@@ -4,11 +4,11 @@
 
 namespace presets {
 constexpr Settings::Limits defaultLimits {
-    .iMotMax = 25,
-    .iDcMax = 27,
-    .nMotMax = 1000,
-    .fieldWeakMax = 5,
-    .phaseAdvMax = 40
+    .iMotMax = DEFAULT_IMOTMAX,
+    .iDcMax = DEFAULT_IDCMAX,
+    .nMotMax = DEFAULT_NMOTMAX,
+    .fieldWeakMax = DEFAULT_FIELDWEAKMAX,
+    .phaseAdvMax = DEFAULT_FIELDADVMAX
 };
 constexpr Settings::Limits kidsLimits {
     .iMotMax = 5,
@@ -20,10 +20,10 @@ constexpr Settings::Limits kidsLimits {
 
 constexpr Settings::Hardware::Poti defaultPoti {
     .sampleCount = 100,
-    .gasMin = 800,
-    .gasMax = 3700,
-    .bremsMin = 1300,
-    .bremsMax = 4000
+    .gasMin = DEFAULT_GASMIN,
+    .gasMax = DEFAULT_GASMAX,
+    .bremsMin = DEFAULT_BREMSMIN,
+    .bremsMax = DEFAULT_BREMSMAX
 };
 
 constexpr Settings::Hardware defaultHardware {
