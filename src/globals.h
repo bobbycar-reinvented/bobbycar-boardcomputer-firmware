@@ -23,8 +23,8 @@ float avgSpeed, avgSpeedKmh, sumCurrent, sumAbsoluteCurrent;
 Settings settings;
 SettingsSaver settingsSaver;
 
-Controller front{Serial1, settings.hardware.enableFrontLeft, settings.hardware.enableFrontRight, settings.hardware.invertFrontLeft, settings.hardware.invertFrontRight};
-Controller back{Serial2, settings.hardware.enableBackLeft, settings.hardware.enableBackRight, settings.hardware.invertBackLeft, settings.hardware.invertBackRight};
+Controller front{Serial1, settings.controllerHardware.enableFrontLeft, settings.controllerHardware.enableFrontRight, settings.controllerHardware.invertFrontLeft, settings.controllerHardware.invertFrontRight};
+Controller back{Serial2, settings.controllerHardware.enableBackLeft, settings.controllerHardware.enableBackRight, settings.controllerHardware.invertBackLeft, settings.controllerHardware.invertBackRight};
 
 struct {
     unsigned long lastTime = millis();

@@ -14,7 +14,7 @@
 #include "displays/menus/feedbackdebugmenu.h"
 #include "displays/menus/genericwifisettingsmenu.h"
 #include "displays/menus/graphsmenu.h"
-#include "displays/menus/hardwaresettingsmenu.h"
+#include "displays/menus/controllerhardwaresettingsmenu.h"
 #include "displays/menus/invertmenu.h"
 #include "displays/menus/larsmmodesettingsmenu.h"
 #include "displays/menus/limitssettingsmenu.h"
@@ -24,7 +24,7 @@
 #include "displays/menus/motorfeedbackdebugmenu.h"
 #include "displays/menus/motorstatedebugmenu.h"
 #include "displays/menus/presetsmenu.h"
-#include "displays/menus/potisettingsmenu.h"
+#include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 #include "displays/menus/selectmodemenu.h"
 #include "displays/menus/settingsmenu.h"
 #include "displays/menus/stationwifisettingsmenu.h"
@@ -59,6 +59,7 @@ union X {
     BuzzerMenu buzzerMenu;
     FrontCommandDebugMenu frontCommandDebugMenu;
     BackCommandDebugMenu backCommandDebugMenu;
+    ControllerHardwareSettingsMenu controllerHardwareSettingsMenu;
     DebugMenu debugMenu;
     DefaultModeSettingsMenu defaultModeSettingsMenu;
     DemosMenu demosMenu;
@@ -68,7 +69,6 @@ union X {
     BackFeedbackDebugMenu backFeedbackDebugMenu;
     GenericWifiSettingsMenu genericWifiSettingsMenu;
     GraphsMenu graphsMenu;
-    HardwareSettingsMenu hardwareSettingsMenu;
     InvertMenu invertMenu;
     LarsmModeSettingsMenu larsmModeSettingsMenu;
     LimitsSettingsMenu limitsSettingsMenu;
@@ -83,7 +83,7 @@ union X {
     FrontRightMotorFeedbackDebugMenu frontRightMotorFeedbackDebugMenu;
     BackLeftMotorFeedbackDebugMenu backLeftMotorFeedbackDebugMenu;
     BackRightMotorFeedbackDebugMenu backRightMotorFeedbackDebugMenu;
-    PotiSettingsMenu potiSettingsMenu;
+    BoardcomputerHardwareSettingsMenu boardcomputerHardwareSettingsMenu;
     PresetsMenu presetsMenu;
     SelectModeMenu selectModeMenu;
     SettingsMenu settingsMenu;
@@ -171,6 +171,8 @@ template<> decltype(displays.accessPointWifiSettingsMenu)                      &
 template<> decltype(displays.bluetoothSettingsMenu)                            &getRefByType<decltype(displays.bluetoothSettingsMenu)>()                            { return displays.bluetoothSettingsMenu; }
 template<> decltype(displays.bmsMenu)                                          &getRefByType<decltype(displays.bmsMenu)>()                                          { return displays.bmsMenu; }
 template<> decltype(displays.buzzerMenu)                                       &getRefByType<decltype(displays.buzzerMenu)>()                                       { return displays.buzzerMenu; }
+template<> decltype(displays.boardcomputerHardwareSettingsMenu)                &getRefByType<decltype(displays.boardcomputerHardwareSettingsMenu)>()                { return displays.boardcomputerHardwareSettingsMenu; }
+template<> decltype(displays.controllerHardwareSettingsMenu)                   &getRefByType<decltype(displays.controllerHardwareSettingsMenu)>()                   { return displays.controllerHardwareSettingsMenu; }
 template<> decltype(displays.frontCommandDebugMenu)                            &getRefByType<decltype(displays.frontCommandDebugMenu)>()                            { return displays.frontCommandDebugMenu; }
 template<> decltype(displays.backCommandDebugMenu)                             &getRefByType<decltype(displays.backCommandDebugMenu)>()                             { return displays.backCommandDebugMenu; }
 template<> decltype(displays.debugMenu)                                        &getRefByType<decltype(displays.debugMenu)>()                                        { return displays.debugMenu; }
@@ -182,7 +184,6 @@ template<> decltype(displays.frontFeedbackDebugMenu)                           &
 template<> decltype(displays.backFeedbackDebugMenu)                            &getRefByType<decltype(displays.backFeedbackDebugMenu)>()                            { return displays.backFeedbackDebugMenu; }
 template<> decltype(displays.genericWifiSettingsMenu)                          &getRefByType<decltype(displays.genericWifiSettingsMenu)>()                          { return displays.genericWifiSettingsMenu; }
 template<> decltype(displays.graphsMenu)                                       &getRefByType<decltype(displays.graphsMenu)>()                                       { return displays.graphsMenu; }
-template<> decltype(displays.hardwareSettingsMenu)                             &getRefByType<decltype(displays.hardwareSettingsMenu)>()                             { return displays.hardwareSettingsMenu; }
 template<> decltype(displays.invertMenu)                                       &getRefByType<decltype(displays.invertMenu)>()                                       { return displays.invertMenu; }
 template<> decltype(displays.larsmModeSettingsMenu)                            &getRefByType<decltype(displays.larsmModeSettingsMenu)>()                            { return displays.larsmModeSettingsMenu; }
 template<> decltype(displays.limitsSettingsMenu)                               &getRefByType<decltype(displays.limitsSettingsMenu)>()                               { return displays.limitsSettingsMenu; }
@@ -197,7 +198,6 @@ template<> decltype(displays.frontLeftMotorFeedbackDebugMenu)                  &
 template<> decltype(displays.frontRightMotorFeedbackDebugMenu)                 &getRefByType<decltype(displays.frontRightMotorFeedbackDebugMenu)>()                 { return displays.frontRightMotorFeedbackDebugMenu; }
 template<> decltype(displays.backLeftMotorFeedbackDebugMenu)                   &getRefByType<decltype(displays.backLeftMotorFeedbackDebugMenu)>()                   { return displays.backLeftMotorFeedbackDebugMenu; }
 template<> decltype(displays.backRightMotorFeedbackDebugMenu)                  &getRefByType<decltype(displays.backRightMotorFeedbackDebugMenu)>()                  { return displays.backRightMotorFeedbackDebugMenu; }
-template<> decltype(displays.potiSettingsMenu)                                 &getRefByType<decltype(displays.potiSettingsMenu)>()                                 { return displays.potiSettingsMenu; }
 template<> decltype(displays.presetsMenu)                                      &getRefByType<decltype(displays.presetsMenu)>()                                      { return displays.presetsMenu; }
 template<> decltype(displays.selectModeMenu)                                   &getRefByType<decltype(displays.selectModeMenu)>()                                   { return displays.selectModeMenu; }
 template<> decltype(displays.settingsMenu)                                     &getRefByType<decltype(displays.settingsMenu)>()                                     { return displays.settingsMenu; }
@@ -372,6 +372,9 @@ void updateDisplay()
 void redrawDisplay()
 {
     if (currentDisplay)
+    {
+        tft.setSwapBytes(settings.boardcomputerHardware.swapScreenBytes);
         currentDisplay->redraw();
+    }
 }
 }

@@ -191,9 +191,9 @@ void MenuDisplay::redraw()
             auto icon = item.icon();
             if (icon)
             {
-                tft.setSwapBytes(true);
+                tft.setSwapBytes(!settings.boardcomputerHardware.swapScreenBytes);
                 tft.pushImage(6, labelsIter->y()+1, icon->WIDTH, icon->HEIGHT, icon->buffer);
-                tft.setSwapBytes(false);
+                tft.setSwapBytes(settings.boardcomputerHardware.swapScreenBytes);
             }
             *iconsIter = icon;
         }

@@ -30,12 +30,12 @@ T scaleBetween(T x, T in_min, T in_max, T out_min, T out_max) {
 
 float convertToKmh(float val)
 {
-    return val /* / settings.hardware.numMagnetPoles */ / 60.f * settings.hardware.wheelDiameter / 1000.f * 3.14159265359f * 3.6f;
+    return val /* / settings.controllerHardware.numMagnetPoles */ / 60.f * settings.controllerHardware.wheelDiameter / 1000.f * 3.14159265359f * 3.6f;
 }
 
 float convertFromKmh(float val)
 {
-    return val /* * settings.hardware.numMagnetPoles */ * 60.f / settings.hardware.wheelDiameter * 1000.f / 3.14159265359f / 3.6f;
+    return val /* * settings.controllerHardware.numMagnetPoles */ * 60.f / settings.controllerHardware.wheelDiameter * 1000.f / 3.14159265359f / 3.6f;
 }
 
 float convertToInch(float val)
@@ -220,18 +220,18 @@ void fixCommonParams()
         currentlyReverseBeeping = false;
     }
 
-    front.command.left.enable = settings.hardware.enableFrontLeft;
-    front.command.right.enable = settings.hardware.enableFrontRight;
-    back.command.left.enable = settings.hardware.enableBackLeft;
-    back.command.right.enable = settings.hardware.enableBackRight;
+    front.command.left.enable = settings.controllerHardware.enableFrontLeft;
+    front.command.right.enable = settings.controllerHardware.enableFrontRight;
+    back.command.left.enable = settings.controllerHardware.enableBackLeft;
+    back.command.right.enable = settings.controllerHardware.enableBackRight;
 
-    if (settings.hardware.invertFrontLeft)
+    if (settings.controllerHardware.invertFrontLeft)
         front.command.left.pwm = -front.command.left.pwm;
-    if (settings.hardware.invertFrontRight)
+    if (settings.controllerHardware.invertFrontRight)
         front.command.right.pwm = -front.command.right.pwm;
-    if (settings.hardware.invertBackLeft)
+    if (settings.controllerHardware.invertBackLeft)
         back.command.left.pwm = -back.command.left.pwm;
-    if (settings.hardware.invertBackRight)
+    if (settings.controllerHardware.invertBackRight)
         back.command.right.pwm = -back.command.right.pwm;
 }
 
@@ -250,8 +250,8 @@ void switchScreen(Args&&... args);
 
 void updateSwapFrontBack()
 {
-    front.serial = settings.hardware.swapFrontBack ? Serial2 : Serial1;
-    back.serial = settings.hardware.swapFrontBack ? Serial1 : Serial2;
+    front.serial = settings.controllerHardware.swapFrontBack ? Serial2 : Serial1;
+    back.serial = settings.controllerHardware.swapFrontBack ? Serial1 : Serial2;
 }
 
 void loadSettings()
@@ -305,15 +305,15 @@ void readPotis()
     const auto sampleMultipleTimes = [](int pin){
         analogRead(pin);
         double sum{};
-        for (int i = 0; i < settings.hardware.poti.sampleCount; i++)
+        for (int i = 0; i < settings.boardcomputerHardware.sampleCount; i++)
             sum += analogRead(pin);
-        return sum/settings.hardware.poti.sampleCount;
+        return sum/settings.boardcomputerHardware.sampleCount;
     };
 
     raw_gas = sampleMultipleTimes(PINS_GAS);
-    gas = scaleBetween<float>(raw_gas, settings.hardware.poti.gasMin, settings.hardware.poti.gasMax, 0., 1000.);
+    gas = scaleBetween<float>(raw_gas, settings.boardcomputerHardware.gasMin, settings.boardcomputerHardware.gasMax, 0., 1000.);
 
     raw_brems = sampleMultipleTimes(PINS_BREMS);
-    brems = scaleBetween<float>(raw_brems, settings.hardware.poti.bremsMin, settings.hardware.poti.bremsMax, 0., 1000.);
+    brems = scaleBetween<float>(raw_brems, settings.boardcomputerHardware.bremsMin, settings.boardcomputerHardware.bremsMax, 0., 1000.);
 }
 }

@@ -24,19 +24,20 @@ struct Settings
         int16_t phaseAdvMax;  // [deg] Maximum Phase Advance angle (only for SIN). Higher angle results in higher maximum speed.
     } limits;
 
-    struct Hardware {
+    struct ControllerHardware {
         bool enableFrontLeft, enableFrontRight, enableBackLeft, enableBackRight;
         bool invertFrontLeft, invertFrontRight, invertBackLeft, invertBackRight;
-
-        struct Poti {
-            int16_t sampleCount;
-            int16_t gasMin, gasMax, bremsMin, bremsMax;
-        } poti;
 
         int16_t wheelDiameter; // in mm
         int16_t numMagnetPoles; // virtual RPM per one real RPM
         bool swapFrontBack;
-    } hardware;
+    } controllerHardware;
+
+    struct BoardcomputerHardware {
+        int16_t sampleCount;
+        int16_t gasMin, gasMax, bremsMin, bremsMax;
+        bool swapScreenBytes;
+    } boardcomputerHardware;
 
     struct DefaultMode {
         ControlType ctrlTyp;
@@ -83,23 +84,24 @@ void Settings::executeForEverySetting(T &&callable)
     callable("fieldWeakMax", limits.fieldWeakMax);
     callable("phaseAdvMax", limits.phaseAdvMax);
 
-    callable("enableFrontLeft", hardware.enableFrontLeft);
-    callable("enableFrontRigh", hardware.enableFrontRight);
-    callable("enableBackLeft", hardware.enableBackLeft);
-    callable("enableBackRight", hardware.enableBackRight);
+    callable("enableFrontLeft", controllerHardware.enableFrontLeft);
+    callable("enableFrontRigh", controllerHardware.enableFrontRight);
+    callable("enableBackLeft", controllerHardware.enableBackLeft);
+    callable("enableBackRight", controllerHardware.enableBackRight);
 
-    callable("invertFrontLeft", hardware.invertFrontLeft);
-    callable("invertFrontRigh", hardware.invertFrontRight);
-    callable("invertBackLeft", hardware.invertBackLeft);
-    callable("invertBackRight", hardware.invertBackRight);
+    callable("invertFrontLeft", controllerHardware.invertFrontLeft);
+    callable("invertFrontRigh", controllerHardware.invertFrontRight);
+    callable("invertBackLeft", controllerHardware.invertBackLeft);
+    callable("invertBackRight", controllerHardware.invertBackRight);
 
-    callable("sampleCount", hardware.poti.sampleCount);
-    callable("gasMin", hardware.poti.gasMin);
-    callable("gasMax", hardware.poti.gasMax);
-    callable("bremsMin", hardware.poti.bremsMin);
-    callable("bremsMax", hardware.poti.bremsMax);
+    callable("swapFrontBack", controllerHardware.swapFrontBack);
 
-    callable("swapFrontBack", hardware.swapFrontBack);
+    callable("sampleCount", boardcomputerHardware.sampleCount);
+    callable("gasMin", boardcomputerHardware.gasMin);
+    callable("gasMax", boardcomputerHardware.gasMax);
+    callable("bremsMin", boardcomputerHardware.bremsMin);
+    callable("bremsMax", boardcomputerHardware.bremsMax);
+    callable("swapScreenBytes", boardcomputerHardware.swapScreenBytes);
 
     callable("default.ctrlTyp", defaultMode.ctrlTyp);
     callable("default.ctrlMod", defaultMode.ctrlMod);

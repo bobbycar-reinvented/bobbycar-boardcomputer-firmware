@@ -12,7 +12,7 @@
 #include "settingsaccessors.h"
 
 namespace {
-class HardwareSettingsMenu;
+class ControllerHardwareSettingsMenu;
 }
 
 namespace {
@@ -24,7 +24,7 @@ class EnableMenu :
         makeComponent<MenuItem, StaticText<TEXT_ENABLEFRONTRIGHT>, ToggleBoolAction, CheckboxIcon, FrontRightEnabledAccessor>,
         makeComponent<MenuItem, StaticText<TEXT_ENABLEBACKLEFT>,   ToggleBoolAction, CheckboxIcon, BackLeftEnabledAccessor>,
         makeComponent<MenuItem, StaticText<TEXT_ENABLEBACKRIGHT>,  ToggleBoolAction, CheckboxIcon, BackRightEnabledAccessor>,
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,             SwitchScreenAction<HardwareSettingsMenu>, StaticMenuItemIcon<&icons::back>>
+        makeComponent<MenuItem, StaticText<TEXT_BACK>,             SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {};
 }

@@ -14,7 +14,7 @@
 
 namespace {
 class StatusDisplay;
-class PotiSettingsMenu;
+class BoardcomputerHardwareSettingsMenu;
 }
 
 namespace {
@@ -102,6 +102,6 @@ void CalibrateDisplay::triggered()
     if (m_bootup)
         switchScreen<StatusDisplay>();
     else
-        switchScreen<PotiSettingsMenu>();
+        switchScreen<BoardcomputerHardwareSettingsMenu>();
 }
 }

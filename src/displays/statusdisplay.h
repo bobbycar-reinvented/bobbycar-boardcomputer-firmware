@@ -224,9 +224,9 @@ void StatusDisplay::BoardStatus::drawWarning()
     tft.drawString("No data!", 60, m_y+50, 4);
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-    tft.setSwapBytes(true);
+    tft.setSwapBytes(!settings.boardcomputerHardware.swapScreenBytes);
     tft.pushImage(10, m_y+40, icons::alert.WIDTH, icons::alert.HEIGHT, icons::alert.buffer);
-    tft.setSwapBytes(false);
+    tft.setSwapBytes(settings.boardcomputerHardware.swapScreenBytes);
 }
 
 void StatusDisplay::BoardStatus::MotorStatus::start()

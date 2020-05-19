@@ -18,15 +18,7 @@ constexpr Settings::Limits kidsLimits {
     .phaseAdvMax = 20
 };
 
-constexpr Settings::Hardware::Poti defaultPoti {
-    .sampleCount = 100,
-    .gasMin = DEFAULT_GASMIN,
-    .gasMax = DEFAULT_GASMAX,
-    .bremsMin = DEFAULT_BREMSMIN,
-    .bremsMax = DEFAULT_BREMSMAX
-};
-
-constexpr Settings::Hardware defaultHardware {
+constexpr Settings::ControllerHardware defaultControllerHardware {
     .enableFrontLeft = true,
     .enableFrontRight = true,
     .enableBackLeft = true,
@@ -37,11 +29,18 @@ constexpr Settings::Hardware defaultHardware {
     .invertBackLeft = false,
     .invertBackRight = true,
 
-    .poti = defaultPoti,
-
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
     .swapFrontBack = false
+};
+
+constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
+    .sampleCount = 100,
+    .gasMin = DEFAULT_GASMIN,
+    .gasMax = DEFAULT_GASMAX,
+    .bremsMin = DEFAULT_BREMSMIN,
+    .bremsMax = DEFAULT_BREMSMAX,
+    .swapScreenBytes = DEFAULT_SWAPSCREENBYTES
 };
 
 constexpr Settings::DefaultMode defaultDefaultMode {
@@ -76,7 +75,8 @@ constexpr Settings defaultSettings{
     .reverseBeepDuration0 = 500,
     .reverseBeepDuration1 = 500,
     .limits = defaultLimits,
-    .hardware = defaultHardware,
+    .controllerHardware = defaultControllerHardware,
+    .boardcomputerHardware = defaultBoardcomputerHardware,
     .defaultMode = defaultDefaultMode,
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode

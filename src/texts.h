@@ -66,7 +66,8 @@ constexpr char TEXT_LIMITSSETTINGS[] = "Limits settings";
 constexpr char TEXT_WIFISETTINGS[] = "WiFi settings";
 //constexpr char TEXT_BLUETOOTHSETTINGS[] = "Bluetooth settings";
 constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
-constexpr char TEXT_HARDWARESETTINGS[] = "Hardware settings";
+constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
+constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
 constexpr char TEXT_AUTOCONNECTBMS[] = "Auto connect BMS";
 constexpr char TEXT_BUZZER[] = "Buzzer";
 constexpr char TEXT_FRONTLED[] = "Front LED";
@@ -74,14 +75,13 @@ constexpr char TEXT_BACKLED[] = "Back LED";
 //constexpr char TEXT_ABOUT[] = "About";
 //constexpr char TEXT_BACK[] = "Back";
 
-//HardwareSettings
-//constexpr char TEXT_HARDWARESETTINGS[] = "Hardware settings";
+//ControllerHardwareSettings
+//constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
 constexpr char TEXT_WHEELDIAMETERMM[] = "Wheel diameter (mm)";
 constexpr char TEXT_WHEELDIAMETERINCH[] = "Wheel diameter (inch)";
 constexpr char TEXT_NUMMAGNETPOLES[] = "Num magnet poles";
 constexpr char TEXT_SETENABLED[] = "Set enabled";
 constexpr char TEXT_SETINVERTED[] = "Set inverted";
-constexpr char TEXT_POTISETTINGS[] = "Poti settings";
 constexpr char TEXT_SWAPFRONTBACK[] = "Swap front/back";
 //constexpr char TEXT_BACK[] = "Back";
 
@@ -215,14 +215,15 @@ constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
 //constexpr char TEXT_GENERICWIFISETTINGS[] = "Generic WiFi settings";
 //constexpr char TEXT_BACK[] = "Back";
 
-//PotiSettingsMenu
-//constexpr char TEXT_POTISETTINGS[] = "Poti settings";
+//BoardcomputerHardwareSettingsMenu
+//constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
+constexpr char TEXT_CALIBRATE[] = "Calibrate";
 constexpr char TEXT_SETSAMPLECOUNT[] = "Set sampleCount";
 constexpr char TEXT_SETGASMIN[] = "Set gasMin";
 constexpr char TEXT_SETGASMAX[] = "Set gasMax";
 constexpr char TEXT_SETBREMSMIN[] = "Set bremsMin";
 constexpr char TEXT_SETBREMSMAX[] = "Set bremsMax";
-constexpr char TEXT_CALIBRATE[] = "Calibrate";
+constexpr char TEXT_SWAPSCREENBYTES[] = "Swap screen bytes";
 //constexpr char TEXT_BACK[] = "Back";
 
 //PresetsMenu
@@ -231,7 +232,8 @@ constexpr char TEXT_DEFAULTEVERYTHING[] = "Default everything";
 constexpr char TEXT_DEFAULTLIMITS[] = "Default limits";
 constexpr char TEXT_KIDSLIMITS[] = "Kids limits";
 constexpr char TEXT_DEFAULTPOTI[] = "Default poti";
-constexpr char TEXT_DEFAULTHARDWARE[] = "Default hardware";
+constexpr char TEXT_DEFAULTCONTROLLERHARDWARE[] = "Default controller H/W";
+constexpr char TEXT_DEFAULTBOARDCOMPUTERHARDWARE[] = "Default boardcomputer H/W";
 constexpr char TEXT_STREET[] = "Street";
 constexpr char TEXT_SIDEWALK[] = "Sidewalk";
 constexpr char TEXT_POLICE[] = "Police";
