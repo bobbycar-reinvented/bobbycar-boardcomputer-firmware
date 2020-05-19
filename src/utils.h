@@ -248,22 +248,6 @@ void sendCommands()
 template<typename T, typename... Args>
 void switchScreen(Args&&... args);
 
-void setupScrollArea(uint16_t TFA, uint16_t BFA) {
-  tft.writecommand(ILI9341_VSCRDEF); // Vertical scroll definition
-  tft.writedata(TFA >> 8);
-  tft.writedata(TFA);
-  tft.writedata((320 - TFA - BFA) >> 8);
-  tft.writedata(320 - TFA - BFA);
-  tft.writedata(BFA >> 8);
-  tft.writedata(BFA);
-}
-
-void scrollAddress(uint16_t VSP) {
-  tft.writecommand(ILI9341_VSCRSADD); // Vertical scrolling start address
-  tft.writedata(VSP >> 8);
-  tft.writedata(VSP);
-}
-
 void updateSwapFrontBack()
 {
     front.serial = settings.hardware.swapFrontBack ? Serial2 : Serial1;
