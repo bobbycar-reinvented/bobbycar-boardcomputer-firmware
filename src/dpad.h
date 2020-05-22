@@ -9,53 +9,37 @@
 namespace {
 using DPadState = std::tuple<bool, bool, bool, bool>;
 
-template<pin_t OUT, pin_t IN1, pin_t IN2>
+template<pin_t IN1, pin_t IN2, pin_t IN3, pin_t IN4>
 class DPadHelper
 {
-public:
-    static constexpr auto OutPin = OUT;
-    static constexpr auto In1Pin = IN1;
-    static constexpr auto In2Pin = IN2;
-
+ public:
     void begin();
 
     DPadState read();
 };
 
-template<pin_t OUT, pin_t IN1, pin_t IN2>
-void DPadHelper<OUT, IN1, IN2>::begin()
+template<pin_t IN1, pin_t IN2, pin_t IN3, pin_t IN4>
+void DPadHelper<IN1, IN2, IN3, IN4>::begin()
 {
-    pinMode(OUT, OUTPUT);
+  pinMode(IN1, INPUT_PULLUP);
+  pinMode(IN2, INPUT_PULLUP);
+  pinMode(IN3, INPUT_PULLUP);
+  pinMode(IN4, INPUT_PULLUP);
 }
 
-template<pin_t OUT, pin_t IN1, pin_t IN2>
-DPadState DPadHelper<OUT, IN1, IN2>::read()
+template<pin_t IN1, pin_t IN2, pin_t IN3, pin_t IN4>
+DPadState DPadHelper<IN1, IN2, IN3, IN4>::read()
 {
-    digitalWrite(OUT, LOW);
-
-    pinMode(IN1, INPUT_PULLUP);
-    pinMode(IN2, INPUT_PULLUP);
-
-    delay(1);
-
-    const bool result0 = digitalRead(IN1)==LOW;
-    const bool result1 = digitalRead(IN2)==LOW;
-
-    digitalWrite(OUT, HIGH);
-
-    pinMode(IN1, INPUT_PULLDOWN);
-    pinMode(IN2, INPUT_PULLDOWN);
-
-    delay(1);
-
-    const bool result2 = digitalRead(IN1);
-    const bool result3 = digitalRead(IN2);
+    const bool result0 = digitalRead(IN1);
+    const bool result1 = digitalRead(IN2);
+    const bool result2 = digitalRead(IN3);
+    const bool result3 = digitalRead(IN4);
 
     return std::make_tuple(result0, result1, result2, result3);
 }
 
-#ifdef FEATURE_3WIRESW
-DPadHelper<PINS_3WIRESW_OUT, PINS_3WIRESW_IN1, PINS_3WIRESW_IN2> dpad;
+#ifdef FEATURE_DPAD
+DPadHelper<PINS_DPAD_IN1, PINS_DPAD_IN2, PINS_DPAD_IN3, PINS_DPAD_IN4> dpad;
 
 DPadState lastState;
 void updateDpad()

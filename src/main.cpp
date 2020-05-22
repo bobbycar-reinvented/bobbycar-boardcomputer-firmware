@@ -10,6 +10,7 @@
 #include "modes/tempomatmode.h"
 #include "screens.h"
 #include "dpad.h"
+#include "dpadHack.h"
 #include "rotary.h"
 #include "serialhandler.h"
 #include "ota.h"
@@ -40,8 +41,12 @@ void setup()
 
     initScreen();
 
+#ifdef FEATURE_DPAD
+  dpad.begin();
+#endif
+
 #ifdef FEATURE_3WIRESW
-    dpad.begin();
+    dpadHack.begin();
 #endif
 
 #ifdef FEATURE_ROTARY
@@ -91,8 +96,12 @@ void loop()
 {
     const auto now = millis();
 
+#ifdef FEATURE_DPAD
+  updateDpad();
+#endif
+
 #ifdef FEATURE_3WIRESW
-    updateDpad();
+  updateDpadHack();
 #endif
 
     if (!lastModeUpdate)
