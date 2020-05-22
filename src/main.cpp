@@ -18,6 +18,7 @@
 #include "statistics.h"
 #include "actions/bluetoothbeginmasteraction.h"
 #include "actions/bluetoothconnectbmsaction.h"
+#include "webserver.h"
 
 namespace {
 ModeInterface *lastMode{};
@@ -83,6 +84,8 @@ void setup()
     currentMode = &modes::defaultMode;
 
     initOta();
+
+    initWebserver();
 
     readPotis();
 
@@ -158,6 +161,8 @@ void loop()
     handleSerial();
 
     handleOta();
+
+    handleWebserver();
 
     bms::update();
 }

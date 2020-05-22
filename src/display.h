@@ -3,6 +3,7 @@
 #include <WString.h>
 
 namespace {
+class TextInterface;
 class MenuDisplay;
 class ChangeValueDisplayInterface;
 }
@@ -20,6 +21,9 @@ public:
 
     virtual void rotate(int offset) {}
     virtual void button() {}
+
+    virtual TextInterface *asTextInterface() { return nullptr; }
+    virtual const TextInterface *asTextInterface() const { return nullptr; }
 
     virtual MenuDisplay *asMenuDisplay() { return nullptr; }
     virtual const MenuDisplay *asMenuDisplay() const { return nullptr; }

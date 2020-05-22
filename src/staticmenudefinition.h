@@ -15,6 +15,11 @@ public:
         callback(item);
     }
 
+    void runForEveryMenuItem(std::function<void(const MenuItem&)> &&callback) const override
+    {
+        callback(item);
+    }
+
 private:
     T item;
 };
@@ -26,6 +31,12 @@ class StaticMenuDefinition<T, Tmore...> : public virtual StaticMenuDefinition<Tm
 
 public:
     void runForEveryMenuItem(std::function<void(MenuItem&)> &&callback) override
+    {
+        callback(item);
+        Base::runForEveryMenuItem(std::move(callback));
+    }
+
+    void runForEveryMenuItem(std::function<void(const MenuItem&)> &&callback) const override
     {
         callback(item);
         Base::runForEveryMenuItem(std::move(callback));

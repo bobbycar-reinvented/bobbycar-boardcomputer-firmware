@@ -14,6 +14,9 @@ class ChangeValueDisplayInterface : public Display, public virtual TextInterface
 public:
     void initScreen() override;
 
+    TextInterface *asTextInterface() override { return this; }
+    const TextInterface *asTextInterface() const override { return this; }
+
     ChangeValueDisplayInterface *asChangeValueDisplayInterface() override { return this; }
     const ChangeValueDisplayInterface *asChangeValueDisplayInterface() const override { return this; }
 

@@ -26,6 +26,9 @@ public:
 
     virtual void itemPressed(int index);
 
+    TextInterface *asTextInterface() override { return this; }
+    const TextInterface *asTextInterface() const override { return this; }
+
     MenuDisplay *asMenuDisplay() override { return this; }
     const MenuDisplay *asMenuDisplay() const override { return this; }
 

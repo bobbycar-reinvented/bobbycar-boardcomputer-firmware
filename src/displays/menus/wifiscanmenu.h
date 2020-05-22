@@ -36,6 +36,13 @@ public:
         callback(m_backItem);
     }
 
+    void runForEveryMenuItem(std::function<void(const MenuItem&)> &&callback) const override
+    {
+        for (auto &item : vec)
+            callback(item);
+        callback(m_backItem);
+    }
+
 private:
     makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>> m_backItem;
 
