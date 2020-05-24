@@ -39,7 +39,13 @@ struct WifiModeAccessor : public virtual AccessorInterface<wifi_mode_t>
         // TODO: better error handling
     }
 };
-using WifiModeChangeScreen = makeComponent<ChangeValueDisplay<wifi_mode_t>, StaticText<TEXT_WIFICHANGEMODE>, WifiModeAccessor, BackActionInterface<SwitchScreenAction<GenericWifiSettingsMenu>>, SwitchScreenAction<GenericWifiSettingsMenu>>;
+using WifiModeChangeScreen = makeComponent<
+    ChangeValueDisplay<wifi_mode_t>,
+    StaticText<TEXT_WIFICHANGEMODE>,
+    WifiModeAccessor,
+    BackActionInterface<SwitchScreenAction<GenericWifiSettingsMenu>>,
+    SwitchScreenAction<GenericWifiSettingsMenu>
+>;
 
 struct WifiSleepAccessor : public virtual AccessorInterface<bool>
 {
@@ -62,7 +68,13 @@ struct WifiTxPowerAccessor : public virtual AccessorInterface<wifi_power_t>
         // TODO: better error handling
     }
 };
-using WifiTxPowerChangeScreen = makeComponent<ChangeValueDisplay<wifi_power_t>, StaticText<TEXT_WIFICHANGETXPOWER>, WifiTxPowerAccessor, BackActionInterface<SwitchScreenAction<GenericWifiSettingsMenu>>, SwitchScreenAction<GenericWifiSettingsMenu>>;
+using WifiTxPowerChangeScreen = makeComponent<
+    ChangeValueDisplay<wifi_power_t>,
+    StaticText<TEXT_WIFICHANGETXPOWER>,
+    WifiTxPowerAccessor,
+    BackActionInterface<SwitchScreenAction<GenericWifiSettingsMenu>>,
+    SwitchScreenAction<GenericWifiSettingsMenu>
+>;
 
 class GenericWifiSettingsMenu :
     public MenuDisplay,

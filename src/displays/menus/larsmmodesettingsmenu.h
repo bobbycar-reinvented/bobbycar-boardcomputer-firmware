@@ -16,8 +16,20 @@ class ModesSettingsMenu;
 }
 
 namespace {
-using LarsmModeModeChangeDisplay = makeComponent<ChangeValueDisplay<LarsmModeMode>, StaticText<TEXT_LARSMMODECHANGEMODE>, LarsmModeModeAccessor, BackActionInterface<SwitchScreenAction<LarsmModeSettingsMenu>>, SwitchScreenAction<LarsmModeSettingsMenu>>;
-using LarsmModeIterationsChangeDisplay = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_LARSMMODECHANGEITERATIONS>, LarsmModeIterationsAccessor, BackActionInterface<SwitchScreenAction<LarsmModeSettingsMenu>>, SwitchScreenAction<LarsmModeSettingsMenu>>;
+using LarsmModeModeChangeDisplay = makeComponent<
+    ChangeValueDisplay<LarsmModeMode>,
+    StaticText<TEXT_LARSMMODECHANGEMODE>,
+    LarsmModeModeAccessor,
+    BackActionInterface<SwitchScreenAction<LarsmModeSettingsMenu>>,
+    SwitchScreenAction<LarsmModeSettingsMenu>
+>;
+using LarsmModeIterationsChangeDisplay = makeComponent<
+    ChangeValueDisplay<uint8_t>,
+    StaticText<TEXT_LARSMMODECHANGEITERATIONS>,
+    LarsmModeIterationsAccessor,
+    BackActionInterface<SwitchScreenAction<LarsmModeSettingsMenu>>,
+    SwitchScreenAction<LarsmModeSettingsMenu>
+>;
 
 class LarsmModeSettingsMenu :
     public MenuDisplay,

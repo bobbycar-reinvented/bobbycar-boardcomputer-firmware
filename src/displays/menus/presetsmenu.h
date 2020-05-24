@@ -18,16 +18,32 @@ class MainMenu;
 
 namespace {
 template<const Settings *preset>
-class ApplyPresetAction : public virtual ActionInterface {public: void triggered() override { settings = *preset; saveSettings(); } };
+class ApplyPresetAction : public virtual ActionInterface
+{
+public:
+    void triggered() override { settings = *preset; saveSettings(); }
+};
 
 template<const Settings::Limits *preset>
-class ApplyLimitsPresetAction : public virtual ActionInterface {public: void triggered() override { settings.limits = *preset; saveSettings(); } };
+class ApplyLimitsPresetAction : public virtual ActionInterface
+{
+public:
+    void triggered() override { settings.limits = *preset; saveSettings(); }
+};
 
 template<const Settings::ControllerHardware *preset>
-class ApplyControllerHardwarePresetAction : public virtual ActionInterface {public: void triggered() override { settings.controllerHardware = *preset; saveSettings(); } };
+class ApplyControllerHardwarePresetAction : public virtual ActionInterface
+{
+public:
+    void triggered() override { settings.controllerHardware = *preset; saveSettings(); }
+};
 
 template<const Settings::BoardcomputerHardware *preset>
-class ApplyBoardcomputerHardwarePresetAction : public virtual ActionInterface {public: void triggered() override { settings.boardcomputerHardware = *preset; saveSettings(); } };
+class ApplyBoardcomputerHardwarePresetAction : public virtual ActionInterface
+{
+public:
+    void triggered() override { settings.boardcomputerHardware = *preset; saveSettings(); }
+};
 
 class PresetsMenu :
     public MenuDisplay,
