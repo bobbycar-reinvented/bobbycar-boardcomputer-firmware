@@ -16,7 +16,7 @@ class BmsDisplay;
 }
 
 namespace {
-class MetersDisplay : public DemoDisplay, public SwitchScreenAction<MainMenu>
+class MetersDisplay : public DemoDisplay, public SwitchScreenAction<MainMenu>, public BackActionInterface<SwitchScreenAction<MainMenu>>
 {
     using Base = DemoDisplay;
 

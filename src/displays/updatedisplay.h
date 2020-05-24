@@ -27,7 +27,7 @@ public:
     void start() override;
     void initScreen() override;
     void redraw() override;
-    void button() override;
+    void confirm() override;
 
 public:
     bool m_finished;
@@ -85,7 +85,7 @@ void UpdateDisplay::redraw()
     m_progressBar.redraw(float(m_progress) / m_total * 100.f);
 }
 
-void UpdateDisplay::button()
+void UpdateDisplay::confirm()
 {
     if (m_finished)
         switchScreen<StatusDisplay>();

@@ -22,6 +22,7 @@ namespace {
 class BluetoothSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_BLUETOOTHSETTINGS>,
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, BluetoothAvailableText,                 DisabledColor, DummyAction>,
         makeComponent<MenuItem, BluetoothHasClientText,                 DisabledColor, DummyAction>,

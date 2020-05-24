@@ -19,6 +19,7 @@ template<const char *Ttext, typename Ttexts>
 class CommandDebugMenu :
     public MenuDisplay,
     public StaticText<Ttext>,
+    public BackActionInterface<SwitchScreenAction<DebugMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, typename Ttexts::BuzzerFreqText,    DisabledColor, DummyAction>,
         makeComponent<MenuItem, typename Ttexts::BuzzerPatternText, DisabledColor, DummyAction>,

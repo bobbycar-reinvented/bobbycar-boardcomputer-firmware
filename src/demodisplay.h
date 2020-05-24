@@ -7,10 +7,10 @@ namespace {
 class DemoDisplay : public Display, public virtual ActionInterface
 {
 public:
-    void button() override;
+    void confirm() override;
 };
 
-void DemoDisplay::button()
+void DemoDisplay::confirm()
 {
     triggered();
 }

@@ -34,6 +34,7 @@ namespace {
 class MainMenu :
     public MenuDisplay,
     public StaticText<TEXT_MAINMENU>,
+    public BackActionInterface<SwitchScreenAction<StatusDisplay>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_STATUS>,      SwitchScreenAction<StatusDisplay>, StaticMenuItemIcon<&icons::back>>,
         makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,  SwitchScreenAction<SelectModeMenu>, StaticMenuItemIcon<&icons::modes>>,

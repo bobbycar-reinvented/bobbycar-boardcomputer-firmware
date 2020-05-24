@@ -54,7 +54,7 @@ void initWebserver()
                 {
                     HtmlTag pTag{"p", content};
 
-                    content += "<a href=\"/up\">Up</a> <a href=\"/down\">Down</a> <a href=\"/confirm\">Confirm</a>";
+                    content += "<a href=\"/up\">Up</a> <a href=\"/down\">Down</a> <a href=\"/confirm\">Confirm</a> <a href=\"/back\">Back</a>";
                 }
 
                 if (auto constCurrentDisplay = static_cast<const Display *>(currentDisplay))
@@ -117,8 +117,17 @@ void initWebserver()
     });
 
     webServer.on("/confirm", HTTP_GET, [](){
-        InputDispatcher::button(true);
-        InputDispatcher::button(false);
+        InputDispatcher::confirmButton(true);
+        InputDispatcher::confirmButton(false);
+
+        webServer.sendHeader("Connection", "close");
+        webServer.sendHeader("Location", "/");
+        webServer.send(302, "text/html", "ok");
+    });
+
+    webServer.on("/back", HTTP_GET, [](){
+        InputDispatcher::backButton(true);
+        InputDispatcher::backButton(false);
 
         webServer.sendHeader("Connection", "close");
         webServer.sendHeader("Location", "/");

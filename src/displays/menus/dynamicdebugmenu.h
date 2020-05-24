@@ -121,6 +121,7 @@ constexpr char TEXT_DEBUGTOGGLE[] = "Toggle";
 class DynamicDebugMenu :
     public MenuDisplay,
     public RandomText,
+    public BackActionInterface<SwitchScreenAction<DebugMenu>>,
     public StaticMenuDefinition<
         // dummy items to allow for scrolling
         makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,

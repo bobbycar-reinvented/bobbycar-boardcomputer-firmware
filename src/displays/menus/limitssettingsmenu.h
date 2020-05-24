@@ -16,16 +16,53 @@ class SettingsMenu;
 }
 
 namespace {
-using IMotMaxChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETIMOTMAX>, IMotMaxAccessor, SwitchScreenAction<LimitsSettingsMenu>>;
-using IDcMaxChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETIDCMAX>, IDcMaxAccessor, SwitchScreenAction<LimitsSettingsMenu>>;
-using NMotMaxKmhChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETNMOTMAXKMH>, NMotMaxKmhAccessor, SwitchScreenAction<LimitsSettingsMenu>>;
-using NMotMaxRpmChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETNMOTMAX>, NMotMaxRpmAccessor, SwitchScreenAction<LimitsSettingsMenu>>;
-using FieldWeakMaxChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETFIELDWEAKMAX>, FieldWeakMaxAccessor, SwitchScreenAction<LimitsSettingsMenu>>;
-using PhaseAdvMaxChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETPHASEADVMAX>, PhaseAdvMaxAccessor, SwitchScreenAction<LimitsSettingsMenu>>;
+using IMotMaxChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETIMOTMAX>,
+    IMotMaxAccessor,
+    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
+    SwitchScreenAction<LimitsSettingsMenu>
+>;
+using IDcMaxChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETIDCMAX>,
+    IDcMaxAccessor,
+    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
+    SwitchScreenAction<LimitsSettingsMenu>
+>;
+using NMotMaxKmhChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETNMOTMAXKMH>,
+    NMotMaxKmhAccessor,
+    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
+    SwitchScreenAction<LimitsSettingsMenu>
+>;
+using NMotMaxRpmChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETNMOTMAX>,
+    NMotMaxRpmAccessor,
+    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
+    SwitchScreenAction<LimitsSettingsMenu>
+>;
+using FieldWeakMaxChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETFIELDWEAKMAX>,
+    FieldWeakMaxAccessor,
+    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
+    SwitchScreenAction<LimitsSettingsMenu>
+>;
+using PhaseAdvMaxChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETPHASEADVMAX>,
+    PhaseAdvMaxAccessor,
+    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
+    SwitchScreenAction<LimitsSettingsMenu>
+>;
 
 class LimitsSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_LIMITSSETTINGS>,
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_SETIMOTMAX>,      SwitchScreenAction<IMotMaxChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETIDCMAX>,       SwitchScreenAction<IDcMaxChangeScreen>>,

@@ -28,15 +28,46 @@ public:
     String text() const override { return String{"brems: "} + raw_brems + ": " + brems; }
 };
 
-using SampleCountChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETSAMPLECOUNT>, SampleCountAccessor, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>;
-using GasMinChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETGASMIN>, GasMinAccessor, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>;
-using GasMaxChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETGASMAX>, GasMaxAccessor, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>;
-using BremsMinChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETBREMSMIN>, BremsMinAccessor, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>;
-using BremsMaxChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETBREMSMAX>, BremsMaxAccessor, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>;
+using SampleCountChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETSAMPLECOUNT>,
+    SampleCountAccessor,
+    BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+>;
+using GasMinChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETGASMIN>,
+    GasMinAccessor,
+    BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+>;
+using GasMaxChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETGASMAX>,
+    GasMaxAccessor,
+    BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+>;
+using BremsMinChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETBREMSMIN>,
+    BremsMinAccessor,
+    BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+>;
+using BremsMaxChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETBREMSMAX>,
+    BremsMaxAccessor,
+    BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+>;
 
 class BoardcomputerHardwareSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>,
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, GasText,                         DisabledColor, StaticFont<2>, DummyAction>,
         makeComponent<MenuItem, BremsText,                       DisabledColor, StaticFont<2>, DummyAction>,

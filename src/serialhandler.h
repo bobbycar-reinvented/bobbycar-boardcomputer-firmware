@@ -83,8 +83,12 @@ void handleSerial()
             InputDispatcher::rotate(1);
             break;
         case 'C':
-            InputDispatcher::button(true);
-            InputDispatcher::button(false);
+            InputDispatcher::confirmButton(true);
+            InputDispatcher::confirmButton(false);
+            break;
+        case 'D':
+            InputDispatcher::backButton(true);
+            InputDispatcher::backButton(false);
             break;
         }
     }

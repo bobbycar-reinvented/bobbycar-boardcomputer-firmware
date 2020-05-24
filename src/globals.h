@@ -42,8 +42,10 @@ Display *currentDisplay{};
 
 int rotated{};
 bool requestFullRedraw{};
-bool buttonLongPressed{};
-bool buttonPressed{};
+bool confirmButtonPressed{};
+bool confirmButtonLongPressed{};
+bool backButtonPressed{};
+bool backButtonLongPressed{};
 
 class InputDispatcher
 {
@@ -53,7 +55,7 @@ public:
         rotated += offset;
     }
 
-    static void button(bool pressed)
+    static void confirmButton(bool pressed)
     {
         static unsigned long pressBegin = 0;
 
@@ -65,12 +67,33 @@ public:
         {
             const auto duration = now - pressBegin;
 
-            if (duration < 1000)
-                buttonPressed = true;
-            else if (duration < 3000)
-                buttonLongPressed = true;
+            if (duration < 500)
+                confirmButtonPressed = true;
+            else if (duration < 2000)
+                confirmButtonLongPressed = true;
             else
                 requestFullRedraw = true;
+
+            pressBegin = 0;
+        }
+    }
+
+    static void backButton(bool pressed)
+    {
+        static unsigned long pressBegin = 0;
+
+        const auto now = millis();
+
+        if (pressed)
+            pressBegin = now;
+        else
+        {
+            const auto duration = now - pressBegin;
+
+            if (duration < 500)
+                backButtonPressed = true;
+            else
+                backButtonLongPressed = true;
 
             pressBegin = 0;
         }

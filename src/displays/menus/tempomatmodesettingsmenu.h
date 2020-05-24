@@ -16,12 +16,25 @@ class ModesSettingsMenu;
 }
 
 namespace {
-using TempomatModeCtrlTypChangeScreen = makeComponent<ChangeValueDisplay<ControlType>, StaticText<TEXT_SETCONTROLMODE>, TempomatModeCtrlTypAccessor, SwitchScreenAction<TempomatModeSettingsMenu>>;
-using TempomatModeCtrlModChangeScreen = makeComponent<ChangeValueDisplay<ControlMode>, StaticText<TEXT_SETCONTROLMODE>, TempomatModeCtrlModAccessor, SwitchScreenAction<TempomatModeSettingsMenu>>;
+using TempomatModeCtrlTypChangeScreen = makeComponent<
+    ChangeValueDisplay<ControlType>,
+    StaticText<TEXT_SETCONTROLMODE>,
+    TempomatModeCtrlTypAccessor,
+    BackActionInterface<SwitchScreenAction<TempomatModeSettingsMenu>>,
+    SwitchScreenAction<TempomatModeSettingsMenu>
+>;
+using TempomatModeCtrlModChangeScreen = makeComponent<
+    ChangeValueDisplay<ControlMode>,
+    StaticText<TEXT_SETCONTROLMODE>,
+    TempomatModeCtrlModAccessor,
+    BackActionInterface<SwitchScreenAction<TempomatModeSettingsMenu>>,
+    SwitchScreenAction<TempomatModeSettingsMenu>
+>;
 
 class TempomatModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_TEMPOMATMODESETTINGS>,
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_SETCONTROLTYPE>, SwitchScreenAction<TempomatModeCtrlTypChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETCONTROLMODE>, SwitchScreenAction<TempomatModeCtrlModChangeScreen>>,

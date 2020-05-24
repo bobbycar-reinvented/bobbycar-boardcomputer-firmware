@@ -19,6 +19,7 @@ namespace {
 class InvertMenu :
     public MenuDisplay,
     public StaticText<TEXT_SETINVERTED>,
+    public BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTLEFT>,  ToggleBoolAction, CheckboxIcon, FrontLeftInvertedAccessor>,
         makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTRIGHT>, ToggleBoolAction, CheckboxIcon, FrontRightInvertedAccessor>,

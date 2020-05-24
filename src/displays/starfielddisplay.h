@@ -13,7 +13,7 @@ class DemosMenu;
 }
 
 namespace {
-class StarfieldDisplay : public DemoDisplay, public SwitchScreenAction<DemosMenu>
+class StarfieldDisplay : public DemoDisplay, public SwitchScreenAction<DemosMenu>, public BackActionInterface<SwitchScreenAction<DemosMenu>>
 {
     using Base = DemoDisplay;
 

@@ -20,6 +20,7 @@ template<const char *Ttext, typename Ttexts, template<int> class ColorInterface>
 class MotorFeedbackDebugMenu :
     public MenuDisplay,
     public StaticText<Ttext>,
+    public BackActionInterface<SwitchScreenAction<DebugMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, typename Ttexts::AngleText,        ColorInterface<TFT_DARKGREY>, DummyAction>,
         makeComponent<MenuItem, typename Ttexts::SpeedText,        ColorInterface<TFT_DARKGREY>, DummyAction>,

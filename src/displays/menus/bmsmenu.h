@@ -24,6 +24,7 @@ namespace {
 class BmsMenu :
     public MenuDisplay,
     public StaticText<TEXT_BMS>,
+    public BackActionInterface<SwitchScreenAction<MainMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_CONNECTBMS>,       BluetoothConnectBmsAction>,
         makeComponent<MenuItem, StaticText<TEXT_DISCONNECTBMS>,    BluetoothDisconnectAction>,

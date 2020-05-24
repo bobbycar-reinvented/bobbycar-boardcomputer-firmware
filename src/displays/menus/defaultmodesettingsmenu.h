@@ -18,20 +18,81 @@ class ModesSettingsMenu;
 }
 
 namespace {
-using DefaultModeCtrlTypChangeDisplay = makeComponent<ChangeValueDisplay<ControlType>, StaticText<TEXT_SETCONTROLTYPE>, DefaultModeCtrlTypAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
-using DefaultModeCtrlModChangeDisplay = makeComponent<ChangeValueDisplay<ControlMode>, StaticText<TEXT_SETCONTROLMODE>, DefaultModeCtrlModAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
-using DefaultModeSmoothingChangeDisplay = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETSMOOTHING>, DefaultModeSmoothingAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
-using DefaultModeFrontPercentageChangeDisplay = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETFRONTPERCENTAGE>, DefaultModeFrontPercentageAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
-using DefaultModeBackPercentageChangeDisplay = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETBACKPERCENTAGE>, DefaultModeBackPercentageAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
-using DefaultModeAddSchwelleChangeDisplay = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETADDSCHWELLE>, DefaultModeAddSchwelleAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
-using DefaultModeGas1WertChangeDisplay = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETGAS1WERT>, DefaultModeGas1WertAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
-using DefaultModeGas2WertChangeDisplay = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETGAS2WERT>, DefaultModeGas2WertAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
-using DefaultModeBrems1WertChangeDisplay = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETBREMS1WERT>, DefaultModeBrems1WertAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
-using DefaultModeBrems2WertChangeDisplay = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_SETBREMS2WERT>, DefaultModeBrems2WertAccessor, SwitchScreenAction<DefaultModeSettingsMenu>>;
+using DefaultModeCtrlTypChangeDisplay = makeComponent<
+    ChangeValueDisplay<ControlType>,
+    StaticText<TEXT_SETCONTROLTYPE>,
+    DefaultModeCtrlTypAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+using DefaultModeCtrlModChangeDisplay = makeComponent<
+    ChangeValueDisplay<ControlMode>,
+    StaticText<TEXT_SETCONTROLMODE>,
+    DefaultModeCtrlModAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+using DefaultModeSmoothingChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETSMOOTHING>,
+    DefaultModeSmoothingAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+using DefaultModeFrontPercentageChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETFRONTPERCENTAGE>,
+    DefaultModeFrontPercentageAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+using DefaultModeBackPercentageChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETBACKPERCENTAGE>,
+    DefaultModeBackPercentageAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+using DefaultModeAddSchwelleChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETADDSCHWELLE>,
+    DefaultModeAddSchwelleAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+using DefaultModeGas1WertChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETGAS1WERT>,
+    DefaultModeGas1WertAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+using DefaultModeGas2WertChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETGAS2WERT>,
+    DefaultModeGas2WertAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+using DefaultModeBrems1WertChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETBREMS1WERT>,
+    DefaultModeBrems1WertAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+using DefaultModeBrems2WertChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_SETBREMS2WERT>,
+    DefaultModeBrems2WertAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
 
 class DefaultModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_DEFAULTMODESETTIGNS>,
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_SETCONTROLTYPE>,     SwitchScreenAction<DefaultModeCtrlTypChangeDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_SETCONTROLMODE>,     SwitchScreenAction<DefaultModeCtrlModChangeDisplay>>,

@@ -31,6 +31,7 @@ using SetLarsmModeAction = SetterAction<ModeInterface*, currentMode, LarsmMode*,
 class SelectModeMenu :
     public MenuDisplay,
     public StaticText<TEXT_SELECTMODE>,
+    public BackActionInterface<SwitchScreenAction<MainMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,   MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>,
         makeComponent<MenuItem, StaticText<TEXT_TEMPOMAT>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>,

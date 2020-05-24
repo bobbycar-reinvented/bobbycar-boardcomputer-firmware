@@ -29,7 +29,7 @@ public:
     void redraw() override;
     void stop() override;
 
-    void button() override;
+    void confirm() override;
     void rotate(int offset) override;
 
 private:
@@ -146,7 +146,7 @@ void Lockscreen::stop()
         currentMode = m_oldMode;
 }
 
-void Lockscreen::button()
+void Lockscreen::confirm()
 {
     m_pressed = true;
 }

@@ -30,7 +30,7 @@ public:
 };
 
 template<size_t COUNT>
-class GraphDisplay : public DemoDisplay, public SwitchScreenAction<GraphsMenu>, public virtual TextInterface, public virtual MultiStatisticsInterface<COUNT>
+class GraphDisplay : public DemoDisplay, public SwitchScreenAction<GraphsMenu>, public virtual TextInterface, public BackActionInterface<SwitchScreenAction<GraphsMenu>>, public virtual MultiStatisticsInterface<COUNT>
 {
     using Base = DemoDisplay;
 

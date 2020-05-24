@@ -37,6 +37,7 @@ struct BackLedAccessor : public RefAccessor<bool> { bool &getRef() const overrid
 class SettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_SETTINGS>,
+    public BackActionInterface<SwitchScreenAction<MainMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,                SwitchScreenAction<LimitsSettingsMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_WIFISETTINGS>,                  SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::wifi>>,
