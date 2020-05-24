@@ -20,21 +20,21 @@ class SettingsMenu;
 
 namespace {
 struct FrontFreqAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return front.command.buzzer.freq; } };
-using FrontFreqChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_FRONTFREQ>, FrontFreqAccessor, SwitchScreenAction<BuzzerMenu>>;
+using FrontFreqChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_FRONTFREQ>, FrontFreqAccessor, BackActionInterface<SwitchScreenAction<BuzzerMenu>>, SwitchScreenAction<BuzzerMenu>>;
 
 struct FrontPatternAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return front.command.buzzer.pattern; } };
-using FrontPatternChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_FRONTPATTERN>, FrontPatternAccessor, SwitchScreenAction<BuzzerMenu>>;
+using FrontPatternChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_FRONTPATTERN>, FrontPatternAccessor, BackActionInterface<SwitchScreenAction<BuzzerMenu>>, SwitchScreenAction<BuzzerMenu>>;
 
 struct BackFreqAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return back.command.buzzer.freq; } };
-using BackFreqChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_BACKFREQ>, BackFreqAccessor, SwitchScreenAction<BuzzerMenu>>;
+using BackFreqChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_BACKFREQ>, BackFreqAccessor, BackActionInterface<SwitchScreenAction<BuzzerMenu>>, SwitchScreenAction<BuzzerMenu>>;
 
 struct BackPatternAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return back.command.buzzer.pattern; } };
-using BackPatternChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_BACKPATTERN>, BackPatternAccessor, SwitchScreenAction<BuzzerMenu>>;
+using BackPatternChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_BACKPATTERN>, BackPatternAccessor, BackActionInterface<SwitchScreenAction<BuzzerMenu>>, SwitchScreenAction<BuzzerMenu>>;
 
-using ReverseBeepFreq0ChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_REVERSEBEEPFREQ0>, ReverseBeepFreq0Accessor, SwitchScreenAction<BuzzerMenu>>;
-using ReverseBeepFreq1ChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_REVERSEBEEPFREQ1>, ReverseBeepFreq1Accessor, SwitchScreenAction<BuzzerMenu>>;
-using ReverseBeepDuration0ChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_REVERSEBEEPDURATION0>, ReverseBeepDuration0Accessor, SwitchScreenAction<BuzzerMenu>>;
-using ReverseBeepDuration1ChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_REVERSEBEEPDURATION1>, ReverseBeepDuration1Accessor, SwitchScreenAction<BuzzerMenu>>;
+using ReverseBeepFreq0ChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_REVERSEBEEPFREQ0>, ReverseBeepFreq0Accessor, BackActionInterface<SwitchScreenAction<BuzzerMenu>>, SwitchScreenAction<BuzzerMenu>>;
+using ReverseBeepFreq1ChangeScreen = makeComponent<ChangeValueDisplay<uint8_t>, StaticText<TEXT_REVERSEBEEPFREQ1>, ReverseBeepFreq1Accessor, BackActionInterface<SwitchScreenAction<BuzzerMenu>>, SwitchScreenAction<BuzzerMenu>>;
+using ReverseBeepDuration0ChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_REVERSEBEEPDURATION0>, ReverseBeepDuration0Accessor, BackActionInterface<SwitchScreenAction<BuzzerMenu>>, SwitchScreenAction<BuzzerMenu>>;
+using ReverseBeepDuration1ChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_REVERSEBEEPDURATION1>, ReverseBeepDuration1Accessor, BackActionInterface<SwitchScreenAction<BuzzerMenu>>, SwitchScreenAction<BuzzerMenu>>;
 
 class BuzzerMenu :
     public MenuDisplay,

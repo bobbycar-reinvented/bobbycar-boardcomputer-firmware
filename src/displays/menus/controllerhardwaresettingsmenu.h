@@ -23,9 +23,9 @@ class SettingsMenu;
 }
 
 namespace {
-using WheelDiameterMmChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_WHEELDIAMETERMM>, WheelDiameterMmAccessor, SwitchScreenAction<ControllerHardwareSettingsMenu>>;
-using WheelDiameterInchChangeScreen = makeComponent<ChangeValueDisplay<float>, StaticText<TEXT_WHEELDIAMETERINCH>, WheelDiameterInchAccessor, RatioNumberStep<float, std::ratio<1,10>>, SwitchScreenAction<ControllerHardwareSettingsMenu>>;
-using NumMagnetPolesChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_NUMMAGNETPOLES>, NumMagnetPolesAccessor, SwitchScreenAction<ControllerHardwareSettingsMenu>>;
+using WheelDiameterMmChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_WHEELDIAMETERMM>, WheelDiameterMmAccessor, BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>, SwitchScreenAction<ControllerHardwareSettingsMenu>>;
+using WheelDiameterInchChangeScreen = makeComponent<ChangeValueDisplay<float>, StaticText<TEXT_WHEELDIAMETERINCH>, WheelDiameterInchAccessor, RatioNumberStep<float, std::ratio<1,10>>, BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>, SwitchScreenAction<ControllerHardwareSettingsMenu>>;
+using NumMagnetPolesChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticText<TEXT_NUMMAGNETPOLES>, NumMagnetPolesAccessor, BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>, SwitchScreenAction<ControllerHardwareSettingsMenu>>;
 
 class ControllerHardwareSettingsMenu :
     public MenuDisplay,
