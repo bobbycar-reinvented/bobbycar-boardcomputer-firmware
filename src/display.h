@@ -20,7 +20,8 @@ public:
     virtual void stop() {}
 
     virtual void rotate(int offset) {}
-    virtual void button() {}
+    virtual void confirm() {}
+    virtual void back() {}
 
     virtual TextInterface *asTextInterface() { return nullptr; }
     virtual const TextInterface *asTextInterface() const { return nullptr; }

@@ -148,8 +148,8 @@ void StatusDisplay::redraw()
     m_labelBrems.redraw(String{brems});
     m_progressBarBrems.redraw(brems);
 
-    m_frontStatus.redraw(front);
-    m_backStatus.redraw(back);
+    m_frontStatus.redraw(::front);
+    m_backStatus.redraw(::back);
 
     tft.setTextFont(2);
     m_labelWifiStatus.redraw(toString(WiFi.status()));

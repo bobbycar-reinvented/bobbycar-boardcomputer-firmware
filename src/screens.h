@@ -345,18 +345,32 @@ void updateDisplay()
             currentDisplay->initScreen();
     }
 
-    if (confirmButtonLongPressed)
-    {
-        confirmButtonLongPressed = false;
-        Serial.println("todo: implement long press");
-    }
-
     if (confirmButtonPressed)
     {
         confirmButtonPressed = false;
 
         if (currentDisplay)
-            currentDisplay->button();
+            currentDisplay->confirm();
+    }
+
+    if (confirmButtonLongPressed)
+    {
+        confirmButtonLongPressed = false;
+        Serial.println("todo: implement long press for confirm");
+    }
+
+    if (backButtonPressed)
+    {
+        backButtonPressed = false;
+
+        if (currentDisplay)
+            currentDisplay->back();
+    }
+
+    if (backButtonLongPressed)
+    {
+        backButtonLongPressed = false;
+        Serial.println("todo: implement long press for back");
     }
 
     if (currentDisplay)

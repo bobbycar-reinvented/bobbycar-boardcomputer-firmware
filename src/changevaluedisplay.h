@@ -23,8 +23,6 @@ public:
     virtual int shownValue() const = 0;
     virtual void setShownValue(int value) = 0;
 
-    virtual void confirm() = 0;
-
 protected:
     Label m_titleLabel{5, 5}; // 230, 25
     Label m_valueLabel{26, 81}; // 188, 53
@@ -55,12 +53,10 @@ public:
     void redraw() override;
 
     void rotate(int offset) override;
-    void button() override;
+    void confirm() override;
 
     int shownValue() const { return m_value; }
     void setShownValue(int value) { m_value = value; }
-
-    void confirm() override;
 
 private:
     Tvalue m_value{};
@@ -130,12 +126,6 @@ template<typename Tvalue>
 void ChangeValueDisplay<Tvalue>::rotate(int offset)
 {
     m_rotateOffset += offset;
-}
-
-template<typename Tvalue>
-void ChangeValueDisplay<Tvalue>::button()
-{
-    m_pressed = true;
 }
 
 template<typename Tvalue>

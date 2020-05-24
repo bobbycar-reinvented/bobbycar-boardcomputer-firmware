@@ -22,7 +22,7 @@ public:
     void stop() override;
 
     void rotate(int offset) override;
-    void button() override;
+    void confirm() override;
 
     virtual void itemPressed(int index);
 
@@ -241,7 +241,7 @@ void MenuDisplay::rotate(int offset)
     m_rotateOffset += offset;
 }
 
-void MenuDisplay::button()
+void MenuDisplay::confirm()
 {
     m_pressed = true;
 }
