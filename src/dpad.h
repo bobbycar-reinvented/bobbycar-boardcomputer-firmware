@@ -58,7 +58,9 @@ void updateDpad()
     if (!std::get<ButtonDown>(lastState) && std::get<ButtonDown>(state))
         InputDispatcher::rotate(1);
     if (std::get<ButtonConfirm>(lastState) != std::get<ButtonConfirm>(state))
-        InputDispatcher::button(std::get<ButtonConfirm>(state));
+        InputDispatcher::confirmButton(std::get<ButtonConfirm>(state));
+    if (std::get<ButtonBack>(lastState) != std::get<ButtonBack>(state))
+        InputDispatcher::backButton(std::get<ButtonBack>(state));
 
     lastState = state;
 }

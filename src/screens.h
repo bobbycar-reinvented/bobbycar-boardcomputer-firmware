@@ -345,15 +345,15 @@ void updateDisplay()
             currentDisplay->initScreen();
     }
 
-    if (buttonLongPressed)
+    if (confirmButtonLongPressed)
     {
-        buttonLongPressed = false;
+        confirmButtonLongPressed = false;
         Serial.println("todo: implement long press");
     }
 
-    if (buttonPressed)
+    if (confirmButtonPressed)
     {
-        buttonPressed = false;
+        confirmButtonPressed = false;
 
         if (currentDisplay)
             currentDisplay->button();
