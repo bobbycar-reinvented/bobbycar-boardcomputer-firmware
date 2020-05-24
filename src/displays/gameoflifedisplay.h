@@ -14,7 +14,7 @@ class DemosMenu;
 }
 
 namespace {
-class GameOfLifeDisplay : public DemoDisplay, public SwitchScreenAction<DemosMenu>
+class GameOfLifeDisplay : public DemoDisplay, public SwitchScreenAction<DemosMenu>, public BackActionInterface<SwitchScreenAction<DemosMenu>>
 {
     using Base = DemoDisplay;
 

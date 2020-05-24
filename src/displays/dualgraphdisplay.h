@@ -13,7 +13,7 @@ class GraphsMenu;
 }
 
 namespace {
-class DualGraphDisplay : public DemoDisplay, public SwitchScreenAction<GraphsMenu>
+class DualGraphDisplay : public DemoDisplay, public SwitchScreenAction<GraphsMenu>, public BackActionInterface<SwitchScreenAction<GraphsMenu>>
 {
     using Base = DemoDisplay;
 

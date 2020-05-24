@@ -31,6 +31,8 @@ public:
     void redraw() override;
     void stop() override;
 
+    void back() override;
+
     void triggered() override;
 
 private:
@@ -95,6 +97,12 @@ void CalibrateDisplay::stop()
 {
     if (currentMode == &m_mode)
         currentMode = m_oldMode;
+}
+
+void CalibrateDisplay::back()
+{
+    if (!m_bootup)
+        switchScreen<BoardcomputerHardwareSettingsMenu>();
 }
 
 void CalibrateDisplay::triggered()
