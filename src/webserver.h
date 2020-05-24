@@ -54,7 +54,7 @@ void initWebserver()
                 {
                     HtmlTag pTag{"p", content};
 
-                    content += "<a href=\"/up\">Up</a> <a href=\"/down\">Down</a> <a href=\"/confirm\">Confirm</a> <a href=\"/Back\">Back</a>";
+                    content += "<a href=\"/up\">Up</a> <a href=\"/down\">Down</a> <a href=\"/confirm\">Confirm</a> <a href=\"/back\">Back</a>";
                 }
 
                 if (auto constCurrentDisplay = static_cast<const Display *>(currentDisplay))
