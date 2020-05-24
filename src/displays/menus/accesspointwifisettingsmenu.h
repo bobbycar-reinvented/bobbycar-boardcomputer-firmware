@@ -7,6 +7,7 @@
 #include "actions/wifisoftapenableipv6action.h"
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
+#include "wifitexthelpers.h"
 #include "texts.h"
 
 namespace {
@@ -14,39 +15,6 @@ class WifiSettingsMenu;
 }
 
 namespace {
-class WifiSoftApGetStationNumText : public virtual TextInterface {
-public:
-    String text() const override { return String{"softAPgetStationNum: "} + WiFi.softAPgetStationNum(); }
-};
-class WifiSoftApIpText : public virtual TextInterface {
-public:
-    String text() const override { return String{"softAPIP: "} + WiFi.softAPIP().toString(); }
-};
-class WifiSoftApBroadcastIpText : public virtual TextInterface {
-public:
-    String text() const override { return String{"softAPBroadcastIP: "} + WiFi.softAPBroadcastIP().toString(); }
-};
-class WifiSoftApNetworkIdText : public virtual TextInterface {
-public:
-    String text() const override { return String{"softAPNetworkID: "} + WiFi.softAPNetworkID().toString(); }
-};
-class WifiSoftApSubnetCidrText : public virtual TextInterface {
-public:
-    String text() const override { return String{"softAPSubnetCIDR: "} + WiFi.softAPSubnetCIDR(); }
-};
-class WifiSoftApIpV6Text : public virtual TextInterface {
-public:
-    String text() const override { return String{"softAPIPv6: "} + WiFi.softAPIPv6().toString(); }
-};
-class WifiSoftApHostnameText : public virtual TextInterface {
-public:
-    String text() const override { return String{"softAPgetHostname: "} + WiFi.softAPgetHostname(); }
-};
-class WifiSoftApMacAddressText : public virtual TextInterface {
-public:
-    String text() const override { return String{"softAPmacAddress: "} + WiFi.softAPmacAddress(); }
-};
-
 class AccessPointWifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_ACCESSPOINTWIFISETTINGS>,

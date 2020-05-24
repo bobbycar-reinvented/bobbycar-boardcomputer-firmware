@@ -1,7 +1,6 @@
 #pragma once
 
 #include <HardwareSerial.h>
-#include <WiFi.h>
 
 #include "menudisplay.h"
 #include "staticmenudefinition.h"
@@ -12,6 +11,8 @@
 #include "actions/switchscreenaction.h"
 #include "checkboxicon.h"
 #include "icons/back.h"
+#include "wifitexthelpers.h"
+#include "wifiaccessors.h"
 #include "texts.h"
 
 namespace {
@@ -20,25 +21,6 @@ class WifiSettingsMenu;
 }
 
 namespace {
-struct WifiStatusBitsText : public virtual TextInterface {
-public:
-    String text() const override { return String{"statusBits: "} + WiFi.getStatusBits(); }
-};
-struct WifiChannelText : public virtual TextInterface {
-public:
-    String text() const override { return String{"channel: "} + WiFi.channel(); }
-};
-
-struct WifiModeAccessor : public virtual AccessorInterface<wifi_mode_t>
-{
-    wifi_mode_t getValue() const override { return WiFi.getMode(); }
-    void setValue(wifi_mode_t value) override
-    {
-        if (!WiFi.mode(value))
-            Serial.println("Could not change WiFi mode!");
-        // TODO: better error handling
-    }
-};
 using WifiModeChangeScreen = makeComponent<
     ChangeValueDisplay<wifi_mode_t>,
     StaticText<TEXT_WIFICHANGEMODE>,
@@ -47,27 +29,6 @@ using WifiModeChangeScreen = makeComponent<
     SwitchScreenAction<GenericWifiSettingsMenu>
 >;
 
-struct WifiSleepAccessor : public virtual AccessorInterface<bool>
-{
-    bool getValue() const override { return WiFi.getSleep(); }
-    void setValue(bool value) override
-    {
-        if (!WiFi.setSleep(value))
-            Serial.println("Could not set WiFi sleep!");
-        // TODO: better error handling
-    }
-};
-
-struct WifiTxPowerAccessor : public virtual AccessorInterface<wifi_power_t>
-{
-    wifi_power_t getValue() const override { return WiFi.getTxPower(); }
-    void setValue(wifi_power_t value) override
-    {
-        if (!WiFi.setTxPower(value))
-            Serial.println("Could not set WiFi tx power!");
-        // TODO: better error handling
-    }
-};
 using WifiTxPowerChangeScreen = makeComponent<
     ChangeValueDisplay<wifi_power_t>,
     StaticText<TEXT_WIFICHANGETXPOWER>,
