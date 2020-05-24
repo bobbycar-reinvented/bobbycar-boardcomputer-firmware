@@ -3,6 +3,7 @@
 #include "globals.h"
 
 namespace {
+#ifdef FEATURE_BMS
 namespace bms {
 constexpr auto autoReconnect = false; // causes hangs when not available
 
@@ -119,4 +120,5 @@ void update()
     }
 }
 }
+#endif
 }

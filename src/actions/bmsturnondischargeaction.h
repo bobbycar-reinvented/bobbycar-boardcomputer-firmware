@@ -4,6 +4,7 @@
 #include "bmsutils.h"
 
 namespace {
+#ifdef FEATURE_BMS
 class BmsTurnOnDischargeAction : public virtual ActionInterface
 {
 public:
@@ -16,4 +17,5 @@ public:
         }
     }
 };
+#endif
 }

@@ -87,7 +87,11 @@ void MetersDisplay::rotate(int offset)
     if (offset < 0)
         switchScreen<StatusDisplay>();
     else if (offset > 0)
+#ifdef FEATURE_BMS
         switchScreen<BmsDisplay>();
+#else
+        switchScreen<StatusDisplay>();
+#endif
 }
 
 void MetersDisplay::analogMeter()

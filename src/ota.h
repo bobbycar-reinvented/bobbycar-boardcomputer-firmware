@@ -1,11 +1,14 @@
 #pragma once
 
+#ifdef FEATURE_OTA
 #include <ArduinoOTA.h>
+#endif
 
 #include "screens.h"
 #include "displays/updatedisplay.h"
 
 namespace {
+#ifdef FEATURE_OTA
 void initOta()
 {
     ArduinoOTA
@@ -42,4 +45,5 @@ void handleOta()
 {
     ArduinoOTA.handle();
 }
+#endif
 }

@@ -23,6 +23,7 @@ using SumCurrentGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_SU
 using SumAbsoluteCurrentGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_SUMABSOLUTECURRENT>, MultiStatisticsSingleImpl, SumAbsoluteCurrentStatistics>;
 using FrontVoltageGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_FRONTVOLTAGE>, MultiStatisticsSingleImpl, FrontVoltageStatistics>;
 using BackVoltageGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_BACKVOLTAGE>, MultiStatisticsSingleImpl, BackVoltageStatistics>;
+#ifdef FEATURE_BMS
 using BmsVoltageGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_BMSVOLTAGE>, MultiStatisticsSingleImpl, BmsVoltageStatistics>;
 using BmsCurrentGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_BMSCURRENT>, MultiStatisticsSingleImpl, BmsCurrentStatistics>;
 using BmsPowerGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_BMSPOWER>, MultiStatisticsSingleImpl, BmsPowerStatistics>;
@@ -35,6 +36,7 @@ class SumCurrentsComparisonStatistics : public virtual MultiStatisticsInterface<
     }
 };
 using SumCurrentsComparisonGraphDisplay = makeComponent<GraphDisplay<2>, StaticText<TEXT_SUMCURRENTSCOMPARISON>, SumCurrentsComparisonStatistics>;
+#endif
 
 class MotorCurrentsStatistics : public virtual MultiStatisticsInterface<4>
 {
@@ -58,10 +60,12 @@ class GraphsMenu :
         makeComponent<MenuItem, StaticText<TEXT_SUMABSOLUTECURRENT>,    SwitchScreenAction<SumAbsoluteCurrentGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_FRONTVOLTAGE>,          SwitchScreenAction<FrontVoltageGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_BACKVOLTAGE>,           SwitchScreenAction<BackVoltageGraphDisplay>>,
+#ifdef FEATURE_BMS
         makeComponent<MenuItem, StaticText<TEXT_BMSVOLTAGE>,            SwitchScreenAction<BmsVoltageGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_BMSCURRENT>,            SwitchScreenAction<BmsCurrentGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_BMSPOWER>,              SwitchScreenAction<BmsPowerGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_SUMCURRENTSCOMPARISON>, SwitchScreenAction<SumCurrentsComparisonGraphDisplay>>,
+#endif
         makeComponent<MenuItem, StaticText<TEXT_MOTORCURRENTS>,         SwitchScreenAction<MotorCurrentsGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_DUALGRAPHS>,            SwitchScreenAction<DualGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>

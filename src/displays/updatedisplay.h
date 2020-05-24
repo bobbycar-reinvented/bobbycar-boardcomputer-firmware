@@ -18,6 +18,7 @@ class StatusDisplay;
 }
 
 namespace {
+#ifdef FEATURE_OTA
 class UpdateDisplay : public Display
 {
 public:
@@ -90,4 +91,5 @@ void UpdateDisplay::confirm()
     if (m_finished)
         switchScreen<StatusDisplay>();
 }
+#endif
 }

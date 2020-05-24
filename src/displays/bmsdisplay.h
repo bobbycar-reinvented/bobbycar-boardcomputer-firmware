@@ -14,6 +14,7 @@ class MetersDisplay;
 class StatusDisplay;
 }
 namespace {
+#ifdef FEATURE_BMS
 class BmsDisplay : public DemoDisplay, public SwitchScreenAction<MainMenu>
 {
 public:
@@ -86,4 +87,5 @@ void BmsDisplay::rotate(int offset)
     else if (offset > 0)
         switchScreen<StatusDisplay>();
 }
+#endif
 }

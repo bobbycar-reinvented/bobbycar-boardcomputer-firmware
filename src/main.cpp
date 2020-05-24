@@ -67,8 +67,10 @@ void setup()
     //WiFi.begin("McDonalds Free WiFi 2.4GHz", "Passwort_123");
 
     BluetoothBeginMasterAction{}.triggered();
+#ifdef FEATURE_BMS
     if (settings.autoConnectBms)
         BluetoothConnectBmsAction{}.triggered();
+#endif
 
     front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
     back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
@@ -83,7 +85,9 @@ void setup()
 
     currentMode = &modes::defaultMode;
 
+#ifdef FEATURE_OTA
     initOta();
+#endif
 
     initWebserver();
 
@@ -160,9 +164,13 @@ void loop()
 
     handleSerial();
 
+#ifdef FEATURE_OTA
     handleOta();
+#endif
 
     handleWebserver();
 
+#ifdef FEATURE_BMS
     bms::update();
+#endif
 }

@@ -9,7 +9,11 @@
 namespace {
 namespace statistics {
 using ContainerType = ring_buffer<float, 200>;
-ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, sumAbsoluteCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent, bmsVoltage, bmsCurrent, bmsPower;
+ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, sumAbsoluteCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent
+#ifdef FEATURE_BMS
+, bmsVoltage, bmsCurrent, bmsPower
+#endif
+;
 }
 
 void pushStats()
@@ -32,9 +36,11 @@ void pushStats()
         statistics::backLeftCurrent.push_back(fixCurrent(back.feedback.left.current));
         statistics::backRightCurrent.push_back(fixCurrent(back.feedback.right.current));
     }
+#ifdef FEATURE_BMS
     statistics::bmsVoltage.push_back(bms::voltage);
     statistics::bmsCurrent.push_back(bms::current);
     statistics::bmsPower.push_back(bms::power);
+#endif
 }
 
 class BufferAccessorInterface
@@ -58,9 +64,11 @@ using SumCurrentStatistics = BufferAccessorImpl<statistics::sumCurrent>;
 using SumAbsoluteCurrentStatistics = BufferAccessorImpl<statistics::sumAbsoluteCurrent>;
 using FrontVoltageStatistics = BufferAccessorImpl<statistics::frontVoltage>;
 using BackVoltageStatistics = BufferAccessorImpl<statistics::backVoltage>;
+#ifdef FEATURE_BMS
 using BmsVoltageStatistics = BufferAccessorImpl<statistics::bmsVoltage>;
 using BmsCurrentStatistics = BufferAccessorImpl<statistics::bmsCurrent>;
 using BmsPowerStatistics = BufferAccessorImpl<statistics::bmsPower>;
+#endif
 using FrontLeftCurrentStatistics = BufferAccessorImpl<statistics::frontLeftCurrent>;
 using FrontRightCurrentStatistics = BufferAccessorImpl<statistics::frontRightCurrent>;
 using BackLeftCurrentStatistics = BufferAccessorImpl<statistics::backLeftCurrent>;

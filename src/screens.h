@@ -55,7 +55,9 @@ union X {
     AboutMenu aboutMenu;
     AccessPointWifiSettingsMenu accessPointWifiSettingsMenu;
     BluetoothSettingsMenu bluetoothSettingsMenu;
+#ifdef FEATURE_BMS
     BmsMenu bmsMenu;
+#endif
     BuzzerMenu buzzerMenu;
     FrontCommandDebugMenu frontCommandDebugMenu;
     BackCommandDebugMenu backCommandDebugMenu;
@@ -91,7 +93,9 @@ union X {
     WifiScanMenu wifiScanMenu;
     WifiSettingsMenu wifiSettingsMenu;
 
+#ifdef FEATURE_BMS
     BmsDisplay bmsDisplay;
+#endif
     CalibrateDisplay calibrateDisplay;
     DualGraphDisplay dualGraphDisplay;
     GameOfLifeDisplay gameOfLifeDisplay;
@@ -102,7 +106,9 @@ union X {
     SpiroDisplay spiroDisplay;
     StarfieldDisplay starFieldDisplay;
     StatusDisplay statusDisplay;
+#ifdef FEATURE_OTA
     UpdateDisplay updateDisplay;
+#endif
 
     FrontFreqChangeScreen changeFrontFreq;
     FrontPatternChangeScreen changeFrontPattern;
@@ -158,10 +164,12 @@ union X {
     SumAbsoluteCurrentGraphDisplay sumAbsoluteCurrentGraphDisplay;
     FrontVoltageGraphDisplay frontVoltageGraphDisplay;
     BackVoltageGraphDisplay backVoltageGraphDisplay;
+#ifdef FEATURE_BMS
     BmsVoltageGraphDisplay bmsVoltageGraphDisplay;
     BmsCurrentGraphDisplay bmsCurrentGraphDisplay;
     BmsPowerGraphDisplay bmsPowerGraphDisplay;
     SumCurrentsComparisonGraphDisplay sumCurrentsComparisonGraphDisplay;
+#endif
     MotorCurrentsGraphDisplay motorCurrentsGraphDisplay;
 } displays;
 
@@ -169,7 +177,9 @@ template<typename T> T &getRefByType() = delete;
 template<> decltype(displays.aboutMenu)                                        &getRefByType<decltype(displays.aboutMenu)>()                                        { return displays.aboutMenu; }
 template<> decltype(displays.accessPointWifiSettingsMenu)                      &getRefByType<decltype(displays.accessPointWifiSettingsMenu)>()                      { return displays.accessPointWifiSettingsMenu; }
 template<> decltype(displays.bluetoothSettingsMenu)                            &getRefByType<decltype(displays.bluetoothSettingsMenu)>()                            { return displays.bluetoothSettingsMenu; }
+#ifdef FEATURE_BMS
 template<> decltype(displays.bmsMenu)                                          &getRefByType<decltype(displays.bmsMenu)>()                                          { return displays.bmsMenu; }
+#endif
 template<> decltype(displays.buzzerMenu)                                       &getRefByType<decltype(displays.buzzerMenu)>()                                       { return displays.buzzerMenu; }
 template<> decltype(displays.boardcomputerHardwareSettingsMenu)                &getRefByType<decltype(displays.boardcomputerHardwareSettingsMenu)>()                { return displays.boardcomputerHardwareSettingsMenu; }
 template<> decltype(displays.controllerHardwareSettingsMenu)                   &getRefByType<decltype(displays.controllerHardwareSettingsMenu)>()                   { return displays.controllerHardwareSettingsMenu; }
@@ -205,7 +215,9 @@ template<> decltype(displays.stationWifiSettingsMenu)                          &
 template<> decltype(displays.wifiScanMenu)                                     &getRefByType<decltype(displays.wifiScanMenu)>()                                     { return displays.wifiScanMenu; }
 template<> decltype(displays.wifiSettingsMenu)                                 &getRefByType<decltype(displays.wifiSettingsMenu)>()                                 { return displays.wifiSettingsMenu; }
 
+#ifdef FEATURE_BMS
 template<> decltype(displays.bmsDisplay)                                       &getRefByType<decltype(displays.bmsDisplay)>()                                       { return displays.bmsDisplay; }
+#endif
 template<> decltype(displays.calibrateDisplay)                                 &getRefByType<decltype(displays.calibrateDisplay)>()                                 { return displays.calibrateDisplay; }
 template<> decltype(displays.dualGraphDisplay)                                 &getRefByType<decltype(displays.dualGraphDisplay)>()                                 { return displays.dualGraphDisplay; }
 template<> decltype(displays.gameOfLifeDisplay)                                &getRefByType<decltype(displays.gameOfLifeDisplay)>()                                { return displays.gameOfLifeDisplay; }
@@ -216,7 +228,9 @@ template<> decltype(displays.poweroffDisplay)                                  &
 template<> decltype(displays.spiroDisplay)                                     &getRefByType<decltype(displays.spiroDisplay)>()                                     { return displays.spiroDisplay; }
 template<> decltype(displays.starFieldDisplay)                                 &getRefByType<decltype(displays.starFieldDisplay)>()                                 { return displays.starFieldDisplay; }
 template<> decltype(displays.statusDisplay)                                    &getRefByType<decltype(displays.statusDisplay)>()                                    { return displays.statusDisplay; }
+#ifdef FEATURE_OTA
 template<> decltype(displays.updateDisplay)                                    &getRefByType<decltype(displays.updateDisplay)>()                                    { return displays.updateDisplay; }
+#endif
 
 template<> decltype(displays.changeFrontFreq)                                  &getRefByType<decltype(displays.changeFrontFreq)>()                                  { return displays.changeFrontFreq; }
 template<> decltype(displays.changeFrontPattern)                               &getRefByType<decltype(displays.changeFrontPattern)>()                               { return displays.changeFrontPattern; }
@@ -272,10 +286,12 @@ template<> decltype(displays.sumCurrentGraphDisplay)                           &
 template<> decltype(displays.sumAbsoluteCurrentGraphDisplay)                   &getRefByType<decltype(displays.sumAbsoluteCurrentGraphDisplay)>()                   { return displays.sumAbsoluteCurrentGraphDisplay; }
 template<> decltype(displays.frontVoltageGraphDisplay)                         &getRefByType<decltype(displays.frontVoltageGraphDisplay)>()                         { return displays.frontVoltageGraphDisplay; }
 template<> decltype(displays.backVoltageGraphDisplay)                          &getRefByType<decltype(displays.backVoltageGraphDisplay)>()                          { return displays.backVoltageGraphDisplay; }
+#ifdef FEATURE_BMS
 template<> decltype(displays.bmsVoltageGraphDisplay)                           &getRefByType<decltype(displays.bmsVoltageGraphDisplay)>()                           { return displays.bmsVoltageGraphDisplay; }
 template<> decltype(displays.bmsCurrentGraphDisplay)                           &getRefByType<decltype(displays.bmsCurrentGraphDisplay)>()                           { return displays.bmsCurrentGraphDisplay; }
 template<> decltype(displays.bmsPowerGraphDisplay)                             &getRefByType<decltype(displays.bmsPowerGraphDisplay)>()                             { return displays.bmsPowerGraphDisplay; }
 template<> decltype(displays.sumCurrentsComparisonGraphDisplay)                &getRefByType<decltype(displays.sumCurrentsComparisonGraphDisplay)>()                { return displays.sumCurrentsComparisonGraphDisplay; }
+#endif
 template<> decltype(displays.motorCurrentsGraphDisplay)                        &getRefByType<decltype(displays.motorCurrentsGraphDisplay)>()                        { return displays.motorCurrentsGraphDisplay; }
 
 

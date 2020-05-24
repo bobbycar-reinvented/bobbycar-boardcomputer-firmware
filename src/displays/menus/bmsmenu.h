@@ -21,6 +21,7 @@ class MainMenu;
 }
 
 namespace {
+#ifdef FEATURE_BMS
 class BmsMenu :
     public MenuDisplay,
     public StaticText<TEXT_BMS>,
@@ -36,4 +37,5 @@ class BmsMenu :
         makeComponent<MenuItem, StaticText<TEXT_BACK>,             SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {};
+#endif
 }

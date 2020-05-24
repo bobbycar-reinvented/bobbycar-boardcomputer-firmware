@@ -40,7 +40,9 @@ class MainMenu :
         makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,  SwitchScreenAction<SelectModeMenu>, StaticMenuItemIcon<&icons::modes>>,
         makeComponent<MenuItem, StaticText<TEXT_PRESETS>,     SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&icons::presets>>,
         makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,      SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&icons::graph>>,
+#ifdef FEATURE_BMS
         makeComponent<MenuItem, StaticText<TEXT_BMS>,         SwitchScreenAction<BmsMenu>, StaticMenuItemIcon<&icons::bms>>,
+#endif
         makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,    SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::settings>>,
         makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>, SwitchScreenAction<Lockscreen>, StaticMenuItemIcon<&icons::lock>>,
         makeComponent<MenuItem, StaticText<TEXT_DEMOS>,       SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&icons::demos>>,

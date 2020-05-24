@@ -68,7 +68,9 @@ constexpr Settings::LarsmMode defaultLarsmMode {
 };
 
 constexpr Settings defaultSettings{
+#ifdef FEATURE_BMS
     .autoConnectBms = false,
+#endif
     .reverseBeep = true,
     .reverseBeepFreq0 = 3,
     .reverseBeepFreq1 = 0,

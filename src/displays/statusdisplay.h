@@ -163,7 +163,11 @@ void StatusDisplay::redraw()
 void StatusDisplay::rotate(int offset)
 {
     if (offset < 0)
+#ifdef FEATURE_BMS
         switchScreen<BmsDisplay>();
+#else
+        switchScreen<MetersDisplay>();
+#endif
     else if (offset > 0)
         switchScreen<MetersDisplay>();
 }
