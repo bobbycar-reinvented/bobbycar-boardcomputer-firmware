@@ -83,7 +83,10 @@ void initWebserver()
                     }
                     else if (const auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface())
                     {
-                        content += "<input type=\"number\" value=\"" + String{changeValueDisplay->shownValue()} + "\" />";
+                        content += "<form action=\"/setValue\" method=\"GET\">";
+                        content += "<input type=\"number\" name=\"value\" value=\"" + String{changeValueDisplay->shownValue()} + "\" />";
+                        content += "<button type=\"submit\">Update</button>";
+                        content += "</form>";
                     }
                     else
                     {
@@ -128,6 +131,44 @@ void initWebserver()
     webServer.on("/back", HTTP_GET, [](){
         InputDispatcher::backButton(true);
         InputDispatcher::backButton(false);
+
+        webServer.sendHeader("Connection", "close");
+        webServer.sendHeader("Location", "/");
+        webServer.send(302, "text/html", "ok");
+    });
+
+    webServer.on("/setValue", HTTP_GET, [](){
+        if (!webServer.hasArg("value"))
+        {
+            webServer.send(400, "text/plain", "value parameter missing");
+            return;
+        }
+
+        if (!currentDisplay)
+        {
+            webServer.send(400, "text/plain", "currentDisplay is null");
+            return;
+        }
+
+        auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface();
+        if (!changeValueDisplay)
+        {
+            webServer.send(400, "text/plain", "currentDisplay is a change value display");
+            return;
+        }
+
+        const auto valueStr = webServer.arg("value");
+
+        char *egal;
+        const auto value = std::strtol(std::begin(valueStr), &egal, 10);
+
+        if (egal != std::end(valueStr))
+        {
+            webServer.send(400, "text/plain", "value could not be parsed");
+            return;
+        }
+
+        changeValueDisplay->setShownValue(value);
 
         webServer.sendHeader("Connection", "close");
         webServer.sendHeader("Location", "/");
