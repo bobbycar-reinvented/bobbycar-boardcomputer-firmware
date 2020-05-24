@@ -32,6 +32,7 @@ class ApplyBoardcomputerHardwarePresetAction : public virtual ActionInterface {p
 class PresetsMenu :
     public MenuDisplay,
     public StaticText<TEXT_PRESETS>,
+    public BackActionInterface<SwitchScreenAction<MainMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTEVERYTHING>,            ApplyPresetAction<&presets::defaultSettings>>,
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTLIMITS>,                ApplyLimitsPresetAction<&presets::defaultLimits>>,

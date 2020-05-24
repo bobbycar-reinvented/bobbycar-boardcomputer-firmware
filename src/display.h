@@ -9,7 +9,35 @@ class ChangeValueDisplayInterface;
 }
 
 namespace {
-class Display {
+class ConfirmInterface {
+public:
+    virtual void confirm() {}
+};
+
+class BackInterface {
+public:
+    virtual void back() {}
+};
+
+template<typename T>
+class ConfirmActionInterface : public virtual ConfirmInterface
+{
+    T m_action;
+
+public:
+    void confirm() override { m_action.triggered(); }
+};
+
+template<typename T>
+class BackActionInterface : public virtual BackInterface
+{
+    T m_action;
+
+public:
+    void back() override { m_action.triggered(); }
+};
+
+class Display : public virtual ConfirmInterface, public virtual BackInterface {
 public:
     virtual ~Display() = default;
 
@@ -20,8 +48,6 @@ public:
     virtual void stop() {}
 
     virtual void rotate(int offset) {}
-    virtual void confirm() {}
-    virtual void back() {}
 
     virtual TextInterface *asTextInterface() { return nullptr; }
     virtual const TextInterface *asTextInterface() const { return nullptr; }

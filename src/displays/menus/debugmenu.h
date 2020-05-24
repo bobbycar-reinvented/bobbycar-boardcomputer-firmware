@@ -36,6 +36,7 @@ namespace {
 class DebugMenu :
     public MenuDisplay,
     public StaticText<TEXT_DEBUG>,
+    public BackActionInterface<SwitchScreenAction<MainMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_LOADSETTINGS>,         LoadSettingsAction>,
         makeComponent<MenuItem, StaticText<TEXT_SAVESETTINGS>,         SaveSettingsAction>,

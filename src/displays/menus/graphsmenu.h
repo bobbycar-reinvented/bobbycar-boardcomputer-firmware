@@ -48,6 +48,7 @@ using MotorCurrentsGraphDisplay = makeComponent<GraphDisplay<4>, StaticText<TEXT
 class GraphsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GRAPHS>,
+    public BackActionInterface<SwitchScreenAction<MainMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_GAS>,                   SwitchScreenAction<GasGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_BREMS>,                 SwitchScreenAction<BremsGraphDisplay>>,

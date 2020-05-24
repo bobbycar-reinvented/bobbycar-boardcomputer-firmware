@@ -20,6 +20,7 @@ namespace {
 class DemosMenu :
     public MenuDisplay,
     public StaticText<TEXT_DEMOS>,
+    public BackActionInterface<SwitchScreenAction<MainMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_STARFIELD>,  SwitchScreenAction<StarfieldDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_PINGPONG>,   SwitchScreenAction<PingPongDisplay>>,
