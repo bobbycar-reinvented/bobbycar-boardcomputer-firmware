@@ -19,6 +19,7 @@ namespace {
 class EnableMenu :
     public MenuDisplay,
     public StaticText<TEXT_SETENABLED>,
+    public BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_ENABLEFRONTLEFT>,  ToggleBoolAction, CheckboxIcon, FrontLeftEnabledAccessor>,
         makeComponent<MenuItem, StaticText<TEXT_ENABLEFRONTRIGHT>, ToggleBoolAction, CheckboxIcon, FrontRightEnabledAccessor>,

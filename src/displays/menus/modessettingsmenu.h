@@ -18,6 +18,7 @@ namespace {
 class ModesSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_MODESSETTINGS>,
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTMODESETTIGNS>,   SwitchScreenAction<DefaultModeSettingsMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_TEMPOMATMODESETTINGS>,  SwitchScreenAction<TempomatModeSettingsMenu>>,

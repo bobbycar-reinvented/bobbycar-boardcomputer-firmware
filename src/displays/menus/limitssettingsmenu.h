@@ -26,6 +26,7 @@ using PhaseAdvMaxChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, Stati
 class LimitsSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_LIMITSSETTINGS>,
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_SETIMOTMAX>,      SwitchScreenAction<IMotMaxChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETIDCMAX>,       SwitchScreenAction<IDcMaxChangeScreen>>,

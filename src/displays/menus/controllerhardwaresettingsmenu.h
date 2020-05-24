@@ -30,6 +30,7 @@ using NumMagnetPolesChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, St
 class ControllerHardwareSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_CONTROLLERHARDWARESETTINGS>,
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_SETENABLED>,        SwitchScreenAction<EnableMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_SETINVERTED>,       SwitchScreenAction<InvertMenu>>,

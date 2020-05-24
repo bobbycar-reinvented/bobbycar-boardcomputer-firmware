@@ -22,6 +22,7 @@ using TempomatModeCtrlModChangeScreen = makeComponent<ChangeValueDisplay<Control
 class TempomatModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_TEMPOMATMODESETTINGS>,
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_SETCONTROLTYPE>, SwitchScreenAction<TempomatModeCtrlTypChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETCONTROLMODE>, SwitchScreenAction<TempomatModeCtrlModChangeScreen>>,

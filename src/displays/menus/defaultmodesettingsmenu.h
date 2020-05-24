@@ -32,6 +32,7 @@ using DefaultModeBrems2WertChangeDisplay = makeComponent<ChangeValueDisplay<int1
 class DefaultModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_DEFAULTMODESETTIGNS>,
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_SETCONTROLTYPE>,     SwitchScreenAction<DefaultModeCtrlTypChangeDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_SETCONTROLMODE>,     SwitchScreenAction<DefaultModeCtrlModChangeDisplay>>,

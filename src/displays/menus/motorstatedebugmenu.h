@@ -19,6 +19,7 @@ template<const char *Ttext, typename Ttexts>
 class MotorStateDebugMenu :
     public MenuDisplay,
     public StaticText<Ttext>,
+    public BackActionInterface<SwitchScreenAction<DebugMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, typename Ttexts::EnableText,       DisabledColor, DummyAction>,
         makeComponent<MenuItem, typename Ttexts::PwmText,          DisabledColor, DummyAction>,

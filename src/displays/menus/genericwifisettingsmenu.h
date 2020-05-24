@@ -67,6 +67,7 @@ using WifiTxPowerChangeScreen = makeComponent<ChangeValueDisplay<wifi_power_t>, 
 class GenericWifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GENERICWIFISETTINGS>,
+    public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, WifiStatusBitsText,                 DisabledColor, DummyAction>,
         makeComponent<MenuItem, WifiChannelText,                    DisabledColor, DummyAction>,

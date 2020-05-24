@@ -37,6 +37,7 @@ using BremsMaxChangeScreen = makeComponent<ChangeValueDisplay<int16_t>, StaticTe
 class BoardcomputerHardwareSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>,
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, GasText,                         DisabledColor, StaticFont<2>, DummyAction>,
         makeComponent<MenuItem, BremsText,                       DisabledColor, StaticFont<2>, DummyAction>,

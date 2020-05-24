@@ -20,6 +20,7 @@ constexpr char TEXT_ESPINFO[] = "ESP info:";
 class AboutMenu :
     public MenuDisplay,
     public StaticText<TEXT_ABOUT>,
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_VERSION>, DummyAction>,
         makeComponent<MenuItem, StaticText<nullptr>, DummyAction>,

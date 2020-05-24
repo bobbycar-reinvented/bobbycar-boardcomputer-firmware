@@ -18,7 +18,7 @@ class WifiSettingsMenu;
 }
 
 namespace {
-class WifiScanMenu : public MenuDisplay
+class WifiScanMenu : public MenuDisplay, public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>
 {
     using Base = MenuDisplay;
 

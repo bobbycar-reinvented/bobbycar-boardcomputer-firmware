@@ -22,6 +22,7 @@ using LarsmModeIterationsChangeDisplay = makeComponent<ChangeValueDisplay<uint8_
 class LarsmModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_LARSMMODESETTINGS>,
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_LARSMMODECHANGEMODE>,       SwitchScreenAction<LarsmModeModeChangeDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_LARSMMODECHANGEITERATIONS>, SwitchScreenAction<LarsmModeIterationsChangeDisplay>>,

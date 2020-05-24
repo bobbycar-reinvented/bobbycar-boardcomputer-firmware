@@ -20,6 +20,7 @@ template<const char *Ttext, typename Ttexts, template<int> class ColorInterface>
 class FeedbackDebugMenu :
     public MenuDisplay,
     public StaticText<Ttext>,
+    public BackActionInterface<SwitchScreenAction<DebugMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, typename Ttexts::BatVoltageText,       ColorInterface<TFT_DARKGREY>, DummyAction>,
         makeComponent<MenuItem, typename Ttexts::BatVoltageFixedText,  ColorInterface<TFT_DARKGREY>, DummyAction>,

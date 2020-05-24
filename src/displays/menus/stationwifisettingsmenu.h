@@ -112,6 +112,7 @@ public:
 class StationWifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_STATIONWIFISETTINGS>,
+    public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_WIFIRECONNECT>,           WifiReconnectAction>,
         makeComponent<MenuItem, StaticText<TEXT_WIFIDISCONNECT>,          WifiDisconnectAction>,

@@ -50,6 +50,7 @@ public:
 class AccessPointWifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_ACCESSPOINTWIFISETTINGS>,
+    public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, WifiSoftApGetStationNumText,           StaticFont<2>, DisabledColor, DummyAction>,
         makeComponent<MenuItem, WifiSoftApIpText,                      StaticFont<2>, DisabledColor, DummyAction>,

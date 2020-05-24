@@ -39,6 +39,7 @@ using ReverseBeepDuration1ChangeScreen = makeComponent<ChangeValueDisplay<int16_
 class BuzzerMenu :
     public MenuDisplay,
     public StaticText<TEXT_BUZZER>,
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_FRONTFREQ>,            SwitchScreenAction<FrontFreqChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_FRONTPATTERN>,         SwitchScreenAction<FrontPatternChangeScreen>>,
