@@ -13,6 +13,7 @@ class ModesSettingsMenu;
 }
 
 namespace {
+#ifdef FEATURE_GAMETRAK
 class GametrakModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GAMETRAKMODESETTINGS>,
@@ -21,4 +22,5 @@ class GametrakModeSettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {};
+#endif
 }
