@@ -49,7 +49,7 @@ void GametrakCalibrateDisplay::initScreen()
     tft.setTextFont(4);
     tft.setTextColor(TFT_YELLOW);
 
-    tft.drawString(TEXT_CALIBRATE, 5, 5, 4);
+    tft.drawString(TEXT_GAMETRAKCALIBRATE, 5, 5, 4);
 
     tft.fillRect(0, 34, tft.width(), 3, TFT_WHITE);
 

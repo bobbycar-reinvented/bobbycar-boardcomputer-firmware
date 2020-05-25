@@ -64,7 +64,21 @@ using BremsMaxChangeScreen = makeComponent<
     BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
+
 #ifdef FEATURE_GAMETRAK
+struct GametrakXText : public virtual TextInterface {
+public:
+    String text() const override { return String{"gametrakX: "} + raw_gametrakX + ": " + gametrakX; }
+};
+struct GametrakYText : public virtual TextInterface {
+public:
+    String text() const override { return String{"gametrakY: "} + raw_gametrakY + ": " + gametrakY; }
+};
+struct GametrakDistText : public virtual TextInterface {
+public:
+    String text() const override { return String{"gametrakDist: "} + raw_gametrakDist + ": " + gametrakDist; }
+};
+
 using GametrakXMinChangeScreen = makeComponent<
     ChangeValueDisplay<int16_t>,
     StaticText<TEXT_SETGAMETRAKXMIN>,
@@ -123,6 +137,10 @@ class BoardcomputerHardwareSettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_SETBREMSMIN>,        SwitchScreenAction<BremsMinChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETBREMSMAX>,        SwitchScreenAction<BremsMaxChangeScreen>>,
 #ifdef FEATURE_GAMETRAK
+        makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>,
+        makeComponent<MenuItem, GametrakXText,                       DisabledColor, StaticFont<2>, DummyAction>,
+        makeComponent<MenuItem, GametrakYText,                       DisabledColor, StaticFont<2>, DummyAction>,
+        makeComponent<MenuItem, GametrakDistText,                    DisabledColor, StaticFont<2>, DummyAction>,
         makeComponent<MenuItem, StaticText<TEXT_GAMETRAKCALIBRATE>,  SwitchScreenAction<GametrakCalibrateDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMIN>,    SwitchScreenAction<GametrakXMinChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMAX>,    SwitchScreenAction<GametrakXMaxChangeScreen>>,
@@ -131,6 +149,7 @@ class BoardcomputerHardwareSettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMIN>, SwitchScreenAction<GametrakDistMinChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMAX>, SwitchScreenAction<GametrakDistMaxChangeScreen>>,
 #endif
+        makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>,
         makeComponent<MenuItem, StaticText<TEXT_SWAPSCREENBYTES>,    ToggleBoolAction, CheckboxIcon, SwapScreenBytesAccessor>,
         makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>
     >
