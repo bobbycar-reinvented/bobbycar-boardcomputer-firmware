@@ -73,6 +73,14 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
     .gasMax = DEFAULT_GASMAX,
     .bremsMin = DEFAULT_BREMSMIN,
     .bremsMax = DEFAULT_BREMSMAX,
+#ifdef FEATURE_GAMETRAK
+    .gametrakXMin = DEFAULT_GAMETRAKXMIN,
+    .gametrakXMax = DEFAULT_GAMETRAKXMAX,
+    .gametrakYMin = DEFAULT_GAMETRAKYMIN,
+    .gametrakYMax = DEFAULT_GAMETRAKYMAX,
+    .gametrakDistMin = DEFAULT_GAMETRAKDISTMIN,
+    .gametrakDistMax = DEFAULT_GAMETRAKDISTMAX,
+#endif
     .swapScreenBytes = DEFAULT_SWAPSCREENBYTES
 };
 
