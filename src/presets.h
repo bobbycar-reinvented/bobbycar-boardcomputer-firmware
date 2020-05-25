@@ -10,6 +10,7 @@ constexpr Settings::Limits defaultLimits {
     .fieldWeakMax = DEFAULT_FIELDWEAKMAX,
     .phaseAdvMax = DEFAULT_FIELDADVMAX
 };
+
 constexpr Settings::Limits kidsLimits {
     .iMotMax = 5,
     .iDcMax = 7,
@@ -28,6 +29,38 @@ constexpr Settings::ControllerHardware defaultControllerHardware {
     .invertFrontRight = true,
     .invertBackLeft = false,
     .invertBackRight = true,
+
+    .wheelDiameter = 165,
+    .numMagnetPoles = 15,
+    .swapFrontBack = false
+};
+
+constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
+    .enableFrontLeft = false,
+    .enableFrontRight = false,
+    .enableBackLeft = false,
+    .enableBackRight = false,
+
+    .invertFrontLeft = false,
+    .invertFrontRight = true,
+    .invertBackLeft = false,
+    .invertBackRight = true,
+
+    .wheelDiameter = 165,
+    .numMagnetPoles = 15,
+    .swapFrontBack = false
+};
+
+constexpr Settings::ControllerHardware spinnerControllerHardware {
+    .enableFrontLeft = true,
+    .enableFrontRight = true,
+    .enableBackLeft = true,
+    .enableBackRight = true,
+
+    .invertFrontLeft = false,
+    .invertFrontRight = false,
+    .invertBackLeft = false,
+    .invertBackRight = false,
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,

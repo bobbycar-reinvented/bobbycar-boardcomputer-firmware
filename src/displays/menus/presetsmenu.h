@@ -54,6 +54,8 @@ class PresetsMenu :
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTLIMITS>,                ApplyLimitsPresetAction<&presets::defaultLimits>>,
         makeComponent<MenuItem, StaticText<TEXT_KIDSLIMITS>,                   ApplyLimitsPresetAction<&presets::kidsLimits>>,
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTCONTROLLERHARDWARE>,    ApplyControllerHardwarePresetAction<&presets::defaultControllerHardware>>,
+        makeComponent<MenuItem, StaticText<TEXT_MOSFETSOFFCONTROLLERHARDWARE>, ApplyControllerHardwarePresetAction<&presets::mosfetsOffControllerHardware>>,
+        makeComponent<MenuItem, StaticText<TEXT_SPINNERCONTROLLERHARDWARE>,    ApplyControllerHardwarePresetAction<&presets::spinnerControllerHardware>>,
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTBOARDCOMPUTERHARDWARE>, ApplyBoardcomputerHardwarePresetAction<&presets::defaultBoardcomputerHardware>>,
         makeComponent<MenuItem, StaticText<TEXT_STREET>,                       DisabledColor, DummyAction>,
         makeComponent<MenuItem, StaticText<TEXT_SIDEWALK>,                     DisabledColor, DummyAction>,
