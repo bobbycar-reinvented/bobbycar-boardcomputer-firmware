@@ -18,6 +18,7 @@ class BoardcomputerHardwareSettingsMenu;
 }
 
 namespace {
+#ifdef FEATURE_GAMETRAK
 class GametrakCalibrateDisplay : public DemoDisplay, public SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, public BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 {
     using Base = DemoDisplay;
@@ -77,4 +78,5 @@ void GametrakCalibrateDisplay::redraw()
     m_progressBars[1].redraw(gametrakY);
     m_progressBars[2].redraw(gametrakDist);
 }
+#endif
 }
