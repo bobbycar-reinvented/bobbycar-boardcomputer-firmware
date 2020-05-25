@@ -223,6 +223,12 @@ constexpr char TEXT_SETGASMIN[] = "Set gasMin";
 constexpr char TEXT_SETGASMAX[] = "Set gasMax";
 constexpr char TEXT_SETBREMSMIN[] = "Set bremsMin";
 constexpr char TEXT_SETBREMSMAX[] = "Set bremsMax";
+constexpr char TEXT_SETGAMETRAKXMIN[] = "Set gametrakXMin";
+constexpr char TEXT_SETGAMETRAKXMAX[] = "Set gametrakXMax";
+constexpr char TEXT_SETGAMETRAKYMIN[] = "Set gametrakYMin";
+constexpr char TEXT_SETGAMETRAKYMAX[] = "Set gametrakYMax";
+constexpr char TEXT_SETGAMETRAKDISTMIN[] = "Set gametrakDistMin";
+constexpr char TEXT_SETGAMETRAKDISTMAX[] = "Set gametrakDistMax";
 constexpr char TEXT_SWAPSCREENBYTES[] = "Swap screen bytes";
 //constexpr char TEXT_BACK[] = "Back";
 

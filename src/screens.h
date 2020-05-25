@@ -152,6 +152,14 @@ union X {
     GasMaxChangeScreen changeGasMax;
     BremsMinChangeScreen changeBremsMin;
     BremsMaxChangeScreen changeBremsMax;
+#ifdef FEATURE_GAMETRAK
+    GametrakXMinChangeScreen changeGametrakXMin;
+    GametrakXMaxChangeScreen changeGametrakXMax;
+    GametrakYMinChangeScreen changeGametrakYMin;
+    GametrakYMaxChangeScreen changeGametrakYMax;
+    GametrakDistMinChangeScreen changeGametrakDistMin;
+    GametrakDistMaxChangeScreen changeGametrakDistMax;
+#endif
 
     WifiModeChangeScreen wifiModeChangeScreen;
     WifiTxPowerChangeScreen wifiTxPowerChangeScreen;
@@ -274,6 +282,14 @@ template<> decltype(displays.changeGasMin)                                     &
 template<> decltype(displays.changeGasMax)                                     &getRefByType<decltype(displays.changeGasMax)>()                                     { return displays.changeGasMax; }
 template<> decltype(displays.changeBremsMin)                                   &getRefByType<decltype(displays.changeBremsMin)>()                                   { return displays.changeBremsMin; }
 template<> decltype(displays.changeBremsMax)                                   &getRefByType<decltype(displays.changeBremsMax)>()                                   { return displays.changeBremsMax; }
+#ifdef FEATURE_GAMETRAK
+template<> decltype(displays.changeGametrakXMin)                               &getRefByType<decltype(displays.changeGametrakXMin)>()                               { return displays.changeGametrakXMin; }
+template<> decltype(displays.changeGametrakXMax)                               &getRefByType<decltype(displays.changeGametrakXMax)>()                               { return displays.changeGametrakXMax; }
+template<> decltype(displays.changeGametrakYMin)                               &getRefByType<decltype(displays.changeGametrakYMin)>()                               { return displays.changeGametrakYMin; }
+template<> decltype(displays.changeGametrakYMax)                               &getRefByType<decltype(displays.changeGametrakYMax)>()                               { return displays.changeGametrakYMax; }
+template<> decltype(displays.changeGametrakDistMin)                            &getRefByType<decltype(displays.changeGametrakDistMin)>()                            { return displays.changeGametrakDistMin; }
+template<> decltype(displays.changeGametrakDistMax)                            &getRefByType<decltype(displays.changeGametrakDistMax)>()                            { return displays.changeGametrakDistMax; }
+#endif
 
 template<> decltype(displays.wifiModeChangeScreen)                             &getRefByType<decltype(displays.wifiModeChangeScreen)>()                             { return displays.wifiModeChangeScreen; }
 template<> decltype(displays.wifiTxPowerChangeScreen)                          &getRefByType<decltype(displays.wifiTxPowerChangeScreen)>()                          { return displays.wifiTxPowerChangeScreen; }
