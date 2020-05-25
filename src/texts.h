@@ -246,7 +246,7 @@ constexpr char TEXT_RACE[] = "Race";
 constexpr char TEXT_DEFAULT[] = "Default";
 constexpr char TEXT_TEMPOMAT[] = "Tempomat";
 constexpr char TEXT_LARSM[] = "Larsm";
-constexpr char TEXT_BLUETOOTH[] = "Bluetooth";
+constexpr char TEXT_GAMETRAK[] = "Gametrak";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<bool>
