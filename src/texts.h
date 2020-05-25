@@ -227,6 +227,7 @@ constexpr char TEXT_SETGASMIN[] = "Set gasMin";
 constexpr char TEXT_SETGASMAX[] = "Set gasMax";
 constexpr char TEXT_SETBREMSMIN[] = "Set bremsMin";
 constexpr char TEXT_SETBREMSMAX[] = "Set bremsMax";
+constexpr char TEXT_GAMETRAKCALIBRATE[] = "Gametrak calibrate";
 constexpr char TEXT_SETGAMETRAKXMIN[] = "Set gametrakXMin";
 constexpr char TEXT_SETGAMETRAKXMAX[] = "Set gametrakXMax";
 constexpr char TEXT_SETGAMETRAKYMIN[] = "Set gametrakYMin";

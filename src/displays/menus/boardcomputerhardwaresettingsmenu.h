@@ -15,6 +15,7 @@
 namespace {
 class BoardcomputerHardwareSettingsMenu;
 class CalibrateDisplay;
+class GametrakCalibrateDisplay;
 class SettingsMenu;
 }
 
@@ -122,6 +123,7 @@ class BoardcomputerHardwareSettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_SETBREMSMIN>,        SwitchScreenAction<BremsMinChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETBREMSMAX>,        SwitchScreenAction<BremsMaxChangeScreen>>,
 #ifdef FEATURE_GAMETRAK
+        makeComponent<MenuItem, StaticText<TEXT_GAMETRAKCALIBRATE>,  SwitchScreenAction<GametrakCalibrateDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMIN>,    SwitchScreenAction<GametrakXMinChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMAX>,    SwitchScreenAction<GametrakXMaxChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKYMIN>,    SwitchScreenAction<GametrakYMinChangeScreen>>,

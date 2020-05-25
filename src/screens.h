@@ -35,6 +35,7 @@
 #include "displays/calibratedisplay.h"
 #include "displays/dualgraphdisplay.h"
 #include "displays/gameoflifedisplay.h"
+#include "displays/gametrakcalibratedisplay.h"
 #include "displays/lockscreen.h"
 #include "displays/metersdisplay.h"
 #include "displays/pingpongdisplay.h"
@@ -103,6 +104,9 @@ union X {
     CalibrateDisplay calibrateDisplay;
     DualGraphDisplay dualGraphDisplay;
     GameOfLifeDisplay gameOfLifeDisplay;
+#ifdef FEATURE_GAMETRAK
+    GametrakCalibrateDisplay gametrakCalibrateDisplay;
+#endif
     Lockscreen lockScreen;
     MetersDisplay metersDisplay;
     PingPongDisplay pingPongDisplay;
@@ -236,6 +240,9 @@ template<> decltype(displays.bmsDisplay)                                       &
 template<> decltype(displays.calibrateDisplay)                                 &getRefByType<decltype(displays.calibrateDisplay)>()                                 { return displays.calibrateDisplay; }
 template<> decltype(displays.dualGraphDisplay)                                 &getRefByType<decltype(displays.dualGraphDisplay)>()                                 { return displays.dualGraphDisplay; }
 template<> decltype(displays.gameOfLifeDisplay)                                &getRefByType<decltype(displays.gameOfLifeDisplay)>()                                { return displays.gameOfLifeDisplay; }
+#ifdef FEATURE_GAMETRAK
+template<> decltype(displays.gametrakCalibrateDisplay)                         &getRefByType<decltype(displays.gametrakCalibrateDisplay)>()                         { return displays.gametrakCalibrateDisplay; }
+#endif
 template<> decltype(displays.lockScreen)                                       &getRefByType<decltype(displays.lockScreen)>()                                       { return displays.lockScreen; }
 template<> decltype(displays.metersDisplay)                                    &getRefByType<decltype(displays.metersDisplay)>()                                    { return displays.metersDisplay; }
 template<> decltype(displays.pingPongDisplay)                                  &getRefByType<decltype(displays.pingPongDisplay)>()                                  { return displays.pingPongDisplay; }

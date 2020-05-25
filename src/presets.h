@@ -91,7 +91,7 @@ constexpr Settings::DefaultMode defaultDefaultMode {
     .smoothing = 20,
     .frontPercentage = 100,
     .backPercentage = 100,
-    .add_schwelle = 950,
+    .add_schwelle = 750,
     .gas1_wert = 1250,
     .gas2_wert = 1250,
     .brems1_wert = 250,
@@ -105,7 +105,7 @@ constexpr Settings::TempomatMode defaultTempomatMode {
 
 constexpr Settings::LarsmMode defaultLarsmMode {
     .mode = LarsmModeMode::Mode4,
-    .iterations = 5
+    .iterations = 100
 };
 
 constexpr Settings defaultSettings{
