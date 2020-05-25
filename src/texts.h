@@ -157,6 +157,9 @@ constexpr char TEXT_ENABLEBACKLEFT[] = "Enable back left";
 constexpr char TEXT_ENABLEBACKRIGHT[] = "Enable back right";
 //constexpr char TEXT_BACK[] = "Back";
 
+//GametrakModeSettingsMenu
+constexpr char TEXT_GAMETRAKMODESETTINGS[] = "Gametrak mode settings";
+
 //GenericWifiSettingsMenu
 constexpr char TEXT_GENERICWIFISETTINGS[] = "Generic WiFi settings";
 constexpr char TEXT_WIFICHANGEMODE[] = "Change mode";
@@ -202,6 +205,7 @@ constexpr char TEXT_LARSMMODECHANGEITERATIONS[] = "Change iterations";
 constexpr char TEXT_DEFAULTMODESETTIGNS[] = "Default mode settings";
 constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
 //constexpr char TEXT_LARSMMODESETTINGS[] = "Larsm mode settings";
+//constexpr char TEXT_GAMETRAKMODESETTINGS[] = "Gametrak mode settings";
 //constexpr char TEXT_BACK[] = "Back";
 
 //TempomatModeSettingsMenu

@@ -12,6 +12,7 @@
 #include "displays/menus/dynamicdebugmenu.h"
 #include "displays/menus/enablemenu.h"
 #include "displays/menus/feedbackdebugmenu.h"
+#include "displays/menus/gametrakmodesettingsmenu.h"
 #include "displays/menus/genericwifisettingsmenu.h"
 #include "displays/menus/graphsmenu.h"
 #include "displays/menus/controllerhardwaresettingsmenu.h"
@@ -69,6 +70,7 @@ union X {
     EnableMenu enableMenu;
     FrontFeedbackDebugMenu frontFeedbackDebugMenu;
     BackFeedbackDebugMenu backFeedbackDebugMenu;
+    GametrakModeSettingsMenu gametrakModeSettingsMenu;
     GenericWifiSettingsMenu genericWifiSettingsMenu;
     GraphsMenu graphsMenu;
     InvertMenu invertMenu;
@@ -200,6 +202,7 @@ template<> decltype(displays.dynamicDebugMenu)                                 &
 template<> decltype(displays.enableMenu)                                       &getRefByType<decltype(displays.enableMenu)>()                                       { return displays.enableMenu; }
 template<> decltype(displays.frontFeedbackDebugMenu)                           &getRefByType<decltype(displays.frontFeedbackDebugMenu)>()                           { return displays.frontFeedbackDebugMenu; }
 template<> decltype(displays.backFeedbackDebugMenu)                            &getRefByType<decltype(displays.backFeedbackDebugMenu)>()                            { return displays.backFeedbackDebugMenu; }
+template<> decltype(displays.gametrakModeSettingsMenu)                         &getRefByType<decltype(displays.gametrakModeSettingsMenu)>()                         { return displays.gametrakModeSettingsMenu; }
 template<> decltype(displays.genericWifiSettingsMenu)                          &getRefByType<decltype(displays.genericWifiSettingsMenu)>()                          { return displays.genericWifiSettingsMenu; }
 template<> decltype(displays.graphsMenu)                                       &getRefByType<decltype(displays.graphsMenu)>()                                       { return displays.graphsMenu; }
 template<> decltype(displays.invertMenu)                                       &getRefByType<decltype(displays.invertMenu)>()                                       { return displays.invertMenu; }
