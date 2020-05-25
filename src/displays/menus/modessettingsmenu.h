@@ -11,6 +11,7 @@ namespace {
 class DefaultModeSettingsMenu;
 class TempomatModeSettingsMenu;
 class LarsmModeSettingsMenu;
+class GametrakModeSettingsMenu;
 class SettingsMenu;
 }
 
@@ -23,6 +24,9 @@ class ModesSettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTMODESETTIGNS>,   SwitchScreenAction<DefaultModeSettingsMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_TEMPOMATMODESETTINGS>,  SwitchScreenAction<TempomatModeSettingsMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_LARSMMODESETTINGS>,     SwitchScreenAction<LarsmModeSettingsMenu>>,
+#ifdef FEATURE_GAMETRAK
+        makeComponent<MenuItem, StaticText<TEXT_GAMETRAKMODESETTINGS>,  SwitchScreenAction<GametrakModeSettingsMenu>>,
+#endif
         makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {};

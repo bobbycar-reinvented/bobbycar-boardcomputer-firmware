@@ -38,6 +38,9 @@ struct Settings
     struct BoardcomputerHardware {
         int16_t sampleCount;
         int16_t gasMin, gasMax, bremsMin, bremsMax;
+#ifdef FEATURE_GAMETRAK
+        int16_t gametrakXMin, gametrakXMax, gametrakYMin, gametrakYMax, gametrakDistMin, gametrakDistMax;
+#endif
         bool swapScreenBytes;
     } boardcomputerHardware;
 
@@ -105,6 +108,14 @@ void Settings::executeForEverySetting(T &&callable)
     callable("gasMax", boardcomputerHardware.gasMax);
     callable("bremsMin", boardcomputerHardware.bremsMin);
     callable("bremsMax", boardcomputerHardware.bremsMax);
+#ifdef FEATURE_GAMETRAK
+    callable("gametrakXMin", boardcomputerHardware.gametrakXMin);
+    callable("gametrakXMax", boardcomputerHardware.gametrakXMax);
+    callable("gametrakYMin", boardcomputerHardware.gametrakYMin);
+    callable("gametrakYMax", boardcomputerHardware.gametrakYMax);
+    callable("gametrakDistMin", boardcomputerHardware.gametrakDistMin);
+    callable("gametrakDistMax", boardcomputerHardware.gametrakDistMax);
+#endif
     callable("swapScreenBytes", boardcomputerHardware.swapScreenBytes);
 
     callable("default.ctrlTyp", defaultMode.ctrlTyp);

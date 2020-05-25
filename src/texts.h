@@ -157,6 +157,9 @@ constexpr char TEXT_ENABLEBACKLEFT[] = "Enable back left";
 constexpr char TEXT_ENABLEBACKRIGHT[] = "Enable back right";
 //constexpr char TEXT_BACK[] = "Back";
 
+//GametrakModeSettingsMenu
+constexpr char TEXT_GAMETRAKMODESETTINGS[] = "Gametrak mode settings";
+
 //GenericWifiSettingsMenu
 constexpr char TEXT_GENERICWIFISETTINGS[] = "Generic WiFi settings";
 constexpr char TEXT_WIFICHANGEMODE[] = "Change mode";
@@ -202,6 +205,7 @@ constexpr char TEXT_LARSMMODECHANGEITERATIONS[] = "Change iterations";
 constexpr char TEXT_DEFAULTMODESETTIGNS[] = "Default mode settings";
 constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
 //constexpr char TEXT_LARSMMODESETTINGS[] = "Larsm mode settings";
+//constexpr char TEXT_GAMETRAKMODESETTINGS[] = "Gametrak mode settings";
 //constexpr char TEXT_BACK[] = "Back";
 
 //TempomatModeSettingsMenu
@@ -223,6 +227,13 @@ constexpr char TEXT_SETGASMIN[] = "Set gasMin";
 constexpr char TEXT_SETGASMAX[] = "Set gasMax";
 constexpr char TEXT_SETBREMSMIN[] = "Set bremsMin";
 constexpr char TEXT_SETBREMSMAX[] = "Set bremsMax";
+constexpr char TEXT_GAMETRAKCALIBRATE[] = "Gametrak calibrate";
+constexpr char TEXT_SETGAMETRAKXMIN[] = "Set gametrakXMin";
+constexpr char TEXT_SETGAMETRAKXMAX[] = "Set gametrakXMax";
+constexpr char TEXT_SETGAMETRAKYMIN[] = "Set gametrakYMin";
+constexpr char TEXT_SETGAMETRAKYMAX[] = "Set gametrakYMax";
+constexpr char TEXT_SETGAMETRAKDISTMIN[] = "Set gametrakDistMin";
+constexpr char TEXT_SETGAMETRAKDISTMAX[] = "Set gametrakDistMax";
 constexpr char TEXT_SWAPSCREENBYTES[] = "Swap screen bytes";
 //constexpr char TEXT_BACK[] = "Back";
 
@@ -246,7 +257,7 @@ constexpr char TEXT_RACE[] = "Race";
 constexpr char TEXT_DEFAULT[] = "Default";
 constexpr char TEXT_TEMPOMAT[] = "Tempomat";
 constexpr char TEXT_LARSM[] = "Larsm";
-constexpr char TEXT_BLUETOOTH[] = "Bluetooth";
+constexpr char TEXT_GAMETRAK[] = "Gametrak";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<bool>

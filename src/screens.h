@@ -12,6 +12,7 @@
 #include "displays/menus/dynamicdebugmenu.h"
 #include "displays/menus/enablemenu.h"
 #include "displays/menus/feedbackdebugmenu.h"
+#include "displays/menus/gametrakmodesettingsmenu.h"
 #include "displays/menus/genericwifisettingsmenu.h"
 #include "displays/menus/graphsmenu.h"
 #include "displays/menus/controllerhardwaresettingsmenu.h"
@@ -34,6 +35,7 @@
 #include "displays/calibratedisplay.h"
 #include "displays/dualgraphdisplay.h"
 #include "displays/gameoflifedisplay.h"
+#include "displays/gametrakcalibratedisplay.h"
 #include "displays/lockscreen.h"
 #include "displays/metersdisplay.h"
 #include "displays/pingpongdisplay.h"
@@ -69,6 +71,9 @@ union X {
     EnableMenu enableMenu;
     FrontFeedbackDebugMenu frontFeedbackDebugMenu;
     BackFeedbackDebugMenu backFeedbackDebugMenu;
+#ifdef FEATURE_GAMETRAK
+    GametrakModeSettingsMenu gametrakModeSettingsMenu;
+#endif
     GenericWifiSettingsMenu genericWifiSettingsMenu;
     GraphsMenu graphsMenu;
     InvertMenu invertMenu;
@@ -99,6 +104,9 @@ union X {
     CalibrateDisplay calibrateDisplay;
     DualGraphDisplay dualGraphDisplay;
     GameOfLifeDisplay gameOfLifeDisplay;
+#ifdef FEATURE_GAMETRAK
+    GametrakCalibrateDisplay gametrakCalibrateDisplay;
+#endif
     Lockscreen lockScreen;
     MetersDisplay metersDisplay;
     PingPongDisplay pingPongDisplay;
@@ -152,6 +160,14 @@ union X {
     GasMaxChangeScreen changeGasMax;
     BremsMinChangeScreen changeBremsMin;
     BremsMaxChangeScreen changeBremsMax;
+#ifdef FEATURE_GAMETRAK
+    GametrakXMinChangeScreen changeGametrakXMin;
+    GametrakXMaxChangeScreen changeGametrakXMax;
+    GametrakYMinChangeScreen changeGametrakYMin;
+    GametrakYMaxChangeScreen changeGametrakYMax;
+    GametrakDistMinChangeScreen changeGametrakDistMin;
+    GametrakDistMaxChangeScreen changeGametrakDistMax;
+#endif
 
     WifiModeChangeScreen wifiModeChangeScreen;
     WifiTxPowerChangeScreen wifiTxPowerChangeScreen;
@@ -192,6 +208,9 @@ template<> decltype(displays.dynamicDebugMenu)                                 &
 template<> decltype(displays.enableMenu)                                       &getRefByType<decltype(displays.enableMenu)>()                                       { return displays.enableMenu; }
 template<> decltype(displays.frontFeedbackDebugMenu)                           &getRefByType<decltype(displays.frontFeedbackDebugMenu)>()                           { return displays.frontFeedbackDebugMenu; }
 template<> decltype(displays.backFeedbackDebugMenu)                            &getRefByType<decltype(displays.backFeedbackDebugMenu)>()                            { return displays.backFeedbackDebugMenu; }
+#ifdef FEATURE_GAMETRAK
+template<> decltype(displays.gametrakModeSettingsMenu)                         &getRefByType<decltype(displays.gametrakModeSettingsMenu)>()                         { return displays.gametrakModeSettingsMenu; }
+#endif
 template<> decltype(displays.genericWifiSettingsMenu)                          &getRefByType<decltype(displays.genericWifiSettingsMenu)>()                          { return displays.genericWifiSettingsMenu; }
 template<> decltype(displays.graphsMenu)                                       &getRefByType<decltype(displays.graphsMenu)>()                                       { return displays.graphsMenu; }
 template<> decltype(displays.invertMenu)                                       &getRefByType<decltype(displays.invertMenu)>()                                       { return displays.invertMenu; }
@@ -221,6 +240,9 @@ template<> decltype(displays.bmsDisplay)                                       &
 template<> decltype(displays.calibrateDisplay)                                 &getRefByType<decltype(displays.calibrateDisplay)>()                                 { return displays.calibrateDisplay; }
 template<> decltype(displays.dualGraphDisplay)                                 &getRefByType<decltype(displays.dualGraphDisplay)>()                                 { return displays.dualGraphDisplay; }
 template<> decltype(displays.gameOfLifeDisplay)                                &getRefByType<decltype(displays.gameOfLifeDisplay)>()                                { return displays.gameOfLifeDisplay; }
+#ifdef FEATURE_GAMETRAK
+template<> decltype(displays.gametrakCalibrateDisplay)                         &getRefByType<decltype(displays.gametrakCalibrateDisplay)>()                         { return displays.gametrakCalibrateDisplay; }
+#endif
 template<> decltype(displays.lockScreen)                                       &getRefByType<decltype(displays.lockScreen)>()                                       { return displays.lockScreen; }
 template<> decltype(displays.metersDisplay)                                    &getRefByType<decltype(displays.metersDisplay)>()                                    { return displays.metersDisplay; }
 template<> decltype(displays.pingPongDisplay)                                  &getRefByType<decltype(displays.pingPongDisplay)>()                                  { return displays.pingPongDisplay; }
@@ -274,6 +296,14 @@ template<> decltype(displays.changeGasMin)                                     &
 template<> decltype(displays.changeGasMax)                                     &getRefByType<decltype(displays.changeGasMax)>()                                     { return displays.changeGasMax; }
 template<> decltype(displays.changeBremsMin)                                   &getRefByType<decltype(displays.changeBremsMin)>()                                   { return displays.changeBremsMin; }
 template<> decltype(displays.changeBremsMax)                                   &getRefByType<decltype(displays.changeBremsMax)>()                                   { return displays.changeBremsMax; }
+#ifdef FEATURE_GAMETRAK
+template<> decltype(displays.changeGametrakXMin)                               &getRefByType<decltype(displays.changeGametrakXMin)>()                               { return displays.changeGametrakXMin; }
+template<> decltype(displays.changeGametrakXMax)                               &getRefByType<decltype(displays.changeGametrakXMax)>()                               { return displays.changeGametrakXMax; }
+template<> decltype(displays.changeGametrakYMin)                               &getRefByType<decltype(displays.changeGametrakYMin)>()                               { return displays.changeGametrakYMin; }
+template<> decltype(displays.changeGametrakYMax)                               &getRefByType<decltype(displays.changeGametrakYMax)>()                               { return displays.changeGametrakYMax; }
+template<> decltype(displays.changeGametrakDistMin)                            &getRefByType<decltype(displays.changeGametrakDistMin)>()                            { return displays.changeGametrakDistMin; }
+template<> decltype(displays.changeGametrakDistMax)                            &getRefByType<decltype(displays.changeGametrakDistMax)>()                            { return displays.changeGametrakDistMax; }
+#endif
 
 template<> decltype(displays.wifiModeChangeScreen)                             &getRefByType<decltype(displays.wifiModeChangeScreen)>()                             { return displays.wifiModeChangeScreen; }
 template<> decltype(displays.wifiTxPowerChangeScreen)                          &getRefByType<decltype(displays.wifiTxPowerChangeScreen)>()                          { return displays.wifiTxPowerChangeScreen; }

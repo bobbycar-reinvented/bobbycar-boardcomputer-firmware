@@ -315,5 +315,16 @@ void readPotis()
 
     raw_brems = sampleMultipleTimes(PINS_BREMS);
     brems = scaleBetween<float>(raw_brems, settings.boardcomputerHardware.bremsMin, settings.boardcomputerHardware.bremsMax, 0., 1000.);
+
+#ifdef FEATURE_GAMETRAK
+    raw_gametrakX = sampleMultipleTimes(PINS_GAMETRAKX);
+    gametrakX = scaleBetween<float>(raw_gametrakX, settings.boardcomputerHardware.gametrakXMin, settings.boardcomputerHardware.gametrakXMax, 0., 1000.);
+
+    raw_gametrakY = sampleMultipleTimes(PINS_GAMETRAKY);
+    gametrakY = scaleBetween<float>(raw_gametrakY, settings.boardcomputerHardware.gametrakYMin, settings.boardcomputerHardware.gametrakYMax, 0., 1000.);
+
+    raw_gametrakDist = sampleMultipleTimes(PINS_GAMETRAKDIST);
+    gametrakDist = scaleBetween<float>(raw_gametrakDist, settings.boardcomputerHardware.gametrakDistMin, settings.boardcomputerHardware.gametrakDistMax, 0., 1000.);
+#endif
 }
 }

@@ -18,6 +18,10 @@ using pin_t = int;
 
 int16_t raw_gas, raw_brems;
 float gas, brems;
+#ifdef FEATURE_GAMETRAK
+int16_t raw_gametrakX, raw_gametrakY, raw_gametrakDist;
+float gametrakX, gametrakY, gametrakDist;
+#endif
 float avgSpeed, avgSpeedKmh, sumCurrent, sumAbsoluteCurrent;
 
 Settings settings;

@@ -47,8 +47,10 @@ private:
         Label{25, 125} // 100, 23
     }};
 
-    ProgressBar m_progressBar0{20, 200, 200, 10, 0, 1000};
-    ProgressBar m_progressBar1{20, 230, 200, 10, 0, 1000};
+    std::array<ProgressBar, 2> m_progressBars {{
+        ProgressBar{20, 200, 200, 10, 0, 1000},
+        ProgressBar{20, 230, 200, 10, 0, 1000}
+    }};
 };
 
 CalibrateDisplay::CalibrateDisplay(bool bootup) :
@@ -77,8 +79,8 @@ void CalibrateDisplay::initScreen()
     for (auto &label : m_labels)
         label.start();
 
-    m_progressBar0.start();
-    m_progressBar1.start();
+    for (auto &progressBar : m_progressBars)
+        progressBar.start();
 }
 
 void CalibrateDisplay::redraw()
@@ -89,8 +91,8 @@ void CalibrateDisplay::redraw()
     m_labels[2].redraw(String{brems});
     m_labels[3].redraw(String{raw_brems});
 
-    m_progressBar0.redraw(gas);
-    m_progressBar1.redraw(brems);
+    m_progressBars[0].redraw(gas);
+    m_progressBars[1].redraw(brems);
 }
 
 void CalibrateDisplay::stop()

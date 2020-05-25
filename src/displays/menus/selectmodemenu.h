@@ -12,6 +12,7 @@
 #include "modes/defaultmode.h"
 #include "modes/tempomatmode.h"
 #include "modes/larsmmode.h"
+#include "modes/gametrakmode.h"
 
 namespace {
 class MainMenu;
@@ -27,6 +28,9 @@ public:
 using SetDefaultModeAction = SetterAction<ModeInterface*, currentMode, DefaultMode*, &modes::defaultMode>;
 using SetTempomatModeAction = SetterAction<ModeInterface*, currentMode, TempomatMode*, &modes::tempomatMode>;
 using SetLarsmModeAction = SetterAction<ModeInterface*, currentMode, LarsmMode*, &modes::larsmMode>;
+#ifdef FEATURE_GAMETRAK
+using SetGametrakModeAction = SetterAction<ModeInterface*, currentMode, GametrakMode*, &modes::gametrakMode>;
+#endif
 
 class SelectModeMenu :
     public MenuDisplay,
@@ -36,6 +40,9 @@ class SelectModeMenu :
         makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,   MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>,
         makeComponent<MenuItem, StaticText<TEXT_TEMPOMAT>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>,
         makeComponent<MenuItem, StaticText<TEXT_LARSM>,     MultiAction<SetLarsmModeAction, SwitchScreenAction<MainMenu>>>,
+#ifdef FEATURE_GAMETRAK
+        makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, SwitchScreenAction<MainMenu>>>,
+#endif
         makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {

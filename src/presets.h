@@ -73,6 +73,14 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
     .gasMax = DEFAULT_GASMAX,
     .bremsMin = DEFAULT_BREMSMIN,
     .bremsMax = DEFAULT_BREMSMAX,
+#ifdef FEATURE_GAMETRAK
+    .gametrakXMin = DEFAULT_GAMETRAKXMIN,
+    .gametrakXMax = DEFAULT_GAMETRAKXMAX,
+    .gametrakYMin = DEFAULT_GAMETRAKYMIN,
+    .gametrakYMax = DEFAULT_GAMETRAKYMAX,
+    .gametrakDistMin = DEFAULT_GAMETRAKDISTMIN,
+    .gametrakDistMax = DEFAULT_GAMETRAKDISTMAX,
+#endif
     .swapScreenBytes = DEFAULT_SWAPSCREENBYTES
 };
 
@@ -83,7 +91,7 @@ constexpr Settings::DefaultMode defaultDefaultMode {
     .smoothing = 20,
     .frontPercentage = 100,
     .backPercentage = 100,
-    .add_schwelle = 950,
+    .add_schwelle = 750,
     .gas1_wert = 1250,
     .gas2_wert = 1250,
     .brems1_wert = 250,
@@ -97,7 +105,7 @@ constexpr Settings::TempomatMode defaultTempomatMode {
 
 constexpr Settings::LarsmMode defaultLarsmMode {
     .mode = LarsmModeMode::Mode4,
-    .iterations = 5
+    .iterations = 100
 };
 
 constexpr Settings defaultSettings{
