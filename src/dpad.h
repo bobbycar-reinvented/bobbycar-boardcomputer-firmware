@@ -39,7 +39,7 @@ DPadState DPadHelper<IN1, IN2, IN3, IN4>::read()
 }
 
 #ifdef FEATURE_DPAD
-DPadHelper<DPINS_DPAD_UP, DPINS_DPAD_DOWN, DPINS_DPAD_LEFT, DPINS_DPAD_RIGHT> dpad;
+DPadHelper<PINS_DPAD_UP, PINS_DPAD_DOWN, PINS_DPAD_BACK, PINS_DPAD_CONFIRM> dpad;
 
 DPadState lastState;
 void updateDpad()
@@ -49,8 +49,8 @@ void updateDpad()
     enum {
         ButtonDown = 0,
         ButtonConfirm = 1,
-        ButtonBack = 2
-        ButtonUp = 3,
+        ButtonBack = 2,
+        ButtonUp = 3
     };
 
     if (!std::get<ButtonUp>(lastState) && std::get<ButtonUp>(state))
