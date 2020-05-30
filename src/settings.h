@@ -4,6 +4,8 @@
 
 #include "bobbycar-protocol/protocol.h"
 
+#include "bluetoothmode.h"
+
 namespace {
 enum class LarsmModeMode : uint8_t { Mode1, Mode2, Mode3, Mode4 };
 
@@ -12,6 +14,9 @@ struct Settings
 #ifdef FEATURE_BMS
     bool autoConnectBms;
 #endif
+
+    BluetoothMode bluetoothMode;
+
     bool reverseBeep;
     uint8_t reverseBeepFreq0;
     uint8_t reverseBeepFreq1;
@@ -79,6 +84,9 @@ void Settings::executeForEverySetting(T &&callable)
 #ifdef FEATURE_BMS
     callable("autoConnectBms", autoConnectBms);
 #endif
+
+    callable("bluetoothMode", bluetoothMode);
+
     callable("reverseBeep", reverseBeep);
     callable("revBeepFreq0", reverseBeepFreq0);
     callable("revBeepFreq1", reverseBeepFreq1);

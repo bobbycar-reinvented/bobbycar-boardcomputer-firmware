@@ -118,6 +118,8 @@ union X {
     UpdateDisplay updateDisplay;
 #endif
 
+    BluetoothModeChangeDisplay bluetoothModeChangeDisplay;
+
     FrontFreqChangeScreen changeFrontFreq;
     FrontPatternChangeScreen changeFrontPattern;
     BackFreqChangeScreen changeBackFreq;
@@ -253,6 +255,8 @@ template<> decltype(displays.statusDisplay)                                    &
 #ifdef FEATURE_OTA
 template<> decltype(displays.updateDisplay)                                    &getRefByType<decltype(displays.updateDisplay)>()                                    { return displays.updateDisplay; }
 #endif
+
+template<> decltype(displays.bluetoothModeChangeDisplay)                       &getRefByType<decltype(displays.bluetoothModeChangeDisplay)>()                       { return displays.bluetoothModeChangeDisplay; }
 
 template<> decltype(displays.changeFrontFreq)                                  &getRefByType<decltype(displays.changeFrontFreq)>()                                  { return displays.changeFrontFreq; }
 template<> decltype(displays.changeFrontPattern)                               &getRefByType<decltype(displays.changeFrontPattern)>()                               { return displays.changeFrontPattern; }
