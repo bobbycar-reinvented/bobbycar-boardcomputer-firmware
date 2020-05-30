@@ -39,8 +39,12 @@ void initWebserver()
             {
                 HtmlTag headTag{"head", content};
 
-                HtmlTag titleTag{"title", content};
-                content += "Bobbycar remote";
+                {
+                    HtmlTag titleTag{"title", content};
+                    content += "Bobbycar remote";
+                }
+
+                content += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />";
             }
 
             {
