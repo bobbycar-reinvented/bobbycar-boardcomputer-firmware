@@ -18,6 +18,7 @@
 #include "ota.h"
 #include "presets.h"
 #include "statistics.h"
+#include "actions/bluetoothbeginaction.h"
 #include "actions/bluetoothbeginmasteraction.h"
 #include "actions/bluetoothconnectbmsaction.h"
 #include "webserver.h"
@@ -73,11 +74,15 @@ void setup()
     WiFi.softAP(deviceName, "Passwort_123");
     WiFi.begin("realraum", "r3alraum");
 
-    BluetoothBeginMasterAction{}.triggered();
+    if (settings.bluetoothMode == BluetoothMode::Master)
+    {
+        BluetoothBeginMasterAction{}.triggered();
 #ifdef FEATURE_BMS
-    if (settings.autoConnectBms)
-        BluetoothConnectBmsAction{}.triggered();
+        if (settings.autoConnectBms)
+            BluetoothConnectBmsAction{}.triggered();
 #endif
+    } else if (settings.bluetoothMode == BluetoothMode::Slave)
+        BluetoothBeginAction{}.triggered();
 
     front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
     back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);

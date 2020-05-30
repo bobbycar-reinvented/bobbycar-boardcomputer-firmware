@@ -7,6 +7,7 @@
 #include <nvs.h>
 
 #include "settings.h"
+#include "bluetoothmode.h"
 
 namespace {
 class SettingsSaver
@@ -91,6 +92,14 @@ template<> struct nvsGetterHelper<LarsmModeMode> { static esp_err_t nvs_get(nvs_
             *out_value = LarsmModeMode(tempValue);
         return err;
     }};
+template<> struct nvsGetterHelper<BluetoothMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, BluetoothMode* out_value)
+    {
+        uint8_t tempValue;
+        esp_err_t err = nvs_get_u8(handle, key, &tempValue);
+        if (err == ESP_OK)
+            *out_value = BluetoothMode(tempValue);
+        return err;
+    }};
 
 bool SettingsSaver::load(Settings &settings)
 {
@@ -126,6 +135,10 @@ template<> struct nvsSetterHelper<ControlMode> { static esp_err_t nvs_set(nvs_ha
         return nvs_set_u8(handle, key, uint8_t(value));
     }};
 template<> struct nvsSetterHelper<LarsmModeMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, LarsmModeMode value)
+    {
+        return nvs_set_u8(handle, key, uint8_t(value));
+    }};
+template<> struct nvsSetterHelper<BluetoothMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, BluetoothMode value)
     {
         return nvs_set_u8(handle, key, uint8_t(value));
     }};

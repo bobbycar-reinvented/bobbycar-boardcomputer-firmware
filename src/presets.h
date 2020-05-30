@@ -112,7 +112,8 @@ constexpr Settings defaultSettings{
 #ifdef FEATURE_BMS
     .autoConnectBms = false,
 #endif
-    .reverseBeep = true,
+    .bluetoothMode = BluetoothMode::Off,
+    .reverseBeep = false,
     .reverseBeepFreq0 = 3,
     .reverseBeepFreq1 = 0,
     .reverseBeepDuration0 = 500,
