@@ -82,7 +82,9 @@ void initWebserver()
 
                             content += "><a href=\"/triggerItem?index=";
                             content += i;
-                            content += "\">" + menuItem.text() + "</a></li>";
+                            content += "\">";
+                            content += menuItem.text();
+                            content += "</a></li>";
 
                             i++;
                         });
