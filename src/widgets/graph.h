@@ -74,7 +74,7 @@ void Graph<LENGTH, COUNT>::redraw(const std::array<std::reference_wrapper<const 
 template<size_t LENGTH, size_t COUNT>
 void Graph<LENGTH, COUNT>::render(const std::array<std::reference_wrapper<const ring_buffer<float, LENGTH>>, COUNT> &buffers, bool delta)
 {
-    float min, max;
+    float min{std::numeric_limits<float>::quiet_NaN()}, max{std::numeric_limits<float>::quiet_NaN()};
     bool first{true};
     for (const ring_buffer<float, LENGTH> &buffer : buffers)
     {
