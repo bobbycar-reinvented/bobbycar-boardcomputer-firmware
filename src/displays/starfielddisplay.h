@@ -105,7 +105,7 @@ uint8_t StarfieldDisplay::rng()
     zx++;
     za = (za^zc^zx);
     zb = (zb+za);
-    zc = (zc+(zb>>1)^za);
+    zc = (zc+(zb>>1))^za;
     return zc;
 }
 }

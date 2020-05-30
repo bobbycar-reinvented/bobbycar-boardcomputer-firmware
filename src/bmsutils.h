@@ -31,7 +31,7 @@ bool send6Bit(int zhen_tou, int address, int data)
 
     const auto sent = bluetoothSerial.write(buffer, 6);
     if (sent != 6)
-        Serial.printf("send: %lu\r\n", sent);
+        Serial.printf("send: %u\r\n", sent);
     return sent == 6;
 }
 
@@ -53,7 +53,7 @@ void update()
             const auto read = bluetoothSerial.readBytes(buffer, 140);
             if (read != 140)
             {
-                Serial.printf("bms read buffer too short %lu\r\n", read);
+                Serial.printf("bms read buffer too short %u\r\n", read);
 
                 for (int i = 0; i < read; i++)
                     Serial.printf("%i  ", buffer[i]);

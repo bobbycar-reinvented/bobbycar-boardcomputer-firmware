@@ -59,13 +59,13 @@ void initWebserver()
 
                 if (auto constCurrentDisplay = static_cast<const Display *>(currentDisplay))
                 {
-                    if (const auto *textInterface = currentDisplay->asTextInterface())
+                    if (const auto *textInterface = constCurrentDisplay->asTextInterface())
                     {
                         HtmlTag h2Tag{"h2", content};
                         content += textInterface->text();
                     }
 
-                    if (const auto *menuDisplay = currentDisplay->asMenuDisplay())
+                    if (const auto *menuDisplay = constCurrentDisplay->asMenuDisplay())
                     {
                         HtmlTag ulTag{"ul", content};
 
@@ -81,7 +81,7 @@ void initWebserver()
                             i++;
                         });
                     }
-                    else if (const auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface())
+                    else if (const auto *changeValueDisplay = constCurrentDisplay->asChangeValueDisplayInterface())
                     {
                         content += "<form action=\"/setValue\" method=\"GET\">";
                         content += "<input type=\"number\" name=\"value\" value=\"" + String{changeValueDisplay->shownValue()} + "\" />";
