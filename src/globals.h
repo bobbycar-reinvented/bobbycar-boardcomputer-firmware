@@ -24,6 +24,8 @@ float gametrakX, gametrakY, gametrakDist;
 #endif
 float avgSpeed, avgSpeedKmh, sumCurrent, sumAbsoluteCurrent;
 
+char deviceName[16];
+
 Settings settings;
 SettingsSaver settingsSaver;
 
