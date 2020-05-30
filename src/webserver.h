@@ -80,7 +80,9 @@ void initWebserver()
                             if (i == selectedIndex)
                                 content += " style=\"border: 1px solid black;\"";
 
-                            content += '>' + menuItem.text() + "</li>";
+                            content += "><a href=\"/triggerItem?index=";
+                            content += i;
+                            content += "\">" + menuItem.text() + "</a></li>";
 
                             i++;
                         });
@@ -141,6 +143,44 @@ void initWebserver()
         webServer.send(302, "text/html", "ok");
     });
 
+    webServer.on("/triggerItem", HTTP_GET, [](){
+        if (!webServer.hasArg("index"))
+        {
+            webServer.send(400, "text/plain", "index parameter missing");
+            return;
+        }
+
+        if (!currentDisplay)
+        {
+            webServer.send(400, "text/plain", "currentDisplay is null");
+            return;
+        }
+
+        auto *menuDisplay = currentDisplay->asMenuDisplay();
+        if (!menuDisplay)
+        {
+            webServer.send(400, "text/plain", "currentDisplay is not a menu display");
+            return;
+        }
+
+        const auto indexStr = webServer.arg("index");
+
+        char *ptr;
+        const auto index = std::strtol(std::begin(indexStr), &ptr, 10);
+
+        if (ptr != std::end(indexStr))
+        {
+            webServer.send(400, "text/plain", "index could not be parsed");
+            return;
+        }
+
+        menuDisplay->itemPressed(index);
+
+        webServer.sendHeader("Connection", "close");
+        webServer.sendHeader("Location", "/");
+        webServer.send(302, "text/html", "ok");
+    });
+
     webServer.on("/setValue", HTTP_GET, [](){
         if (!webServer.hasArg("value"))
         {
@@ -157,16 +197,16 @@ void initWebserver()
         auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface();
         if (!changeValueDisplay)
         {
-            webServer.send(400, "text/plain", "currentDisplay is a change value display");
+            webServer.send(400, "text/plain", "currentDisplay is not a change value display");
             return;
         }
 
         const auto valueStr = webServer.arg("value");
 
-        char *egal;
-        const auto value = std::strtol(std::begin(valueStr), &egal, 10);
+        char *ptr;
+        const auto value = std::strtol(std::begin(valueStr), &ptr, 10);
 
-        if (egal != std::end(valueStr))
+        if (ptr != std::end(valueStr))
         {
             webServer.send(400, "text/plain", "value could not be parsed");
             return;
