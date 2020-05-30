@@ -18,6 +18,7 @@ install:
 
 env:
     - BUILD_CONFIG=feedc0de_usb
+    - BUILD_CONFIG=greyhash_usb
     - BUILD_CONFIG=aveexy_usb
     - BUILD_CONFIG=testbench_usb
     - BUILD_CONFIG=mickdermack_usb
