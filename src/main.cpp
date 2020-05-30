@@ -66,7 +66,7 @@ void setup()
     {
         uint8_t macAddress[6];
         WiFi.macAddress(&macAddress[0]);
-        std::sprintf(deviceName, "bobbyquad_%02hhx%02hhx%02hhx", macAddress[3], macAddress[4], macAddress[5]);
+        std::sprintf(deviceName, __STRINGIFY(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", macAddress[3], macAddress[4], macAddress[5]);
     }
 
     WiFi.mode(WIFI_AP_STA);
