@@ -68,6 +68,7 @@ constexpr char TEXT_WIFISETTINGS[] = "WiFi settings";
 constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
 constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
 constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
+constexpr char TEXT_BLUETOOTHMODE[] = "Bluetooth mode";
 constexpr char TEXT_AUTOCONNECTBMS[] = "Auto connect BMS";
 constexpr char TEXT_BUZZER[] = "Buzzer";
 constexpr char TEXT_FRONTLED[] = "Front LED";
@@ -259,6 +260,11 @@ constexpr char TEXT_TEMPOMAT[] = "Tempomat";
 constexpr char TEXT_LARSM[] = "Larsm";
 constexpr char TEXT_GAMETRAK[] = "Gametrak";
 //constexpr char TEXT_BACK[] = "Back";
+
+//ChangeValueDisplay<BluetoothMode>
+constexpr char TEXT_OFF[] = "Off";
+constexpr char TEXT_MASTER[] = "Master";
+constexpr char TEXT_SLAVE[] = "Slave";
 
 //ChangeValueDisplay<bool>
 constexpr char TEXT_TRUE[] = "true";
