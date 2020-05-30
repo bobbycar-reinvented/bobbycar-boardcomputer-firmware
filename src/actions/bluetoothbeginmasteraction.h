@@ -11,7 +11,7 @@ class BluetoothBeginMasterAction : public virtual ActionInterface
 public:
     void triggered() override
     {
-        if (!bluetoothSerial.begin("bobbyquad", true))
+        if (!bluetoothSerial.begin(deviceName, true))
         {
             Serial.println("Could not begin bluetooth master");
             // TODO: better error handling

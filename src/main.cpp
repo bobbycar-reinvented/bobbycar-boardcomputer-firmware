@@ -1,3 +1,5 @@
+#include <cstdio>
+
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <WiFi.h>
@@ -61,10 +63,15 @@ void setup()
 
     updateSwapFrontBack();
 
+    {
+        uint8_t macAddress[6];
+        WiFi.macAddress(&macAddress[0]);
+        std::sprintf(deviceName, __STRINGIFY(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", macAddress[3], macAddress[4], macAddress[5]);
+    }
+
     WiFi.mode(WIFI_AP_STA);
-    WiFi.softAP("bobbyquad", "Passwort_123");
+    WiFi.softAP(deviceName, "Passwort_123");
     WiFi.begin("realraum", "r3alraum");
-    //WiFi.begin("McDonalds Free WiFi 2.4GHz", "Passwort_123");
 
     BluetoothBeginMasterAction{}.triggered();
 #ifdef FEATURE_BMS
