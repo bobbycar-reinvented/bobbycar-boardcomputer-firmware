@@ -67,12 +67,25 @@ void setup()
     {
         uint8_t macAddress[6];
         WiFi.macAddress(&macAddress[0]);
-        std::sprintf(deviceName, __STRINGIFY(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", macAddress[3], macAddress[4], macAddress[5]);
+        #define STRING2(s) #s
+        #define STRING(s) STRING2(s)
+        std::sprintf(deviceName, STRING(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", macAddress[3], macAddress[4], macAddress[5]);
     }
 
-    WiFi.mode(WIFI_AP_STA);
-    WiFi.softAP(deviceName, "Passwort_123");
-    WiFi.begin("realraum", "r3alraum");
+    if (!WiFi.setHostname(deviceName))
+        Serial.println("Could not setHostname");
+
+    if (!WiFi.softAPsetHostname(deviceName))
+        Serial.println("Could not softAPsetHostname");
+
+    if (!WiFi.mode(WIFI_AP_STA))
+        Serial.println("Could not set mode to WIFI_AP_STA");
+
+    if (!WiFi.softAP(deviceName, "Passwort_123"))
+        Serial.println("Could not softAP");
+
+    if (!WiFi.begin("realraum", "r3alraum"))
+        Serial.println("Could not begin WiFi");
 
     if (settings.bluetoothMode == BluetoothMode::Master)
     {

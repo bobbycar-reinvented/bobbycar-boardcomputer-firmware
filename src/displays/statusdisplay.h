@@ -95,12 +95,15 @@ private:
     BoardStatus m_frontStatus{42};
     BoardStatus m_backStatus{142};
 
-    Label m_labelWifiStatus{35, 266}; // 120, 15
-    Label m_labelLimit0{205, 266}; // 35, 15
-    Label m_labelIpAddress{25, 281}; // 130, 15
-    Label m_labelLimit1{205, 281}; // 35, 15
-    Label m_labelPerformance{85, 296}; // 40, 15
-    Label m_labelMode{165, 296}; // 75, 15
+    Label m_labelWifiStatus{35, bottomLines[0]}; // 120, 15
+    Label m_labelLimit0{205, bottomLines[0]}; // 35, 15
+    Label m_labelIpAddress{25, bottomLines[1]}; // 130, 15
+    Label m_labelLimit1{205, bottomLines[1]}; // 35, 15
+    Label m_labelPerformance{85, bottomLines[2]}; // 40, 15
+    Label m_labelMode{165, bottomLines[2]}; // 75, 15
+    Label m_labelName{40, bottomLines[3]}; // 40, 15
+
+    static const constexpr int bottomLines[4] { 251, 266, 281, 296 };
 };
 
 void StatusDisplay::initScreen()
@@ -122,18 +125,20 @@ void StatusDisplay::initScreen()
     m_backStatus.start();
 
     tft.setTextFont(2);
-    tft.drawString("WiFi:", 0, 266);
+    tft.drawString("WiFi:", 0, bottomLines[0]);
     m_labelWifiStatus.start();
-    tft.drawString("Limit0:", 160, 266);
+    tft.drawString("Limit0:", 160, bottomLines[0]);
     m_labelLimit0.start();
-    tft.drawString("IP:", 0, 281);
+    tft.drawString("IP:", 0, bottomLines[1]);
     m_labelIpAddress.start();
-    tft.drawString("Limit1:", 160, 281);
+    tft.drawString("Limit1:", 160, bottomLines[1]);
     m_labelLimit1.start();
-    tft.drawString("Performance:", 0, 296);
+    tft.drawString("Performance:", 0, bottomLines[2]);
     m_labelPerformance.start();
-    tft.drawString("Mode:", 125, 296);
+    tft.drawString("Mode:", 125, bottomLines[2]);
     m_labelMode.start();
+    tft.drawString("Name:", 0, bottomLines[3]);
+    m_labelName.start();
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
 }
@@ -158,6 +163,7 @@ void StatusDisplay::redraw()
     m_labelLimit1.redraw(String{front.command.left.iDcMax} + "A");
     m_labelPerformance.redraw(String{performance.last});
     m_labelMode.redraw(currentMode->displayName());
+    m_labelName.redraw(&deviceName[0]);
 }
 
 void StatusDisplay::rotate(int offset)
