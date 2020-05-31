@@ -3,6 +3,7 @@
 #include "modeinterface.h"
 #include "globals.h"
 #include "utils.h"
+#include "defaultmode.h"
 
 #include "bobbycar-protocol/protocol.h"
 
@@ -22,11 +23,19 @@ GametrakMode gametrakMode;
 
 void GametrakMode::update()
 {
+    if (gas > 500. || brems > 500.)
+    {
+        modes::defaultMode.waitForGasLoslass = true;
+        modes::defaultMode.waitForBremsLoslass = true;
+        currentMode = &modes::defaultMode;
+        return;
+    }
+
     for (MotorState &motor : motors())
     {
         motor.ctrlTyp = ControlType::FieldOrientedControl;
         motor.ctrlMod = ControlMode::Speed;
-        motor.pwm = 0;
+        motor.pwm = gametrakDist > 200 ? 20 : 0;
     }
 
     fixCommonParams();
