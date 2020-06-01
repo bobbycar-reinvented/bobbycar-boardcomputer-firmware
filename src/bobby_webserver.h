@@ -5,6 +5,7 @@
 #include "screens.h"
 
 namespace {
+#ifdef FEATURE_WEBSERVER
 WebServer webServer{80};
 
 class HtmlTag {
@@ -228,4 +229,5 @@ void handleWebserver()
 {
     webServer.handleClient();
 }
+#endif
 }

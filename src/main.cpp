@@ -193,7 +193,9 @@ void loop()
     handleOta();
 #endif
 
+#ifdef FEATURE_WEBSERVER
     handleWebserver();
+#endif
 
 #ifdef FEATURE_BMS
     bms::update();
