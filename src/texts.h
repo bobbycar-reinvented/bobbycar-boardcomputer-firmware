@@ -55,6 +55,7 @@ constexpr char TEXT_GRAPHS[] = "Graphs";
 //constexpr char TEXT_BMS[] = "BMS";
 constexpr char TEXT_SETTINGS[] = "Settings";
 constexpr char TEXT_LOCKVEHICLE[] = "Lock vehicle";
+constexpr char TEXT_MOSFETS[] = "Mosfets";
 constexpr char TEXT_DEMOS[] = "Demos";
 constexpr char TEXT_POWEROFF[] = "Poweroff";
 constexpr char TEXT_REBOOT[] = "Reboot";
@@ -208,6 +209,12 @@ constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
 //constexpr char TEXT_LARSMMODESETTINGS[] = "Larsm mode settings";
 //constexpr char TEXT_GAMETRAKMODESETTINGS[] = "Gametrak mode settings";
 //constexpr char TEXT_BACK[] = "Back";
+
+//MosfetsMenu
+//constexpr char TEXT_MOSFETS[] = "Mosfets";
+constexpr char TEXT_MOSFET0[] = "Mosfet0";
+constexpr char TEXT_MOSFET1[] = "Mosfet1";
+constexpr char TEXT_MOSFET2[] = "Mosfet2";
 
 //TempomatModeSettingsMenu
 //constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";

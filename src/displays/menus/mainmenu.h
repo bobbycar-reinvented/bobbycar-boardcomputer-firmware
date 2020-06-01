@@ -25,6 +25,7 @@ class GraphsMenu;
 class BmsMenu;
 class SettingsMenu;
 class Lockscreen;
+class MosfetsMenu;
 class DemosMenu;
 class PoweroffDisplay;
 class DebugMenu;
@@ -45,6 +46,9 @@ class MainMenu :
 #endif
         makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,    SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::settings>>,
         makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>, SwitchScreenAction<Lockscreen>, StaticMenuItemIcon<&icons::lock>>,
+#ifdef FEATURE_MOSFETS
+        makeComponent<MenuItem, StaticText<TEXT_MOSFETS>,     SwitchScreenAction<MosfetsMenu>, StaticMenuItemIcon<&icons::lock>>, // TODO icon
+#endif
         makeComponent<MenuItem, StaticText<TEXT_DEMOS>,       SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&icons::demos>>,
         makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,    SwitchScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&icons::poweroff>>,
         makeComponent<MenuItem, StaticText<TEXT_REBOOT>,      RebootAction, StaticMenuItemIcon<&icons::reboot>>,
