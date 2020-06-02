@@ -22,6 +22,7 @@ env:
     - BUILD_CONFIG=aveexy_usb
     - BUILD_CONFIG=testbench_usb
     - BUILD_CONFIG=mickdermack_usb
+    - BUILD_CONFIG=peter_usb
 
 script:
     - platformio run -e $BUILD_CONFIG

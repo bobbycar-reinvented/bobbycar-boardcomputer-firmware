@@ -57,6 +57,16 @@ void setup()
     initRotary();
 #endif
 
+#ifdef FEATURE_MOSFETS
+    pinMode(PINS_MOSFET0, OUTPUT);
+    pinMode(PINS_MOSFET1, OUTPUT);
+    pinMode(PINS_MOSFET2, OUTPUT);
+
+    digitalWrite(PINS_MOSFET0, LOW);
+    digitalWrite(PINS_MOSFET1, LOW);
+    digitalWrite(PINS_MOSFET2, LOW);
+#endif
+
     settings = presets::defaultSettings;
 
     if (settingsSaver.init())

@@ -22,6 +22,7 @@
 #include "displays/menus/mainmenu.h"
 #include "displays/menus/tempomatmodesettingsmenu.h"
 #include "displays/menus/modessettingsmenu.h"
+#include "displays/menus/mosfetsmenu.h"
 #include "displays/menus/motorfeedbackdebugmenu.h"
 #include "displays/menus/motorstatedebugmenu.h"
 #include "displays/menus/presetsmenu.h"
@@ -82,6 +83,9 @@ union X {
     MainMenu mainMenu;
     TempomatModeSettingsMenu tempomatModeSettingsMenu;
     ModesSettingsMenu modesSettingsMenu;
+#ifdef FEATURE_MOSFETS
+    MosfetsMenu mosfetsMenu;
+#endif
     FrontLeftMotorStateDebugMenu frontLeftMotorStateDebugMenu;
     FrontRightMotorStateDebugMenu frontRightMotorStateDebugMenu;
     BackLeftMotorStateDebugMenu backLeftMotorStateDebugMenu;
@@ -221,6 +225,9 @@ template<> decltype(displays.limitsSettingsMenu)                               &
 template<> decltype(displays.mainMenu)                                         &getRefByType<decltype(displays.mainMenu)>()                                         { return displays.mainMenu; }
 template<> decltype(displays.tempomatModeSettingsMenu)                         &getRefByType<decltype(displays.tempomatModeSettingsMenu)>()                         { return displays.tempomatModeSettingsMenu; }
 template<> decltype(displays.modesSettingsMenu)                                &getRefByType<decltype(displays.modesSettingsMenu)>()                                { return displays.modesSettingsMenu; }
+#ifdef FEATURE_MOSFETS
+template<> decltype(displays.mosfetsMenu)                                      &getRefByType<decltype(displays.mosfetsMenu)>()                                      { return displays.mosfetsMenu; }
+#endif
 template<> decltype(displays.frontLeftMotorStateDebugMenu)                     &getRefByType<decltype(displays.frontLeftMotorStateDebugMenu)>()                     { return displays.frontLeftMotorStateDebugMenu; }
 template<> decltype(displays.frontRightMotorStateDebugMenu)                    &getRefByType<decltype(displays.frontRightMotorStateDebugMenu)>()                    { return displays.frontRightMotorStateDebugMenu; }
 template<> decltype(displays.backLeftMotorStateDebugMenu)                      &getRefByType<decltype(displays.backLeftMotorStateDebugMenu)>()                      { return displays.backLeftMotorStateDebugMenu; }
