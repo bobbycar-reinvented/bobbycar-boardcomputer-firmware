@@ -45,6 +45,13 @@ public:
     void triggered() override { settings.boardcomputerHardware = *preset; saveSettings(); }
 };
 
+template<const Settings::DefaultMode *preset>
+class ApplyDefaultModePresetAction : public virtual ActionInterface
+{
+public:
+    void triggered() override { settings.defaultMode = *preset; saveSettings(); }
+};
+
 class PresetsMenu :
     public MenuDisplay,
     public StaticText<TEXT_PRESETS>,
@@ -57,10 +64,8 @@ class PresetsMenu :
         makeComponent<MenuItem, StaticText<TEXT_MOSFETSOFFCONTROLLERHARDWARE>, ApplyControllerHardwarePresetAction<&presets::mosfetsOffControllerHardware>>,
         makeComponent<MenuItem, StaticText<TEXT_SPINNERCONTROLLERHARDWARE>,    ApplyControllerHardwarePresetAction<&presets::spinnerControllerHardware>>,
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTBOARDCOMPUTERHARDWARE>, ApplyBoardcomputerHardwarePresetAction<&presets::defaultBoardcomputerHardware>>,
-        makeComponent<MenuItem, StaticText<TEXT_STREET>,                       DisabledColor, DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_SIDEWALK>,                     DisabledColor, DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_POLICE>,                       DisabledColor, DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_RACE>,                         DisabledColor, DummyAction>,
+        makeComponent<MenuItem, StaticText<TEXT_DEFAULTDEFAULTMODE>,           ApplyDefaultModePresetAction<&presets::defaultDefaultMode>>,
+        makeComponent<MenuItem, StaticText<TEXT_SINUSODIALDEFAULTMODE>,        ApplyDefaultModePresetAction<&presets::sinusodialDefaultMode>>,
         makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {};
