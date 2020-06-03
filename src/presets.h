@@ -98,6 +98,20 @@ constexpr Settings::DefaultMode defaultDefaultMode {
     .brems2_wert = 750
 };
 
+constexpr Settings::DefaultMode sinusodialDefaultMode {
+    .ctrlTyp = ControlType::Sinusoidal,
+    .ctrlMod = ControlMode::Voltage,
+    .enableSmoothing = true,
+    .smoothing = 20,
+    .frontPercentage = 100,
+    .backPercentage = 100,
+    .add_schwelle = 500,
+    .gas1_wert = 1250,
+    .gas2_wert = 1250,
+    .brems1_wert = 150,
+    .brems2_wert = 1000
+};
+
 constexpr Settings::TempomatMode defaultTempomatMode {
     .ctrlTyp = ControlType::FieldOrientedControl,
     .ctrlMod = ControlMode::Speed
