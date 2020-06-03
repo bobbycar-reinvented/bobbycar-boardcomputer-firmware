@@ -52,6 +52,20 @@ public:
     void triggered() override { settings.defaultMode = *preset; saveSettings(); }
 };
 
+template<const Settings::TempomatMode *preset>
+class ApplyTempomatModePresetAction : public virtual ActionInterface
+{
+public:
+    void triggered() override { settings.tempomatMode = *preset; saveSettings(); }
+};
+
+template<const Settings::LarsmMode *preset>
+class ApplyLarsmModePresetAction : public virtual ActionInterface
+{
+public:
+    void triggered() override { settings.larsmMode = *preset; saveSettings(); }
+};
+
 class PresetsMenu :
     public MenuDisplay,
     public StaticText<TEXT_PRESETS>,
@@ -66,6 +80,8 @@ class PresetsMenu :
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTBOARDCOMPUTERHARDWARE>, ApplyBoardcomputerHardwarePresetAction<&presets::defaultBoardcomputerHardware>>,
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTDEFAULTMODE>,           ApplyDefaultModePresetAction<&presets::defaultDefaultMode>>,
         makeComponent<MenuItem, StaticText<TEXT_SINUSODIALDEFAULTMODE>,        ApplyDefaultModePresetAction<&presets::sinusodialDefaultMode>>,
+        makeComponent<MenuItem, StaticText<TEXT_DEFAULTTEMPOMATMODE>,          ApplyTempomatModePresetAction<&presets::defaultTempomatMode>>,
+        makeComponent<MenuItem, StaticText<TEXT_DEFAULTLARSMMODE>,             ApplyLarsmModePresetAction<&presets::defaultLarsmMode>>,
         makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {};
