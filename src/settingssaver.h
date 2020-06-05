@@ -8,6 +8,7 @@
 
 #include "settings.h"
 #include "bluetoothmode.h"
+#include "unifiedmodelmode.h"
 
 namespace {
 class SettingsSaver
@@ -61,45 +62,53 @@ template<> struct nvsGetterHelper<uint16_t> { static constexpr auto nvs_get = &n
 template<> struct nvsGetterHelper<int32_t> { static constexpr auto nvs_get = &nvs_get_i32; };
 template<> struct nvsGetterHelper<uint32_t> { static constexpr auto nvs_get = &nvs_get_u32; };
 template<> struct nvsGetterHelper<bool> { static esp_err_t nvs_get(nvs_handle handle, const char* key, bool* out_value)
-    {
-        uint8_t tempValue;
-        esp_err_t err = nvs_get_u8(handle, key, &tempValue);
-        if (err == ESP_OK)
-            *out_value = tempValue;
-        return err;
-    }};
+{
+    uint8_t tempValue;
+    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = tempValue;
+    return err;
+}};
 template<> struct nvsGetterHelper<ControlType> { static esp_err_t nvs_get(nvs_handle handle, const char* key, ControlType* out_value)
-    {
-        uint8_t tempValue;
-        esp_err_t err = nvs_get_u8(handle, key, &tempValue);
-        if (err == ESP_OK)
-            *out_value = ControlType(tempValue);
-        return err;
-    }};
+{
+    uint8_t tempValue;
+    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = ControlType(tempValue);
+    return err;
+}};
 template<> struct nvsGetterHelper<ControlMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, ControlMode* out_value)
-    {
-        uint8_t tempValue;
-        esp_err_t err = nvs_get_u8(handle, key, &tempValue);
-        if (err == ESP_OK)
-            *out_value = ControlMode(tempValue);
-        return err;
-    }};
+{
+    uint8_t tempValue;
+    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = ControlMode(tempValue);
+    return err;
+}};
 template<> struct nvsGetterHelper<LarsmModeMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, LarsmModeMode* out_value)
-    {
-        uint8_t tempValue;
-        esp_err_t err = nvs_get_u8(handle, key, &tempValue);
-        if (err == ESP_OK)
-            *out_value = LarsmModeMode(tempValue);
-        return err;
-    }};
+{
+    uint8_t tempValue;
+    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = LarsmModeMode(tempValue);
+    return err;
+}};
 template<> struct nvsGetterHelper<BluetoothMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, BluetoothMode* out_value)
-    {
-        uint8_t tempValue;
-        esp_err_t err = nvs_get_u8(handle, key, &tempValue);
-        if (err == ESP_OK)
-            *out_value = BluetoothMode(tempValue);
-        return err;
-    }};
+{
+    uint8_t tempValue;
+    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = BluetoothMode(tempValue);
+    return err;
+}};
+template<> struct nvsGetterHelper<UnifiedModelMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, UnifiedModelMode* out_value)
+{
+    uint8_t tempValue;
+    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = UnifiedModelMode(tempValue);
+    return err;
+}};
 
 bool SettingsSaver::load(Settings &settings)
 {
@@ -127,21 +136,25 @@ template<> struct nvsSetterHelper<int32_t> { static constexpr auto nvs_set = &nv
 template<> struct nvsSetterHelper<uint32_t> { static constexpr auto nvs_set = &nvs_set_u32; };
 template<> struct nvsSetterHelper<bool> { static constexpr auto nvs_set = &nvs_set_u8; };
 template<> struct nvsSetterHelper<ControlType> { static esp_err_t nvs_set(nvs_handle handle, const char* key, ControlType value)
-    {
-        return nvs_set_u8(handle, key, uint8_t(value));
-    }};
+{
+    return nvs_set_u8(handle, key, uint8_t(value));
+}};
 template<> struct nvsSetterHelper<ControlMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, ControlMode value)
-    {
-        return nvs_set_u8(handle, key, uint8_t(value));
-    }};
+{
+    return nvs_set_u8(handle, key, uint8_t(value));
+}};
 template<> struct nvsSetterHelper<LarsmModeMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, LarsmModeMode value)
-    {
-        return nvs_set_u8(handle, key, uint8_t(value));
-    }};
+{
+    return nvs_set_u8(handle, key, uint8_t(value));
+}};
 template<> struct nvsSetterHelper<BluetoothMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, BluetoothMode value)
-    {
-        return nvs_set_u8(handle, key, uint8_t(value));
-    }};
+{
+    return nvs_set_u8(handle, key, uint8_t(value));
+}};
+template<> struct nvsSetterHelper<UnifiedModelMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, UnifiedModelMode value)
+{
+    return nvs_set_u8(handle, key, uint8_t(value));
+}};
 
 bool SettingsSaver::save(Settings &settings)
 {

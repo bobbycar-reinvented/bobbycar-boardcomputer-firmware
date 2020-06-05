@@ -144,8 +144,7 @@ union X {
     WheelDiameterInchChangeScreen wheelDiameterInchChangeScreen;
     NumMagnetPolesChangeScreen numMagnetPolesChangeScreen;
 
-    DefaultModeCtrlTypChangeDisplay changeDefaultModeCtrlTyp;
-    DefaultModeCtrlModChangeDisplay changeDefaultModeCtrlMod;
+    DefaultModeModelModeChangeDisplay changeDefaultModeModelMode;
     DefaultModeSmoothingChangeDisplay changeDefaultModeSmoothing;
     DefaultModeFrontPercentageChangeDisplay changeDefaultModeFrontPercentage;
     DefaultModeBackPercentageChangeDisplay changeDefaultModeBackPercentage;
@@ -155,9 +154,9 @@ union X {
     DefaultModeBrems1WertChangeDisplay changeDefaultModeBrems1Wert;
     DefaultModeBrems2WertChangeDisplay changeDefaultModeBrems2Wert;
 
-    TempomatModeCtrlTypChangeScreen changeManualModeCtrlTyp;
-    TempomatModeCtrlModChangeScreen changeManualModeCtrlMod;
+    TempomatModeModelModeChangeScreen changeManualModeModelMode;
 
+    LarsmModeModelModeChangeDisplay larsmModeModelModeChangeDisplay;
     LarsmModeModeChangeDisplay larsmModeModeChangeDisplay;
     LarsmModeIterationsChangeDisplay larsmModeIterationsChangeDisplay;
 
@@ -285,8 +284,7 @@ template<> decltype(displays.wheelDiameterMmChangeScreen)                      &
 template<> decltype(displays.wheelDiameterInchChangeScreen)                    &getRefByType<decltype(displays.wheelDiameterInchChangeScreen)>()                    { return displays.wheelDiameterInchChangeScreen; }
 template<> decltype(displays.numMagnetPolesChangeScreen)                       &getRefByType<decltype(displays.numMagnetPolesChangeScreen)>()                       { return displays.numMagnetPolesChangeScreen; }
 
-template<> decltype(displays.changeDefaultModeCtrlTyp)                         &getRefByType<decltype(displays.changeDefaultModeCtrlTyp)>()                         { return displays.changeDefaultModeCtrlTyp; }
-template<> decltype(displays.changeDefaultModeCtrlMod)                         &getRefByType<decltype(displays.changeDefaultModeCtrlMod)>()                         { return displays.changeDefaultModeCtrlMod; }
+template<> decltype(displays.changeDefaultModeModelMode)                       &getRefByType<decltype(displays.changeDefaultModeModelMode)>()                       { return displays.changeDefaultModeModelMode; }
 template<> decltype(displays.changeDefaultModeSmoothing)                       &getRefByType<decltype(displays.changeDefaultModeSmoothing)>()                       { return displays.changeDefaultModeSmoothing; }
 template<> decltype(displays.changeDefaultModeFrontPercentage)                 &getRefByType<decltype(displays.changeDefaultModeFrontPercentage)>()                 { return displays.changeDefaultModeFrontPercentage; }
 template<> decltype(displays.changeDefaultModeBackPercentage)                  &getRefByType<decltype(displays.changeDefaultModeBackPercentage)>()                  { return displays.changeDefaultModeBackPercentage; }
@@ -296,9 +294,9 @@ template<> decltype(displays.changeDefaultModeGas2Wert)                        &
 template<> decltype(displays.changeDefaultModeBrems1Wert)                      &getRefByType<decltype(displays.changeDefaultModeBrems1Wert)>()                      { return displays.changeDefaultModeBrems1Wert; }
 template<> decltype(displays.changeDefaultModeBrems2Wert)                      &getRefByType<decltype(displays.changeDefaultModeBrems2Wert)>()                      { return displays.changeDefaultModeBrems2Wert; }
 
-template<> decltype(displays.changeManualModeCtrlTyp)                          &getRefByType<decltype(displays.changeManualModeCtrlTyp)>()                          { return displays.changeManualModeCtrlTyp; }
-template<> decltype(displays.changeManualModeCtrlMod)                          &getRefByType<decltype(displays.changeManualModeCtrlMod)>()                          { return displays.changeManualModeCtrlMod; }
+template<> decltype(displays.changeManualModeModelMode)                        &getRefByType<decltype(displays.changeManualModeModelMode)>()                        { return displays.changeManualModeModelMode; }
 
+template<> decltype(displays.larsmModeModelModeChangeDisplay)                  &getRefByType<decltype(displays.larsmModeModelModeChangeDisplay)>()                  { return displays.larsmModeModelModeChangeDisplay; }
 template<> decltype(displays.larsmModeModeChangeDisplay)                       &getRefByType<decltype(displays.larsmModeModeChangeDisplay)>()                       { return displays.larsmModeModeChangeDisplay; }
 template<> decltype(displays.larsmModeIterationsChangeDisplay)                 &getRefByType<decltype(displays.larsmModeIterationsChangeDisplay)>()                 { return displays.larsmModeIterationsChangeDisplay; }
 
