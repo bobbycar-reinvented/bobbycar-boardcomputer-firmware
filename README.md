@@ -10,4 +10,8 @@ platformio run --environment bobbycar_usb --target upload
 
 ## How to wire all connections?
 
-![Wiring diagram](/wiring.png)
+![Wiring diagram](/img/wiring.png)
+
+![3 wire switches](/img/3wiresw.png)
+
+![dpad switches with 5 wires](/img/dpadsw.png)
