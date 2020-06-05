@@ -79,7 +79,7 @@ class PresetsMenu :
         makeComponent<MenuItem, StaticText<TEXT_SPINNERCONTROLLERHARDWARE>,    ApplyControllerHardwarePresetAction<&presets::spinnerControllerHardware>>,
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTBOARDCOMPUTERHARDWARE>, ApplyBoardcomputerHardwarePresetAction<&presets::defaultBoardcomputerHardware>>,
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTDEFAULTMODE>,           ApplyDefaultModePresetAction<&presets::defaultDefaultMode>>,
-        makeComponent<MenuItem, StaticText<TEXT_SINUSODIALDEFAULTMODE>,        ApplyDefaultModePresetAction<&presets::sinusodialDefaultMode>>,
+        makeComponent<MenuItem, StaticText<TEXT_SINUSOIDALDEFAULTMODE>,        ApplyDefaultModePresetAction<&presets::sinusoidalDefaultMode>>,
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTTEMPOMATMODE>,          ApplyTempomatModePresetAction<&presets::defaultTempomatMode>>,
         makeComponent<MenuItem, StaticText<TEXT_DEFAULTLARSMMODE>,             ApplyLarsmModePresetAction<&presets::defaultLarsmMode>>,
         makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>

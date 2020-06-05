@@ -85,8 +85,7 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
 };
 
 constexpr Settings::DefaultMode defaultDefaultMode {
-    .ctrlTyp = ControlType::FieldOrientedControl,
-    .ctrlMod = ControlMode::Torque,
+    .modelMode = UnifiedModelMode::FocTorque,
     .enableSmoothing = true,
     .smoothing = 20,
     .frontPercentage = 100,
@@ -98,9 +97,8 @@ constexpr Settings::DefaultMode defaultDefaultMode {
     .brems2_wert = 750
 };
 
-constexpr Settings::DefaultMode sinusodialDefaultMode {
-    .ctrlTyp = ControlType::Sinusoidal,
-    .ctrlMod = ControlMode::Voltage,
+constexpr Settings::DefaultMode sinusoidalDefaultMode {
+    .modelMode = UnifiedModelMode::Sinusoidal,
     .enableSmoothing = true,
     .smoothing = 20,
     .frontPercentage = 100,
@@ -113,11 +111,11 @@ constexpr Settings::DefaultMode sinusodialDefaultMode {
 };
 
 constexpr Settings::TempomatMode defaultTempomatMode {
-    .ctrlTyp = ControlType::FieldOrientedControl,
-    .ctrlMod = ControlMode::Speed
+    .modelMode = UnifiedModelMode::FocSpeed
 };
 
 constexpr Settings::LarsmMode defaultLarsmMode {
+    .modelMode = UnifiedModelMode::Commutation,
     .mode = LarsmModeMode::Mode4,
     .iterations = 100
 };

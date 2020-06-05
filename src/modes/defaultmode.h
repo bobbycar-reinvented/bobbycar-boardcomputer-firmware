@@ -78,8 +78,9 @@ void DefaultMode::update()
     for (Controller &controller : controllers())
         for (MotorState &motor : motorsInController(controller))
         {
-            motor.ctrlTyp = settings.defaultMode.ctrlTyp;
-            motor.ctrlMod = settings.defaultMode.ctrlMod;
+            const auto pair = split(settings.defaultMode.modelMode);
+            motor.ctrlTyp = pair.first;
+            motor.ctrlMod = pair.second;
             motor.pwm = pwm / 100. * (&controller == &front ? settings.defaultMode.frontPercentage : settings.defaultMode.backPercentage);
         }
 

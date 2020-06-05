@@ -5,6 +5,7 @@
 #include "bobbycar-protocol/protocol.h"
 
 #include "bluetoothmode.h"
+#include "unifiedmodelmode.h"
 
 namespace {
 enum class LarsmModeMode : uint8_t { Mode1, Mode2, Mode3, Mode4 };
@@ -50,8 +51,7 @@ struct Settings
     } boardcomputerHardware;
 
     struct DefaultMode {
-        ControlType ctrlTyp;
-        ControlMode ctrlMod;
+        UnifiedModelMode modelMode;
         bool enableSmoothing;
         int16_t smoothing;
         int16_t frontPercentage;
@@ -64,11 +64,11 @@ struct Settings
     } defaultMode;
 
     struct TempomatMode {
-        ControlType ctrlTyp;
-        ControlMode ctrlMod;
+        UnifiedModelMode modelMode;
     } tempomatMode;
 
     struct LarsmMode {
+        UnifiedModelMode modelMode;
         LarsmModeMode mode;
         uint8_t iterations;
     } larsmMode;
@@ -126,8 +126,7 @@ void Settings::executeForEverySetting(T &&callable)
 #endif
     callable("swapScreenBytes", boardcomputerHardware.swapScreenBytes);
 
-    callable("default.ctrlTyp", defaultMode.ctrlTyp);
-    callable("default.ctrlMod", defaultMode.ctrlMod);
+    callable("default.modelMo", defaultMode.modelMode);
     callable("default.enableS", defaultMode.enableSmoothing);
     callable("default.smoothi", defaultMode.smoothing);
     callable("default.frontPe", defaultMode.frontPercentage);
@@ -138,9 +137,9 @@ void Settings::executeForEverySetting(T &&callable)
     callable("default.brems1_", defaultMode.brems1_wert);
     callable("default.brems2_", defaultMode.brems2_wert);
 
-    callable("tempoma.ctrlTyp", tempomatMode.ctrlTyp);
-    callable("tempomt.ctrlMod", tempomatMode.ctrlMod);
+    callable("tempoma.modelMo", tempomatMode.modelMode);
 
+    callable("larsm.modelMode", larsmMode.modelMode);
     callable("larsm.mode", larsmMode.mode);
     callable("larsm.iters", larsmMode.iterations);
 }

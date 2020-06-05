@@ -98,8 +98,9 @@ void LarsmMode::update()
 
     for (MotorState &motor : motors())
     {
-        motor.ctrlTyp = ControlType::Commutation;
-        motor.ctrlMod = ControlMode::Voltage;
+        const auto pair = split(settings.larsmMode.modelMode);
+        motor.ctrlTyp = pair.first;
+        motor.ctrlMod = pair.second;
         motor.pwm = speed + weak;
     }
 

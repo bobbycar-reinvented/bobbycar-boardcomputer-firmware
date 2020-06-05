@@ -45,8 +45,9 @@ void TempomatMode::update()
 
     for (MotorState &motor : motors())
     {
-        motor.ctrlTyp = settings.tempomatMode.ctrlTyp;
-        motor.ctrlMod = settings.tempomatMode.ctrlMod;
+        const auto pair = split(settings.tempomatMode.modelMode);
+        motor.ctrlTyp = pair.first;
+        motor.ctrlMod = pair.second;
         motor.pwm = pwm;
     }
 

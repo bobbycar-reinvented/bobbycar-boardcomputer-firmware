@@ -140,5 +140,6 @@ void ChangeValueDisplay<Tvalue>::confirm()
 #include "changevaluedisplay_controlmode.h"
 #include "changevaluedisplay_controltype.h"
 #include "changevaluedisplay_larsmmode_mode.h"
+#include "changevaluedisplay_unifiedmodelmode.h"
 #include "changevaluedisplay_wifi_mode_t.h"
 #include "changevaluedisplay_wifi_power_t.h"

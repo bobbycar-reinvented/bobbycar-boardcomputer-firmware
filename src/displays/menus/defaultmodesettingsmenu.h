@@ -18,17 +18,10 @@ class ModesSettingsMenu;
 }
 
 namespace {
-using DefaultModeCtrlTypChangeDisplay = makeComponent<
-    ChangeValueDisplay<ControlType>,
-    StaticText<TEXT_SETCONTROLTYPE>,
-    DefaultModeCtrlTypAccessor,
-    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
-    SwitchScreenAction<DefaultModeSettingsMenu>
->;
-using DefaultModeCtrlModChangeDisplay = makeComponent<
-    ChangeValueDisplay<ControlMode>,
-    StaticText<TEXT_SETCONTROLMODE>,
-    DefaultModeCtrlModAccessor,
+using DefaultModeModelModeChangeDisplay = makeComponent<
+    ChangeValueDisplay<UnifiedModelMode>,
+    StaticText<TEXT_SETMODELMODE>,
+    DefaultModeModelModeAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
@@ -94,9 +87,8 @@ class DefaultModeSettingsMenu :
     public StaticText<TEXT_DEFAULTMODESETTIGNS>,
     public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
     public StaticMenuDefinition<
-        makeComponent<MenuItem, StaticText<TEXT_SETCONTROLTYPE>,     SwitchScreenAction<DefaultModeCtrlTypChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_SETCONTROLMODE>,     SwitchScreenAction<DefaultModeCtrlModChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHING>,     ToggleBoolAction, CheckboxIcon, DefaultModeEnableSmoothingAccessor>,
+        makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>,       SwitchScreenAction<DefaultModeModelModeChangeDisplay>>,
+        makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHING>,    ToggleBoolAction, CheckboxIcon, DefaultModeEnableSmoothingAccessor>,
         makeComponent<MenuItem, StaticText<TEXT_SETSMOOTHING>,       SwitchScreenAction<DefaultModeSmoothingChangeDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_SETFRONTPERCENTAGE>, SwitchScreenAction<DefaultModeFrontPercentageChangeDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_SETBACKPERCENTAGE>,  SwitchScreenAction<DefaultModeBackPercentageChangeDisplay>>,

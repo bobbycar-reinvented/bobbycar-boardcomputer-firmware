@@ -134,8 +134,7 @@ constexpr char TEXT_DYNAMICMENU[] = "Dynamic menu";
 
 //DefaultModeSettingsMenu
 //constexpr char TEXT_DEFAULTMODESETTINGS[] = "Default mode settings";
-constexpr char TEXT_SETCONTROLTYPE[] = "Set control type";
-constexpr char TEXT_SETCONTROLMODE[] = "Set control mode";
+constexpr char TEXT_SETMODELMODE[] = "Set model mode";
 constexpr char TEXT_ENABLESMOOTHING[] = "Enable smoothing";
 constexpr char TEXT_SETSMOOTHING[] = "Set smoothing";
 constexpr char TEXT_SETFRONTPERCENTAGE[] = "Set front percentage";
@@ -198,8 +197,9 @@ constexpr char TEXT_INVERTBACKRIGHT[] = "Invert back right";
 
 //LarsmModeSettingsMenu
 constexpr char TEXT_LARSMMODESETTINGS[] = "Larsm mode settings";
-constexpr char TEXT_LARSMMODECHANGEMODE[] = "Change mode";
-constexpr char TEXT_LARSMMODECHANGEITERATIONS[] = "Change iterations";
+//constexpr char TEXT_SETMODELMODE[] = "Set model mode";
+constexpr char TEXT_SETMODE[] = "Set mode";
+constexpr char TEXT_SETITERATIONS[] = "Set iterations";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ModesSettingsMenu
@@ -218,8 +218,7 @@ constexpr char TEXT_MOSFET2[] = "Mosfet2";
 
 //TempomatModeSettingsMenu
 //constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
-//constexpr char TEXT_SETCONTROLTYPE[] = "Set control type";
-//constexpr char TEXT_SETCONTROLMODE[] = "Set control mode";
+//constexpr char TEXT_SETMODELMODE[] = "Set model mode";
 //constexpr char TEXT_BACK[] = "Back";
 
 //WiFiSettingsMenu
@@ -256,7 +255,7 @@ constexpr char TEXT_MOSFETSOFFCONTROLLERHARDWARE[] = "MOSFETs off controller H/W
 constexpr char TEXT_SPINNERCONTROLLERHARDWARE[] = "Spinner controller H/W";
 constexpr char TEXT_DEFAULTBOARDCOMPUTERHARDWARE[] = "Default boardcomputer H/W";
 constexpr char TEXT_DEFAULTDEFAULTMODE[] = "Default defaultMode";
-constexpr char TEXT_SINUSODIALDEFAULTMODE[] = "Sinusodial defaultMode";
+constexpr char TEXT_SINUSOIDALDEFAULTMODE[] = "Sinusoidal defaultMode";
 constexpr char TEXT_DEFAULTTEMPOMATMODE[] = "Default tempomatMode";
 constexpr char TEXT_DEFAULTLARSMMODE[] = "Default larsmMode";
 constexpr char TEXT_STREET[] = "Street";
@@ -300,6 +299,14 @@ constexpr char TEXT_LARSMMODE1[] = "Mode1";
 constexpr char TEXT_LARSMMODE2[] = "Mode2";
 constexpr char TEXT_LARSMMODE3[] = "Mode3";
 constexpr char TEXT_LARSMMODE4[] = "Mode4";
+//constexpr char TEXT_BACK[] = "Back";
+
+//ChangeValueDisplay<UnifiedModelMode>
+//constexpr char TEXT_COMMUTATION[] = "Commutation";
+//constexpr char TEXT_SINUSOIDAL[] = "Sinusoidal";
+constexpr char TEXT_FOCVOLTAGE[] = "FOC/Voltage";
+constexpr char TEXT_FOCSPEED[] = "FOC/Speed";
+constexpr char TEXT_FOCTORQUE[] = "FOC/Torque";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<wifi_mode_t>
