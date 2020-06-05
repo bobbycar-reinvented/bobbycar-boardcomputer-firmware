@@ -12,6 +12,11 @@ platformio run --environment bobbycar_usb --target upload
 
 ![Wiring diagram](/img/wiring.png)
 
+### -DFEATURE_3WIRESW
 ![3 wire switches](/img/3wiresw.png)
 
+### -DFEATURE_DPAD
 ![dpad switches with 5 wires](/img/dpadsw.png)
+
+### -DFEATURE_ROTARY
+![rotary encoder](/img/rotary.png)
