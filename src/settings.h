@@ -44,6 +44,9 @@ struct Settings
     struct BoardcomputerHardware {
         int16_t sampleCount;
         int16_t gasMin, gasMax, bremsMin, bremsMax;
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+        uint8_t dpadDebounce;
+#endif
 #ifdef FEATURE_GAMETRAK
         int16_t gametrakXMin, gametrakXMax, gametrakYMin, gametrakYMax, gametrakDistMin, gametrakDistMax;
 #endif
@@ -116,6 +119,9 @@ void Settings::executeForEverySetting(T &&callable)
     callable("gasMax", boardcomputerHardware.gasMax);
     callable("bremsMin", boardcomputerHardware.bremsMin);
     callable("bremsMax", boardcomputerHardware.bremsMax);
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+    callable("dpadDebounce", boardcomputerHardware.dpadDebounce);
+#endif
 #ifdef FEATURE_GAMETRAK
     callable("gametrakXMin", boardcomputerHardware.gametrakXMin);
     callable("gametrakXMax", boardcomputerHardware.gametrakXMax);

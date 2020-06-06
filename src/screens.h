@@ -165,6 +165,9 @@ union X {
     GasMaxChangeScreen changeGasMax;
     BremsMinChangeScreen changeBremsMin;
     BremsMaxChangeScreen changeBremsMax;
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+    DPadDebounceChangeScreen dPadDebounceChangeScreen;
+#endif
 #ifdef FEATURE_GAMETRAK
     GametrakXMinChangeScreen changeGametrakXMin;
     GametrakXMaxChangeScreen changeGametrakXMax;
@@ -305,6 +308,9 @@ template<> decltype(displays.changeGasMin)                                     &
 template<> decltype(displays.changeGasMax)                                     &getRefByType<decltype(displays.changeGasMax)>()                                     { return displays.changeGasMax; }
 template<> decltype(displays.changeBremsMin)                                   &getRefByType<decltype(displays.changeBremsMin)>()                                   { return displays.changeBremsMin; }
 template<> decltype(displays.changeBremsMax)                                   &getRefByType<decltype(displays.changeBremsMax)>()                                   { return displays.changeBremsMax; }
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+template<> decltype(displays.dPadDebounceChangeScreen)                         &getRefByType<decltype(displays.dPadDebounceChangeScreen)>()                         { return displays.dPadDebounceChangeScreen; }
+#endif
 #ifdef FEATURE_GAMETRAK
 template<> decltype(displays.changeGametrakXMin)                               &getRefByType<decltype(displays.changeGametrakXMin)>()                               { return displays.changeGametrakXMin; }
 template<> decltype(displays.changeGametrakXMax)                               &getRefByType<decltype(displays.changeGametrakXMax)>()                               { return displays.changeGametrakXMax; }

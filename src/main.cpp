@@ -78,8 +78,6 @@ void setup()
     {
         uint8_t macAddress[6];
         WiFi.macAddress(&macAddress[0]);
-        #define STRING2(s) #s
-        #define STRING(s) STRING2(s)
         std::sprintf(deviceName, STRING(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", macAddress[3], macAddress[4], macAddress[5]);
     }
 
