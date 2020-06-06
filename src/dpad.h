@@ -62,7 +62,7 @@ void update()
         ButtonBack = 3
     };
 
-    constexpr auto debounceTime = 50;
+    constexpr auto debounceTime = 25;
 
     if (std::get<ButtonUp>(lastState) != std::get<ButtonUp>(state) && now-debounceUp > debounceTime)
     {
