@@ -39,30 +39,44 @@ DPadState DPadHelper<IN1, IN2, IN3, IN4>::read()
 }
 
 #ifdef FEATURE_DPAD
-DPadHelper<PINS_DPAD_UP, PINS_DPAD_DOWN, PINS_DPAD_BACK, PINS_DPAD_CONFIRM> dpad;
+DPadHelper<PINS_DPAD_UP, PINS_DPAD_DOWN, PINS_DPAD_CONFIRM, PINS_DPAD_BACK> dpad;
 
-DPadState lastState;
+DPadState dpadLastState;
 void updateDpad()
 {
     const auto state = dpad.read();
 
     enum {
-        ButtonDown = 0,
-        ButtonConfirm = 1,
-        ButtonBack = 2,
-        ButtonUp = 3
+        ButtonUp = 0
+        ButtonDown = 1,
+        ButtonConfirm = 2,
+        ButtonBack = 3,
     };
 
-    if (!std::get<ButtonUp>(lastState) && std::get<ButtonUp>(state))
-        InputDispatcher::rotate(-1);
-    if (!std::get<ButtonDown>(lastState) && std::get<ButtonDown>(state))
-        InputDispatcher::rotate(1);
-    if (std::get<ButtonConfirm>(lastState) != std::get<ButtonConfirm>(state))
+    if (std::get<ButtonUp>(dpadHackLastState) != std::get<ButtonUp>(state))
+    {
+        if (std::get<ButtonUp>(state))
+            InputDispatcher::rotate(-1);
+        std::get<ButtonUp>(dpadHackLastState) = std::get<ButtonUp>(state);
+    }
+    if (std::get<ButtonDown>(dpadHackLastState) != std::get<ButtonDown>(state))
+    {
+        if (std::get<ButtonDown>(state))
+            InputDispatcher::rotate(1);
+        std::get<ButtonDown>(dpadHackLastState) = std::get<ButtonDown>(state);
+    }
+    if (std::get<ButtonConfirm>(dpadHackLastState) != std::get<ButtonConfirm>(state))
+    {
         InputDispatcher::confirmButton(std::get<ButtonConfirm>(state));
-    if (std::get<ButtonBack>(lastState) != std::get<ButtonBack>(state))
+        std::get<ButtonConfirm>(dpadHackLastState) = std::get<ButtonConfirm>(state);
+    }
+    if (std::get<ButtonBack>(dpadHackLastState) != std::get<ButtonBack>(state))
+    {
         InputDispatcher::backButton(std::get<ButtonBack>(state));
+        std::get<ButtonBack>(dpadHackLastState) = std::get<ButtonBack>(state);
+    }
 
-    lastState = state;
+    dpadLastState = state;
 }
 #endif
 }

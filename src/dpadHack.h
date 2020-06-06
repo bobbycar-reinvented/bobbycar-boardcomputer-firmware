@@ -58,7 +58,7 @@ DPadState DPadHackHelper<OUT, IN1, IN2>::read()
 #ifdef FEATURE_3WIRESW
 DPadHackHelper<PINS_3WIRESW_OUT, PINS_3WIRESW_IN1, PINS_3WIRESW_IN2> dpadHack;
 
-DPadState lastState;
+DPadState dpadHackLastState;
 void updateDpadHack()
 {
     const auto state = dpadHack.read();
@@ -70,16 +70,30 @@ void updateDpadHack()
         ButtonBack = 2
     };
 
-    if (!std::get<ButtonUp>(lastState) && std::get<ButtonUp>(state))
-        InputDispatcher::rotate(-1);
-    if (!std::get<ButtonDown>(lastState) && std::get<ButtonDown>(state))
-        InputDispatcher::rotate(1);
-    if (std::get<ButtonConfirm>(lastState) != std::get<ButtonConfirm>(state))
+    if (std::get<ButtonUp>(dpadHackLastState) != std::get<ButtonUp>(state))
+    {
+        if (std::get<ButtonUp>(state))
+            InputDispatcher::rotate(-1);
+        std::get<ButtonUp>(dpadHackLastState) = std::get<ButtonUp>(state);
+    }
+    if (std::get<ButtonDown>(dpadHackLastState) != std::get<ButtonDown>(state))
+    {
+        if (std::get<ButtonDown>(state))
+            InputDispatcher::rotate(1);
+        std::get<ButtonDown>(dpadHackLastState) = std::get<ButtonDown>(state);
+    }
+    if (std::get<ButtonConfirm>(dpadHackLastState) != std::get<ButtonConfirm>(state))
+    {
         InputDispatcher::confirmButton(std::get<ButtonConfirm>(state));
-    if (std::get<ButtonBack>(lastState) != std::get<ButtonBack>(state))
+        std::get<ButtonConfirm>(dpadHackLastState) = std::get<ButtonConfirm>(state);
+    }
+    if (std::get<ButtonBack>(dpadHackLastState) != std::get<ButtonBack>(state))
+    {
         InputDispatcher::backButton(std::get<ButtonBack>(state));
+        std::get<ButtonBack>(dpadHackLastState) = std::get<ButtonBack>(state);
+    }
 
-    lastState = state;
+    dpadHackLastState = state;
 }
 #endif
 }
