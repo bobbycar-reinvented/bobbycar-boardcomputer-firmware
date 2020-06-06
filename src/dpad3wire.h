@@ -1,7 +1,5 @@
 #pragma once
 
-#include <tuple>
-
 #include <Arduino.h>
 
 #include "globals.h"
@@ -9,9 +7,10 @@
 #include "dpad.h"
 
 namespace {
-
+namespace dpad3wire
+{
 template<pin_t OUT, pin_t IN1, pin_t IN2>
-class DPadHackHelper
+class Helper
 {
 public:
     static constexpr auto OutPin = OUT;
@@ -20,17 +19,17 @@ public:
 
     void begin();
 
-    DPadState read();
+    dpad::State read();
 };
 
 template<pin_t OUT, pin_t IN1, pin_t IN2>
-void DPadHackHelper<OUT, IN1, IN2>::begin()
+void Helper<OUT, IN1, IN2>::begin()
 {
     pinMode(OUT, OUTPUT);
 }
 
 template<pin_t OUT, pin_t IN1, pin_t IN2>
-DPadState DPadHackHelper<OUT, IN1, IN2>::read()
+dpad::State Helper<OUT, IN1, IN2>::read()
 {
     digitalWrite(OUT, LOW);
 
@@ -55,13 +54,19 @@ DPadState DPadHackHelper<OUT, IN1, IN2>::read()
     return std::make_tuple(result0, result1, result2, result3);
 }
 
-#ifdef FEATURE_3WIRESW
-DPadHackHelper<PINS_3WIRESW_OUT, PINS_3WIRESW_IN1, PINS_3WIRESW_IN2> dpadHack;
+#ifdef FEATURE_DPAD_3WIRESW
+Helper<PINS_DPAD_3WIRESW_OUT, PINS_DPAD_3WIRESW_IN1, PINS_DPAD_3WIRESW_IN2> helper;
+dpad::State lastState;
 
-DPadState dpadHackLastState;
-void updateDpadHack()
+void init()
 {
-    const auto state = dpadHack.read();
+    helper.begin();
+}
+
+void update()
+{
+    const auto state = helper.read();
+    const auto now = millis();
 
     enum {
         ButtonUp = 3,
@@ -70,30 +75,31 @@ void updateDpadHack()
         ButtonBack = 2
     };
 
-    if (std::get<ButtonUp>(dpadHackLastState) != std::get<ButtonUp>(state))
+    if (std::get<ButtonUp>(lastState) != std::get<ButtonUp>(state))
     {
         if (std::get<ButtonUp>(state))
             InputDispatcher::rotate(-1);
-        std::get<ButtonUp>(dpadHackLastState) = std::get<ButtonUp>(state);
+        std::get<ButtonUp>(lastState) = std::get<ButtonUp>(state);
     }
-    if (std::get<ButtonDown>(dpadHackLastState) != std::get<ButtonDown>(state))
+    if (std::get<ButtonDown>(lastState) != std::get<ButtonDown>(state))
     {
         if (std::get<ButtonDown>(state))
             InputDispatcher::rotate(1);
-        std::get<ButtonDown>(dpadHackLastState) = std::get<ButtonDown>(state);
+        std::get<ButtonDown>(lastState) = std::get<ButtonDown>(state);
     }
-    if (std::get<ButtonConfirm>(dpadHackLastState) != std::get<ButtonConfirm>(state))
+    if (std::get<ButtonConfirm>(lastState) != std::get<ButtonConfirm>(state))
     {
         InputDispatcher::confirmButton(std::get<ButtonConfirm>(state));
-        std::get<ButtonConfirm>(dpadHackLastState) = std::get<ButtonConfirm>(state);
+        std::get<ButtonConfirm>(lastState) = std::get<ButtonConfirm>(state);
     }
-    if (std::get<ButtonBack>(dpadHackLastState) != std::get<ButtonBack>(state))
+    if (std::get<ButtonBack>(lastState) != std::get<ButtonBack>(state))
     {
         InputDispatcher::backButton(std::get<ButtonBack>(state));
-        std::get<ButtonBack>(dpadHackLastState) = std::get<ButtonBack>(state);
+        std::get<ButtonBack>(lastState) = std::get<ButtonBack>(state);
     }
 
-    dpadHackLastState = state;
+    lastState = state;
 }
 #endif
+}
 }
