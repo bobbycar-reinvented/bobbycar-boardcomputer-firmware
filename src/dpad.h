@@ -44,6 +44,7 @@ State Helper<IN1, IN2, IN3, IN4>::read()
 #ifdef FEATURE_DPAD
 Helper<PINS_DPAD_UP, PINS_DPAD_DOWN, PINS_DPAD_CONFIRM, PINS_DPAD_BACK> helper;
 State lastState;
+millis_t debounceUp, debounceDown, debounceConfirm, debounceBack;
 
 void init()
 {
@@ -61,27 +62,33 @@ void update()
         ButtonBack = 3
     };
 
-    if (std::get<ButtonUp>(lastState) != std::get<ButtonUp>(state))
+    constexpr auto debounceTime = 50;
+
+    if (std::get<ButtonUp>(lastState) != std::get<ButtonUp>(state) && now-debounceUp > debounceTime)
     {
         if (std::get<ButtonUp>(state))
             InputDispatcher::rotate(-1);
         std::get<ButtonUp>(lastState) = std::get<ButtonUp>(state);
+        debounceUp = now;
     }
-    if (std::get<ButtonDown>(lastState) != std::get<ButtonDown>(state))
+    if (std::get<ButtonDown>(lastState) != std::get<ButtonDown>(state) && now-debounceDown > debounceTime)
     {
         if (std::get<ButtonDown>(state))
             InputDispatcher::rotate(1);
         std::get<ButtonDown>(lastState) = std::get<ButtonDown>(state);
+        debounceDown = now;
     }
-    if (std::get<ButtonConfirm>(lastState) != std::get<ButtonConfirm>(state))
+    if (std::get<ButtonConfirm>(lastState) != std::get<ButtonConfirm>(state) && now-debounceConfirm > debounceTime)
     {
         InputDispatcher::confirmButton(std::get<ButtonConfirm>(state));
         std::get<ButtonConfirm>(lastState) = std::get<ButtonConfirm>(state);
+        debounceConfirm = now;
     }
-    if (std::get<ButtonBack>(lastState) != std::get<ButtonBack>(state))
+    if (std::get<ButtonBack>(lastState) != std::get<ButtonBack>(state) && now-debounceBack > debounceTime)
     {
         InputDispatcher::backButton(std::get<ButtonBack>(state));
         std::get<ButtonBack>(lastState) = std::get<ButtonBack>(state);
+        debounceBack = now;
     }
 }
 #endif
