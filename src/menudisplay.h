@@ -73,7 +73,6 @@ void MenuDisplay::start()
 {
     m_selectedIndex = 0;
     m_scrollOffset = 0;
-    m_highlightedIndex = -1;
 
     m_rotateOffset = 0;
     m_pressed = false;
@@ -94,6 +93,8 @@ void MenuDisplay::initScreen()
     });
 
     m_icons.fill(nullptr);
+
+    m_highlightedIndex = -1;
 }
 
 void MenuDisplay::update()
