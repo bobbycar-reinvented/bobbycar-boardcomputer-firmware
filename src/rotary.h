@@ -3,6 +3,7 @@
 #include <Arduino.h>
 
 #include "globals.h"
+#include "types.h"
 
 namespace {
 template<typename HANDLER, pin_t CLK, pin_t DT, pin_t SW>

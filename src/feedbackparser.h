@@ -7,6 +7,8 @@
 
 #include "bobbycar-protocol/protocol.h"
 
+#include "types.h"
+
 namespace {
 class FeedbackParser
 {
@@ -78,7 +80,7 @@ private:
     uint8_t m_incomingByte{};
     uint8_t m_incomingBytePrev{};
 
-    unsigned long m_lastFeedback{millis()};
+    millis_t m_lastFeedback{millis()};
     const std::reference_wrapper<HardwareSerial> &m_serial;
     bool &m_feedbackValid;
     Feedback &m_feedback, m_newFeedback;

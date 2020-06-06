@@ -1,6 +1,7 @@
 #pragma once
 
 #include "globals.h"
+#include "types.h"
 
 namespace {
 #ifdef FEATURE_BMS
@@ -8,8 +9,8 @@ namespace bms {
 constexpr auto autoReconnect = false; // causes hangs when not available
 
 bool lastConnected;
-unsigned long lastSend;
-unsigned long lastReceive;
+millis_t lastSend;
+millis_t lastReceive;
 
 float voltage;
 float current;

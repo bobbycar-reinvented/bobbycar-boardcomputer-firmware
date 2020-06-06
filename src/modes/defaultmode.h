@@ -7,6 +7,7 @@
 #include "modeinterface.h"
 #include "globals.h"
 #include "utils.h"
+#include "types.h"
 
 namespace {
 class DefaultMode : public ModeInterface
@@ -20,7 +21,7 @@ public:
     bool waitForBremsLoslass{false};
 
 private:
-    unsigned long lastTime{millis()};
+    millis_t lastTime{millis()};
     float lastPwm{0};
 };
 

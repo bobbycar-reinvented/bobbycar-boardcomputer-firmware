@@ -1,54 +1,69 @@
 #pragma once
 
-#include <tuple>
-
 #include <Arduino.h>
 
 #include "globals.h"
+
+#include "dpad.h"
 #include "types.h"
 
 namespace {
-namespace dpad
+namespace dpad3wire
 {
-using State = std::tuple<bool, bool, bool, bool>;
-
-template<pin_t IN1, pin_t IN2, pin_t IN3, pin_t IN4>
+template<pin_t OUT, pin_t IN1, pin_t IN2>
 class Helper
 {
- public:
+public:
+    static constexpr auto OutPin = OUT;
+    static constexpr auto In1Pin = IN1;
+    static constexpr auto In2Pin = IN2;
+
     void begin();
 
-    State read();
+    dpad::State read();
 };
 
-template<pin_t IN1, pin_t IN2, pin_t IN3, pin_t IN4>
-void Helper<IN1, IN2, IN3, IN4>::begin()
+template<pin_t OUT, pin_t IN1, pin_t IN2>
+void Helper<OUT, IN1, IN2>::begin()
 {
-  pinMode(IN1, INPUT_PULLUP);
-  pinMode(IN2, INPUT_PULLUP);
-  pinMode(IN3, INPUT_PULLUP);
-  pinMode(IN4, INPUT_PULLUP);
+    pinMode(OUT, OUTPUT);
 }
 
-template<pin_t IN1, pin_t IN2, pin_t IN3, pin_t IN4>
-State Helper<IN1, IN2, IN3, IN4>::read()
+template<pin_t OUT, pin_t IN1, pin_t IN2>
+dpad::State Helper<OUT, IN1, IN2>::read()
 {
-    const bool result0 = digitalRead(IN1);
-    const bool result1 = digitalRead(IN2);
-    const bool result2 = digitalRead(IN3);
-    const bool result3 = digitalRead(IN4);
+    digitalWrite(OUT, LOW);
+
+    pinMode(IN1, INPUT_PULLUP);
+    pinMode(IN2, INPUT_PULLUP);
+
+    delay(1);
+
+    const bool result0 = digitalRead(IN1)==LOW;
+    const bool result1 = digitalRead(IN2)==LOW;
+
+    digitalWrite(OUT, HIGH);
+
+    pinMode(IN1, INPUT_PULLDOWN);
+    pinMode(IN2, INPUT_PULLDOWN);
+
+    delay(1);
+
+    const bool result2 = digitalRead(IN1);
+    const bool result3 = digitalRead(IN2);
 
     return std::make_tuple(result0, result1, result2, result3);
 }
 
-#ifdef FEATURE_DPAD
-Helper<PINS_DPAD_UP, PINS_DPAD_DOWN, PINS_DPAD_CONFIRM, PINS_DPAD_BACK> helper;
-State lastState;
+#ifdef FEATURE_DPAD_3WIRESW
+Helper<PINS_DPAD_3WIRESW_OUT, PINS_DPAD_3WIRESW_IN1, PINS_DPAD_3WIRESW_IN2> helper;
+dpad::State lastState;
 millis_t debounceUp, debounceDown, debounceConfirm, debounceBack;
 
 void init()
 {
     helper.begin();
+    debounceUp = debounceDown = debounceConfirm = debounceBack = millis();
 }
 
 void update()
@@ -57,10 +72,10 @@ void update()
     const auto now = millis();
 
     enum {
-        ButtonUp = 0,
-        ButtonDown = 1,
-        ButtonConfirm = 2,
-        ButtonBack = 3
+        ButtonUp = 3,
+        ButtonDown = 0,
+        ButtonConfirm = 1,
+        ButtonBack = 2
     };
 
     constexpr auto debounceTime = 25;

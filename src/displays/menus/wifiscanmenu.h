@@ -12,6 +12,7 @@
 #include "actions/dummyaction.h"
 #include "icons/back.h"
 #include "texts.h"
+#include "types.h"
 
 namespace {
 class WifiSettingsMenu;
@@ -48,7 +49,7 @@ private:
 
     std::vector<makeComponent<MenuItem, ChangeableText, DummyAction>> vec;
 
-    unsigned long m_lastScanComplete;
+    millis_t m_lastScanComplete;
 };
 
 String WifiScanMenu::text() const
