@@ -5,6 +5,7 @@
 #include <Arduino.h>
 
 #include "globals.h"
+#include "types.h"
 
 namespace {
 namespace dpad

@@ -12,10 +12,9 @@
 #include "modeinterface.h"
 #include "settings.h"
 #include "settingssaver.h"
+#include "types.h"
 
 namespace {
-using pin_t = int;
-
 int16_t raw_gas, raw_brems;
 float gas, brems;
 #ifdef FEATURE_GAMETRAK
@@ -33,7 +32,7 @@ Controller front{Serial1, settings.controllerHardware.enableFrontLeft, settings.
 Controller back{Serial2, settings.controllerHardware.enableBackLeft, settings.controllerHardware.enableBackRight, settings.controllerHardware.invertBackLeft, settings.controllerHardware.invertBackRight};
 
 struct {
-    unsigned long lastTime = millis();
+    millis_t lastTime = millis();
     int current{0};
     int last{0};
 } performance;
@@ -63,7 +62,7 @@ public:
 
     static void confirmButton(bool pressed)
     {
-        static unsigned long pressBegin = 0;
+        static millis_t pressBegin = 0;
 
         const auto now = millis();
 
@@ -86,7 +85,7 @@ public:
 
     static void backButton(bool pressed)
     {
-        static unsigned long pressBegin = 0;
+        static millis_t pressBegin = 0;
 
         const auto now = millis();
 

@@ -14,6 +14,7 @@
 #include "checkboxicon.h"
 #include "icons/back.h"
 #include "texts.h"
+#include "types.h"
 
 namespace {
 class DebugMenu;
@@ -36,7 +37,7 @@ public:
     }
 
 private:
-    mutable unsigned long m_nextUpdate{};
+    mutable millis_t m_nextUpdate{};
     mutable String m_title;
 };
 
@@ -57,7 +58,7 @@ public:
     }
 
 private:
-    mutable unsigned long m_nextUpdate{};
+    mutable millis_t m_nextUpdate{};
     mutable int m_color;
 };
 
@@ -77,7 +78,7 @@ public:
     }
 
 private:
-    mutable unsigned long m_nextUpdate{};
+    mutable millis_t m_nextUpdate{};
     mutable int m_font;
 };
 
@@ -100,7 +101,7 @@ public:
     }
 
 private:
-    mutable unsigned long m_nextUpdate{};
+    mutable millis_t m_nextUpdate{};
     mutable const Icon<24, 24> *m_icon;
 };
 

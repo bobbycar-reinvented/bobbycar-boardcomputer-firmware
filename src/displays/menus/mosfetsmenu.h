@@ -9,6 +9,7 @@
 #include "checkboxicon.h"
 #include "icons/back.h"
 #include "texts.h"
+#include "types.h"
 
 namespace {
 class MainMenu;

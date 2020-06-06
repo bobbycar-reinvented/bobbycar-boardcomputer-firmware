@@ -5,6 +5,7 @@
 #include "globals.h"
 
 #include "dpad.h"
+#include "types.h"
 
 namespace {
 namespace dpad3wire

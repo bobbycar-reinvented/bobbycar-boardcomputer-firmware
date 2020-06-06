@@ -22,12 +22,13 @@
 #include "actions/bluetoothbeginmasteraction.h"
 #include "actions/bluetoothconnectbmsaction.h"
 #include "bobby_webserver.h"
+#include "types.h"
 
 namespace {
 ModeInterface *lastMode{};
-unsigned long lastModeUpdate{};
-unsigned long lastStatsUpdate{};
-unsigned long lastDisplayRedraw{};
+millis_t lastModeUpdate{};
+millis_t lastStatsUpdate{};
+millis_t lastDisplayRedraw{};
 
 constexpr auto modeUpdateRate = 50;
 constexpr auto statsUpdateRate = 50;
