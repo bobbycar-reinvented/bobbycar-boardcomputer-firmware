@@ -48,8 +48,6 @@ private:
         void redraw(const Controller &controller);
 
     private:
-        void drawWarning();
-
         class MotorStatus
         {
         public:
@@ -72,7 +70,8 @@ private:
 
         const int m_y;
 
-        bool m_lastFeedbackValid{};
+        bool m_initialRedraw;
+        bool m_lastFeedbackValid;
 
         Label m_labelLeftPwm;
         Label m_labelRightPwm;
@@ -184,7 +183,7 @@ void StatusDisplay::BoardStatus::start()
     tft.drawString("pwm:", 0, m_y);
     m_labelLeftPwm.start();
     m_labelRightPwm.start();
-    drawWarning();
+    m_initialRedraw = true;
 }
 
 void StatusDisplay::BoardStatus::redraw(const Controller &controller)
@@ -194,7 +193,7 @@ void StatusDisplay::BoardStatus::redraw(const Controller &controller)
     m_labelLeftPwm.redraw(String{controller.command.left.pwm});
     m_labelRightPwm.redraw(String{controller.command.right.pwm});
 
-    if (controller.feedbackValid != m_lastFeedbackValid)
+    if (controller.feedbackValid != m_lastFeedbackValid || m_initialRedraw)
     {
         tft.fillRect(0, m_y+25, tft.width(), 75, TFT_BLACK);
 
@@ -214,9 +213,18 @@ void StatusDisplay::BoardStatus::redraw(const Controller &controller)
             tft.setTextColor(TFT_WHITE, TFT_BLACK);
         }
         else
-            drawWarning();
+        {
+            tft.setTextColor(TFT_RED);
+            tft.drawString("No data!", 60, m_y+50, 4);
+            tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+            tft.setSwapBytes(!settings.boardcomputerHardware.swapScreenBytes);
+            tft.pushImage(10, m_y+40, icons::alert.WIDTH, icons::alert.HEIGHT, icons::alert.buffer);
+            tft.setSwapBytes(settings.boardcomputerHardware.swapScreenBytes);
+        }
 
         m_lastFeedbackValid = controller.feedbackValid;
+        m_initialRedraw = false;
     }
 
     if (controller.feedbackValid)
@@ -226,17 +234,6 @@ void StatusDisplay::BoardStatus::redraw(const Controller &controller)
         m_leftMotor.redraw(controller.feedback.left);
         m_rightMotor.redraw(controller.feedback.right);
     }
-}
-
-void StatusDisplay::BoardStatus::drawWarning()
-{
-    tft.setTextColor(TFT_RED);
-    tft.drawString("No data!", 60, m_y+50, 4);
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-
-    tft.setSwapBytes(!settings.boardcomputerHardware.swapScreenBytes);
-    tft.pushImage(10, m_y+40, icons::alert.WIDTH, icons::alert.HEIGHT, icons::alert.buffer);
-    tft.setSwapBytes(settings.boardcomputerHardware.swapScreenBytes);
 }
 
 void StatusDisplay::BoardStatus::MotorStatus::start()
