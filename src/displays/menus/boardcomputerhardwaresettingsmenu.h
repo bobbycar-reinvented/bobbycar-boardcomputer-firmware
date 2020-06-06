@@ -65,6 +65,16 @@ using BremsMaxChangeScreen = makeComponent<
     SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+using DPadDebounceChangeScreen = makeComponent<
+    ChangeValueDisplay<uint8_t>,
+    StaticText<TEXT_SETDPADDEBOUNCE>,
+    DPadDebounceAccessor,
+    BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+>;
+#endif
+
 #ifdef FEATURE_GAMETRAK
 struct GametrakXText : public virtual TextInterface {
 public:
@@ -136,6 +146,7 @@ class BoardcomputerHardwareSettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_SETGASMAX>,          SwitchScreenAction<GasMaxChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETBREMSMIN>,        SwitchScreenAction<BremsMinChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETBREMSMAX>,        SwitchScreenAction<BremsMaxChangeScreen>>,
+        makeComponent<MenuItem, StaticText<TEXT_SETDPADDEBOUNCE>,    SwitchScreenAction<DPadDebounceChangeScreen>>,
 #ifdef FEATURE_GAMETRAK
         makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>,
         makeComponent<MenuItem, GametrakXText,                       DisabledColor, StaticFont<2>, DummyAction>,
