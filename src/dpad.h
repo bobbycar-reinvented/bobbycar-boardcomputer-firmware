@@ -54,6 +54,7 @@ void init()
 void update()
 {
     const auto state = helper.read();
+    const auto now = millis();
 
     enum {
         ButtonUp = 0,
