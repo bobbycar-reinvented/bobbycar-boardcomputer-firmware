@@ -7,6 +7,9 @@ constexpr char TEXT_BACK[] = "Back";
 
 //AccessPointWifiSettingsMenu
 constexpr char TEXT_ACCESSPOINTWIFISETTINGS[] = "Access Point WiFi settings";
+constexpr char TEXT_WIFISOFTAP[] = "softAP()";
+constexpr char TEXT_WIFISOFTAPDISCONNECT[] = "softAPdisconnect()";
+constexpr char TEXT_WIFISOFTAPDISCONNECTWIFIOFF[] = "softAPdisconnect() wifioff";
 constexpr char TEXT_WIFISOFTAPENABLEIPV6[] = "softAPenableIpV6()";
 //constexpr char TEXT_BACK[] = "Back";
 

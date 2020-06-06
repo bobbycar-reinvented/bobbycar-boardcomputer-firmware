@@ -18,6 +18,7 @@
 #include "ota.h"
 #include "presets.h"
 #include "statistics.h"
+#include "actions/wifisoftapaction.h"
 #include "actions/bluetoothbeginaction.h"
 #include "actions/bluetoothbeginmasteraction.h"
 #include "actions/bluetoothconnectbmsaction.h"
@@ -90,8 +91,7 @@ void setup()
     if (!WiFi.mode(WIFI_AP_STA))
         Serial.println("Could not set mode to WIFI_AP_STA");
 
-    if (!WiFi.softAP(deviceName, "Passwort_123"))
-        Serial.println("Could not softAP");
+    WifiSoftApAction{}.triggered();
 
     if (!WiFi.begin("realraum", "r3alraum"))
         Serial.println("Could not begin WiFi");
