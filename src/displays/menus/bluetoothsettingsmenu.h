@@ -1,5 +1,6 @@
 #pragma once
 
+#include "changevaluedisplay.h"
 #include "menudisplay.h"
 #include "staticmenudefinition.h"
 #include "menuitem.h"
@@ -11,6 +12,7 @@
 #include "actions/bluetoothdisconnectaction.h"
 #include "actions/switchscreenaction.h"
 #include "bluetoothtexthelpers.h"
+#include "settingsaccessors.h"
 #include "icons/back.h"
 #include "texts.h"
 
@@ -19,6 +21,16 @@ class SettingsMenu;
 }
 
 namespace {
+class BluetoothSettingsMenu;
+
+using AutoBluetoothModeChangeDisplay = makeComponent<
+    ChangeValueDisplay<BluetoothMode>,
+    StaticText<TEXT_AUTOBLUETOOTHMODE>,
+    AutoBluetoothModeAccessor,
+    BackActionInterface<SwitchScreenAction<BluetoothSettingsMenu>>,
+    SwitchScreenAction<BluetoothSettingsMenu>
+>;
+
 class BluetoothSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_BLUETOOTHSETTINGS>,
@@ -34,6 +46,7 @@ class BluetoothSettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHFLUSH>,        BluetoothFlushAction>,
         makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHEND>,          BluetoothEndAction>,
         makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHDISCONNECT>,   BluetoothDisconnectAction>,
+        makeComponent<MenuItem, StaticText<TEXT_AUTOBLUETOOTHMODE>,     SwitchScreenAction<AutoBluetoothModeChangeDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {};

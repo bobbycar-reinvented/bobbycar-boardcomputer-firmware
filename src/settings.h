@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include <esp_wifi_types.h>
+
 #include "bobbycar-protocol/protocol.h"
 
 #include "bluetoothmode.h"
@@ -16,8 +18,6 @@ struct Settings
     bool autoConnectBms;
 #endif
 
-    BluetoothMode bluetoothMode;
-
     bool reverseBeep;
     uint8_t reverseBeepFreq0;
     uint8_t reverseBeepFreq1;
@@ -31,6 +31,15 @@ struct Settings
         int16_t fieldWeakMax; // [A] Maximum Field Weakening D axis current (only for FOC). Higher current results in higher maximum speed.
         int16_t phaseAdvMax;  // [deg] Maximum Phase Advance angle (only for SIN). Higher angle results in higher maximum speed.
     } limits;
+
+    struct WifiSettings {
+        wifi_mode_t autoWifiMode;
+        bool autoEnableAp;
+    } wifiSettings;
+
+    struct BluetoothSettings {
+        BluetoothMode autoBluetoothMode;
+    } bluetoothSettings;
 
     struct ControllerHardware {
         bool enableFrontLeft, enableFrontRight, enableBackLeft, enableBackRight;
@@ -88,8 +97,6 @@ void Settings::executeForEverySetting(T &&callable)
     callable("autoConnectBms", autoConnectBms);
 #endif
 
-    callable("bluetoothMode", bluetoothMode);
-
     callable("reverseBeep", reverseBeep);
     callable("revBeepFreq0", reverseBeepFreq0);
     callable("revBeepFreq1", reverseBeepFreq1);
@@ -101,6 +108,11 @@ void Settings::executeForEverySetting(T &&callable)
     callable("nMotMax", limits.nMotMax);
     callable("fieldWeakMax", limits.fieldWeakMax);
     callable("phaseAdvMax", limits.phaseAdvMax);
+
+    callable("autoBluetoothMo", bluetoothSettings.autoBluetoothMode);
+
+    callable("autoWifiMode", wifiSettings.autoWifiMode);
+    callable("autoEnableAp", wifiSettings.autoEnableAp);
 
     callable("enableFrontLeft", controllerHardware.enableFrontLeft);
     callable("enableFrontRigh", controllerHardware.enableFrontRight);

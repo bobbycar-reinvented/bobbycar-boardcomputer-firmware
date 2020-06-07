@@ -51,6 +51,15 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
     .swapFrontBack = false
 };
 
+constexpr Settings::WifiSettings defaultWifiSettings {
+    .autoWifiMode = WIFI_MODE_APSTA,
+    .autoEnableAp = true
+};
+
+constexpr Settings::BluetoothSettings defaultBluetoothSettings {
+    .autoBluetoothMode = BluetoothMode::Off
+};
+
 constexpr Settings::ControllerHardware spinnerControllerHardware {
     .enableFrontLeft = true,
     .enableFrontRight = true,
@@ -127,13 +136,14 @@ constexpr Settings defaultSettings{
 #ifdef FEATURE_BMS
     .autoConnectBms = false,
 #endif
-    .bluetoothMode = BluetoothMode::Off,
     .reverseBeep = false,
     .reverseBeepFreq0 = 3,
     .reverseBeepFreq1 = 0,
     .reverseBeepDuration0 = 500,
     .reverseBeepDuration1 = 500,
     .limits = defaultLimits,
+    .wifiSettings = defaultWifiSettings,
+    .bluetoothSettings = defaultBluetoothSettings,
     .controllerHardware = defaultControllerHardware,
     .boardcomputerHardware = defaultBoardcomputerHardware,
     .defaultMode = defaultDefaultMode,
