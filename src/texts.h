@@ -20,6 +20,7 @@ constexpr char TEXT_BLUETOOTHBEGINMASTER[] = "begin() Master";
 constexpr char TEXT_BLUETOOTHFLUSH[] = "flush()";
 constexpr char TEXT_BLUETOOTHEND[] = "end()";
 constexpr char TEXT_BLUETOOTHDISCONNECT[] = "disconnect()";
+constexpr char TEXT_AUTOBLUETOOTHMODE[] = "Auto bluetooth mode";
 //constexpr char TEXT_BACK[] = "Back";
 
 //BmsMenu
@@ -72,7 +73,6 @@ constexpr char TEXT_WIFISETTINGS[] = "WiFi settings";
 constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
 constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
 constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
-constexpr char TEXT_BLUETOOTHMODE[] = "Bluetooth mode";
 constexpr char TEXT_AUTOCONNECTBMS[] = "Auto connect BMS";
 constexpr char TEXT_BUZZER[] = "Buzzer";
 constexpr char TEXT_FRONTLED[] = "Front LED";

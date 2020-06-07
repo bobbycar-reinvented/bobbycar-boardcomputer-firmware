@@ -5,7 +5,6 @@
 #include "menudisplay.h"
 #include "staticmenudefinition.h"
 #include "utils.h"
-#include "changevaluedisplay.h"
 #include "actions/toggleboolaction.h"
 #include "actions/switchscreenaction.h"
 #include "checkboxicon.h"
@@ -17,7 +16,6 @@
 #include "icons/back.h"
 #include "texts.h"
 #include "globals.h"
-#include "settingsaccessors.h"
 
 namespace {
 class LimitsSettingsMenu;
@@ -32,15 +30,6 @@ class MainMenu;
 }
 
 namespace {
-class SettingsMenu;
-using BluetoothModeChangeDisplay = makeComponent<
-    ChangeValueDisplay<BluetoothMode>,
-    StaticText<TEXT_BLUETOOTHMODE>,
-    BluetoothModeAccessor,
-    BackActionInterface<SwitchScreenAction<SettingsMenu>>,
-    SwitchScreenAction<SettingsMenu>
->;
-
 struct FrontLedAccessor : public RefAccessor<bool> { bool &getRef() const override { return front.command.led; } };
 struct BackLedAccessor : public RefAccessor<bool> { bool &getRef() const override { return back.command.led; } };
 
@@ -55,7 +44,6 @@ class SettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_MODESSETTINGS>,                 SwitchScreenAction<ModesSettingsMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>,    SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::hardware>>,
         makeComponent<MenuItem, StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::hardware>>,
-        makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHMODE>,                 SwitchScreenAction<BluetoothModeChangeDisplay>>,
 #ifdef FEATURE_BMS
         makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                ToggleBoolAction, CheckboxIcon, AutoConnectBmsAccessor>,
 #endif

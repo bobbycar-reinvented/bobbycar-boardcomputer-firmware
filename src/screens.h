@@ -122,7 +122,7 @@ union X {
     UpdateDisplay updateDisplay;
 #endif
 
-    BluetoothModeChangeDisplay bluetoothModeChangeDisplay;
+    AutoBluetoothModeChangeDisplay autoBluetoothModeChangeDisplay;
 
     FrontFreqChangeScreen changeFrontFreq;
     FrontPatternChangeScreen changeFrontPattern;
@@ -265,7 +265,7 @@ template<> decltype(displays.statusDisplay)                                    &
 template<> decltype(displays.updateDisplay)                                    &getRefByType<decltype(displays.updateDisplay)>()                                    { return displays.updateDisplay; }
 #endif
 
-template<> decltype(displays.bluetoothModeChangeDisplay)                       &getRefByType<decltype(displays.bluetoothModeChangeDisplay)>()                       { return displays.bluetoothModeChangeDisplay; }
+template<> decltype(displays.autoBluetoothModeChangeDisplay)                   &getRefByType<decltype(displays.autoBluetoothModeChangeDisplay)>()                   { return displays.autoBluetoothModeChangeDisplay; }
 
 template<> decltype(displays.changeFrontFreq)                                  &getRefByType<decltype(displays.changeFrontFreq)>()                                  { return displays.changeFrontFreq; }
 template<> decltype(displays.changeFrontPattern)                               &getRefByType<decltype(displays.changeFrontPattern)>()                               { return displays.changeFrontPattern; }

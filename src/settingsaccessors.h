@@ -15,7 +15,6 @@ struct RefAccessorSaveSettings : public virtual RefAccessor<T>
 #ifdef FEATURE_BMS
 struct AutoConnectBmsAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.autoConnectBms; } };
 #endif
-struct BluetoothModeAccessor : public RefAccessorSaveSettings<BluetoothMode> { BluetoothMode &getRef() const override { return settings.bluetoothMode; } };
 struct ReverseBeepAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.reverseBeep; } };
 struct ReverseBeepFreq0Accessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.reverseBeepFreq0; } };
 struct ReverseBeepFreq1Accessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.reverseBeepFreq1; } };
@@ -32,6 +31,11 @@ struct NMotMaxKmhAccessor : public virtual AccessorInterface<int16_t>
 struct NMotMaxRpmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.nMotMax; } };
 struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.fieldWeakMax; } };
 struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.phaseAdvMax; } };
+
+struct AutoWifiModeAccessor : public RefAccessorSaveSettings<wifi_mode_t> { wifi_mode_t &getRef() const override { return settings.wifiSettings.autoWifiMode; } };
+struct AutoEnableApAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.wifiSettings.autoEnableAp; } };
+
+struct AutoBluetoothModeAccessor : public RefAccessorSaveSettings<BluetoothMode> { BluetoothMode &getRef() const override { return settings.bluetoothSettings.autoBluetoothMode; } };
 
 struct FrontLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontLeft; } };
 struct FrontRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontRight; } };

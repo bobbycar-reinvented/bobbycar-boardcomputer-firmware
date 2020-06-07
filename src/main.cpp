@@ -1,5 +1,7 @@
 #include <cstdio>
 
+#include <esp_wifi_types.h>
+
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <WiFi.h>
@@ -96,14 +98,14 @@ void setup()
     if (!WiFi.begin("realraum", "r3alraum"))
         Serial.println("Could not begin WiFi");
 
-    if (settings.bluetoothMode == BluetoothMode::Master)
+    if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Master)
     {
         BluetoothBeginMasterAction{}.triggered();
 #ifdef FEATURE_BMS
         if (settings.autoConnectBms)
             BluetoothConnectBmsAction{}.triggered();
 #endif
-    } else if (settings.bluetoothMode == BluetoothMode::Slave)
+    } else if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Slave)
         BluetoothBeginAction{}.triggered();
 
     front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
