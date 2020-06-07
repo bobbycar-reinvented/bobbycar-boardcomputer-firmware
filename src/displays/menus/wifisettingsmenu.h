@@ -1,12 +1,16 @@
 #pragma once
 
+#include "changevaluedisplay.h"
 #include "menudisplay.h"
 #include "staticmenudefinition.h"
 #include "utils.h"
 #include "actions/switchscreenaction.h"
+#include "actions/toggleboolaction.h"
+#include "checkboxicon.h"
 #include "icons/scan.h"
 #include "icons/back.h"
 #include "texts.h"
+#include "settingsaccessors.h"
 
 namespace {
 class GenericWifiSettingsMenu;
@@ -17,11 +21,23 @@ class SettingsMenu;
 }
 
 namespace {
+class WifiSettingsMenu;
+
+using AutoWifiModeChangeDisplay = makeComponent<
+    ChangeValueDisplay<wifi_mode_t>,
+    StaticText<TEXT_AUTOWIFIMODE>,
+    AutoWifiModeAccessor,
+    BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>,
+    SwitchScreenAction<WifiSettingsMenu>
+>;
+
 class WifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_WIFISETTINGS>,
     public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
     public StaticMenuDefinition<
+        makeComponent<MenuItem, StaticText<TEXT_AUTOWIFIMODE>,            SwitchScreenAction<AutoWifiModeChangeDisplay>>,
+        makeComponent<MenuItem, StaticText<TEXT_AUTOENABLEAP>,            ToggleBoolAction, CheckboxIcon, AutoEnableApAccessor>,
         makeComponent<MenuItem, StaticText<TEXT_GENERICWIFISETTINGS>,     SwitchScreenAction<GenericWifiSettingsMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_STATIONWIFISETTINGS>,     SwitchScreenAction<StationWifiSettingsMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_WIFISCAN>,                SwitchScreenAction<WifiScanMenu>, StaticMenuItemIcon<&icons::scan>>,

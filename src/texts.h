@@ -92,6 +92,8 @@ constexpr char TEXT_SWAPFRONTBACK[] = "Swap front/back";
 
 //StationWifiSettingsMenu
 constexpr char TEXT_STATIONWIFISETTINGS[] = "Station WiFi settings";
+constexpr char TEXT_AUTOWIFIMODE[] = "Auto wifi mode";
+constexpr char TEXT_AUTOENABLEAP[] = "Auto enable AP";
 constexpr char TEXT_WIFIRECONNECT[] = "reconnect()";
 constexpr char TEXT_WIFIDISCONNECT[] = "disconnect()";
 constexpr char TEXT_WIFICHANGEAUTOCONNECT[] = "Change auto connect";

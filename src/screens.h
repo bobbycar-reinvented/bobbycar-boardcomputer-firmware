@@ -122,6 +122,8 @@ union X {
     UpdateDisplay updateDisplay;
 #endif
 
+    AutoWifiModeChangeDisplay autoWifiModeChangeDisplay;
+
     AutoBluetoothModeChangeDisplay autoBluetoothModeChangeDisplay;
 
     FrontFreqChangeScreen changeFrontFreq;
@@ -264,6 +266,8 @@ template<> decltype(displays.statusDisplay)                                    &
 #ifdef FEATURE_OTA
 template<> decltype(displays.updateDisplay)                                    &getRefByType<decltype(displays.updateDisplay)>()                                    { return displays.updateDisplay; }
 #endif
+
+template<> decltype(displays.autoWifiModeChangeDisplay)                        &getRefByType<decltype(displays.autoWifiModeChangeDisplay)>()                        { return displays.autoWifiModeChangeDisplay; }
 
 template<> decltype(displays.autoBluetoothModeChangeDisplay)                   &getRefByType<decltype(displays.autoBluetoothModeChangeDisplay)>()                   { return displays.autoBluetoothModeChangeDisplay; }
 

@@ -90,10 +90,11 @@ void setup()
     if (!WiFi.softAPsetHostname(deviceName))
         Serial.println("Could not softAPsetHostname");
 
-    if (!WiFi.mode(WIFI_AP_STA))
+    if (!WiFi.mode(settings.wifiSettings.autoWifiMode))
         Serial.println("Could not set mode to WIFI_AP_STA");
 
-    WifiSoftApAction{}.triggered();
+    if (settings.wifiSettings.autoEnableAp)
+        WifiSoftApAction{}.triggered();
 
     if (!WiFi.begin("realraum", "r3alraum"))
         Serial.println("Could not begin WiFi");
