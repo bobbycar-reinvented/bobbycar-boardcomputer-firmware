@@ -152,14 +152,14 @@ void StatusDisplay::redraw()
     m_labelBrems.redraw(String{brems});
     m_progressBarBrems.redraw(brems);
 
-    m_frontStatus.redraw(::front);
-    m_backStatus.redraw(::back);
+    m_frontStatus.redraw(controllers.front);
+    m_backStatus.redraw(controllers.back);
 
     tft.setTextFont(2);
     m_labelWifiStatus.redraw(toString(WiFi.status()));
-    m_labelLimit0.redraw(String{front.command.left.iMotMax} + "A");
+    m_labelLimit0.redraw(String{controllers.front.command.left.iMotMax} + "A");
     m_labelIpAddress.redraw(WiFi.localIP().toString());
-    m_labelLimit1.redraw(String{front.command.left.iDcMax} + "A");
+    m_labelLimit1.redraw(String{controllers.front.command.left.iDcMax} + "A");
     m_labelPerformance.redraw(String{performance.last});
     m_labelMode.redraw(currentMode->displayName());
     m_labelName.redraw(&deviceName[0]);

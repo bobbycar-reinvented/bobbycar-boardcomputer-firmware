@@ -29,7 +29,7 @@ void PoweroffDisplay::start()
 {
     m_startTime = millis();
 
-    for (Controller &controller : controllers())
+    for (Controller &controller : controllers)
         controller.command.poweroff = true;
 }
 
@@ -56,7 +56,7 @@ void PoweroffDisplay::update()
 
 void PoweroffDisplay::stop()
 {
-    for (Controller &controller : controllers())
+    for (Controller &controller : controllers)
         controller.command.poweroff = false;
 }
 }

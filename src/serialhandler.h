@@ -42,16 +42,16 @@ void handleSerial()
         case 'p':
         case 'P':
         {
-            const auto firstPower = front.command.poweroff;
-            for (Controller &controller : controllers())
+            const auto firstPower = controllers.front.command.poweroff;
+            for (Controller &controller : controllers)
                 controller.command.poweroff = !firstPower;
             break;
         }
         case 'l':
         case 'L':
         {
-            const auto firstLed = front.command.led;
-            for (Controller &controller : controllers())
+            const auto firstLed = controllers.front.command.led;
+            for (Controller &controller : controllers)
                 controller.command.led = !firstLed;
             break;
         }
@@ -73,7 +73,7 @@ void handleSerial()
         case '7':
         case '8':
         case '9':
-            for (Controller &controller : controllers())
+            for (Controller &controller : controllers)
                 controller.command.buzzer.freq = c-'0';
             break;
         case 'A':
