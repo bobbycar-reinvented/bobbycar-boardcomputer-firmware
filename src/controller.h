@@ -14,6 +14,8 @@ struct Controller {
         serial{serial}, enableLeft{enableLeft}, enableRight{enableRight}, invertLeft{invertLeft}, invertRight{invertRight}
     {
     }
+//    Controller(const Controller &) = delete;
+//    Controller &operator=(const Controller &) = delete;
 
     std::reference_wrapper<HardwareSerial> serial;
     bool &enableLeft, &enableRight, &invertLeft, &invertRight;

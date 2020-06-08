@@ -142,11 +142,6 @@ String toString<ota_error_t>(ota_error_t value)
     return String("Unknown: ") + int(value);
 }
 
-std::array<std::reference_wrapper<Controller>, 2> controllers()
-{
-    return {front, back};
-}
-
 std::array<std::reference_wrapper<MotorState>, 2> motorsInController(Controller &controller)
 {
     return {std::ref(controller.command.left), std::ref(controller.command.right)};
@@ -170,22 +165,21 @@ std::array<std::reference_wrapper<const MotorFeedback>, 2> motorFeedbacksInContr
 std::array<std::reference_wrapper<MotorState>, 4> motors()
 {
     return {
-        std::ref(front.command.left), std::ref(front.command.right),
-        std::ref(back.command.left), std::ref(back.command.right)
+        std::ref(controllers.front.command.left), std::ref(controllers.front.command.right),
+        std::ref(controllers.back.command.left), std::ref(controllers.back.command.right)
     };
 }
 
 void fixCommonParams()
 {
-    for (Controller &controller : controllers())
-        for (MotorState &motor : motorsInController(controller))
-        {
-            motor.iMotMax = settings.limits.iMotMax;
-            motor.iDcMax = settings.limits.iDcMax;
-            motor.nMotMax = settings.limits.nMotMax;
-            motor.fieldWeakMax = settings.limits.fieldWeakMax;
-            motor.phaseAdvMax = settings.limits.phaseAdvMax;
-        }
+    for (MotorState &motor : motors())
+    {
+        motor.iMotMax = settings.limits.iMotMax;
+        motor.iDcMax = settings.limits.iDcMax;
+        motor.nMotMax = settings.limits.nMotMax;
+        motor.fieldWeakMax = settings.limits.fieldWeakMax;
+        motor.phaseAdvMax = settings.limits.phaseAdvMax;
+    }
 
     if (settings.reverseBeep)
     {
@@ -198,12 +192,12 @@ void fixCommonParams()
             {
                 reverseBeepToggle = true;
                 lastReverseBeepToggle = millis();
-                for (const auto &ref : controllers())
-                    ref.get().command.buzzer = {.freq=settings.reverseBeepFreq0, .pattern=0};
+                for (auto &controller : controllers)
+                    controller.command.buzzer = {.freq=settings.reverseBeepFreq0, .pattern=0};
             }
             else
-                for (const auto &ref : controllers())
-                    ref.get().command.buzzer = {};
+                for (auto &controller : controllers)
+                    controller.command.buzzer = {};
 
             currentlyReverseBeeping = shouldBeep;
         }
@@ -211,37 +205,37 @@ void fixCommonParams()
         {
             reverseBeepToggle = !reverseBeepToggle;
 
-            for (const auto &ref : controllers())
-                ref.get().command.buzzer = {.freq=uint8_t(reverseBeepToggle?settings.reverseBeepFreq0:settings.reverseBeepFreq1), .pattern=0};
+            for (auto &controller : controllers)
+                controller.command.buzzer = {.freq=uint8_t(reverseBeepToggle?settings.reverseBeepFreq0:settings.reverseBeepFreq1), .pattern=0};
 
             lastReverseBeepToggle = millis();
         }
     }
     else if (currentlyReverseBeeping)
     {
-        for (const auto &ref : controllers())
-            ref.get().command.buzzer = {};
+        for (auto &controller : controllers)
+            controller.command.buzzer = {};
         currentlyReverseBeeping = false;
     }
 
-    front.command.left.enable = settings.controllerHardware.enableFrontLeft;
-    front.command.right.enable = settings.controllerHardware.enableFrontRight;
-    back.command.left.enable = settings.controllerHardware.enableBackLeft;
-    back.command.right.enable = settings.controllerHardware.enableBackRight;
+    controllers.front.command.left.enable = settings.controllerHardware.enableFrontLeft;
+    controllers.front.command.right.enable = settings.controllerHardware.enableFrontRight;
+    controllers.back.command.left.enable = settings.controllerHardware.enableBackLeft;
+    controllers.back.command.right.enable = settings.controllerHardware.enableBackRight;
 
     if (settings.controllerHardware.invertFrontLeft)
-        front.command.left.pwm = -front.command.left.pwm;
+        controllers.front.command.left.pwm = -controllers.front.command.left.pwm;
     if (settings.controllerHardware.invertFrontRight)
-        front.command.right.pwm = -front.command.right.pwm;
+        controllers.front.command.right.pwm = -controllers.front.command.right.pwm;
     if (settings.controllerHardware.invertBackLeft)
-        back.command.left.pwm = -back.command.left.pwm;
+        controllers.back.command.left.pwm = -controllers.back.command.left.pwm;
     if (settings.controllerHardware.invertBackRight)
-        back.command.right.pwm = -back.command.right.pwm;
+        controllers.back.command.right.pwm = -controllers.back.command.right.pwm;
 }
 
 void sendCommands()
 {
-    for (Controller &controller : controllers())
+    for (Controller &controller : controllers)
     {
         controller.command.start = Command::VALID_HEADER;
         controller.command.checksum = calculateChecksum(controller.command);
@@ -254,8 +248,8 @@ void switchScreen(Args&&... args);
 
 void updateSwapFrontBack()
 {
-    front.serial = settings.controllerHardware.swapFrontBack ? Serial2 : Serial1;
-    back.serial = settings.controllerHardware.swapFrontBack ? Serial1 : Serial2;
+    controllers.front.serial = settings.controllerHardware.swapFrontBack ? Serial2 : Serial1;
+    controllers.back.serial = settings.controllerHardware.swapFrontBack ? Serial1 : Serial2;
 }
 
 void loadSettings()
@@ -275,7 +269,7 @@ void updateAccumulators()
     sumAbsoluteCurrent = 0.f;
     uint8_t count{0};
 
-    for (const Controller &controller : controllers())
+    for (const Controller &controller : controllers)
     {
         if (!controller.feedbackValid)
             continue;

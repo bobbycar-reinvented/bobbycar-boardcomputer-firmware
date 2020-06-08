@@ -28,8 +28,31 @@ char deviceName[32];
 Settings settings;
 SettingsSaver settingsSaver;
 
-Controller front{Serial1, settings.controllerHardware.enableFrontLeft, settings.controllerHardware.enableFrontRight, settings.controllerHardware.invertFrontLeft, settings.controllerHardware.invertFrontRight};
-Controller back{Serial2, settings.controllerHardware.enableBackLeft, settings.controllerHardware.enableBackRight, settings.controllerHardware.invertBackLeft, settings.controllerHardware.invertBackRight};
+class Controllers : public std::array<Controller, 2>
+{
+public:
+    explicit Controllers() :
+        std::array<Controller, 2>{{
+            Controller{Serial1, settings.controllerHardware.enableFrontLeft, settings.controllerHardware.enableFrontRight, settings.controllerHardware.invertFrontLeft, settings.controllerHardware.invertFrontRight},
+            Controller{Serial2, settings.controllerHardware.enableBackLeft, settings.controllerHardware.enableBackRight, settings.controllerHardware.invertBackLeft, settings.controllerHardware.invertBackRight}
+        }},
+        front{getFront()},
+        back(getBack())
+    {}
+    Controllers(const Controllers &) = delete;
+    Controllers &operator=(const Controllers &) = delete;
+
+    Controller &front;
+    Controller &back;
+
+private:
+    Controller &getFront() { return operator[](0); }
+    Controller &getBack() { return operator[](1); }
+};
+
+Controllers controllers;
+struct FrontControllerGetter { static Controller &get() { return controllers.front; }};
+struct BackControllerGetter { static Controller &get() { return controllers.back; }};
 
 struct {
     millis_t lastTime = millis();

@@ -30,8 +30,8 @@ class MainMenu;
 }
 
 namespace {
-struct FrontLedAccessor : public RefAccessor<bool> { bool &getRef() const override { return front.command.led; } };
-struct BackLedAccessor : public RefAccessor<bool> { bool &getRef() const override { return back.command.led; } };
+struct FrontLedAccessor : public RefAccessor<bool> { bool &getRef() const override { return controllers.front.command.led; } };
+struct BackLedAccessor : public RefAccessor<bool> { bool &getRef() const override { return controllers.back.command.led; } };
 
 class SettingsMenu :
     public MenuDisplay,

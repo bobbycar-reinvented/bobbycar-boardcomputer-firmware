@@ -4,12 +4,12 @@
 #include "globals.h"
 
 namespace {
-template<Controller &Tcontroller, int TsuccessColor>
-class FeedbackColor : public virtual ColorInterface { public: int color() const { return Tcontroller.feedbackValid ? TsuccessColor : TFT_RED; } };
+template<typename Tcontroller, int TsuccessColor>
+class FeedbackColor : public virtual ColorInterface { public: int color() const { return Tcontroller::get().feedbackValid ? TsuccessColor : TFT_RED; } };
 
 template<int TsuccessColor>
-using FrontFeedbackColor = FeedbackColor<front, TsuccessColor>;
+using FrontFeedbackColor = FeedbackColor<FrontControllerGetter, TsuccessColor>;
 
 template<int TsuccessColor>
-using BackFeedbackColor = FeedbackColor<back, TsuccessColor>;
+using BackFeedbackColor = FeedbackColor<BackControllerGetter, TsuccessColor>;
 }

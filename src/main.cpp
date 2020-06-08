@@ -109,15 +109,15 @@ void setup()
     } else if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Slave)
         BluetoothBeginAction{}.triggered();
 
-    front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
-    back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
+    controllers.front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
+    controllers.back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
 
     raw_gas = 0;
     raw_brems = 0;
     gas = 0;
     brems = 0;
 
-    for (Controller &controller : controllers())
+    for (Controller &controller : controllers)
         controller.command.buzzer = {};
 
     currentMode = &modes::defaultMode;
@@ -196,7 +196,7 @@ void loop()
         performance.lastTime = now;
     }
 
-    for (Controller &controller : controllers())
+    for (Controller &controller : controllers)
         controller.parser.update();
 
     handleSerial();

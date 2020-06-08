@@ -76,14 +76,19 @@ void DefaultMode::update()
     lastPwm = pwm;
     lastTime = now;
 
-    for (Controller &controller : controllers())
-        for (MotorState &motor : motorsInController(controller))
-        {
-            const auto pair = split(settings.defaultMode.modelMode);
-            motor.ctrlTyp = pair.first;
-            motor.ctrlMod = pair.second;
-            motor.pwm = pwm / 100. * (&controller == &front ? settings.defaultMode.frontPercentage : settings.defaultMode.backPercentage);
-        }
+    const auto pair = split(settings.defaultMode.modelMode);
+    for (MotorState &motor : motorsInController(controllers.front))
+    {
+        motor.ctrlTyp = pair.first;
+        motor.ctrlMod = pair.second;
+        motor.pwm = pwm / 100. * settings.defaultMode.frontPercentage;
+    }
+    for (MotorState &motor : motorsInController(controllers.back))
+    {
+        motor.ctrlTyp = pair.first;
+        motor.ctrlMod = pair.second;
+        motor.pwm = pwm / 100. * settings.defaultMode.backPercentage;
+    }
 
     fixCommonParams();
 

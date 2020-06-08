@@ -19,7 +19,7 @@ class SettingsMenu;
 }
 
 namespace {
-struct FrontFreqAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return front.command.buzzer.freq; } };
+struct FrontFreqAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.front.command.buzzer.freq; } };
 using FrontFreqChangeScreen = makeComponent<
     ChangeValueDisplay<uint8_t>,
     StaticText<TEXT_FRONTFREQ>,
@@ -28,7 +28,7 @@ using FrontFreqChangeScreen = makeComponent<
     SwitchScreenAction<BuzzerMenu>
 >;
 
-struct FrontPatternAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return front.command.buzzer.pattern; } };
+struct FrontPatternAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.front.command.buzzer.pattern; } };
 using FrontPatternChangeScreen = makeComponent<
     ChangeValueDisplay<uint8_t>,
     StaticText<TEXT_FRONTPATTERN>,
@@ -37,7 +37,7 @@ using FrontPatternChangeScreen = makeComponent<
     SwitchScreenAction<BuzzerMenu>
 >;
 
-struct BackFreqAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return back.command.buzzer.freq; } };
+struct BackFreqAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.back.command.buzzer.freq; } };
 using BackFreqChangeScreen = makeComponent<
     ChangeValueDisplay<uint8_t>,
     StaticText<TEXT_BACKFREQ>,
@@ -46,7 +46,7 @@ using BackFreqChangeScreen = makeComponent<
     SwitchScreenAction<BuzzerMenu>
 >;
 
-struct BackPatternAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return back.command.buzzer.pattern; } };
+struct BackPatternAccessor : public RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.back.command.buzzer.pattern; } };
 using BackPatternChangeScreen = makeComponent<
     ChangeValueDisplay<uint8_t>,
     StaticText<TEXT_BACKPATTERN>,

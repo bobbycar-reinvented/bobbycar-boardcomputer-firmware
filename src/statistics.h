@@ -24,17 +24,17 @@ void pushStats()
     statistics::avgSpeedKmh.push_back(avgSpeedKmh);
     statistics::sumCurrent.push_back(sumCurrent);
     statistics::sumAbsoluteCurrent.push_back(sumAbsoluteCurrent);
-    if (front.feedbackValid)
+    if (controllers.front.feedbackValid)
     {
-        statistics::frontVoltage.push_back(fixBatVoltage(front.feedback.batVoltage));
-        statistics::frontLeftCurrent.push_back(fixCurrent(front.feedback.left.current));
-        statistics::frontRightCurrent.push_back(fixCurrent(front.feedback.right.current));
+        statistics::frontVoltage.push_back(fixBatVoltage(controllers.front.feedback.batVoltage));
+        statistics::frontLeftCurrent.push_back(fixCurrent(controllers.front.feedback.left.current));
+        statistics::frontRightCurrent.push_back(fixCurrent(controllers.front.feedback.right.current));
     }
-    if (back.feedbackValid)
+    if (controllers.back.feedbackValid)
     {
-        statistics::backVoltage.push_back(fixBatVoltage(back.feedback.batVoltage));
-        statistics::backLeftCurrent.push_back(fixCurrent(back.feedback.left.current));
-        statistics::backRightCurrent.push_back(fixCurrent(back.feedback.right.current));
+        statistics::backVoltage.push_back(fixBatVoltage(controllers.back.feedback.batVoltage));
+        statistics::backLeftCurrent.push_back(fixCurrent(controllers.back.feedback.left.current));
+        statistics::backRightCurrent.push_back(fixCurrent(controllers.back.feedback.right.current));
     }
 #ifdef FEATURE_BMS
     statistics::bmsVoltage.push_back(bms::voltage);
