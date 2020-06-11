@@ -32,12 +32,8 @@ ModeInterface *lastMode{};
 millis_t lastPotiRead{};
 millis_t lastModeUpdate{};
 millis_t lastStatsUpdate{};
+millis_t lastDisplayUpdate{};
 millis_t lastDisplayRedraw{};
-
-constexpr auto potiReadRate = 50;
-constexpr auto modeUpdateRate = 50;
-constexpr auto statsUpdateRate = 50;
-constexpr auto displayRedrawRate = 50;
 }
 
 void setup()
@@ -150,18 +146,14 @@ void loop()
     dpad3wire::update();
 #endif
 
-    if (!lastPotiRead)
-        lastPotiRead = now;
-    else if (now - lastPotiRead >= 1000/potiReadRate)
+    if (!lastPotiRead || now - lastPotiRead >= 1000/settings.boardcomputerHardware.timersSettings.potiReadRate)
     {
         readPotis();
 
         lastPotiRead = now;
     }
 
-    if (!lastModeUpdate)
-        lastModeUpdate = now;
-    else if (now - lastModeUpdate >= 1000/modeUpdateRate)
+    if (!lastModeUpdate || now - lastModeUpdate >= 1000/settings.boardcomputerHardware.timersSettings.modeUpdateRate)
     {
         if (lastMode != currentMode)
         {
@@ -180,18 +172,21 @@ void loop()
         performance.current++;
     }
 
-    if (!lastStatsUpdate)
-        lastStatsUpdate = now;
-    else if (now - lastStatsUpdate >= 1000/statsUpdateRate)
+    if (!lastStatsUpdate || now - lastStatsUpdate >= 1000/settings.boardcomputerHardware.timersSettings.statsUpdateRate)
     {
         updateAccumulators();
         pushStats();
         lastStatsUpdate = now;
     }
 
-    updateDisplay();
+    if (!lastDisplayUpdate || now - lastDisplayUpdate >= 1000/settings.boardcomputerHardware.timersSettings.displayUpdateRate)
+    {
+        updateDisplay();
 
-    if (!lastDisplayRedraw || now - lastDisplayRedraw >= 1000/displayRedrawRate)
+        lastDisplayUpdate = now;
+    }
+
+    if (!lastDisplayRedraw || now - lastDisplayRedraw >= 1000/settings.boardcomputerHardware.timersSettings.displayRedrawRate)
     {
         redrawDisplay();
 
