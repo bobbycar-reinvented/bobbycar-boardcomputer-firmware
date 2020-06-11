@@ -30,6 +30,7 @@
 #include "displays/menus/selectmodemenu.h"
 #include "displays/menus/settingsmenu.h"
 #include "displays/menus/stationwifisettingsmenu.h"
+#include "displays/menus/timersmenu.h"
 #include "displays/menus/wifiscanmenu.h"
 #include "displays/menus/wifisettingsmenu.h"
 #include "displays/bmsdisplay.h"
@@ -99,6 +100,7 @@ union X {
     SelectModeMenu selectModeMenu;
     SettingsMenu settingsMenu;
     StationWifiSettingsMenu stationWifiSettingsMenu;
+    TimersMenu timersMenu;
     WifiScanMenu wifiScanMenu;
     WifiSettingsMenu wifiSettingsMenu;
 
@@ -244,6 +246,8 @@ template<> decltype(displays.presetsMenu)                                      &
 template<> decltype(displays.selectModeMenu)                                   &getRefByType<decltype(displays.selectModeMenu)>()                                   { return displays.selectModeMenu; }
 template<> decltype(displays.settingsMenu)                                     &getRefByType<decltype(displays.settingsMenu)>()                                     { return displays.settingsMenu; }
 template<> decltype(displays.stationWifiSettingsMenu)                          &getRefByType<decltype(displays.stationWifiSettingsMenu)>()                          { return displays.stationWifiSettingsMenu; }
+
+template<> decltype(displays.timersMenu)                                       &getRefByType<decltype(displays.timersMenu)>()                                       { return displays.timersMenu; }
 template<> decltype(displays.wifiScanMenu)                                     &getRefByType<decltype(displays.wifiScanMenu)>()                                     { return displays.wifiScanMenu; }
 template<> decltype(displays.wifiSettingsMenu)                                 &getRefByType<decltype(displays.wifiSettingsMenu)>()                                 { return displays.wifiSettingsMenu; }
 
