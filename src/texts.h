@@ -280,6 +280,11 @@ constexpr char TEXT_GAMETRAK[] = "Gametrak";
 
 //TimersMenu
 //constexpr char TEXT_TIMERS[] = "Timers";
+constexpr char TEXT_POTIREADRATE[] = "Poti read rate";
+constexpr char TEXT_MODEUPDATERATE[] = "Mode update rate";
+constexpr char TEXT_STATSUPDATERATE[] = "Stats update rate";
+constexpr char TEXT_DISPLAYUPDATERATE[] = "Display update rate";
+constexpr char TEXT_DISPLAYREDRAWRATE[] = "Display redraw rate";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<BluetoothMode>

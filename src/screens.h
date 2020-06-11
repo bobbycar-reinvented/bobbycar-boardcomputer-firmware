@@ -181,6 +181,12 @@ union X {
     GametrakDistMaxChangeScreen changeGametrakDistMax;
 #endif
 
+    PotiReadRateChangeDisplay potiReadRateChangeDisplay;
+    ModeUpdateRateChangeDisplay modeUpdateRateChangeDisplay;
+    StatsUpdateRateChangeDisplay statsUpdateRateChangeDisplay;
+    DisplayUpdateRateChangeDisplay displayUpdateRateChangeDisplay;
+    DisplayRedrawRateChangeDisplay displayRedrawRateChangeDisplay;
+
     WifiModeChangeScreen wifiModeChangeScreen;
     WifiTxPowerChangeScreen wifiTxPowerChangeScreen;
 
@@ -327,6 +333,12 @@ template<> decltype(displays.changeGametrakYMax)                               &
 template<> decltype(displays.changeGametrakDistMin)                            &getRefByType<decltype(displays.changeGametrakDistMin)>()                            { return displays.changeGametrakDistMin; }
 template<> decltype(displays.changeGametrakDistMax)                            &getRefByType<decltype(displays.changeGametrakDistMax)>()                            { return displays.changeGametrakDistMax; }
 #endif
+
+template<> decltype(displays.potiReadRateChangeDisplay)                        &getRefByType<decltype(displays.potiReadRateChangeDisplay)>()                        { return displays.potiReadRateChangeDisplay; }
+template<> decltype(displays.modeUpdateRateChangeDisplay)                      &getRefByType<decltype(displays.modeUpdateRateChangeDisplay)>()                      { return displays.modeUpdateRateChangeDisplay; }
+template<> decltype(displays.statsUpdateRateChangeDisplay)                     &getRefByType<decltype(displays.statsUpdateRateChangeDisplay)>()                     { return displays.statsUpdateRateChangeDisplay; }
+template<> decltype(displays.displayUpdateRateChangeDisplay)                   &getRefByType<decltype(displays.displayUpdateRateChangeDisplay)>()                   { return displays.displayUpdateRateChangeDisplay; }
+template<> decltype(displays.displayRedrawRateChangeDisplay)                   &getRefByType<decltype(displays.displayRedrawRateChangeDisplay)>()                   { return displays.displayRedrawRateChangeDisplay; }
 
 template<> decltype(displays.wifiModeChangeScreen)                             &getRefByType<decltype(displays.wifiModeChangeScreen)>()                             { return displays.wifiModeChangeScreen; }
 template<> decltype(displays.wifiTxPowerChangeScreen)                          &getRefByType<decltype(displays.wifiTxPowerChangeScreen)>()                          { return displays.wifiTxPowerChangeScreen; }
