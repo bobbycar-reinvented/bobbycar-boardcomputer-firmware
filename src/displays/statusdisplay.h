@@ -3,7 +3,7 @@
 #include <HardwareSerial.h>
 #include <WiFi.h>
 
-#include "demodisplay.h"
+#include "display.h"
 #include "actions/switchscreenaction.h"
 
 #include "modeinterface.h"
@@ -20,10 +20,8 @@ class MetersDisplay;
 }
 
 namespace {
-class StatusDisplay : public DemoDisplay, public SwitchScreenAction<MainMenu>
+class StatusDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<MainMenu>>
 {
-    using Base = DemoDisplay;
-
 public:
     void initScreen() override;
     void redraw() override;

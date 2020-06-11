@@ -6,7 +6,7 @@
 #include <Arduino.h>
 #include <HardwareSerial.h>
 
-#include "demodisplay.h"
+#include "display.h"
 #include "actions/switchscreenaction.h"
 
 namespace {
@@ -14,10 +14,8 @@ class DemosMenu;
 }
 
 namespace {
-class GameOfLifeDisplay : public DemoDisplay, public SwitchScreenAction<DemosMenu>, public BackActionInterface<SwitchScreenAction<DemosMenu>>
+class GameOfLifeDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<DemosMenu>>, public BackActionInterface<SwitchScreenAction<DemosMenu>>
 {
-    using Base = DemoDisplay;
-
 public:
     void start() override;
     void initScreen() override;

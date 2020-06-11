@@ -29,10 +29,12 @@
 
 namespace {
 ModeInterface *lastMode{};
+millis_t lastPotiRead{};
 millis_t lastModeUpdate{};
 millis_t lastStatsUpdate{};
 millis_t lastDisplayRedraw{};
 
+constexpr auto potiReadRate = 50;
 constexpr auto modeUpdateRate = 50;
 constexpr auto statsUpdateRate = 50;
 constexpr auto displayRedrawRate = 50;
@@ -148,12 +150,19 @@ void loop()
     dpad3wire::update();
 #endif
 
+    if (!lastPotiRead)
+        lastPotiRead = now;
+    else if (now - lastPotiRead >= 1000/potiReadRate)
+    {
+        readPotis();
+
+        lastPotiRead = now;
+    }
+
     if (!lastModeUpdate)
         lastModeUpdate = now;
     else if (now - lastModeUpdate >= 1000/modeUpdateRate)
     {
-        readPotis();
-
         if (lastMode != currentMode)
         {
             if (lastMode)

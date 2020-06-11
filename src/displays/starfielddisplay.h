@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 
-#include "demodisplay.h"
+#include "display.h"
 #include "actions/switchscreenaction.h"
 #include "globals.h"
 
@@ -13,10 +13,8 @@ class DemosMenu;
 }
 
 namespace {
-class StarfieldDisplay : public DemoDisplay, public SwitchScreenAction<DemosMenu>, public BackActionInterface<SwitchScreenAction<DemosMenu>>
+class StarfieldDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<DemosMenu>>, public BackActionInterface<SwitchScreenAction<DemosMenu>>
 {
-    using Base = DemoDisplay;
-
 public:
     StarfieldDisplay();
 

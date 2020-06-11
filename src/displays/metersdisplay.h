@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 
-#include "demodisplay.h"
+#include "display.h"
 #include "actions/switchscreenaction.h"
 #include "globals.h"
 #include "utils.h"
@@ -16,10 +16,8 @@ class BmsDisplay;
 }
 
 namespace {
-class MetersDisplay : public DemoDisplay, public SwitchScreenAction<MainMenu>, public BackActionInterface<SwitchScreenAction<MainMenu>>
+class MetersDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<MainMenu>>, public BackActionInterface<SwitchScreenAction<MainMenu>>
 {
-    using Base = DemoDisplay;
-
 public:
     void initScreen() override;
     void redraw() override;

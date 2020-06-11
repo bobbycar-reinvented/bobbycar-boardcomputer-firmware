@@ -4,9 +4,10 @@
 
 #include <WString.h>
 
-#include "demodisplay.h"
+#include "display.h"
 #include "actions/switchscreenaction.h"
 #include "globals.h"
+#include "utils.h"
 #include "texts.h"
 #include "widgets/label.h"
 #include "widgets/progressbar.h"
@@ -18,39 +19,68 @@ class BoardcomputerHardwareSettingsMenu;
 }
 
 namespace {
-class CalibrateDisplay : public DemoDisplay
+class CalibrateDisplay : public Display
 {
-    using Base = DemoDisplay;
-
 public:
     CalibrateDisplay() = default;
     CalibrateDisplay(bool bootup);
 
     void start() override;
     void initScreen() override;
+    void update() override;
     void redraw() override;
     void stop() override;
 
+    void rotate(int offset) override;
+
     void back() override;
 
-    void triggered() override;
+    void confirm() override;
 
 private:
+    void copyFromSettings();
+    void copyToSettings();
+
     const bool m_bootup{false};
     ModeInterface *m_oldMode;
     IgnoreInputMode m_mode{0, ControlType::FieldOrientedControl, ControlMode::Torque};
 
-    std::array<Label, 4> m_labels {{
-        Label{25, 50}, // 100, 23
-        Label{25, 75}, // 100, 23
-        Label{25, 100}, // 100, 23
-        Label{25, 125} // 100, 23
+    std::array<Label, 11> m_labels {{
+        Label{25, 72}, // 100, 23
+        Label{145, 72}, // 100, 23
+        Label{25, 97}, // 100, 23
+        Label{145, 97}, // 100, 23
+
+        Label{25, 172}, // 100, 23
+        Label{145, 172}, // 100, 23
+        Label{25, 197}, // 100, 23
+        Label{145, 197}, // 100, 23
+
+        Label{25, 247}, // 190, 23
+
+        Label{25, 275}, // 100, 23
+        Label{145, 275}, // 100, 23
     }};
 
     std::array<ProgressBar, 2> m_progressBars {{
-        ProgressBar{20, 200, 200, 10, 0, 1000},
-        ProgressBar{20, 230, 200, 10, 0, 1000}
+        ProgressBar{20, 129, 200, 10, 0, 1000},
+        ProgressBar{20, 229, 200, 10, 0, 1000}
     }};
+
+    enum Status {
+        Begin,
+        GasMin,
+        GasMax,
+        BremsMin,
+        BremsMax,
+        Confirm
+    };
+
+    int8_t m_selectedButton, m_renderedButton;
+
+    Status m_status;
+    int16_t m_gasMin, m_gasMax, m_bremsMin, m_bremsMax;
+    float m_gas, m_brems;
 };
 
 CalibrateDisplay::CalibrateDisplay(bool bootup) :
@@ -62,6 +92,11 @@ void CalibrateDisplay::start()
 {
     m_oldMode = currentMode;
     currentMode = &m_mode;
+    m_selectedButton = 0;
+    m_status = Status::Begin;
+    copyFromSettings();
+    m_gas = 0.f;
+    m_brems = 0.f;
 }
 
 void CalibrateDisplay::initScreen()
@@ -76,23 +111,78 @@ void CalibrateDisplay::initScreen()
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
+    tft.drawString("gas:", 25, 47);
+    tft.drawString("brems:", 25, 147);
+
     for (auto &label : m_labels)
         label.start();
 
     for (auto &progressBar : m_progressBars)
         progressBar.start();
+
+    m_renderedButton = -1;
+}
+
+void CalibrateDisplay::update()
+{
+    m_gas = scaleBetween<float>(raw_gas, m_gasMin, m_gasMax, 0., 1000.);
+    m_brems = scaleBetween<float>(raw_brems, m_bremsMin, m_bremsMax, 0., 1000.);
 }
 
 void CalibrateDisplay::redraw()
 {
-    m_labels[0].redraw(String{gas});
-    m_labels[1].redraw(String{raw_gas});
+    m_labels[0].redraw(toString(m_gas));
+    m_labels[1].redraw(toString(raw_gas));
+    m_labels[2].redraw(toString(m_gasMin));
+    m_labels[3].redraw(toString(m_gasMax));
 
-    m_labels[2].redraw(String{brems});
-    m_labels[3].redraw(String{raw_brems});
+    m_progressBars[0].redraw(m_gas);
 
-    m_progressBars[0].redraw(gas);
-    m_progressBars[1].redraw(brems);
+    m_labels[4].redraw(toString(m_brems));
+    m_labels[5].redraw(toString(raw_brems));
+    m_labels[6].redraw(toString(m_bremsMin));
+    m_labels[7].redraw(toString(m_bremsMax));
+
+    m_progressBars[1].redraw(m_brems);
+
+    m_labels[8].redraw([&](){
+        switch (m_status)
+        {
+        case Status::Begin: return "Start calibrating?";
+        case Status::GasMin: return "Release gas";
+        case Status::GasMax: return "Press gas";
+        case Status::BremsMin: return "Release brems";
+        case Status::BremsMax: return "Press brems";
+        case Status::Confirm: return "Verify";
+        }
+        __builtin_unreachable();
+    }());
+
+    m_labels[9].redraw([&](){
+        switch (m_status)
+        {
+        case Status::Begin: return "Yes";
+        case Status::GasMin:
+        case Status::GasMax:
+        case Status::BremsMin:
+        case Status::BremsMax: return "Next";
+        case Status::Confirm: return "Save";
+        }
+        __builtin_unreachable();
+    }());
+
+    m_labels[10].redraw([&](){
+        switch (m_status)
+        {
+        case Status::Begin: return "No";
+        case Status::GasMin:
+        case Status::GasMax:
+        case Status::BremsMin:
+        case Status::BremsMax:
+        case Status::Confirm: return "Restart";
+        }
+        __builtin_unreachable();
+    }());
 }
 
 void CalibrateDisplay::stop()
@@ -101,17 +191,59 @@ void CalibrateDisplay::stop()
         currentMode = m_oldMode;
 }
 
-void CalibrateDisplay::back()
+void CalibrateDisplay::rotate(int offset)
 {
-    if (!m_bootup)
-        switchScreen<BoardcomputerHardwareSettingsMenu>();
+    m_selectedButton += offset;
+
+    if (m_selectedButton < 0)
+        m_selectedButton = 1;
+    if (m_selectedButton > 1)
+        m_selectedButton = 0;
 }
 
-void CalibrateDisplay::triggered()
+void CalibrateDisplay::back()
 {
-    if (m_bootup)
-        switchScreen<StatusDisplay>();
+    if (m_status == Status::Begin)
+    {
+        if (!m_bootup)
+            switchScreen<BoardcomputerHardwareSettingsMenu>();
+    }
     else
-        switchScreen<BoardcomputerHardwareSettingsMenu>();
+    {
+        m_status = Status::Begin;
+        copyFromSettings();
+    }
+}
+
+void CalibrateDisplay::confirm()
+{
+    if (m_status == Status::Begin)
+    {
+        if (m_bootup)
+            switchScreen<StatusDisplay>();
+        else
+            switchScreen<BoardcomputerHardwareSettingsMenu>();
+    }
+    else
+    {
+        m_status = Status::Begin;
+        copyFromSettings();
+    }
+}
+
+void CalibrateDisplay::copyFromSettings()
+{
+    m_gasMin = settings.boardcomputerHardware.gasMin;
+    m_gasMax = settings.boardcomputerHardware.gasMax;
+    m_bremsMin = settings.boardcomputerHardware.bremsMin;
+    m_bremsMax = settings.boardcomputerHardware.bremsMax;
+}
+
+void CalibrateDisplay::copyToSettings()
+{
+    settings.boardcomputerHardware.gasMin = m_gasMin;
+    settings.boardcomputerHardware.gasMax = m_gasMax;
+    settings.boardcomputerHardware.bremsMin = m_bremsMin;
+    settings.boardcomputerHardware.bremsMax = m_bremsMax;
 }
 }
