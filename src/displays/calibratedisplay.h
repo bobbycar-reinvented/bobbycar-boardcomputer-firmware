@@ -174,21 +174,26 @@ void CalibrateDisplay::redraw()
         __builtin_unreachable();
     }());
 
-    m_labels[9].redraw([&](){
-        switch (m_status)
-        {
-        case Status::Begin: return "Yes";
-        case Status::GasMin:
-        case Status::GasMax:
-        case Status::BremsMin:
-        case Status::BremsMax: return "Next";
-        case Status::Confirm: return "Save";
-        }
-        __builtin_unreachable();
-    }());
+    {
+        const auto color = m_status == Status::Confirm && (m_gas > 100 || m_brems > 100) ? TFT_DARKGREY : TFT_WHITE;
+        tft.setTextColor(color, TFT_BLACK);
+        m_labels[9].redraw([&](){
+            switch (m_status)
+            {
+            case Status::Begin: return "Yes";
+            case Status::GasMin:
+            case Status::GasMax:
+            case Status::BremsMin:
+            case Status::BremsMax: return "Next";
+            case Status::Confirm: return "Save";
+            }
+            __builtin_unreachable();
+        }());
+        tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-    if (m_selectedButton != m_renderedButton && (m_selectedButton == 0 || m_renderedButton == 0))
-        tft.drawRect(23, 275, 100, 27, m_selectedButton == 0 ? TFT_WHITE : TFT_BLACK);
+        if (m_selectedButton != m_renderedButton && (m_selectedButton == 0 || m_renderedButton == 0))
+            tft.drawRect(23, 275, 100, 27, m_selectedButton == 0 ? color : TFT_BLACK);
+    }
 
     m_labels[10].redraw([&](){
         switch (m_status)
@@ -230,7 +235,9 @@ void CalibrateDisplay::back()
     switch (m_status)
     {
     case Status::Begin:
-        if (!m_bootup)
+        if (m_bootup)
+            switchScreen<StatusDisplay>();
+        else
             switchScreen<BoardcomputerHardwareSettingsMenu>();
         break;
     case Status::GasMin:
@@ -261,6 +268,11 @@ void CalibrateDisplay::confirm()
         case Status::GasMax:
             m_gasMax = raw_gas;
             m_status = Status::BremsMin;
+            {
+                const auto dead = (m_gasMax - m_gasMin)/20;
+                m_gasMin += dead;
+                m_gasMax -= dead;
+            }
             break;
         case Status::BremsMin:
             m_bremsMin = raw_brems;
@@ -269,8 +281,15 @@ void CalibrateDisplay::confirm()
         case Status::BremsMax:
             m_bremsMax = raw_brems;
             m_status = Status::Confirm;
+            {
+                const auto dead = (m_bremsMax - m_bremsMin)/20;
+                m_bremsMin += dead;
+                m_bremsMax -= dead;
+            }
             break;
         case Status::Confirm:
+            if (m_gas > 100 || m_brems > 100)
+                return;
             copyToSettings();
             saveSettings();
             if (m_bootup)
@@ -280,15 +299,7 @@ void CalibrateDisplay::confirm()
         }
         break;
     case 1: // right button pressed
-        if (m_status == Status::Begin)
-        {
-            if (m_bootup)
-                switchScreen<StatusDisplay>();
-            else
-                switchScreen<BoardcomputerHardwareSettingsMenu>();
-        }
-        else
-            back();
+        back();
     }
 }
 
