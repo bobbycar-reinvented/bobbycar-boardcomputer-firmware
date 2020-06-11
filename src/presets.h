@@ -76,6 +76,14 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
     .swapFrontBack = false
 };
 
+constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings {
+    .potiReadRate = 50,
+    .modeUpdateRate = 50,
+    .statsUpdateRate = 50,
+    .displayUpdateRate = 50,
+    .displayRedrawRate = 50
+};
+
 constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
     .sampleCount = 100,
     .gasMin = DEFAULT_GASMIN,
@@ -93,7 +101,8 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
     .gametrakDistMin = DEFAULT_GAMETRAKDISTMIN,
     .gametrakDistMax = DEFAULT_GAMETRAKDISTMAX,
 #endif
-    .swapScreenBytes = DEFAULT_SWAPSCREENBYTES
+    .swapScreenBytes = DEFAULT_SWAPSCREENBYTES,
+    .timersSettings = defaultTimersSettings
 };
 
 constexpr Settings::DefaultMode defaultDefaultMode {

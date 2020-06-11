@@ -16,6 +16,7 @@ namespace {
 class BoardcomputerHardwareSettingsMenu;
 class CalibrateDisplay;
 class GametrakCalibrateDisplay;
+class TimersMenu;
 class SettingsMenu;
 }
 
@@ -164,6 +165,7 @@ class BoardcomputerHardwareSettingsMenu :
 #endif
         makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>,
         makeComponent<MenuItem, StaticText<TEXT_SWAPSCREENBYTES>,    ToggleBoolAction, CheckboxIcon, SwapScreenBytesAccessor>,
+        makeComponent<MenuItem, StaticText<TEXT_TIMERS>,             SwitchScreenAction<TimersMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {};

@@ -248,6 +248,7 @@ constexpr char TEXT_SETGAMETRAKYMAX[] = "Set gametrakYMax";
 constexpr char TEXT_SETGAMETRAKDISTMIN[] = "Set gametrakDistMin";
 constexpr char TEXT_SETGAMETRAKDISTMAX[] = "Set gametrakDistMax";
 constexpr char TEXT_SWAPSCREENBYTES[] = "Swap screen bytes";
+constexpr char TEXT_TIMERS[] = "Timers";
 //constexpr char TEXT_BACK[] = "Back";
 
 //PresetsMenu
@@ -275,6 +276,15 @@ constexpr char TEXT_DEFAULT[] = "Default";
 constexpr char TEXT_TEMPOMAT[] = "Tempomat";
 constexpr char TEXT_LARSM[] = "Larsm";
 constexpr char TEXT_GAMETRAK[] = "Gametrak";
+//constexpr char TEXT_BACK[] = "Back";
+
+//TimersMenu
+//constexpr char TEXT_TIMERS[] = "Timers";
+constexpr char TEXT_POTIREADRATE[] = "Poti read rate";
+constexpr char TEXT_MODEUPDATERATE[] = "Mode update rate";
+constexpr char TEXT_STATSUPDATERATE[] = "Stats update rate";
+constexpr char TEXT_DISPLAYUPDATERATE[] = "Display update rate";
+constexpr char TEXT_DISPLAYREDRAWRATE[] = "Display redraw rate";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<BluetoothMode>

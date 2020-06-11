@@ -60,6 +60,14 @@ struct Settings
         int16_t gametrakXMin, gametrakXMax, gametrakYMin, gametrakYMax, gametrakDistMin, gametrakDistMax;
 #endif
         bool swapScreenBytes;
+
+        struct TimersSettings {
+            int16_t potiReadRate;
+            int16_t modeUpdateRate;
+            int16_t statsUpdateRate;
+            int16_t displayUpdateRate;
+            int16_t displayRedrawRate;
+        } timersSettings;
     } boardcomputerHardware;
 
     struct DefaultMode {
@@ -143,6 +151,11 @@ void Settings::executeForEverySetting(T &&callable)
     callable("gametrakDistMax", boardcomputerHardware.gametrakDistMax);
 #endif
     callable("swapScreenBytes", boardcomputerHardware.swapScreenBytes);
+    callable("potiReadRate", boardcomputerHardware.timersSettings.potiReadRate);
+    callable("modeUpdateRate", boardcomputerHardware.timersSettings.modeUpdateRate);
+    callable("statsUpdateRate", boardcomputerHardware.timersSettings.statsUpdateRate);
+    callable("displayUpdateRa", boardcomputerHardware.timersSettings.displayUpdateRate);
+    callable("displayRedrawRa", boardcomputerHardware.timersSettings.displayRedrawRate);
 
     callable("default.modelMo", defaultMode.modelMode);
     callable("default.enableS", defaultMode.enableSmoothing);

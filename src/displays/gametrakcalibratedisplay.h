@@ -4,7 +4,7 @@
 
 #include <WString.h>
 
-#include "demodisplay.h"
+#include "display.h"
 #include "actions/switchscreenaction.h"
 #include "globals.h"
 #include "texts.h"
@@ -19,10 +19,8 @@ class BoardcomputerHardwareSettingsMenu;
 
 namespace {
 #ifdef FEATURE_GAMETRAK
-class GametrakCalibrateDisplay : public DemoDisplay, public SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, public BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+class GametrakCalibrateDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>, public BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 {
-    using Base = DemoDisplay;
-
 public:
     void initScreen() override;
     void redraw() override;

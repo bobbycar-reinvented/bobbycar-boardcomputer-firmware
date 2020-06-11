@@ -1,6 +1,6 @@
 #pragma once
 
-#include "demodisplay.h"
+#include "display.h"
 #include "actions/switchscreenaction.h"
 #include "textinterface.h"
 #include "widgets/label.h"
@@ -30,10 +30,13 @@ public:
 };
 
 template<size_t COUNT>
-class GraphDisplay : public DemoDisplay, public SwitchScreenAction<GraphsMenu>, public virtual TextInterface, public BackActionInterface<SwitchScreenAction<GraphsMenu>>, public virtual MultiStatisticsInterface<COUNT>
+class GraphDisplay :
+        public Display,
+        public virtual TextInterface,
+        public ConfirmActionInterface<SwitchScreenAction<GraphsMenu>>,
+        public BackActionInterface<SwitchScreenAction<GraphsMenu>>,
+        public virtual MultiStatisticsInterface<COUNT>
 {
-    using Base = DemoDisplay;
-
 public:
     void initScreen() override;
     void redraw() override;

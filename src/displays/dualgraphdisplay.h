@@ -1,6 +1,6 @@
 #pragma once
 
-#include "demodisplay.h"
+#include "display.h"
 #include "actions/switchscreenaction.h"
 #include "textinterface.h"
 #include "widgets/label.h"
@@ -13,10 +13,8 @@ class GraphsMenu;
 }
 
 namespace {
-class DualGraphDisplay : public DemoDisplay, public SwitchScreenAction<GraphsMenu>, public BackActionInterface<SwitchScreenAction<GraphsMenu>>
+class DualGraphDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<GraphsMenu>>, public BackActionInterface<SwitchScreenAction<GraphsMenu>>
 {
-    using Base = DemoDisplay;
-
 public:
     void initScreen() override;
     void redraw() override;

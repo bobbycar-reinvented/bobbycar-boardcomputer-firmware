@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#include "demodisplay.h"
+#include "display.h"
 #include "actions/switchscreenaction.h"
 #include "globals.h"
 #include "bmsutils.h"
@@ -15,7 +15,7 @@ class StatusDisplay;
 }
 namespace {
 #ifdef FEATURE_BMS
-class BmsDisplay : public DemoDisplay, public SwitchScreenAction<MainMenu>
+class BmsDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<MainMenu>>
 {
 public:
     void initScreen() override;
