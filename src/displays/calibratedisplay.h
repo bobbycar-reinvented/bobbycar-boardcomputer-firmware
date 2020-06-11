@@ -58,8 +58,8 @@ private:
 
         Label{25, 247}, // 190, 23
 
-        Label{25, 275}, // 100, 23
-        Label{145, 275}, // 100, 23
+        Label{25, 277}, // 100, 23
+        Label{145, 277}, // 100, 23
     }};
 
     std::array<ProgressBar, 2> m_progressBars {{
@@ -133,15 +133,31 @@ void CalibrateDisplay::redraw()
 {
     m_labels[0].redraw(toString(m_gas));
     m_labels[1].redraw(toString(raw_gas));
+    if (m_status == Status::GasMin)
+        tft.setTextColor(TFT_RED, TFT_BLACK);
     m_labels[2].redraw(toString(m_gasMin));
+    if (m_status == Status::GasMin)
+        tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    if (m_status == Status::GasMax)
+        tft.setTextColor(TFT_RED, TFT_BLACK);
     m_labels[3].redraw(toString(m_gasMax));
+    if (m_status == Status::GasMax)
+        tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
     m_progressBars[0].redraw(m_gas);
 
     m_labels[4].redraw(toString(m_brems));
     m_labels[5].redraw(toString(raw_brems));
+    if (m_status == Status::BremsMin)
+        tft.setTextColor(TFT_RED, TFT_BLACK);
     m_labels[6].redraw(toString(m_bremsMin));
+    if (m_status == Status::BremsMin)
+        tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    if (m_status == Status::BremsMax)
+        tft.setTextColor(TFT_RED, TFT_BLACK);
     m_labels[7].redraw(toString(m_bremsMax));
+    if (m_status == Status::BremsMax)
+        tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
     m_progressBars[1].redraw(m_brems);
 
@@ -171,6 +187,9 @@ void CalibrateDisplay::redraw()
         __builtin_unreachable();
     }());
 
+    if (m_selectedButton != m_renderedButton && (m_selectedButton == 0 || m_renderedButton == 0))
+        tft.drawRect(23, 275, 100, 27, m_selectedButton == 0 ? TFT_WHITE : TFT_BLACK);
+
     m_labels[10].redraw([&](){
         switch (m_status)
         {
@@ -183,6 +202,11 @@ void CalibrateDisplay::redraw()
         }
         __builtin_unreachable();
     }());
+
+    if (m_selectedButton != m_renderedButton && (m_selectedButton == 1 || m_renderedButton == 1))
+        tft.drawRect(143, 275, 100, 27, m_selectedButton == 1 ? TFT_WHITE : TFT_BLACK);
+
+    m_renderedButton = m_selectedButton;
 }
 
 void CalibrateDisplay::stop()
@@ -203,13 +227,18 @@ void CalibrateDisplay::rotate(int offset)
 
 void CalibrateDisplay::back()
 {
-    if (m_status == Status::Begin)
+    switch (m_status)
     {
+    case Status::Begin:
         if (!m_bootup)
             switchScreen<BoardcomputerHardwareSettingsMenu>();
-    }
-    else
-    {
+        break;
+    case Status::GasMin:
+    case Status::GasMax:
+    case Status::BremsMin:
+    case Status::BremsMax:
+    case Status::Confirm:
+        m_selectedButton = 0;
         m_status = Status::Begin;
         copyFromSettings();
     }
@@ -217,17 +246,49 @@ void CalibrateDisplay::back()
 
 void CalibrateDisplay::confirm()
 {
-    if (m_status == Status::Begin)
+    switch (m_selectedButton)
     {
-        if (m_bootup)
-            switchScreen<StatusDisplay>();
+    case 0: // left button pressed
+        switch (m_status)
+        {
+        case Status::Begin:
+            m_status = Status::GasMin;
+            break;
+        case Status::GasMin:
+            m_gasMin = raw_gas;
+            m_status = Status::GasMax;
+            break;
+        case Status::GasMax:
+            m_gasMax = raw_gas;
+            m_status = Status::BremsMin;
+            break;
+        case Status::BremsMin:
+            m_bremsMin = raw_brems;
+            m_status = Status::BremsMax;
+            break;
+        case Status::BremsMax:
+            m_bremsMax = raw_brems;
+            m_status = Status::Confirm;
+            break;
+        case Status::Confirm:
+            copyToSettings();
+            saveSettings();
+            if (m_bootup)
+                switchScreen<StatusDisplay>();
+            else
+                switchScreen<BoardcomputerHardwareSettingsMenu>();
+        }
+        break;
+    case 1: // right button pressed
+        if (m_status == Status::Begin)
+        {
+            if (m_bootup)
+                switchScreen<StatusDisplay>();
+            else
+                switchScreen<BoardcomputerHardwareSettingsMenu>();
+        }
         else
-            switchScreen<BoardcomputerHardwareSettingsMenu>();
-    }
-    else
-    {
-        m_status = Status::Begin;
-        copyFromSettings();
+            back();
     }
 }
 
