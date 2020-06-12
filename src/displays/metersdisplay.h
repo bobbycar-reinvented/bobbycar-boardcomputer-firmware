@@ -29,16 +29,14 @@ public:
 private:
     VuMeter m_vuMeter;
 
-    int d = 0;
-
     static constexpr auto x = 40;
     std::array<VerticalMeter, 6> meters{{
-        VerticalMeter{"A0", 0*x, 160},
-        VerticalMeter{"A1", 1*x, 160},
-        VerticalMeter{"A2", 2*x, 160},
-        VerticalMeter{"A3", 3*x, 160},
-        VerticalMeter{"A4", 4*x, 160},
-        VerticalMeter{"A5", 5*x, 160}
+        VerticalMeter{"U f", 0*x, 160},
+        VerticalMeter{"U b", 1*x, 160},
+        VerticalMeter{"Ivl", 2*x, 160},
+        VerticalMeter{"Ivr", 3*x, 160},
+        VerticalMeter{"Ihl", 4*x, 160},
+        VerticalMeter{"Ihr", 5*x, 160}
     }};
 };
 
@@ -56,11 +54,12 @@ void MetersDisplay::redraw()
 {
     m_vuMeter.redraw(avgSpeedKmh);
 
-    int i{};
-    for (auto &meter : meters)
-        meter.redraw(50 + 50 * sin((d + (i++ * 60)) * 0.0174532925));
-
-    d += 4; if (d >= 360) d -= 360;
+    meters[0].redraw(fixBatVoltage(controllers.front.feedback.batVoltage), 35, 50);
+    meters[1].redraw(fixBatVoltage(controllers.back.feedback.batVoltage), 35, 50);
+    meters[2].redraw(fixCurrent(controllers.front.feedback.left.current), -10, 10);
+    meters[3].redraw(fixCurrent(controllers.front.feedback.right.current), -10, 10);
+    meters[4].redraw(fixCurrent(controllers.back.feedback.left.current), -10, 10);
+    meters[5].redraw(fixCurrent(controllers.back.feedback.right.current), -10, 10);
 }
 
 void MetersDisplay::rotate(int offset)

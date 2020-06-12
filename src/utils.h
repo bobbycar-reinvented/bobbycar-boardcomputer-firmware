@@ -54,7 +54,7 @@ float convertFromInch(float val)
 
 float fixCurrent(int16_t value)
 {
-    return std::abs(value/50.);
+    return -value/50.;
 }
 
 float fixBatVoltage(int16_t value)

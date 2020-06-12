@@ -1,6 +1,7 @@
 #pragma once
 
 #include "globals.h"
+#include "utils.h"
 
 namespace {
 class VerticalMeter
@@ -9,14 +10,14 @@ public:
     VerticalMeter(const char *text, int x, int y);
 
     void start();
-    void redraw(int value);
+    void redraw(float value, float min, float max);
 
 private:
     const char * const m_text;
     const int m_x;
     const int m_y;
 
-    int m_oldValue{};
+    float m_oldValue{};
 };
 
 VerticalMeter::VerticalMeter(const char *text, int x, int y) :
@@ -44,7 +45,7 @@ void VerticalMeter::start()
     tft.drawCentreString("---", m_x + w / 2, m_y + 155 - 18, 2);
 }
 
-void VerticalMeter::redraw(int value)
+void VerticalMeter::redraw(float value, float min, float max)
 {
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
 
@@ -53,23 +54,22 @@ void VerticalMeter::redraw(int value)
     tft.drawRightString(buf, m_x + 36 - 5, 187 - 27 + 155 - 18, 2);
 
     const int dx = 3 + m_x;
-    if (value < 0.f) value = 0; // Limit value to emulate needle end stops
-    if (value > 100.f) value = 100;
+    value = scaleBetween<float>(value, min, max, 0.f, 100.f);
 
-    while (value != m_oldValue) {
+    while (m_oldValue > value)
+    {
         const int dy = 187 + 100 - m_oldValue;
-        if (m_oldValue > value)
-        {
-            tft.drawLine(dx, dy - 5, dx + 16, dy, TFT_WHITE);
-            m_oldValue--;
-            tft.drawLine(dx, dy + 6, dx + 16, dy + 1, TFT_RED);
-        }
-        else
-        {
-            tft.drawLine(dx, dy + 5, dx + 16, dy, TFT_WHITE);
-            m_oldValue++;
-            tft.drawLine(dx, dy - 6, dx + 16, dy - 1, TFT_RED);
-        }
+        tft.drawLine(dx, dy - 5, dx + 16, dy, TFT_WHITE);
+        m_oldValue--;
+        tft.drawLine(dx, dy + 6, dx + 16, dy + 1, TFT_RED);
+    }
+
+    while (m_oldValue < value)
+    {
+        const int dy = 187 + 100 - m_oldValue;
+        tft.drawLine(dx, dy + 5, dx + 16, dy, TFT_WHITE);
+        m_oldValue++;
+        tft.drawLine(dx, dy - 6, dx + 16, dy - 1, TFT_RED);
     }
 }
 
