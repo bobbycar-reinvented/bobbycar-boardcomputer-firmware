@@ -28,6 +28,8 @@ char deviceName[32];
 Settings settings;
 SettingsSaver settingsSaver;
 
+constexpr auto TFT_GREY = 0x5AEB;
+
 class Controllers : public std::array<Controller, 2>
 {
 public:

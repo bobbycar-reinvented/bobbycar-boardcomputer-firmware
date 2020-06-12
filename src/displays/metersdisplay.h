@@ -8,6 +8,7 @@
 #include "actions/switchscreenaction.h"
 #include "globals.h"
 #include "utils.h"
+#include "widgets/verticalmeter.h"
 
 namespace {
 class MainMenu;
@@ -31,22 +32,18 @@ private:
     // Update needle position
     void plotNeedle(float value);
 
-    //  Draw a linear meter on the screen
-    void plotLinear(const char *label, int x, int y);
-
-    //  Adjust 6 linear meter pointer positions
-    void plotPointer();
-
-    static const constexpr auto TFT_GREY = 0x5AEB;
-
     float ltx = 0;    // Saved x coord of bottom of needle
     uint16_t osx = 120, osy = 120; // Saved x & y coords
 
-    struct ValuePair {
-        int value = 0,
-            old_value = -1;
-    };
-    std::array<ValuePair, 6> values;
+    static constexpr auto x = 40;
+    std::array<VerticalMeter, 6> meters{{
+        VerticalMeter{"A0", 0*x, 160},
+        VerticalMeter{"A1", 1*x, 160},
+        VerticalMeter{"A2", 2*x, 160},
+        VerticalMeter{"A3", 3*x, 160},
+        VerticalMeter{"A4", 4*x, 160},
+        VerticalMeter{"A5", 5*x, 160}
+    }};
 
     int d = 0;
 };
@@ -57,27 +54,22 @@ void MetersDisplay::initScreen()
 
     analogMeter(); // Draw analogue meter
 
-    // Draw 6 linear meters
-    byte d = 40;
-    plotLinear("A0", 0, 160);
-    plotLinear("A1", 1 * d, 160);
-    plotLinear("A2", 2 * d, 160);
-    plotLinear("A3", 3 * d, 160);
-    plotLinear("A4", 4 * d, 160);
-    plotLinear("A5", 5 * d, 160);
+    for (auto &meter : meters)
+        meter.start();
 }
 
 void MetersDisplay::redraw()
 {
+    plotNeedle(avgSpeedKmh);
+
+    tft.setTextColor(TFT_GREEN, TFT_BLACK);
+
     d += 4; if (d >= 360) d = 0;
 
     // Create a Sine wave for testing
-    for (auto iter = std::begin(values); iter != std::end(values); iter++)
-        iter->value = 50 + 50 * sin((d + (std::distance(std::begin(values), iter) * 60)) * 0.0174532925);
-
-    plotPointer();
-
-    plotNeedle(avgSpeedKmh);
+    int i{};
+    for (auto &meter : meters)
+        meter.redraw(50 + 50 * sin((d + (i++ * 60)) * 0.0174532925));
 }
 
 void MetersDisplay::rotate(int offset)
@@ -217,67 +209,5 @@ void MetersDisplay::plotNeedle(float value)
     tft.drawLine(120 + 20 * ltx - 1, 140 - 20, osx - 1, osy, TFT_RED);
     tft.drawLine(120 + 20 * ltx, 140 - 20, osx, osy, TFT_MAGENTA);
     tft.drawLine(120 + 20 * ltx + 1, 140 - 20, osx + 1, osy, TFT_RED);
-}
-
-void MetersDisplay::plotLinear(const char *label, int x, int y)
-{
-    int w = 36;
-    tft.drawRect(x, y, w, 155, TFT_GREY);
-    tft.fillRect(x + 2, y + 19, w - 3, 155 - 38, TFT_WHITE);
-    tft.setTextColor(TFT_CYAN, TFT_BLACK);
-    tft.drawCentreString(label, x + w / 2, y + 2, 2);
-
-    for (int i = 0; i < 110; i += 10)
-    {
-        tft.drawFastHLine(x + 20, y + 27 + i, 6, TFT_BLACK);
-    }
-
-    for (int i = 0; i < 110; i += 50)
-    {
-        tft.drawFastHLine(x + 20, y + 27 + i, 9, TFT_BLACK);
-    }
-
-    tft.fillTriangle(x + 3, y + 127, x + 3 + 16, y + 127, x + 3, y + 127 - 5, TFT_RED);
-    tft.fillTriangle(x + 3, y + 127, x + 3 + 16, y + 127, x + 3, y + 127 + 5, TFT_RED);
-
-    tft.drawCentreString("---", x + w / 2, y + 155 - 18, 2);
-}
-
-void MetersDisplay::plotPointer()
-{
-    int dy = 187;
-    byte pw = 16;
-
-    tft.setTextColor(TFT_GREEN, TFT_BLACK);
-
-    // Move the 6 pointers one pixel towards new value
-    for (auto iter = std::begin(values); iter != std::end(values); iter++)
-    {
-        const auto i = std::distance(std::begin(values), iter);
-
-        char buf[8];
-        dtostrf(iter->value, 4, 0, buf);
-        tft.drawRightString(buf, i * 40 + 36 - 5, 187 - 27 + 155 - 18, 2);
-
-        int dx = 3 + 40 * i;
-        if (iter->value < 0) iter->value = 0; // Limit value to emulate needle end stops
-        if (iter->value > 100) iter->value = 100;
-
-        while (!(iter->value == iter->old_value)) {
-            dy = 187 + 100 - iter->old_value;
-            if (iter->old_value > iter->value)
-            {
-                tft.drawLine(dx, dy - 5, dx + pw, dy, TFT_WHITE);
-                iter->old_value--;
-                tft.drawLine(dx, dy + 6, dx + pw, dy + 1, TFT_RED);
-            }
-            else
-            {
-                tft.drawLine(dx, dy + 5, dx + pw, dy, TFT_WHITE);
-                iter->old_value++;
-                tft.drawLine(dx, dy - 6, dx + pw, dy - 1, TFT_RED);
-            }
-        }
-    }
 }
 }
