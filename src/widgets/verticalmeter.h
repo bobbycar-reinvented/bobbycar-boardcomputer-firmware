@@ -46,6 +46,8 @@ void VerticalMeter::start()
 
 void VerticalMeter::redraw(int value)
 {
+    tft.setTextColor(TFT_GREEN, TFT_BLACK);
+
     char buf[8];
     dtostrf(value, 4, 0, buf);
     tft.drawRightString(buf, m_x + 36 - 5, 187 - 27 + 155 - 18, 2);
