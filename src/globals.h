@@ -21,7 +21,7 @@ float gas, brems;
 int16_t raw_gametrakX, raw_gametrakY, raw_gametrakDist;
 float gametrakX, gametrakY, gametrakDist;
 #endif
-float avgSpeed, avgSpeedKmh, sumCurrent, sumAbsoluteCurrent;
+float avgSpeed, avgSpeedKmh, sumCurrent;
 
 char deviceName[32];
 

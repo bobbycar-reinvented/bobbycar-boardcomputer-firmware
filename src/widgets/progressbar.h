@@ -7,9 +7,7 @@ namespace {
 class ProgressBar
 {
 public:
-    ProgressBar(int x, int y, int width, int height, int min, int max, uint32_t color=TFT_YELLOW) :
-        m_x{x}, m_y{y}, m_width{width}, m_height{height}, m_min{min}, m_max{max}, m_color{color}
-    {}
+    ProgressBar(int x, int y, int width, int height, int min, int max, uint32_t color=TFT_YELLOW);
 
     void start();
     void redraw(int value);
@@ -23,11 +21,17 @@ private:
     const int m_max;
     const uint32_t m_color;
 
-    int m_lastValue{m_x+1};
+    int m_lastValue;
 };
+
+ProgressBar::ProgressBar(int x, int y, int width, int height, int min, int max, uint32_t color) :
+    m_x{x}, m_y{y}, m_width{width}, m_height{height}, m_min{min}, m_max{max}, m_color{color}
+{
+}
 
 void ProgressBar::start()
 {
+    m_lastValue = m_x+1;
     tft.drawRect(m_x, m_y, m_width, m_height, TFT_WHITE);
 }
 

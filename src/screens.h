@@ -195,7 +195,6 @@ union X {
     AvgSpeedGraphDisplay avgSpeedGraphDisplay;
     AvgSpeedKmhGraphDisplay avgSpeedKmhGraphDisplay;
     SumCurrentGraphDisplay sumCurrentGraphDisplay;
-    SumAbsoluteCurrentGraphDisplay sumAbsoluteCurrentGraphDisplay;
     FrontVoltageGraphDisplay frontVoltageGraphDisplay;
     BackVoltageGraphDisplay backVoltageGraphDisplay;
 #ifdef FEATURE_BMS
@@ -348,7 +347,6 @@ template<> decltype(displays.bremsGraphDisplay)                                &
 template<> decltype(displays.avgSpeedGraphDisplay)                             &getRefByType<decltype(displays.avgSpeedGraphDisplay)>()                             { return displays.avgSpeedGraphDisplay; }
 template<> decltype(displays.avgSpeedKmhGraphDisplay)                          &getRefByType<decltype(displays.avgSpeedKmhGraphDisplay)>()                          { return displays.avgSpeedKmhGraphDisplay; }
 template<> decltype(displays.sumCurrentGraphDisplay)                           &getRefByType<decltype(displays.sumCurrentGraphDisplay)>()                           { return displays.sumCurrentGraphDisplay; }
-template<> decltype(displays.sumAbsoluteCurrentGraphDisplay)                   &getRefByType<decltype(displays.sumAbsoluteCurrentGraphDisplay)>()                   { return displays.sumAbsoluteCurrentGraphDisplay; }
 template<> decltype(displays.frontVoltageGraphDisplay)                         &getRefByType<decltype(displays.frontVoltageGraphDisplay)>()                         { return displays.frontVoltageGraphDisplay; }
 template<> decltype(displays.backVoltageGraphDisplay)                          &getRefByType<decltype(displays.backVoltageGraphDisplay)>()                          { return displays.backVoltageGraphDisplay; }
 #ifdef FEATURE_BMS

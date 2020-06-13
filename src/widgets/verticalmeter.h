@@ -7,21 +7,22 @@ namespace {
 class VerticalMeter
 {
 public:
-    VerticalMeter(const char *text, int x, int y);
+    VerticalMeter(const char *text, const char *format, int x, int y);
 
     void start();
     void redraw(float value, float min, float max);
 
 private:
     const char * const m_text;
+    const char * const m_format;
     const int m_x;
     const int m_y;
 
     float m_oldValue{};
 };
 
-VerticalMeter::VerticalMeter(const char *text, int x, int y) :
-    m_text{text}, m_x{x}, m_y{y}
+VerticalMeter::VerticalMeter(const char *text, const char *format, int x, int y) :
+    m_text{text}, m_format{format}, m_x{x}, m_y{y}
 {
 }
 
@@ -49,8 +50,8 @@ void VerticalMeter::redraw(float value, float min, float max)
 {
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
 
-    char buf[8];
-    dtostrf(value, 4, 0, buf);
+    char buf[16];
+    snprintf(&buf[0], 16, m_format, value);
     tft.drawRightString(buf, m_x + 36 - 5, 187 - 27 + 155 - 18, 2);
 
     const int dx = 3 + m_x;
