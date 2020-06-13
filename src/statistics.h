@@ -9,7 +9,7 @@
 namespace {
 namespace statistics {
 using ContainerType = ring_buffer<float, 200>;
-ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, sumAbsoluteCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent
+ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent
 #ifdef FEATURE_BMS
 , bmsVoltage, bmsCurrent, bmsPower
 #endif
@@ -23,7 +23,6 @@ void pushStats()
     statistics::avgSpeed.push_back(avgSpeed);
     statistics::avgSpeedKmh.push_back(avgSpeedKmh);
     statistics::sumCurrent.push_back(sumCurrent);
-    statistics::sumAbsoluteCurrent.push_back(sumAbsoluteCurrent);
     if (controllers.front.feedbackValid)
     {
         statistics::frontVoltage.push_back(fixBatVoltage(controllers.front.feedback.batVoltage));
@@ -61,7 +60,6 @@ using BremsStatistics = BufferAccessorImpl<statistics::brems>;
 using AvgSpeedStatistics = BufferAccessorImpl<statistics::avgSpeed>;
 using AvgSpeedKmhStatistics = BufferAccessorImpl<statistics::avgSpeedKmh>;
 using SumCurrentStatistics = BufferAccessorImpl<statistics::sumCurrent>;
-using SumAbsoluteCurrentStatistics = BufferAccessorImpl<statistics::sumAbsoluteCurrent>;
 using FrontVoltageStatistics = BufferAccessorImpl<statistics::frontVoltage>;
 using BackVoltageStatistics = BufferAccessorImpl<statistics::backVoltage>;
 #ifdef FEATURE_BMS

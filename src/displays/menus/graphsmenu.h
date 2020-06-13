@@ -20,7 +20,6 @@ using BremsGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_BREMS>,
 using AvgSpeedGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_AVGSPEED>, MultiStatisticsSingleImpl, AvgSpeedStatistics>;
 using AvgSpeedKmhGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_AVGSPEEDKMH>, MultiStatisticsSingleImpl, AvgSpeedKmhStatistics>;
 using SumCurrentGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_SUMCURRENT>, MultiStatisticsSingleImpl, SumCurrentStatistics>;
-using SumAbsoluteCurrentGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_SUMABSOLUTECURRENT>, MultiStatisticsSingleImpl, SumAbsoluteCurrentStatistics>;
 using FrontVoltageGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_FRONTVOLTAGE>, MultiStatisticsSingleImpl, FrontVoltageStatistics>;
 using BackVoltageGraphDisplay = makeComponent<GraphDisplay<1>, StaticText<TEXT_BACKVOLTAGE>, MultiStatisticsSingleImpl, BackVoltageStatistics>;
 #ifdef FEATURE_BMS
@@ -57,7 +56,6 @@ class GraphsMenu :
         makeComponent<MenuItem, StaticText<TEXT_AVGSPEED>,              SwitchScreenAction<AvgSpeedGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_AVGSPEEDKMH>,           SwitchScreenAction<AvgSpeedKmhGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_SUMCURRENT>,            SwitchScreenAction<SumCurrentGraphDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_SUMABSOLUTECURRENT>,    SwitchScreenAction<SumAbsoluteCurrentGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_FRONTVOLTAGE>,          SwitchScreenAction<FrontVoltageGraphDisplay>>,
         makeComponent<MenuItem, StaticText<TEXT_BACKVOLTAGE>,           SwitchScreenAction<BackVoltageGraphDisplay>>,
 #ifdef FEATURE_BMS

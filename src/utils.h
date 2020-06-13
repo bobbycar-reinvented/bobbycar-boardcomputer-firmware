@@ -266,7 +266,6 @@ void updateAccumulators()
 {
     avgSpeed = 0.f;
     sumCurrent = 0.f;
-    sumAbsoluteCurrent = 0.f;
     uint8_t count{0};
 
     for (const Controller &controller : controllers)
@@ -282,10 +281,6 @@ void updateAccumulators()
                 controller.feedback.left.current +
                 controller.feedback.right.current;
 
-        sumAbsoluteCurrent +=
-                std::abs(controller.feedback.left.current) +
-                std::abs(controller.feedback.right.current);
-
         count +=2;
     }
 
@@ -293,7 +288,6 @@ void updateAccumulators()
         avgSpeed /= count;
 
     sumCurrent = fixCurrent(sumCurrent);
-    sumAbsoluteCurrent = fixCurrent(sumAbsoluteCurrent);
 
     avgSpeedKmh = convertToKmh(avgSpeed);
 }

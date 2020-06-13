@@ -181,7 +181,6 @@ constexpr char TEXT_BREMS[] = "Brems";
 constexpr char TEXT_AVGSPEED[] = "Avg. speed";
 constexpr char TEXT_AVGSPEEDKMH[] = "Avg. speed KMH";
 constexpr char TEXT_SUMCURRENT[] = "Sum current";
-constexpr char TEXT_SUMABSOLUTECURRENT[] = "Sum absolute current";
 constexpr char TEXT_FRONTVOLTAGE[] = "Front voltage";
 constexpr char TEXT_BACKVOLTAGE[] = "Back voltage";
 constexpr char TEXT_BMSVOLTAGE[] = "BMS voltage";
