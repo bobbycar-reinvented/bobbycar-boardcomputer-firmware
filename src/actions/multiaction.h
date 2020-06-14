@@ -12,11 +12,8 @@ class MultiAction<T> : public virtual ActionInterface
 public:
     void triggered() override
     {
-        m_action.triggered();
+        T{}.triggered();
     }
-
-private:
-    T m_action;
 };
 
 template<typename T, typename ...Tmore>
@@ -25,11 +22,8 @@ class MultiAction<T, Tmore...> : public virtual MultiAction<Tmore...>
 public:
     void triggered() override
     {
-        m_action.triggered();
+        T{}.triggered();
         MultiAction<Tmore...>::triggered();
     }
-
-private:
-    T m_action;
 };
 }

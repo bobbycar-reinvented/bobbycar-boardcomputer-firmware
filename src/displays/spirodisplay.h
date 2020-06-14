@@ -13,7 +13,7 @@ class DemosMenu;
 }
 
 namespace {
-class SpiroDisplay : public Display, public SwitchScreenAction<DemosMenu>, public BackActionInterface<SwitchScreenAction<DemosMenu>>
+class SpiroDisplay : public Display, public SwitchScreenAction<DemosMenu>, public DummyConfirm, public BackActionInterface<SwitchScreenAction<DemosMenu>>
 {
 public:
     void initScreen() override;

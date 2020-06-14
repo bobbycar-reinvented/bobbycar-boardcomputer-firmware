@@ -12,7 +12,7 @@ class MainMenu;
 }
 
 namespace {
-class PoweroffDisplay : public Display
+class PoweroffDisplay : public Display, public DummyConfirm, public DummyBack
 {
 public:
     void start() override;

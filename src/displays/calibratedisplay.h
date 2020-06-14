@@ -189,12 +189,12 @@ void CalibrateDisplay::redraw()
             }
             __builtin_unreachable();
         }());
-        tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
         if (m_selectedButton != m_renderedButton && (m_selectedButton == 0 || m_renderedButton == 0))
-            tft.drawRect(23, 275, 100, 27, m_selectedButton == 0 ? color : TFT_BLACK);
+            tft.drawRect(3, 275, 100, 27, m_selectedButton == 0 ? color : TFT_BLACK);
     }
 
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
     m_labels[10].redraw([&](){
         switch (m_status)
         {
@@ -203,13 +203,13 @@ void CalibrateDisplay::redraw()
         case Status::GasMax:
         case Status::BremsMin:
         case Status::BremsMax:
-        case Status::Confirm: return "Restart";
+        case Status::Confirm: return "Abort";
         }
         __builtin_unreachable();
     }());
 
     if (m_selectedButton != m_renderedButton && (m_selectedButton == 1 || m_renderedButton == 1))
-        tft.drawRect(143, 275, 100, 27, m_selectedButton == 1 ? TFT_WHITE : TFT_BLACK);
+        tft.drawRect(123, 275, 100, 27, m_selectedButton == 1 ? TFT_WHITE : TFT_BLACK);
 
     m_renderedButton = m_selectedButton;
 }

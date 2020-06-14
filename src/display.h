@@ -11,30 +11,38 @@ class ChangeValueDisplayInterface;
 namespace {
 class ConfirmInterface {
 public:
-    virtual void confirm() {}
+    virtual void confirm() = 0;
 };
 
 class BackInterface {
 public:
-    virtual void back() {}
+    virtual void back() = 0;
 };
 
 template<typename T>
 class ConfirmActionInterface : public virtual ConfirmInterface
 {
-    T m_action;
-
 public:
-    void confirm() override { m_action.triggered(); }
+    void confirm() override { T{}.triggered(); }
+};
+
+class DummyConfirm : public virtual ConfirmInterface
+{
+public:
+    void confirm() override {}
 };
 
 template<typename T>
 class BackActionInterface : public virtual BackInterface
 {
-    T m_action;
-
 public:
-    void back() override { m_action.triggered(); }
+    void back() override { T{}.triggered(); }
+};
+
+class DummyBack : public virtual BackInterface
+{
+public:
+    void back() override {}
 };
 
 class Display : public virtual ConfirmInterface, public virtual BackInterface {
