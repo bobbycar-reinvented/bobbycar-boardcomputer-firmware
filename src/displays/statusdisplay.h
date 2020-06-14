@@ -20,7 +20,7 @@ class MetersDisplay;
 }
 
 namespace {
-class StatusDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<MainMenu>>
+class StatusDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<MainMenu>>, public DummyBack
 {
 public:
     void initScreen() override;

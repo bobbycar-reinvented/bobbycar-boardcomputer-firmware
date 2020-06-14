@@ -15,15 +15,16 @@ class Graph
     static constexpr int leftMargin = 40;
 
 public:
+    using Container = std::array<std::reference_wrapper<const ring_buffer<float, LENGTH>>, COUNT>;
     static constexpr int WIDTH = LENGTH+40;
 
     Graph(int x, int y, int height);
 
-    void start(const std::array<std::reference_wrapper<const ring_buffer<float, LENGTH>>, COUNT> &buffers);
-    void redraw(const std::array<std::reference_wrapper<const ring_buffer<float, LENGTH>>, COUNT> &buffers);
+    void start(const Container &buffers);
+    void redraw(const Container &buffers);
 
 private:
-    void render(const std::array<std::reference_wrapper<const ring_buffer<float, LENGTH>>, COUNT> &buffers, bool delta);
+    void render(const Container &buffers, bool delta);
 
     const int m_x, m_y, m_height;
 
@@ -49,7 +50,7 @@ Graph<LENGTH, COUNT>::Graph(int x, int y, int height) :
 }
 
 template<size_t LENGTH, size_t COUNT>
-void Graph<LENGTH, COUNT>::start(const std::array<std::reference_wrapper<const ring_buffer<float, LENGTH>>, COUNT> &buffers)
+void Graph<LENGTH, COUNT>::start(const Container &buffers)
 {
     m_min = 0.f;
     m_max = 10.f;
@@ -66,13 +67,13 @@ void Graph<LENGTH, COUNT>::start(const std::array<std::reference_wrapper<const r
 }
 
 template<size_t LENGTH, size_t COUNT>
-void Graph<LENGTH, COUNT>::redraw(const std::array<std::reference_wrapper<const ring_buffer<float, LENGTH>>, COUNT> &buffers)
+void Graph<LENGTH, COUNT>::redraw(const Container &buffers)
 {
     render(buffers, true);
 }
 
 template<size_t LENGTH, size_t COUNT>
-void Graph<LENGTH, COUNT>::render(const std::array<std::reference_wrapper<const ring_buffer<float, LENGTH>>, COUNT> &buffers, bool delta)
+void Graph<LENGTH, COUNT>::render(const Container &buffers, bool delta)
 {
     float min{std::numeric_limits<float>::quiet_NaN()}, max{std::numeric_limits<float>::quiet_NaN()};
     bool first{true};

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "display.h"
-#include "actions/switchscreenaction.h"
 #include "textinterface.h"
 #include "widgets/label.h"
 #include "widgets/graph.h"
@@ -9,23 +8,30 @@
 #include "statistics.h"
 
 namespace {
-class GraphsMenu;
-}
-
-namespace {
 template<size_t COUNT>
-class MultiStatisticsInterface
+class GraphAccessorInterface
 {
 public:
     virtual std::array<std::reference_wrapper<const statistics::ContainerType>, COUNT> getBuffers() const = 0;
 };
 
-class MultiStatisticsSingleImpl : public virtual MultiStatisticsInterface<1>, public virtual BufferAccessorInterface
+template<typename T>
+class SingleGraphAccessor : public virtual GraphAccessorInterface<1>
 {
 public:
-    std::array<std::reference_wrapper<const statistics::ContainerType>, 1> getBuffers() const
+    Graph<200, 1>::Container getBuffers() const
     {
-        return {getBuffer()};
+        return {T{}.getBuffer()};
+    }
+};
+
+template<typename T1, typename T2>
+class DualGraphAccessor : public virtual GraphAccessorInterface<2>
+{
+public:
+    Graph<200, 2>::Container getBuffers() const
+    {
+        return {T1{}.getBuffer(), T2{}.getBuffer()};
     }
 };
 
@@ -33,9 +39,7 @@ template<size_t COUNT>
 class GraphDisplay :
         public Display,
         public virtual TextInterface,
-        public ConfirmActionInterface<SwitchScreenAction<GraphsMenu>>,
-        public BackActionInterface<SwitchScreenAction<GraphsMenu>>,
-        public virtual MultiStatisticsInterface<COUNT>
+        public virtual GraphAccessorInterface<COUNT>
 {
 public:
     void initScreen() override;
@@ -58,7 +62,7 @@ void GraphDisplay<COUNT>::initScreen()
     m_titleLabel.start();
     tft.fillRect(0, 34, tft.width(), 3, TFT_WHITE);
 
-    m_graph.start(static_cast<const MultiStatisticsInterface<COUNT> &>(*this).getBuffers());
+    m_graph.start(static_cast<const GraphAccessorInterface<COUNT> &>(*this).getBuffers());
 }
 
 template<size_t COUNT>
@@ -68,6 +72,6 @@ void GraphDisplay<COUNT>::redraw()
     tft.setTextColor(TFT_YELLOW, TFT_BLACK);
     m_titleLabel.redraw(text());
 
-    m_graph.redraw(static_cast<const MultiStatisticsInterface<COUNT> &>(*this).getBuffers());
+    m_graph.redraw(static_cast<const GraphAccessorInterface<COUNT> &>(*this).getBuffers());
 }
 }

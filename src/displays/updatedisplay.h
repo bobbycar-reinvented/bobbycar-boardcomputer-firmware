@@ -19,7 +19,7 @@ class StatusDisplay;
 
 namespace {
 #ifdef FEATURE_OTA
-class UpdateDisplay : public Display
+class UpdateDisplay : public Display, public DummyBack
 {
 public:
     UpdateDisplay(const String &title);

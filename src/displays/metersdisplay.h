@@ -39,12 +39,12 @@ private:
 
     static constexpr auto x = 40;
     std::array<VerticalMeter, 6> meters{{
-        VerticalMeter{"U f", "%.1fV", 0*x, 160},
-        VerticalMeter{"U b", "%.1fV", 1*x, 160},
-        VerticalMeter{"Ivl", "%.1fA", 2*x, 160},
-        VerticalMeter{"Ivr", "%.1fA", 3*x, 160},
-        VerticalMeter{"Ihl", "%.1fA", 4*x, 160},
-        VerticalMeter{"Ihr", "%.1fA", 5*x, 160}
+        VerticalMeter{"U f", "%.1f", 0*x, 160},
+        VerticalMeter{"U b", "%.1f", 1*x, 160},
+        VerticalMeter{"Ibl", "%.1f", 2*x, 160},
+        VerticalMeter{"Ibr", "%.1f", 3*x, 160},
+        VerticalMeter{"Ihl", "%.1f", 4*x, 160},
+        VerticalMeter{"Ihr", "%.1f", 5*x, 160}
     }};
 };
 

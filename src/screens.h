@@ -35,7 +35,6 @@
 #include "displays/menus/wifisettingsmenu.h"
 #include "displays/bmsdisplay.h"
 #include "displays/calibratedisplay.h"
-#include "displays/dualgraphdisplay.h"
 #include "displays/gameoflifedisplay.h"
 #include "displays/gametrakcalibratedisplay.h"
 #include "displays/lockscreen.h"
@@ -108,7 +107,6 @@ union X {
     BmsDisplay bmsDisplay;
 #endif
     CalibrateDisplay calibrateDisplay;
-    DualGraphDisplay dualGraphDisplay;
     GameOfLifeDisplay gameOfLifeDisplay;
 #ifdef FEATURE_GAMETRAK
     GametrakCalibrateDisplay gametrakCalibrateDisplay;
@@ -192,11 +190,15 @@ union X {
 
     GasGraphDisplay gasGraphDisplay;
     BremsGraphDisplay bremsGraphDisplay;
+    PotisGraphDisplay potisGraphDisplay;
+    PotisSplitGraphDisplay potisSplitGraphDisplay;
     AvgSpeedGraphDisplay avgSpeedGraphDisplay;
     AvgSpeedKmhGraphDisplay avgSpeedKmhGraphDisplay;
     SumCurrentGraphDisplay sumCurrentGraphDisplay;
     FrontVoltageGraphDisplay frontVoltageGraphDisplay;
     BackVoltageGraphDisplay backVoltageGraphDisplay;
+    VoltagesGraphDisplay voltagesGraphDisplay;
+    VoltagesSplitGraphDisplay voltagesSplitGraphDisplay;
 #ifdef FEATURE_BMS
     BmsVoltageGraphDisplay bmsVoltageGraphDisplay;
     BmsCurrentGraphDisplay bmsCurrentGraphDisplay;
@@ -260,7 +262,6 @@ template<> decltype(displays.wifiSettingsMenu)                                 &
 template<> decltype(displays.bmsDisplay)                                       &getRefByType<decltype(displays.bmsDisplay)>()                                       { return displays.bmsDisplay; }
 #endif
 template<> decltype(displays.calibrateDisplay)                                 &getRefByType<decltype(displays.calibrateDisplay)>()                                 { return displays.calibrateDisplay; }
-template<> decltype(displays.dualGraphDisplay)                                 &getRefByType<decltype(displays.dualGraphDisplay)>()                                 { return displays.dualGraphDisplay; }
 template<> decltype(displays.gameOfLifeDisplay)                                &getRefByType<decltype(displays.gameOfLifeDisplay)>()                                { return displays.gameOfLifeDisplay; }
 #ifdef FEATURE_GAMETRAK
 template<> decltype(displays.gametrakCalibrateDisplay)                         &getRefByType<decltype(displays.gametrakCalibrateDisplay)>()                         { return displays.gametrakCalibrateDisplay; }
@@ -344,11 +345,15 @@ template<> decltype(displays.wifiTxPowerChangeScreen)                          &
 
 template<> decltype(displays.gasGraphDisplay)                                  &getRefByType<decltype(displays.gasGraphDisplay)>()                                  { return displays.gasGraphDisplay; }
 template<> decltype(displays.bremsGraphDisplay)                                &getRefByType<decltype(displays.bremsGraphDisplay)>()                                { return displays.bremsGraphDisplay; }
+template<> decltype(displays.potisGraphDisplay)                                &getRefByType<decltype(displays.potisGraphDisplay)>()                                { return displays.potisGraphDisplay; }
+template<> decltype(displays.potisSplitGraphDisplay)                           &getRefByType<decltype(displays.potisSplitGraphDisplay)>()                           { return displays.potisSplitGraphDisplay; }
 template<> decltype(displays.avgSpeedGraphDisplay)                             &getRefByType<decltype(displays.avgSpeedGraphDisplay)>()                             { return displays.avgSpeedGraphDisplay; }
 template<> decltype(displays.avgSpeedKmhGraphDisplay)                          &getRefByType<decltype(displays.avgSpeedKmhGraphDisplay)>()                          { return displays.avgSpeedKmhGraphDisplay; }
 template<> decltype(displays.sumCurrentGraphDisplay)                           &getRefByType<decltype(displays.sumCurrentGraphDisplay)>()                           { return displays.sumCurrentGraphDisplay; }
 template<> decltype(displays.frontVoltageGraphDisplay)                         &getRefByType<decltype(displays.frontVoltageGraphDisplay)>()                         { return displays.frontVoltageGraphDisplay; }
 template<> decltype(displays.backVoltageGraphDisplay)                          &getRefByType<decltype(displays.backVoltageGraphDisplay)>()                          { return displays.backVoltageGraphDisplay; }
+template<> decltype(displays.voltagesGraphDisplay)                             &getRefByType<decltype(displays.voltagesGraphDisplay)>()                             { return displays.voltagesGraphDisplay; }
+template<> decltype(displays.voltagesSplitGraphDisplay)                        &getRefByType<decltype(displays.voltagesSplitGraphDisplay)>()                        { return displays.voltagesSplitGraphDisplay; }
 #ifdef FEATURE_BMS
 template<> decltype(displays.bmsVoltageGraphDisplay)                           &getRefByType<decltype(displays.bmsVoltageGraphDisplay)>()                           { return displays.bmsVoltageGraphDisplay; }
 template<> decltype(displays.bmsCurrentGraphDisplay)                           &getRefByType<decltype(displays.bmsCurrentGraphDisplay)>()                           { return displays.bmsCurrentGraphDisplay; }

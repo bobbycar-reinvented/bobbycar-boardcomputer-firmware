@@ -14,7 +14,7 @@ class MainMenu;
 }
 
 namespace {
-class Lockscreen : public Display
+class Lockscreen : public Display, public DummyBack
 {
     using Base = Display;
 
