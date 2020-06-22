@@ -24,7 +24,7 @@ public:
         while (m_serial.get().available())
         {
             m_incomingByte    = m_serial.get().read();                                // Read the incoming byte
-            m_bufStartFrame = ((uint16_t)(m_incomingBytePrev) << 8) +  m_incomingByte; // Construct the start frame
+            m_bufStartFrame = ((uint16_t)(m_incomingBytePrev) << 8) + m_incomingByte; // Construct the start frame
 
             //Serial.printf("received: %x\r\n", m_incomingByte);
 

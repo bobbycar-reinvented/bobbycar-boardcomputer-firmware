@@ -54,6 +54,7 @@ constexpr char TEXT_BACKRIGHTFEEDBACK[] = "Back right feedback";
 constexpr char TEXT_MAINMENU[] = "Main menu";
 constexpr char TEXT_STATUS[] = "Status";
 constexpr char TEXT_SELECTMODE[] = "Select mode";
+constexpr char TEXT_MODESETTINGS[] = "Mode settings";
 constexpr char TEXT_PRESETS[] = "Presets";
 constexpr char TEXT_GRAPHS[] = "Graphs";
 //constexpr char TEXT_BMS[] = "BMS";

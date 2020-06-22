@@ -38,7 +38,6 @@ void DefaultMode::update()
         else
             gas = 0;
     }
-    const auto gas_squared = (gas * gas) / 1000;
 
     if (waitForBremsLoslass)
     {
@@ -47,6 +46,8 @@ void DefaultMode::update()
         else
             brems = 0;
     }
+
+    const auto gas_squared = (gas * gas) / 1000;
     const auto brems_squared = (brems * brems) / 1000;
 
     const auto now = millis();
