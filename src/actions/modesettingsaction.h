@@ -28,8 +28,10 @@ void ModeSettingsAction::triggered()
         switchScreen<TempomatModeSettingsMenu>();
     else if (currentMode == &modes::larsmMode)
         switchScreen<LarsmModeSettingsMenu>();
+#ifdef FEATURE_GAMETRAK
     else if (currentMode == &modes::gametrakMode)
         switchScreen<GametrakModeSettingsMenu>();
+#endif
     else
         Serial.println("Unknown mode, cannot open settings for it");
 }
