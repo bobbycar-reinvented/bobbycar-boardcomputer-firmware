@@ -177,7 +177,13 @@ void initWebserver()
             return;
         }
 
-        menuDisplay->itemPressed(index);
+        if (index < 0 || index >= menuDisplay->size())
+        {
+            webServer.send(400, "text/plain", "index out of range");
+            return;
+        }
+
+        menuDisplay->getMenuItem(index).triggered();
 
         webServer.sendHeader("Connection", "close");
         webServer.sendHeader("Location", "/");

@@ -104,11 +104,7 @@ void MenuDisplay::update()
         const auto offset = m_rotateOffset;
         m_rotateOffset = 0;
 
-        const auto itemCount = [&](){
-            int i{0};
-            runForEveryMenuItem([&](MenuItem&){ i++; });
-            return i;
-        }();
+        const auto itemCount = size();
 
         if (itemCount)
         {
@@ -251,9 +247,6 @@ void MenuDisplay::itemPressed(int index)
 {
     int i{0};
 
-    runForEveryMenuItem([&](MenuItem &item){
-        if (i++ == index)
-            item.triggered();
-    });
+    getMenuItem(index).triggered();
 }
 }
