@@ -107,6 +107,8 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
 
 constexpr Settings::DefaultMode defaultDefaultMode {
     .modelMode = UnifiedModelMode::FocTorque,
+    .squareGas = true,
+    .squareBrems = true,
     .enableSmoothing = true,
     .smoothing = 20,
     .frontPercentage = 100,
@@ -120,6 +122,8 @@ constexpr Settings::DefaultMode defaultDefaultMode {
 
 constexpr Settings::DefaultMode sinusoidalDefaultMode {
     .modelMode = UnifiedModelMode::Sinusoidal,
+    .squareGas = true,
+    .squareBrems = true,
     .enableSmoothing = true,
     .smoothing = 20,
     .frontPercentage = 100,

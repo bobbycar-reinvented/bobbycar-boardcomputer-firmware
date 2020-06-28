@@ -141,6 +141,8 @@ constexpr char TEXT_DYNAMICMENU[] = "Dynamic menu";
 //DefaultModeSettingsMenu
 //constexpr char TEXT_DEFAULTMODESETTINGS[] = "Default mode settings";
 constexpr char TEXT_SETMODELMODE[] = "Set model mode";
+constexpr char TEXT_SQUAREGAS[] = "Square gas";
+constexpr char TEXT_SQUAREBREMS[] = "Square brems";
 constexpr char TEXT_ENABLESMOOTHING[] = "Enable smoothing";
 constexpr char TEXT_SETSMOOTHING[] = "Set smoothing";
 constexpr char TEXT_SETFRONTPERCENTAGE[] = "Set front percentage";
