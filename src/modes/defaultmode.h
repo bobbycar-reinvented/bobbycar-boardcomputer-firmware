@@ -38,7 +38,6 @@ void DefaultMode::update()
         else
             gas = 0;
     }
-    const auto gas_squared = (gas * gas) / 1000;
 
     if (waitForBremsLoslass)
     {
@@ -47,14 +46,16 @@ void DefaultMode::update()
         else
             brems = 0;
     }
-    const auto brems_squared = (brems * brems) / 1000;
+
+    const auto gas_processed = settings.defaultMode.squareGas ? (gas * gas) / 1000.f : gas;
+    const auto brems_processed = settings.defaultMode.squareBrems ? (brems * brems) / 1000 : brems;
 
     const auto now = millis();
 
     float pwm;
-    if (gas_squared >= settings.defaultMode.add_schwelle)
+    if (gas_processed >= settings.defaultMode.add_schwelle)
     {
-        pwm = (gas_squared/1000.*settings.defaultMode.gas1_wert) + (brems_squared/1000.*settings.defaultMode.brems1_wert);
+        pwm = (gas_processed/1000.*settings.defaultMode.gas1_wert) + (brems_processed/1000.*settings.defaultMode.brems1_wert);
 
         if (settings.defaultMode.enableSmoothing && (pwm > 1000. || lastPwm > 1000.))
         {
@@ -71,7 +72,7 @@ void DefaultMode::update()
         }
     }
     else
-        pwm = (gas_squared/1000.*settings.defaultMode.gas2_wert) - (brems_squared/1000.*settings.defaultMode.brems2_wert);
+        pwm = (gas_processed/1000.*settings.defaultMode.gas2_wert) - (brems_processed/1000.*settings.defaultMode.brems2_wert);
 
     lastPwm = pwm;
     lastTime = now;

@@ -16,37 +16,30 @@ struct ControllerTexts
     struct PoweroffText : public virtual TextInterface { public: String text() const override { return String{"poweroff: "} + toString(controller::get().command.poweroff); } };
     struct LedText : public virtual TextInterface { public: String text() const override { return String{"led: "} + toString(controller::get().command.led); } };
 
-    struct LeftCommand
-    {
-        LeftCommand() = delete;
-        ~LeftCommand() = delete;
+private:
+    struct LeftCommandGetter { static const MotorState &get() { return controller::get().command.left; } };
+    struct RightCommandGetter { static const MotorState &get() { return controller::get().command.right; } };
 
-        struct EnableText : public virtual TextInterface { public: String text() const override { return String{"enable: "} + toString(controller::get().command.left.enable); } };
-        struct PwmText : public virtual TextInterface { public: String text() const override { return String{"pwm: "} + toString(controller::get().command.left.pwm); } };
-        struct CtrlTypText : public virtual TextInterface { public: String text() const override { return String{"ctrlTyp: "} + toString(controller::get().command.left.ctrlTyp); } };
-        struct CtrlModText : public virtual TextInterface { public: String text() const override { return String{"ctrlMod: "} + toString(controller::get().command.left.ctrlMod); } };
-        struct IMotMaxText : public virtual TextInterface { public: String text() const override { return String{"iMotMax: "} + toString(controller::get().command.left.iMotMax); } };
-        struct IDcMaxText : public virtual TextInterface { public: String text() const override { return String{"iDcMax: "} + toString(controller::get().command.left.iDcMax); } };
-        struct NMotMaxText : public virtual TextInterface { public: String text() const override { return String{"nMotMax: "} + toString(controller::get().command.left.nMotMax); } };
-        struct FieldWeakMaxText : public virtual TextInterface { public: String text() const override { return String{"fieldWeakMax: "} + toString(controller::get().command.left.fieldWeakMax); } };
-        struct PhaseAdvMaxText : public virtual TextInterface { public: String text() const override { return String{"phaseAdvMax: "} + toString(controller::get().command.left.phaseAdvMax); } };
+    template<typename MotorStateGetter>
+    struct CommandTexts
+    {
+        CommandTexts() = delete;
+        ~CommandTexts() = delete;
+
+        struct EnableText : public virtual TextInterface { public: String text() const override { return String{"enable: "} + toString(MotorStateGetter::get().enable); } };
+        struct PwmText : public virtual TextInterface { public: String text() const override { return String{"pwm: "} + toString(MotorStateGetter::get().pwm); } };
+        struct CtrlTypText : public virtual TextInterface { public: String text() const override { return String{"ctrlTyp: "} + toString(MotorStateGetter::get().ctrlTyp); } };
+        struct CtrlModText : public virtual TextInterface { public: String text() const override { return String{"ctrlMod: "} + toString(MotorStateGetter::get().ctrlMod); } };
+        struct IMotMaxText : public virtual TextInterface { public: String text() const override { return String{"iMotMax: "} + toString(MotorStateGetter::get().iMotMax); } };
+        struct IDcMaxText : public virtual TextInterface { public: String text() const override { return String{"iDcMax: "} + toString(MotorStateGetter::get().iDcMax); } };
+        struct NMotMaxText : public virtual TextInterface { public: String text() const override { return String{"nMotMax: "} + toString(MotorStateGetter::get().nMotMax); } };
+        struct FieldWeakMaxText : public virtual TextInterface { public: String text() const override { return String{"fieldWeakMax: "} + toString(MotorStateGetter::get().fieldWeakMax); } };
+        struct PhaseAdvMaxText : public virtual TextInterface { public: String text() const override { return String{"phaseAdvMax: "} + toString(MotorStateGetter::get().phaseAdvMax); } };
     };
 
-    struct RightCommand
-    {
-        RightCommand() = delete;
-        ~RightCommand() = delete;
-
-        struct EnableText : public virtual TextInterface { public: String text() const override { return String{"enable: "} + toString(controller::get().command.right.enable); } };
-        struct PwmText : public virtual TextInterface { public: String text() const override { return String{"pwm: "} + toString(controller::get().command.right.pwm); } };
-        struct CtrlTypText : public virtual TextInterface { public: String text() const override { return String{"ctrlTyp: "} + toString(controller::get().command.right.ctrlTyp); } };
-        struct CtrlModText : public virtual TextInterface { public: String text() const override { return String{"ctrlMod: "} + toString(controller::get().command.right.ctrlMod); } };
-        struct IMotMaxText : public virtual TextInterface { public: String text() const override { return String{"iMotMax: "} + toString(controller::get().command.right.iMotMax); } };
-        struct IDcMaxText : public virtual TextInterface { public: String text() const override { return String{"iDcMax: "} + toString(controller::get().command.right.iDcMax); } };
-        struct NMotMaxText : public virtual TextInterface { public: String text() const override { return String{"nMotMax: "} + toString(controller::get().command.right.nMotMax); } };
-        struct FieldWeakMaxText : public virtual TextInterface { public: String text() const override { return String{"fieldWeakMax: "} + toString(controller::get().command.right.fieldWeakMax); } };
-        struct PhaseAdvMaxText : public virtual TextInterface { public: String text() const override { return String{"phaseAdvMax: "} + toString(controller::get().command.right.phaseAdvMax); } };
-    };
+public:
+    using LeftCommand = CommandTexts<LeftCommandGetter>;
+    using RightCommand = CommandTexts<LeftCommandGetter>;
 
     struct BatVoltageText : public virtual TextInterface { public: String text() const override { auto line = String{"batVoltage: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.batVoltage); return line; } };
     struct BatVoltageFixedText : public virtual TextInterface { public: String text() const override { auto line = String{"batVoltage: "}; if (controller::get().feedbackValid) line += toString(fixBatVoltage(controller::get().feedback.batVoltage)) + 'V'; return line; } };
@@ -54,35 +47,29 @@ struct ControllerTexts
     struct BoardTempFixedText : public virtual TextInterface { public: String text() const override { auto line = String{"boardTemp: "}; if (controller::get().feedbackValid) line += toString(fixBoardTemp(controller::get().feedback.boardTemp)) + 'C'; return line; } };
     struct TimeoutCntSerialText : public virtual TextInterface { public: String text() const override { auto line = String{"timeoutCntSerial: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.timeoutCntSerial); return line; } };
 
-    struct LeftFeedback
-    {
-        LeftFeedback() = delete;
-        ~LeftFeedback() = delete;
+private:
+    struct LeftFeedbackGetter { static const MotorFeedback &get() { return controller::get().feedback.left; } };
+    struct RightFeedbackGetter { static const MotorFeedback &get() { return controller::get().feedback.right; } };
 
-        struct AngleText : public virtual TextInterface { public: String text() const override { auto line = String{"angle: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.left.angle); return line; } };
-        struct SpeedText : public virtual TextInterface { public: String text() const override { auto line = String{"speed: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.left.speed); return line; } };
-        struct SpeedKmhText : public virtual TextInterface { public: String text() const override { auto line = String{"speed kmh: "}; if (controller::get().feedbackValid) line += toString(convertToKmh(controller::get().feedback.left.speed)); return line; } };
-        struct ErrorText : public virtual TextInterface { public: String text() const override { auto line = String{"error: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.left.error); return line; } };
-        struct CurrentText : public virtual TextInterface { public: String text() const override { auto line = String{"current: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.left.current); return line; } };
-        struct CurrentFixedText : public virtual TextInterface { public: String text() const override { auto line = String{"current: "}; if (controller::get().feedbackValid) line += toString(fixCurrent(controller::get().feedback.left.current)) + 'A'; return line; } };
-        struct ChopsText : public virtual TextInterface { public: String text() const override { auto line = String{"chops: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.left.chops); return line; } };
-        struct HallText : public virtual TextInterface { public: String text() const override { auto line = String{"hall: "}; if (controller::get().feedbackValid) line += hallString(controller::get().feedback.left); return line; } };
+    template<typename MotorFeedbackGetter>
+    struct FeedbackTexts
+    {
+        FeedbackTexts() = delete;
+        ~FeedbackTexts() = delete;
+
+        struct AngleText : public virtual TextInterface { public: String text() const override { auto line = String{"angle: "}; if (controller::get().feedbackValid) line += toString(MotorFeedbackGetter::get().angle); return line; } };
+        struct SpeedText : public virtual TextInterface { public: String text() const override { auto line = String{"speed: "}; if (controller::get().feedbackValid) line += toString(MotorFeedbackGetter::get().speed); return line; } };
+        struct SpeedKmhText : public virtual TextInterface { public: String text() const override { auto line = String{"speed kmh: "}; if (controller::get().feedbackValid) line += toString(convertToKmh(MotorFeedbackGetter::get().speed)); return line; } };
+        struct ErrorText : public virtual TextInterface { public: String text() const override { auto line = String{"error: "}; if (controller::get().feedbackValid) line += toString(MotorFeedbackGetter::get().error); return line; } };
+        struct CurrentText : public virtual TextInterface { public: String text() const override { auto line = String{"current: "}; if (controller::get().feedbackValid) line += toString(MotorFeedbackGetter::get().current); return line; } };
+        struct CurrentFixedText : public virtual TextInterface { public: String text() const override { auto line = String{"current: "}; if (controller::get().feedbackValid) line += toString(fixCurrent(MotorFeedbackGetter::get().current)) + 'A'; return line; } };
+        struct ChopsText : public virtual TextInterface { public: String text() const override { auto line = String{"chops: "}; if (controller::get().feedbackValid) line += toString(MotorFeedbackGetter::get().chops); return line; } };
+        struct HallText : public virtual TextInterface { public: String text() const override { auto line = String{"hall: "}; if (controller::get().feedbackValid) line += hallString(MotorFeedbackGetter::get()); return line; } };
     };
 
-    struct RightFeedback
-    {
-        RightFeedback() = delete;
-        ~RightFeedback() = delete;
-
-        struct AngleText : public virtual TextInterface { public: String text() const override { auto line = String{"angle: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.right.angle); return line; } };
-        struct SpeedText : public virtual TextInterface { public: String text() const override { auto line = String{"speed: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.right.speed); return line; } };
-        struct SpeedKmhText : public virtual TextInterface { public: String text() const override { auto line = String{"speed kmh: "}; if (controller::get().feedbackValid) line += toString(convertToKmh(controller::get().feedback.right.speed)); return line; } };
-        struct ErrorText : public virtual TextInterface { public: String text() const override { auto line = String{"error: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.right.error); return line; } };
-        struct CurrentText : public virtual TextInterface { public: String text() const override { auto line = String{"current: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.right.current); return line; } };
-        struct CurrentFixedText : public virtual TextInterface { public: String text() const override { auto line = String{"current: "}; if (controller::get().feedbackValid) line += toString(fixCurrent(controller::get().feedback.right.current)) + 'A'; return line; } };
-        struct ChopsText : public virtual TextInterface { public: String text() const override { auto line = String{"chops: "}; if (controller::get().feedbackValid) line += toString(controller::get().feedback.right.chops); return line; } };
-        struct HallText : public virtual TextInterface { public: String text() const override { auto line = String{"hall: "}; if (controller::get().feedbackValid) line += hallString(controller::get().feedback.right); return line; } };
-    };
+public:
+    using LeftFeedback = FeedbackTexts<LeftFeedbackGetter>;
+    using RightFeedback = FeedbackTexts<RightFeedbackGetter>;
 };
 
 using FrontTexts = ControllerTexts<FrontControllerGetter>;

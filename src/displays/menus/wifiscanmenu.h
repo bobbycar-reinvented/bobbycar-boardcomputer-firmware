@@ -30,6 +30,24 @@ public:
     void update() override;
     void stop() override;
 
+    std::size_t size() const override { return 1 + vec.size(); }
+
+    MenuItem& getMenuItem(std::size_t index) override
+    {
+        if (index == vec.size())
+            return m_backItem;
+
+        return vec[index];
+    }
+
+    const MenuItem& getMenuItem(std::size_t index) const override
+    {
+        if (index == vec.size())
+            return m_backItem;
+
+        return vec[index];
+    }
+
     void runForEveryMenuItem(std::function<void(MenuItem&)> &&callback) override
     {
         for (auto &item : vec)

@@ -72,6 +72,8 @@ struct Settings
 
     struct DefaultMode {
         UnifiedModelMode modelMode;
+        bool squareGas;
+        bool squareBrems;
         bool enableSmoothing;
         int16_t smoothing;
         int16_t frontPercentage;

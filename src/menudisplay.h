@@ -24,8 +24,6 @@ public:
     void rotate(int offset) override;
     void confirm() override;
 
-    virtual void itemPressed(int index);
-
     TextInterface *asTextInterface() override { return this; }
     const TextInterface *asTextInterface() const override { return this; }
 
@@ -104,11 +102,7 @@ void MenuDisplay::update()
         const auto offset = m_rotateOffset;
         m_rotateOffset = 0;
 
-        const auto itemCount = [&](){
-            int i{0};
-            runForEveryMenuItem([&](MenuItem&){ i++; });
-            return i;
-        }();
+        const auto itemCount = size();
 
         if (itemCount)
         {
@@ -141,7 +135,7 @@ void MenuDisplay::update()
     {
         m_pressed = false;
         if (m_selectedIndex >= 0)
-            itemPressed(m_selectedIndex);
+            getMenuItem(m_selectedIndex).triggered();
     }
 }
 
@@ -245,15 +239,5 @@ void MenuDisplay::rotate(int offset)
 void MenuDisplay::confirm()
 {
     m_pressed = true;
-}
-
-void MenuDisplay::itemPressed(int index)
-{
-    int i{0};
-
-    runForEveryMenuItem([&](MenuItem &item){
-        if (i++ == index)
-            item.triggered();
-    });
 }
 }
