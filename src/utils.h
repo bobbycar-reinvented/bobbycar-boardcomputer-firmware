@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <utility>
 
 #include <ArduinoOTA.h>
 #include <WString.h>
@@ -21,6 +22,17 @@ unsigned int lastReverseBeepToggle;
 template<typename ...T>
 class makeComponent : public T...
 {};
+
+template <typename T1, typename T2, typename ...T3>
+class makeComponentArgs : public T1, public T2, public T3...
+{
+public:
+    template<typename ...T>
+    makeComponentArgs(T&& ...args) :
+        T2{std::forward<T>(args)...}
+    {
+    }
+};
 
 template<typename T>
 T scaleBetween(T x, T in_min, T in_max, T out_min, T out_max) {
