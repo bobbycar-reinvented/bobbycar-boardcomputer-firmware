@@ -57,6 +57,7 @@ constexpr char TEXT_STATUS[] = "Status";
 constexpr char TEXT_SELECTMODE[] = "Select mode";
 constexpr char TEXT_MODESETTINGS[] = "Mode settings";
 constexpr char TEXT_PRESETS[] = "Presets";
+constexpr char TEXT_PROFILES[] = "Profiles";
 constexpr char TEXT_GRAPHS[] = "Graphs";
 //constexpr char TEXT_BMS[] = "BMS";
 constexpr char TEXT_SETTINGS[] = "Settings";
@@ -253,6 +254,14 @@ constexpr char TEXT_SETGAMETRAKDISTMIN[] = "Set gametrakDistMin";
 constexpr char TEXT_SETGAMETRAKDISTMAX[] = "Set gametrakDistMax";
 constexpr char TEXT_SWAPSCREENBYTES[] = "Swap screen bytes";
 constexpr char TEXT_TIMERS[] = "Timers";
+//constexpr char TEXT_BACK[] = "Back";
+
+//ProfilesMenu
+//constexpr char TEXT_PROFILES[] = "Profiles";
+constexpr char TEXT_PROFILE0[] = "Profile 0";
+constexpr char TEXT_PROFILE1[] = "Profile 1";
+constexpr char TEXT_PROFILE2[] = "Profile 2";
+constexpr char TEXT_PROFILE3[] = "Profile 3";
 //constexpr char TEXT_BACK[] = "Back";
 
 //PresetsMenu

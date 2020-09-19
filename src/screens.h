@@ -27,6 +27,7 @@
 #include "displays/menus/mosfetsmenu.h"
 #include "displays/menus/motorfeedbackdebugmenu.h"
 #include "displays/menus/motorstatedebugmenu.h"
+#include "displays/menus/profilesmenu.h"
 #include "displays/menus/presetsmenu.h"
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 #include "displays/menus/selectmodemenu.h"
@@ -100,6 +101,7 @@ union X {
     BackLeftMotorFeedbackDebugMenu backLeftMotorFeedbackDebugMenu;
     BackRightMotorFeedbackDebugMenu backRightMotorFeedbackDebugMenu;
     BoardcomputerHardwareSettingsMenu boardcomputerHardwareSettingsMenu;
+    ProfilesMenu profilesMenu;
     PresetsMenu presetsMenu;
     SelectModeMenu selectModeMenu;
     SettingsMenu settingsMenu;
@@ -172,7 +174,7 @@ union X {
     GasMaxChangeScreen changeGasMax;
     BremsMinChangeScreen changeBremsMin;
     BremsMaxChangeScreen changeBremsMax;
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW)
     DPadDebounceChangeScreen dPadDebounceChangeScreen;
 #endif
 #ifdef FEATURE_GAMETRAK
@@ -254,6 +256,7 @@ template<> decltype(displays.frontLeftMotorFeedbackDebugMenu)                  &
 template<> decltype(displays.frontRightMotorFeedbackDebugMenu)                 &getRefByType<decltype(displays.frontRightMotorFeedbackDebugMenu)>()                 { return displays.frontRightMotorFeedbackDebugMenu; }
 template<> decltype(displays.backLeftMotorFeedbackDebugMenu)                   &getRefByType<decltype(displays.backLeftMotorFeedbackDebugMenu)>()                   { return displays.backLeftMotorFeedbackDebugMenu; }
 template<> decltype(displays.backRightMotorFeedbackDebugMenu)                  &getRefByType<decltype(displays.backRightMotorFeedbackDebugMenu)>()                  { return displays.backRightMotorFeedbackDebugMenu; }
+template<> decltype(displays.profilesMenu)                                     &getRefByType<decltype(displays.profilesMenu)>()                                     { return displays.profilesMenu; }
 template<> decltype(displays.presetsMenu)                                      &getRefByType<decltype(displays.presetsMenu)>()                                      { return displays.presetsMenu; }
 template<> decltype(displays.selectModeMenu)                                   &getRefByType<decltype(displays.selectModeMenu)>()                                   { return displays.selectModeMenu; }
 template<> decltype(displays.settingsMenu)                                     &getRefByType<decltype(displays.settingsMenu)>()                                     { return displays.settingsMenu; }
@@ -327,7 +330,7 @@ template<> decltype(displays.changeGasMin)                                     &
 template<> decltype(displays.changeGasMax)                                     &getRefByType<decltype(displays.changeGasMax)>()                                     { return displays.changeGasMax; }
 template<> decltype(displays.changeBremsMin)                                   &getRefByType<decltype(displays.changeBremsMin)>()                                   { return displays.changeBremsMin; }
 template<> decltype(displays.changeBremsMax)                                   &getRefByType<decltype(displays.changeBremsMax)>()                                   { return displays.changeBremsMax; }
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW)
 template<> decltype(displays.dPadDebounceChangeScreen)                         &getRefByType<decltype(displays.dPadDebounceChangeScreen)>()                         { return displays.dPadDebounceChangeScreen; }
 #endif
 #ifdef FEATURE_GAMETRAK

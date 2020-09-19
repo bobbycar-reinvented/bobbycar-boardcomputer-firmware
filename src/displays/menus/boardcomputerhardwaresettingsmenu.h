@@ -66,7 +66,7 @@ using BremsMaxChangeScreen = makeComponent<
     SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW)
 using DPadDebounceChangeScreen = makeComponent<
     ChangeValueDisplay<uint8_t>,
     StaticText<TEXT_SETDPADDEBOUNCE>,
@@ -147,7 +147,7 @@ class BoardcomputerHardwareSettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_SETGASMAX>,          SwitchScreenAction<GasMaxChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETBREMSMIN>,        SwitchScreenAction<BremsMinChangeScreen>>,
         makeComponent<MenuItem, StaticText<TEXT_SETBREMSMAX>,        SwitchScreenAction<BremsMaxChangeScreen>>,
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW)
         makeComponent<MenuItem, StaticText<TEXT_SETDPADDEBOUNCE>,    SwitchScreenAction<DPadDebounceChangeScreen>>,
 #endif
 #ifdef FEATURE_GAMETRAK

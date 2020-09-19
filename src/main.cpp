@@ -15,6 +15,7 @@
 #include "screens.h"
 #include "dpad.h"
 #include "dpad3wire.h"
+#include "dpad5wire.h"
 #include "rotary.h"
 #include "serialhandler.h"
 #include "ota.h"
@@ -55,6 +56,11 @@ void setup()
 #ifdef FEATURE_DPAD_3WIRESW
     bootLabel.redraw("dpad3wire");
     dpad3wire::init();
+#endif
+
+#ifdef FEATURE_DPAD_5WIRESW
+    bootLabel.redraw("dpad5wire");
+    dpad5wire::init();
 #endif
 
 #ifdef FEATURE_ROTARY
@@ -177,6 +183,10 @@ void loop()
 
 #ifdef FEATURE_DPAD_3WIRESW
     dpad3wire::update();
+#endif
+
+#ifdef FEATURE_DPAD_5WIRESW
+    dpad5wire::update();
 #endif
 
     if (!lastPotiRead || now - lastPotiRead >= 1000/settings.boardcomputerHardware.timersSettings.potiReadRate)
