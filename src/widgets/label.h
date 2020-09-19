@@ -8,7 +8,7 @@ namespace {
 class Label
 {
 public:
-    Label(int x, int y) : m_x{x}, m_y{y} {}
+    Label(int x, int y, uint32_t backgroundColor = TFT_BLACK);
 
     int x() const { return m_x; };
     int y() const { return m_y; };
@@ -20,6 +20,7 @@ public:
 private:
     const int m_x;
     const int m_y;
+    const uint32_t m_backgroundColor;
 
     String m_lastStr;
     int m_lastFont;
@@ -28,6 +29,13 @@ private:
     int m_lastWidth;
     int m_lastHeight;
 };
+
+Label::Label(int x, int y, uint32_t backgroundColor) :
+    m_x{x},
+    m_y{y},
+    m_backgroundColor{backgroundColor}
+{
+}
 
 void Label::start()
 {
@@ -71,7 +79,7 @@ void Label::redraw(const String &str, bool forceRedraw)
 void Label::clear()
 {
     if (m_lastWidth || m_lastHeight)
-        tft.fillRect(m_x, m_y, m_lastWidth, m_lastHeight, TFT_BLACK);
+        tft.fillRect(m_x, m_y, m_lastWidth, m_lastHeight, m_backgroundColor);
 
     start();
 }

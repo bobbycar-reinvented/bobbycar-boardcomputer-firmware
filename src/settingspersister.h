@@ -6,28 +6,32 @@
 #include <nvs_flash.h>
 #include <nvs.h>
 
+#include <include/tl/optional.hpp>
+
 #include "settings.h"
 #include "bluetoothmode.h"
 #include "unifiedmodelmode.h"
 
 namespace {
-class SettingsSaver
+class SettingsPersister
 {
 public:
     bool init();
+    bool openProfile(uint8_t index);
     bool load(Settings &settings);
     bool save(Settings &settings);
 
 private:
-    nvs_handle my_handle;
+    tl::optional<nvs_handle> m_handle;
 };
 
-bool SettingsSaver::init()
+bool SettingsPersister::init()
 {
     esp_err_t err = nvs_flash_init();
     if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND)
     {
         Serial.printf("nvs_flash_init() returned: %s, trying to erase\r\n", esp_err_to_name(err));
+
         err = nvs_flash_erase();
         if (err != ESP_OK)
         {
@@ -44,12 +48,26 @@ bool SettingsSaver::init()
         return false;
     }
 
-    err = nvs_open("bobbycar", NVS_READWRITE, &my_handle);
+    return true;
+}
+
+bool SettingsPersister::openProfile(uint8_t index)
+{
+    if (m_handle)
+    {
+        nvs_close(*m_handle);
+        m_handle = tl::nullopt;
+    }
+
+    nvs_handle handle;
+    esp_err_t err = nvs_open((String{"bobbycar"}+index).c_str(), NVS_READWRITE, &handle);
     if (err != ESP_OK)
     {
         Serial.printf("nvs_open() returned: %s\r\n", esp_err_to_name(err));
         return false;
     }
+
+    m_handle = handle;
 
     return true;
 }
@@ -118,13 +136,19 @@ template<> struct nvsGetterHelper<wifi_mode_t> { static esp_err_t nvs_get(nvs_ha
     return err;
 }};
 
-bool SettingsSaver::load(Settings &settings)
+bool SettingsPersister::load(Settings &settings)
 {
+    if (!m_handle)
+    {
+        Serial.println("");
+        return false;
+    }
+
     bool result{true};
 
     settings.executeForEverySetting([&](const char *key, auto &value)
     {
-        esp_err_t err = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(my_handle, key, &value);
+        esp_err_t err = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(*m_handle, key, &value);
         if (err != ESP_OK)
         {
             Serial.printf("nvs_get_i32() for %s returned: %s\r\n", key, esp_err_to_name(err));
@@ -168,13 +192,19 @@ template<> struct nvsSetterHelper<wifi_mode_t> { static esp_err_t nvs_set(nvs_ha
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
 
-bool SettingsSaver::save(Settings &settings)
+bool SettingsPersister::save(Settings &settings)
 {
+    if (!m_handle)
+    {
+        Serial.println("");
+        return false;
+    }
+
     bool result{true};
 
     settings.executeForEverySetting([&](const char *key, auto value)
     {
-        esp_err_t err = nvsSetterHelper<decltype(value)>::nvs_set(my_handle, key, value);
+        esp_err_t err = nvsSetterHelper<decltype(value)>::nvs_set(*m_handle, key, value);
         if (err != ESP_OK)
         {
             Serial.printf("nvs_get_i32() for %s returned: %s\r\n", key, esp_err_to_name(err));

@@ -266,12 +266,12 @@ void updateSwapFrontBack()
 
 void loadSettings()
 {
-    settingsSaver.load(settings);
+    settingsPersister.load(settings);
 }
 
 void saveSettings()
 {
-    settingsSaver.save(settings);
+    settingsPersister.save(settings);
 }
 
 void updateAccumulators()

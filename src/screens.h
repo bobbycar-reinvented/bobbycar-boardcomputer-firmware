@@ -1,5 +1,7 @@
 #pragma once
 
+#include <include/tl/optional.hpp>
+
 #include "displays/menus/aboutmenu.h"
 #include "displays/menus/accesspointwifisettingsmenu.h"
 #include "displays/menus/bluetoothsettingsmenu.h"
@@ -48,9 +50,12 @@
 
 #include "globals.h"
 #include "utils.h"
+#include "widgets/label.h"
 #include "icons/logo.h"
 
 namespace {
+Label bootLabel{32, 250, TFT_WHITE};
+
 union X {
     X() {}
     ~X() { ((Display&)statusDisplay).~Display(); }
@@ -406,6 +411,7 @@ void initScreen()
     tft.pushImage(0, 40, icons::logo.WIDTH, icons::logo.HEIGHT, icons::logo.buffer);
     tft.drawString("Bobbycar-OS", 32, 200, 4);
     tft.drawString("booting...", 32, 225, 4);
+    bootLabel.start();
 }
 
 void updateDisplay()
