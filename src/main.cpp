@@ -127,7 +127,8 @@ void setup()
             BluetoothConnectBmsAction{}.triggered();
         }
 #endif
-    } else if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Slave)
+    }
+    else if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Slave)
     {
         bootLabel.redraw("bluetooth begin");
         BluetoothBeginAction{}.triggered();
@@ -150,6 +151,7 @@ void setup()
     currentMode = &modes::defaultMode;
 
 #ifdef FEATURE_OTA
+    bootLabel.redraw("ota");
     initOta();
 #endif
 

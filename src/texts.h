@@ -36,6 +36,7 @@ constexpr char TEXT_TURNOFFDISCHARGE[] = "Turn off discharge";
 //DebugMenu
 constexpr char TEXT_LOADSETTINGS[] = "Load settings";
 constexpr char TEXT_SAVESETTINGS[] = "Save settings";
+constexpr char TEXT_ERASENVS[] = "Erase NVS";
 constexpr char TEXT_FRONTCOMMAND[] = "Front command";
 constexpr char TEXT_BACKCOMMAND[] = "Back command";
 constexpr char TEXT_FRONTLEFTCOMMAND[] = "Front left command";
