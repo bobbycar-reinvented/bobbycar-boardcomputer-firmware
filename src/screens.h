@@ -38,6 +38,7 @@
 #include "displays/menus/wifisettingsmenu.h"
 #include "displays/bmsdisplay.h"
 #include "displays/calibratedisplay.h"
+#include "displays/dpad5wiredebugdisplay.h"
 #include "displays/gameoflifedisplay.h"
 #include "displays/gametrakcalibratedisplay.h"
 #include "displays/lockscreen.h"
@@ -114,6 +115,9 @@ union X {
     BmsDisplay bmsDisplay;
 #endif
     CalibrateDisplay calibrateDisplay;
+#if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
+    DPad5WireDebugDisplay dPad5WireDebugDisplay;
+#endif
     GameOfLifeDisplay gameOfLifeDisplay;
 #ifdef FEATURE_GAMETRAK
     GametrakCalibrateDisplay gametrakCalibrateDisplay;
@@ -270,6 +274,9 @@ template<> decltype(displays.wifiSettingsMenu)                                 &
 template<> decltype(displays.bmsDisplay)                                       &getRefByType<decltype(displays.bmsDisplay)>()                                       { return displays.bmsDisplay; }
 #endif
 template<> decltype(displays.calibrateDisplay)                                 &getRefByType<decltype(displays.calibrateDisplay)>()                                 { return displays.calibrateDisplay; }
+#if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
+template<> decltype(displays.dPad5WireDebugDisplay)                            &getRefByType<decltype(displays.dPad5WireDebugDisplay)>()                            { return displays.dPad5WireDebugDisplay; }
+#endif
 template<> decltype(displays.gameOfLifeDisplay)                                &getRefByType<decltype(displays.gameOfLifeDisplay)>()                                { return displays.gameOfLifeDisplay; }
 #ifdef FEATURE_GAMETRAK
 template<> decltype(displays.gametrakCalibrateDisplay)                         &getRefByType<decltype(displays.gametrakCalibrateDisplay)>()                         { return displays.gametrakCalibrateDisplay; }

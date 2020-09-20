@@ -12,6 +12,7 @@
 #include "globals.h"
 #include "modes/defaultmode.h"
 #include "modes/tempomatmode.h"
+#include "displays/dpad5wiredebugdisplay.h"
 #include "screens.h"
 #include "dpad.h"
 #include "dpad3wire.h"
@@ -166,6 +167,11 @@ void setup()
 
     bootLabel.redraw("potis");
     readPotis();
+
+#if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
+    switchScreen<DPad5WireDebugDisplay>();
+    return;
+#endif
 
     if (gas > 200.f || brems > 200.f)
         switchScreen<CalibrateDisplay>(true);

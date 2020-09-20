@@ -3,10 +3,10 @@
 #include <tuple>
 
 #include <Arduino.h>
-#include <HardwareSerial.h>
 
 #include "globals.h"
 #include "types.h"
+#include "actions/switchprofileaction.h"
 
 namespace {
 namespace dpad5wire
@@ -53,10 +53,10 @@ State Helper<OUT, IN1, IN2, IN3, IN4>::read()
 
     digitalWrite(OUT, HIGH);
 
-    pinMode(IN1, INPUT_PULLUP);
-    pinMode(IN2, INPUT_PULLUP);
-    pinMode(IN3, INPUT_PULLUP);
-    pinMode(IN4, INPUT_PULLUP);
+    pinMode(IN1, INPUT_PULLDOWN);
+    pinMode(IN2, INPUT_PULLDOWN);
+    pinMode(IN3, INPUT_PULLDOWN);
+    pinMode(IN4, INPUT_PULLDOWN);
 
     delay(1);
 
@@ -82,103 +82,74 @@ void init()
 void update()
 {
     const auto state = helper.read();
+
+#ifdef DPAD_5WIRESW_DEBUG
+    lastState = state;
+    return;
+#endif
+
     const auto now = millis();
 
-    enum {
-        ButtonUp = 3,
-        ButtonDown = 0,
-        ButtonConfirm = 1,
-        ButtonBack = 2,
-        ButtonProfile0 = 4,
-        ButtonProfile1 = 5,
-        ButtonProfile2 = 6,
-        ButtonProfile3 = 7,
-    };
-
-    if (std::get<ButtonUp>(lastState) != std::get<ButtonUp>(state) && now-debounceUp > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<DPAD_5WIRESW_UP>(lastState) != std::get<DPAD_5WIRESW_UP>(state) && now-debounceUp > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<ButtonUp>(state))
+        if (std::get<DPAD_5WIRESW_UP>(state))
             InputDispatcher::rotate(-1);
-        std::get<ButtonUp>(lastState) = std::get<ButtonUp>(state);
+        std::get<DPAD_5WIRESW_UP>(lastState) = std::get<DPAD_5WIRESW_UP>(state);
         debounceUp = now;
     }
-    if (std::get<ButtonDown>(lastState) != std::get<ButtonDown>(state) && now-debounceDown > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<DPAD_5WIRESW_DOWN>(lastState) != std::get<DPAD_5WIRESW_DOWN>(state) && now-debounceDown > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<ButtonDown>(state))
+        if (std::get<DPAD_5WIRESW_DOWN>(state))
             InputDispatcher::rotate(1);
-        std::get<ButtonDown>(lastState) = std::get<ButtonDown>(state);
+        std::get<DPAD_5WIRESW_DOWN>(lastState) = std::get<DPAD_5WIRESW_DOWN>(state);
         debounceDown = now;
     }
-    if (std::get<ButtonConfirm>(lastState) != std::get<ButtonConfirm>(state) && now-debounceConfirm > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<DPAD_5WIRESW_CONFIRM>(lastState) != std::get<DPAD_5WIRESW_CONFIRM>(state) && now-debounceConfirm > settings.boardcomputerHardware.dpadDebounce)
     {
-        InputDispatcher::confirmButton(std::get<ButtonConfirm>(state));
-        std::get<ButtonConfirm>(lastState) = std::get<ButtonConfirm>(state);
+        InputDispatcher::confirmButton(std::get<DPAD_5WIRESW_CONFIRM>(state));
+        std::get<DPAD_5WIRESW_CONFIRM>(lastState) = std::get<DPAD_5WIRESW_CONFIRM>(state);
         debounceConfirm = now;
     }
-    if (std::get<ButtonBack>(lastState) != std::get<ButtonBack>(state) && now-debounceBack > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<DPAD_5WIRESW_BACK>(lastState) != std::get<DPAD_5WIRESW_BACK>(state) && now-debounceBack > settings.boardcomputerHardware.dpadDebounce)
     {
-        InputDispatcher::backButton(std::get<ButtonBack>(state));
-        std::get<ButtonBack>(lastState) = std::get<ButtonBack>(state);
+        InputDispatcher::backButton(std::get<DPAD_5WIRESW_BACK>(state));
+        std::get<DPAD_5WIRESW_BACK>(lastState) = std::get<DPAD_5WIRESW_BACK>(state);
         debounceBack = now;
     }
-    if (std::get<ButtonProfile0>(lastState) != std::get<ButtonProfile0>(state) && now-debounceProfile0 > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<DPAD_5WIRESW_PROFILE0>(lastState) != std::get<DPAD_5WIRESW_PROFILE0>(state) && now-debounceProfile0 > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<ButtonProfile0>(state))
+        if (std::get<DPAD_5WIRESW_PROFILE0>(state))
         {
-            if (settingsPersister.openProfile(0))
-            {
-                if (!settingsPersister.load(settings))
-                    Serial.println("dpad5wire::update() load 0 failed");
-            }
-            else
-                Serial.println("dpad5wire::update() openProfile 0 failed");
+            SwitchProfileAction<0>{}.triggered();
         }
-        std::get<ButtonProfile0>(lastState) = std::get<ButtonProfile0>(state);
+        std::get<DPAD_5WIRESW_PROFILE0>(lastState) = std::get<DPAD_5WIRESW_PROFILE0>(state);
         debounceProfile0 = now;
     }
-    if (std::get<ButtonProfile1>(lastState) != std::get<ButtonProfile1>(state) && now-debounceProfile1 > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<DPAD_5WIRESW_PROFILE1>(lastState) != std::get<DPAD_5WIRESW_PROFILE1>(state) && now-debounceProfile1 > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<ButtonProfile1>(state))
+        if (std::get<DPAD_5WIRESW_PROFILE1>(state))
         {
-            if (settingsPersister.openProfile(1))
-            {
-                if (!settingsPersister.load(settings))
-                    Serial.println("dpad5wire::update() load 1 failed");
-            }
-            else
-                Serial.println("dpad5wire::update() openProfile 1 failed");
+            SwitchProfileAction<1>{}.triggered();
         }
-        std::get<ButtonProfile1>(lastState) = std::get<ButtonProfile1>(state);
+        std::get<DPAD_5WIRESW_PROFILE1>(lastState) = std::get<DPAD_5WIRESW_PROFILE1>(state);
         debounceProfile1 = now;
     }
-    if (std::get<ButtonProfile2>(lastState) != std::get<ButtonProfile2>(state) && now-debounceProfile2 > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<DPAD_5WIRESW_PROFILE2>(lastState) != std::get<DPAD_5WIRESW_PROFILE2>(state) && now-debounceProfile2 > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<ButtonProfile2>(state))
+        if (std::get<DPAD_5WIRESW_PROFILE2>(state))
         {
-            if (settingsPersister.openProfile(2))
-            {
-                if (!settingsPersister.load(settings))
-                    Serial.println("dpad5wire::update() load 2 failed");
-            }
-            else
-                Serial.println("dpad5wire::update() openProfile 2 failed");
+            SwitchProfileAction<2>{}.triggered();
         }
-        std::get<ButtonProfile2>(lastState) = std::get<ButtonProfile2>(state);
+        std::get<DPAD_5WIRESW_PROFILE2>(lastState) = std::get<DPAD_5WIRESW_PROFILE2>(state);
         debounceProfile2 = now;
     }
-    if (std::get<ButtonProfile3>(lastState) != std::get<ButtonProfile3>(state) && now-debounceProfile3 > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<DPAD_5WIRESW_PROFILE3>(lastState) != std::get<DPAD_5WIRESW_PROFILE3>(state) && now-debounceProfile3 > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<ButtonProfile3>(state))
+        if (std::get<DPAD_5WIRESW_PROFILE3>(state))
         {
-            if (settingsPersister.openProfile(3))
-            {
-                if (!settingsPersister.load(settings))
-                    Serial.println("dpad5wire::update() load 3 failed");
-            }
-            else
-                Serial.println("dpad5wire::update() openProfile 3 failed");
+            SwitchProfileAction<3>{}.triggered();
         }
-        std::get<ButtonProfile3>(lastState) = std::get<ButtonProfile3>(state);
+        std::get<DPAD_5WIRESW_PROFILE3>(lastState) = std::get<DPAD_5WIRESW_PROFILE3>(state);
         debounceProfile3 = now;
     }
 }
