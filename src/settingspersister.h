@@ -6,36 +6,41 @@
 #include <nvs_flash.h>
 #include <nvs.h>
 
+#include <include/tl/optional.hpp>
+
 #include "settings.h"
 #include "bluetoothmode.h"
 #include "unifiedmodelmode.h"
 
 namespace {
-class SettingsSaver
+class SettingsPersister
 {
 public:
     bool init();
+    bool erase();
+    bool openProfile(uint8_t index);
+    void closeProfile();
     bool load(Settings &settings);
     bool save(Settings &settings);
 
+    tl::optional<uint8_t> currentlyOpenProfileIndex() const;
+
 private:
-    nvs_handle my_handle;
+    struct CurrentlyOpenProfile {
+        nvs_handle handle;
+        uint8_t profileIndex;
+    };
+    tl::optional<CurrentlyOpenProfile> m_profile;
 };
 
-bool SettingsSaver::init()
+bool SettingsPersister::init()
 {
     esp_err_t err = nvs_flash_init();
     if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND)
     {
         Serial.printf("nvs_flash_init() returned: %s, trying to erase\r\n", esp_err_to_name(err));
-        err = nvs_flash_erase();
-        if (err != ESP_OK)
-        {
-            Serial.printf("nvs_flash_erase() returned: %s, aborting\r\n", esp_err_to_name(err));
-            return false;
-        }
 
-        err = nvs_flash_init();
+        return erase();
     }
 
     if (err != ESP_OK)
@@ -44,14 +49,53 @@ bool SettingsSaver::init()
         return false;
     }
 
-    err = nvs_open("bobbycar", NVS_READWRITE, &my_handle);
+    return true;
+}
+
+bool SettingsPersister::erase()
+{
+    esp_err_t err = nvs_flash_erase();
+    if (err != ESP_OK)
+    {
+        Serial.printf("nvs_flash_erase() returned: %s, aborting\r\n", esp_err_to_name(err));
+        return false;
+    }
+
+    err = nvs_flash_init();
+    if (err != ESP_OK)
+    {
+        Serial.printf("nvs_flash_init() returned: %s\r\n", esp_err_to_name(err));
+        return false;
+    }
+
+    return true;
+}
+
+bool SettingsPersister::openProfile(uint8_t index)
+{
+    closeProfile();
+
+    nvs_handle handle;
+    esp_err_t err = nvs_open((String{"bobbycar"}+index).c_str(), NVS_READWRITE, &handle);
     if (err != ESP_OK)
     {
         Serial.printf("nvs_open() returned: %s\r\n", esp_err_to_name(err));
         return false;
     }
 
+    m_profile = {handle, index};
+
     return true;
+}
+
+void SettingsPersister::closeProfile()
+{
+    if (!m_profile)
+        return;
+
+    nvs_close(m_profile->handle);
+
+    m_profile = tl::nullopt;
 }
 
 template<typename T> struct nvsGetterHelper;
@@ -118,13 +162,19 @@ template<> struct nvsGetterHelper<wifi_mode_t> { static esp_err_t nvs_get(nvs_ha
     return err;
 }};
 
-bool SettingsSaver::load(Settings &settings)
+bool SettingsPersister::load(Settings &settings)
 {
+    if (!m_profile)
+    {
+        Serial.println("SettingsPersister::load() no profile open currently!");
+        return false;
+    }
+
     bool result{true};
 
     settings.executeForEverySetting([&](const char *key, auto &value)
     {
-        esp_err_t err = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(my_handle, key, &value);
+        esp_err_t err = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(m_profile->handle, key, &value);
         if (err != ESP_OK)
         {
             Serial.printf("nvs_get_i32() for %s returned: %s\r\n", key, esp_err_to_name(err));
@@ -168,13 +218,19 @@ template<> struct nvsSetterHelper<wifi_mode_t> { static esp_err_t nvs_set(nvs_ha
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
 
-bool SettingsSaver::save(Settings &settings)
+bool SettingsPersister::save(Settings &settings)
 {
+    if (!m_profile)
+    {
+        Serial.println("SettingsPersister::save() no profile open currently!");
+        return false;
+    }
+
     bool result{true};
 
     settings.executeForEverySetting([&](const char *key, auto value)
     {
-        esp_err_t err = nvsSetterHelper<decltype(value)>::nvs_set(my_handle, key, value);
+        esp_err_t err = nvsSetterHelper<decltype(value)>::nvs_set(m_profile->handle, key, value);
         if (err != ESP_OK)
         {
             Serial.printf("nvs_get_i32() for %s returned: %s\r\n", key, esp_err_to_name(err));
@@ -184,5 +240,13 @@ bool SettingsSaver::save(Settings &settings)
     });
 
     return result;
+}
+
+tl::optional<uint8_t> SettingsPersister::currentlyOpenProfileIndex() const
+{
+    if (m_profile)
+        return m_profile->profileIndex;
+
+    return tl::nullopt;
 }
 }

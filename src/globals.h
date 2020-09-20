@@ -11,7 +11,7 @@
 #include "display.h"
 #include "modeinterface.h"
 #include "settings.h"
-#include "settingssaver.h"
+#include "settingspersister.h"
 #include "types.h"
 
 namespace {
@@ -26,7 +26,7 @@ float avgSpeed, avgSpeedKmh, sumCurrent;
 char deviceName[32];
 
 Settings settings;
-SettingsSaver settingsSaver;
+SettingsPersister settingsPersister;
 
 constexpr auto TFT_GREY = 0x5AEB;
 

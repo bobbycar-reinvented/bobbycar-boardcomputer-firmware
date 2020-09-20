@@ -1,5 +1,7 @@
 #pragma once
 
+#include <include/tl/optional.hpp>
+
 #include "displays/menus/aboutmenu.h"
 #include "displays/menus/accesspointwifisettingsmenu.h"
 #include "displays/menus/bluetoothsettingsmenu.h"
@@ -25,6 +27,7 @@
 #include "displays/menus/mosfetsmenu.h"
 #include "displays/menus/motorfeedbackdebugmenu.h"
 #include "displays/menus/motorstatedebugmenu.h"
+#include "displays/menus/profilesmenu.h"
 #include "displays/menus/presetsmenu.h"
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 #include "displays/menus/selectmodemenu.h"
@@ -35,6 +38,7 @@
 #include "displays/menus/wifisettingsmenu.h"
 #include "displays/bmsdisplay.h"
 #include "displays/calibratedisplay.h"
+#include "displays/dpad5wiredebugdisplay.h"
 #include "displays/gameoflifedisplay.h"
 #include "displays/gametrakcalibratedisplay.h"
 #include "displays/lockscreen.h"
@@ -48,9 +52,12 @@
 
 #include "globals.h"
 #include "utils.h"
+#include "widgets/label.h"
 #include "icons/logo.h"
 
 namespace {
+Label bootLabel{32, 250};
+
 union X {
     X() {}
     ~X() { ((Display&)statusDisplay).~Display(); }
@@ -95,6 +102,7 @@ union X {
     BackLeftMotorFeedbackDebugMenu backLeftMotorFeedbackDebugMenu;
     BackRightMotorFeedbackDebugMenu backRightMotorFeedbackDebugMenu;
     BoardcomputerHardwareSettingsMenu boardcomputerHardwareSettingsMenu;
+    ProfilesMenu profilesMenu;
     PresetsMenu presetsMenu;
     SelectModeMenu selectModeMenu;
     SettingsMenu settingsMenu;
@@ -107,6 +115,9 @@ union X {
     BmsDisplay bmsDisplay;
 #endif
     CalibrateDisplay calibrateDisplay;
+#if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
+    DPad5WireDebugDisplay dPad5WireDebugDisplay;
+#endif
     GameOfLifeDisplay gameOfLifeDisplay;
 #ifdef FEATURE_GAMETRAK
     GametrakCalibrateDisplay gametrakCalibrateDisplay;
@@ -167,7 +178,7 @@ union X {
     GasMaxChangeScreen changeGasMax;
     BremsMinChangeScreen changeBremsMin;
     BremsMaxChangeScreen changeBremsMax;
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW)
     DPadDebounceChangeScreen dPadDebounceChangeScreen;
 #endif
 #ifdef FEATURE_GAMETRAK
@@ -249,6 +260,7 @@ template<> decltype(displays.frontLeftMotorFeedbackDebugMenu)                  &
 template<> decltype(displays.frontRightMotorFeedbackDebugMenu)                 &getRefByType<decltype(displays.frontRightMotorFeedbackDebugMenu)>()                 { return displays.frontRightMotorFeedbackDebugMenu; }
 template<> decltype(displays.backLeftMotorFeedbackDebugMenu)                   &getRefByType<decltype(displays.backLeftMotorFeedbackDebugMenu)>()                   { return displays.backLeftMotorFeedbackDebugMenu; }
 template<> decltype(displays.backRightMotorFeedbackDebugMenu)                  &getRefByType<decltype(displays.backRightMotorFeedbackDebugMenu)>()                  { return displays.backRightMotorFeedbackDebugMenu; }
+template<> decltype(displays.profilesMenu)                                     &getRefByType<decltype(displays.profilesMenu)>()                                     { return displays.profilesMenu; }
 template<> decltype(displays.presetsMenu)                                      &getRefByType<decltype(displays.presetsMenu)>()                                      { return displays.presetsMenu; }
 template<> decltype(displays.selectModeMenu)                                   &getRefByType<decltype(displays.selectModeMenu)>()                                   { return displays.selectModeMenu; }
 template<> decltype(displays.settingsMenu)                                     &getRefByType<decltype(displays.settingsMenu)>()                                     { return displays.settingsMenu; }
@@ -262,6 +274,9 @@ template<> decltype(displays.wifiSettingsMenu)                                 &
 template<> decltype(displays.bmsDisplay)                                       &getRefByType<decltype(displays.bmsDisplay)>()                                       { return displays.bmsDisplay; }
 #endif
 template<> decltype(displays.calibrateDisplay)                                 &getRefByType<decltype(displays.calibrateDisplay)>()                                 { return displays.calibrateDisplay; }
+#if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
+template<> decltype(displays.dPad5WireDebugDisplay)                            &getRefByType<decltype(displays.dPad5WireDebugDisplay)>()                            { return displays.dPad5WireDebugDisplay; }
+#endif
 template<> decltype(displays.gameOfLifeDisplay)                                &getRefByType<decltype(displays.gameOfLifeDisplay)>()                                { return displays.gameOfLifeDisplay; }
 #ifdef FEATURE_GAMETRAK
 template<> decltype(displays.gametrakCalibrateDisplay)                         &getRefByType<decltype(displays.gametrakCalibrateDisplay)>()                         { return displays.gametrakCalibrateDisplay; }
@@ -322,7 +337,7 @@ template<> decltype(displays.changeGasMin)                                     &
 template<> decltype(displays.changeGasMax)                                     &getRefByType<decltype(displays.changeGasMax)>()                                     { return displays.changeGasMax; }
 template<> decltype(displays.changeBremsMin)                                   &getRefByType<decltype(displays.changeBremsMin)>()                                   { return displays.changeBremsMin; }
 template<> decltype(displays.changeBremsMax)                                   &getRefByType<decltype(displays.changeBremsMax)>()                                   { return displays.changeBremsMax; }
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW)
 template<> decltype(displays.dPadDebounceChangeScreen)                         &getRefByType<decltype(displays.dPadDebounceChangeScreen)>()                         { return displays.dPadDebounceChangeScreen; }
 #endif
 #ifdef FEATURE_GAMETRAK
@@ -402,10 +417,12 @@ void initScreen()
 {
     tft.init();
     tft.fillScreen(TFT_WHITE);
-    tft.setTextColor(TFT_BLACK);
+    tft.setTextColor(TFT_BLACK, TFT_WHITE);
+    tft.setTextFont(4);
     tft.pushImage(0, 40, icons::logo.WIDTH, icons::logo.HEIGHT, icons::logo.buffer);
-    tft.drawString("Bobbycar-OS", 32, 200, 4);
-    tft.drawString("booting...", 32, 225, 4);
+    tft.drawString("Bobbycar-OS", 32, 200);
+    tft.drawString("booting...", 32, 225);
+    bootLabel.start();
 }
 
 void updateDisplay()

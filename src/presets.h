@@ -25,10 +25,10 @@ constexpr Settings::ControllerHardware defaultControllerHardware {
     .enableBackLeft = true,
     .enableBackRight = true,
 
-    .invertFrontLeft = false,
-    .invertFrontRight = true,
-    .invertBackLeft = false,
-    .invertBackRight = true,
+    .invertFrontLeft = DEFAULT_INVERTFRONTLEFT,
+    .invertFrontRight = DEFAULT_INVERTFRONTRIGHT,
+    .invertBackLeft = DEFAULT_INVERTBACKLEFT,
+    .invertBackRight = DEFAULT_INVERTBACKRIGHT,
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
@@ -41,10 +41,10 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
     .enableBackLeft = false,
     .enableBackRight = false,
 
-    .invertFrontLeft = false,
-    .invertFrontRight = true,
-    .invertBackLeft = false,
-    .invertBackRight = true,
+    .invertFrontLeft = DEFAULT_INVERTFRONTLEFT,
+    .invertFrontRight = DEFAULT_INVERTFRONTRIGHT,
+    .invertBackLeft = DEFAULT_INVERTBACKLEFT,
+    .invertBackRight = DEFAULT_INVERTBACKRIGHT,
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
@@ -57,7 +57,7 @@ constexpr Settings::WifiSettings defaultWifiSettings {
 };
 
 constexpr Settings::BluetoothSettings defaultBluetoothSettings {
-    .autoBluetoothMode = BluetoothMode::Off
+    .autoBluetoothMode = BluetoothMode::Master
 };
 
 constexpr Settings::ControllerHardware spinnerControllerHardware {
@@ -66,10 +66,10 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
     .enableBackLeft = true,
     .enableBackRight = true,
 
-    .invertFrontLeft = false,
-    .invertFrontRight = false,
-    .invertBackLeft = false,
-    .invertBackRight = false,
+    .invertFrontLeft = DEFAULT_INVERTFRONTLEFT,
+    .invertFrontRight = !DEFAULT_INVERTFRONTRIGHT,
+    .invertBackLeft = DEFAULT_INVERTBACKLEFT,
+    .invertBackRight = !DEFAULT_INVERTBACKRIGHT,
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
@@ -90,7 +90,7 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
     .gasMax = DEFAULT_GASMAX,
     .bremsMin = DEFAULT_BREMSMIN,
     .bremsMax = DEFAULT_BREMSMAX,
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW)
     .dpadDebounce = 25,
 #endif
 #ifdef FEATURE_GAMETRAK

@@ -99,6 +99,7 @@ private:
     Label m_labelPerformance{85, bottomLines[2]}; // 40, 15
     Label m_labelMode{165, bottomLines[2]}; // 75, 15
     Label m_labelName{40, bottomLines[3]}; // 40, 15
+    Label m_labelProfile{205, bottomLines[3]}; // 35, 15
 
     static const constexpr int bottomLines[4] { 251, 266, 281, 296 };
 };
@@ -136,6 +137,7 @@ void StatusDisplay::initScreen()
     m_labelMode.start();
     tft.drawString("Name:", 0, bottomLines[3]);
     m_labelName.start();
+    m_labelProfile.start();
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
 }
@@ -161,6 +163,8 @@ void StatusDisplay::redraw()
     m_labelPerformance.redraw(String{performance.last});
     m_labelMode.redraw(currentMode->displayName());
     m_labelName.redraw(&deviceName[0]);
+    const auto profile = settingsPersister.currentlyOpenProfileIndex();
+    m_labelProfile.redraw(profile?String{*profile}:"-");
 }
 
 void StatusDisplay::rotate(int offset)

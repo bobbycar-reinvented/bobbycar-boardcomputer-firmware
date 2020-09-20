@@ -21,6 +21,7 @@
 namespace {
 class StatusDisplay;
 class SelectModeMenu;
+class ProfilesMenu;
 class PresetsMenu;
 class GraphsMenu;
 class BmsMenu;
@@ -42,6 +43,7 @@ class MainMenu :
         makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,   SwitchScreenAction<SelectModeMenu>, StaticMenuItemIcon<&icons::modes>>,
         makeComponent<MenuItem, StaticText<TEXT_MODESETTINGS>, ModeSettingsAction>,
         makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&icons::presets>>,
+        makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&icons::graph>>,
 #ifdef FEATURE_BMS
         makeComponent<MenuItem, StaticText<TEXT_BMS>,          SwitchScreenAction<BmsMenu>, StaticMenuItemIcon<&icons::bms>>,

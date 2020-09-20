@@ -6,6 +6,7 @@
 #include "menuitem.h"
 #include "actions/loadsettingsaction.h"
 #include "actions/savesettingsaction.h"
+#include "actions/erasenvsaction.h"
 #include "actions/switchscreenaction.h"
 #include "actions/dummyaction.h"
 #include "actions/toggleboolaction.h"
@@ -40,6 +41,7 @@ class DebugMenu :
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_LOADSETTINGS>,         LoadSettingsAction>,
         makeComponent<MenuItem, StaticText<TEXT_SAVESETTINGS>,         SaveSettingsAction>,
+        makeComponent<MenuItem, StaticText<TEXT_ERASENVS>,             EraseNvsAction>,
         makeComponent<MenuItem, StaticText<nullptr>,                   DummyAction>,
         makeComponent<MenuItem, StaticText<TEXT_FRONTCOMMAND>,         SwitchScreenAction<FrontCommandDebugMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_BACKCOMMAND>,          SwitchScreenAction<BackCommandDebugMenu>>,
