@@ -2,7 +2,9 @@
 
 #include <array>
 
+#ifdef FEATURE_BLUETOOTH
 #include <BluetoothSerial.h>
+#endif
 #include <WiFiType.h>
 #include <TFT_eSPI.h>
 #include <SPI.h>
@@ -57,7 +59,9 @@ struct {
     int last{0};
 } performance;
 
+#ifdef FEATURE_BLUETOOTH
 BluetoothSerial bluetoothSerial;
+#endif
 
 TFT_eSPI tft = TFT_eSPI();
 

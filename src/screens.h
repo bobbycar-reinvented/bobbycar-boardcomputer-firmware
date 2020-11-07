@@ -1,10 +1,12 @@
 #pragma once
 
-#include <include/tl/optional.hpp>
+#include <optional>
 
 #include "displays/menus/aboutmenu.h"
 #include "displays/menus/accesspointwifisettingsmenu.h"
+#ifdef FEATURE_BLUETOOTH
 #include "displays/menus/bluetoothsettingsmenu.h"
+#endif
 #include "displays/menus/bmsmenu.h"
 #include "displays/menus/buzzermenu.h"
 #include "displays/menus/commanddebugmenu.h"
@@ -64,9 +66,11 @@ union X {
 
     AboutMenu aboutMenu;
     AccessPointWifiSettingsMenu accessPointWifiSettingsMenu;
+#ifdef FEATURE_BLUETOOTH
     BluetoothSettingsMenu bluetoothSettingsMenu;
 #ifdef FEATURE_BMS
     BmsMenu bmsMenu;
+#endif
 #endif
     BuzzerMenu buzzerMenu;
     FrontCommandDebugMenu frontCommandDebugMenu;
@@ -135,7 +139,9 @@ union X {
 
     AutoWifiModeChangeDisplay autoWifiModeChangeDisplay;
 
+#ifdef FEATURE_BLUETOOTH
     AutoBluetoothModeChangeDisplay autoBluetoothModeChangeDisplay;
+#endif
 
     FrontFreqChangeScreen changeFrontFreq;
     FrontPatternChangeScreen changeFrontPattern;
@@ -222,9 +228,11 @@ union X {
 template<typename T> T &getRefByType() = delete;
 template<> decltype(displays.aboutMenu)                                        &getRefByType<decltype(displays.aboutMenu)>()                                        { return displays.aboutMenu; }
 template<> decltype(displays.accessPointWifiSettingsMenu)                      &getRefByType<decltype(displays.accessPointWifiSettingsMenu)>()                      { return displays.accessPointWifiSettingsMenu; }
+#ifdef FEATURE_BLUETOOTH
 template<> decltype(displays.bluetoothSettingsMenu)                            &getRefByType<decltype(displays.bluetoothSettingsMenu)>()                            { return displays.bluetoothSettingsMenu; }
 #ifdef FEATURE_BMS
 template<> decltype(displays.bmsMenu)                                          &getRefByType<decltype(displays.bmsMenu)>()                                          { return displays.bmsMenu; }
+#endif
 #endif
 template<> decltype(displays.buzzerMenu)                                       &getRefByType<decltype(displays.buzzerMenu)>()                                       { return displays.buzzerMenu; }
 template<> decltype(displays.boardcomputerHardwareSettingsMenu)                &getRefByType<decltype(displays.boardcomputerHardwareSettingsMenu)>()                { return displays.boardcomputerHardwareSettingsMenu; }
@@ -294,7 +302,9 @@ template<> decltype(displays.updateDisplay)                                    &
 
 template<> decltype(displays.autoWifiModeChangeDisplay)                        &getRefByType<decltype(displays.autoWifiModeChangeDisplay)>()                        { return displays.autoWifiModeChangeDisplay; }
 
+#ifdef FEATURE_BLUETOOTH
 template<> decltype(displays.autoBluetoothModeChangeDisplay)                   &getRefByType<decltype(displays.autoBluetoothModeChangeDisplay)>()                   { return displays.autoBluetoothModeChangeDisplay; }
+#endif
 
 template<> decltype(displays.changeFrontFreq)                                  &getRefByType<decltype(displays.changeFrontFreq)>()                                  { return displays.changeFrontFreq; }
 template<> decltype(displays.changeFrontPattern)                               &getRefByType<decltype(displays.changeFrontPattern)>()                               { return displays.changeFrontPattern; }

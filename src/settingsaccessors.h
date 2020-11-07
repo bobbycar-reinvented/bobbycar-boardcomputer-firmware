@@ -35,7 +35,9 @@ struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &
 struct AutoWifiModeAccessor : public RefAccessorSaveSettings<wifi_mode_t> { wifi_mode_t &getRef() const override { return settings.wifiSettings.autoWifiMode; } };
 struct AutoEnableApAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.wifiSettings.autoEnableAp; } };
 
+#ifdef FEATURE_BLUETOOTH
 struct AutoBluetoothModeAccessor : public RefAccessorSaveSettings<BluetoothMode> { BluetoothMode &getRef() const override { return settings.bluetoothSettings.autoBluetoothMode; } };
+#endif
 
 struct FrontLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontLeft; } };
 struct FrontRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontRight; } };

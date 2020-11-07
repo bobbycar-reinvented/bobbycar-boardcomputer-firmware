@@ -5,11 +5,13 @@
 #include "staticmenudefinition.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
+#ifdef FEATURE_BLUETOOTH
 #include "actions/bluetoothbeginaction.h"
 #include "actions/bluetoothbeginmasteraction.h"
 #include "actions/bluetoothflushaction.h"
 #include "actions/bluetoothendaction.h"
 #include "actions/bluetoothdisconnectaction.h"
+#endif
 #include "actions/switchscreenaction.h"
 #include "bluetoothtexthelpers.h"
 #include "settingsaccessors.h"
@@ -21,6 +23,7 @@ class SettingsMenu;
 }
 
 namespace {
+#ifdef FEATURE_BLUETOOTH
 class BluetoothSettingsMenu;
 
 using AutoBluetoothModeChangeDisplay = makeComponent<
@@ -50,4 +53,5 @@ class BluetoothSettingsMenu :
         makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>
     >
 {};
+#endif
 }

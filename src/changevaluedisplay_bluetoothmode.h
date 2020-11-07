@@ -8,9 +8,12 @@
 #include "actions/backproxyaction.h"
 #include "icons/back.h"
 #include "texts.h"
+#ifdef FEATURE_BLUETOOTH
 #include "bluetoothmode.h"
+#endif
 
 namespace {
+#ifdef FEATURE_BLUETOOTH
 template<>
 class ChangeValueDisplay<BluetoothMode> :
     public MenuDisplay,
@@ -83,4 +86,5 @@ void ChangeValueDisplay<BluetoothMode>::start()
         setSelectedIndex(4);
     }
 }
+#endif
 }
