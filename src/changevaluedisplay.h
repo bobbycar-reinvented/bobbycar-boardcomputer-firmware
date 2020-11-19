@@ -136,7 +136,9 @@ void ChangeValueDisplay<Tvalue>::confirm()
 }
 
 #include "changevaluedisplay_bool.h"
+#ifdef FEATURE_BLUETOOTH
 #include "changevaluedisplay_bluetoothmode.h"
+#endif
 #include "changevaluedisplay_controlmode.h"
 #include "changevaluedisplay_controltype.h"
 #include "changevaluedisplay_larsmmode_mode.h"

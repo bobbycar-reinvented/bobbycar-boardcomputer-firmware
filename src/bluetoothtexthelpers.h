@@ -5,6 +5,7 @@
 #include "utils.h"
 
 namespace {
+#ifdef FEATURE_BLUETOOTH
 template<const char *Ttext, typename TreturnType, TreturnType (BluetoothSerial::*Tmethod)()>
 using BluetoothStatusTextHelper = StatusTextHelper<Ttext, BluetoothSerial, &bluetoothSerial, TreturnType, Tmethod>;
 
@@ -34,4 +35,5 @@ class BluetoothIsReadyMasterText : public virtual TextInterface {
 public:
     String text() const override { return String{"isReady (M): "} + toString(bluetoothSerial.isReady(true)); }
 };
+#endif
 }

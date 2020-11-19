@@ -4,6 +4,7 @@
 #include "globals.h"
 
 namespace {
+#ifdef FEATURE_BLUETOOTH
 class BluetoothFlushAction : public virtual ActionInterface
 {
 public:
@@ -12,4 +13,5 @@ public:
         bluetoothSerial.flush();
     }
 };
+#endif
 }

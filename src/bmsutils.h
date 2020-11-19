@@ -4,7 +4,7 @@
 #include "types.h"
 
 namespace {
-#ifdef FEATURE_BMS
+#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 namespace bms {
 constexpr auto autoReconnect = false; // causes hangs when not available
 

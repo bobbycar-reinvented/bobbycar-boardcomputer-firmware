@@ -23,9 +23,11 @@
 #include "presets.h"
 #include "statistics.h"
 #include "actions/wifisoftapaction.h"
+#ifdef FEATURE_BLUETOOTH
 #include "actions/bluetoothbeginaction.h"
 #include "actions/bluetoothbeginmasteraction.h"
 #include "actions/bluetoothconnectbmsaction.h"
+#endif
 #include "bobby_webserver.h"
 #include "types.h"
 
@@ -123,6 +125,7 @@ void setup()
     if (!WiFi.begin("realraum", "r3alraum"))
         Serial.println("Could not begin WiFi");
 
+#ifdef FEATURE_BLUETOOTH
     if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Master)
     {
         bootLabel.redraw("bluetooth begin master");
@@ -140,6 +143,7 @@ void setup()
         bootLabel.redraw("bluetooth begin");
         BluetoothBeginAction{}.triggered();
     }
+#endif
 
     bootLabel.redraw("front Serial begin");
     controllers.front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);

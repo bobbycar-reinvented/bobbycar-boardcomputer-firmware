@@ -4,8 +4,10 @@
 #include "staticmenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
+#ifdef FEATURE_BLUETOOTH
 #include "actions/bluetoothconnectbmsaction.h"
 #include "actions/bluetoothdisconnectaction.h"
+#endif
 #include "actions/dummyaction.h"
 #include "actions/bmsturnonchargeaction.h"
 #include "actions/bmsturnoffchargeaction.h"
@@ -21,7 +23,7 @@ class MainMenu;
 }
 
 namespace {
-#ifdef FEATURE_BMS
+#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 class BmsMenu :
     public MenuDisplay,
     public StaticText<TEXT_BMS>,

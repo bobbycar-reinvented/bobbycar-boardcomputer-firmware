@@ -6,10 +6,12 @@
 #include <nvs_flash.h>
 #include <nvs.h>
 
-#include <include/tl/optional.hpp>
+#include <optional>
 
 #include "settings.h"
+#ifdef FEATURE_BLUETOOTH
 #include "bluetoothmode.h"
+#endif
 #include "unifiedmodelmode.h"
 
 namespace {
@@ -23,14 +25,14 @@ public:
     bool load(Settings &settings);
     bool save(Settings &settings);
 
-    tl::optional<uint8_t> currentlyOpenProfileIndex() const;
+    std::optional<uint8_t> currentlyOpenProfileIndex() const;
 
 private:
     struct CurrentlyOpenProfile {
         nvs_handle handle;
         uint8_t profileIndex;
     };
-    tl::optional<CurrentlyOpenProfile> m_profile;
+    std::optional<CurrentlyOpenProfile> m_profile;
 };
 
 bool SettingsPersister::init()
@@ -95,7 +97,7 @@ void SettingsPersister::closeProfile()
 
     nvs_close(m_profile->handle);
 
-    m_profile = tl::nullopt;
+    m_profile = std::nullopt;
 }
 
 template<typename T> struct nvsGetterHelper;
@@ -137,6 +139,7 @@ template<> struct nvsGetterHelper<LarsmModeMode> { static esp_err_t nvs_get(nvs_
         *out_value = LarsmModeMode(tempValue);
     return err;
 }};
+#ifdef FEATURE_BLUETOOTH
 template<> struct nvsGetterHelper<BluetoothMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, BluetoothMode* out_value)
 {
     uint8_t tempValue;
@@ -145,6 +148,7 @@ template<> struct nvsGetterHelper<BluetoothMode> { static esp_err_t nvs_get(nvs_
         *out_value = BluetoothMode(tempValue);
     return err;
 }};
+#endif
 template<> struct nvsGetterHelper<UnifiedModelMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, UnifiedModelMode* out_value)
 {
     uint8_t tempValue;
@@ -205,10 +209,12 @@ template<> struct nvsSetterHelper<LarsmModeMode> { static esp_err_t nvs_set(nvs_
 {
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
+#ifdef FEATURE_BLUETOOTH
 template<> struct nvsSetterHelper<BluetoothMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, BluetoothMode value)
 {
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
+#endif
 template<> struct nvsSetterHelper<UnifiedModelMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, UnifiedModelMode value)
 {
     return nvs_set_u8(handle, key, uint8_t(value));
@@ -242,11 +248,11 @@ bool SettingsPersister::save(Settings &settings)
     return result;
 }
 
-tl::optional<uint8_t> SettingsPersister::currentlyOpenProfileIndex() const
+std::optional<uint8_t> SettingsPersister::currentlyOpenProfileIndex() const
 {
     if (m_profile)
         return m_profile->profileIndex;
 
-    return tl::nullopt;
+    return std::nullopt;
 }
 }

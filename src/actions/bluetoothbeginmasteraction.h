@@ -6,6 +6,7 @@
 #include "globals.h"
 
 namespace {
+#ifdef FEATURE_BLUETOOTH
 class BluetoothBeginMasterAction : public virtual ActionInterface
 {
 public:
@@ -18,4 +19,5 @@ public:
         }
     }
 };
+#endif
 }

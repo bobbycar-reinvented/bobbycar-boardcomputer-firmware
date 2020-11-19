@@ -14,7 +14,7 @@ class MetersDisplay;
 class StatusDisplay;
 }
 namespace {
-#ifdef FEATURE_BMS
+#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 class BmsDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<MainMenu>>, public DummyBack
 {
 public:

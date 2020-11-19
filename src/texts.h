@@ -13,6 +13,7 @@ constexpr char TEXT_WIFISOFTAPDISCONNECTWIFIOFF[] = "softAPdisconnect() wifioff"
 constexpr char TEXT_WIFISOFTAPENABLEIPV6[] = "softAPenableIpV6()";
 //constexpr char TEXT_BACK[] = "Back";
 
+#ifdef FEATURE_BLUETOOTH
 //BluetoothSettingsMenu
 constexpr char TEXT_BLUETOOTHSETTINGS[] = "Bluetooth settings";
 constexpr char TEXT_BLUETOOTHBEGIN[] = "begin()";
@@ -24,6 +25,7 @@ constexpr char TEXT_AUTOBLUETOOTHMODE[] = "Auto bluetooth mode";
 //constexpr char TEXT_BACK[] = "Back";
 
 //BmsMenu
+#ifdef FEATURE_BMS
 constexpr char TEXT_BMS[] = "BMS";
 constexpr char TEXT_CONNECTBMS[] = "Connect BMS";
 constexpr char TEXT_DISCONNECTBMS[] = "Disonnect BMS";
@@ -32,6 +34,8 @@ constexpr char TEXT_TURNOFFCHARGE[] = "Turn off charge";
 constexpr char TEXT_TURNONDISCHARGE[] = "Turn on discharge";
 constexpr char TEXT_TURNOFFDISCHARGE[] = "Turn off discharge";
 //constexpr char TEXT_BACK[] = "Back";
+#endif
+#endif
 
 //DebugMenu
 constexpr char TEXT_LOADSETTINGS[] = "Load settings";

@@ -6,7 +6,9 @@
 
 #include "bobbycar-protocol/protocol.h"
 
+#ifdef FEATURE_BLUETOOTH
 #include "bluetoothmode.h"
+#endif
 #include "unifiedmodelmode.h"
 
 namespace {
@@ -37,9 +39,11 @@ struct Settings
         bool autoEnableAp;
     } wifiSettings;
 
+#ifdef FEATURE_BLUETOOTH
     struct BluetoothSettings {
         BluetoothMode autoBluetoothMode;
     } bluetoothSettings;
+#endif
 
     struct ControllerHardware {
         bool enableFrontLeft, enableFrontRight, enableBackLeft, enableBackRight;
@@ -119,7 +123,9 @@ void Settings::executeForEverySetting(T &&callable)
     callable("fieldWeakMax", limits.fieldWeakMax);
     callable("phaseAdvMax", limits.phaseAdvMax);
 
+#ifdef FEATURE_BLUETOOTH
     callable("autoBluetoothMo", bluetoothSettings.autoBluetoothMode);
+#endif
 
     callable("autoWifiMode", wifiSettings.autoWifiMode);
     callable("autoEnableAp", wifiSettings.autoEnableAp);

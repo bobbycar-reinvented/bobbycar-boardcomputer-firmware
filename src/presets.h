@@ -56,9 +56,11 @@ constexpr Settings::WifiSettings defaultWifiSettings {
     .autoEnableAp = true
 };
 
+#ifdef FEATURE_BLUETOOTH
 constexpr Settings::BluetoothSettings defaultBluetoothSettings {
     .autoBluetoothMode = BluetoothMode::Master
 };
+#endif
 
 constexpr Settings::ControllerHardware spinnerControllerHardware {
     .enableFrontLeft = true,
@@ -156,7 +158,9 @@ constexpr Settings defaultSettings{
     .reverseBeepDuration1 = 500,
     .limits = defaultLimits,
     .wifiSettings = defaultWifiSettings,
+#ifdef FEATURE_BLUETOOTH
     .bluetoothSettings = defaultBluetoothSettings,
+#endif
     .controllerHardware = defaultControllerHardware,
     .boardcomputerHardware = defaultBoardcomputerHardware,
     .defaultMode = defaultDefaultMode,

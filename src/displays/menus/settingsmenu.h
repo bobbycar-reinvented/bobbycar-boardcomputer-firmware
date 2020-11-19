@@ -9,7 +9,9 @@
 #include "actions/switchscreenaction.h"
 #include "checkboxicon.h"
 #include "icons/wifi.h"
+#ifdef FEATURE_BLUETOOTH
 #include "icons/bluetooth.h"
+#endif
 #include "icons/hardware.h"
 #include "icons/buzzer.h"
 #include "icons/info.h"
@@ -40,11 +42,13 @@ class SettingsMenu :
     public StaticMenuDefinition<
         makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,                SwitchScreenAction<LimitsSettingsMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_WIFISETTINGS>,                  SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::wifi>>,
+#ifdef FEATURE_BLUETOOTH
         makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHSETTINGS>,             SwitchScreenAction<BluetoothSettingsMenu>, StaticMenuItemIcon<&icons::bluetooth>>,
+#endif
         makeComponent<MenuItem, StaticText<TEXT_MODESSETTINGS>,                 SwitchScreenAction<ModesSettingsMenu>>,
         makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>,    SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::hardware>>,
         makeComponent<MenuItem, StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::hardware>>,
-#ifdef FEATURE_BMS
+#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
         makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                ToggleBoolAction, CheckboxIcon, AutoConnectBmsAccessor>,
 #endif
         makeComponent<MenuItem, StaticText<TEXT_BUZZER>,                        SwitchScreenAction<BuzzerMenu>, StaticMenuItemIcon<&icons::buzzer>>,
