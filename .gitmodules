@@ -1,3 +1,6 @@
 [submodule "src/bobbycar-protocol"]
 	path = src/bobbycar-protocol
 	url = git@github.com:bobbycar-graz/bobbycar-protocol.git
+[submodule "src/espcpputils"]
+	path = src/espcpputils
+	url = git@github.com:0xFEEDC0DE64/espcpputils.git
