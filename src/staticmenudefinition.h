@@ -1,5 +1,6 @@
 #pragma once
 
+// local includes
 #include "menudefinitioninterface.h"
 
 namespace {
@@ -81,4 +82,4 @@ public:
 private:
     T item;
 };
-}
+} // namespace

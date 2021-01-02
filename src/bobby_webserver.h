@@ -1,8 +1,13 @@
 #pragma once
 
+// 3rdparty lib includes
 #include <ESPAsyncWebServer.h>
 
+// local includes
 #include "screens.h"
+#include "textinterface.h"
+#include "menudisplay.h"
+#include "changevaluedisplay.h"
 
 namespace {
 #ifdef FEATURE_WEBSERVER
@@ -64,7 +69,7 @@ void initWebserver()
                                     "<a href=\"/back\">Back</a>");
                 }
 
-                if (auto constCurrentDisplay = static_cast<const Display *>(currentDisplay))
+                if (auto constCurrentDisplay = static_cast<const Display *>(currentDisplay.get()))
                 {
                     if (const auto *textInterface = constCurrentDisplay->asTextInterface())
                     {
