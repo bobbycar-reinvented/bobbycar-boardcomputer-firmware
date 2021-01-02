@@ -42,9 +42,12 @@ public:
     }
 
     template<typename T, typename... Args>
-    void constructItem(Args&&... args)
+    T &constructItem(Args&&... args)
     {
-        emplaceItem(std::make_unique<T>(std::forward<Args>(args)...));
+        auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
+        T &ref = *ptr;
+        emplaceItem(std::move(ptr));
+        return ref;
     }
 
     void emplaceItem(std::unique_ptr<MenuItem> &&ptr)
@@ -55,6 +58,16 @@ public:
     void clearItems()
     {
         m_items.clear();
+    }
+
+    std::unique_ptr<MenuItem> takeLast()
+    {
+        if (m_items.empty())
+            throw "aua";
+
+        std::unique_ptr<MenuItem> ptr = std::move(m_items.back());
+        m_items.pop_back();
+        return ptr;
     }
 
 private:
