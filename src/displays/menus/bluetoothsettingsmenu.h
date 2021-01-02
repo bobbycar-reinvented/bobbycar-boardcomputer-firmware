@@ -1,8 +1,9 @@
 #pragma once
 
+// local includes
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
+#include "containermenudefinition.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
 #ifdef FEATURE_BLUETOOTH
@@ -18,9 +19,10 @@
 #include "icons/back.h"
 #include "texts.h"
 
+// forward declares
 namespace {
 class SettingsMenu;
-}
+} // namespace
 
 namespace {
 #ifdef FEATURE_BLUETOOTH
@@ -38,20 +40,24 @@ class BluetoothSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_BLUETOOTHSETTINGS>,
     public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, BluetoothAvailableText,                 DisabledColor, DummyAction>,
-        makeComponent<MenuItem, BluetoothHasClientText,                 DisabledColor, DummyAction>,
-//        makeComponent<MenuItem, BluetoothConnectedText,                 DisabledColor, DummyAction>, // crashes
-        makeComponent<MenuItem, BluetoothIsReadyText,                   DisabledColor, DummyAction>,
-        makeComponent<MenuItem, BluetoothIsReadyMasterText,             DisabledColor, DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHBEGIN>,        BluetoothBeginAction>,
-        makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHBEGINMASTER>,  BluetoothBeginMasterAction>,
-        makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHFLUSH>,        BluetoothFlushAction>,
-        makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHEND>,          BluetoothEndAction>,
-        makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHDISCONNECT>,   BluetoothDisconnectAction>,
-        makeComponent<MenuItem, StaticText<TEXT_AUTOBLUETOOTHMODE>,     SwitchScreenAction<AutoBluetoothModeChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
+    public ContainerMenuDefinition
+{
+public:
+    BluetoothSettingsMenu()
+    {
+        constructItem<makeComponent<MenuItem, BluetoothAvailableText,                 DisabledColor, DummyAction>>();
+        constructItem<makeComponent<MenuItem, BluetoothHasClientText,                 DisabledColor, DummyAction>>();
+//        constructItem<makeComponent<MenuItem, BluetoothConnectedText,                 DisabledColor, DummyAction>>(); // crashes
+        constructItem<makeComponent<MenuItem, BluetoothIsReadyText,                   DisabledColor, DummyAction>>();
+        constructItem<makeComponent<MenuItem, BluetoothIsReadyMasterText,             DisabledColor, DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHBEGIN>,        BluetoothBeginAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHBEGINMASTER>,  BluetoothBeginMasterAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHFLUSH>,        BluetoothFlushAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHEND>,          BluetoothEndAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHDISCONNECT>,   BluetoothDisconnectAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_AUTOBLUETOOTHMODE>,     SwitchScreenAction<AutoBluetoothModeChangeDisplay>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
 #endif
-}
+} // namespace

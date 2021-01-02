@@ -2,7 +2,6 @@
 
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
 #include "utils.h"
 #include "actions/setvalueaction.h"
 #include "actions/backproxyaction.h"

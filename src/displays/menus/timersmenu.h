@@ -1,17 +1,19 @@
 #pragma once
 
+// local includes
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
+#include "containermenudefinition.h"
 #include "utils.h"
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
 #include "texts.h"
 #include "settingsaccessors.h"
 
+// forward declares
 namespace {
 class BoardcomputerHardwareSettingsMenu;
-}
+} // namespace
 
 namespace {
 class TimersMenu;
@@ -60,13 +62,17 @@ class TimersMenu :
     public MenuDisplay,
     public StaticText<TEXT_TIMERS>,
     public BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, StaticText<TEXT_POTIREADRATE>,      SwitchScreenAction<PotiReadRateChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_MODEUPDATERATE>,    SwitchScreenAction<ModeUpdateRateChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_STATSUPDATERATE>,   SwitchScreenAction<StatsUpdateRateChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_DISPLAYUPDATERATE>, SwitchScreenAction<DisplayUpdateRateChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_DISPLAYREDRAWRATE>, SwitchScreenAction<DisplayRedrawRateChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
-}
+    public ContainerMenuDefinition
+{
+public:
+    TimersMenu()
+    {
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_POTIREADRATE>,      SwitchScreenAction<PotiReadRateChangeDisplay>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_MODEUPDATERATE>,    SwitchScreenAction<ModeUpdateRateChangeDisplay>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_STATSUPDATERATE>,   SwitchScreenAction<StatsUpdateRateChangeDisplay>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DISPLAYUPDATERATE>, SwitchScreenAction<DisplayUpdateRateChangeDisplay>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DISPLAYREDRAWRATE>, SwitchScreenAction<DisplayRedrawRateChangeDisplay>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
+} // namespace

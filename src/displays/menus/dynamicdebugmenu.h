@@ -1,10 +1,12 @@
 #pragma once
 
+// Arduino includes
 #include <Arduino.h>
 #include <WString.h>
 
+// local includes
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
+#include "containermenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
@@ -16,9 +18,10 @@
 #include "texts.h"
 #include "types.h"
 
+// forward declares
 namespace {
 class DebugMenu;
-}
+} // namespace
 
 namespace {
 class RandomText : public virtual TextInterface
@@ -123,33 +126,37 @@ class DynamicDebugMenu :
     public MenuDisplay,
     public RandomText,
     public BackActionInterface<SwitchScreenAction<DebugMenu>>,
-    public StaticMenuDefinition<
+    public ContainerMenuDefinition
+{
+public:
+    DynamicDebugMenu()
+    {
         // dummy items to allow for scrolling
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
 
         // the interesting bits
-        makeComponent<MenuItem, RandomText,                    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DYNAMICCOLOR>, RandomColor, DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DYNAMICFONT>,  RandomFont, DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DYNAMICICON>,  RandomIcon, DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_STATICICON>,   StaticMenuItemIcon<&icons::lock>, DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DEBUGTOGGLE>,  ToggleBoolAction, CheckboxIcon, ToggleAccessor>,
-        makeComponent<MenuItem, RandomText,                    RandomColor, RandomFont, RandomIcon, DummyAction>,
+        constructItem<makeComponent<MenuItem, RandomText,                    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICCOLOR>, RandomColor, DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICFONT>,  RandomFont, DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICICON>,  RandomIcon, DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_STATICICON>,   StaticMenuItemIcon<&icons::lock>, DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DEBUGTOGGLE>,  ToggleBoolAction, CheckboxIcon, ToggleAccessor>>();
+        constructItem<makeComponent<MenuItem, RandomText,                    RandomColor, RandomFont, RandomIcon, DummyAction>>();
 
         // more scrolling
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>,
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
 
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,         SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
-}
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
+} // namespace

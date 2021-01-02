@@ -1,10 +1,13 @@
 #pragma once
 
+// system includes
 #include <vector>
 
+// Arduino includes
 #include <Arduino.h>
 #include <WiFi.h>
 
+// local includes
 #include "menudisplay.h"
 #include "utils.h"
 #include "actions/multiaction.h"
@@ -14,9 +17,10 @@
 #include "texts.h"
 #include "types.h"
 
+// forward declares
 namespace {
 class WifiSettingsMenu;
-}
+} // namespace
 
 namespace {
 class WifiScanMenu : public MenuDisplay, public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>
@@ -34,18 +38,24 @@ public:
 
     MenuItem& getMenuItem(std::size_t index) override
     {
+        if (index < vec.size())
+            return vec[index];
+
         if (index == vec.size())
             return m_backItem;
 
-        return vec[index];
+        throw "aua";
     }
 
     const MenuItem& getMenuItem(std::size_t index) const override
     {
+        if (index < vec.size())
+            return vec[index];
+
         if (index == vec.size())
             return m_backItem;
 
-        return vec[index];
+        throw "aua";
     }
 
     void runForEveryMenuItem(std::function<void(MenuItem&)> &&callback) override
@@ -132,4 +142,4 @@ void WifiScanMenu::stop()
 {
     WiFi.scanDelete();
 }
-}
+} // namespace

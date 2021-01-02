@@ -1,7 +1,8 @@
 #pragma once
 
+// local includes
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
+#include "containermenudefinition.h"
 #include "utils.h"
 #include "actions/multiaction.h"
 #include "actions/switchscreenaction.h"
@@ -14,9 +15,10 @@
 #include "modes/larsmmode.h"
 #include "modes/gametrakmode.h"
 
+// forward declares
 namespace {
 class MainMenu;
-}
+} // namespace
 
 namespace {
 template<typename T1, T1 &target, typename T2, T2 value>
@@ -36,19 +38,22 @@ class SelectModeMenu :
     public MenuDisplay,
     public StaticText<TEXT_SELECTMODE>,
     public BackActionInterface<SwitchScreenAction<MainMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,   MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_TEMPOMAT>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_LARSM>,     MultiAction<SetLarsmModeAction, SwitchScreenAction<MainMenu>>>,
-#ifdef FEATURE_GAMETRAK
-        makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, SwitchScreenAction<MainMenu>>>,
-#endif
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>
-    >
+    public ContainerMenuDefinition
 {
     using Base = MenuDisplay;
 
 public:
+    SelectModeMenu()
+    {
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,   MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_TEMPOMAT>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,     MultiAction<SetLarsmModeAction, SwitchScreenAction<MainMenu>>>>();
+#ifdef FEATURE_GAMETRAK
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, SwitchScreenAction<MainMenu>>>>();
+#endif
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+
     void start() override;
 };
 
@@ -68,4 +73,4 @@ void SelectModeMenu::start()
         setSelectedIndex(3);
     }
 }
-}
+} // namespace

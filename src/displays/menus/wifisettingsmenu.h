@@ -1,8 +1,9 @@
 #pragma once
 
+// local includes
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
+#include "containermenudefinition.h"
 #include "utils.h"
 #include "actions/switchscreenaction.h"
 #include "actions/toggleboolaction.h"
@@ -12,13 +13,14 @@
 #include "texts.h"
 #include "settingsaccessors.h"
 
+// forward declares
 namespace {
 class GenericWifiSettingsMenu;
 class StationWifiSettingsMenu;
 class WifiScanMenu;
 class AccessPointWifiSettingsMenu;
 class SettingsMenu;
-}
+} // namespace
 
 namespace {
 class WifiSettingsMenu;
@@ -35,14 +37,18 @@ class WifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_WIFISETTINGS>,
     public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, StaticText<TEXT_AUTOWIFIMODE>,            SwitchScreenAction<AutoWifiModeChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_AUTOENABLEAP>,            ToggleBoolAction, CheckboxIcon, AutoEnableApAccessor>,
-        makeComponent<MenuItem, StaticText<TEXT_GENERICWIFISETTINGS>,     SwitchScreenAction<GenericWifiSettingsMenu>>,
-        makeComponent<MenuItem, StaticText<TEXT_STATIONWIFISETTINGS>,     SwitchScreenAction<StationWifiSettingsMenu>>,
-        makeComponent<MenuItem, StaticText<TEXT_WIFISCAN>,                SwitchScreenAction<WifiScanMenu>, StaticMenuItemIcon<&icons::scan>>,
-        makeComponent<MenuItem, StaticText<TEXT_ACCESSPOINTWIFISETTINGS>, SwitchScreenAction<AccessPointWifiSettingsMenu>>,
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,                    SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
-}
+    public ContainerMenuDefinition
+{
+public:
+    WifiSettingsMenu()
+    {
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_AUTOWIFIMODE>,            SwitchScreenAction<AutoWifiModeChangeDisplay>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_AUTOENABLEAP>,            ToggleBoolAction, CheckboxIcon, AutoEnableApAccessor>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_GENERICWIFISETTINGS>,     SwitchScreenAction<GenericWifiSettingsMenu>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_STATIONWIFISETTINGS>,     SwitchScreenAction<StationWifiSettingsMenu>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFISCAN>,                SwitchScreenAction<WifiScanMenu>, StaticMenuItemIcon<&icons::scan>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_ACCESSPOINTWIFISETTINGS>, SwitchScreenAction<AccessPointWifiSettingsMenu>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
+} // namespace

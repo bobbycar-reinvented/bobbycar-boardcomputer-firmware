@@ -1,9 +1,11 @@
 #pragma once
 
+// Arduino includes
 #include <HardwareSerial.h>
 
+// local includes
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
+#include "containermenudefinition.h"
 #include "changevaluedisplay.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -15,10 +17,11 @@
 #include "wifiaccessors.h"
 #include "texts.h"
 
+// forward declares
 namespace {
 class GenericWifiSettingsMenu;
 class WifiSettingsMenu;
-}
+} // namespace
 
 namespace {
 using WifiModeChangeScreen = makeComponent<
@@ -41,13 +44,17 @@ class GenericWifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GENERICWIFISETTINGS>,
     public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, WifiStatusBitsText,                 DisabledColor, DummyAction>,
-        makeComponent<MenuItem, WifiChannelText,                    DisabledColor, DummyAction>,
-        makeComponent<MenuItem, StaticText<TEXT_WIFICHANGEMODE>,    SwitchScreenAction<WifiModeChangeScreen>>,
-        makeComponent<MenuItem, StaticText<TEXT_WIFICHANGESLEEP>,   ToggleBoolAction, CheckboxIcon, WifiSleepAccessor>,
-        makeComponent<MenuItem, StaticText<TEXT_WIFICHANGETXPOWER>, SwitchScreenAction<WifiTxPowerChangeScreen>>,
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
-}
+    public ContainerMenuDefinition
+{
+public:
+    GenericWifiSettingsMenu()
+    {
+        constructItem<makeComponent<MenuItem, WifiStatusBitsText,                 DisabledColor, DummyAction>>();
+        constructItem<makeComponent<MenuItem, WifiChannelText,                    DisabledColor, DummyAction>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGEMODE>,    SwitchScreenAction<WifiModeChangeScreen>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGESLEEP>,   ToggleBoolAction, CheckboxIcon, WifiSleepAccessor>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGETXPOWER>, SwitchScreenAction<WifiTxPowerChangeScreen>>>();
+        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
+} // namespace
