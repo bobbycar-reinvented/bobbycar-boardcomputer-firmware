@@ -11,7 +11,8 @@ echo "OTHER_FILES += \\" >> platformio.pro
 #    echo "    $i \\" >> platformio.pro
 #done
 
-echo "    bobbycar.csv \\" >> platformio.pro
-echo "    bobbycar_noota.csv \\" >> platformio.pro
+echo "    partitions_16M_ota.csv \\" >> platformio.pro
+echo "    partitions_4M_noota.csv \\" >> platformio.pro
+echo "    partitions_4M_ota.csv \\" >> platformio.pro
 echo "    LICENSE" >> platformio.pro
 echo "    README.md" >> platformio.pro
