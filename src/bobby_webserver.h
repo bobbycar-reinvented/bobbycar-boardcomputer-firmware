@@ -1,231 +1,233 @@
 #pragma once
 
-#include <WebServer.h>
+#include <ESPAsyncWebServer.h>
 
 #include "screens.h"
 
 namespace {
 #ifdef FEATURE_WEBSERVER
-WebServer webServer{80};
+AsyncWebServer webServer{80};
 
 class HtmlTag {
 public:
-    HtmlTag(const String &tagName, String &content) :
+    HtmlTag(const char *tagName, AsyncResponseStream *response) :
         m_tagName{tagName},
-        m_content{content}
+        m_response{response}
     {
-        content += "<" + tagName + ">";
+        m_response->printf("<%s>", m_tagName);
     }
 
     ~HtmlTag()
     {
-        m_content += "</" + m_tagName + ">";
+        m_response->printf("</%s>", m_tagName);
     }
 
 private:
-    const String m_tagName;
-    String &m_content;
+    const char * const m_tagName;
+    AsyncResponseStream * const m_response;
 };
 
 void initWebserver()
 {
-    webServer.on("/", HTTP_GET, [](){
-        webServer.sendHeader("Connection", "close");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
 
-        String content;
+    webServer.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+        AsyncResponseStream *response = request->beginResponseStream("text/html");
 
         {
-            HtmlTag htmlTag{"html", content};
+            HtmlTag htmlTag{"html", response};
 
             {
-                HtmlTag headTag{"head", content};
+                HtmlTag headTag{"head", response};
 
                 {
-                    HtmlTag titleTag{"title", content};
-                    content += "Bobbycar remote";
+                    HtmlTag titleTag{"title", response};
+                    response->print("Bobbycar remote");
                 }
 
-                content += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />";
+                response->print("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />");
             }
 
             {
-                HtmlTag bodyTag{"body", content};
+                HtmlTag bodyTag{"body", response};
 
                 {
-                    HtmlTag h1Tag{"h1", content};
-                    content += "Bobbycar remote";
+                    HtmlTag h1Tag{"h1", response};
+                    response->print("Bobbycar remote");
                 }
 
                 {
-                    HtmlTag pTag{"p", content};
-
-                    content += "<a href=\"/up\">Up</a> <a href=\"/down\">Down</a> <a href=\"/confirm\">Confirm</a> <a href=\"/back\">Back</a>";
+                    HtmlTag pTag{"p", response};
+                    response->print("<a href=\"/up\">Up</a> "
+                                    "<a href=\"/down\">Down</a> "
+                                    "<a href=\"/confirm\">Confirm</a> "
+                                    "<a href=\"/back\">Back</a>");
                 }
 
                 if (auto constCurrentDisplay = static_cast<const Display *>(currentDisplay))
                 {
                     if (const auto *textInterface = constCurrentDisplay->asTextInterface())
                     {
-                        HtmlTag h2Tag{"h2", content};
-                        content += textInterface->text();
+                        HtmlTag h2Tag{"h2", response};
+                        response->print(textInterface->text());
                     }
 
                     if (const auto *menuDisplay = constCurrentDisplay->asMenuDisplay())
                     {
-                        HtmlTag ulTag{"ul", content};
+                        HtmlTag ulTag{"ul", response};
 
                         int i{0};
                         menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const MenuItem &menuItem){
-                            content += "<li";
+                            response->print("<li");
 
                             if (i == selectedIndex)
-                                content += " style=\"border: 1px solid black;\"";
+                                response->print(" style=\"border: 1px solid black;\"");
 
-                            content += "><a href=\"/triggerItem?index=";
-                            content += i;
-                            content += "\">";
-                            content += menuItem.text();
-                            content += "</a></li>";
+                            response->print("><a href=\"/triggerItem?index=");
+                            response->print(i);
+                            response->print("\">");
+                            response->print(menuItem.text());
+                            response->print("</a></li>");
 
                             i++;
                         });
                     }
                     else if (const auto *changeValueDisplay = constCurrentDisplay->asChangeValueDisplayInterface())
                     {
-                        content += "<form action=\"/setValue\" method=\"GET\">";
-                        content += "<input type=\"number\" name=\"value\" value=\"" + String{changeValueDisplay->shownValue()} + "\" />";
-                        content += "<button type=\"submit\">Update</button>";
-                        content += "</form>";
+                        response->print("<form action=\"/setValue\" method=\"GET\">");
+                        response->print("<input type=\"number\" name=\"value\" value=\"" + String{changeValueDisplay->shownValue()} + "\" />");
+                        response->print("<button type=\"submit\">Update</button>");
+                        response->print("</form>");
                     }
                     else
                     {
-                        content += "No web control implemented for current display.";
+                        response->print("No web control implemented for current display.");
                     }
                 }
                 else
                 {
-                    content += "Currently no screen instantiated.";
+                    response->print("Currently no screen instantiated.");
                 }
             }
         }
 
-        webServer.send(200, "text/html", content);
+        request->send(response);
     });
 
-    webServer.on("/up", HTTP_GET, [](){
+    webServer.on("/up", HTTP_GET, [](AsyncWebServerRequest *request){
         InputDispatcher::rotate(-1);
 
-        webServer.sendHeader("Connection", "close");
-        webServer.sendHeader("Location", "/");
-        webServer.send(302, "text/html", "ok");
+        AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
+        response->addHeader("Location", "/");
+        request->send(response);
     });
 
-    webServer.on("/down", HTTP_GET, [](){
+    webServer.on("/down", HTTP_GET, [](AsyncWebServerRequest *request){
         InputDispatcher::rotate(1);
 
-        webServer.sendHeader("Connection", "close");
-        webServer.sendHeader("Location", "/");
-        webServer.send(302, "text/html", "ok");
+        AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
+        response->addHeader("Location", "/");
+        request->send(response);
     });
 
-    webServer.on("/confirm", HTTP_GET, [](){
+    webServer.on("/confirm", HTTP_GET, [](AsyncWebServerRequest *request){
         InputDispatcher::confirmButton(true);
         InputDispatcher::confirmButton(false);
 
-        webServer.sendHeader("Connection", "close");
-        webServer.sendHeader("Location", "/");
-        webServer.send(302, "text/html", "ok");
+        AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
+        response->addHeader("Location", "/");
+        request->send(response);
     });
 
-    webServer.on("/back", HTTP_GET, [](){
+    webServer.on("/back", HTTP_GET, [](AsyncWebServerRequest *request){
         InputDispatcher::backButton(true);
         InputDispatcher::backButton(false);
 
-        webServer.sendHeader("Connection", "close");
-        webServer.sendHeader("Location", "/");
-        webServer.send(302, "text/html", "ok");
+        AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
+        response->addHeader("Location", "/");
+        request->send(response);
     });
 
-    webServer.on("/triggerItem", HTTP_GET, [](){
-        if (!webServer.hasArg("index"))
+    webServer.on("/triggerItem", HTTP_GET, [](AsyncWebServerRequest *request){
+        if (!request->hasArg("index"))
         {
-            webServer.send(400, "text/plain", "index parameter missing");
+            request->send(400, "text/plain", "index parameter missing");
             return;
         }
 
         if (!currentDisplay)
         {
-            webServer.send(400, "text/plain", "currentDisplay is null");
+            request->send(400, "text/plain", "currentDisplay is null");
             return;
         }
 
         auto *menuDisplay = currentDisplay->asMenuDisplay();
         if (!menuDisplay)
         {
-            webServer.send(400, "text/plain", "currentDisplay is not a menu display");
+            request->send(400, "text/plain", "currentDisplay is not a menu display");
             return;
         }
 
-        const auto indexStr = webServer.arg("index");
+        const auto indexStr = request->arg("index");
 
         char *ptr;
         const auto index = std::strtol(std::begin(indexStr), &ptr, 10);
 
         if (ptr != std::end(indexStr))
         {
-            webServer.send(400, "text/plain", "index could not be parsed");
+            request->send(400, "text/plain", "index could not be parsed");
             return;
         }
 
         if (index < 0 || index >= menuDisplay->size())
         {
-            webServer.send(400, "text/plain", "index out of range");
+            request->send(400, "text/plain", "index out of range");
             return;
         }
 
         menuDisplay->getMenuItem(index).triggered();
 
-        webServer.sendHeader("Connection", "close");
-        webServer.sendHeader("Location", "/");
-        webServer.send(302, "text/html", "ok");
+        AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
+        response->addHeader("Location", "/");
+        request->send(response);
     });
 
-    webServer.on("/setValue", HTTP_GET, [](){
-        if (!webServer.hasArg("value"))
+    webServer.on("/setValue", HTTP_GET, [](AsyncWebServerRequest *request){
+        if (!request->hasArg("value"))
         {
-            webServer.send(400, "text/plain", "value parameter missing");
+            request->send(400, "text/plain", "value parameter missing");
             return;
         }
 
         if (!currentDisplay)
         {
-            webServer.send(400, "text/plain", "currentDisplay is null");
+            request->send(400, "text/plain", "currentDisplay is null");
             return;
         }
 
         auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface();
         if (!changeValueDisplay)
         {
-            webServer.send(400, "text/plain", "currentDisplay is not a change value display");
+            request->send(400, "text/plain", "currentDisplay is not a change value display");
             return;
         }
 
-        const auto valueStr = webServer.arg("value");
+        const auto valueStr = request->arg("value");
 
         char *ptr;
         const auto value = std::strtol(std::begin(valueStr), &ptr, 10);
 
         if (ptr != std::end(valueStr))
         {
-            webServer.send(400, "text/plain", "value could not be parsed");
+            request->send(400, "text/plain", "value could not be parsed");
             return;
         }
 
         changeValueDisplay->setShownValue(value);
 
-        webServer.sendHeader("Connection", "close");
-        webServer.sendHeader("Location", "/");
-        webServer.send(302, "text/html", "ok");
+        AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
+        response->addHeader("Location", "/");
+        request->send(response);
     });
 
     webServer.begin();
@@ -233,7 +235,6 @@ void initWebserver()
 
 void handleWebserver()
 {
-    webServer.handleClient();
 }
 #endif
 }
