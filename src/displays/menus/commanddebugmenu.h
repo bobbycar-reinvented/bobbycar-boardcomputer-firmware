@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -21,17 +20,16 @@ template<const char *Ttext, typename Ttexts>
 class CommandDebugMenu :
     public MenuDisplay,
     public StaticText<Ttext>,
-    public BackActionInterface<SwitchScreenAction<DebugMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<DebugMenu>>
 {
 public:
     CommandDebugMenu()
     {
-        constructItem<makeComponent<MenuItem, typename Ttexts::BuzzerFreqText,    DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::BuzzerPatternText, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::PoweroffText,      DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::LedText,           DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::BuzzerFreqText,    DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::BuzzerPatternText, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::PoweroffText,      DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::LedText,           DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 

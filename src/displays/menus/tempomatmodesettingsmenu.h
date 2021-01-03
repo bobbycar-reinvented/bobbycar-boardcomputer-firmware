@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
 #include "menuitem.h"
@@ -29,14 +28,13 @@ using TempomatModeModelModeChangeScreen = makeComponent<
 class TempomatModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_TEMPOMATMODESETTINGS>,
-    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>
 {
 public:
     TempomatModeSettingsMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

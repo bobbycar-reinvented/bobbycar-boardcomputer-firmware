@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/toggleboolaction.h"
@@ -21,17 +20,16 @@ namespace {
 class InvertMenu :
     public MenuDisplay,
     public StaticText<TEXT_SETINVERTED>,
-    public BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>
 {
 public:
     InvertMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTLEFT>,  ToggleBoolAction, CheckboxIcon, FrontLeftInvertedAccessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTRIGHT>, ToggleBoolAction, CheckboxIcon, FrontRightInvertedAccessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKLEFT>,   ToggleBoolAction, CheckboxIcon, BackLeftInvertedAccessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKRIGHT>,  ToggleBoolAction, CheckboxIcon, BackRightInvertedAccessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTLEFT>,  ToggleBoolAction, CheckboxIcon, FrontLeftInvertedAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTRIGHT>, ToggleBoolAction, CheckboxIcon, FrontRightInvertedAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKLEFT>,   ToggleBoolAction, CheckboxIcon, BackLeftInvertedAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKRIGHT>,  ToggleBoolAction, CheckboxIcon, BackRightInvertedAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

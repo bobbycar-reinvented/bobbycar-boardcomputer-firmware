@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
 #include "menuitem.h"
@@ -64,19 +63,18 @@ using PhaseAdvMaxChangeScreen = makeComponent<
 class LimitsSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_LIMITSSETTINGS>,
-    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>
 {
 public:
     LimitsSettingsMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETIMOTMAX>,      SwitchScreenAction<IMotMaxChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETIDCMAX>,       SwitchScreenAction<IDcMaxChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETNMOTMAXKMH>,   SwitchScreenAction<NMotMaxKmhChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETNMOTMAX>,      SwitchScreenAction<NMotMaxRpmChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETFIELDWEAKMAX>, SwitchScreenAction<FieldWeakMaxChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETPHASEADVMAX>,  SwitchScreenAction<PhaseAdvMaxChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,            SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETIMOTMAX>,      SwitchScreenAction<IMotMaxChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETIDCMAX>,       SwitchScreenAction<IDcMaxChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETNMOTMAXKMH>,   SwitchScreenAction<NMotMaxKmhChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETNMOTMAX>,      SwitchScreenAction<NMotMaxRpmChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETFIELDWEAKMAX>, SwitchScreenAction<FieldWeakMaxChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETPHASEADVMAX>,  SwitchScreenAction<PhaseAdvMaxChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,            SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

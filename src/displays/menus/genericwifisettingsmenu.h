@@ -5,7 +5,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "changevaluedisplay.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -43,18 +42,17 @@ using WifiTxPowerChangeScreen = makeComponent<
 class GenericWifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GENERICWIFISETTINGS>,
-    public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>
 {
 public:
     GenericWifiSettingsMenu()
     {
-        constructItem<makeComponent<MenuItem, WifiStatusBitsText,                 DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiChannelText,                    DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGEMODE>,    SwitchScreenAction<WifiModeChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGESLEEP>,   ToggleBoolAction, CheckboxIcon, WifiSleepAccessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGETXPOWER>, SwitchScreenAction<WifiTxPowerChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, WifiStatusBitsText,                 DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiChannelText,                    DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGEMODE>,    SwitchScreenAction<WifiModeChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGESLEEP>,   ToggleBoolAction, CheckboxIcon, WifiSleepAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGETXPOWER>, SwitchScreenAction<WifiTxPowerChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

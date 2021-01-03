@@ -6,7 +6,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "actions/multiaction.h"
 #include "actions/switchscreenaction.h"
@@ -21,11 +20,13 @@ class WifiSettingsMenu;
 } // namespace
 
 namespace {
-class WifiScanMenu : public MenuDisplay, public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>, public ContainerMenuDefinition
+class WifiScanMenu : public MenuDisplay, public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>
 {
     using Base = MenuDisplay;
 
 public:
+    WifiScanMenu();
+
     String text() const override;
 
     void start() override;
@@ -38,9 +39,14 @@ private:
     std::vector<std::unique_ptr<makeComponent<MenuItem, ChangeableText, DummyAction>>> m_reusableItems;
 };
 
+WifiScanMenu::WifiScanMenu()
+{
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+}
+
 String WifiScanMenu::text() const
 {
-    auto text = String{size()-1} + " found";
+    auto text = String{menuItemCount()-1} + " found";
     switch (WiFi.scanComplete())
     {
     case WIFI_SCAN_RUNNING: text += " (scanning)"; break;
@@ -51,8 +57,6 @@ String WifiScanMenu::text() const
 
 void WifiScanMenu::start()
 {
-    constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
-
     Base::start();
 
     m_lastScanComplete = 0;
@@ -68,16 +72,16 @@ void WifiScanMenu::update()
         const auto now = millis();
         if (!m_lastScanComplete)
         {
-            auto backButton = takeLast();
+            auto backButton = takeLastMenuItem();
 
             for (std::size_t i = 0; i < n; i++)
             {
                 const auto ssid = WiFi.SSID(i);
-                if (size() <= i)
+                if (menuItemCount() <= i)
                 {
                     if (m_reusableItems.empty())
                     {
-                        auto &item = constructItem<makeComponent<MenuItem, ChangeableText, DummyAction>>();
+                        auto &item = constructMenuItem<makeComponent<MenuItem, ChangeableText, DummyAction>>();
                         item.setTitle(ssid);
                     }
                     else
@@ -85,7 +89,7 @@ void WifiScanMenu::update()
                         std::unique_ptr<makeComponent<MenuItem, ChangeableText, DummyAction>> ptr = std::move(m_reusableItems.back());
                         m_reusableItems.pop_back();
                         ptr->setTitle(ssid);
-                        emplaceItem(std::move(ptr));
+                        emplaceMenuItem(std::move(ptr));
                     }
                 }
                 else
@@ -95,10 +99,10 @@ void WifiScanMenu::update()
                 }
             }
 
-            while (size() > n)
-                m_reusableItems.emplace_back((makeComponent<MenuItem, ChangeableText, DummyAction>*)takeLast().release());
+            while (menuItemCount() > n)
+                m_reusableItems.emplace_back((makeComponent<MenuItem, ChangeableText, DummyAction>*)takeLastMenuItem().release());
 
-            emplaceItem(std::move(backButton));
+            emplaceMenuItem(std::move(backButton));
 
             m_lastScanComplete = now;
         }

@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -22,21 +21,20 @@ template<const char *Ttext, typename Ttexts, template<int> class ColorInterface>
 class MotorFeedbackDebugMenu :
     public MenuDisplay,
     public StaticText<Ttext>,
-    public BackActionInterface<SwitchScreenAction<DebugMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<DebugMenu>>
 {
 public:
     MotorFeedbackDebugMenu()
     {
-        constructItem<makeComponent<MenuItem, typename Ttexts::AngleText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::SpeedText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::SpeedKmhText,     ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::ErrorText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::CurrentText,      ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::CurrentFixedText, ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::ChopsText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::HallText,         ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                             SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::AngleText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::SpeedText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::SpeedKmhText,     ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::ErrorText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::CurrentText,      ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::CurrentFixedText, ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::ChopsText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::HallText,         ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                             SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 

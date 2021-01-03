@@ -50,7 +50,7 @@ void initScreen()
     tft.fillScreen(TFT_WHITE);
     tft.setTextColor(TFT_BLACK, TFT_WHITE);
     tft.setTextFont(4);
-    tft.pushImage(0, 40, icons::logo.WIDTH, icons::logo.HEIGHT, icons::logo.buffer);
+    //tft.pushImage(0, 40, icons::logo.WIDTH, icons::logo.HEIGHT, icons::logo.buffer);
     tft.drawString("Bobbycar-OS", 32, 200);
     tft.drawString("booting...", 32, 225);
     bootLabel.start();

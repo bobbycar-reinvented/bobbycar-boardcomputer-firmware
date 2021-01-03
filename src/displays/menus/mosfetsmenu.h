@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/toggleboolaction.h"
@@ -34,8 +33,7 @@ using Mosfet2Accessor = GPIOAccessor<PINS_MOSFET2>;
 class MosfetsMenu :
     public MenuDisplay,
     public StaticText<TEXT_MOSFETS>,
-    public BackActionInterface<SwitchScreenAction<MainMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<MainMenu>>
 {
 public:
     MosfetsMenu()

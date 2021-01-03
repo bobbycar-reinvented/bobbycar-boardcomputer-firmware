@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
@@ -19,8 +18,7 @@ namespace {
 class ContainerModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GAMETRAKMODESETTINGS>,
-    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>
 {
 public:
     ContainerModeSettingsMenu()

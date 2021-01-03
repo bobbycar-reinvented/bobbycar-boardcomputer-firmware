@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
 #include "menuitem.h"
@@ -89,22 +88,21 @@ using ReverseBeepDuration1ChangeScreen = makeComponent<
 class BuzzerMenu :
     public MenuDisplay,
     public StaticText<TEXT_BUZZER>,
-    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>
 {
 public:
     BuzzerMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_FRONTFREQ>,            SwitchScreenAction<FrontFreqChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_FRONTPATTERN>,         SwitchScreenAction<FrontPatternChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACKFREQ>,             SwitchScreenAction<BackFreqChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACKPATTERN>,          SwitchScreenAction<BackPatternChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEP>,          ToggleBoolAction, CheckboxIcon, ReverseBeepAccessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPFREQ0>,     SwitchScreenAction<ReverseBeepFreq0ChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPFREQ1>,     SwitchScreenAction<ReverseBeepFreq1ChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPDURATION0>, SwitchScreenAction<ReverseBeepDuration0ChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPDURATION1>, SwitchScreenAction<ReverseBeepDuration1ChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTFREQ>,            SwitchScreenAction<FrontFreqChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTPATTERN>,         SwitchScreenAction<FrontPatternChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKFREQ>,             SwitchScreenAction<BackFreqChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKPATTERN>,          SwitchScreenAction<BackPatternChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEP>,          ToggleBoolAction, CheckboxIcon, ReverseBeepAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPFREQ0>,     SwitchScreenAction<ReverseBeepFreq0ChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPFREQ1>,     SwitchScreenAction<ReverseBeepFreq1ChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPDURATION0>, SwitchScreenAction<ReverseBeepDuration0ChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPDURATION1>, SwitchScreenAction<ReverseBeepDuration1ChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

@@ -5,7 +5,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -29,34 +28,33 @@ namespace {
 class StationWifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_STATIONWIFISETTINGS>,
-    public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>
 {
 public:
     StationWifiSettingsMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFIRECONNECT>,           WifiReconnectAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFIDISCONNECT>,          WifiDisconnectAction>>();
-        constructItem<makeComponent<MenuItem, WifiIsConnectedText,                      StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGEAUTOCONNECT>,   ToggleBoolAction, CheckboxIcon, WifiAutoConnectAccessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGEAUTORECONNECT>, ToggleBoolAction, CheckboxIcon, WifiAutoReconnectAccessor>>();
-        constructItem<makeComponent<MenuItem, WifiLocalIpText,                          StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiMacAddressText,                       StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiSubnetMaskText,                       StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiGatewayIpText,                        StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiDnsIpText,                            StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiBroadcastIpText,                      StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiNetworkIdText,                        StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiSubnetCIDRText,                       StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_WIFIENABLEIPV6>,          WifiEnableIpV6Action>>();
-        constructItem<makeComponent<MenuItem, WifiLocalIpV6Text,                        StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiHostnameText,                         StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiStatusText,                           StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiSsidText,                             StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiPskText,                              StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiBssidText,                            StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, WifiRssiText,                             StaticFont<2>, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFIRECONNECT>,           WifiReconnectAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFIDISCONNECT>,          WifiDisconnectAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiIsConnectedText,                      StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGEAUTOCONNECT>,   ToggleBoolAction, CheckboxIcon, WifiAutoConnectAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGEAUTORECONNECT>, ToggleBoolAction, CheckboxIcon, WifiAutoReconnectAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, WifiLocalIpText,                          StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiMacAddressText,                       StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiSubnetMaskText,                       StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiGatewayIpText,                        StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiDnsIpText,                            StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiBroadcastIpText,                      StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiNetworkIdText,                        StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiSubnetCIDRText,                       StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFIENABLEIPV6>,          WifiEnableIpV6Action>>();
+        constructMenuItem<makeComponent<MenuItem, WifiLocalIpV6Text,                        StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiHostnameText,                         StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiStatusText,                           StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiSsidText,                             StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiPskText,                              StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiBssidText,                            StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, WifiRssiText,                             StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

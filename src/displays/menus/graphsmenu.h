@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
@@ -150,31 +149,30 @@ using MotorCurrentsGraphDisplay = makeComponent<
 class GraphsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GRAPHS>,
-    public BackActionInterface<SwitchScreenAction<MainMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<MainMenu>>
 {
 public:
     GraphsMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_GAS>,                   SwitchScreenAction<GasGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BREMS>,                 SwitchScreenAction<BremsGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_POTIS>,                 SwitchScreenAction<PotisGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_POTIS>,                 SwitchScreenAction<PotisSplitGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_AVGSPEED>,              SwitchScreenAction<AvgSpeedGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_AVGSPEEDKMH>,           SwitchScreenAction<AvgSpeedKmhGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SUMCURRENT>,            SwitchScreenAction<SumCurrentGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_FRONTVOLTAGE>,          SwitchScreenAction<FrontVoltageGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACKVOLTAGE>,           SwitchScreenAction<BackVoltageGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGES>,              SwitchScreenAction<VoltagesGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGES>,              SwitchScreenAction<VoltagesSplitGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAS>,                   SwitchScreenAction<GasGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BREMS>,                 SwitchScreenAction<BremsGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTIS>,                 SwitchScreenAction<PotisGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTIS>,                 SwitchScreenAction<PotisSplitGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AVGSPEED>,              SwitchScreenAction<AvgSpeedGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AVGSPEEDKMH>,           SwitchScreenAction<AvgSpeedKmhGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SUMCURRENT>,            SwitchScreenAction<SumCurrentGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTVOLTAGE>,          SwitchScreenAction<FrontVoltageGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKVOLTAGE>,           SwitchScreenAction<BackVoltageGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGES>,              SwitchScreenAction<VoltagesGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGES>,              SwitchScreenAction<VoltagesSplitGraphDisplay>>>();
 #ifdef FEATURE_BMS
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BMSVOLTAGE>,            SwitchScreenAction<BmsVoltageGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BMSCURRENT>,            SwitchScreenAction<BmsCurrentGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BMSPOWER>,              SwitchScreenAction<BmsPowerGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SUMCURRENTSCOMPARISON>, SwitchScreenAction<SumCurrentsComparisonGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMSVOLTAGE>,            SwitchScreenAction<BmsVoltageGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMSCURRENT>,            SwitchScreenAction<BmsCurrentGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMSPOWER>,              SwitchScreenAction<BmsPowerGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SUMCURRENTSCOMPARISON>, SwitchScreenAction<SumCurrentsComparisonGraphDisplay>>>();
 #endif
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_MOTORCURRENTS>,         SwitchScreenAction<MotorCurrentsGraphDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORCURRENTS>,         SwitchScreenAction<MotorCurrentsGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

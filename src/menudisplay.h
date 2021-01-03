@@ -8,11 +8,10 @@
 #include "textinterface.h"
 #include "widgets/label.h"
 #include "globals.h"
-#include "menudefinitioninterface.h"
 #include "menuitem.h"
 
 namespace {
-class MenuDisplay : public Display, public virtual TextInterface, public virtual MenuDefinitionInterface
+class MenuDisplay : public Display, public virtual TextInterface
 {
 public:
     void start() override;
@@ -31,6 +30,66 @@ public:
     const MenuDisplay *asMenuDisplay() const override { return this; }
 
     int selectedIndex() const { return m_selectedIndex; }
+
+
+    std::size_t menuItemCount() const { return m_menuItems.size(); }
+
+    MenuItem& getMenuItem(std::size_t index)
+    {
+        if (index < m_menuItems.size())
+            return *m_menuItems[index].get();
+
+        throw "aua";
+    }
+
+    const MenuItem& getMenuItem(std::size_t index) const
+    {
+        if (index < m_menuItems.size())
+            return *m_menuItems[index].get();
+
+        throw "aua";
+    }
+
+    void runForEveryMenuItem(std::function<void(MenuItem&)> &&callback)
+    {
+        for (const auto &ptr : m_menuItems)
+            callback(*ptr);
+    }
+
+    void runForEveryMenuItem(std::function<void(const MenuItem&)> &&callback) const
+    {
+        for (const auto &ptr : m_menuItems)
+            callback(*ptr);
+    }
+
+    template<typename T, typename... Args>
+    T &constructMenuItem(Args&&... args)
+    {
+        auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
+        T &ref = *ptr;
+        emplaceMenuItem(std::move(ptr));
+        return ref;
+    }
+
+    void emplaceMenuItem(std::unique_ptr<MenuItem> &&ptr)
+    {
+        m_menuItems.emplace_back(std::move(ptr));
+    }
+
+    void clearMenuItems()
+    {
+        m_menuItems.clear();
+    }
+
+    std::unique_ptr<MenuItem> takeLastMenuItem()
+    {
+        if (m_menuItems.empty())
+            throw "aua";
+
+        std::unique_ptr<MenuItem> ptr = std::move(m_menuItems.back());
+        m_menuItems.pop_back();
+        return ptr;
+    }
 
 protected:
     void setSelectedIndex(int selectedIndex) { m_selectedIndex = selectedIndex; }
@@ -65,6 +124,8 @@ private:
 
     int m_rotateOffset;
     bool m_pressed;
+
+    std::vector<std::unique_ptr<MenuItem>> m_menuItems;
 };
 
 void MenuDisplay::start()
@@ -102,7 +163,7 @@ void MenuDisplay::update()
         const auto offset = m_rotateOffset;
         m_rotateOffset = 0;
 
-        const auto itemCount = size();
+        const auto itemCount = menuItemCount();
 
         if (itemCount)
         {

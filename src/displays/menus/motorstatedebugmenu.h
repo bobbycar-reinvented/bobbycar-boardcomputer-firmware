@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -21,22 +20,21 @@ template<const char *Ttext, typename Ttexts>
 class MotorStateDebugMenu :
     public MenuDisplay,
     public StaticText<Ttext>,
-    public BackActionInterface<SwitchScreenAction<DebugMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<DebugMenu>>
 {
 public:
     MotorStateDebugMenu()
     {
-        constructItem<makeComponent<MenuItem, typename Ttexts::EnableText,       DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::PwmText,          DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::CtrlTypText,      DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::CtrlModText,      DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::IMotMaxText,      DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::IDcMaxText,       DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::NMotMaxText,      DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::FieldWeakMaxText, DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, typename Ttexts::PhaseAdvMaxText,  DisabledColor, DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::EnableText,       DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::PwmText,          DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::CtrlTypText,      DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::CtrlModText,      DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::IMotMaxText,      DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::IDcMaxText,       DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::NMotMaxText,      DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::FieldWeakMaxText, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::PhaseAdvMaxText,  DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 

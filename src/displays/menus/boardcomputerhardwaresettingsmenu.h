@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
 #include "actions/dummyaction.h"
@@ -139,22 +138,21 @@ using GametrakDistMaxChangeScreen = makeComponent<
 class BoardcomputerHardwareSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>,
-    public BackActionInterface<SwitchScreenAction<SettingsMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<SettingsMenu>>
 {
 public:
     BoardcomputerHardwareSettingsMenu()
     {
-        constructItem<makeComponent<MenuItem, GasText,                             DisabledColor, StaticFont<2>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, BremsText,                           DisabledColor, StaticFont<2>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_CALIBRATE>,          SwitchScreenAction<CalibrateDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETSAMPLECOUNT>,     SwitchScreenAction<SampleCountChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGASMIN>,          SwitchScreenAction<GasMinChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGASMAX>,          SwitchScreenAction<GasMaxChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETBREMSMIN>,        SwitchScreenAction<BremsMinChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETBREMSMAX>,        SwitchScreenAction<BremsMaxChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, GasText,                             DisabledColor, StaticFont<2>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, BremsText,                           DisabledColor, StaticFont<2>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CALIBRATE>,          SwitchScreenAction<CalibrateDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETSAMPLECOUNT>,     SwitchScreenAction<SampleCountChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGASMIN>,          SwitchScreenAction<GasMinChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGASMAX>,          SwitchScreenAction<GasMaxChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETBREMSMIN>,        SwitchScreenAction<BremsMinChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETBREMSMAX>,        SwitchScreenAction<BremsMaxChangeScreen>>>();
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW)
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETDPADDEBOUNCE>,    SwitchScreenAction<DPadDebounceChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETDPADDEBOUNCE>,    SwitchScreenAction<DPadDebounceChangeScreen>>>();
 #endif
 #ifdef FEATURE_GAMETRAK
         constructItem<makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>,
@@ -169,10 +167,10 @@ public:
         constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMIN>, SwitchScreenAction<GametrakDistMinChangeScreen>>>();
         constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMAX>, SwitchScreenAction<GametrakDistMaxChangeScreen>>>();
 #endif
-        constructItem<makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SWAPSCREENBYTES>,    ToggleBoolAction, CheckboxIcon, SwapScreenBytesAccessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_TIMERS>,             SwitchScreenAction<TimersMenu>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPSCREENBYTES>,    ToggleBoolAction, CheckboxIcon, SwapScreenBytesAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIMERS>,             SwitchScreenAction<TimersMenu>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

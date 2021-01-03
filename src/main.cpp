@@ -88,16 +88,28 @@ millis_t lastDisplayUpdate{};
 millis_t lastDisplayRedraw{};
 }
 
+void printMemoryStats(const char *s)
+{
+    Serial.printf("MEMORY %s 8bit: %u 32bit: %u\r\n",
+                  s,
+                  heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT),
+                  heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_32BIT));
+}
+
 void setup()
 {
     Serial.begin(115200);
     Serial.setDebugOutput(true);
-    Serial.println("setup()");
+    //Serial.println("setup()");
+
+    printMemoryStats("setup()");
+
     pinMode(3, INPUT_PULLUP);
 
     currentlyReverseBeeping = false;
 
     initScreen();
+    printMemoryStats("initScreen()");
 
 #ifdef FEATURE_DPAD
     bootLabel.redraw("dpad");
@@ -140,9 +152,11 @@ void setup()
             loadSettings();
         }
     }
+    printMemoryStats("loadSettings()");
 
     bootLabel.redraw("swap front back");
     updateSwapFrontBack();
+    printMemoryStats("swapFronBack()");
 
     bootLabel.redraw("deviceName");
     {
@@ -150,39 +164,47 @@ void setup()
         WiFi.macAddress(&macAddress[0]);
         std::sprintf(deviceName, STRING(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", macAddress[3], macAddress[4], macAddress[5]);
     }
+    printMemoryStats("deviceName");
 
     bootLabel.redraw("setHostname");
     if (!WiFi.setHostname(deviceName))
         Serial.println("Could not setHostname");
+    printMemoryStats("setHostname()");
 
     bootLabel.redraw("softAPsetHostname");
     if (!WiFi.softAPsetHostname(deviceName))
         Serial.println("Could not softAPsetHostname");
+    printMemoryStats("softAPsetHostname()");
 
     bootLabel.redraw("WiFi mode");
     if (!WiFi.mode(settings.wifiSettings.autoWifiMode))
         Serial.println("Could not set mode to WIFI_AP_STA");
+    printMemoryStats("WiFi.mode()");
 
     if (settings.wifiSettings.autoEnableAp)
     {
         bootLabel.redraw("WiFi softAp");
         WifiSoftApAction{}.triggered();
     }
+    printMemoryStats("WifiSoftApAction()");
 
     bootLabel.redraw("WiFi begin");
     if (!WiFi.begin("realraum", "r3alraum"))
         Serial.println("Could not begin WiFi");
+    printMemoryStats("WiFi.begin()");
 
 #ifdef FEATURE_BLUETOOTH
     if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Master)
     {
         bootLabel.redraw("bluetooth begin master");
         BluetoothBeginMasterAction{}.triggered();
+        printMemoryStats("BluetoothBeginMasterAction()");
 #ifdef FEATURE_BMS
         if (settings.autoConnectBms)
         {
             bootLabel.redraw("connect BMS");
             BluetoothConnectBmsAction{}.triggered();
+            printMemoryStats("BluetoothConnectBmsAction()");
         }
 #endif
     }
@@ -190,6 +212,7 @@ void setup()
     {
         bootLabel.redraw("bluetooth begin");
         BluetoothBeginAction{}.triggered();
+        printMemoryStats("BluetoothBeginAction()");
     }
 #endif
 
@@ -209,16 +232,19 @@ void setup()
 
     currentMode = &modes::defaultMode;
 
-#ifdef FEATURE_OTA
+#ifdef FEATURE_ARDUINOOTA
     bootLabel.redraw("ota");
     initOta();
+    printMemoryStats("initOta()");
 #endif
 
     bootLabel.redraw("webserver");
     initWebserver();
+    printMemoryStats("initWebserver()");
 
     bootLabel.redraw("potis");
     readPotis();
+    printMemoryStats("readPotis()");
 
 #if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
     switchScreen<DPad5WireDebugDisplay>();
@@ -229,10 +255,15 @@ void setup()
         switchScreen<CalibrateDisplay>(true);
     else
         switchScreen<StatusDisplay>();
+
+    printMemoryStats("switchScreen()");
 }
 
 void loop()
 {
+    //Serial.println("loop()");
+    //printMemoryStats("loop()");
+
     const auto now = millis();
 
 #ifdef FEATURE_DPAD
@@ -306,7 +337,7 @@ void loop()
 
     handleSerial();
 
-#ifdef FEATURE_OTA
+#ifdef FEATURE_ARDUINOOTA
     handleOta();
 #endif
 

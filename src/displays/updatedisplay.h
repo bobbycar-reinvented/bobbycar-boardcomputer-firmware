@@ -18,7 +18,7 @@ class StatusDisplay;
 }
 
 namespace {
-#ifdef FEATURE_OTA
+#ifdef FEATURE_ARDUINOOTA
 class UpdateDisplay : public Display, public DummyBack
 {
 public:

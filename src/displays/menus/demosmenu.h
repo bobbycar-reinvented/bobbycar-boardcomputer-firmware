@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
@@ -22,17 +21,16 @@ namespace {
 class DemosMenu :
     public MenuDisplay,
     public StaticText<TEXT_DEMOS>,
-    public BackActionInterface<SwitchScreenAction<MainMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<MainMenu>>
 {
 public:
     DemosMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_STARFIELD>,  SwitchScreenAction<StarfieldDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_PINGPONG>,   SwitchScreenAction<PingPongDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SPIRO>,      SwitchScreenAction<SpiroDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_GAMEOFLIFE>, SwitchScreenAction<GameOfLifeDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STARFIELD>,  SwitchScreenAction<StarfieldDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PINGPONG>,   SwitchScreenAction<PingPongDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SPIRO>,      SwitchScreenAction<SpiroDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMEOFLIFE>, SwitchScreenAction<GameOfLifeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

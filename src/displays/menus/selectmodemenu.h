@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "actions/multiaction.h"
 #include "actions/switchscreenaction.h"
@@ -37,21 +36,20 @@ using SetGametrakModeAction = SetterAction<ModeInterface*, currentMode, Gametrak
 class SelectModeMenu :
     public MenuDisplay,
     public StaticText<TEXT_SELECTMODE>,
-    public BackActionInterface<SwitchScreenAction<MainMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<MainMenu>>
 {
     using Base = MenuDisplay;
 
 public:
     SelectModeMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,   MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_TEMPOMAT>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,     MultiAction<SetLarsmModeAction, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,   MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TEMPOMAT>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,     MultiAction<SetLarsmModeAction, SwitchScreenAction<MainMenu>>>>();
 #ifdef FEATURE_GAMETRAK
         constructItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, SwitchScreenAction<MainMenu>>>>();
 #endif
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 
     void start() override;

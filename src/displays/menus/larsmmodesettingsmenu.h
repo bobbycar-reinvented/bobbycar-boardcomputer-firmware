@@ -2,7 +2,6 @@
 
 // local includes
 #include "menudisplay.h"
-#include "containermenudefinition.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
 #include "menuitem.h"
@@ -43,16 +42,15 @@ using LarsmModeIterationsChangeDisplay = makeComponent<
 class LarsmModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_LARSMMODESETTINGS>,
-    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
-    public ContainerMenuDefinition
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>
 {
 public:
     LarsmModeSettingsMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>,  SwitchScreenAction<LarsmModeModelModeChangeDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETMODE>,       SwitchScreenAction<LarsmModeModeChangeDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETITERATIONS>, SwitchScreenAction<LarsmModeIterationsChangeDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,          SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>,  SwitchScreenAction<LarsmModeModelModeChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODE>,       SwitchScreenAction<LarsmModeModeChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETITERATIONS>, SwitchScreenAction<LarsmModeIterationsChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,          SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace
