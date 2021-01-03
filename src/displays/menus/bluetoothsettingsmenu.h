@@ -45,7 +45,7 @@ public:
     {
         constructMenuItem<makeComponent<MenuItem, BluetoothAvailableText,                 DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, BluetoothHasClientText,                 DisabledColor, DummyAction>>();
-//        constructItem<makeComponent<MenuItem, BluetoothConnectedText,                 DisabledColor, DummyAction>>(); // crashes
+//        constructMenuItem<makeComponent<MenuItem, BluetoothConnectedText,                 DisabledColor, DummyAction>>(); // crashes
         constructMenuItem<makeComponent<MenuItem, BluetoothIsReadyText,                   DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, BluetoothIsReadyMasterText,             DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHBEGIN>,        BluetoothBeginAction>>();

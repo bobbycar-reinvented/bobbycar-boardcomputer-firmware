@@ -38,10 +38,10 @@ class MosfetsMenu :
 public:
     MosfetsMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET0>, ToggleBoolAction, CheckboxIcon, Mosfet0Accessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET1>, ToggleBoolAction, CheckboxIcon, Mosfet1Accessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET2>, ToggleBoolAction, CheckboxIcon, Mosfet2Accessor>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET0>, ToggleBoolAction, CheckboxIcon, Mosfet0Accessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET1>, ToggleBoolAction, CheckboxIcon, Mosfet1Accessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET2>, ToggleBoolAction, CheckboxIcon, Mosfet2Accessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 #endif

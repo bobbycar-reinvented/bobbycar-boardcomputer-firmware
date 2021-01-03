@@ -23,7 +23,7 @@ class ContainerModeSettingsMenu :
 public:
     ContainerModeSettingsMenu()
     {
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 #endif

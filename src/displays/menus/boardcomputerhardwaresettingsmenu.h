@@ -155,17 +155,17 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETDPADDEBOUNCE>,    SwitchScreenAction<DPadDebounceChangeScreen>>>();
 #endif
 #ifdef FEATURE_GAMETRAK
-        constructItem<makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>,
-        constructItem<makeComponent<MenuItem, GametrakXText,                       DisabledColor, StaticFont<2>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, GametrakYText,                       DisabledColor, StaticFont<2>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, GametrakDistText,                    DisabledColor, StaticFont<2>, DummyAction>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAKCALIBRATE>,  SwitchScreenAction<GametrakCalibrateDisplay>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMIN>,    SwitchScreenAction<GametrakXMinChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMAX>,    SwitchScreenAction<GametrakXMaxChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKYMIN>,    SwitchScreenAction<GametrakYMinChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKYMAX>,    SwitchScreenAction<GametrakYMaxChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMIN>, SwitchScreenAction<GametrakDistMinChangeScreen>>>();
-        constructItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMAX>, SwitchScreenAction<GametrakDistMaxChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>,
+        constructMenuItem<makeComponent<MenuItem, GametrakXText,                       DisabledColor, StaticFont<2>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, GametrakYText,                       DisabledColor, StaticFont<2>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, GametrakDistText,                    DisabledColor, StaticFont<2>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAKCALIBRATE>,  SwitchScreenAction<GametrakCalibrateDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMIN>,    SwitchScreenAction<GametrakXMinChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMAX>,    SwitchScreenAction<GametrakXMaxChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKYMIN>,    SwitchScreenAction<GametrakYMinChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKYMAX>,    SwitchScreenAction<GametrakYMaxChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMIN>, SwitchScreenAction<GametrakDistMinChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMAX>, SwitchScreenAction<GametrakDistMaxChangeScreen>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<nullptr>,                 DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPSCREENBYTES>,    ToggleBoolAction, CheckboxIcon, SwapScreenBytesAccessor>>();
