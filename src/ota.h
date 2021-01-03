@@ -1,14 +1,15 @@
 #pragma once
 
-#ifdef FEATURE_OTA
+#ifdef FEATURE_ARDUINOOTA
 #include <ArduinoOTA.h>
 #endif
 
 #include "screens.h"
+#include "globals.h"
 #include "displays/updatedisplay.h"
 
 namespace {
-#ifdef FEATURE_OTA
+#ifdef FEATURE_ARDUINOOTA
 void initOta()
 {
     ArduinoOTA
@@ -24,18 +25,18 @@ void initOta()
             switchScreenImpl<UpdateDisplay>("Updating " + type);
         })
         .onEnd([]() {
-            getRefByType<UpdateDisplay>().m_finished = true;
-            getRefByType<UpdateDisplay>().redraw();
+            ((UpdateDisplay*)currentDisplay.get())->m_finished = true;
+            ((UpdateDisplay*)currentDisplay.get())->redraw();
         })
         .onProgress([](unsigned int progress, unsigned int total) {
-            getRefByType<UpdateDisplay>().m_progress = progress;
-            getRefByType<UpdateDisplay>().m_total = total;
-            getRefByType<UpdateDisplay>().redraw();
+            ((UpdateDisplay*)currentDisplay.get())->m_progress = progress;
+            ((UpdateDisplay*)currentDisplay.get())->m_total = total;
+            ((UpdateDisplay*)currentDisplay.get())->redraw();
         })
         .onError([](ota_error_t error) {
-            getRefByType<UpdateDisplay>().m_error = error;
-            getRefByType<UpdateDisplay>().m_errorValid = true;
-            getRefByType<UpdateDisplay>().redraw();
+            ((UpdateDisplay*)currentDisplay.get())->m_error = error;
+            ((UpdateDisplay*)currentDisplay.get())->m_errorValid = true;
+            ((UpdateDisplay*)currentDisplay.get())->redraw();
         });
 
     ArduinoOTA.begin();

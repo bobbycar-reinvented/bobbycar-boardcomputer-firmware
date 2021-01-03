@@ -1,7 +1,10 @@
 #pragma once
 
+// system includes
 #include <array>
+#include <memory>
 
+// Arduino includes
 #ifdef FEATURE_BLUETOOTH
 #include <BluetoothSerial.h>
 #endif
@@ -9,6 +12,7 @@
 #include <TFT_eSPI.h>
 #include <SPI.h>
 
+// local includes
 #include "controller.h"
 #include "display.h"
 #include "modeinterface.h"
@@ -67,7 +71,7 @@ TFT_eSPI tft = TFT_eSPI();
 
 ModeInterface *currentMode{};
 
-Display *currentDisplay{};
+std::unique_ptr<Display> currentDisplay;
 
 int rotated{};
 bool requestFullRedraw{};

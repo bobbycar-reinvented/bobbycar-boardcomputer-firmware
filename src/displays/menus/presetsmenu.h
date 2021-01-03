@@ -1,8 +1,8 @@
 #pragma once
 
+// local includes
 #include "actioninterface.h"
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
 #include "utils.h"
 #include "actions/multiaction.h"
 #include "actions/switchscreenaction.h"
@@ -12,9 +12,10 @@
 #include "presets.h"
 #include "globals.h"
 
+// forward declares
 namespace {
 class MainMenu;
-}
+} // namespace
 
 namespace {
 class ApplyPresetAction : public virtual ActionInterface
@@ -75,20 +76,23 @@ public:
 class PresetsMenu :
     public MenuDisplay,
     public StaticText<TEXT_PRESETS>,
-    public BackActionInterface<SwitchScreenAction<MainMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, StaticText<TEXT_DEFAULTEVERYTHING>,            MultiAction<ApplySettingsPresetAction<&presets::defaultSettings>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_DEFAULTLIMITS>,                MultiAction<ApplyLimitsPresetAction<&presets::defaultLimits>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_KIDSLIMITS>,                   MultiAction<ApplyLimitsPresetAction<&presets::kidsLimits>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_DEFAULTCONTROLLERHARDWARE>,    MultiAction<ApplyControllerHardwarePresetAction<&presets::defaultControllerHardware>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_MOSFETSOFFCONTROLLERHARDWARE>, MultiAction<ApplyControllerHardwarePresetAction<&presets::mosfetsOffControllerHardware>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_SPINNERCONTROLLERHARDWARE>,    MultiAction<ApplyControllerHardwarePresetAction<&presets::spinnerControllerHardware>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_DEFAULTBOARDCOMPUTERHARDWARE>, MultiAction<ApplyBoardcomputerHardwarePresetAction<&presets::defaultBoardcomputerHardware>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_DEFAULTDEFAULTMODE>,           MultiAction<ApplyDefaultModePresetAction<&presets::defaultDefaultMode>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_SINUSOIDALDEFAULTMODE>,        MultiAction<ApplyDefaultModePresetAction<&presets::sinusoidalDefaultMode>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_DEFAULTTEMPOMATMODE>,          MultiAction<ApplyTempomatModePresetAction<&presets::defaultTempomatMode>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_DEFAULTLARSMMODE>,             MultiAction<ApplyLarsmModePresetAction<&presets::defaultLarsmMode>, SwitchScreenAction<MainMenu>>>,
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
-}
+    public BackActionInterface<SwitchScreenAction<MainMenu>>
+{
+public:
+    PresetsMenu()
+    {
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTEVERYTHING>,            MultiAction<ApplySettingsPresetAction<&presets::defaultSettings>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTLIMITS>,                MultiAction<ApplyLimitsPresetAction<&presets::defaultLimits>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_KIDSLIMITS>,                   MultiAction<ApplyLimitsPresetAction<&presets::kidsLimits>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTCONTROLLERHARDWARE>,    MultiAction<ApplyControllerHardwarePresetAction<&presets::defaultControllerHardware>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFETSOFFCONTROLLERHARDWARE>, MultiAction<ApplyControllerHardwarePresetAction<&presets::mosfetsOffControllerHardware>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SPINNERCONTROLLERHARDWARE>,    MultiAction<ApplyControllerHardwarePresetAction<&presets::spinnerControllerHardware>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTBOARDCOMPUTERHARDWARE>, MultiAction<ApplyBoardcomputerHardwarePresetAction<&presets::defaultBoardcomputerHardware>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTDEFAULTMODE>,           MultiAction<ApplyDefaultModePresetAction<&presets::defaultDefaultMode>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SINUSOIDALDEFAULTMODE>,        MultiAction<ApplyDefaultModePresetAction<&presets::sinusoidalDefaultMode>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTTEMPOMATMODE>,          MultiAction<ApplyTempomatModePresetAction<&presets::defaultTempomatMode>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTLARSMMODE>,             MultiAction<ApplyLarsmModePresetAction<&presets::defaultLarsmMode>, SwitchScreenAction<MainMenu>>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
+} // namespace

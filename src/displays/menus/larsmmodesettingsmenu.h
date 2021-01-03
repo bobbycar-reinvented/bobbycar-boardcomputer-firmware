@@ -1,7 +1,7 @@
 #pragma once
 
+// local includes
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
 #include "menuitem.h"
@@ -10,10 +10,11 @@
 #include "texts.h"
 #include "settingsaccessors.h"
 
+// forward declares
 namespace {
 class LarsmModeSettingsMenu;
 class ModesSettingsMenu;
-}
+} // namespace
 
 namespace {
 using LarsmModeModelModeChangeDisplay = makeComponent<
@@ -41,12 +42,15 @@ using LarsmModeIterationsChangeDisplay = makeComponent<
 class LarsmModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_LARSMMODESETTINGS>,
-    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>,  SwitchScreenAction<LarsmModeModelModeChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_SETMODE>,       SwitchScreenAction<LarsmModeModeChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_SETITERATIONS>, SwitchScreenAction<LarsmModeIterationsChangeDisplay>>,
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,          SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
-}
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>
+{
+public:
+    LarsmModeSettingsMenu()
+    {
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>,  SwitchScreenAction<LarsmModeModelModeChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODE>,       SwitchScreenAction<LarsmModeModeChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETITERATIONS>, SwitchScreenAction<LarsmModeIterationsChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,          SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
+} // namespace

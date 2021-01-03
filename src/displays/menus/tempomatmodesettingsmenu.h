@@ -1,7 +1,7 @@
 #pragma once
 
+// local includes
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
 #include "menuitem.h"
@@ -10,10 +10,11 @@
 #include "texts.h"
 #include "settingsaccessors.h"
 
+// forward declares
 namespace {
 class TempomatModeSettingsMenu;
 class ModesSettingsMenu;
-}
+} // namespace
 
 namespace {
 using TempomatModeModelModeChangeScreen = makeComponent<
@@ -27,10 +28,13 @@ using TempomatModeModelModeChangeScreen = makeComponent<
 class TempomatModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_TEMPOMATMODESETTINGS>,
-    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>,
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,         SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
-}
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>
+{
+public:
+    TempomatModeSettingsMenu()
+    {
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
+} // namespace

@@ -1,26 +1,30 @@
 #pragma once
 
+// local includes
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
 #include "texts.h"
 
+// forward declares
 namespace {
 class ModesSettingsMenu;
-}
+} // namespace
 
 namespace {
 #ifdef FEATURE_GAMETRAK
-class GametrakModeSettingsMenu :
+class ContainerModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GAMETRAKMODESETTINGS>,
-    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
+    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>
+{
+public:
+    ContainerModeSettingsMenu()
+    {
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
 #endif
-}
+} // namespace

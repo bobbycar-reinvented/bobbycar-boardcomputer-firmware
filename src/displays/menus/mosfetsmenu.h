@@ -1,7 +1,7 @@
 #pragma once
 
+// local includes
 #include "menudisplay.h"
-#include "staticmenudefinition.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/toggleboolaction.h"
@@ -11,9 +11,10 @@
 #include "texts.h"
 #include "types.h"
 
+// forward declares
 namespace {
 class MainMenu;
-}
+} // namespace
 
 namespace {
 #ifdef FEATURE_MOSFETS
@@ -32,13 +33,16 @@ using Mosfet2Accessor = GPIOAccessor<PINS_MOSFET2>;
 class MosfetsMenu :
     public MenuDisplay,
     public StaticText<TEXT_MOSFETS>,
-    public BackActionInterface<SwitchScreenAction<MainMenu>>,
-    public StaticMenuDefinition<
-        makeComponent<MenuItem, StaticText<TEXT_MOSFET0>, ToggleBoolAction, CheckboxIcon, Mosfet0Accessor>,
-        makeComponent<MenuItem, StaticText<TEXT_MOSFET1>, ToggleBoolAction, CheckboxIcon, Mosfet1Accessor>,
-        makeComponent<MenuItem, StaticText<TEXT_MOSFET2>, ToggleBoolAction, CheckboxIcon, Mosfet2Accessor>,
-        makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>
-    >
-{};
+    public BackActionInterface<SwitchScreenAction<MainMenu>>
+{
+public:
+    MosfetsMenu()
+    {
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET0>, ToggleBoolAction, CheckboxIcon, Mosfet0Accessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET1>, ToggleBoolAction, CheckboxIcon, Mosfet1Accessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET2>, ToggleBoolAction, CheckboxIcon, Mosfet2Accessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+    }
+};
 #endif
-}
+} // namespace
