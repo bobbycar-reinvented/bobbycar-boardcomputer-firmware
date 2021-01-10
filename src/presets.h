@@ -30,7 +30,7 @@ constexpr Settings::ControllerHardware defaultControllerHardware {
     .invertBackLeft = DEFAULT_INVERTBACKLEFT,
     .invertBackRight = DEFAULT_INVERTBACKRIGHT,
 
-    .wheelDiameter = 165,
+    .wheelDiameter = DEFAULT_WHEELDIAMETER,
     .numMagnetPoles = 15,
     .swapFrontBack = false
 };
