@@ -140,6 +140,8 @@ void Settings::executeForEverySetting(T &&callable)
     callable("invertBackLeft", controllerHardware.invertBackLeft);
     callable("invertBackRight", controllerHardware.invertBackRight);
 
+    callable("wheelDiameter", controllerHardware.wheelDiameter);
+    callable("numMagnetPoles", controllerHardware.numMagnetPoles);
     callable("swapFrontBack", controllerHardware.swapFrontBack);
 
     callable("sampleCount", boardcomputerHardware.sampleCount);
