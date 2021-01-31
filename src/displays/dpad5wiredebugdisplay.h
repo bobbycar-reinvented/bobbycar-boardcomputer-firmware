@@ -14,9 +14,17 @@ public:
     void redraw() override;
 
 private:
-    Label m_label0{30, 100};
-    Label m_label1{30, 125};
-    Label m_label2{30, 150};
+    Label m_labelRaw{30, 50};
+    Label m_labelUp{175, 75};
+    Label m_labelDown{175, 100};
+    Label m_labelBack{175, 125};
+    Label m_labelConfirm{175, 150};
+    Label m_labelProfile0{175, 175};
+    Label m_labelProfile1{175, 200};
+    Label m_labelProfile2{175, 225};
+    Label m_labelProfile3{175, 250};
+    Label m_labelGas{175, 275};
+    Label m_labelBrems{175, 300};
 };
 
 void DPad5WireDebugDisplay::initScreen()
@@ -31,14 +39,33 @@ void DPad5WireDebugDisplay::initScreen()
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-    m_label0.start();
-    m_label1.start();
-    m_label2.start();
+    tft.drawString("UP:", 30, 75);
+    tft.drawString("DOWN:", 30, 100);
+    tft.drawString("CONFIRM:", 30, 125);
+    tft.drawString("BACK:", 30, 150);
+    tft.drawString("PROFILE0:", 30, 175);
+    tft.drawString("PROFILE1:", 30, 200);
+    tft.drawString("PROFILE2:", 30, 225);
+    tft.drawString("PROFILE3:", 30, 250);
+    tft.drawString("GAS:", 30, 275);
+    tft.drawString("BREMS:", 30, 300);
+
+    m_labelRaw.start();
+    m_labelUp.start();
+    m_labelDown.start();
+    m_labelBack.start();
+    m_labelConfirm.start();
+    m_labelProfile0.start();
+    m_labelProfile1.start();
+    m_labelProfile2.start();
+    m_labelProfile3.start();
+    m_labelGas.start();
+    m_labelBrems.start();
 }
 
 void DPad5WireDebugDisplay::redraw()
 {
-    m_label0.redraw(String{} +
+    m_labelRaw.redraw(String{} +
                     (std::get<0>(dpad5wire::lastState) ? '1' : '0') + ' ' +
                     (std::get<1>(dpad5wire::lastState) ? '1' : '0') + ' ' +
                     (std::get<2>(dpad5wire::lastState) ? '1' : '0') + ' ' +
@@ -47,8 +74,17 @@ void DPad5WireDebugDisplay::redraw()
                     (std::get<5>(dpad5wire::lastState) ? '1' : '0') + ' ' +
                     (std::get<6>(dpad5wire::lastState) ? '1' : '0') + ' ' +
                     (std::get<7>(dpad5wire::lastState) ? '1' : '0'));
-    m_label1.redraw(String{raw_gas});
-    m_label2.redraw(String{raw_brems});
+
+    m_labelUp.redraw(std::get<DPAD_5WIRESW_UP>(dpad5wire::lastState) ? "1" : "0");
+    m_labelDown.redraw(std::get<DPAD_5WIRESW_DOWN>(dpad5wire::lastState) ? "1" : "0");
+    m_labelBack.redraw(std::get<DPAD_5WIRESW_BACK>(dpad5wire::lastState) ? "1" : "0");
+    m_labelConfirm.redraw(std::get<DPAD_5WIRESW_CONFIRM>(dpad5wire::lastState) ? "1" : "0");
+    m_labelProfile0.redraw(std::get<DPAD_5WIRESW_PROFILE0>(dpad5wire::lastState) ? "1" : "0");
+    m_labelProfile1.redraw(std::get<DPAD_5WIRESW_PROFILE1>(dpad5wire::lastState) ? "1" : "0");
+    m_labelProfile2.redraw(std::get<DPAD_5WIRESW_PROFILE2>(dpad5wire::lastState) ? "1" : "0");
+    m_labelProfile3.redraw(std::get<DPAD_5WIRESW_PROFILE3>(dpad5wire::lastState) ? "1" : "0");
+    m_labelGas.redraw(String{raw_gas});
+    m_labelBrems.redraw(String{raw_brems});
 }
 #endif
 }
