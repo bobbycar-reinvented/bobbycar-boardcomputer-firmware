@@ -1,6 +1,11 @@
 #include <cstdio>
 
 #include <esp_wifi_types.h>
+#ifdef FEATURE_CLOUD
+#include <esp_websocket_client.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#endif
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
@@ -95,6 +100,80 @@ void printMemoryStats(const char *s)
                   heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT),
                   heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_32BIT));
 }
+
+#ifdef FEATURE_CLOUD
+void cloudTask(void*)
+{
+    const esp_websocket_client_config_t config = {
+        .uri = "--REMOVED--",
+    };
+    esp_websocket_client_handle_t handle = esp_websocket_client_init(&config);
+
+    if (handle)
+    {
+        Serial.println("esp websocket init succeeded");
+
+        if (const auto result = esp_websocket_client_start(handle); result == ESP_OK)
+        {
+            Serial.println("esp websocket start succeeded");
+
+            while (true)
+            {
+                if (esp_websocket_client_is_connected(handle))
+                {
+                    String msg = "{"
+                        "\"type\": \"fullStatus\","
+                        "\"partial\": false, "
+                        "\"status\": {"
+                            "\"millis\":" + String{millis()} + ","
+                            "\"front.valid\":" + (controllers.front.feedbackValid?"true":"false") + ","
+                            "\"back.valid\":" + (controllers.back.feedbackValid?"true":"false") + ","
+                            "\"front.left.pwm\":" + String(controllers.front.command.left.pwm) + ","
+                            "\"front.right.pwm\":" + String(controllers.front.command.right.pwm) + ","
+                            "\"back.left.pwm\":" + String(controllers.back.command.left.pwm) + ","
+                            "\"back.right.pwm\":" + String(controllers.back.command.right.pwm) + ","
+                            "\"front.volt\":" + String(controllers.front.feedback.batVoltage) + ","
+                            "\"back.volt\":" + String(controllers.back.feedback.batVoltage) + ","
+                            "\"front.temp\":" + String(controllers.front.feedback.boardTemp) + ","
+                            "\"back.temp\":" + String(controllers.back.feedback.boardTemp) + ","
+                            "\"front.bad\":" + String(controllers.front.feedback.timeoutCntSerial) + ","
+                            "\"back.bad\":" + String(controllers.back.feedback.timeoutCntSerial) + ","
+                            "\"front.left.speed\":" + String(controllers.front.feedback.left.speed) + ","
+                            "\"front.right.speed\":" + String(controllers.front.feedback.right.speed) + ","
+                            "\"back.left.speed\":" + String(controllers.back.feedback.left.speed) + ","
+                            "\"back.right.speed\":" + String(controllers.back.feedback.right.speed) + ","
+                            "\"front.left.current\":" + String(controllers.front.feedback.left.current) + ","
+                            "\"front.right.current\":" + String(controllers.front.feedback.right.current) + ","
+                            "\"back.left.current\":" + String(controllers.back.feedback.left.current) + ","
+                            "\"back.right.current\":" + String(controllers.back.feedback.right.current) + ","
+                            "\"front.left.error\":" + String(controllers.front.feedback.left.error) + ","
+                            "\"front.right.error\":" + String(controllers.front.feedback.right.error) + ","
+                            "\"back.left.error\":" + String(controllers.back.feedback.left.error) + ","
+                            "\"back.right.error\":" + String(controllers.back.feedback.right.error) +
+                        "}"
+                    "}";
+
+                    const auto sent = esp_websocket_client_send_text(handle, msg.c_str(), msg.length(), 1000 / portTICK_PERIOD_MS);
+                    if (sent == msg.length())
+                        Serial.println("Sent cloud message");
+                    else
+                        Serial.printf("sent=%i, msgsize=%i\r\n", sent, msg.length());
+                }
+                else
+                    Serial.println("Not sending cloud because not connected");
+
+                delay(1000);
+            }
+        }
+        else
+            Serial.printf("esp websocket start failed with %s\r\n", esp_err_to_name(result));
+    }
+    else
+        Serial.println("esp websocket init failed");
+
+    vTaskDelete(NULL);
+}
+#endif
 
 void setup()
 {
@@ -245,6 +324,13 @@ void setup()
     bootLabel.redraw("potis");
     readPotis();
     printMemoryStats("readPotis()");
+
+#ifdef FEATURE_CLOUD
+    if (const auto result = xTaskCreatePinnedToCore(cloudTask, "cloudTask", 4096, nullptr, 10, nullptr, 1); result == pdTRUE)
+        Serial.println("cloud task create succeeded");
+    else
+        Serial.printf("cloud task create failed\r\n");
+#endif
 
 #if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
     switchScreen<DPad5WireDebugDisplay>();
