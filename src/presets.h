@@ -32,7 +32,9 @@ constexpr Settings::ControllerHardware defaultControllerHardware {
 
     .wheelDiameter = DEFAULT_WHEELDIAMETER,
     .numMagnetPoles = 15,
+#ifndef FEATURE_CAN
     .swapFrontBack = false
+#endif
 };
 
 constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
@@ -48,7 +50,9 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
+#ifndef FEATURE_CAN
     .swapFrontBack = false
+#endif
 };
 
 constexpr Settings::WifiSettings defaultWifiSettings {
@@ -75,7 +79,9 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
+#ifndef FEATURE_CAN
     .swapFrontBack = false
+#endif
 };
 
 constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings {

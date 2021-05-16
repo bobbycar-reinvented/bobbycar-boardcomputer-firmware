@@ -51,7 +51,9 @@ struct Settings
 
         int16_t wheelDiameter; // in mm
         int16_t numMagnetPoles; // virtual RPM per one real RPM
+#ifndef FEATURE_CAN
         bool swapFrontBack;
+#endif
     } controllerHardware;
 
     struct BoardcomputerHardware {
@@ -142,7 +144,9 @@ void Settings::executeForEverySetting(T &&callable)
 
     callable("wheelDiameter", controllerHardware.wheelDiameter);
     callable("numMagnetPoles", controllerHardware.numMagnetPoles);
+#ifndef FEATURE_CAN
     callable("swapFrontBack", controllerHardware.swapFrontBack);
+#endif
 
     callable("sampleCount", boardcomputerHardware.sampleCount);
     callable("gasMin", boardcomputerHardware.gasMin);

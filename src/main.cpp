@@ -233,9 +233,11 @@ void setup()
     }
     printMemoryStats("loadSettings()");
 
+#ifndef FEATURE_CAN
     bootLabel.redraw("swap front back");
     updateSwapFrontBack();
     printMemoryStats("swapFronBack()");
+#endif
 
     bootLabel.redraw("deviceName");
     {
@@ -295,11 +297,13 @@ void setup()
     }
 #endif
 
+#ifndef FEATURE_CAN
     bootLabel.redraw("front Serial begin");
     controllers.front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
 
     bootLabel.redraw("back Serial begin");
     controllers.back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
+#endif
 
     raw_gas = 0;
     raw_brems = 0;
@@ -418,8 +422,10 @@ void loop()
         performance.lastTime = now;
     }
 
+#ifndef FEATURE_CAN
     for (Controller &controller : controllers)
         controller.parser.update();
+#endif
 
     handleSerial();
 

@@ -251,18 +251,22 @@ void sendCommands()
     {
         controller.command.start = Command::VALID_HEADER;
         controller.command.checksum = calculateChecksum(controller.command);
+#ifndef FEATURE_CAN
         controller.serial.get().write((uint8_t *) &controller.command, sizeof(controller.command));
+#endif
     }
 }
 
 template<typename T, typename... Args>
 void switchScreen(Args&&... args);
 
+#ifndef FEATURE_CAN
 void updateSwapFrontBack()
 {
     controllers.front.serial = settings.controllerHardware.swapFrontBack ? Serial2 : Serial1;
     controllers.back.serial = settings.controllerHardware.swapFrontBack ? Serial1 : Serial2;
 }
+#endif
 
 void loadSettings()
 {

@@ -56,10 +56,12 @@ struct WheelDiameterInchAccessor : public virtual AccessorInterface<float>
     void setValue(float value) override { settings.controllerHardware.wheelDiameter = convertFromInch(value); saveSettings(); }
 };
 struct NumMagnetPolesAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.numMagnetPoles; } };
+#ifndef FEATURE_CAN
 struct SwapFrontBackAccessor : public RefAccessorSaveSettings<bool> {
     bool &getRef() const override { return settings.controllerHardware.swapFrontBack; }
     void setValue(bool value) override { RefAccessorSaveSettings<bool>::setValue(value); updateSwapFrontBack(); };
 };
+#endif
 
 struct SampleCountAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.sampleCount; } };
 struct GasMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gasMin; } };

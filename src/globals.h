@@ -41,8 +41,18 @@ class Controllers : public std::array<Controller, 2>
 public:
     explicit Controllers() :
         std::array<Controller, 2>{{
-            Controller{Serial1, settings.controllerHardware.enableFrontLeft, settings.controllerHardware.enableFrontRight, settings.controllerHardware.invertFrontLeft, settings.controllerHardware.invertFrontRight},
-            Controller{Serial2, settings.controllerHardware.enableBackLeft, settings.controllerHardware.enableBackRight, settings.controllerHardware.invertBackLeft, settings.controllerHardware.invertBackRight}
+            Controller {
+#ifndef FEATURE_CAN
+                Serial1,
+#endif
+                settings.controllerHardware.enableFrontLeft, settings.controllerHardware.enableFrontRight, settings.controllerHardware.invertFrontLeft, settings.controllerHardware.invertFrontRight
+            },
+            Controller {
+#ifndef FEATURE_CAN
+                Serial2,
+#endif
+                settings.controllerHardware.enableBackLeft, settings.controllerHardware.enableBackRight, settings.controllerHardware.invertBackLeft, settings.controllerHardware.invertBackRight
+            }
         }}
     {}
 
