@@ -170,6 +170,46 @@ void parseCanInput()
         controllers.front.feedbackValid = true;
         controllers.front.feedback.right.current = *((int16_t*)message.data);
         break;
+    case MotorControllerFrontLeftSpeed:
+        m_lastCanFeedback = millis();
+        controllers.front.feedbackValid = true;
+        controllers.front.feedback.left.speed = *((int16_t*)message.data);
+        break;
+    case MotorControllerFrontRightSpeed:
+        m_lastCanFeedback = millis();
+        controllers.front.feedbackValid = true;
+        controllers.front.feedback.right.speed = *((int16_t*)message.data);
+        break;
+    case MotorControllerFrontLeftError:
+        m_lastCanFeedback = millis();
+        controllers.front.feedbackValid = true;
+        controllers.front.feedback.left.error = *((int8_t*)message.data);
+        break;
+    case MotorControllerFrontRightError:
+        m_lastCanFeedback = millis();
+        controllers.front.feedbackValid = true;
+        controllers.front.feedback.right.error = *((int8_t*)message.data);
+        break;
+    case MotorControllerFrontLeftAngle:
+        m_lastCanFeedback = millis();
+        controllers.front.feedbackValid = true;
+        controllers.front.feedback.left.angle = *((int16_t*)message.data);
+        break;
+    case MotorControllerFrontRightAngle:
+        m_lastCanFeedback = millis();
+        controllers.front.feedbackValid = true;
+        controllers.front.feedback.right.angle = *((int16_t*)message.data);
+        break;
+    case MotorControllerFrontLeftChops:
+        m_lastCanFeedback = millis();
+        controllers.front.feedbackValid = true;
+        controllers.front.feedback.left.chops = *((uint16_t*)message.data);
+        break;
+    case MotorControllerFrontRightChops:
+        m_lastCanFeedback = millis();
+        controllers.front.feedbackValid = true;
+        controllers.front.feedback.right.chops = *((uint16_t*)message.data);
+        break;
     case MotorControllerFrontLeftVoltage:
         m_lastCanFeedback = millis();
         controllers.front.feedbackValid = true;
