@@ -5,6 +5,8 @@
 #include "bobbycar-protocol/bobbycar-common.h"
 #include "bobbycar-protocol/bobbycar-serial.h"
 
+#include "types.h"
+
 #ifndef FEATURE_CAN
 #include "feedbackparser.h"
 #endif
@@ -36,6 +38,9 @@ struct Controller {
 
     Command command{};
 
+#ifdef FEATURE_CAN
+    millis_t lastCanFeedback{};
+#endif
     bool feedbackValid{};
     Feedback feedback{};
 

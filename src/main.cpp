@@ -429,7 +429,9 @@ void loop()
     }
 
 #ifdef FEATURE_CAN
-    parseCanInput();
+    for (int i = 0; i < 4; i++)
+        if (!parseCanInput())
+            break;
 #else
     for (Controller &controller : controllers)
         controller.parser.update();

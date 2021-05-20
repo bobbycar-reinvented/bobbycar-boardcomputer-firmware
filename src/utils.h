@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <utility>
-#include <cstring>
 
 #include <driver/can.h>
 
@@ -14,6 +13,9 @@
 
 #include "display.h"
 #include "globals.h"
+#ifdef FEATURE_CAN
+#include "can.h"
+#endif
 
 // macros are a shit piece of software
 #define STRING2(s) #s
@@ -259,108 +261,8 @@ void sendCommands()
         controller.command.checksum = calculateChecksum(controller.command);
         controller.serial.get().write((uint8_t *) &controller.command, sizeof(controller.command));
     }
-#endif
-
-#ifdef FEATURE_CAN
-    constexpr auto send = [](uint32_t addr, auto value){
-        can_message_t message;
-        message.identifier = addr;
-        if (addr == MotorControllerFrontLeftInpTgt || addr == MotorControllerFrontRightInpTgt)
-            message.flags = CAN_MSG_FLAG_SS;
-        else
-            message.flags = CAN_MSG_FLAG_NONE;
-        message.data_length_code = sizeof(value);
-        std::fill(std::begin(message.data), std::end(message.data), 0);
-        std::memcpy(message.data, &value, sizeof(value));
-
-        const auto result = can_transmit(&message, pdMS_TO_TICKS(200));
-        if (result != ESP_OK && result != ESP_ERR_TIMEOUT)
-            Serial.printf("ERROR: can_transmit() failed with %s\r\n", esp_err_to_name(result));
-        return result;
-    };
-
-    send(MotorControllerFrontLeftInpTgt, controllers.front.command.left.pwm);
-    send(MotorControllerFrontRightInpTgt, controllers.front.command.right.pwm);
-//    send(MotorControllerBackLeftInpTgt, controllers.back.command.left.pwm);
-//    send(MotorControllerBackRightInpTgt, controllers.back.command.right.pwm);
-
-    static int i = 0;
-    switch (i++)
-    {
-    case 0:
-    send(MotorControllerFrontLeftEnable, controllers.front.command.left.enable);
-    send(MotorControllerFrontRightEnable, controllers.front.command.right.enable);
-//    send(MotorControllerBackLeftEnable, controllers.back.command.left.enable);
-//    send(MotorControllerBackRightEnable, controllers.back.command.right.enable);
-    break;
-    case 1:
-    send(MotorControllerFrontLeftCtrlTyp, controllers.front.command.left.ctrlTyp);
-    send(MotorControllerFrontRightCtrlTyp, controllers.front.command.right.ctrlTyp);
-//    send(MotorControllerBackLeftCtrlTyp, controllers.back.command.left.ctrlTyp);
-//    send(MotorControllerBackRightCtrlTyp, controllers.back.command.right.ctrlTyp);
-    break;
-    case 2:
-    send(MotorControllerFrontLeftCtrlMod, controllers.front.command.left.ctrlMod);
-    send(MotorControllerFrontRightCtrlMod, controllers.front.command.right.ctrlMod);
-//    send(MotorControllerBackLeftCtrlMod, controllers.back.command.left.ctrlMod);
-//    send(MotorControllerBackRightCtrlMod, controllers.back.command.right.ctrlMod);
-    break;
-    case 3:
-    send(MotorControllerFrontLeftIMotMax, controllers.front.command.left.iMotMax);
-    send(MotorControllerFrontRightIMotMax, controllers.front.command.right.iMotMax);
-//    send(MotorControllerBackLeftIMotMax, controllers.back.command.left.iMotMax);
-//    send(MotorControllerBackRightIMotMax, controllers.back.command.right.iMotMax);
-    break;
-    case 4:
-    send(MotorControllerFrontLeftIDcMax, controllers.front.command.left.iDcMax);
-    send(MotorControllerFrontRightIDcMax, controllers.front.command.right.iDcMax);
-//    send(MotorControllerBackLeftIDcMax, controllers.back.command.left.iDcMax);
-//    send(MotorControllerBackRightIDcMax, controllers.back.command.right.iDcMax);
-    break;
-    case 5:
-    send(MotorControllerFrontLeftNMotMax, controllers.front.command.left.nMotMax);
-    send(MotorControllerFrontRightNMotMax, controllers.front.command.right.nMotMax);
-//    send(MotorControllerBackLeftNMotMax, controllers.back.command.left.nMotMax);
-//    send(MotorControllerBackRightNMotMax, controllers.back.command.right.nMotMax);
-    break;
-    case 6:
-    send(MotorControllerFrontLeftFieldWeakMax, controllers.front.command.left.fieldWeakMax);
-    send(MotorControllerFrontRightFieldWeakMax, controllers.front.command.right.fieldWeakMax);
-//    send(MotorControllerBackLeftFieldWeakMax, controllers.back.command.left.fieldWeakMax);
-//    send(MotorControllerBackRightFieldWeakMax, controllers.back.command.right.fieldWeakMax);
-    break;
-    case 7:
-    send(MotorControllerFrontLeftPhaseAdvMax, controllers.front.command.left.phaseAdvMax);
-    send(MotorControllerFrontRightPhaseAdvMax, controllers.front.command.right.phaseAdvMax);
-//    send(MotorControllerBackLeftPhaseAdvMax, controllers.back.command.left.phaseAdvMax);
-//    send(MotorControllerBackRightPhaseAdvMax, controllers.back.command.right.phaseAdvMax);
-    break;
-    case 8:
-    send(MotorControllerFrontLeftBuzzerFreq, controllers.front.command.buzzer.freq);
-    send(MotorControllerFrontRightBuzzerFreq, controllers.front.command.buzzer.freq);
-//    send(MotorControllerBackLeftBuzzerFreq, controllers.back.command.buzzer.freq);
-//    send(MotorControllerBackRightBuzzerFreq, controllers.back.command.buzzer.freq);
-    break;
-    case 9:
-    send(MotorControllerFrontLeftBuzzerPattern, controllers.front.command.buzzer.pattern);
-    send(MotorControllerFrontRightBuzzerPattern, controllers.front.command.buzzer.pattern);
-//    send(MotorControllerBackLeftBuzzerPattern, controllers.back.command.buzzer.pattern);
-//    send(MotorControllerBackRightBuzzerPattern, controllers.back.command.buzzer.pattern);
-    break;
-    case 10:
-    send(MotorControllerFrontLeftLed, controllers.front.command.led);
-    send(MotorControllerFrontRightLed, controllers.front.command.led);
-//    send(MotorControllerBackLeftLed, controllers.back.command.led);
-//    send(MotorControllerBackRightLed, controllers.back.command.led);
-    break;
-    case 11:
-    send(MotorControllerFrontLeftPoweroff, controllers.front.command.poweroff);
-    send(MotorControllerFrontRightPoweroff, controllers.front.command.poweroff);
-//    send(MotorControllerBackLeftPoweroff, controllers.back.command.poweroff);
-//    send(MotorControllerBackRightPoweroff, controllers.back.command.poweroff);
-    i=0;
-    break;
-    }
+#else
+    sendCanCommands();
 #endif
 }
 
