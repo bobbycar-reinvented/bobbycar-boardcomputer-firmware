@@ -5,7 +5,7 @@
 
 #include <HardwareSerial.h>
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-common.h"
 
 #include "types.h"
 

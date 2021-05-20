@@ -14,7 +14,7 @@ constexpr const T& clamp( const T& v, const T& lo, const T& hi )
 #include "utils.h"
 #include "defaultmode.h"
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-common.h"
 
 namespace {
 #ifdef FEATURE_GAMETRAK

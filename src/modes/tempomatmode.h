@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-common.h"
 
 #include "modeinterface.h"
 #include "globals.h"

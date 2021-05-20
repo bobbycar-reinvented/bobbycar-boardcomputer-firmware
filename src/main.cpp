@@ -12,7 +12,8 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-common.h"
+#include "bobbycar-protocol/bobbycar-serial.h"
 
 #include "globals.h"
 #include "modes/defaultmode.h"

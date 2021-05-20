@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "utils.h"
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-common.h"
 
 namespace {
 class LarsmMode : public ModeInterface

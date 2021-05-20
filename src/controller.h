@@ -2,7 +2,8 @@
 
 #include <functional>
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-common.h"
+#include "bobbycar-protocol/bobbycar-serial.h"
 
 #ifndef FEATURE_CAN
 #include "feedbackparser.h"

@@ -4,7 +4,7 @@
 
 #include <HardwareSerial.h>
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-common.h"
 
 namespace {
 enum class UnifiedModelMode : uint8_t
