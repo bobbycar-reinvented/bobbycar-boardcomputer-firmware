@@ -2,7 +2,6 @@
 
 #include <cstring>
 
-#include <esp_log.h>
 #include <driver/gpio.h>
 #include <driver/can.h>
 

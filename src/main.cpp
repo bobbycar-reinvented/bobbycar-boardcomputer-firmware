@@ -185,6 +185,11 @@ void setup()
     Serial.setDebugOutput(true);
     //Serial.println("setup()");
 
+#ifdef PINS_LED
+    pinMode(PINS_LED, OUTPUT);
+    digitalWrite(PINS_LED, LOW);
+#endif
+
     printMemoryStats("setup()");
 
     pinMode(3, INPUT_PULLUP);
