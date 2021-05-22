@@ -170,7 +170,7 @@ bool parseCanInput()
             controllers.back.feedbackValid = false;
     }
 
-    Serial.printf("WARNING Unknown CAN info received .identifier = %u\r\n", message.identifier);
+    //Serial.printf("WARNING Unknown CAN info received .identifier = %u\r\n", message.identifier);
 
     return true;
 }
