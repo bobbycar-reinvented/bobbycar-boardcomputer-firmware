@@ -18,7 +18,7 @@ class StatusDisplay;
 }
 
 namespace {
-#ifdef FEATURE_ARDUINOOTA
+#if defined(FEATURE_ARDUINOOTA) || defined(FEATURE_WEBOTA)
 class UpdateDisplay : public Display, public DummyBack
 {
 public:

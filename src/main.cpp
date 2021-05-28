@@ -109,7 +109,7 @@ void printMemoryStats(const char *s)
 void cloudTask(void*)
 {
     const esp_websocket_client_config_t config = {
-        .uri = "--REMOVED--",
+        .uri = "ws://iot.wattpilot.io:8080/charger/bobbycar1",
     };
     esp_websocket_client_handle_t handle = esp_websocket_client_init(&config);
 
@@ -166,7 +166,7 @@ void cloudTask(void*)
                 else
                     Serial.println("Not sending cloud because not connected");
 
-                delay(1000);
+                delay(100);
             }
         }
         else
@@ -332,9 +332,11 @@ void setup()
     printMemoryStats("initOta()");
 #endif
 
+#ifdef FEATURE_WEBSERVER
     bootLabel.redraw("webserver");
     initWebserver();
     printMemoryStats("initWebserver()");
+#endif
 
     bootLabel.redraw("potis");
     readPotis();

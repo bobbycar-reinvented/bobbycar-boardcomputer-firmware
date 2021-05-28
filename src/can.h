@@ -59,10 +59,8 @@ void initCan()
 }
 
 template<bool isBack>
-bool parseCanMessage(const can_message_t &message)
+bool parseCanMessage(const can_message_t &message, Controller &controller)
 {
-    auto &controller = isBack ? controllers.back : controllers.front;
-
     switch (message.identifier)
     {
     using namespace bobbycar::can;
@@ -143,7 +141,7 @@ bool parseCanInput()
         return false;
     }
 
-    if (parseCanMessage<false>(message))
+    if (parseCanMessage<false>(message, controllers.front))
     {
         if (millis() - controllers.back.lastCanFeedback > 100)
             controllers.back.feedbackValid = false;
@@ -158,7 +156,7 @@ bool parseCanInput()
             controllers.front.feedbackValid = false;
     }
 
-    if (parseCanMessage<true>(message))
+    if (parseCanMessage<true>(message, controllers.back))
     {
         controllers.back.lastCanFeedback = millis();
         controllers.back.feedbackValid = true;
