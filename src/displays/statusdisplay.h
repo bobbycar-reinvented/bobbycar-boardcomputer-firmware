@@ -253,7 +253,7 @@ void StatusDisplay::BoardStatus::MotorStatus::redraw(const MotorFeedback &motor)
     m_labelError.redraw(String{motor.error});
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-    m_labelCurrent.redraw(String{fixCurrent(motor.current)} + 'A');
+    m_labelCurrent.redraw(String{fixCurrent(motor.dcLink)} + 'A');
     m_labelSpeed.redraw(String{convertToKmh(motor.speed)});
 
     tft.setTextFont(2);

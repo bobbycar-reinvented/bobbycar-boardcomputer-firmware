@@ -26,14 +26,14 @@ void pushStats()
     if (controllers.front.feedbackValid)
     {
         statistics::frontVoltage.push_back(fixBatVoltage(controllers.front.feedback.batVoltage));
-        statistics::frontLeftCurrent.push_back(fixCurrent(controllers.front.feedback.left.current));
-        statistics::frontRightCurrent.push_back(fixCurrent(controllers.front.feedback.right.current));
+        statistics::frontLeftCurrent.push_back(fixCurrent(controllers.front.feedback.left.dcLink));
+        statistics::frontRightCurrent.push_back(fixCurrent(controllers.front.feedback.right.dcLink));
     }
     if (controllers.back.feedbackValid)
     {
         statistics::backVoltage.push_back(fixBatVoltage(controllers.back.feedback.batVoltage));
-        statistics::backLeftCurrent.push_back(fixCurrent(controllers.back.feedback.left.current));
-        statistics::backRightCurrent.push_back(fixCurrent(controllers.back.feedback.right.current));
+        statistics::backLeftCurrent.push_back(fixCurrent(controllers.back.feedback.left.dcLink));
+        statistics::backRightCurrent.push_back(fixCurrent(controllers.back.feedback.right.dcLink));
     }
 #ifdef FEATURE_BMS
     statistics::bmsVoltage.push_back(bms::voltage);

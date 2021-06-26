@@ -303,8 +303,8 @@ void updateAccumulators()
                 controller.feedback.right.speed * (controller.invertRight ? -1 : 1);
 
         sumCurrent +=
-                controller.feedback.left.current +
-                controller.feedback.right.current;
+                controller.feedback.left.dcLink +
+                controller.feedback.right.dcLink;
 
         count +=2;
     }

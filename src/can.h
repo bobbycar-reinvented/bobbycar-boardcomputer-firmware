@@ -65,10 +65,10 @@ bool parseCanMessage(const can_message_t &message, Controller &controller)
     {
     using namespace bobbycar::can;
     case MotorController<isBack, false>::Feedback::DcLink:
-        controller.feedback.left.current = *((int16_t*)message.data);
+        controller.feedback.left.dcLink = *((int16_t*)message.data);
         return true;
     case MotorController<isBack, true>::Feedback::DcLink:
-        controller.feedback.right.current = *((int16_t*)message.data);
+        controller.feedback.right.dcLink = *((int16_t*)message.data);
         return true;
     case MotorController<isBack, false>::Feedback::Speed:
         controller.feedback.left.speed = *((int16_t*)message.data);
@@ -89,11 +89,22 @@ bool parseCanMessage(const can_message_t &message, Controller &controller)
         controller.feedback.right.angle = *((int16_t*)message.data);
         return true;
     case MotorController<isBack, false>::Feedback::DcPhaA:
+        controller.feedback.left.dcPhaA = *((int16_t*)message.data);
+        return true;
     case MotorController<isBack, true>::Feedback::DcPhaA:
+        controller.feedback.right.dcPhaA = *((int16_t*)message.data);
+        return true;
     case MotorController<isBack, false>::Feedback::DcPhaB:
+        controller.feedback.left.dcPhaB = *((int16_t*)message.data);
+        return true;
     case MotorController<isBack, true>::Feedback::DcPhaB:
+        controller.feedback.right.dcPhaB = *((int16_t*)message.data);
+        return true;
     case MotorController<isBack, false>::Feedback::DcPhaC:
+        controller.feedback.left.dcPhaC = *((int16_t*)message.data);
+        return true;
     case MotorController<isBack, true>::Feedback::DcPhaC:
+        controller.feedback.right.dcPhaC = *((int16_t*)message.data);
         return true;
     case MotorController<isBack, false>::Feedback::Chops:
         controller.feedback.left.chops = *((uint16_t*)message.data);

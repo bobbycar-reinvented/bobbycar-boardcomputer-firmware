@@ -76,10 +76,10 @@ void MetersDisplay::redraw()
 
     meters[0].redraw(fixBatVoltage(controllers.front.feedback.batVoltage), 35, 50);
     meters[1].redraw(fixBatVoltage(controllers.back.feedback.batVoltage), 35, 50);
-    meters[2].redraw(fixCurrent(controllers.front.feedback.left.current), -10, 10);
-    meters[3].redraw(fixCurrent(controllers.front.feedback.right.current), -10, 10);
-    meters[4].redraw(fixCurrent(controllers.back.feedback.left.current), -10, 10);
-    meters[5].redraw(fixCurrent(controllers.back.feedback.right.current), -10, 10);
+    meters[2].redraw(fixCurrent(controllers.front.feedback.left.dcLink), -10, 10);
+    meters[3].redraw(fixCurrent(controllers.front.feedback.right.dcLink), -10, 10);
+    meters[4].redraw(fixCurrent(controllers.back.feedback.left.dcLink), -10, 10);
+    meters[5].redraw(fixCurrent(controllers.back.feedback.right.dcLink), -10, 10);
 }
 
 void MetersDisplay::rotate(int offset)
