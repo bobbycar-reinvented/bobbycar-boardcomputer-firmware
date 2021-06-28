@@ -243,7 +243,7 @@ void setup()
     }
     printMemoryStats("loadSettings()");
 
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
     bootLabel.redraw("swap front back");
     updateSwapFrontBack();
     printMemoryStats("swapFronBack()");
@@ -309,7 +309,9 @@ void setup()
 
 #ifdef FEATURE_CAN
     initCan();
-#else
+#endif
+
+#ifdef FEATURE_SERIAL
     bootLabel.redraw("front Serial begin");
     controllers.front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
 
@@ -440,7 +442,9 @@ void loop()
     for (int i = 0; i < 4; i++)
         if (!parseCanInput())
             break;
-#else
+#endif
+
+#ifdef FEATURE_SERIAL
     for (Controller &controller : controllers)
         controller.parser.update();
 #endif

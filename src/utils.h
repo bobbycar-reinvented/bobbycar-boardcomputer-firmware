@@ -256,14 +256,15 @@ void fixCommonParams()
 
 void sendCommands()
 {
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
     for (Controller &controller : controllers)
     {
         controller.command.start = Command::VALID_HEADER;
         controller.command.checksum = calculateChecksum(controller.command);
         controller.serial.get().write((uint8_t *) &controller.command, sizeof(controller.command));
     }
-#else
+#endif
+#ifdef FEATURE_CAN
     sendCanCommands();
 #endif
 }
@@ -271,7 +272,7 @@ void sendCommands()
 template<typename T, typename... Args>
 void switchScreen(Args&&... args);
 
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
 void updateSwapFrontBack()
 {
     controllers.front.serial = settings.controllerHardware.swapFrontBack ? Serial2 : Serial1;

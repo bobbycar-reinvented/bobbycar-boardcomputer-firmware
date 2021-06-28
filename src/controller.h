@@ -7,22 +7,22 @@
 
 #include "types.h"
 
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
 #include "feedbackparser.h"
 #endif
 
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
 class HardwareSerial;
 #endif
 
 namespace {
 struct Controller {
     Controller(
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
         HardwareSerial &serial,
 #endif
         bool &enableLeft, bool &enableRight, bool &invertLeft, bool &invertRight) :
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
         serial{serial},
 #endif
         enableLeft{enableLeft}, enableRight{enableRight}, invertLeft{invertLeft}, invertRight{invertRight}
@@ -31,7 +31,7 @@ struct Controller {
 //    Controller(const Controller &) = delete;
 //    Controller &operator=(const Controller &) = delete;
 
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
     std::reference_wrapper<HardwareSerial> serial;
 #endif
     bool &enableLeft, &enableRight, &invertLeft, &invertRight;
@@ -44,7 +44,7 @@ struct Controller {
     bool feedbackValid{};
     bobbycar::protocol::serial::Feedback feedback{};
 
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
     FeedbackParser parser{serial, feedbackValid, feedback};
 #endif
 };

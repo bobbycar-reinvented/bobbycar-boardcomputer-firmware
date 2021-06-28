@@ -32,7 +32,7 @@ constexpr Settings::ControllerHardware defaultControllerHardware {
 
     .wheelDiameter = DEFAULT_WHEELDIAMETER,
     .numMagnetPoles = 15,
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
     .swapFrontBack = false
 #endif
 };
@@ -50,7 +50,7 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
     .swapFrontBack = false
 #endif
 };
@@ -79,7 +79,7 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
     .swapFrontBack = false
 #endif
 };

@@ -51,7 +51,7 @@ struct Settings
 
         int16_t wheelDiameter; // in mm
         int16_t numMagnetPoles; // virtual RPM per one real RPM
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
         bool swapFrontBack;
 #endif
     } controllerHardware;
@@ -144,7 +144,7 @@ void Settings::executeForEverySetting(T &&callable)
 
     callable("wheelDiameter", controllerHardware.wheelDiameter);
     callable("numMagnetPoles", controllerHardware.numMagnetPoles);
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
     callable("swapFrontBack", controllerHardware.swapFrontBack);
 #endif
 

@@ -42,13 +42,13 @@ public:
     explicit Controllers() :
         std::array<Controller, 2>{{
             Controller {
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
                 Serial1,
 #endif
                 settings.controllerHardware.enableFrontLeft, settings.controllerHardware.enableFrontRight, settings.controllerHardware.invertFrontLeft, settings.controllerHardware.invertFrontRight
             },
             Controller {
-#ifndef FEATURE_CAN
+#ifdef FEATURE_SERIAL
                 Serial2,
 #endif
                 settings.controllerHardware.enableBackLeft, settings.controllerHardware.enableBackRight, settings.controllerHardware.invertBackLeft, settings.controllerHardware.invertBackRight
