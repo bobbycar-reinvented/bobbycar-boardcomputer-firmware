@@ -50,7 +50,7 @@ private:
     int m_rotated;
 
     ModeInterface *m_oldMode;
-    IgnoreInputMode m_mode{0, ControlType::FieldOrientedControl, ControlMode::Speed};
+    IgnoreInputMode m_mode{0, bobbycar::protocol::ControlType::FieldOrientedControl, bobbycar::protocol::ControlMode::Speed};
 };
 
 void Lockscreen::start()

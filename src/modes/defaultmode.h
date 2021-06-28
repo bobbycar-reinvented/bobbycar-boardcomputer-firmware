@@ -78,13 +78,13 @@ void DefaultMode::update()
     lastTime = now;
 
     const auto pair = split(settings.defaultMode.modelMode);
-    for (MotorState &motor : motorsInController(controllers.front))
+    for (bobbycar::protocol::serial::MotorState &motor : motorsInController(controllers.front))
     {
         motor.ctrlTyp = pair.first;
         motor.ctrlMod = pair.second;
         motor.pwm = pwm / 100. * settings.defaultMode.frontPercentage;
     }
-    for (MotorState &motor : motorsInController(controllers.back))
+    for (bobbycar::protocol::serial::MotorState &motor : motorsInController(controllers.back))
     {
         motor.ctrlTyp = pair.first;
         motor.ctrlMod = pair.second;

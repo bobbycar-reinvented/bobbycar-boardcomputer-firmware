@@ -17,8 +17,8 @@ struct ControllerTexts
     struct LedText : public virtual TextInterface { public: std::string text() const override { return "led: " + std::to_string(controller::get().command.led); } };
 
 private:
-    struct LeftCommandGetter { static const MotorState &get() { return controller::get().command.left; } };
-    struct RightCommandGetter { static const MotorState &get() { return controller::get().command.right; } };
+    struct LeftCommandGetter { static const bobbycar::protocol::serial::MotorState &get() { return controller::get().command.left; } };
+    struct RightCommandGetter { static const bobbycar::protocol::serial::MotorState &get() { return controller::get().command.right; } };
 
     template<typename MotorStateGetter>
     struct CommandTexts
@@ -48,8 +48,8 @@ public:
     struct TimeoutCntSerialText : public virtual TextInterface { public: std::string text() const override { std::string line{"timeoutCntSerial: "}; if (controller::get().feedbackValid) line += std::to_string(controller::get().feedback.timeoutCntSerial); return line; } };
 
 private:
-    struct LeftFeedbackGetter { static const MotorFeedback &get() { return controller::get().feedback.left; } };
-    struct RightFeedbackGetter { static const MotorFeedback &get() { return controller::get().feedback.right; } };
+    struct LeftFeedbackGetter { static const bobbycar::protocol::serial::MotorFeedback &get() { return controller::get().feedback.left; } };
+    struct RightFeedbackGetter { static const bobbycar::protocol::serial::MotorFeedback &get() { return controller::get().feedback.right; } };
 
     template<typename MotorFeedbackGetter>
     struct FeedbackTexts

@@ -87,7 +87,7 @@ float fixBoardTemp(int16_t value)
     return value/10.;
 }
 
-std::string hallString(const MotorFeedback &motor)
+std::string hallString(const bobbycar::protocol::serial::MotorFeedback &motor)
 {
     return std::string{} + (motor.hallA ? '1' : '0') + (motor.hallB ? '1' : '0') + (motor.hallC ? '1' : '0');
 }
@@ -97,10 +97,11 @@ std::string to_string(const String &value)
     return std::string{value.c_str(), value.length()};
 }
 
-std::string to_string(ControlType value)
+std::string to_string(bobbycar::protocol::ControlType value)
 {
     switch (value)
     {
+    using namespace bobbycar::protocol;
     case ControlType::Commutation: return "Commutation";
     case ControlType::Sinusoidal: return "Sinusoidal";
     case ControlType::FieldOrientedControl: return "FieldOrientedControl";
@@ -108,10 +109,11 @@ std::string to_string(ControlType value)
     return "Unknown ControlType(" + std::to_string(int(value)) + ')';
 }
 
-std::string to_string(ControlMode value)
+std::string to_string(bobbycar::protocol::ControlMode value)
 {
     switch (value)
     {
+    using namespace bobbycar::protocol;
     case ControlMode::OpenMode: return "OpenMode";
     case ControlMode::Voltage: return "Voltage";
     case ControlMode::Speed: return "Speed";
@@ -161,27 +163,27 @@ std::string to_string(IPv6Address value)
     return to_string(value.toString());
 }
 
-std::array<std::reference_wrapper<MotorState>, 2> motorsInController(Controller &controller)
+std::array<std::reference_wrapper<bobbycar::protocol::serial::MotorState>, 2> motorsInController(Controller &controller)
 {
     return {std::ref(controller.command.left), std::ref(controller.command.right)};
 }
 
-std::array<std::reference_wrapper<const MotorState>, 2> motorsInController(const Controller &controller)
+std::array<std::reference_wrapper<const bobbycar::protocol::serial::MotorState>, 2> motorsInController(const Controller &controller)
 {
     return {std::ref(controller.command.left), std::ref(controller.command.right)};
 }
 
-std::array<std::reference_wrapper<MotorFeedback>, 2> motorFeedbacksInController(Controller &controller)
+std::array<std::reference_wrapper<bobbycar::protocol::serial::MotorFeedback>, 2> motorFeedbacksInController(Controller &controller)
 {
     return {std::ref(controller.feedback.left), std::ref(controller.feedback.right)};
 }
 
-std::array<std::reference_wrapper<const MotorFeedback>, 2> motorFeedbacksInController(const Controller &controller)
+std::array<std::reference_wrapper<const bobbycar::protocol::serial::MotorFeedback>, 2> motorFeedbacksInController(const Controller &controller)
 {
     return {std::ref(controller.feedback.left), std::ref(controller.feedback.right)};
 }
 
-std::array<std::reference_wrapper<MotorState>, 4> motors()
+std::array<std::reference_wrapper<bobbycar::protocol::serial::MotorState>, 4> motors()
 {
     return {
         std::ref(controllers.front.command.left), std::ref(controllers.front.command.right),
@@ -191,7 +193,7 @@ std::array<std::reference_wrapper<MotorState>, 4> motors()
 
 void fixCommonParams()
 {
-    for (MotorState &motor : motors())
+    for (bobbycar::protocol::serial::MotorState &motor : motors())
     {
         motor.iMotMax = settings.limits.iMotMax;
         motor.iDcMax = settings.limits.iDcMax;
@@ -203,7 +205,7 @@ void fixCommonParams()
     if (settings.reverseBeep)
     {
         const auto x = motors();
-        const auto shouldBeep = std::all_of(std::begin(x), std::end(x), [](const MotorState &motor){ return motor.pwm < 0; });
+        const auto shouldBeep = std::all_of(std::begin(x), std::end(x), [](const bobbycar::protocol::serial::MotorState &motor){ return motor.pwm < 0; });
 
         if (shouldBeep != currentlyReverseBeeping)
         {

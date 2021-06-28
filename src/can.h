@@ -63,7 +63,7 @@ bool parseCanMessage(const can_message_t &message, Controller &controller)
 {
     switch (message.identifier)
     {
-    using namespace bobbycar::can;
+    using namespace bobbycar::protocol::can;
     case MotorController<isBack, false>::Feedback::DcLink:
         controller.feedback.left.dcLink = *((int16_t*)message.data);
         return true;
@@ -200,7 +200,7 @@ void sendCanCommands()
         return result;
     };
 
-    using namespace bobbycar::can;
+    using namespace bobbycar::protocol::can;
 
     send(MotorController<false, false>::Command::InpTgt, controllers.front.command.left.pwm);
     send(MotorController<false, true>::Command::InpTgt, controllers.front.command.right.pwm);

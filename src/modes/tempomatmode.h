@@ -43,7 +43,7 @@ void TempomatMode::update()
 
     pwm += (gas/1000.) - (brems/1000.);
 
-    for (MotorState &motor : motors())
+    for (bobbycar::protocol::serial::MotorState &motor : motors())
     {
         const auto pair = split(settings.tempomatMode.modelMode);
         motor.ctrlTyp = pair.first;

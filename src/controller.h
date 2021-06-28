@@ -36,13 +36,13 @@ struct Controller {
 #endif
     bool &enableLeft, &enableRight, &invertLeft, &invertRight;
 
-    Command command{};
+    bobbycar::protocol::serial::Command command{};
 
 #ifdef FEATURE_CAN
     millis_t lastCanFeedback{};
 #endif
     bool feedbackValid{};
-    Feedback feedback{};
+    bobbycar::protocol::serial::Feedback feedback{};
 
 #ifndef FEATURE_CAN
     FeedbackParser parser{serial, feedbackValid, feedback};

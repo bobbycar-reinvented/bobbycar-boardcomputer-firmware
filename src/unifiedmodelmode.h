@@ -16,8 +16,11 @@ enum class UnifiedModelMode : uint8_t
     FocTorque
 };
 
-std::pair<ControlType, ControlMode> split(UnifiedModelMode mode)
+std::pair<bobbycar::protocol::ControlType, bobbycar::protocol::ControlMode> split(UnifiedModelMode mode)
 {
+    using bobbycar::protocol::ControlType;
+    using bobbycar::protocol::ControlMode;
+
     switch (mode)
     {
     case UnifiedModelMode::Commutation: return std::make_pair(ControlType::Commutation, ControlMode::Voltage);

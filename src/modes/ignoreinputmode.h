@@ -10,7 +10,7 @@ namespace {
 class IgnoreInputMode : public ModeInterface
 {
 public:
-    IgnoreInputMode(int16_t pwm, ControlType ctrlTyp, ControlMode ctrlMod) :
+    IgnoreInputMode(int16_t pwm, bobbycar::protocol::ControlType ctrlTyp, bobbycar::protocol::ControlMode ctrlMod) :
         m_pwm{pwm}, m_ctrlTyp{ctrlTyp}, m_ctrlMod{ctrlMod}
     {
     }
@@ -21,13 +21,13 @@ public:
 
 private:
     const int16_t m_pwm;
-    const ControlType m_ctrlTyp;
-    const ControlMode m_ctrlMod;
+    const bobbycar::protocol::ControlType m_ctrlTyp;
+    const bobbycar::protocol::ControlMode m_ctrlMod;
 };
 
 void IgnoreInputMode::update()
 {
-    for (MotorState &motor : motors())
+    for (bobbycar::protocol::serial::MotorState &motor : motors())
     {
         motor.ctrlTyp = m_ctrlTyp;
         motor.ctrlMod = m_ctrlMod;

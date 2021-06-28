@@ -42,7 +42,7 @@ private:
 
     const bool m_bootup{false};
     ModeInterface *m_oldMode;
-    IgnoreInputMode m_mode{0, ControlType::FieldOrientedControl, ControlMode::Torque};
+    IgnoreInputMode m_mode{0, bobbycar::protocol::ControlType::FieldOrientedControl, bobbycar::protocol::ControlMode::Torque};
 
     std::array<Label, 11> m_labels {{
         Label{25, 72}, // 100, 23

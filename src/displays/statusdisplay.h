@@ -57,7 +57,7 @@ private:
             {}
 
             void start();
-            void redraw(const MotorFeedback &motor);
+            void redraw(const bobbycar::protocol::serial::MotorFeedback &motor);
 
         private:
             Label m_labelError;
@@ -246,7 +246,7 @@ void StatusDisplay::BoardStatus::MotorStatus::start()
     m_labelHallSensors.start();
 }
 
-void StatusDisplay::BoardStatus::MotorStatus::redraw(const MotorFeedback &motor)
+void StatusDisplay::BoardStatus::MotorStatus::redraw(const bobbycar::protocol::serial::MotorFeedback &motor)
 {
     tft.setTextFont(4);
     tft.setTextColor(motor.error?TFT_RED:TFT_GREEN, TFT_BLACK);

@@ -96,7 +96,7 @@ void LarsmMode::update()
         speed = CLAMP(speed, -1000, 1000);  // clamp output
     }
 
-    for (MotorState &motor : motors())
+    for (bobbycar::protocol::serial::MotorState &motor : motors())
     {
         const auto pair = split(settings.larsmMode.modelMode);
         motor.ctrlTyp = pair.first;

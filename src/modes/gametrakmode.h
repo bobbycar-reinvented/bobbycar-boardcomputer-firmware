@@ -66,10 +66,10 @@ void GametrakMode::update()
             pwm = 0;
     }
 
-    for (MotorState &motor : motors())
+    for (bobbycar::protocol::serial::MotorState &motor : motors())
     {
-        motor.ctrlTyp = ControlType::FieldOrientedControl;
-        motor.ctrlMod = ControlMode::Speed;
+        motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
+        motor.ctrlMod = bobbycar::protocol::ControlMode::Speed;
         motor.pwm = pwm;
     }
 

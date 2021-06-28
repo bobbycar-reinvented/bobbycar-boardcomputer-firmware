@@ -115,20 +115,20 @@ template<> struct nvsGetterHelper<bool> { static esp_err_t nvs_get(nvs_handle ha
         *out_value = tempValue;
     return err;
 }};
-template<> struct nvsGetterHelper<ControlType> { static esp_err_t nvs_get(nvs_handle handle, const char* key, ControlType* out_value)
+template<> struct nvsGetterHelper<bobbycar::protocol::ControlType> { static esp_err_t nvs_get(nvs_handle handle, const char* key, bobbycar::protocol::ControlType* out_value)
 {
     uint8_t tempValue;
     esp_err_t err = nvs_get_u8(handle, key, &tempValue);
     if (err == ESP_OK)
-        *out_value = ControlType(tempValue);
+        *out_value = bobbycar::protocol::ControlType(tempValue);
     return err;
 }};
-template<> struct nvsGetterHelper<ControlMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, ControlMode* out_value)
+template<> struct nvsGetterHelper<bobbycar::protocol::ControlMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, bobbycar::protocol::ControlMode* out_value)
 {
     uint8_t tempValue;
     esp_err_t err = nvs_get_u8(handle, key, &tempValue);
     if (err == ESP_OK)
-        *out_value = ControlMode(tempValue);
+        *out_value = bobbycar::protocol::ControlMode(tempValue);
     return err;
 }};
 template<> struct nvsGetterHelper<LarsmModeMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, LarsmModeMode* out_value)
@@ -197,11 +197,11 @@ template<> struct nvsSetterHelper<uint16_t> { static constexpr auto nvs_set = &n
 template<> struct nvsSetterHelper<int32_t> { static constexpr auto nvs_set = &nvs_set_i32; };
 template<> struct nvsSetterHelper<uint32_t> { static constexpr auto nvs_set = &nvs_set_u32; };
 template<> struct nvsSetterHelper<bool> { static constexpr auto nvs_set = &nvs_set_u8; };
-template<> struct nvsSetterHelper<ControlType> { static esp_err_t nvs_set(nvs_handle handle, const char* key, ControlType value)
+template<> struct nvsSetterHelper<bobbycar::protocol::ControlType> { static esp_err_t nvs_set(nvs_handle handle, const char* key, bobbycar::protocol::ControlType value)
 {
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
-template<> struct nvsSetterHelper<ControlMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, ControlMode value)
+template<> struct nvsSetterHelper<bobbycar::protocol::ControlMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, bobbycar::protocol::ControlMode value)
 {
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
