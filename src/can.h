@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstring>
+#include <optional>
 
 #include <driver/gpio.h>
 #include <driver/can.h>
@@ -11,8 +12,26 @@
 
 #include "types.h"
 #include "globals.h"
+#include "buttons.h"
 
+namespace can {
 namespace {
+std::optional<int16_t> can_gas, can_brems;
+millis_t last_can_gas{}, last_can_brems{};
+
+struct CanButtonsState
+{
+    bool up{};
+    bool down{};
+    bool confirm{};
+    bool back{};
+    bool profile0{};
+    bool profile1{};
+    bool profile2{};
+    bool profile3{};
+};
+CanButtonsState lastButtonsState;
+
 void initCan()
 {
     Serial.println("initCan()");
@@ -59,7 +78,7 @@ void initCan()
 }
 
 template<bool isBack>
-bool parseCanMessage(const can_message_t &message, Controller &controller)
+bool parseMotorControllerCanMessage(const can_message_t &message, Controller &controller)
 {
     switch (message.identifier)
     {
@@ -135,7 +154,68 @@ bool parseCanMessage(const can_message_t &message, Controller &controller)
     return false;
 }
 
-bool parseCanInput()
+bool parseBoardcomputerCanMessage(const can_message_t &message)
+{
+    switch (message.identifier)
+    {
+    using namespace bobbycar::protocol::can;
+    case Boardcomputer::Command::ButtonPress:
+    {
+        const auto canButtonBits = *((uint16_t*)message.data);
+        CanButtonsState newState {
+            .up =       bool(canButtonBits & Boardcomputer::ButtonUp),
+            .down =     bool(canButtonBits & Boardcomputer::ButtonDown),
+            .confirm =  bool(canButtonBits & Boardcomputer::ButtonConfirm),
+            .back =     bool(canButtonBits & Boardcomputer::ButtonBack),
+            .profile0 = bool(canButtonBits & Boardcomputer::ButtonProfile0),
+            .profile1 = bool(canButtonBits & Boardcomputer::ButtonProfile1),
+            .profile2 = bool(canButtonBits & Boardcomputer::ButtonProfile2),
+            .profile3 = bool(canButtonBits & Boardcomputer::ButtonProfile3),
+        };
+
+        if (lastButtonsState.up != newState.up)
+            if (newState.up)
+                InputDispatcher::rotate(-1);
+
+        if (lastButtonsState.down != newState.down)
+            if (newState.down)
+                InputDispatcher::rotate(1);
+
+        if (lastButtonsState.confirm != newState.confirm)
+            InputDispatcher::confirmButton(newState.confirm);
+
+        if (lastButtonsState.back != newState.back)
+            InputDispatcher::backButton(newState.back);
+
+        if (lastButtonsState.profile0 != newState.profile0)
+            InputDispatcher::profileButton(0, newState.profile0);
+
+        if (lastButtonsState.profile1 != newState.profile1)
+            InputDispatcher::profileButton(1, newState.profile1);
+
+        if (lastButtonsState.profile2 != newState.profile2)
+            InputDispatcher::profileButton(2, newState.profile2);
+
+        if (lastButtonsState.profile3 != newState.profile3)
+            InputDispatcher::profileButton(3, newState.profile3);
+
+        lastButtonsState = newState;
+        break;
+    }
+    case Boardcomputer::Command::RawGas:
+        can_gas = *((int16_t*)message.data);
+        last_can_gas = millis();
+        break;
+    case Boardcomputer::Command::RawBrems:
+        can_brems = *((int16_t*)message.data);
+        last_can_brems = millis();
+        break;
+    }
+
+    return false;
+}
+
+bool tryParseCanInput()
 {
     can_message_t message;
     if (const auto result = can_receive(&message, pdMS_TO_TICKS(50)); result != ESP_OK)
@@ -152,36 +232,49 @@ bool parseCanInput()
         return false;
     }
 
-    if (parseCanMessage<false>(message, controllers.front))
-    {
-        if (millis() - controllers.back.lastCanFeedback > 100)
-            controllers.back.feedbackValid = false;
+    Controller &front = settings.controllerHardware.swapFrontBack ? controllers.back : controllers.front;
+    Controller &back = settings.controllerHardware.swapFrontBack ? controllers.front : controllers.back;
 
-        controllers.front.lastCanFeedback = millis();
-        controllers.front.feedbackValid = true;
+    if (parseMotorControllerCanMessage<false>(message, front))
+    {
+        if (millis() - back.lastCanFeedback > 100)
+            back.feedbackValid = false;
+
+        front.lastCanFeedback = millis();
+        front.feedbackValid = true;
         return true;
     }
     else
     {
-        if (millis() - controllers.front.lastCanFeedback > 100)
-            controllers.front.feedbackValid = false;
+        if (millis() - front.lastCanFeedback > 100)
+            front.feedbackValid = false;
     }
 
-    if (parseCanMessage<true>(message, controllers.back))
+    if (parseMotorControllerCanMessage<true>(message, back))
     {
-        controllers.back.lastCanFeedback = millis();
-        controllers.back.feedbackValid = true;
+        back.lastCanFeedback = millis();
+        back.feedbackValid = true;
         return true;
     }
     else
     {
-        if (millis() - controllers.back.lastCanFeedback > 100)
-            controllers.back.feedbackValid = false;
+        if (millis() - back.lastCanFeedback > 100)
+            back.feedbackValid = false;
     }
+
+    if (parseBoardcomputerCanMessage(message))
+        return true;
 
     //Serial.printf("WARNING Unknown CAN info received .identifier = %u\r\n", message.identifier);
 
     return true;
+}
+
+void parseCanInput()
+{
+    for (int i = 0; i < 4; i++)
+        if (!tryParseCanInput())
+            break;
 }
 
 void sendCanCommands()
@@ -200,89 +293,129 @@ void sendCanCommands()
         return result;
     };
 
+    const Controller &front = settings.controllerHardware.swapFrontBack ? controllers.back : controllers.front;
+    const Controller &back = settings.controllerHardware.swapFrontBack ? controllers.front : controllers.back;
+
     using namespace bobbycar::protocol::can;
 
-    send(MotorController<false, false>::Command::InpTgt, controllers.front.command.left.pwm);
-    send(MotorController<false, true>::Command::InpTgt, controllers.front.command.right.pwm);
-    send(MotorController<true, false>::Command::InpTgt, controllers.back.command.left.pwm);
-    send(MotorController<true, true>::Command::InpTgt, controllers.back.command.right.pwm);
+    send(MotorController<false, false>::Command::InpTgt, front.command.left.pwm);
+    send(MotorController<false, true>::Command::InpTgt, front.command.right.pwm);
+    send(MotorController<true, false>::Command::InpTgt, back.command.left.pwm);
+    send(MotorController<true, true>::Command::InpTgt, back.command.right.pwm);
+
+    uint16_t buttonLeds{};
+    if (const auto index = settingsPersister.currentlyOpenProfileIndex())
+        switch (*index)
+        {
+        case 0: buttonLeds |= Boardcomputer::ButtonProfile0; break;
+        case 1: buttonLeds |= Boardcomputer::ButtonProfile1; break;
+        case 2: buttonLeds |= Boardcomputer::ButtonProfile2; break;
+        case 3: buttonLeds |= Boardcomputer::ButtonProfile3; break;
+        }
+
+    static struct {
+        struct {
+            uint8_t freq = 0;
+            uint8_t pattern = 0;
+        } front, back;
+        uint16_t buttonLeds{};
+    } lastValues;
 
     static int i{};
+
+    if (front.command.buzzer.freq    != lastValues.front.freq ||
+        front.command.buzzer.pattern != lastValues.front.pattern ||
+        back.command.buzzer.freq     != lastValues.back.freq ||
+        back.command.buzzer.pattern  != lastValues.back.pattern)
+        i = 8;
+    else if (buttonLeds              != lastValues.buttonLeds)
+        i = 10;
+
     switch (i++)
     {
     case 0:
-        send(MotorController<false, false>::Command::Enable, controllers.front.command.left.enable);
-        send(MotorController<false, true>::Command::Enable, controllers.front.command.right.enable);
-        send(MotorController<true, false>::Command::Enable, controllers.back.command.left.enable);
-        send(MotorController<true, true>::Command::Enable, controllers.back.command.right.enable);
+        send(MotorController<false, false>::Command::Enable, front.command.left.enable);
+        send(MotorController<false, true>::Command::Enable, front.command.right.enable);
+        send(MotorController<true, false>::Command::Enable, back.command.left.enable);
+        send(MotorController<true, true>::Command::Enable, back.command.right.enable);
         break;
     case 1:
-        send(MotorController<false, false>::Command::CtrlTyp, controllers.front.command.left.ctrlTyp);
-        send(MotorController<false, true>::Command::CtrlTyp, controllers.front.command.right.ctrlTyp);
-        send(MotorController<true, false>::Command::CtrlTyp, controllers.back.command.left.ctrlTyp);
-        send(MotorController<true, true>::Command::CtrlTyp, controllers.back.command.right.ctrlTyp);
+        send(MotorController<false, false>::Command::CtrlTyp, front.command.left.ctrlTyp);
+        send(MotorController<false, true>::Command::CtrlTyp, front.command.right.ctrlTyp);
+        send(MotorController<true, false>::Command::CtrlTyp, back.command.left.ctrlTyp);
+        send(MotorController<true, true>::Command::CtrlTyp, back.command.right.ctrlTyp);
         break;
     case 2:
-        send(MotorController<false, false>::Command::CtrlMod, controllers.front.command.left.ctrlMod);
-        send(MotorController<false, true>::Command::CtrlMod, controllers.front.command.right.ctrlMod);
-        send(MotorController<true, false>::Command::CtrlMod, controllers.back.command.left.ctrlMod);
-        send(MotorController<true, true>::Command::CtrlMod, controllers.back.command.right.ctrlMod);
+        send(MotorController<false, false>::Command::CtrlMod, front.command.left.ctrlMod);
+        send(MotorController<false, true>::Command::CtrlMod, front.command.right.ctrlMod);
+        send(MotorController<true, false>::Command::CtrlMod, back.command.left.ctrlMod);
+        send(MotorController<true, true>::Command::CtrlMod, back.command.right.ctrlMod);
         break;
     case 3:
-        send(MotorController<false, false>::Command::IMotMax, controllers.front.command.left.iMotMax);
-        send(MotorController<false, true>::Command::IMotMax, controllers.front.command.right.iMotMax);
-        send(MotorController<true, false>::Command::IMotMax, controllers.back.command.left.iMotMax);
-        send(MotorController<true, true>::Command::IMotMax, controllers.back.command.right.iMotMax);
+        send(MotorController<false, false>::Command::IMotMax, front.command.left.iMotMax);
+        send(MotorController<false, true>::Command::IMotMax, front.command.right.iMotMax);
+        send(MotorController<true, false>::Command::IMotMax, back.command.left.iMotMax);
+        send(MotorController<true, true>::Command::IMotMax, back.command.right.iMotMax);
         break;
     case 4:
-        send(MotorController<false, false>::Command::IDcMax, controllers.front.command.left.iDcMax);
-        send(MotorController<false, true>::Command::IDcMax, controllers.front.command.right.iDcMax);
-        send(MotorController<true, false>::Command::IDcMax, controllers.back.command.left.iDcMax);
-        send(MotorController<true, true>::Command::IDcMax, controllers.back.command.right.iDcMax);
+        send(MotorController<false, false>::Command::IDcMax, front.command.left.iDcMax);
+        send(MotorController<false, true>::Command::IDcMax, front.command.right.iDcMax);
+        send(MotorController<true, false>::Command::IDcMax, back.command.left.iDcMax);
+        send(MotorController<true, true>::Command::IDcMax, back.command.right.iDcMax);
         break;
     case 5:
-        send(MotorController<false, false>::Command::NMotMax, controllers.front.command.left.nMotMax);
-        send(MotorController<false, true>::Command::NMotMax, controllers.front.command.right.nMotMax);
-        send(MotorController<true, false>::Command::NMotMax, controllers.back.command.left.nMotMax);
-        send(MotorController<true, true>::Command::NMotMax, controllers.back.command.right.nMotMax);
+        send(MotorController<false, false>::Command::NMotMax, front.command.left.nMotMax);
+        send(MotorController<false, true>::Command::NMotMax, front.command.right.nMotMax);
+        send(MotorController<true, false>::Command::NMotMax, back.command.left.nMotMax);
+        send(MotorController<true, true>::Command::NMotMax, back.command.right.nMotMax);
         break;
     case 6:
-        send(MotorController<false, false>::Command::FieldWeakMax, controllers.front.command.left.fieldWeakMax);
-        send(MotorController<false, true>::Command::FieldWeakMax, controllers.front.command.right.fieldWeakMax);
-        send(MotorController<true, false>::Command::FieldWeakMax, controllers.back.command.left.fieldWeakMax);
-        send(MotorController<true, true>::Command::FieldWeakMax, controllers.back.command.right.fieldWeakMax);
+        send(MotorController<false, false>::Command::FieldWeakMax, front.command.left.fieldWeakMax);
+        send(MotorController<false, true>::Command::FieldWeakMax, front.command.right.fieldWeakMax);
+        send(MotorController<true, false>::Command::FieldWeakMax, back.command.left.fieldWeakMax);
+        send(MotorController<true, true>::Command::FieldWeakMax, back.command.right.fieldWeakMax);
         break;
     case 7:
-        send(MotorController<false, false>::Command::PhaseAdvMax, controllers.front.command.left.phaseAdvMax);
-        send(MotorController<false, true>::Command::PhaseAdvMax, controllers.front.command.right.phaseAdvMax);
-        send(MotorController<true, false>::Command::PhaseAdvMax, controllers.back.command.left.phaseAdvMax);
-        send(MotorController<true, true>::Command::PhaseAdvMax, controllers.back.command.right.phaseAdvMax);
+        send(MotorController<false, false>::Command::PhaseAdvMax, front.command.left.phaseAdvMax);
+        send(MotorController<false, true>::Command::PhaseAdvMax, front.command.right.phaseAdvMax);
+        send(MotorController<true, false>::Command::PhaseAdvMax, back.command.left.phaseAdvMax);
+        send(MotorController<true, true>::Command::PhaseAdvMax, back.command.right.phaseAdvMax);
         break;
     case 8:
-        send(MotorController<false, false>::Command::BuzzerFreq, controllers.front.command.buzzer.freq);
-        send(MotorController<false, true>::Command::BuzzerFreq, controllers.front.command.buzzer.freq);
-        send(MotorController<true, false>::Command::BuzzerFreq, controllers.back.command.buzzer.freq);
-        send(MotorController<true, true>::Command::BuzzerFreq, controllers.back.command.buzzer.freq);
+        if (send(MotorController<false, false>::Command::BuzzerFreq, front.command.buzzer.freq) == ESP_OK)
+            lastValues.front.freq = front.command.buzzer.freq;
+//        if (send(MotorController<false, true>::Command::BuzzerFreq, front.command.buzzer.freq) == ESP_OK)
+//            lastValues.front.freq = front.command.buzzer.freq;
+        if (send(MotorController<true, false>::Command::BuzzerFreq, back.command.buzzer.freq) == ESP_OK)
+            lastValues.back.freq = back.command.buzzer.freq;
+//        if (send(MotorController<true, true>::Command::BuzzerFreq, back.command.buzzer.freq) == ESP_OK)
+//            lastValues.back.freq = back.command.buzzer.freq;
+        if (send(MotorController<false, false>::Command::BuzzerPattern, front.command.buzzer.pattern) == ESP_OK)
+            lastValues.front.pattern = front.command.buzzer.pattern;
+//        if (send(MotorController<false, true>::Command::BuzzerPattern, front.command.buzzer.pattern) == ESP_OK)
+//            lastValues.front.pattern = front.command.buzzer.pattern;
+        if (send(MotorController<true, false>::Command::BuzzerPattern, back.command.buzzer.pattern) == ESP_OK)
+            lastValues.back.pattern = back.command.buzzer.pattern;
+//        if (send(MotorController<true, true>::Command::BuzzerPattern, back.command.buzzer.pattern) == ESP_OK)
+//            lastValues.back.pattern = back.command.buzzer.pattern;
         break;
     case 9:
-        send(MotorController<false, false>::Command::BuzzerPattern, controllers.front.command.buzzer.pattern);
-        send(MotorController<false, true>::Command::BuzzerPattern, controllers.front.command.buzzer.pattern);
-        send(MotorController<true, false>::Command::BuzzerPattern, controllers.back.command.buzzer.pattern);
-        send(MotorController<true, true>::Command::BuzzerPattern, controllers.back.command.buzzer.pattern);
+        send(MotorController<false, false>::Command::Led, front.command.led);
+        //send(MotorController<false, true>::Command::Led, front.command.led);
+        send(MotorController<true, false>::Command::Led, back.command.led);
+        //send(MotorController<true, true>::Command::Led, back.command.led);
+        send(MotorController<false, false>::Command::Poweroff, front.command.poweroff);
+        //send(MotorController<false, true>::Command::Poweroff, front.command.poweroff);
+        send(MotorController<true, false>::Command::Poweroff, back.command.poweroff);
+        //send(MotorController<true, true>::Command::Poweroff, back.command.poweroff);
         break;
     case 10:
-        send(MotorController<false, false>::Command::Led, controllers.front.command.led);
-        send(MotorController<false, true>::Command::Led, controllers.front.command.led);
-        send(MotorController<true, false>::Command::Led, controllers.back.command.led);
-        send(MotorController<true, true>::Command::Led, controllers.back.command.led);
-        break;
-    case 11:
-        send(MotorController<false, false>::Command::Poweroff, controllers.front.command.poweroff);
-        send(MotorController<false, true>::Command::Poweroff, controllers.front.command.poweroff);
-        send(MotorController<true, false>::Command::Poweroff, controllers.back.command.poweroff);
-        send(MotorController<true, true>::Command::Poweroff, controllers.back.command.poweroff);
+        if (send(Boardcomputer::Feedback::ButtonLeds, buttonLeds) == ESP_OK)
+            lastValues.buttonLeds = buttonLeds;
+    default:
         i=0;
         break;
     }
 }
-}
+} // namespace
+} // namespace can

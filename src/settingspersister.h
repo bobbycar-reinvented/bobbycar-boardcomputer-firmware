@@ -1,12 +1,11 @@
 #pragma once
 
 #include <type_traits>
+#include <optional>
 
 #include <HardwareSerial.h>
 #include <nvs_flash.h>
 #include <nvs.h>
-
-#include <optional>
 
 #include "settings.h"
 #ifdef FEATURE_BLUETOOTH

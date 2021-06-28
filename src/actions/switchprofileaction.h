@@ -3,25 +3,16 @@
 #include <HardwareSerial.h>
 
 #include "actioninterface.h"
-#include "globals.h"
-#include "presets.h"
+#include "settingsutils.h"
 
 namespace {
-template<uint8_t profile>
+template<uint8_t index>
 class SwitchProfileAction : public virtual ActionInterface
 {
 public:
     void triggered() override
     {
-        settings = presets::defaultSettings;
-
-        if (settingsPersister.openProfile(profile))
-        {
-            if (!settingsPersister.load(settings))
-                Serial.println("SwitchProfileAction::triggered() load failed");
-        }
-        else
-            Serial.println("SwitchProfileAction::triggered() openProfile failed");
+        switchProfile(index);
     }
 };
 }

@@ -265,7 +265,7 @@ void sendCommands()
     }
 #endif
 #ifdef FEATURE_CAN
-    sendCanCommands();
+    can::sendCanCommands();
 #endif
 }
 
@@ -321,20 +321,55 @@ void updateAccumulators()
 }
 
 void readPotis()
-{
-    const auto sampleMultipleTimes = [](int pin){
+{    
+    [[maybe_unused]]
+    constexpr auto sampleMultipleTimes = [](int pin){
         analogRead(pin);
         double sum{};
-        for (int i = 0; i < settings.boardcomputerHardware.sampleCount; i++)
+        const auto sampleCount = settings.boardcomputerHardware.sampleCount;
+        for (int i = 0; i < sampleCount; i++)
             sum += analogRead(pin);
-        return sum/settings.boardcomputerHardware.sampleCount;
+        return sum / sampleCount;
     };
 
-    raw_gas = sampleMultipleTimes(PINS_GAS);
-    gas = scaleBetween<float>(raw_gas, settings.boardcomputerHardware.gasMin, settings.boardcomputerHardware.gasMax, 0., 1000.);
+    raw_gas = std::nullopt;
+    raw_brems = std::nullopt;
 
-    raw_brems = sampleMultipleTimes(PINS_BREMS);
-    brems = scaleBetween<float>(raw_brems, settings.boardcomputerHardware.bremsMin, settings.boardcomputerHardware.bremsMax, 0., 1000.);
+#ifdef FEATURE_CAN
+    const auto now = millis();
+
+    if (can::can_gas)
+    {
+        if (now - can::last_can_gas < 100)
+            raw_gas = *can::can_gas;
+        else
+            can::can_gas = std::nullopt;
+    }
+
+    if (can::can_brems)
+    {
+        if (now - can::last_can_brems < 100)
+            raw_brems = *can::can_brems;
+        else
+            can::can_brems = std::nullopt;
+    }
+#endif
+
+#ifdef FEATURE_ADC_IN
+    if (!raw_gas)
+        raw_gas = sampleMultipleTimes(PINS_GAS);
+    if (!raw_brems)
+        raw_brems = sampleMultipleTimes(PINS_BREMS);
+#endif
+
+    if (raw_gas)
+        gas = scaleBetween<float>(*raw_gas, settings.boardcomputerHardware.gasMin, settings.boardcomputerHardware.gasMax, 0., 1000.);
+    else
+        gas = std::nullopt;
+    if (raw_brems)
+        brems = scaleBetween<float>(*raw_brems, settings.boardcomputerHardware.bremsMin, settings.boardcomputerHardware.bremsMax, 0., 1000.);
+    else
+        brems = std::nullopt;
 
 #ifdef FEATURE_GAMETRAK
     raw_gametrakX = sampleMultipleTimes(PINS_GAMETRAKX);

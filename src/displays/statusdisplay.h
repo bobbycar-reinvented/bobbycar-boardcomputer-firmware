@@ -145,12 +145,12 @@ void StatusDisplay::initScreen()
 void StatusDisplay::redraw()
 {
     tft.setTextFont(2);
-    m_labelRawGas.redraw(std::to_string(raw_gas));
-    m_labelGas.redraw(std::to_string(gas));
-    m_progressBarGas.redraw(gas);
-    m_labelRawBrems.redraw(std::to_string(raw_brems));
-    m_labelBrems.redraw(std::to_string(brems));
-    m_progressBarBrems.redraw(brems);
+    m_labelRawGas.redraw(raw_gas ? std::to_string(*raw_gas) : "?");
+    m_labelGas.redraw(gas ? std::to_string(*gas) : "?");
+    m_progressBarGas.redraw(gas ? *gas : 0);
+    m_labelRawBrems.redraw(raw_brems ? std::to_string(*raw_brems) : "?");
+    m_labelBrems.redraw(brems ? std::to_string(*brems) : "?");
+    m_progressBarBrems.redraw(brems ? *brems : 0);
 
     m_frontStatus.redraw(controllers.front);
     m_backStatus.redraw(controllers.back);

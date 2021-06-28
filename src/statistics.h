@@ -18,8 +18,10 @@ ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backV
 
 void pushStats()
 {
-    statistics::gas.push_back(gas);
-    statistics::brems.push_back(brems);
+    if (gas)
+        statistics::gas.push_back(*gas);
+    if (brems)
+        statistics::brems.push_back(*brems);
     statistics::avgSpeed.push_back(avgSpeed);
     statistics::avgSpeedKmh.push_back(avgSpeedKmh);
     statistics::sumCurrent.push_back(sumCurrent);

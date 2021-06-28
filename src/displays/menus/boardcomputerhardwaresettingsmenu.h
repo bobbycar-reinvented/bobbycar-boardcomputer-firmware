@@ -24,11 +24,23 @@ class SettingsMenu;
 namespace {
 struct GasText : public virtual TextInterface {
 public:
-    std::string text() const override { return std::string{"gas: "} + std::to_string(raw_gas) + ": " + std::to_string(gas); }
+    std::string text() const override
+    {
+        return std::string{"gas: "} +
+            (raw_gas ? std::to_string(*raw_gas) : "?") +
+            ": " +
+            (gas ? std::to_string(*gas) : "?");
+    }
 };
 struct BremsText : public virtual TextInterface {
 public:
-    std::string text() const override { return std::string{"brems: "} + std::to_string(raw_brems) + ": " + std::to_string(brems); }
+    std::string text() const override
+    {
+        return std::string{"brems: "} +
+            (raw_brems ? std::to_string(*raw_brems) : "?") +
+            ": " +
+            (brems ? std::to_string(*brems) : "?");
+    }
 };
 
 using SampleCountChangeScreen = makeComponent<

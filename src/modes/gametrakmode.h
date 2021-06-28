@@ -41,36 +41,50 @@ void GametrakMode::start()
 
 void GametrakMode::update()
 {
-    if (gas > 500. || brems > 500.)
+    if (!gas || !brems)
     {
-        modes::defaultMode.waitForGasLoslass = true;
-        modes::defaultMode.waitForBremsLoslass = true;
-        currentMode = &modes::defaultMode;
-        return;
-    }
+        start();
 
-    int16_t pwm;
-    if (gametrakDist < 150)
-    {
-        pwm = 0;
-        m_flag = false;
+        for (bobbycar::protocol::serial::MotorState &motor : motors())
+        {
+            motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
+            motor.ctrlMod = bobbycar::protocol::ControlMode::OpenMode;
+            motor.pwm = 0;
+        }
     }
     else
     {
-        if (m_flag || gametrakDist >= 400)
+        if (*gas > 500. || *brems > 500.)
         {
-            m_flag = true;
-            pwm = clamp<int>((gametrakDist - 400) / 2, -200, 200);
+            modes::defaultMode.waitForGasLoslass = true;
+            modes::defaultMode.waitForBremsLoslass = true;
+            currentMode = &modes::defaultMode;
+            return;
+        }
+
+        int16_t pwm;
+        if (gametrakDist < 150)
+        {
+            pwm = 0;
+            m_flag = false;
         }
         else
-            pwm = 0;
-    }
+        {
+            if (m_flag || gametrakDist >= 400)
+            {
+                m_flag = true;
+                pwm = clamp<int>((gametrakDist - 400) / 2, -200, 200);
+            }
+            else
+                pwm = 0;
+        }
 
-    for (bobbycar::protocol::serial::MotorState &motor : motors())
-    {
-        motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
-        motor.ctrlMod = bobbycar::protocol::ControlMode::Speed;
-        motor.pwm = pwm;
+        for (bobbycar::protocol::serial::MotorState &motor : motors())
+        {
+            motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
+            motor.ctrlMod = bobbycar::protocol::ControlMode::Speed;
+            motor.pwm = pwm;
+        }
     }
 
     fixCommonParams();

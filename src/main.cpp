@@ -308,7 +308,7 @@ void setup()
 #endif
 
 #ifdef FEATURE_CAN
-    initCan();
+    can::initCan();
 #endif
 
 #ifdef FEATURE_SERIAL
@@ -319,10 +319,10 @@ void setup()
     controllers.back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
 #endif
 
-    raw_gas = 0;
-    raw_brems = 0;
-    gas = 0;
-    brems = 0;
+    raw_gas = std::nullopt;
+    raw_brems = std::nullopt;
+    gas = std::nullopt;
+    brems = std::nullopt;
 
     for (Controller &controller : controllers)
         controller.command.buzzer = {};
@@ -357,7 +357,7 @@ void setup()
     return;
 #endif
 
-    if (gas > 200.f || brems > 200.f)
+    if (!gas || !brems || *gas > 200.f || *brems > 200.f)
         switchScreen<CalibrateDisplay>(true);
     else
         switchScreen<StatusDisplay>();
@@ -439,9 +439,7 @@ void loop()
     }
 
 #ifdef FEATURE_CAN
-    for (int i = 0; i < 4; i++)
-        if (!parseCanInput())
-            break;
+    can::parseCanInput();
 #endif
 
 #ifdef FEATURE_SERIAL

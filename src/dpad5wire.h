@@ -1,17 +1,42 @@
 #pragma once
 
-#include <tuple>
+#include <array>
 
 #include <Arduino.h>
 
-#include "globals.h"
 #include "types.h"
-#include "actions/switchprofileaction.h"
+#include "buttons.h"
 
 namespace {
 namespace dpad5wire
 {
-using State = std::tuple<bool, bool, bool, bool, bool, bool, bool, bool>;
+class State : public std::array<bool, 8>
+{
+public:
+    State() : std::array<bool, 8>{false, false, false, false, false, false, false, false} {}
+    State(const std::array<bool, 8> &other) : std::array<bool, 8>{} {}
+
+    State &operator=(const std::array<bool, 8> &other)
+    {
+        std::array<bool, 8>::operator=(other);
+        return *this;
+    }
+
+    State &operator=(const State &other)
+    {
+        std::array<bool, 8>::operator=(other);
+        return *this;
+    }
+
+    bool &up{this->at(DPAD_5WIRESW_UP)};
+    bool &down{this->at(DPAD_5WIRESW_DOWN)};
+    bool &confirm{this->at(DPAD_5WIRESW_CONFIRM)};
+    bool &back{this->at(DPAD_5WIRESW_BACK)};
+    bool &profile0{this->at(DPAD_5WIRESW_PROFILE0)};
+    bool &profile1{this->at(DPAD_5WIRESW_PROFILE1)};
+    bool &profile2{this->at(DPAD_5WIRESW_PROFILE2)};
+    bool &profile3{this->at(DPAD_5WIRESW_PROFILE3)};
+};
 
 template<pin_t OUT, pin_t IN1, pin_t IN2, pin_t IN3, pin_t IN4>
 class Helper
@@ -37,6 +62,8 @@ void Helper<OUT, IN1, IN2, IN3, IN4>::begin()
 template<pin_t OUT, pin_t IN1, pin_t IN2, pin_t IN3, pin_t IN4>
 State Helper<OUT, IN1, IN2, IN3, IN4>::read()
 {
+    State result;
+
     digitalWrite(OUT, LOW);
 
     pinMode(IN1, INPUT_PULLUP);
@@ -46,10 +73,10 @@ State Helper<OUT, IN1, IN2, IN3, IN4>::read()
 
     delay(1);
 
-    const bool result0 = digitalRead(IN1)==LOW;
-    const bool result1 = digitalRead(IN2)==LOW;
-    const bool result2 = digitalRead(IN3)==LOW;
-    const bool result3 = digitalRead(IN4)==LOW;
+    result[0] = digitalRead(IN1)==LOW;
+    result[1] = digitalRead(IN2)==LOW;
+    result[2] = digitalRead(IN3)==LOW;
+    result[3] = digitalRead(IN4)==LOW;
 
     digitalWrite(OUT, HIGH);
 
@@ -60,12 +87,12 @@ State Helper<OUT, IN1, IN2, IN3, IN4>::read()
 
     delay(1);
 
-    const bool result4 = digitalRead(IN1);
-    const bool result5 = digitalRead(IN2);
-    const bool result6 = digitalRead(IN3);
-    const bool result7 = digitalRead(IN4);
+    result[4] = digitalRead(IN1);
+    result[5] = digitalRead(IN2);
+    result[6] = digitalRead(IN3);
+    result[7] = digitalRead(IN4);
 
-    return std::make_tuple(result0, result1, result2, result3, result4, result5, result6, result7);
+    return result;
 }
 
 #ifdef FEATURE_DPAD_5WIRESW
@@ -81,77 +108,66 @@ void init()
 
 void update()
 {
-    const auto state = helper.read();
+    const auto newState = helper.read();
 
 #ifdef DPAD_5WIRESW_DEBUG
-    lastState = state;
+    lastState = newState;
     return;
 #endif
 
     const auto now = millis();
 
-    if (std::get<DPAD_5WIRESW_UP>(lastState) != std::get<DPAD_5WIRESW_UP>(state) && now-debounceUp > settings.boardcomputerHardware.dpadDebounce)
+    if (lastState.up != newState.up && now-debounceUp > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<DPAD_5WIRESW_UP>(state))
+        if (newState.up)
             InputDispatcher::rotate(-1);
-        std::get<DPAD_5WIRESW_UP>(lastState) = std::get<DPAD_5WIRESW_UP>(state);
         debounceUp = now;
     }
-    if (std::get<DPAD_5WIRESW_DOWN>(lastState) != std::get<DPAD_5WIRESW_DOWN>(state) && now-debounceDown > settings.boardcomputerHardware.dpadDebounce)
+
+    if (lastState.down != newState.down && now-debounceDown > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<DPAD_5WIRESW_DOWN>(state))
+        if (newState.down)
             InputDispatcher::rotate(1);
-        std::get<DPAD_5WIRESW_DOWN>(lastState) = std::get<DPAD_5WIRESW_DOWN>(state);
         debounceDown = now;
     }
-    if (std::get<DPAD_5WIRESW_CONFIRM>(lastState) != std::get<DPAD_5WIRESW_CONFIRM>(state) && now-debounceConfirm > settings.boardcomputerHardware.dpadDebounce)
+
+    if (lastState.confirm != newState.confirm && now-debounceConfirm > settings.boardcomputerHardware.dpadDebounce)
     {
-        InputDispatcher::confirmButton(std::get<DPAD_5WIRESW_CONFIRM>(state));
-        std::get<DPAD_5WIRESW_CONFIRM>(lastState) = std::get<DPAD_5WIRESW_CONFIRM>(state);
+        InputDispatcher::confirmButton(std::get<DPAD_5WIRESW_CONFIRM>(newState));
         debounceConfirm = now;
     }
-    if (std::get<DPAD_5WIRESW_BACK>(lastState) != std::get<DPAD_5WIRESW_BACK>(state) && now-debounceBack > settings.boardcomputerHardware.dpadDebounce)
+
+    if (lastState.back != newState.back && now-debounceBack > settings.boardcomputerHardware.dpadDebounce)
     {
-        InputDispatcher::backButton(std::get<DPAD_5WIRESW_BACK>(state));
-        std::get<DPAD_5WIRESW_BACK>(lastState) = std::get<DPAD_5WIRESW_BACK>(state);
+        InputDispatcher::backButton(std::get<DPAD_5WIRESW_BACK>(newState));
         debounceBack = now;
     }
-    if (std::get<DPAD_5WIRESW_PROFILE0>(lastState) != std::get<DPAD_5WIRESW_PROFILE0>(state) && now-debounceProfile0 > settings.boardcomputerHardware.dpadDebounce)
+
+    if (lastState.profile0 != newState.profile0 && now-debounceProfile0 > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<DPAD_5WIRESW_PROFILE0>(state))
-        {
-            SwitchProfileAction<0>{}.triggered();
-        }
-        std::get<DPAD_5WIRESW_PROFILE0>(lastState) = std::get<DPAD_5WIRESW_PROFILE0>(state);
+        InputDispatcher::profileButton(0, std::get<DPAD_5WIRESW_PROFILE0>(newState));
         debounceProfile0 = now;
     }
-    if (std::get<DPAD_5WIRESW_PROFILE1>(lastState) != std::get<DPAD_5WIRESW_PROFILE1>(state) && now-debounceProfile1 > settings.boardcomputerHardware.dpadDebounce)
+
+    if (lastState.profile1 != newState.profile1 && now-debounceProfile1 > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<DPAD_5WIRESW_PROFILE1>(state))
-        {
-            SwitchProfileAction<1>{}.triggered();
-        }
-        std::get<DPAD_5WIRESW_PROFILE1>(lastState) = std::get<DPAD_5WIRESW_PROFILE1>(state);
+        InputDispatcher::profileButton(1, std::get<DPAD_5WIRESW_PROFILE1>(newState));
         debounceProfile1 = now;
     }
-    if (std::get<DPAD_5WIRESW_PROFILE2>(lastState) != std::get<DPAD_5WIRESW_PROFILE2>(state) && now-debounceProfile2 > settings.boardcomputerHardware.dpadDebounce)
+
+    if (lastState.profile2 != newState.profile2 && now-debounceProfile2 > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<DPAD_5WIRESW_PROFILE2>(state))
-        {
-            SwitchProfileAction<2>{}.triggered();
-        }
-        std::get<DPAD_5WIRESW_PROFILE2>(lastState) = std::get<DPAD_5WIRESW_PROFILE2>(state);
+        InputDispatcher::profileButton(2, std::get<DPAD_5WIRESW_PROFILE2>(newState));
         debounceProfile2 = now;
     }
-    if (std::get<DPAD_5WIRESW_PROFILE3>(lastState) != std::get<DPAD_5WIRESW_PROFILE3>(state) && now-debounceProfile3 > settings.boardcomputerHardware.dpadDebounce)
+
+    if (lastState.profile3 != newState.profile3 && now-debounceProfile3 > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<DPAD_5WIRESW_PROFILE3>(state))
-        {
-            SwitchProfileAction<3>{}.triggered();
-        }
-        std::get<DPAD_5WIRESW_PROFILE3>(lastState) = std::get<DPAD_5WIRESW_PROFILE3>(state);
+        InputDispatcher::profileButton(3, std::get<DPAD_5WIRESW_PROFILE3>(newState));
         debounceProfile3 = now;
     }
+
+    lastState = newState;
 }
 #endif
 }
