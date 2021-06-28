@@ -1,8 +1,10 @@
 #pragma once
 
+// local includes
 #include "actioninterface.h"
 #include "globals.h"
 #include "utils.h"
+#include "macros_bobbycar.h"
 
 namespace {
 class WifiSoftApAction : public virtual ActionInterface

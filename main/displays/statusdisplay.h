@@ -163,7 +163,7 @@ void StatusDisplay::redraw()
     m_labelLimit1.redraw(std::to_string(controllers.front.command.left.iDcMax) + "A");
     m_labelPerformance.redraw(std::to_string(performance.last));
     m_labelMode.redraw(currentMode->displayName());
-    m_labelName.redraw(&deviceName[0]);
+    m_labelName.redraw(deviceName);
     const auto profile = settingsPersister.currentlyOpenProfileIndex();
     m_labelProfile.redraw(profile ? std::to_string(*profile) : "-");
 }

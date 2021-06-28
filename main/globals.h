@@ -14,6 +14,7 @@
 #endif
 #include <SPI.h>
 
+// 3rdparty lib includes
 #include <espchrono.h>
 #include <TFT_eSPI.h>
 
@@ -23,6 +24,7 @@
 #include "modeinterface.h"
 #include "settings.h"
 #include "settingspersister.h"
+#include "macros_bobbycar.h"
 
 namespace {
 std::optional<int16_t> raw_gas, raw_brems;
@@ -34,7 +36,7 @@ float gametrakX, gametrakY, gametrakDist;
 #endif
 float avgSpeed, avgSpeedKmh, sumCurrent;
 
-char deviceName[32];
+char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
 
 Settings settings;
 SettingsPersister settingsPersister;

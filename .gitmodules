@@ -37,3 +37,6 @@
 [submodule "components/fmt"]
 	path = components/fmt
 	url = git@github.com:0xFEEDC0DE64/fmt.git
+[submodule "components/espwifistack"]
+	path = components/espwifistack
+	url = git@github.com:0xFEEDC0DE64/espwifistack.git

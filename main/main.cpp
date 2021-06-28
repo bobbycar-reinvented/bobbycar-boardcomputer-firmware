@@ -3,6 +3,7 @@
 
 // esp-idf includes
 #include <esp_wifi_types.h>
+#include <esp_log.h>
 
 // Arduino includes
 #include <Arduino.h>
@@ -10,10 +11,12 @@
 // 3rdparty lib includes
 #include <espchrono.h>
 using namespace std::chrono_literals;
+#include <espwifistack.h>
 
 // local includes
 #include "bobbycar-common.h"
 #include "bobbycar-serial.h"
+#include "macros_bobbycar.h"
 #include "globals.h"
 #include "modes/defaultmode.h"
 #include "modes/tempomatmode.h"
@@ -176,13 +179,12 @@ extern "C" void app_main()
     printMemoryStats("swapFronBack()");
 #endif
 
-    //bootLabel.redraw("deviceName");
-    //{
-    //    uint8_t macAddress[6];
-    //    WiFi.macAddress(&macAddress[0]);
-    //    std::sprintf(deviceName, STRING(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", macAddress[3], macAddress[4], macAddress[5]);
-    //}
-    //printMemoryStats("deviceName");
+    bootLabel.redraw("deviceName");
+    if (const auto result = wifi_stack::get_default_mac_addr())
+        std::sprintf(deviceName, STRING(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", result->at(3), result->at(4), result->at(5));
+    else
+        ESP_LOGE("MAIN", "get_default_mac_addr() failed: %.*s", result.error().size(), result.error().data());
+    printMemoryStats("deviceName");
 
     //bootLabel.redraw("setHostname");
     //if (!WiFi.setHostname(deviceName))

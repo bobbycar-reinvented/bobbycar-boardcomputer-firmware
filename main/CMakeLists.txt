@@ -154,6 +154,7 @@ set(headers
     feedbackparser.h
     globals.h
     htmlutils.h
+    macros_bobbycar.h
     modeinterface.h
     ota.h
     serialhandler.h
@@ -167,6 +168,7 @@ set(headers
     unifiedmodelmode.h
     utils.h
     wifitexthelpers.h
+    wifi_bobbycar.h
 )
 
 set(sources
@@ -179,7 +181,7 @@ set(dependencies
 #    AsyncTCP
     bobbycar-protocol cpputils cxx-ring-buffer date
 #    ESPAsyncWebServer
-    espchrono espcpputils expected fmt TFT_eSPI
+    espchrono espcpputils espwifistack expected fmt TFT_eSPI
 )
 
 idf_component_register(

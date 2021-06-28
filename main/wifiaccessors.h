@@ -1,7 +1,9 @@
 #pragma once
 
+// esp-idf includes
 #include <esp_wifi_types.h>
 
+// local includes
 #include "accessorinterface.h"
 
 namespace {
