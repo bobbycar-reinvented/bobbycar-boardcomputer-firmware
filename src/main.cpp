@@ -63,6 +63,7 @@
 #include "displays/metersdisplay.h"
 #include "displays/pingpongdisplay.h"
 #include "displays/poweroffdisplay.h"
+#include "displays/powersupplydisplay.h"
 #include "displays/spirodisplay.h"
 #include "displays/starfielddisplay.h"
 #include "displays/statusdisplay.h"

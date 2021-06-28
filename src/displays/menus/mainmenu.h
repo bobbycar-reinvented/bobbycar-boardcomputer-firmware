@@ -25,6 +25,7 @@ class SelectModeMenu;
 class ProfilesMenu;
 class PresetsMenu;
 class GraphsMenu;
+class PowerSupplyDisplay;
 class BmsMenu;
 class SettingsMenu;
 class Lockscreen;
@@ -49,6 +50,9 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&icons::presets>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&icons::graph>>>();
+#ifdef FEATURE_CAN
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWERSUPPLY>,  SwitchScreenAction<PowerSupplyDisplay>>>();
+#endif
 #ifdef FEATURE_BMS
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMS>,          SwitchScreenAction<BmsMenu>, StaticMenuItemIcon<&icons::bms>>>();
 #endif

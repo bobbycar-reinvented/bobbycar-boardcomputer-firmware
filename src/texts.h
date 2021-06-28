@@ -363,4 +363,8 @@ constexpr char TEXT_WIFI_POWER_5dBm[] = "5dBm";
 constexpr char TEXT_WIFI_POWER_2dBm[] = "2dBm";
 constexpr char TEXT_WIFI_POWER_MINUS_1dBm[] = "-1dBm";
 //constexpr char TEXT_BACK[] = "Back";
+
+#ifdef FEATURE_CAN
+constexpr char TEXT_POWERSUPPLY[] = "Powersupply";
+#endif
 }
