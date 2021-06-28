@@ -10,7 +10,12 @@
 #include <WiFi.h>
 #include <WString.h>
 
+#ifdef FEATURE_CAN
 #include "bobbycar-protocol/bobbycar-can.h"
+#endif
+#ifdef FEATURE_SERIAL
+#include "bobbycar-protocol/bobbycar-serial.h"
+#endif
 
 #include "display.h"
 #include "globals.h"
@@ -257,6 +262,7 @@ void fixCommonParams()
 void sendCommands()
 {
 #ifdef FEATURE_SERIAL
+    using namespace bobbycar::protocol::serial;
     for (Controller &controller : controllers)
     {
         controller.command.start = Command::VALID_HEADER;

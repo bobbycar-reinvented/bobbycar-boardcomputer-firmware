@@ -67,7 +67,7 @@ void UpdateDisplay::initScreen()
     tft.setTextFont(4);
     tft.setTextColor(TFT_YELLOW);
 
-    tft.drawString(m_title, 5, 5, 4);
+    tft.drawString(m_title.c_str(), 5, 5, 4);
 
     tft.fillRect(0, 34, tft.width(), 3, TFT_WHITE);
 

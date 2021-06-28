@@ -8,8 +8,8 @@
 #include "buttons.h"
 
 namespace {
-namespace dpad5wire
-{
+namespace dpad5wire {
+#ifdef FEATURE_DPAD_5WIRESW
 class State : public std::array<bool, 8>
 {
 public:
@@ -95,7 +95,6 @@ State Helper<OUT, IN1, IN2, IN3, IN4>::read()
     return result;
 }
 
-#ifdef FEATURE_DPAD_5WIRESW
 Helper<PINS_DPAD_5WIRESW_OUT, PINS_DPAD_5WIRESW_IN1, PINS_DPAD_5WIRESW_IN2, PINS_DPAD_5WIRESW_IN3, PINS_DPAD_5WIRESW_IN4> helper;
 State lastState;
 millis_t debounceUp, debounceDown, debounceConfirm, debounceBack, debounceProfile0, debounceProfile1, debounceProfile2, debounceProfile3;
@@ -170,5 +169,6 @@ void update()
     lastState = newState;
 }
 #endif
-}
-}
+
+} // namespace dpad5wire
+} // namespace

@@ -10,6 +10,7 @@
 #include "changevaluedisplay.h"
 #include "displays/updatedisplay.h"
 //#include "esputils.h"
+#include "buttons.h"
 
 namespace {
 #ifdef FEATURE_WEBSERVER
@@ -80,7 +81,7 @@ void initWebserver()
                     if (const auto *textInterface = constCurrentDisplay->asTextInterface())
                     {
                         HtmlTag h2Tag{"h2", response};
-                        response->print(textInterface->text());
+                        response->print(textInterface->text().c_str());
                     }
 
                     if (const auto *menuDisplay = constCurrentDisplay->asMenuDisplay())
@@ -97,7 +98,7 @@ void initWebserver()
                             response->print("><a href=\"/triggerItem?index=");
                             response->print(i);
                             response->print("\">");
-                            response->print(menuItem.text());
+                            response->print(menuItem.text().c_str());
                             response->print("</a></li>");
 
                             i++;
@@ -106,7 +107,7 @@ void initWebserver()
                     else if (const auto *changeValueDisplay = constCurrentDisplay->asChangeValueDisplayInterface())
                     {
                         response->print("<form action=\"/setValue\" method=\"GET\">");
-                        response->print("<input type=\"number\" name=\"value\" value=\"" + std::to_string(changeValueDisplay->shownValue()) + "\" />");
+                        response->print(("<input type=\"number\" name=\"value\" value=\"" + std::to_string(changeValueDisplay->shownValue()) + "\" />").c_str());
                         response->print("<button type=\"submit\">Update</button>");
                         response->print("</form>");
                     }
