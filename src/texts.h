@@ -130,13 +130,13 @@ constexpr char TEXT_REVERSEBEEPDURATION1[] = "Reverse beep duration1";
 //constexpr char TEXT_BACK[] = "Back";
 
 //LimitsSettingsMenu
-//constexpr char TEXT_LIMITSSETTINGS[] = "Common settings";
-constexpr char TEXT_SETIMOTMAX[] = "Set iMotMax";
-constexpr char TEXT_SETIDCMAX[] = "Set iDcMax";
-constexpr char TEXT_SETNMOTMAXKMH[] = "Set nMotMax (kmh)";
-constexpr char TEXT_SETNMOTMAX[] = "Set nMotMax";
-constexpr char TEXT_SETFIELDWEAKMAX[] = "Set fieldWeakMax";
-constexpr char TEXT_SETPHASEADVMAX[] = "Set phaseAdvMax";
+//constexpr char TEXT_LIMITSSETTINGS[] = "Limit settings";
+constexpr char TEXT_IMOTMAX[] = "iMotMax";
+constexpr char TEXT_IDCMAX[] = "iDcMax";
+constexpr char TEXT_NMOTMAXKMH[] = "nMotMaxKmh";
+constexpr char TEXT_NMOTMAX[] = "nMotMax";
+constexpr char TEXT_FIELDWEAKMAX[] = "fldWkMax";
+constexpr char TEXT_PHASEADVMAX[] = "phsAdvMax";
 //constexpr char TEXT_BACK[] = "Back";
 
 //DebugMenu
