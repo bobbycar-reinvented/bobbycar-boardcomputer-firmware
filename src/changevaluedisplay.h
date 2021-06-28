@@ -119,7 +119,7 @@ void ChangeValueDisplay<Tvalue>::redraw()
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.setTextFont(7);
-    m_valueLabel.redraw(String{m_value});
+    m_valueLabel.redraw(std::to_string(m_value));
 }
 
 template<typename Tvalue>

@@ -14,14 +14,13 @@ void initOta()
 {
     ArduinoOTA
         .onStart([]() {
-            String type;
-            if (ArduinoOTA.getCommand() == U_FLASH)
-                type = "sketch";
-            else if (ArduinoOTA.getCommand() == U_SPIFFS) // U_SPIFFS
-                type = "filesystem";
-            else
-                type = "unknown";
-
+            std::string type;
+            switch (ArduinoOTA.getCommand())
+            {
+            case U_FLASH:  type = "sketch"; break;
+            case U_SPIFFS: type = "filesystem"; break;
+            default: type = "unknown";
+            }
             switchScreenImpl<UpdateDisplay>("Updating " + type);
         })
         .onEnd([]() {

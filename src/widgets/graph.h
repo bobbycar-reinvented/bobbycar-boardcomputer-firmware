@@ -112,7 +112,7 @@ void Graph<LENGTH, COUNT>::render(const Container &buffers, bool delta)
     tft.setTextFont(2);
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     for (auto iter = std::begin(m_labels); iter != std::end(m_labels); iter++)
-        iter->redraw(String(int(m_max+((m_min-m_max)/(m_labels.size()-1)*std::distance(std::begin(m_labels), iter)))));
+        iter->redraw(std::to_string(int(m_max+((m_min-m_max)/(m_labels.size()-1)*std::distance(std::begin(m_labels), iter)))));
 
     int x{leftMargin};
     for (auto pixelsIter = std::begin(m_lastPixels); pixelsIter!=std::end(m_lastPixels); pixelsIter++)

@@ -30,8 +30,14 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::SpeedText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::SpeedKmhText,     ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::ErrorText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, typename Ttexts::CurrentText,      ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, typename Ttexts::CurrentFixedText, ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcLinkText,       ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcLinkFixedText,  ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcPhaAText,       ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcPhaAFixedText,  ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcPhaBText,       ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcPhaBFixedText,  ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcPhaCText,       ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcPhaCFixedText,  ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::ChopsText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::HallText,         ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                             SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();

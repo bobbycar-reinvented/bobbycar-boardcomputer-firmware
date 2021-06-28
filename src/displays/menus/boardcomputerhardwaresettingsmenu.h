@@ -24,11 +24,23 @@ class SettingsMenu;
 namespace {
 struct GasText : public virtual TextInterface {
 public:
-    String text() const override { return String{"gas: "} + raw_gas + ": " + gas; }
+    std::string text() const override
+    {
+        return std::string{"gas: "} +
+            (raw_gas ? std::to_string(*raw_gas) : "?") +
+            ": " +
+            (gas ? std::to_string(*gas) : "?");
+    }
 };
 struct BremsText : public virtual TextInterface {
 public:
-    String text() const override { return String{"brems: "} + raw_brems + ": " + brems; }
+    std::string text() const override
+    {
+        return std::string{"brems: "} +
+            (raw_brems ? std::to_string(*raw_brems) : "?") +
+            ": " +
+            (brems ? std::to_string(*brems) : "?");
+    }
 };
 
 using SampleCountChangeScreen = makeComponent<
@@ -80,15 +92,15 @@ using DPadDebounceChangeScreen = makeComponent<
 #ifdef FEATURE_GAMETRAK
 struct GametrakXText : public virtual TextInterface {
 public:
-    String text() const override { return String{"gametrakX: "} + raw_gametrakX + ": " + gametrakX; }
+    std::string text() const override { return std::string{"gametrakX: "} + std::to_string(raw_gametrakX) + ": " + std::to_string(gametrakX); }
 };
 struct GametrakYText : public virtual TextInterface {
 public:
-    String text() const override { return String{"gametrakY: "} + raw_gametrakY + ": " + gametrakY; }
+    std::string text() const override { return std::string{"gametrakY: "} + std::to_string(raw_gametrakY) + ": " + std::to_string(gametrakY); }
 };
 struct GametrakDistText : public virtual TextInterface {
 public:
-    String text() const override { return String{"gametrakDist: "} + raw_gametrakDist + ": " + gametrakDist; }
+    std::string text() const override { return std::string{"gametrakDist: "} + std::to_string(raw_gametrakDist) + ": " + std::to_string(gametrakDist); }
 };
 
 using GametrakXMinChangeScreen = makeComponent<

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <WString.h>
+#include <string>
 
 #include "globals.h"
 
@@ -14,14 +14,14 @@ public:
     int y() const { return m_y; };
 
     void start();
-    void redraw(const String &str, bool forceRedraw = false);
+    void redraw(const std::string &str, bool forceRedraw = false);
     void clear();
 
 private:
     const int m_x;
     const int m_y;
 
-    String m_lastStr;
+    std::string m_lastStr;
     int m_lastFont;
     int m_lastColor;
 
@@ -45,7 +45,7 @@ void Label::start()
     m_lastHeight = 0;
 }
 
-void Label::redraw(const String &str, bool forceRedraw)
+void Label::redraw(const std::string &str, bool forceRedraw)
 {
     if (m_lastStr == str &&
         m_lastFont == tft.textfont &&
@@ -53,7 +53,7 @@ void Label::redraw(const String &str, bool forceRedraw)
         !forceRedraw)
         return;
 
-    const auto renderedWidth = tft.drawString(str, m_x, m_y);
+    const auto renderedWidth = tft.drawString(str.c_str(), m_x, m_y);
     const auto renderedHeight = tft.fontHeight();
 
     if (renderedWidth < m_lastWidth)

@@ -17,7 +17,7 @@ void handleSerial()
     if (last_status != status)
     {
         Serial.print("Status changed to: ");
-        Serial.println(toString(status));
+        Serial.println(to_string(status).c_str());
         last_status = status;
     }
 
@@ -25,7 +25,7 @@ void handleSerial()
     if (last_ip != ip)
     {
         Serial.print("IP changed to: ");
-        Serial.println(ip.toString());
+        Serial.println(to_string(ip).c_str());
         last_ip = ip;
     }
 

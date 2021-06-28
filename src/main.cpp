@@ -12,7 +12,8 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-common.h"
+#include "bobbycar-protocol/bobbycar-serial.h"
 
 #include "globals.h"
 #include "modes/defaultmode.h"
@@ -62,6 +63,7 @@
 #include "displays/metersdisplay.h"
 #include "displays/pingpongdisplay.h"
 #include "displays/poweroffdisplay.h"
+#include "displays/powersupplydisplay.h"
 #include "displays/spirodisplay.h"
 #include "displays/starfielddisplay.h"
 #include "displays/statusdisplay.h"
@@ -83,6 +85,9 @@
 #endif
 #include "bobby_webserver.h"
 #include "types.h"
+#ifdef FEATURE_CAN
+#include "can.h"
+#endif
 
 namespace {
 ModeInterface *lastMode{};
@@ -105,7 +110,7 @@ void printMemoryStats(const char *s)
 void cloudTask(void*)
 {
     const esp_websocket_client_config_t config = {
-        .uri = "--REMOVED--",
+        .uri = "ws://iot.wattpilot.io:8080/charger/bobbycar1",
     };
     esp_websocket_client_handle_t handle = esp_websocket_client_init(&config);
 
@@ -121,35 +126,35 @@ void cloudTask(void*)
             {
                 if (esp_websocket_client_is_connected(handle))
                 {
-                    String msg = "{"
+                    std::string msg = "{"
                         "\"type\": \"fullStatus\","
                         "\"partial\": false, "
                         "\"status\": {"
-                            "\"millis\":" + String{millis()} + ","
+                            "\"millis\":" + std::to_string(millis()) + ","
                             "\"front.valid\":" + (controllers.front.feedbackValid?"true":"false") + ","
                             "\"back.valid\":" + (controllers.back.feedbackValid?"true":"false") + ","
-                            "\"front.left.pwm\":" + String(controllers.front.command.left.pwm) + ","
-                            "\"front.right.pwm\":" + String(controllers.front.command.right.pwm) + ","
-                            "\"back.left.pwm\":" + String(controllers.back.command.left.pwm) + ","
-                            "\"back.right.pwm\":" + String(controllers.back.command.right.pwm) + ","
-                            "\"front.volt\":" + String(controllers.front.feedback.batVoltage) + ","
-                            "\"back.volt\":" + String(controllers.back.feedback.batVoltage) + ","
-                            "\"front.temp\":" + String(controllers.front.feedback.boardTemp) + ","
-                            "\"back.temp\":" + String(controllers.back.feedback.boardTemp) + ","
-                            "\"front.bad\":" + String(controllers.front.feedback.timeoutCntSerial) + ","
-                            "\"back.bad\":" + String(controllers.back.feedback.timeoutCntSerial) + ","
-                            "\"front.left.speed\":" + String(controllers.front.feedback.left.speed) + ","
-                            "\"front.right.speed\":" + String(controllers.front.feedback.right.speed) + ","
-                            "\"back.left.speed\":" + String(controllers.back.feedback.left.speed) + ","
-                            "\"back.right.speed\":" + String(controllers.back.feedback.right.speed) + ","
-                            "\"front.left.current\":" + String(controllers.front.feedback.left.current) + ","
-                            "\"front.right.current\":" + String(controllers.front.feedback.right.current) + ","
-                            "\"back.left.current\":" + String(controllers.back.feedback.left.current) + ","
-                            "\"back.right.current\":" + String(controllers.back.feedback.right.current) + ","
-                            "\"front.left.error\":" + String(controllers.front.feedback.left.error) + ","
-                            "\"front.right.error\":" + String(controllers.front.feedback.right.error) + ","
-                            "\"back.left.error\":" + String(controllers.back.feedback.left.error) + ","
-                            "\"back.right.error\":" + String(controllers.back.feedback.right.error) +
+                            "\"front.left.pwm\":" + std::to_string(controllers.front.command.left.pwm) + ","
+                            "\"front.right.pwm\":" + std::to_string(controllers.front.command.right.pwm) + ","
+                            "\"back.left.pwm\":" + std::to_string(controllers.back.command.left.pwm) + ","
+                            "\"back.right.pwm\":" + std::to_string(controllers.back.command.right.pwm) + ","
+                            "\"front.volt\":" + std::to_string(controllers.front.feedback.batVoltage) + ","
+                            "\"back.volt\":" + std::to_string(controllers.back.feedback.batVoltage) + ","
+                            "\"front.temp\":" + std::to_string(controllers.front.feedback.boardTemp) + ","
+                            "\"back.temp\":" + std::to_string(controllers.back.feedback.boardTemp) + ","
+                            "\"front.bad\":" + std::to_string(controllers.front.feedback.timeoutCntSerial) + ","
+                            "\"back.bad\":" + std::to_string(controllers.back.feedback.timeoutCntSerial) + ","
+                            "\"front.left.speed\":" + std::to_string(controllers.front.feedback.left.speed) + ","
+                            "\"front.right.speed\":" + std::to_string(controllers.front.feedback.right.speed) + ","
+                            "\"back.left.speed\":" + std::to_string(controllers.back.feedback.left.speed) + ","
+                            "\"back.right.speed\":" + std::to_string(controllers.back.feedback.right.speed) + ","
+                            "\"front.left.current\":" + std::to_string(controllers.front.feedback.left.current) + ","
+                            "\"front.right.current\":" + std::to_string(controllers.front.feedback.right.current) + ","
+                            "\"back.left.current\":" + std::to_string(controllers.back.feedback.left.current) + ","
+                            "\"back.right.current\":" + std::to_string(controllers.back.feedback.right.current) + ","
+                            "\"front.left.error\":" + std::to_string(controllers.front.feedback.left.error) + ","
+                            "\"front.right.error\":" + std::to_string(controllers.front.feedback.right.error) + ","
+                            "\"back.left.error\":" + std::to_string(controllers.back.feedback.left.error) + ","
+                            "\"back.right.error\":" + std::to_string(controllers.back.feedback.right.error) +
                         "}"
                     "}";
 
@@ -162,7 +167,7 @@ void cloudTask(void*)
                 else
                     Serial.println("Not sending cloud because not connected");
 
-                delay(1000);
+                delay(100);
             }
         }
         else
@@ -180,6 +185,11 @@ void setup()
     Serial.begin(115200);
     Serial.setDebugOutput(true);
     //Serial.println("setup()");
+
+#ifdef PINS_LED
+    pinMode(PINS_LED, OUTPUT);
+    digitalWrite(PINS_LED, LOW);
+#endif
 
     printMemoryStats("setup()");
 
@@ -233,9 +243,11 @@ void setup()
     }
     printMemoryStats("loadSettings()");
 
+#ifdef FEATURE_SERIAL
     bootLabel.redraw("swap front back");
     updateSwapFrontBack();
     printMemoryStats("swapFronBack()");
+#endif
 
     bootLabel.redraw("deviceName");
     {
@@ -295,16 +307,22 @@ void setup()
     }
 #endif
 
+#ifdef FEATURE_CAN
+    can::initCan();
+#endif
+
+#ifdef FEATURE_SERIAL
     bootLabel.redraw("front Serial begin");
     controllers.front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
 
     bootLabel.redraw("back Serial begin");
     controllers.back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
+#endif
 
-    raw_gas = 0;
-    raw_brems = 0;
-    gas = 0;
-    brems = 0;
+    raw_gas = std::nullopt;
+    raw_brems = std::nullopt;
+    gas = std::nullopt;
+    brems = std::nullopt;
 
     for (Controller &controller : controllers)
         controller.command.buzzer = {};
@@ -317,9 +335,11 @@ void setup()
     printMemoryStats("initOta()");
 #endif
 
+#ifdef FEATURE_WEBSERVER
     bootLabel.redraw("webserver");
     initWebserver();
     printMemoryStats("initWebserver()");
+#endif
 
     bootLabel.redraw("potis");
     readPotis();
@@ -337,7 +357,7 @@ void setup()
     return;
 #endif
 
-    if (gas > 200.f || brems > 200.f)
+    if (!gas || !brems || *gas > 200.f || *brems > 200.f)
         switchScreen<CalibrateDisplay>(true);
     else
         switchScreen<StatusDisplay>();
@@ -418,8 +438,14 @@ void loop()
         performance.lastTime = now;
     }
 
+#ifdef FEATURE_CAN
+    can::parseCanInput();
+#endif
+
+#ifdef FEATURE_SERIAL
     for (Controller &controller : controllers)
         controller.parser.update();
+#endif
 
     handleSerial();
 

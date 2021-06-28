@@ -92,11 +92,11 @@ void BmsDisplay::redraw()
 
     if (bluetoothSerial.hasClient())
     {
-        m_voltageLabel.redraw(String{bms::voltage} + 'V');
-        m_capacityLabel.redraw(String{int(bms::capacity)} + "mAh");
-        m_socLabel.redraw(String{bms::soc} + '%');
-        m_powerLabel.redraw(String{bms::power} + 'W');
-        m_currentLabel.redraw(String{bms::current} + 'A');
+        m_voltageLabel.redraw(std::to_string(bms::voltage) + 'V');
+        m_capacityLabel.redraw(std::to_string(int(bms::capacity)) + "mAh");
+        m_socLabel.redraw(std::to_string(bms::soc) + '%');
+        m_powerLabel.redraw(std::to_string(bms::power) + 'W');
+        m_currentLabel.redraw(std::to_string(bms::current) + 'A');
     }
     else
     {
@@ -107,18 +107,18 @@ void BmsDisplay::redraw()
         m_currentLabel.clear();
     }
 
-    m_speedLabel.redraw(String{avgSpeedKmh} + "kmh");
+    m_speedLabel.redraw(std::to_string(avgSpeedKmh) + "kmh");
 
     if (bluetoothSerial.hasClient())
-        m_powerPerSpeedLabel.redraw(String{avgSpeedKmh < 1 ? 0 : bms::power / avgSpeedKmh} + "W/kmh");
+        m_powerPerSpeedLabel.redraw(std::to_string(avgSpeedKmh < 1 ? 0 : bms::power / avgSpeedKmh) + "W/kmh");
     else
         m_powerPerSpeedLabel.clear();
 
     for (int i = 0; i < 12; i++)
-        m_battLabels[i].redraw(String{bms::batt[i]});
+        m_battLabels[i].redraw(std::to_string(bms::batt[i]));
 
     if (bluetoothSerial.hasClient())
-        m_cycleLabel.redraw(String{bms::cycle} + "AH");
+        m_cycleLabel.redraw(std::to_string(bms::cycle) + "AH");
     else
         m_cycleLabel.clear();
 }

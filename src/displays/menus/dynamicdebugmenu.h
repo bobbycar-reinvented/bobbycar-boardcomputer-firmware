@@ -2,7 +2,7 @@
 
 // Arduino includes
 #include <Arduino.h>
-#include <WString.h>
+#include <string>
 
 // local includes
 #include "menudisplay.h"
@@ -26,12 +26,12 @@ namespace {
 class RandomText : public virtual TextInterface
 {
 public:
-    String text() const override
+    std::string text() const override
     {
         const auto now = millis();
         if (!m_nextUpdate || now >= m_nextUpdate)
         {
-            m_title = String{"Dynamic text: "} + random(0, 100);
+            m_title = std::string{"Dynamic text: "} + std::to_string(random(0, 100));
             m_nextUpdate = now + random(0, 1000);
         }
 
@@ -40,7 +40,7 @@ public:
 
 private:
     mutable millis_t m_nextUpdate{};
-    mutable String m_title;
+    mutable std::string m_title;
 };
 
 class RandomColor : public virtual ColorInterface

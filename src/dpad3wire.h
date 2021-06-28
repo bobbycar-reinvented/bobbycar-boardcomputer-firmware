@@ -2,11 +2,9 @@
 
 #include <Arduino.h>
 
-#include "globals.h"
-
 #include "dpad.h"
-#include "globals.h"
 #include "types.h"
+#include "buttons.h"
 
 namespace {
 namespace dpad3wire

@@ -4,7 +4,7 @@
 
 #include <esp_wifi_types.h>
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-common.h"
 
 #ifdef FEATURE_BLUETOOTH
 #include "bluetoothmode.h"

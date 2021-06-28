@@ -2,13 +2,26 @@
 
 #include <algorithm>
 #include <utility>
+#include <string>
+
+#include <driver/can.h>
 
 #include <ArduinoOTA.h>
-#include <WString.h>
 #include <WiFi.h>
+#include <WString.h>
+
+#ifdef FEATURE_CAN
+#include "bobbycar-protocol/bobbycar-can.h"
+#endif
+#ifdef FEATURE_SERIAL
+#include "bobbycar-protocol/bobbycar-serial.h"
+#endif
 
 #include "display.h"
 #include "globals.h"
+#ifdef FEATURE_CAN
+#include "can.h"
+#endif
 
 // macros are a shit piece of software
 #define STRING2(s) #s
@@ -79,50 +92,42 @@ float fixBoardTemp(int16_t value)
     return value/10.;
 }
 
-String hallString(const MotorFeedback &motor)
+std::string hallString(const bobbycar::protocol::serial::MotorFeedback &motor)
 {
-    return String{} + (motor.hallA ? '1' : '0') + (motor.hallB ? '1' : '0') + (motor.hallC ? '1' : '0');
+    return std::string{} + (motor.hallA ? '1' : '0') + (motor.hallB ? '1' : '0') + (motor.hallC ? '1' : '0');
 }
 
-template<typename T>
-String toString(T value)
+std::string to_string(const String &value)
 {
-    return String{} + value;
+    return std::string{value.c_str(), value.length()};
 }
 
-template<>
-String toString<bool>(bool value)
-{
-    return value ? "true" : "false";
-}
-
-template<>
-String toString<ControlType>(ControlType value)
+std::string to_string(bobbycar::protocol::ControlType value)
 {
     switch (value)
     {
+    using namespace bobbycar::protocol;
     case ControlType::Commutation: return "Commutation";
     case ControlType::Sinusoidal: return "Sinusoidal";
     case ControlType::FieldOrientedControl: return "FieldOrientedControl";
     }
-    return String("Unknown: ") + int(value);
+    return "Unknown ControlType(" + std::to_string(int(value)) + ')';
 }
 
-template<>
-String toString<ControlMode>(ControlMode value)
+std::string to_string(bobbycar::protocol::ControlMode value)
 {
     switch (value)
     {
+    using namespace bobbycar::protocol;
     case ControlMode::OpenMode: return "OpenMode";
     case ControlMode::Voltage: return "Voltage";
     case ControlMode::Speed: return "Speed";
     case ControlMode::Torque: return "Torque";
     }
-    return String("Unknown: ") + int(value);
+    return "Unknown ControlMode(" + std::to_string(int(value)) + ')';
 }
 
-template<>
-String toString<wl_status_t>(wl_status_t value)
+std::string to_string(wl_status_t value)
 {
     switch (value)
     {
@@ -136,11 +141,10 @@ String toString<wl_status_t>(wl_status_t value)
     case WL_DISCONNECTED: return "WL_DISCONNECTED";
     }
 
-    return String("Unknown: ") + int(value);
+    return "Unknown wl_status_t(" + std::to_string(int(value)) + ')';
 }
 
-template<>
-String toString<ota_error_t>(ota_error_t value)
+std::string to_string(ota_error_t value)
 {
     switch (value)
     {
@@ -151,30 +155,40 @@ String toString<ota_error_t>(ota_error_t value)
     case OTA_END_ERROR: return "OTA_END_ERROR";
     }
 
-    return String("Unknown: ") + int(value);
+    return "Unknown ota_error_t(" + std::to_string(int(value)) + ')';
 }
 
-std::array<std::reference_wrapper<MotorState>, 2> motorsInController(Controller &controller)
+std::string to_string(IPAddress value)
+{
+    return to_string(value.toString());
+}
+
+std::string to_string(IPv6Address value)
+{
+    return to_string(value.toString());
+}
+
+std::array<std::reference_wrapper<bobbycar::protocol::serial::MotorState>, 2> motorsInController(Controller &controller)
 {
     return {std::ref(controller.command.left), std::ref(controller.command.right)};
 }
 
-std::array<std::reference_wrapper<const MotorState>, 2> motorsInController(const Controller &controller)
+std::array<std::reference_wrapper<const bobbycar::protocol::serial::MotorState>, 2> motorsInController(const Controller &controller)
 {
     return {std::ref(controller.command.left), std::ref(controller.command.right)};
 }
 
-std::array<std::reference_wrapper<MotorFeedback>, 2> motorFeedbacksInController(Controller &controller)
+std::array<std::reference_wrapper<bobbycar::protocol::serial::MotorFeedback>, 2> motorFeedbacksInController(Controller &controller)
 {
     return {std::ref(controller.feedback.left), std::ref(controller.feedback.right)};
 }
 
-std::array<std::reference_wrapper<const MotorFeedback>, 2> motorFeedbacksInController(const Controller &controller)
+std::array<std::reference_wrapper<const bobbycar::protocol::serial::MotorFeedback>, 2> motorFeedbacksInController(const Controller &controller)
 {
     return {std::ref(controller.feedback.left), std::ref(controller.feedback.right)};
 }
 
-std::array<std::reference_wrapper<MotorState>, 4> motors()
+std::array<std::reference_wrapper<bobbycar::protocol::serial::MotorState>, 4> motors()
 {
     return {
         std::ref(controllers.front.command.left), std::ref(controllers.front.command.right),
@@ -184,7 +198,7 @@ std::array<std::reference_wrapper<MotorState>, 4> motors()
 
 void fixCommonParams()
 {
-    for (MotorState &motor : motors())
+    for (bobbycar::protocol::serial::MotorState &motor : motors())
     {
         motor.iMotMax = settings.limits.iMotMax;
         motor.iDcMax = settings.limits.iDcMax;
@@ -196,7 +210,7 @@ void fixCommonParams()
     if (settings.reverseBeep)
     {
         const auto x = motors();
-        const auto shouldBeep = std::all_of(std::begin(x), std::end(x), [](const MotorState &motor){ return motor.pwm < 0; });
+        const auto shouldBeep = std::all_of(std::begin(x), std::end(x), [](const bobbycar::protocol::serial::MotorState &motor){ return motor.pwm < 0; });
 
         if (shouldBeep != currentlyReverseBeeping)
         {
@@ -247,22 +261,30 @@ void fixCommonParams()
 
 void sendCommands()
 {
+#ifdef FEATURE_SERIAL
+    using namespace bobbycar::protocol::serial;
     for (Controller &controller : controllers)
     {
         controller.command.start = Command::VALID_HEADER;
         controller.command.checksum = calculateChecksum(controller.command);
         controller.serial.get().write((uint8_t *) &controller.command, sizeof(controller.command));
     }
+#endif
+#ifdef FEATURE_CAN
+    can::sendCanCommands();
+#endif
 }
 
 template<typename T, typename... Args>
 void switchScreen(Args&&... args);
 
+#ifdef FEATURE_SERIAL
 void updateSwapFrontBack()
 {
     controllers.front.serial = settings.controllerHardware.swapFrontBack ? Serial2 : Serial1;
     controllers.back.serial = settings.controllerHardware.swapFrontBack ? Serial1 : Serial2;
 }
+#endif
 
 void loadSettings()
 {
@@ -290,8 +312,8 @@ void updateAccumulators()
                 controller.feedback.right.speed * (controller.invertRight ? -1 : 1);
 
         sumCurrent +=
-                controller.feedback.left.current +
-                controller.feedback.right.current;
+                controller.feedback.left.dcLink +
+                controller.feedback.right.dcLink;
 
         count +=2;
     }
@@ -305,20 +327,55 @@ void updateAccumulators()
 }
 
 void readPotis()
-{
-    const auto sampleMultipleTimes = [](int pin){
+{    
+    [[maybe_unused]]
+    constexpr auto sampleMultipleTimes = [](int pin){
         analogRead(pin);
         double sum{};
-        for (int i = 0; i < settings.boardcomputerHardware.sampleCount; i++)
+        const auto sampleCount = settings.boardcomputerHardware.sampleCount;
+        for (int i = 0; i < sampleCount; i++)
             sum += analogRead(pin);
-        return sum/settings.boardcomputerHardware.sampleCount;
+        return sum / sampleCount;
     };
 
-    raw_gas = sampleMultipleTimes(PINS_GAS);
-    gas = scaleBetween<float>(raw_gas, settings.boardcomputerHardware.gasMin, settings.boardcomputerHardware.gasMax, 0., 1000.);
+    raw_gas = std::nullopt;
+    raw_brems = std::nullopt;
 
-    raw_brems = sampleMultipleTimes(PINS_BREMS);
-    brems = scaleBetween<float>(raw_brems, settings.boardcomputerHardware.bremsMin, settings.boardcomputerHardware.bremsMax, 0., 1000.);
+#ifdef FEATURE_CAN
+    const auto now = millis();
+
+    if (can::can_gas)
+    {
+        if (now - can::last_can_gas < 100)
+            raw_gas = *can::can_gas;
+        else
+            can::can_gas = std::nullopt;
+    }
+
+    if (can::can_brems)
+    {
+        if (now - can::last_can_brems < 100)
+            raw_brems = *can::can_brems;
+        else
+            can::can_brems = std::nullopt;
+    }
+#endif
+
+#ifdef FEATURE_ADC_IN
+    if (!raw_gas)
+        raw_gas = sampleMultipleTimes(PINS_GAS);
+    if (!raw_brems)
+        raw_brems = sampleMultipleTimes(PINS_BREMS);
+#endif
+
+    if (raw_gas)
+        gas = scaleBetween<float>(*raw_gas, settings.boardcomputerHardware.gasMin, settings.boardcomputerHardware.gasMax, 0., 1000.);
+    else
+        gas = std::nullopt;
+    if (raw_brems)
+        brems = scaleBetween<float>(*raw_brems, settings.boardcomputerHardware.bremsMin, settings.boardcomputerHardware.bremsMax, 0., 1000.);
+    else
+        brems = std::nullopt;
 
 #ifdef FEATURE_GAMETRAK
     raw_gametrakX = sampleMultipleTimes(PINS_GAMETRAKX);

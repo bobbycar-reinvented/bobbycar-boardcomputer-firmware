@@ -5,7 +5,7 @@
 
 #include <HardwareSerial.h>
 
-#include "bobbycar-protocol/protocol.h"
+#include "bobbycar-protocol/bobbycar-serial.h"
 
 #include "types.h"
 
@@ -13,13 +13,15 @@ namespace {
 class FeedbackParser
 {
 public:
-    FeedbackParser(const std::reference_wrapper<HardwareSerial> &serial, bool &feedbackValid, Feedback &feedback) :
+    FeedbackParser(const std::reference_wrapper<HardwareSerial> &serial, bool &feedbackValid, bobbycar::protocol::serial::Feedback &feedback) :
         m_serial{serial}, m_feedbackValid{feedbackValid}, m_feedback{feedback}
     {
     }
 
     void update()
     {
+        using namespace bobbycar::protocol::serial;
+
         // Check for new data availability in the Serial buffer
         while (m_serial.get().available())
         {
@@ -83,6 +85,6 @@ private:
     millis_t m_lastFeedback{millis()};
     const std::reference_wrapper<HardwareSerial> &m_serial;
     bool &m_feedbackValid;
-    Feedback &m_feedback, m_newFeedback;
+    bobbycar::protocol::serial::Feedback &m_feedback, m_newFeedback;
 };
 }

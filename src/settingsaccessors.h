@@ -58,7 +58,9 @@ struct WheelDiameterInchAccessor : public virtual AccessorInterface<float>
 struct NumMagnetPolesAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.numMagnetPoles; } };
 struct SwapFrontBackAccessor : public RefAccessorSaveSettings<bool> {
     bool &getRef() const override { return settings.controllerHardware.swapFrontBack; }
+#ifdef FEATURE_SERIAL
     void setValue(bool value) override { RefAccessorSaveSettings<bool>::setValue(value); updateSwapFrontBack(); };
+#endif
 };
 
 struct SampleCountAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.sampleCount; } };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <WString.h>
+#include <string>
 
 namespace {
 class TextInterface;

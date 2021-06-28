@@ -19,21 +19,21 @@ using BluetoothHasClientText = BluetoothStatusTextHelper<TEXT_BLUETOOTHHASCLIENT
 //using BluetoothConnectedText = BluetoothStatusTextHelper<TEXT_BLUETOOTHCONNECTED, bool, &BluetoothSerial::connected>;
 struct BluetoothConnectedText : public virtual TextInterface {
 public:
-    String text() const override { return String{"connected: "} + toString(bluetoothSerial.connected()); }
+    std::string text() const override { return std::string{"connected: "} + to_string(bluetoothSerial.connected()); }
 };
 
 //constexpr char TEXT_BLUETOOTHISREADY[] = "Is ready: ";
 //using BluetoothIsReadyText = BluetoothStatusTextHelper<TEXT_BLUETOOTHISREADY, bool, &BluetoothSerial::isReady>;
 struct BluetoothIsReadyText : public virtual TextInterface {
 public:
-    String text() const override { return String{"isReady: "} + toString(bluetoothSerial.isReady()); }
+    std::string text() const override { return std::string{"isReady: "} + to_string(bluetoothSerial.isReady()); }
 };
 
 //constexpr char TEXT_BLUETOOTHISREADYMASTER[] = "Is ready (M): ";
 //using BluetoothIsReadyMasterText = BluetoothStatusTextHelper<TEXT_BLUETOOTHISREADYMASTER, bool, &BluetoothSerial::isReady>;
 class BluetoothIsReadyMasterText : public virtual TextInterface {
 public:
-    String text() const override { return String{"isReady (M): "} + toString(bluetoothSerial.isReady(true)); }
+    std::string text() const override { return std::string{"isReady (M): "} + to_string(bluetoothSerial.isReady(true)); }
 };
 #endif
 }

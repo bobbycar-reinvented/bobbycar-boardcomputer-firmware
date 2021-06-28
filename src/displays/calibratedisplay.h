@@ -1,8 +1,7 @@
 #pragma once
 
 #include <array>
-
-#include <WString.h>
+#include <string>
 
 #include "display.h"
 #include "actions/switchscreenaction.h"
@@ -43,7 +42,7 @@ private:
 
     const bool m_bootup{false};
     ModeInterface *m_oldMode;
-    IgnoreInputMode m_mode{0, ControlType::FieldOrientedControl, ControlMode::Torque};
+    IgnoreInputMode m_mode{0, bobbycar::protocol::ControlType::FieldOrientedControl, bobbycar::protocol::ControlMode::Torque};
 
     std::array<Label, 11> m_labels {{
         Label{25, 72}, // 100, 23
@@ -80,7 +79,7 @@ private:
 
     Status m_status;
     int16_t m_gasMin, m_gasMax, m_bremsMin, m_bremsMax;
-    float m_gas, m_brems;
+    std::optional<float> m_gas, m_brems;
 };
 
 CalibrateDisplay::CalibrateDisplay(bool bootup) :
@@ -95,8 +94,8 @@ void CalibrateDisplay::start()
     m_selectedButton = 0;
     m_status = Status::Begin;
     copyFromSettings();
-    m_gas = 0.f;
-    m_brems = 0.f;
+    m_gas = std::nullopt;
+    m_brems = std::nullopt;
 }
 
 void CalibrateDisplay::initScreen()
@@ -125,41 +124,48 @@ void CalibrateDisplay::initScreen()
 
 void CalibrateDisplay::update()
 {
-    m_gas = scaleBetween<float>(raw_gas, m_gasMin, m_gasMax, 0., 1000.);
-    m_brems = scaleBetween<float>(raw_brems, m_bremsMin, m_bremsMax, 0., 1000.);
+    if (raw_gas)
+        m_gas = scaleBetween<float>(*raw_gas, m_gasMin, m_gasMax, 0., 1000.);
+    else
+        m_gas = std::nullopt;
+
+    if (raw_brems)
+        m_brems = scaleBetween<float>(*raw_brems, m_bremsMin, m_bremsMax, 0., 1000.);
+    else
+        m_brems = std::nullopt;
 }
 
 void CalibrateDisplay::redraw()
 {
-    m_labels[0].redraw(toString(m_gas));
-    m_labels[1].redraw(toString(raw_gas));
+    m_labels[0].redraw(m_gas ? std::to_string(*m_gas) : "?");
+    m_labels[1].redraw(raw_gas ? std::to_string(*raw_gas) : "?");
     if (m_status == Status::GasMin)
         tft.setTextColor(TFT_RED, TFT_BLACK);
-    m_labels[2].redraw(toString(m_gasMin));
+    m_labels[2].redraw(std::to_string(m_gasMin));
     if (m_status == Status::GasMin)
         tft.setTextColor(TFT_WHITE, TFT_BLACK);
     if (m_status == Status::GasMax)
         tft.setTextColor(TFT_RED, TFT_BLACK);
-    m_labels[3].redraw(toString(m_gasMax));
+    m_labels[3].redraw(std::to_string(m_gasMax));
     if (m_status == Status::GasMax)
         tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-    m_progressBars[0].redraw(m_gas);
+    m_progressBars[0].redraw(m_gas ? *m_gas : 0);
 
-    m_labels[4].redraw(toString(m_brems));
-    m_labels[5].redraw(toString(raw_brems));
+    m_labels[4].redraw(m_brems ? std::to_string(*m_brems) : "?");
+    m_labels[5].redraw(raw_brems ? std::to_string(*raw_brems) : "?");
     if (m_status == Status::BremsMin)
         tft.setTextColor(TFT_RED, TFT_BLACK);
-    m_labels[6].redraw(toString(m_bremsMin));
+    m_labels[6].redraw(std::to_string(m_bremsMin));
     if (m_status == Status::BremsMin)
         tft.setTextColor(TFT_WHITE, TFT_BLACK);
     if (m_status == Status::BremsMax)
         tft.setTextColor(TFT_RED, TFT_BLACK);
-    m_labels[7].redraw(toString(m_bremsMax));
+    m_labels[7].redraw(std::to_string(m_bremsMax));
     if (m_status == Status::BremsMax)
         tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-    m_progressBars[1].redraw(m_brems);
+    m_progressBars[1].redraw(m_brems ? *m_brems : 0);
 
     m_labels[8].redraw([&](){
         switch (m_status)
@@ -175,7 +181,8 @@ void CalibrateDisplay::redraw()
     }());
 
     {
-        const auto color = m_status == Status::Confirm && (m_gas > 100 || m_brems > 100) ? TFT_DARKGREY : TFT_WHITE;
+        const auto failed = !m_gas || !m_brems || (m_status == Status::Confirm && (*m_gas > 100 || *m_brems > 100));
+        const auto color = failed ? TFT_DARKGREY : TFT_WHITE;
         tft.setTextColor(color, TFT_BLACK);
         m_labels[9].redraw([&](){
             switch (m_status)
@@ -256,17 +263,20 @@ void CalibrateDisplay::confirm()
     switch (m_selectedButton)
     {
     case 0: // left button pressed
+        if (!raw_gas || !raw_brems || !m_gas || !m_brems)
+            return;
+
         switch (m_status)
         {
         case Status::Begin:
             m_status = Status::GasMin;
             break;
         case Status::GasMin:
-            m_gasMin = raw_gas;
+            m_gasMin = *raw_gas;
             m_status = Status::GasMax;
             break;
         case Status::GasMax:
-            m_gasMax = raw_gas;
+            m_gasMax = *raw_gas;
             m_status = Status::BremsMin;
             {
                 const auto dead = (m_gasMax - m_gasMin)/20;
@@ -275,11 +285,11 @@ void CalibrateDisplay::confirm()
             }
             break;
         case Status::BremsMin:
-            m_bremsMin = raw_brems;
+            m_bremsMin = *raw_brems;
             m_status = Status::BremsMax;
             break;
         case Status::BremsMax:
-            m_bremsMax = raw_brems;
+            m_bremsMax = *raw_brems;
             m_status = Status::Confirm;
             {
                 const auto dead = (m_bremsMax - m_bremsMin)/20;
@@ -288,7 +298,7 @@ void CalibrateDisplay::confirm()
             }
             break;
         case Status::Confirm:
-            if (m_gas > 100 || m_brems > 100)
+            if (*m_gas > 100 || *m_brems > 100)
                 return;
             copyToSettings();
             saveSettings();
