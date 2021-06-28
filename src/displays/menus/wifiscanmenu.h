@@ -27,7 +27,7 @@ class WifiScanMenu : public MenuDisplay, public BackActionInterface<SwitchScreen
 public:
     WifiScanMenu();
 
-    String text() const override;
+    std::string text() const override;
 
     void start() override;
     void update() override;
@@ -44,9 +44,9 @@ WifiScanMenu::WifiScanMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
 }
 
-String WifiScanMenu::text() const
+std::string WifiScanMenu::text() const
 {
-    auto text = String{menuItemCount()-1} + " found";
+    auto text = std::to_string(menuItemCount()-1) + " found";
     switch (WiFi.scanComplete())
     {
     case WIFI_SCAN_RUNNING: text += " (scanning)"; break;
@@ -76,7 +76,7 @@ void WifiScanMenu::update()
 
             for (std::size_t i = 0; i < n; i++)
             {
-                const auto ssid = WiFi.SSID(i);
+                const auto ssid = to_string(WiFi.SSID(i));
                 if (menuItemCount() <= i)
                 {
                     if (m_reusableItems.empty())

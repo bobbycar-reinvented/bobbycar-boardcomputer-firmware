@@ -10,7 +10,7 @@ void breakLine(AsyncResponseStream &stream)
 
 void label(AsyncResponseStream &stream, const char *name, const char *text)
 {
-    HtmlTag label(stream, "label", String(" for=\"") + name + "\"");
+    HtmlTag label(stream, "label", std::string(" for=\"") + name + "\"");
     stream.print(text);
 }
 
@@ -78,7 +78,7 @@ void checkboxInput(AsyncResponseStream &stream, bool value, const char *name, co
 
 void selectOption(AsyncResponseStream &stream, const char *value, const char *text, bool selected)
 {
-    String str{" value=\""};
+    std::string str{" value=\""};
     str += value;
     str += "\"";
 

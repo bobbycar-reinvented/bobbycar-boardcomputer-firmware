@@ -72,7 +72,7 @@ void MetersDisplay::redraw()
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.setTextFont(2);
-    m_sumCurrentLabel.redraw(toString(sumCurrent) + 'A');
+    m_sumCurrentLabel.redraw(std::to_string(sumCurrent) + 'A');
 
     meters[0].redraw(fixBatVoltage(controllers.front.feedback.batVoltage), 35, 50);
     meters[1].redraw(fixBatVoltage(controllers.back.feedback.batVoltage), 35, 50);

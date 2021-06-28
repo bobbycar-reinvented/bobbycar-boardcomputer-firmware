@@ -92,7 +92,7 @@ void Lockscreen::initScreen()
 
     drawRect(0, 1, TFT_YELLOW);
     drawRect(0, 2, TFT_YELLOW);
-    m_labels[0].redraw(String(m_numbers[0]));
+    m_labels[0].redraw(std::to_string(m_numbers[0]));
 }
 
 void Lockscreen::redraw()
@@ -115,7 +115,7 @@ void Lockscreen::redraw()
             std::for_each(std::begin(m_labels) + 1, std::end(m_labels), [](auto &label){ label.redraw({}); });
         }
 
-        m_labels[m_currentIndex].redraw(String{m_numbers[m_currentIndex]});
+        m_labels[m_currentIndex].redraw(std::to_string(m_numbers[m_currentIndex]));
 
         drawRect(m_currentIndex, 1, TFT_YELLOW);
         drawRect(m_currentIndex, 2, TFT_YELLOW);
@@ -132,7 +132,7 @@ void Lockscreen::redraw()
         else if (m_numbers[m_currentIndex] > 9)
             m_numbers[m_currentIndex]-=10;
 
-        m_labels[m_currentIndex].redraw(String(m_numbers[m_currentIndex]));
+        m_labels[m_currentIndex].redraw(std::to_string(m_numbers[m_currentIndex]));
 
         m_rotated = 0;
     }

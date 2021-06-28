@@ -1,9 +1,9 @@
 #pragma once
 
 #include <array>
+#include <string>
 
 #include <ArduinoOTA.h>
-#include <WString.h>
 
 #include "display.h"
 #include "actions/switchscreenaction.h"
@@ -22,8 +22,8 @@ namespace {
 class UpdateDisplay : public Display, public DummyBack
 {
 public:
-    UpdateDisplay(const String &title);
-    UpdateDisplay(String &&title);
+    UpdateDisplay(const std::string &title);
+    UpdateDisplay(std::string &&title);
 
     void start() override;
     void initScreen() override;
@@ -38,18 +38,18 @@ public:
     bool m_errorValid;
 
 private:
-    const String m_title;
+    const std::string m_title;
 
     Label m_progressLabel{20, 150};
 
     ProgressBar m_progressBar{20, 200, 200, 10, 0, 100};
 };
 
-UpdateDisplay::UpdateDisplay(const String &title) :
+UpdateDisplay::UpdateDisplay(const std::string &title) :
     m_title{title}
 {}
 
-UpdateDisplay::UpdateDisplay(String &&title) :
+UpdateDisplay::UpdateDisplay(std::string &&title) :
     m_title{std::move(title)}
 {}
 
@@ -81,7 +81,7 @@ void UpdateDisplay::initScreen()
 
 void UpdateDisplay::redraw()
 {
-    m_progressLabel.redraw(String{} + m_progress + '/' + m_total);
+    m_progressLabel.redraw(std::to_string(m_progress) + '/' + std::to_string(m_total));
 
     m_progressBar.redraw(float(m_progress) / m_total * 100.f);
 }

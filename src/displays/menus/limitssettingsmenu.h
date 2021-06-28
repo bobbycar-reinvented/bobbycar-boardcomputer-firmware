@@ -20,7 +20,7 @@ namespace {
 template<const char *Tprefix, typename Taccessor>
 struct TextWithValueHelper : public virtual TextInterface
 {
-    String text() const override { return Tprefix + (' ' + String{Taccessor{}.getValue()}); }
+    std::string text() const override { return Tprefix + (' ' + std::to_string(Taccessor{}.getValue())); }
 };
 
 using IMotMaxChangeScreen = makeComponent<

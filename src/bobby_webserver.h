@@ -106,7 +106,7 @@ void initWebserver()
                     else if (const auto *changeValueDisplay = constCurrentDisplay->asChangeValueDisplayInterface())
                     {
                         response->print("<form action=\"/setValue\" method=\"GET\">");
-                        response->print("<input type=\"number\" name=\"value\" value=\"" + String{changeValueDisplay->shownValue()} + "\" />");
+                        response->print("<input type=\"number\" name=\"value\" value=\"" + std::to_string(changeValueDisplay->shownValue()) + "\" />");
                         response->print("<button type=\"submit\">Update</button>");
                         response->print("</form>");
                     }
@@ -276,7 +276,7 @@ void initWebserver()
                 if (!Update.begin(size, command))
                     Update.printError(Serial);
 
-                String type;
+                std::string type;
                 if (ArduinoOTA.getCommand() == U_FLASH)
                     type = "sketch";
                 else if (ArduinoOTA.getCommand() == U_SPIFFS) // U_SPIFFS

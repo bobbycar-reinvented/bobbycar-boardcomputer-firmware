@@ -1,8 +1,7 @@
 #pragma once
 
 #include <array>
-
-#include <WString.h>
+#include <string>
 
 #include "display.h"
 #include "actions/switchscreenaction.h"
@@ -63,14 +62,14 @@ void GametrakCalibrateDisplay::initScreen()
 
 void GametrakCalibrateDisplay::redraw()
 {
-    m_labels[0].redraw(String{gametrakX});
-    m_labels[1].redraw(String{raw_gametrakX});
+    m_labels[0].redraw(std::to_string(gametrakX));
+    m_labels[1].redraw(std::to_string(raw_gametrakX));
 
-    m_labels[2].redraw(String{gametrakY});
-    m_labels[3].redraw(String{raw_gametrakY});
+    m_labels[2].redraw(std::to_string(gametrakY));
+    m_labels[3].redraw(std::to_string(raw_gametrakY));
 
-    m_labels[4].redraw(String{gametrakDist});
-    m_labels[5].redraw(String{raw_gametrakDist});
+    m_labels[4].redraw(std::to_string(gametrakDist));
+    m_labels[5].redraw(std::to_string(raw_gametrakDist));
 
     m_progressBars[0].redraw(gametrakX);
     m_progressBars[1].redraw(gametrakY);

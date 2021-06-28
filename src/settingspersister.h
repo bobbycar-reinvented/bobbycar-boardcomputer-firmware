@@ -78,7 +78,7 @@ bool SettingsPersister::openProfile(uint8_t index)
     closeProfile();
 
     nvs_handle handle;
-    esp_err_t err = nvs_open((String{"bobbycar"}+index).c_str(), NVS_READWRITE, &handle);
+    esp_err_t err = nvs_open(("bobbycar"+std::to_string(index)).c_str(), NVS_READWRITE, &handle);
     if (err != ESP_OK)
     {
         Serial.printf("nvs_open() returned: %s\r\n", esp_err_to_name(err));

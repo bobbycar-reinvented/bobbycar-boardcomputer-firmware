@@ -2,12 +2,13 @@
 
 #include <algorithm>
 #include <utility>
+#include <string>
 
 #include <driver/can.h>
 
 #include <ArduinoOTA.h>
-#include <WString.h>
 #include <WiFi.h>
+#include <WString.h>
 
 #include "bobbycar-protocol/bobbycar-can.h"
 
@@ -86,25 +87,17 @@ float fixBoardTemp(int16_t value)
     return value/10.;
 }
 
-String hallString(const MotorFeedback &motor)
+std::string hallString(const MotorFeedback &motor)
 {
-    return String{} + (motor.hallA ? '1' : '0') + (motor.hallB ? '1' : '0') + (motor.hallC ? '1' : '0');
+    return std::string{} + (motor.hallA ? '1' : '0') + (motor.hallB ? '1' : '0') + (motor.hallC ? '1' : '0');
 }
 
-template<typename T>
-String toString(T value)
+std::string to_string(const String &value)
 {
-    return String{} + value;
+    return std::string{value.c_str(), value.length()};
 }
 
-template<>
-String toString<bool>(bool value)
-{
-    return value ? "true" : "false";
-}
-
-template<>
-String toString<ControlType>(ControlType value)
+std::string to_string(ControlType value)
 {
     switch (value)
     {
@@ -112,11 +105,10 @@ String toString<ControlType>(ControlType value)
     case ControlType::Sinusoidal: return "Sinusoidal";
     case ControlType::FieldOrientedControl: return "FieldOrientedControl";
     }
-    return String("Unknown: ") + int(value);
+    return "Unknown ControlType(" + std::to_string(int(value)) + ')';
 }
 
-template<>
-String toString<ControlMode>(ControlMode value)
+std::string to_string(ControlMode value)
 {
     switch (value)
     {
@@ -125,11 +117,10 @@ String toString<ControlMode>(ControlMode value)
     case ControlMode::Speed: return "Speed";
     case ControlMode::Torque: return "Torque";
     }
-    return String("Unknown: ") + int(value);
+    return "Unknown ControlMode(" + std::to_string(int(value)) + ')';
 }
 
-template<>
-String toString<wl_status_t>(wl_status_t value)
+std::string to_string(wl_status_t value)
 {
     switch (value)
     {
@@ -143,11 +134,10 @@ String toString<wl_status_t>(wl_status_t value)
     case WL_DISCONNECTED: return "WL_DISCONNECTED";
     }
 
-    return String("Unknown: ") + int(value);
+    return "Unknown wl_status_t(" + std::to_string(int(value)) + ')';
 }
 
-template<>
-String toString<ota_error_t>(ota_error_t value)
+std::string to_string(ota_error_t value)
 {
     switch (value)
     {
@@ -158,7 +148,17 @@ String toString<ota_error_t>(ota_error_t value)
     case OTA_END_ERROR: return "OTA_END_ERROR";
     }
 
-    return String("Unknown: ") + int(value);
+    return "Unknown ota_error_t(" + std::to_string(int(value)) + ')';
+}
+
+std::string to_string(IPAddress value)
+{
+    return to_string(value.toString());
+}
+
+std::string to_string(IPv6Address value)
+{
+    return to_string(value.toString());
 }
 
 std::array<std::reference_wrapper<MotorState>, 2> motorsInController(Controller &controller)

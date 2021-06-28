@@ -43,8 +43,8 @@ void PowerSupplyDisplay::initScreen()
 
 void PowerSupplyDisplay::redraw()
 {
-    m_voltageLabel.redraw(String{50.4} + 'V');
-    m_currentLabel.redraw(String{15.1} + 'A');
+    m_voltageLabel.redraw(std::to_string(50.4) + 'V');
+    m_currentLabel.redraw(std::to_string(15.1) + 'A');
 }
 
 void PowerSupplyDisplay::confirm()

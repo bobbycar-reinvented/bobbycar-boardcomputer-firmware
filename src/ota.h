@@ -14,7 +14,7 @@ void initOta()
 {
     ArduinoOTA
         .onStart([]() {
-            String type;
+            std::to_string type;
             if (ArduinoOTA.getCommand() == U_FLASH)
                 type = "sketch";
             else if (ArduinoOTA.getCommand() == U_SPIFFS) // U_SPIFFS

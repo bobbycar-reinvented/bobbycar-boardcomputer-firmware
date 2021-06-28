@@ -1,8 +1,7 @@
 #pragma once
 
 #include <array>
-
-#include <WString.h>
+#include <string>
 
 #include "display.h"
 #include "actions/switchscreenaction.h"
@@ -131,31 +130,31 @@ void CalibrateDisplay::update()
 
 void CalibrateDisplay::redraw()
 {
-    m_labels[0].redraw(toString(m_gas));
-    m_labels[1].redraw(toString(raw_gas));
+    m_labels[0].redraw(std::to_string(m_gas));
+    m_labels[1].redraw(std::to_string(raw_gas));
     if (m_status == Status::GasMin)
         tft.setTextColor(TFT_RED, TFT_BLACK);
-    m_labels[2].redraw(toString(m_gasMin));
+    m_labels[2].redraw(std::to_string(m_gasMin));
     if (m_status == Status::GasMin)
         tft.setTextColor(TFT_WHITE, TFT_BLACK);
     if (m_status == Status::GasMax)
         tft.setTextColor(TFT_RED, TFT_BLACK);
-    m_labels[3].redraw(toString(m_gasMax));
+    m_labels[3].redraw(std::to_string(m_gasMax));
     if (m_status == Status::GasMax)
         tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
     m_progressBars[0].redraw(m_gas);
 
-    m_labels[4].redraw(toString(m_brems));
-    m_labels[5].redraw(toString(raw_brems));
+    m_labels[4].redraw(std::to_string(m_brems));
+    m_labels[5].redraw(std::to_string(raw_brems));
     if (m_status == Status::BremsMin)
         tft.setTextColor(TFT_RED, TFT_BLACK);
-    m_labels[6].redraw(toString(m_bremsMin));
+    m_labels[6].redraw(std::to_string(m_bremsMin));
     if (m_status == Status::BremsMin)
         tft.setTextColor(TFT_WHITE, TFT_BLACK);
     if (m_status == Status::BremsMax)
         tft.setTextColor(TFT_RED, TFT_BLACK);
-    m_labels[7].redraw(toString(m_bremsMax));
+    m_labels[7].redraw(std::to_string(m_bremsMax));
     if (m_status == Status::BremsMax)
         tft.setTextColor(TFT_WHITE, TFT_BLACK);
 

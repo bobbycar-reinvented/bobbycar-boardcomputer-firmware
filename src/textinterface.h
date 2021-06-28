@@ -1,11 +1,13 @@
 #pragma once
 
-#include <WString.h>
+#include <string>
+
+#include "utils.h"
 
 namespace {
 class TextInterface {
 public:
-    virtual String text() const = 0;
+    virtual std::string text() const = 0;
 };
 
 template<const char *Ttext>
@@ -14,31 +16,32 @@ class StaticText : public virtual TextInterface
 public:
     static constexpr const char *STATIC_TEXT = Ttext;
 
-    String text() const override { return Ttext; }
+    std::string text() const override { return Ttext; }
 };
 
 class ChangeableText : public virtual TextInterface
 {
 public:
-    String text() const override { return m_title; }
-    void setTitle(const String &title) { m_title = title; }
+    std::string text() const override { return m_title; }
+    void setTitle(std::string &&title) { m_title = std::move(title); }
+    void setTitle(const std::string &title) { m_title = title; }
 
 private:
-    String m_title;
+    std::string m_title;
 };
 
 template<const char *Ttext, typename Ttype, Ttype *Tptr, typename TreturnType, TreturnType (Ttype::*Tmethod)()>
 class StatusTextHelper : public virtual TextInterface
 {
 public:
-    String text() const override { return String{Ttext} + (Tptr->*Tmethod)(); }
+    std::string text() const override { using std::to_string; using ::to_string; return Ttext + to_string((Tptr->*Tmethod)()); }
 };
 
 template<typename T>
 class CachedText : public virtual T
 {
 public:
-    String text() const override
+    std::string text() const override
     {
         if (!m_loaded)
         {
@@ -51,14 +54,14 @@ public:
 
 private:
     mutable bool m_loaded{};
-    mutable String m_text;
+    mutable std::string m_text;
 };
 
 template<typename T>
 class StaticallyCachedText : public virtual T
 {
 public:
-    String text() const override
+    std::string text() const override
     {
         static const auto text = T::text();
         return text;

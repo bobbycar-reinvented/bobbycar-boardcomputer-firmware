@@ -145,26 +145,26 @@ void StatusDisplay::initScreen()
 void StatusDisplay::redraw()
 {
     tft.setTextFont(2);
-    m_labelRawGas.redraw(String{raw_gas});
-    m_labelGas.redraw(String{gas});
+    m_labelRawGas.redraw(std::to_string(raw_gas));
+    m_labelGas.redraw(std::to_string(gas));
     m_progressBarGas.redraw(gas);
-    m_labelRawBrems.redraw(String{raw_brems});
-    m_labelBrems.redraw(String{brems});
+    m_labelRawBrems.redraw(std::to_string(raw_brems));
+    m_labelBrems.redraw(std::to_string(brems));
     m_progressBarBrems.redraw(brems);
 
     m_frontStatus.redraw(controllers.front);
     m_backStatus.redraw(controllers.back);
 
     tft.setTextFont(2);
-    m_labelWifiStatus.redraw(toString(WiFi.status()));
-    m_labelLimit0.redraw(String{controllers.front.command.left.iMotMax} + "A");
-    m_labelIpAddress.redraw(WiFi.localIP().toString());
-    m_labelLimit1.redraw(String{controllers.front.command.left.iDcMax} + "A");
-    m_labelPerformance.redraw(String{performance.last});
+    m_labelWifiStatus.redraw(to_string(WiFi.status()));
+    m_labelLimit0.redraw(std::to_string(controllers.front.command.left.iMotMax) + "A");
+    m_labelIpAddress.redraw(to_string(WiFi.localIP()));
+    m_labelLimit1.redraw(std::to_string(controllers.front.command.left.iDcMax) + "A");
+    m_labelPerformance.redraw(std::to_string(performance.last));
     m_labelMode.redraw(currentMode->displayName());
     m_labelName.redraw(&deviceName[0]);
     const auto profile = settingsPersister.currentlyOpenProfileIndex();
-    m_labelProfile.redraw(profile?String{*profile}:"-");
+    m_labelProfile.redraw(profile ? std::to_string(*profile) : "-");
 }
 
 void StatusDisplay::rotate(int offset)
@@ -192,8 +192,8 @@ void StatusDisplay::BoardStatus::redraw(const Controller &controller)
 {
     tft.setTextFont(4);
 
-    m_labelLeftPwm.redraw(String{controller.command.left.pwm});
-    m_labelRightPwm.redraw(String{controller.command.right.pwm});
+    m_labelLeftPwm.redraw(std::to_string(controller.command.left.pwm));
+    m_labelRightPwm.redraw(std::to_string(controller.command.right.pwm));
 
     if (controller.feedbackValid != m_lastFeedbackValid || m_initialRedraw)
     {
@@ -231,8 +231,8 @@ void StatusDisplay::BoardStatus::redraw(const Controller &controller)
 
     if (controller.feedbackValid)
     {
-        m_labelVoltage.redraw(String{fixBatVoltage(controller.feedback.batVoltage)} + 'V');
-        m_labelTemperature.redraw(String{fixBoardTemp(controller.feedback.boardTemp)} + 'C');
+        m_labelVoltage.redraw(std::to_string(fixBatVoltage(controller.feedback.batVoltage)) + 'V');
+        m_labelTemperature.redraw(std::to_string(fixBoardTemp(controller.feedback.boardTemp)) + 'C');
         m_leftMotor.redraw(controller.feedback.left);
         m_rightMotor.redraw(controller.feedback.right);
     }
@@ -250,11 +250,11 @@ void StatusDisplay::BoardStatus::MotorStatus::redraw(const MotorFeedback &motor)
 {
     tft.setTextFont(4);
     tft.setTextColor(motor.error?TFT_RED:TFT_GREEN, TFT_BLACK);
-    m_labelError.redraw(String{motor.error});
+    m_labelError.redraw(std::to_string(motor.error));
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-    m_labelCurrent.redraw(String{fixCurrent(motor.dcLink)} + 'A');
-    m_labelSpeed.redraw(String{convertToKmh(motor.speed)});
+    m_labelCurrent.redraw(std::to_string(fixCurrent(motor.dcLink)) + 'A');
+    m_labelSpeed.redraw(std::to_string(convertToKmh(motor.speed)));
 
     tft.setTextFont(2);
     m_labelHallSensors.redraw(hallString(motor));

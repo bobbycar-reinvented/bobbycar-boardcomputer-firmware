@@ -65,7 +65,7 @@ void DPad5WireDebugDisplay::initScreen()
 
 void DPad5WireDebugDisplay::redraw()
 {
-    m_labelRaw.redraw(String{} +
+    m_labelRaw.redraw(std::string{} +
                     (std::get<0>(dpad5wire::lastState) ? '1' : '0') + ' ' +
                     (std::get<1>(dpad5wire::lastState) ? '1' : '0') + ' ' +
                     (std::get<2>(dpad5wire::lastState) ? '1' : '0') + ' ' +
@@ -83,8 +83,8 @@ void DPad5WireDebugDisplay::redraw()
     m_labelProfile1.redraw(std::get<DPAD_5WIRESW_PROFILE1>(dpad5wire::lastState) ? "1" : "0");
     m_labelProfile2.redraw(std::get<DPAD_5WIRESW_PROFILE2>(dpad5wire::lastState) ? "1" : "0");
     m_labelProfile3.redraw(std::get<DPAD_5WIRESW_PROFILE3>(dpad5wire::lastState) ? "1" : "0");
-    m_labelGas.redraw(String{raw_gas});
-    m_labelBrems.redraw(String{raw_brems});
+    m_labelGas.redraw(std::to_string(raw_gas));
+    m_labelBrems.redraw(std::to_string(raw_brems));
 }
 #endif
 }
