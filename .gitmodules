@@ -4,3 +4,6 @@
 [submodule "src/espcpputils"]
 	path = src/espcpputils
 	url = git@github.com:0xFEEDC0DE64/espcpputils.git
+[submodule "esp-idf"]
+	path = esp-idf
+	url = https://github.com/0xFEEDC0DE64/esp-idf.git
