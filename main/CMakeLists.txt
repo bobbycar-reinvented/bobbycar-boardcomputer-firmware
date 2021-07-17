@@ -32,6 +32,7 @@ set(headers
     actions/switchprofileaction.h
     actions/updateswapfrontbackaction.h
     bluetoothmode.h
+    ble.h
     bmsutils.h
     changevaluedisplay_bluetoothmode.h
     changevaluedisplay_bool.h
@@ -139,7 +140,6 @@ set(headers
     esptexthelpers.h
     presets.h
     bluetoothtexthelpers.h
-    bobby_webserver.h
     buttons.h
     can.h
     changevaluedisplay.h
@@ -167,6 +167,7 @@ set(headers
     texts.h
     unifiedmodelmode.h
     utils.h
+    webserver.h
     wifitexthelpers.h
     wifi_bobbycar.h
 )
@@ -182,6 +183,7 @@ set(dependencies
     bobbycar-protocol cpputils cxx-ring-buffer date
 #    ESPAsyncWebServer
     espchrono espcpputils espwifistack expected fmt TFT_eSPI
+    esp-nimble-cpp
 )
 
 idf_component_register(

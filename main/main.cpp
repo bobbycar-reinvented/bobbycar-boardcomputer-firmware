@@ -85,7 +85,12 @@ using namespace std::chrono_literals;
 #include "actions/bluetoothbeginmasteraction.h"
 #include "actions/bluetoothconnectbmsaction.h"
 #endif
-#include "bobby_webserver.h"
+#ifdef FEATURE_BLE
+#include "ble.h"
+#endif
+#ifdef FEATURE_WEBSERVER
+#include "webserver.h"
+#endif
 #ifdef FEATURE_CAN
 #include "can.h"
 #endif
@@ -101,6 +106,9 @@ std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
+#ifdef FEATURE_BLE
+std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
+#endif
 }
 
 void printMemoryStats(const char *s)
@@ -242,6 +250,12 @@ extern "C" void app_main()
     printMemoryStats("initOta()");
 #endif
 
+#ifdef FEATURE_BLE
+    bootLabel.redraw("ble");
+    initBle();
+    printMemoryStats("initBle()");
+#endif
+
 #ifdef FEATURE_WEBSERVER
     bootLabel.redraw("webserver");
     initWebserver();
@@ -356,6 +370,15 @@ extern "C" void app_main()
 
 #ifdef FEATURE_ARDUINOOTA
         handleOta();
+#endif
+
+#ifdef FEATURE_BLE
+        if (!lastBleUpdate || now - *lastBleUpdate >= 1000ms)
+        {
+            handleBle();
+
+            lastBleUpdate = now;
+        }
 #endif
 
 #ifdef FEATURE_WEBSERVER
