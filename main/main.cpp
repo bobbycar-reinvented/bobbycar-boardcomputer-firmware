@@ -373,7 +373,7 @@ extern "C" void app_main()
 #endif
 
 #ifdef FEATURE_BLE
-        if (!lastBleUpdate || now - *lastBleUpdate >= 1000ms)
+        if (!lastBleUpdate || now - *lastBleUpdate >= 1000ms/16)
         {
             handleBle();
 
