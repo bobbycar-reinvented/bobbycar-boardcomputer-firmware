@@ -46,7 +46,7 @@ RemoteControlMode remoteControlMode;
 
 void RemoteControlMode::update()
 {
-    if (!m_remoteCommand || espchrono::ago(m_timestamp) > 1s)
+    if (!m_remoteCommand || espchrono::ago(m_timestamp) > 500ms)
     {
         start();
 
@@ -78,5 +78,11 @@ void RemoteControlMode::update()
     fixCommonParams();
 
     sendCommands();
+}
+
+void RemoteControlMode::setCommand(const RemoteCommand &command)
+{
+    m_remoteCommand = command;
+    m_timestamp = espchrono::millis_clock::now();
 }
 }

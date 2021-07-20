@@ -9,6 +9,7 @@
 // local includes
 #include "globals.h"
 #include "futurecpp.h"
+#include "modes/remotecontrolmode.h"
 
 namespace {
 #ifdef FEATURE_BLE
@@ -16,6 +17,14 @@ BLEServer *pServer{};
 BLEService *pService{};
 BLECharacteristic *livestatsCharacteristic{};
 BLECharacteristic *remotecontrolCharacteristic{};
+
+class RemoteControlCallbacks : public NimBLECharacteristicCallbacks
+{
+public:
+    void onWrite(NimBLECharacteristic* pCharacteristic) override;
+};
+
+RemoteControlCallbacks bleRemoteCallbacks;
 
 void initBle()
 {
@@ -29,6 +38,7 @@ void initBle()
 
     livestatsCharacteristic = pService->createCharacteristic("a48321ea-329f-4eab-a401-30e247211524", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     remotecontrolCharacteristic = pService->createCharacteristic("4201def0-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
+    remotecontrolCharacteristic->setCallbacks(&bleRemoteCallbacks);
 
     pService->start();
 
@@ -119,8 +129,8 @@ void handleBle()
             auto arr = doc.createNestedArray("a");
             if (controllers.front.feedbackValid)
             {
-                arr.add(fixCurrent(controllers.front.feedback.left.dcLink));
-                arr.add(fixCurrent(controllers.front.feedback.right.dcLink));
+                arr.add(fixCurrent(controllers.front.feedback.left.dcLink) * 2);
+                arr.add(fixCurrent(controllers.front.feedback.right.dcLink) * 2);
             }
             else
             {
@@ -129,8 +139,8 @@ void handleBle()
             }
             if (controllers.back.feedbackValid)
             {
-                arr.add(fixCurrent(controllers.back.feedback.left.dcLink));
-                arr.add(fixCurrent(controllers.back.feedback.right.dcLink));
+                arr.add(fixCurrent(controllers.back.feedback.left.dcLink) * 2);
+                arr.add(fixCurrent(controllers.back.feedback.right.dcLink) * 2);
             }
             else
             {
@@ -145,6 +155,25 @@ void handleBle()
         livestatsCharacteristic->setValue(json);
         livestatsCharacteristic->notify();
     }
+}
+
+void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
+{
+    const auto &val = pCharacteristic->getValue();
+
+    StaticJsonDocument<256> doc;
+    if (const auto error = deserializeJson(doc, val))
+    {
+        ESP_LOGW(TAG, "ignoring cmd with invalid json: %.*s %s", val.size(), val.data(), error.c_str());
+        return;
+    }
+
+    modes::remoteControlMode.setCommand(RemoteCommand{
+        .frontLeft = doc["fl"].as<int16_t>(),
+        .frontRight = doc["fr"].as<int16_t>(),
+        .backLeft = doc["bl"].as<int16_t>(),
+        .backRight = doc["br"].as<int16_t>()
+    });
 }
 #endif
 }
