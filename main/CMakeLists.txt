@@ -130,6 +130,7 @@ set(headers
     modes/gametrakmode.h
     modes/ignoreinputmode.h
     modes/larsmmode.h
+    modes/remotecontrolmode.h
     modes/tempomatmode.h
     rotary.h
     screens.h
