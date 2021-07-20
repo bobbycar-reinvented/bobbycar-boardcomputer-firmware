@@ -224,7 +224,13 @@ void CalibrateDisplay::redraw()
 void CalibrateDisplay::stop()
 {
     if (currentMode == &m_mode)
+    {
+        // to avoid crash after deconstruction
+        m_mode.stop();
+        lastMode = nullptr;
+
         currentMode = m_oldMode;
+    }
 }
 
 void CalibrateDisplay::rotate(int offset)

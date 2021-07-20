@@ -143,7 +143,13 @@ void Lockscreen::stop()
     Base::stop();
 
     if (currentMode == &m_mode)
+    {
+        // to avoid crash after deconstruction
+        m_mode.stop();
+        lastMode = nullptr;
+
         currentMode = m_oldMode;
+    }
 }
 
 void Lockscreen::confirm()

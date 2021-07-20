@@ -86,6 +86,7 @@ BluetoothSerial bluetoothSerial;
 
 TFT_eSPI tft = TFT_eSPI();
 
+ModeInterface *lastMode{};
 ModeInterface *currentMode{};
 
 std::unique_ptr<Display> currentDisplay;

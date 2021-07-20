@@ -1,3 +1,5 @@
+constexpr const char * const TAG = "BOBBY";
+
 // system includes
 #include <cstdio>
 
@@ -100,7 +102,6 @@ using namespace std::chrono_literals;
 #include "wifi_bobbycar.h"
 
 namespace {
-ModeInterface *lastMode{};
 std::optional<espchrono::millis_clock::time_point> lastPotiRead;
 std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
