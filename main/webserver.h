@@ -2,12 +2,20 @@
 
 // system includes
 #include <atomic>
+#include <string_view>
 
 // esp-idf includes
 #ifdef FEATURE_WEBSERVER
 #include <esp_http_server.h>
 #endif
 #include <esp_log.h>
+
+// 3rdparty lib includes
+#include <fmt/core.h>
+#include <espcppmacros.h>
+#include <espstrutils.h>
+#include <strutils.h>
+#include <numberparsing.h>
 
 // local includes
 #include "screens.h"
@@ -17,7 +25,6 @@
 #include "displays/updatedisplay.h"
 //#include "esputils.h"
 #include "buttons.h"
-#include "espcppmacros.h"
 
 namespace {
 #ifdef FEATURE_WEBSERVER
@@ -27,12 +34,26 @@ std::atomic<bool> shouldReboot;
 
 class HtmlTag {
 public:
-    HtmlTag(const char *tagName, std::string &body) :
+    HtmlTag(std::string_view tagName, std::string &body) :
         m_tagName{tagName},
         m_body{body}
     {
         m_body += '<';
         m_body += m_tagName;
+        m_body += '>';
+    }
+
+    HtmlTag(std::string_view tagName, std::string_view attributes, std::string &body) :
+        m_tagName{tagName},
+        m_body{body}
+    {
+        m_body += '<';
+        m_body += m_tagName;
+        if (!attributes.empty())
+        {
+            m_body += ' ';
+            m_body += attributes;
+        }
         m_body += '>';
     }
 
@@ -44,9 +65,12 @@ public:
     }
 
 private:
-    const char * const m_tagName;
+    const std::string_view m_tagName;
     std::string &m_body;
 };
+
+template<typename T> T htmlentities(const T &val) { return val; } // TODO
+template<typename T> T htmlentities(T &&val) { return val; } // TODO
 
 esp_err_t webserver_root_handler(httpd_req_t *req);
 esp_err_t webserver_up_handler(httpd_req_t *req);
@@ -204,10 +228,10 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
             {
                 HtmlTag titleTag{"title", body};
-                body += ("Bobbycar remote");
+                body += "Bobbycar remote";
             }
 
-            body += ("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />");
+            body += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />";
         }
 
         {
@@ -215,15 +239,15 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
             {
                 HtmlTag h1Tag{"h1", body};
-                body += ("Bobbycar remote");
+                body += "Bobbycar remote";
             }
 
             {
                 HtmlTag pTag{"p", body};
-                body += ("<a href=\"/up\">Up</a> "
-                                "<a href=\"/down\">Down</a> "
-                                "<a href=\"/confirm\">Confirm</a> "
-                                "<a href=\"/back\">Back</a>");
+                body += "<a href=\"/up\">Up</a> "
+                        "<a href=\"/down\">Down</a> "
+                        "<a href=\"/confirm\">Confirm</a> "
+                        "<a href=\"/back\">Back</a>";
             }
 
             if (auto constCurrentDisplay = static_cast<const Display *>(currentDisplay.get()))
@@ -231,7 +255,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                 if (const auto *textInterface = constCurrentDisplay->asTextInterface())
                 {
                     HtmlTag h2Tag{"h2", body};
-                    body += (textInterface->text().c_str());
+                    body += htmlentities(textInterface->text());
                 }
 
                 if (const auto *menuDisplay = constCurrentDisplay->asMenuDisplay())
@@ -240,200 +264,210 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
                     int i{0};
                     menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const MenuItem &menuItem){
-                        body += ("<li");
+                        HtmlTag liTag = i == selectedIndex ?
+                                    HtmlTag{"li", "style=\"border: 1px solid black;\"", body} :
+                                    HtmlTag{"li", body};
 
-                        if (i == selectedIndex)
-                            body += (" style=\"border: 1px solid black;\"");
-
-                        body += ("><a href=\"/triggerItem?index=");
-                        body += (i);
-                        body += ("\">");
-                        body += (menuItem.text().c_str());
-                        body += ("</a></li>");
-
+                        body += fmt::format("<a href=\"/triggerItem?index={}\">{}</a>", i, htmlentities(menuItem.text()));
                         i++;
                     });
                 }
                 else if (const auto *changeValueDisplay = constCurrentDisplay->asChangeValueDisplayInterface())
                 {
-                    body += ("<form action=\"/setValue\" method=\"GET\">");
-                    body += (("<input type=\"number\" name=\"value\" value=\"" + std::to_string(changeValueDisplay->shownValue()) + "\" />").c_str());
-                    body += ("<button type=\"submit\">Update</button>");
-                    body += ("</form>");
+                    HtmlTag formTag{"form", "action=\"/setValue\" method=\"GET\"", body};
+                    body += fmt::format("<input type=\"number\" name=\"value\" value=\"{}\" />", changeValueDisplay->shownValue());
+                    body += "<button type=\"submit\">Update</button>";
                 }
                 else
                 {
-                    body += ("No web control implemented for current display.");
+                    body += "No web control implemented for current display.";
                 }
             }
             else
             {
-                body += ("Currently no screen instantiated.");
+                body += "Currently no screen instantiated.";
             }
         }
     }
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
-    CALL_AND_EXIT_ON_ERROR(httpd_resp_send, req, body.data(), body.size())
-
-    return ESP_OK;
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
 }
 
 esp_err_t webserver_up_handler(httpd_req_t *req)
 {
-#ifdef OLD_CODE
     InputDispatcher::rotate(-1);
 
-    AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
-    response->addHeader("Location", "/");
-    request->send(response);
-#else
-    return ESP_OK;
-#endif
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_status, req, "302 Moved Permanently")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    constexpr const std::string_view body{"Ok, continue at <a href=\"/\">/</a>"};
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
 }
 
 esp_err_t webserver_down_handler(httpd_req_t *req)
 {
-#ifdef OLD_CODE
     InputDispatcher::rotate(1);
 
-    AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
-    response->addHeader("Location", "/");
-    request->send(response);
-#else
-    return ESP_OK;
-#endif
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_status, req, "302 Moved Permanently")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    constexpr const std::string_view body{"Ok, continue at <a href=\"/\">/</a>"};
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
 }
 
 esp_err_t webserver_confirm_handler(httpd_req_t *req)
 {
-#ifdef OLD_CODE
     InputDispatcher::confirmButton(true);
     InputDispatcher::confirmButton(false);
 
-    AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
-    response->addHeader("Location", "/");
-    request->send(response);
-#else
-    return ESP_OK;
-#endif
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_status, req, "302 Moved Permanently")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    constexpr const std::string_view body{"Ok, continue at <a href=\"/\">/</a>"};
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
 }
 
 esp_err_t webserver_back_handler(httpd_req_t *req)
 {
-#ifdef OLD_CODE
     InputDispatcher::backButton(true);
     InputDispatcher::backButton(false);
 
-    AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
-    response->addHeader("Location", "/");
-    request->send(response);
-#else
-    return ESP_OK;
-#endif
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_status, req, "302 Moved Permanently")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    constexpr const std::string_view body{"Ok, continue at <a href=\"/\">/</a>"};
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
 }
 
 esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 {
-#ifdef OLD_CODE
-    if (!request->hasArg("index"))
+    std::string query;
+
+    if (const size_t queryLength = httpd_req_get_url_query_len(req))
     {
-        request->send(400, "text/plain", "index parameter missing");
-        return;
+        query.resize(queryLength);
+        CALL_AND_EXIT_ON_ERROR(httpd_req_get_url_query_str, req, query.data(), query.size() + 1)
+    }
+
+    std::size_t index;
+
+    constexpr const std::string_view indexParamName{"index"};
+
+    {
+        char valueBufEncoded[256];
+        if (const auto result = httpd_query_key_value(query.data(), indexParamName.data(), valueBufEncoded, 256); result == ESP_OK)
+        {
+            char valueBuf[257];
+            espcpputils::urldecode(valueBuf, valueBufEncoded);
+
+            std::string_view value{valueBuf};
+
+            if (auto parsed = cpputils::fromString<typeof(index)>(value))
+            {
+                index = *parsed;
+            }
+            else
+            {
+                CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, fmt::format("could not parse {} {}", indexParamName, value).c_str());
+            }
+        }
+        else if (result != ESP_ERR_NOT_FOUND)
+        {
+            ESP_LOGE(TAG, "httpd_query_key_value() %.*s failed with %s", indexParamName.size(), indexParamName.data(), esp_err_to_name(result));
+            return result;
+        }
+        else
+        {
+            CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, fmt::format("{} not set", indexParamName).c_str());
+        }
     }
 
     if (!currentDisplay)
-    {
-        request->send(400, "text/plain", "currentDisplay is null");
-        return;
-    }
+        CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, "currentDisplay is null");
 
     auto *menuDisplay = currentDisplay->asMenuDisplay();
     if (!menuDisplay)
-    {
-        request->send(400, "text/plain", "currentDisplay is not a menu display");
-        return;
-    }
-
-    const auto indexStr = request->arg("index");
-
-    char *ptr;
-    const auto index = std::strtol(std::begin(indexStr), &ptr, 10);
-
-    if (ptr != std::end(indexStr))
-    {
-        request->send(400, "text/plain", "index could not be parsed");
-        return;
-    }
+        CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, "currentDisplay is not a menu display");
 
     if (index < 0 || index >= menuDisplay->menuItemCount())
-    {
-        request->send(400, "text/plain", "index out of range");
-        return;
-    }
+        CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, fmt::format("{} out of range", indexParamName).c_str());
 
     menuDisplay->getMenuItem(index).triggered();
 
-    AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
-    response->addHeader("Location", "/");
-    request->send(response);
-#else
-    return ESP_OK;
-#endif
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_status, req, "302 Moved Permanently")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    constexpr const std::string_view body{"Ok, continue at <a href=\"/\">/</a>"};
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
 }
 
 esp_err_t webserver_setValue_handler(httpd_req_t *req)
 {
-#ifdef OLD_CODE
-    if (!request->hasArg("value"))
+    std::string query;
+
+    if (const size_t queryLength = httpd_req_get_url_query_len(req))
     {
-        request->send(400, "text/plain", "value parameter missing");
-        return;
+        query.resize(queryLength);
+        CALL_AND_EXIT_ON_ERROR(httpd_req_get_url_query_str, req, query.data(), query.size() + 1)
+    }
+
+    int newValue;
+
+    constexpr const std::string_view valueParamName{"value"};
+
+    {
+        char valueBufEncoded[256];
+        if (const auto result = httpd_query_key_value(query.data(), valueParamName.data(), valueBufEncoded, 256); result == ESP_OK)
+        {
+            char valueBuf[257];
+            espcpputils::urldecode(valueBuf, valueBufEncoded);
+
+            std::string_view value{valueBuf};
+
+            if (auto parsed = cpputils::fromString<typeof(newValue)>(value))
+            {
+                newValue = *parsed;
+            }
+            else
+            {
+                CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, fmt::format("could not parse {} {}", valueParamName, value).c_str());
+            }
+        }
+        else if (result != ESP_ERR_NOT_FOUND)
+        {
+            ESP_LOGE(TAG, "httpd_query_key_value() %.*s failed with %s", valueParamName.size(), valueParamName.data(), esp_err_to_name(result));
+            return result;
+        }
+        else
+        {
+            CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, fmt::format("{} not set", valueParamName).c_str());
+        }
     }
 
     if (!currentDisplay)
-    {
-        request->send(400, "text/plain", "currentDisplay is null");
-        return;
-    }
+        CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, "currentDisplay is null");
 
     auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface();
     if (!changeValueDisplay)
-    {
-        request->send(400, "text/plain", "currentDisplay is not a change value display");
-        return;
-    }
+        CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, "currentDisplay is not a change value display");
 
-    const auto valueStr = request->arg("value");
+    changeValueDisplay->setShownValue(newValue);
 
-    char *ptr;
-    const auto value = std::strtol(std::begin(valueStr), &ptr, 10);
-
-    if (ptr != std::end(valueStr))
-    {
-        request->send(400, "text/plain", "value could not be parsed");
-        return;
-    }
-
-    changeValueDisplay->setShownValue(value);
-
-    AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "ok");
-    response->addHeader("Location", "/");
-    request->send(response);
-#else
-    return ESP_OK;
-#endif
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_status, req, "302 Moved Permanently")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    constexpr const std::string_view body{"Ok, continue at <a href=\"/\">/</a>"};
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
 }
 
 esp_err_t webserver_reboot_handler(httpd_req_t *req)
 {
-    std::string_view body{"REBOOT called..."};
-    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
-    CALL_AND_EXIT_ON_ERROR(httpd_resp_send, req, body.data(), body.size())
-
     shouldReboot = true;
 
-    return ESP_OK;
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
+    std::string_view body{"REBOOT called..."};
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
 }
 
 #endif
