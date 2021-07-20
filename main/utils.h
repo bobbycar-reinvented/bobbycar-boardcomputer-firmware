@@ -221,13 +221,25 @@ void fixCommonParams()
     controllers.back.command.right.enable = settings.controllerHardware.enableBackRight;
 
     if (settings.controllerHardware.invertFrontLeft)
+    {
         controllers.front.command.left.pwm = -controllers.front.command.left.pwm;
+        controllers.front.command.left.nCruiseMotTgt = -controllers.front.command.left.nCruiseMotTgt;
+    }
     if (settings.controllerHardware.invertFrontRight)
+    {
         controllers.front.command.right.pwm = -controllers.front.command.right.pwm;
+        controllers.front.command.right.nCruiseMotTgt = -controllers.front.command.right.nCruiseMotTgt;
+    }
     if (settings.controllerHardware.invertBackLeft)
+    {
         controllers.back.command.left.pwm = -controllers.back.command.left.pwm;
+        controllers.back.command.left.nCruiseMotTgt = -controllers.back.command.left.nCruiseMotTgt;
+    }
     if (settings.controllerHardware.invertBackRight)
+    {
         controllers.back.command.right.pwm = -controllers.back.command.right.pwm;
+        controllers.back.command.right.nCruiseMotTgt = -controllers.back.command.right.nCruiseMotTgt;
+    }
 }
 
 void sendCommands()

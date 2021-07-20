@@ -15,7 +15,6 @@ set(headers
     actions/bmsturnoffdischargeaction.h
     actions/bmsturnonchargeaction.h
     actions/bmsturnondischargeaction.h
-    actions/defaultmodeapplycurrspeedaction.h
     actions/dummyaction.h
     actions/erasenvsaction.h
     actions/loadsettingsaction.h
@@ -25,6 +24,7 @@ set(headers
     actions/savesettingsaction.h
     actions/setvalueaction.h
     actions/switchscreenaction.h
+    actions/tempomatmodeapplycurrentpeedaction.h
     actions/toggleboolaction.h
     actions/wifidisconnectaction.h
     actions/wifienableipv6action.h

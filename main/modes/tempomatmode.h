@@ -20,7 +20,7 @@ public:
 
     const char *displayName() const override { return "Tempomat"; }
 
-    int16_t pwm;
+    int16_t nCruiseMotTgt;
 };
 
 namespace modes {
@@ -30,7 +30,7 @@ TempomatMode tempomatMode;
 void TempomatMode::start()
 {
     Base::start();
-    pwm = 0;
+    nCruiseMotTgt = avgSpeed;
 }
 
 void TempomatMode::update()
@@ -52,23 +52,23 @@ void TempomatMode::update()
     {
         if (*gas > 500. && *brems > 500.)
         {
-            pwm = 0;
+            nCruiseMotTgt = 0;
             modes::defaultMode.waitForGasLoslass = true;
             modes::defaultMode.waitForBremsLoslass = true;
             currentMode = &modes::defaultMode;
             return;
         }
 
-        pwm += (*gas/1000.) - (*brems/1000.);
+        nCruiseMotTgt += (*gas/1000.) - (*brems/1000.);
 
         for (bobbycar::protocol::serial::MotorState &motor : motors())
         {
             const auto pair = split(settings.tempomatMode.modelMode);
             motor.ctrlTyp = pair.first;
             motor.ctrlMod = pair.second;
-            motor.pwm = pwm;
-            motor.cruiseCtrlEna = false;
-            motor.nCruiseMotTgt = 0;
+            motor.pwm = 0;
+            motor.cruiseCtrlEna = true;
+            motor.nCruiseMotTgt = nCruiseMotTgt;
         }
     }
 

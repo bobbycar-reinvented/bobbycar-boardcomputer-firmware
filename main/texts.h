@@ -147,9 +147,6 @@ constexpr char TEXT_DYNAMICMENU[] = "Dynamic menu";
 //DefaultModeSettingsMenu
 //constexpr char TEXT_DEFAULTMODESETTINGS[] = "Default mode settings";
 constexpr char TEXT_MODELMODE[] = "Model mode";
-constexpr char TEXT_CRUISECTRLENA[] = "Enable tempomat";
-constexpr char TEXT_NCRUISEMOTTGT[] = "Tempomat";
-constexpr char TEXT_APPLYCURRSPEED[] = "Apply";
 constexpr char TEXT_SQUAREGAS[] = "Square gas";
 constexpr char TEXT_SQUAREBREMS[] = "Square brems";
 constexpr char TEXT_ENABLESMOOTHING[] = "Enable smoothing";
@@ -235,6 +232,8 @@ constexpr char TEXT_MOSFET2[] = "Mosfet2";
 
 //TempomatModeSettingsMenu
 //constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
+constexpr char TEXT_APPLY[] = "Apply";
+constexpr char TEXT_NCRUISEMOTTGT[] = "nCruiseMotTgt";
 //constexpr char TEXT_MODELMODE[] = "Model mode";
 //constexpr char TEXT_BACK[] = "Back";
 

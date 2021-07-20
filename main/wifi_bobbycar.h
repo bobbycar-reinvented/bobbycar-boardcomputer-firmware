@@ -25,12 +25,12 @@ wifi_stack::config wifi_create_config()
             wifi_stack::wifi_entry { .ssid = {},                    .key = {} }
         },
         .sta_ip = {
-            .dhcpEnabled = true,
-            .staticIp = {},
-            .staticGateway = {},
-            .staticSubnet = {},
-            .staticDns1 = {},
-            .staticDns2 = {}
+            .staticIpEnabled = false,
+//            .staticIp = {},
+//            .staticGateway = {},
+//            .staticSubnet = {},
+//            .staticDns1 = {},
+//            .staticDns2 = {}
         },
         .ap = {
             {

@@ -3,15 +3,15 @@
 // local includes
 #include "actioninterface.h"
 #include "globals.h"
-#include "modes/defaultmode.h"
+#include "modes/tempomatmode.h"
 
 namespace {
-class DefaultModeApplyCurrentSpeedAction : public virtual ActionInterface
+class TempomatModeApplyCurrentSpeedAction : public virtual ActionInterface
 {
 public:
     void triggered() override
     {
-        modes::defaultMode.nCruiseMotTgt = avgSpeed;
+        modes::tempomatMode.nCruiseMotTgt = avgSpeed;
     }
 };
 } // namespace

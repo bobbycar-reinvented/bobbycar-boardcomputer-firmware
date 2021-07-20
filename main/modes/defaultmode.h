@@ -24,9 +24,6 @@ public:
     bool waitForGasLoslass{false};
     bool waitForBremsLoslass{false};
 
-    bool cruiseCtrlEna{false};
-    int16_t nCruiseMotTgt{0};
-
 private:
     espchrono::millis_clock::time_point lastTime{espchrono::millis_clock::now()};
     float lastPwm{0};
@@ -39,8 +36,6 @@ DefaultMode defaultMode;
 void DefaultMode::start()
 {
     Base::start();
-    cruiseCtrlEna = false;
-    nCruiseMotTgt = 0;
 }
 
 void DefaultMode::update()
@@ -115,16 +110,16 @@ void DefaultMode::update()
             motor.ctrlTyp = pair.first;
             motor.ctrlMod = pair.second;
             motor.pwm = pwm / 100. * settings.defaultMode.frontPercentage;
-            motor.cruiseCtrlEna = cruiseCtrlEna;
-            motor.nCruiseMotTgt = nCruiseMotTgt;
+            motor.cruiseCtrlEna = false;
+            motor.nCruiseMotTgt = 0;
         }
         for (bobbycar::protocol::serial::MotorState &motor : motorsInController(controllers.back))
         {
             motor.ctrlTyp = pair.first;
             motor.ctrlMod = pair.second;
             motor.pwm = pwm / 100. * settings.defaultMode.backPercentage;
-            motor.cruiseCtrlEna = cruiseCtrlEna;
-            motor.nCruiseMotTgt = nCruiseMotTgt;
+            motor.cruiseCtrlEna = false;
+            motor.nCruiseMotTgt = 0;
         }
     }
 

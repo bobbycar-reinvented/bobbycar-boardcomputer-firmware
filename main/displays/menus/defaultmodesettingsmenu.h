@@ -11,8 +11,6 @@
 #include "icons/back.h"
 #include "texts.h"
 #include "accessors/settingsaccessors.h"
-#include "accessors/globalaccessors.h"
-#include "actions/defaultmodeapplycurrspeedaction.h"
 
 // forward declares
 namespace {
@@ -85,14 +83,6 @@ using DefaultModeBrems2WertChangeDisplay = makeComponent<
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
 
-using DefaultModeCruiseMotTgtChangeDisplay = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_NCRUISEMOTTGT>,
-    DefaultModenCruiseMotTgtAccessor,
-    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
-    SwitchScreenAction<DefaultModeSettingsMenu>
->;
-
 class DefaultModeSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_DEFAULTMODESETTIGNS>,
@@ -102,9 +92,6 @@ public:
     DefaultModeSettingsMenu()
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          SwitchScreenAction<DefaultModeModelModeChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRUISECTRLENA>,      ToggleBoolAction, CheckboxIcon,  DefaultModeCruiseCtrlEnaAccessor>>();
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NCRUISEMOTTGT, DefaultModenCruiseMotTgtAccessor>, SwitchScreenAction<DefaultModeCruiseMotTgtChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_APPLYCURRSPEED, AvgSpeedAccessor>, DefaultModeApplyCurrentSpeedAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREGAS>,          ToggleBoolAction, CheckboxIcon,  DefaultModeSquareGasAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREBREMS>,        ToggleBoolAction, CheckboxIcon,  DefaultModeSquareBremsAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHING>,    ToggleBoolAction, CheckboxIcon,  DefaultModeEnableSmoothingAccessor>>();
