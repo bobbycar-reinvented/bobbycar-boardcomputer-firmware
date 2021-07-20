@@ -10,7 +10,9 @@
 #include "checkboxicon.h"
 #include "icons/back.h"
 #include "texts.h"
-#include "settingsaccessors.h"
+#include "accessors/settingsaccessors.h"
+#include "accessors/globalaccessors.h"
+#include "actions/defaultmodeapplycurrspeedaction.h"
 
 // forward declares
 namespace {
@@ -21,64 +23,72 @@ class ModesSettingsMenu;
 namespace {
 using DefaultModeModelModeChangeDisplay = makeComponent<
     ChangeValueDisplay<UnifiedModelMode>,
-    StaticText<TEXT_SETMODELMODE>,
+    StaticText<TEXT_MODELMODE>,
     DefaultModeModelModeAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
 using DefaultModeSmoothingChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_SETSMOOTHING>,
+    StaticText<TEXT_SMOOTHINGVAL>,
     DefaultModeSmoothingAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
 using DefaultModeFrontPercentageChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_SETFRONTPERCENTAGE>,
+    StaticText<TEXT_FRONTPERCENTAGE>,
     DefaultModeFrontPercentageAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
 using DefaultModeBackPercentageChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_SETBACKPERCENTAGE>,
+    StaticText<TEXT_BACKPERCENTAGE>,
     DefaultModeBackPercentageAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
 using DefaultModeAddSchwelleChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_SETADDSCHWELLE>,
+    StaticText<TEXT_ADDSCHWELLE>,
     DefaultModeAddSchwelleAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
 using DefaultModeGas1WertChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_SETGAS1WERT>,
+    StaticText<TEXT_ADDGASVAL>,
     DefaultModeGas1WertAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
 using DefaultModeGas2WertChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_SETGAS2WERT>,
+    StaticText<TEXT_SUBGASVAL>,
     DefaultModeGas2WertAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
 using DefaultModeBrems1WertChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_SETBREMS1WERT>,
+    StaticText<TEXT_ADDBRAKEVAL>,
     DefaultModeBrems1WertAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
 using DefaultModeBrems2WertChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_SETBREMS2WERT>,
+    StaticText<TEXT_SUBBRAKEVAL>,
     DefaultModeBrems2WertAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
+
+using DefaultModeCruiseMotTgtChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_NCRUISEMOTTGT>,
+    DefaultModenCruiseMotTgtAccessor,
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
@@ -91,19 +101,22 @@ class DefaultModeSettingsMenu :
 public:
     DefaultModeSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>,       SwitchScreenAction<DefaultModeModelModeChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREGAS>,          ToggleBoolAction, CheckboxIcon, DefaultModeSquareGasAccessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREBREMS>,        ToggleBoolAction, CheckboxIcon, DefaultModeSquareBremsAccessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHING>,    ToggleBoolAction, CheckboxIcon, DefaultModeEnableSmoothingAccessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETSMOOTHING>,       SwitchScreenAction<DefaultModeSmoothingChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETFRONTPERCENTAGE>, SwitchScreenAction<DefaultModeFrontPercentageChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETBACKPERCENTAGE>,  SwitchScreenAction<DefaultModeBackPercentageChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETADDSCHWELLE>,     SwitchScreenAction<DefaultModeAddSchwelleChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAS1WERT>,        SwitchScreenAction<DefaultModeGas1WertChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAS2WERT>,        SwitchScreenAction<DefaultModeGas2WertChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETBREMS1WERT>,      SwitchScreenAction<DefaultModeBrems1WertChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETBREMS2WERT>,      SwitchScreenAction<DefaultModeBrems2WertChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          SwitchScreenAction<DefaultModeModelModeChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRUISECTRLENA>,      ToggleBoolAction, CheckboxIcon,  DefaultModeCruiseCtrlEnaAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NCRUISEMOTTGT, DefaultModenCruiseMotTgtAccessor>, SwitchScreenAction<DefaultModeCruiseMotTgtChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_APPLYCURRSPEED, AvgSpeedAccessor>, DefaultModeApplyCurrentSpeedAction>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREGAS>,          ToggleBoolAction, CheckboxIcon,  DefaultModeSquareGasAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREBREMS>,        ToggleBoolAction, CheckboxIcon,  DefaultModeSquareBremsAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHING>,    ToggleBoolAction, CheckboxIcon,  DefaultModeEnableSmoothingAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMOOTHINGVAL, DefaultModeSmoothingAccessor>,                     SwitchScreenAction<DefaultModeSmoothingChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_FRONTPERCENTAGE, DefaultModeFrontPercentageAccessor>, SwitchScreenAction<DefaultModeFrontPercentageChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BACKPERCENTAGE, DefaultModeBackPercentageAccessor>,   SwitchScreenAction<DefaultModeBackPercentageChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ADDSCHWELLE, DefaultModeAddSchwelleAccessor>,                    SwitchScreenAction<DefaultModeAddSchwelleChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SUBGASVAL, DefaultModeGas2WertAccessor>,                         SwitchScreenAction<DefaultModeGas2WertChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SUBBRAKEVAL, DefaultModeBrems2WertAccessor>,                     SwitchScreenAction<DefaultModeBrems2WertChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ADDGASVAL, DefaultModeGas1WertAccessor>,                         SwitchScreenAction<DefaultModeGas1WertChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ADDBRAKEVAL, DefaultModeBrems1WertAccessor>,                     SwitchScreenAction<DefaultModeBrems1WertChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                    SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

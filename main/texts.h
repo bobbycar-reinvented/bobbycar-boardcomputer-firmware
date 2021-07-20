@@ -146,18 +146,21 @@ constexpr char TEXT_DYNAMICMENU[] = "Dynamic menu";
 
 //DefaultModeSettingsMenu
 //constexpr char TEXT_DEFAULTMODESETTINGS[] = "Default mode settings";
-constexpr char TEXT_SETMODELMODE[] = "Set model mode";
+constexpr char TEXT_MODELMODE[] = "Model mode";
+constexpr char TEXT_CRUISECTRLENA[] = "Enable tempomat";
+constexpr char TEXT_NCRUISEMOTTGT[] = "Tempomat";
+constexpr char TEXT_APPLYCURRSPEED[] = "Apply";
 constexpr char TEXT_SQUAREGAS[] = "Square gas";
 constexpr char TEXT_SQUAREBREMS[] = "Square brems";
 constexpr char TEXT_ENABLESMOOTHING[] = "Enable smoothing";
-constexpr char TEXT_SETSMOOTHING[] = "Set smoothing";
-constexpr char TEXT_SETFRONTPERCENTAGE[] = "Set front percentage";
-constexpr char TEXT_SETBACKPERCENTAGE[] = "Set back percentage";
-constexpr char TEXT_SETADDSCHWELLE[] = "Set add Schwelle";
-constexpr char TEXT_SETGAS1WERT[] = "Set Gas 1 Wert";
-constexpr char TEXT_SETGAS2WERT[] = "Set Gas 2 Wert";
-constexpr char TEXT_SETBREMS1WERT[] = "Set Brems 1 Wert";
-constexpr char TEXT_SETBREMS2WERT[] = "Set Brems 2 Wert";
+constexpr char TEXT_SMOOTHINGVAL[] = "Smoothing";
+constexpr char TEXT_FRONTPERCENTAGE[] = "Front %";
+constexpr char TEXT_BACKPERCENTAGE[] = "Back %";
+constexpr char TEXT_ADDSCHWELLE[] = "Add/Sub Lim";
+constexpr char TEXT_SUBGASVAL[] = "Add Gas";
+constexpr char TEXT_SUBBRAKEVAL[] = "Add Brake";
+constexpr char TEXT_ADDGASVAL[] = "Sub Gas";
+constexpr char TEXT_ADDBRAKEVAL[] = "Sub Brake";
 //constexpr char TEXT_BACK[] = "Back";
 
 //DynamicDebugMenu
@@ -211,7 +214,7 @@ constexpr char TEXT_INVERTBACKRIGHT[] = "Invert back right";
 
 //LarsmModeSettingsMenu
 constexpr char TEXT_LARSMMODESETTINGS[] = "Larsm mode settings";
-//constexpr char TEXT_SETMODELMODE[] = "Set model mode";
+//constexpr char TEXT_MODELMODE[] = "Model mode";
 constexpr char TEXT_SETMODE[] = "Set mode";
 constexpr char TEXT_SETITERATIONS[] = "Set iterations";
 //constexpr char TEXT_BACK[] = "Back";
@@ -232,7 +235,7 @@ constexpr char TEXT_MOSFET2[] = "Mosfet2";
 
 //TempomatModeSettingsMenu
 //constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
-//constexpr char TEXT_SETMODELMODE[] = "Set model mode";
+//constexpr char TEXT_MODELMODE[] = "Model mode";
 //constexpr char TEXT_BACK[] = "Back";
 
 //WiFiSettingsMenu

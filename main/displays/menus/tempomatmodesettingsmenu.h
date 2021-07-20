@@ -8,7 +8,7 @@
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
 #include "texts.h"
-#include "settingsaccessors.h"
+#include "accessors/settingsaccessors.h"
 
 // forward declares
 namespace {
@@ -19,7 +19,7 @@ class ModesSettingsMenu;
 namespace {
 using TempomatModeModelModeChangeScreen = makeComponent<
     ChangeValueDisplay<UnifiedModelMode>,
-    StaticText<TEXT_SETMODELMODE>,
+    StaticText<TEXT_MODELMODE>,
     TempomatModeModelModeAccessor,
     BackActionInterface<SwitchScreenAction<TempomatModeSettingsMenu>>,
     SwitchScreenAction<TempomatModeSettingsMenu>
@@ -33,8 +33,8 @@ class TempomatModeSettingsMenu :
 public:
     TempomatModeSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
 } // namespace

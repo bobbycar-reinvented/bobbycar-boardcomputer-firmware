@@ -8,7 +8,7 @@
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
 #include "texts.h"
-#include "settingsaccessors.h"
+#include "accessors/settingsaccessors.h"
 
 // forward declares
 namespace {
@@ -17,12 +17,6 @@ class SettingsMenu;
 } // namespace
 
 namespace {
-template<const char *Tprefix, typename Taccessor>
-struct TextWithValueHelper : public virtual TextInterface
-{
-    std::string text() const override { return Tprefix + (' ' + std::to_string(Taccessor{}.getValue())); }
-};
-
 using IMotMaxChangeScreen = makeComponent<
     ChangeValueDisplay<int16_t>,
     StaticText<TEXT_IMOTMAX>,

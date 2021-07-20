@@ -14,7 +14,7 @@
 #endif
 #include "actions/switchscreenaction.h"
 #include "bluetoothtexthelpers.h"
-#include "settingsaccessors.h"
+#include "accessors/settingsaccessors.h"
 #include "icons/back.h"
 #include "texts.h"
 

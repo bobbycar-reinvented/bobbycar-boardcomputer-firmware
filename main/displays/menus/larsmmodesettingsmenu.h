@@ -8,7 +8,7 @@
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
 #include "texts.h"
-#include "settingsaccessors.h"
+#include "accessors/settingsaccessors.h"
 
 // forward declares
 namespace {
@@ -19,7 +19,7 @@ class ModesSettingsMenu;
 namespace {
 using LarsmModeModelModeChangeDisplay = makeComponent<
     ChangeValueDisplay<UnifiedModelMode>,
-    StaticText<TEXT_SETMODELMODE>,
+    StaticText<TEXT_MODELMODE>,
     LarsmModeModelModeAccessor,
     BackActionInterface<SwitchScreenAction<LarsmModeSettingsMenu>>,
     SwitchScreenAction<LarsmModeSettingsMenu>
@@ -47,7 +47,7 @@ class LarsmModeSettingsMenu :
 public:
     LarsmModeSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODELMODE>,  SwitchScreenAction<LarsmModeModelModeChangeDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,     SwitchScreenAction<LarsmModeModelModeChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODE>,       SwitchScreenAction<LarsmModeModeChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETITERATIONS>, SwitchScreenAction<LarsmModeIterationsChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,          SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();

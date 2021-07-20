@@ -10,7 +10,7 @@
 #include "icons/scan.h"
 #include "icons/back.h"
 #include "texts.h"
-#include "settingsaccessors.h"
+#include "accessors/settingsaccessors.h"
 
 // forward declares
 namespace {

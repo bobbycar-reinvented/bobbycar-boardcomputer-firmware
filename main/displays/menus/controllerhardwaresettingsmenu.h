@@ -12,7 +12,7 @@
 #include "icons/back.h"
 #include "texts.h"
 #include "globals.h"
-#include "settingsaccessors.h"
+#include "accessors/settingsaccessors.h"
 
 // forward declares
 namespace {

@@ -13,7 +13,7 @@
 #include "checkboxicon.h"
 #include "icons/back.h"
 #include "wifitexthelpers.h"
-#include "wifiaccessors.h"
+#include "accessors/wifiaccessors.h"
 #include "texts.h"
 
 // forward declares

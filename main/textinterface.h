@@ -1,7 +1,12 @@
 #pragma once
 
+// system includes
 #include <string>
 
+// 3rdparty lib includes
+#include <fmt/core.h>
+
+// local includes
 #include "utils.h"
 
 namespace {
@@ -79,5 +84,11 @@ public:
         static const auto text = T::text();
         return text;
     }
+};
+
+template<const char *Tprefix, typename Taccessor>
+struct TextWithValueHelper : public virtual TextInterface
+{
+    std::string text() const override { return fmt::format("{} {}", Tprefix, Taccessor{}.getValue()); }
 };
 }

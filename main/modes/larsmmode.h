@@ -9,6 +9,8 @@
 namespace {
 class LarsmMode : public ModeInterface
 {
+    using Base = ModeInterface;
+
 public:
     void start() override;
     void update() override;
@@ -28,6 +30,8 @@ LarsmMode larsmMode;
 
 void LarsmMode::start()
 {
+    Base::start();
+
     adc1_filtered = 0.f;
     adc2_filtered = 0.f;
     speed = 0;
@@ -45,6 +49,8 @@ void LarsmMode::update()
             motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
             motor.ctrlMod = bobbycar::protocol::ControlMode::OpenMode;
             motor.pwm = 0;
+            motor.cruiseCtrlEna = false;
+            motor.nCruiseMotTgt = 0;
         }
     }
     else
@@ -115,6 +121,8 @@ void LarsmMode::update()
             motor.ctrlTyp = pair.first;
             motor.ctrlMod = pair.second;
             motor.pwm = speed + weak;
+            motor.cruiseCtrlEna = false;
+            motor.nCruiseMotTgt = 0;
         }
     }
 

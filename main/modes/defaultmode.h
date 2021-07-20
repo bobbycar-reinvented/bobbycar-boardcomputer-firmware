@@ -13,13 +13,19 @@
 namespace {
 class DefaultMode : public ModeInterface
 {
+    using Base = ModeInterface;
+
 public:
+    void start() override;
     void update() override;
 
     const char *displayName() const override { return "Default"; }
 
     bool waitForGasLoslass{false};
     bool waitForBremsLoslass{false};
+
+    bool cruiseCtrlEna{false};
+    int16_t nCruiseMotTgt{0};
 
 private:
     espchrono::millis_clock::time_point lastTime{espchrono::millis_clock::now()};
@@ -28,6 +34,13 @@ private:
 
 namespace modes {
 DefaultMode defaultMode;
+}
+
+void DefaultMode::start()
+{
+    Base::start();
+    cruiseCtrlEna = false;
+    nCruiseMotTgt = 0;
 }
 
 void DefaultMode::update()
@@ -41,6 +54,8 @@ void DefaultMode::update()
             motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
             motor.ctrlMod = bobbycar::protocol::ControlMode::OpenMode;
             motor.pwm = 0;
+            motor.cruiseCtrlEna = false;
+            motor.nCruiseMotTgt = 0;
         }
     }
     else
@@ -100,12 +115,16 @@ void DefaultMode::update()
             motor.ctrlTyp = pair.first;
             motor.ctrlMod = pair.second;
             motor.pwm = pwm / 100. * settings.defaultMode.frontPercentage;
+            motor.cruiseCtrlEna = cruiseCtrlEna;
+            motor.nCruiseMotTgt = nCruiseMotTgt;
         }
         for (bobbycar::protocol::serial::MotorState &motor : motorsInController(controllers.back))
         {
             motor.ctrlTyp = pair.first;
             motor.ctrlMod = pair.second;
             motor.pwm = pwm / 100. * settings.defaultMode.backPercentage;
+            motor.cruiseCtrlEna = cruiseCtrlEna;
+            motor.nCruiseMotTgt = nCruiseMotTgt;
         }
     }
 

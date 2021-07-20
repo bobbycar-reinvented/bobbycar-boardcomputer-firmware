@@ -20,6 +20,8 @@ namespace {
 #ifdef FEATURE_GAMETRAK
 class GametrakMode : public ModeInterface
 {
+    using Base = ModeInterface;
+
 public:
     void start() override;
     void update() override;
@@ -36,6 +38,7 @@ GametrakMode gametrakMode;
 
 void GametrakMode::start()
 {
+    Base::start();
     m_flag = false;
 }
 
@@ -50,6 +53,8 @@ void GametrakMode::update()
             motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
             motor.ctrlMod = bobbycar::protocol::ControlMode::OpenMode;
             motor.pwm = 0;
+            motor.cruiseCtrlEna = false;
+            motor.nCruiseMotTgt = 0;
         }
     }
     else
@@ -84,6 +89,8 @@ void GametrakMode::update()
             motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
             motor.ctrlMod = bobbycar::protocol::ControlMode::Speed;
             motor.pwm = pwm;
+            motor.cruiseCtrlEna = false;
+            motor.nCruiseMotTgt = 0;
         }
     }
 

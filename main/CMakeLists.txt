@@ -1,5 +1,8 @@
 set(headers
     accessorinterface.h
+    accessors/globalaccessors.h
+    accessors/settingsaccessors.h
+    accessors/wifiaccessors.h
     actioninterface.h
     actions/backproxyaction.h
     actions/bluetoothbeginaction.h
@@ -12,6 +15,7 @@ set(headers
     actions/bmsturnoffdischargeaction.h
     actions/bmsturnonchargeaction.h
     actions/bmsturnondischargeaction.h
+    actions/defaultmodeapplycurrspeedaction.h
     actions/dummyaction.h
     actions/erasenvsaction.h
     actions/loadsettingsaction.h
@@ -136,7 +140,6 @@ set(headers
     widgets/vumeter.h
     widgets/graph.h
     widgets/label.h
-    wifiaccessors.h
     esptexthelpers.h
     presets.h
     bluetoothtexthelpers.h
@@ -159,7 +162,6 @@ set(headers
     ota.h
     serialhandler.h
     settings.h
-    settingsaccessors.h
     settingspersister.h
     settingsutils.h
     statistics.h

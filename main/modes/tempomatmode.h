@@ -12,6 +12,8 @@
 namespace {
 class TempomatMode : public ModeInterface
 {
+    using Base = ModeInterface;
+
 public:
     void start() override;
     void update() override;
@@ -27,6 +29,7 @@ TempomatMode tempomatMode;
 
 void TempomatMode::start()
 {
+    Base::start();
     pwm = 0;
 }
 
@@ -41,6 +44,8 @@ void TempomatMode::update()
             motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
             motor.ctrlMod = bobbycar::protocol::ControlMode::OpenMode;
             motor.pwm = 0;
+            motor.cruiseCtrlEna = false;
+            motor.nCruiseMotTgt = 0;
         }
     }
     else
@@ -62,6 +67,8 @@ void TempomatMode::update()
             motor.ctrlTyp = pair.first;
             motor.ctrlMod = pair.second;
             motor.pwm = pwm;
+            motor.cruiseCtrlEna = false;
+            motor.nCruiseMotTgt = 0;
         }
     }
 
