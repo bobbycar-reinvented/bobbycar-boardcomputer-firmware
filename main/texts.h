@@ -74,6 +74,7 @@ constexpr char TEXT_DEBUG[] = "Debug";
 
 //SettingsMenu
 //constexpr char TEXT_SETTINGS[] = "Settings";
+constexpr char TEXT_BACKLIGHT[] = "Backlight";
 constexpr char TEXT_LIMITSSETTINGS[] = "Limits settings";
 constexpr char TEXT_WIFISETTINGS[] = "WiFi settings";
 //constexpr char TEXT_BLUETOOTHSETTINGS[] = "Bluetooth settings";
@@ -95,6 +96,10 @@ constexpr char TEXT_NUMMAGNETPOLES[] = "Num magnet poles";
 constexpr char TEXT_SETENABLED[] = "Set enabled";
 constexpr char TEXT_SETINVERTED[] = "Set inverted";
 constexpr char TEXT_SWAPFRONTBACK[] = "Swap front/back";
+#ifdef FEATURE_CAN
+constexpr char TEXT_FRONTSENDCAN[] = "Front send CAN";
+constexpr char TEXT_BACKSENDCAN[] = "Back send CAN";
+#endif
 //constexpr char TEXT_BACK[] = "Back";
 
 //StationWifiSettingsMenu

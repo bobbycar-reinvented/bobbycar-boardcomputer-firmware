@@ -32,7 +32,11 @@ constexpr Settings::ControllerHardware defaultControllerHardware {
 
     .wheelDiameter = DEFAULT_WHEELDIAMETER,
     .numMagnetPoles = 15,
-    .swapFrontBack = false
+    .swapFrontBack = false,
+#ifdef FEATURE_CAN
+    .sendFrontCanCmd = true,
+    .sendBackCanCmd = true,
+#endif
 };
 
 constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
@@ -48,7 +52,11 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
-    .swapFrontBack = false
+    .swapFrontBack = false,
+#ifdef FEATURE_CAN
+    .sendFrontCanCmd = true,
+    .sendBackCanCmd = true,
+#endif
 };
 
 constexpr Settings::WifiSettings defaultWifiSettings {
@@ -75,7 +83,11 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
 
     .wheelDiameter = 165,
     .numMagnetPoles = 15,
-    .swapFrontBack = false
+    .swapFrontBack = false,
+#ifdef FEATURE_CAN
+    .sendFrontCanCmd = true,
+    .sendBackCanCmd = true,
+#endif
 };
 
 constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings {
@@ -87,7 +99,7 @@ constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings 
 };
 
 constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
-    .sampleCount = 100,
+    .sampleCount = 50,
     .gasMin = DEFAULT_GASMIN,
     .gasMax = DEFAULT_GASMAX,
     .bremsMin = DEFAULT_BREMSMIN,

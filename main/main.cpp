@@ -102,11 +102,15 @@ using namespace std::chrono_literals;
 #include "wifi_bobbycar.h"
 
 namespace {
+std::optional<espchrono::millis_clock::time_point> lastWifiUpdate;
 std::optional<espchrono::millis_clock::time_point> lastPotiRead;
 std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
+#ifdef FEATURE_CAN
+std::optional<espchrono::millis_clock::time_point> lastCanParse;
+#endif
 #ifdef FEATURE_BLE
 std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
 #endif
@@ -126,9 +130,9 @@ extern "C" void app_main()
     //Serial.setDebugOutput(true);
     //Serial.println("setup()");
 
-#ifdef PINS_LED
-    pinMode(PINS_LED, OUTPUT);
-    digitalWrite(PINS_LED, LOW);
+#ifdef FEATURE_LEDBACKLIGHT
+    pinMode(PINS_LEDBACKLIGHT, OUTPUT);
+    digitalWrite(PINS_LEDBACKLIGHT, ledBacklightInverted ? LOW : HIGH);
 #endif
 
     printMemoryStats("setup()");
@@ -268,18 +272,22 @@ extern "C" void app_main()
     printMemoryStats("readPotis()");
 
 #ifdef FEATURE_CLOUD
+    bootLabel.redraw("startCloud");
     startCloud();
+    printMemoryStats("readPotis()");
 #endif
+
+    bootLabel.redraw("switchScreen");
 
 #if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
     switchScreen<DPad5WireDebugDisplay>();
-    return;
-#endif
+#else
 
     if (!gas || !brems || *gas > 200.f || *brems > 200.f)
         switchScreen<CalibrateDisplay>(true);
     else
         switchScreen<StatusDisplay>();
+#endif
 
     printMemoryStats("switchScreen()");
 
@@ -290,7 +298,12 @@ extern "C" void app_main()
 
         const auto now = espchrono::millis_clock::now();
 
-        wifi_update();
+        if (!lastWifiUpdate || now - *lastWifiUpdate >= 100ms)
+        {
+            wifi_update();
+
+            lastWifiUpdate = now;
+        }
 
 #ifdef FEATURE_DPAD
         dpad::update();
@@ -359,7 +372,12 @@ extern "C" void app_main()
         }
 
 #ifdef FEATURE_CAN
-        can::parseCanInput();
+        if (!lastCanParse || now - *lastCanParse >= 50ms)
+        {
+            can::parseCanInput();
+
+            lastCanParse = now;
+        }
 #endif
 
 #ifdef FEATURE_SERIAL

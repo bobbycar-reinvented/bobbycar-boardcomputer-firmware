@@ -5,6 +5,7 @@
 
 #include <driver/gpio.h>
 #include <driver/twai.h>
+#include <esp_log.h>
 
 #include <Arduino.h>
 
@@ -219,11 +220,11 @@ bool parseBoardcomputerCanMessage(const twai_message_t &message)
 bool tryParseCanInput()
 {
     twai_message_t message;
-    if (const auto result = twai_receive(&message, pdMS_TO_TICKS(50)); result != ESP_OK)
+    if (const auto result = twai_receive(&message, pdMS_TO_TICKS(10)); result != ESP_OK)
     {
         if (result != ESP_ERR_TIMEOUT)
         {
-            //Serial.printf("CAN err twai_receive() failed with %s\r\n", esp_err_to_name(result));
+            ESP_LOGE(TAG, "CAN err twai_receive() failed with %s", esp_err_to_name(result));
         }
 
         if (espchrono::millis_clock::now() - controllers.front.lastCanFeedback > 100ms)
@@ -293,20 +294,27 @@ void sendCanCommands()
         const auto result = twai_transmit(&message, pdMS_TO_TICKS(200));
         if (result != ESP_OK && result != ESP_ERR_TIMEOUT)
         {
-            //Serial.printf("ERROR: twai_transmit() failed with %s\r\n", esp_err_to_name(result));
+            ESP_LOGE(TAG, "ERROR: twai_transmit() failed with %s", esp_err_to_name(result));
         }
         return result;
     };
 
-    const Controller &front = settings.controllerHardware.swapFrontBack ? controllers.back : controllers.front;
-    const Controller &back = settings.controllerHardware.swapFrontBack ? controllers.front : controllers.back;
+    const bool swap = settings.controllerHardware.swapFrontBack;
+    const Controller *front =
+            (swap ? settings.controllerHardware.sendBackCanCmd : settings.controllerHardware.sendFrontCanCmd ) ?
+            (swap ? &controllers.back : &controllers.front) :
+            nullptr;
+    const Controller *back =
+            (swap ? settings.controllerHardware.sendFrontCanCmd : settings.controllerHardware.sendBackCanCmd ) ?
+            (swap ? &controllers.front : &controllers.back) :
+            nullptr;
 
     using namespace bobbycar::protocol::can;
 
-    send(MotorController<false, false>::Command::InpTgt, front.command.left.pwm);
-    send(MotorController<false, true>::Command::InpTgt, front.command.right.pwm);
-    send(MotorController<true, false>::Command::InpTgt, back.command.left.pwm);
-    send(MotorController<true, true>::Command::InpTgt, back.command.right.pwm);
+    if (front) send(MotorController<false, false>::Command::InpTgt, front->command.left.pwm);
+    if (front) send(MotorController<false, true>::Command::InpTgt, front->command.right.pwm);
+    if (back) send(MotorController<true, false>::Command::InpTgt, back->command.left.pwm);
+    if (back) send(MotorController<true, true>::Command::InpTgt, back->command.right.pwm);
 
     uint16_t buttonLeds{};
     if (const auto index = settingsPersister.currentlyOpenProfileIndex())
@@ -328,10 +336,10 @@ void sendCanCommands()
 
     static int i{};
 
-    if (front.command.buzzer.freq    != lastValues.front.freq ||
-        front.command.buzzer.pattern != lastValues.front.pattern ||
-        back.command.buzzer.freq     != lastValues.back.freq ||
-        back.command.buzzer.pattern  != lastValues.back.pattern)
+    if ((front && front->command.buzzer.freq    != lastValues.front.freq ) ||
+        (front && front->command.buzzer.pattern != lastValues.front.pattern ) ||
+        (back && back->command.buzzer.freq     != lastValues.back.freq) ||
+        (back && back->command.buzzer.pattern  != lastValues.back.pattern))
         i = 10;
     else if (buttonLeds              != lastValues.buttonLeds)
         i = 12;
@@ -339,92 +347,92 @@ void sendCanCommands()
     switch (i++)
     {
     case 0:
-        send(MotorController<false, false>::Command::Enable, front.command.left.enable);
-        send(MotorController<false, true>::Command::Enable, front.command.right.enable);
-        send(MotorController<true, false>::Command::Enable, back.command.left.enable);
-        send(MotorController<true, true>::Command::Enable, back.command.right.enable);
+        if (front) send(MotorController<false, false>::Command::Enable, front->command.left.enable);
+        if (front) send(MotorController<false, true>::Command::Enable, front->command.right.enable);
+        if (back) send(MotorController<true, false>::Command::Enable, back->command.left.enable);
+        if (back) send(MotorController<true, true>::Command::Enable, back->command.right.enable);
         break;
     case 1:
-        send(MotorController<false, false>::Command::CtrlTyp, front.command.left.ctrlTyp);
-        send(MotorController<false, true>::Command::CtrlTyp, front.command.right.ctrlTyp);
-        send(MotorController<true, false>::Command::CtrlTyp, back.command.left.ctrlTyp);
-        send(MotorController<true, true>::Command::CtrlTyp, back.command.right.ctrlTyp);
+        if (front) send(MotorController<false, false>::Command::CtrlTyp, front->command.left.ctrlTyp);
+        if (front) send(MotorController<false, true>::Command::CtrlTyp, front->command.right.ctrlTyp);
+        if (back) send(MotorController<true, false>::Command::CtrlTyp, back->command.left.ctrlTyp);
+        if (back) send(MotorController<true, true>::Command::CtrlTyp, back->command.right.ctrlTyp);
         break;
     case 2:
-        send(MotorController<false, false>::Command::CtrlMod, front.command.left.ctrlMod);
-        send(MotorController<false, true>::Command::CtrlMod, front.command.right.ctrlMod);
-        send(MotorController<true, false>::Command::CtrlMod, back.command.left.ctrlMod);
-        send(MotorController<true, true>::Command::CtrlMod, back.command.right.ctrlMod);
+        if (front) send(MotorController<false, false>::Command::CtrlMod, front->command.left.ctrlMod);
+        if (front) send(MotorController<false, true>::Command::CtrlMod, front->command.right.ctrlMod);
+        if (back) send(MotorController<true, false>::Command::CtrlMod, back->command.left.ctrlMod);
+        if (back) send(MotorController<true, true>::Command::CtrlMod, back->command.right.ctrlMod);
         break;
     case 3:
-        send(MotorController<false, false>::Command::IMotMax, front.command.left.iMotMax);
-        send(MotorController<false, true>::Command::IMotMax, front.command.right.iMotMax);
-        send(MotorController<true, false>::Command::IMotMax, back.command.left.iMotMax);
-        send(MotorController<true, true>::Command::IMotMax, back.command.right.iMotMax);
+        if (front) send(MotorController<false, false>::Command::IMotMax, front->command.left.iMotMax);
+        if (front) send(MotorController<false, true>::Command::IMotMax, front->command.right.iMotMax);
+        if (back) send(MotorController<true, false>::Command::IMotMax, back->command.left.iMotMax);
+        if (back) send(MotorController<true, true>::Command::IMotMax, back->command.right.iMotMax);
         break;
     case 4:
-        send(MotorController<false, false>::Command::IDcMax, front.command.left.iDcMax);
-        send(MotorController<false, true>::Command::IDcMax, front.command.right.iDcMax);
-        send(MotorController<true, false>::Command::IDcMax, back.command.left.iDcMax);
-        send(MotorController<true, true>::Command::IDcMax, back.command.right.iDcMax);
+        if (front) send(MotorController<false, false>::Command::IDcMax, front->command.left.iDcMax);
+        if (front) send(MotorController<false, true>::Command::IDcMax, front->command.right.iDcMax);
+        if (back) send(MotorController<true, false>::Command::IDcMax, back->command.left.iDcMax);
+        if (back) send(MotorController<true, true>::Command::IDcMax, back->command.right.iDcMax);
         break;
     case 5:
-        send(MotorController<false, false>::Command::NMotMax, front.command.left.nMotMax);
-        send(MotorController<false, true>::Command::NMotMax, front.command.right.nMotMax);
-        send(MotorController<true, false>::Command::NMotMax, back.command.left.nMotMax);
-        send(MotorController<true, true>::Command::NMotMax, back.command.right.nMotMax);
+        if (front) send(MotorController<false, false>::Command::NMotMax, front->command.left.nMotMax);
+        if (front) send(MotorController<false, true>::Command::NMotMax, front->command.right.nMotMax);
+        if (back) send(MotorController<true, false>::Command::NMotMax, back->command.left.nMotMax);
+        if (back) send(MotorController<true, true>::Command::NMotMax, back->command.right.nMotMax);
         break;
     case 6:
-        send(MotorController<false, false>::Command::FieldWeakMax, front.command.left.fieldWeakMax);
-        send(MotorController<false, true>::Command::FieldWeakMax, front.command.right.fieldWeakMax);
-        send(MotorController<true, false>::Command::FieldWeakMax, back.command.left.fieldWeakMax);
-        send(MotorController<true, true>::Command::FieldWeakMax, back.command.right.fieldWeakMax);
+        if (front) send(MotorController<false, false>::Command::FieldWeakMax, front->command.left.fieldWeakMax);
+        if (front) send(MotorController<false, true>::Command::FieldWeakMax, front->command.right.fieldWeakMax);
+        if (back) send(MotorController<true, false>::Command::FieldWeakMax, back->command.left.fieldWeakMax);
+        if (back) send(MotorController<true, true>::Command::FieldWeakMax, back->command.right.fieldWeakMax);
         break;
     case 7:
-        send(MotorController<false, false>::Command::PhaseAdvMax, front.command.left.phaseAdvMax);
-        send(MotorController<false, true>::Command::PhaseAdvMax, front.command.right.phaseAdvMax);
-        send(MotorController<true, false>::Command::PhaseAdvMax, back.command.left.phaseAdvMax);
-        send(MotorController<true, true>::Command::PhaseAdvMax, back.command.right.phaseAdvMax);
+        if (front) send(MotorController<false, false>::Command::PhaseAdvMax, front->command.left.phaseAdvMax);
+        if (front) send(MotorController<false, true>::Command::PhaseAdvMax, front->command.right.phaseAdvMax);
+        if (back) send(MotorController<true, false>::Command::PhaseAdvMax, back->command.left.phaseAdvMax);
+        if (back) send(MotorController<true, true>::Command::PhaseAdvMax, back->command.right.phaseAdvMax);
         break;
     case 8:
-        send(MotorController<false, false>::Command::CruiseCtrlEna, front.command.left.cruiseCtrlEna);
-        send(MotorController<false, true>::Command::CruiseCtrlEna, front.command.right.cruiseCtrlEna);
-        send(MotorController<true, false>::Command::CruiseCtrlEna, back.command.left.cruiseCtrlEna);
-        send(MotorController<true, true>::Command::CruiseCtrlEna, back.command.right.cruiseCtrlEna);
+        if (front) send(MotorController<false, false>::Command::CruiseCtrlEna, front->command.left.cruiseCtrlEna);
+        if (front) send(MotorController<false, true>::Command::CruiseCtrlEna, front->command.right.cruiseCtrlEna);
+        if (back) send(MotorController<true, false>::Command::CruiseCtrlEna, back->command.left.cruiseCtrlEna);
+        if (back) send(MotorController<true, true>::Command::CruiseCtrlEna, back->command.right.cruiseCtrlEna);
         break;
     case 9:
-        send(MotorController<false, false>::Command::CruiseMotTgt, front.command.left.nCruiseMotTgt);
-        send(MotorController<false, true>::Command::CruiseMotTgt, front.command.right.nCruiseMotTgt);
-        send(MotorController<true, false>::Command::CruiseMotTgt, back.command.left.nCruiseMotTgt);
-        send(MotorController<true, true>::Command::CruiseMotTgt, back.command.right.nCruiseMotTgt);
+        if (front) send(MotorController<false, false>::Command::CruiseMotTgt, front->command.left.nCruiseMotTgt);
+        if (front) send(MotorController<false, true>::Command::CruiseMotTgt, front->command.right.nCruiseMotTgt);
+        if (back) send(MotorController<true, false>::Command::CruiseMotTgt, back->command.left.nCruiseMotTgt);
+        if (back) send(MotorController<true, true>::Command::CruiseMotTgt, back->command.right.nCruiseMotTgt);
         break;
     case 10:
-        if (send(MotorController<false, false>::Command::BuzzerFreq, front.command.buzzer.freq) == ESP_OK)
-            lastValues.front.freq = front.command.buzzer.freq;
-//        if (send(MotorController<false, true>::Command::BuzzerFreq, front.command.buzzer.freq) == ESP_OK)
-//            lastValues.front.freq = front.command.buzzer.freq;
-        if (send(MotorController<true, false>::Command::BuzzerFreq, back.command.buzzer.freq) == ESP_OK)
-            lastValues.back.freq = back.command.buzzer.freq;
-//        if (send(MotorController<true, true>::Command::BuzzerFreq, back.command.buzzer.freq) == ESP_OK)
-//            lastValues.back.freq = back.command.buzzer.freq;
-        if (send(MotorController<false, false>::Command::BuzzerPattern, front.command.buzzer.pattern) == ESP_OK)
-            lastValues.front.pattern = front.command.buzzer.pattern;
-//        if (send(MotorController<false, true>::Command::BuzzerPattern, front.command.buzzer.pattern) == ESP_OK)
-//            lastValues.front.pattern = front.command.buzzer.pattern;
-        if (send(MotorController<true, false>::Command::BuzzerPattern, back.command.buzzer.pattern) == ESP_OK)
-            lastValues.back.pattern = back.command.buzzer.pattern;
-//        if (send(MotorController<true, true>::Command::BuzzerPattern, back.command.buzzer.pattern) == ESP_OK)
-//            lastValues.back.pattern = back.command.buzzer.pattern;
+        if (front && send(MotorController<false, false>::Command::BuzzerFreq, front->command.buzzer.freq) == ESP_OK)
+            lastValues.front.freq = front->command.buzzer.freq;
+//        if (front && send(MotorController<false, true>::Command::BuzzerFreq, front->command.buzzer.freq) == ESP_OK)
+//            lastValues.front.freq = front->command.buzzer.freq;
+        if (back && send(MotorController<true, false>::Command::BuzzerFreq, back->command.buzzer.freq) == ESP_OK)
+            lastValues.back.freq = back->command.buzzer.freq;
+//        if (back && send(MotorController<true, true>::Command::BuzzerFreq, back->command.buzzer.freq) == ESP_OK)
+//            lastValues.back.freq = back->command.buzzer.freq;
+        if (front && send(MotorController<false, false>::Command::BuzzerPattern, front->command.buzzer.pattern) == ESP_OK)
+            lastValues.front.pattern = front->command.buzzer.pattern;
+//        if (front && send(MotorController<false, true>::Command::BuzzerPattern, front->command.buzzer.pattern) == ESP_OK)
+//            lastValues.front.pattern = front->command.buzzer.pattern;
+        if (back && send(MotorController<true, false>::Command::BuzzerPattern, back->command.buzzer.pattern) == ESP_OK)
+            lastValues.back.pattern = back->command.buzzer.pattern;
+//        if (back && send(MotorController<true, true>::Command::BuzzerPattern, back->command.buzzer.pattern) == ESP_OK)
+//            lastValues.back.pattern = back->command.buzzer.pattern;
         break;
     case 11:
-        send(MotorController<false, false>::Command::Led, front.command.led);
-        //send(MotorController<false, true>::Command::Led, front.command.led);
-        send(MotorController<true, false>::Command::Led, back.command.led);
-        //send(MotorController<true, true>::Command::Led, back.command.led);
-        send(MotorController<false, false>::Command::Poweroff, front.command.poweroff);
-        //send(MotorController<false, true>::Command::Poweroff, front.command.poweroff);
-        send(MotorController<true, false>::Command::Poweroff, back.command.poweroff);
-        //send(MotorController<true, true>::Command::Poweroff, back.command.poweroff);
+        if (front) send(MotorController<false, false>::Command::Led, front->command.led);
+        //if (front) send(MotorController<false, true>::Command::Led, front->command.led);
+        if (back) send(MotorController<true, false>::Command::Led, back->command.led);
+        //if (back) send(MotorController<true, true>::Command::Led, back->command.led);
+        if (front) send(MotorController<false, false>::Command::Poweroff, front->command.poweroff);
+        //if (front) send(MotorController<false, true>::Command::Poweroff, front->command.poweroff);
+        if (back) send(MotorController<true, false>::Command::Poweroff, back->command.poweroff);
+        //if (back) send(MotorController<true, true>::Command::Poweroff, back->command.poweroff);
         break;
     case 12:
         if (send(Boardcomputer::Feedback::ButtonLeds, buttonLeds) == ESP_OK)

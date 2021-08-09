@@ -9,14 +9,14 @@
 namespace {
 wifi_stack::config wifi_create_config()
 {
-    return wifi_stack::config {
+    static wifi_stack::config config {
         .wifiEnabled = true,
         .hostname = deviceName,
         .sta = {
             .wifis = std::array<wifi_stack::wifi_entry, 10> {
                 wifi_stack::wifi_entry { .ssid = "realraum",            .key = "r3alraum" },
                 wifi_stack::wifi_entry { .ssid = "McDonalds Free WiFi", .key = "Passwort_123" },
-                wifi_stack::wifi_entry { .ssid = "***REMOVED***",          .key = "***REMOVED***" },
+                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
                 wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
                 wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
                 wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
@@ -42,6 +42,8 @@ wifi_stack::config wifi_create_config()
             .beacon_interval = 100
         }
     };
+
+    return config;
 }
 
 void wifi_begin()

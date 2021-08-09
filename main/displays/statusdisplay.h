@@ -1,7 +1,11 @@
 #pragma once
 
+// system includes
+#include <optional>
+
 // 3rdparty lib includes
 #include <fmt/core.h>
+#include <espchrono.h>
 
 // local includes
 #include "display.h"
@@ -103,6 +107,15 @@ private:
     Label m_labelProfile{205, bottomLines[3]}; // 35, 15
 
     static const constexpr int bottomLines[4] { 251, 266, 281, 296 };
+
+    struct CachedString
+    {
+        std::string text;
+        espchrono::millis_clock::time_point timestamp = espchrono::millis_clock::now();
+    };
+
+    std::optional<CachedString> m_cachedWifiStatus;
+    std::optional<CachedString> m_cachedWifiIP;
 };
 
 void StatusDisplay::initScreen()
@@ -141,6 +154,9 @@ void StatusDisplay::initScreen()
     m_labelProfile.start();
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+    m_cachedWifiStatus = std::nullopt;
+    m_cachedWifiIP = std::nullopt;
 }
 
 void StatusDisplay::redraw()
@@ -157,13 +173,38 @@ void StatusDisplay::redraw()
     m_backStatus.redraw(controllers.back);
 
     tft.setTextFont(2);
-    m_labelWifiStatus.redraw(wifi_stack::toString(wifi_stack::get_sta_status()));
-    m_labelLimit0.redraw(std::to_string(controllers.front.command.left.iMotMax) + "A");
+
+    if (!m_cachedWifiStatus || espchrono::ago(m_cachedWifiStatus->timestamp) >= 500ms)
+    {
+        const auto staStatus = wifi_stack::get_sta_status();
+        if (staStatus == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        {
+            if (const auto result = wifi_stack::get_sta_ap_info(); result)
+            {
+                m_cachedWifiStatus = CachedString{ .text = std::string{reinterpret_cast<const char*>(result->ssid)} };
+            }
+            else
+            {
+                ESP_LOGW("BOBBY", "get_sta_ap_info() failed with %.*s", result.error().size(), result.error().data());
+                goto showStaStatus;
+            }
+        }
+        else
+        {
+showStaStatus:
+            m_cachedWifiStatus = CachedString{ .text = wifi_stack::toString(staStatus) };
+        }
+    }
+
+    assert(m_cachedWifiStatus);
+    m_labelWifiStatus.redraw(m_cachedWifiStatus->text);
+
+    m_labelLimit0.redraw(fmt::format("{}A", controllers.front.command.left.iMotMax));
     if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA))
         m_labelIpAddress.redraw(wifi_stack::toString(result->ip));
     else
         m_labelIpAddress.clear();
-    m_labelLimit1.redraw(std::to_string(controllers.front.command.left.iDcMax) + "A");
+    m_labelLimit1.redraw(fmt::format("{}A", controllers.front.command.left.iDcMax));
     m_labelPerformance.redraw(std::to_string(performance.last));
     m_labelMode.redraw(currentMode->displayName());
     m_labelName.redraw(deviceName);

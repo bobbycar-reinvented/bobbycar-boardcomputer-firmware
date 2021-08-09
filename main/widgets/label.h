@@ -14,7 +14,7 @@ public:
     int y() const { return m_y; };
 
     void start();
-    void redraw(const std::string &str, bool forceRedraw = false);
+    void redraw(std::string_view str, bool forceRedraw = false);
     void clear();
 
 private:
@@ -45,7 +45,7 @@ void Label::start()
     m_lastHeight = 0;
 }
 
-void Label::redraw(const std::string &str, bool forceRedraw)
+void Label::redraw(std::string_view str, bool forceRedraw)
 {
     if (m_lastStr == str &&
         m_lastFont == tft.textfont &&
@@ -53,7 +53,7 @@ void Label::redraw(const std::string &str, bool forceRedraw)
         !forceRedraw)
         return;
 
-    const auto renderedWidth = tft.drawString(str.c_str(), m_x, m_y);
+    const auto renderedWidth = tft.drawString(str.data(), m_x, m_y);
     const auto renderedHeight = tft.fontHeight();
 
     if (renderedWidth < m_lastWidth)

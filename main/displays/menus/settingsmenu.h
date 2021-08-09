@@ -32,6 +32,13 @@ class MainMenu;
 }
 
 namespace {
+#ifdef FEATURE_LEDBACKLIGHT
+struct BacklightAccessor : public virtual AccessorInterface<bool>
+{
+    bool getValue() const override { return digitalRead(PINS_LEDBACKLIGHT) != ledBacklightInverted; }
+    void setValue(bool value) override { digitalWrite(PINS_LEDBACKLIGHT, value != ledBacklightInverted); }
+};
+#endif
 struct FrontLedAccessor : public RefAccessor<bool> { bool &getRef() const override { return controllers.front.command.led; } };
 struct BackLedAccessor : public RefAccessor<bool> { bool &getRef() const override { return controllers.back.command.led; } };
 
@@ -43,6 +50,9 @@ class SettingsMenu :
 public:
     SettingsMenu()
     {
+#ifdef FEATURE_LEDBACKLIGHT
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLIGHT>,                     ToggleBoolAction, CheckboxIcon, BacklightAccessor>>();
+#endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,                SwitchScreenAction<LimitsSettingsMenu>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFISETTINGS>,                  SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::wifi>>>();
 #ifdef FEATURE_BLUETOOTH

@@ -61,6 +61,10 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERINCH>, SwitchScreenAction<WheelDiameterInchChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NUMMAGNETPOLES>,    SwitchScreenAction<NumMagnetPolesChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPFRONTBACK>,     ToggleBoolAction, CheckboxIcon, SwapFrontBackAccessor>>();
+#ifdef FEATURE_CAN
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTSENDCAN>,      ToggleBoolAction, CheckboxIcon, SendFrontCanCmdAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKSENDCAN>,       ToggleBoolAction, CheckboxIcon, SendBackCanCmdAccessor>>();
+#endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };

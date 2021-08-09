@@ -4,8 +4,6 @@
 #include <utility>
 #include <string>
 
-#include <driver/twai.h>
-
 #ifdef FEATURE_SERIAL
 #include <HardwareSerial.h>
 #endif

@@ -1,4 +1,4 @@
-if [[ $_ == $0 ]]
+if [[ $_ == $0 ]] && [[ "$1" != "--skip-source-check" ]]
 then
     echo "export.sh has to be sourced, not run in a subshell"
     echo ". export.sh"
