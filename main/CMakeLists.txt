@@ -183,7 +183,7 @@ set(dependencies
     libsodium freertos nvs_flash esp_http_server esp_https_ota mdns app_update esp_system esp_websocket_client driver
     arduino-esp32 ArduinoJson esp-nimble-cpp
     bobbycar-protocol cpputils cxx-ring-buffer date
-    espchrono espcpputils espwifistack expected fmt TFT_eSPI
+    espasyncota espchrono espcpputils esphttpdutils espwifistack expected fmt TFT_eSPI
 )
 
 idf_component_register(

@@ -245,7 +245,7 @@ extern "C" void app_main()
 
     currentMode = &modes::defaultMode;
 
-#ifdef FEATURE_ARDUINOOTA
+#ifdef FEATURE_OTA
     bootLabel.redraw("ota");
     initOta();
     printMemoryStats("initOta()");
@@ -369,7 +369,7 @@ extern "C" void app_main()
 
         handleSerial();
 
-#ifdef FEATURE_ARDUINOOTA
+#ifdef FEATURE_OTA
         handleOta();
 #endif
 

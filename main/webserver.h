@@ -25,6 +25,7 @@
 #include "displays/updatedisplay.h"
 //#include "esputils.h"
 #include "buttons.h"
+#include "esphttpdutils.h"
 
 namespace {
 #ifdef FEATURE_WEBSERVER
@@ -111,100 +112,6 @@ void initWebserver()
         //if (result != ESP_OK)
         //    return result;
     }
-
-#ifdef FEATURE_WEBOTA
-    webServer.on("/update", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(200, "text/html",
-                      "<form method=\"POST\" action=\"/updateCode\" enctype=\"multipart/form-data\">"
-                      "<input type=\"file\" name=\"update\">"
-                      "<input type=\"submit\" value=\"Update Code\">"
-                      "</form>"
-                      "<form method=\"POST\" action=\"/updateData\" enctype=\"multipart/form-data\">"
-                      "<input type=\"file\" name=\"update\">"
-                      "<input type=\"submit\" value=\"Update Data\">"
-                      "</form>");
-    });
-
-    const auto handleUpdate = [](AsyncWebServerRequest *request){
-        shouldReboot = !Update.hasError();
-
-        AsyncWebServerResponse *response = request->beginResponse(200, "text/plain", shouldReboot ? "OK" : "FAIL");
-        response->addHeader("Connection", "close");
-        request->send(response);
-    };
-
-    const auto createHandleUpdtateUpload = [](size_t size, int command){
-        return [size, command](AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final){
-            //ESP_UNUSED(request)
-
-            //Serial.printf("callback %u %u\r\n", index, len);
-
-            if (!index)
-            {
-                //Serial.printf("Update Start: %s\r\n", filename.c_str());
-                //Update.runAsync(true);
-                if (!Update.begin(size, command))
-                    Update.printError(Serial);
-
-                std::string type;
-                if (ArduinoOTA.getCommand() == U_FLASH)
-                    type = "sketch";
-                else if (ArduinoOTA.getCommand() == U_SPIFFS) // U_SPIFFS
-                    type = "filesystem";
-                else
-                    type = "unknown";
-
-                switchScreenImpl<UpdateDisplay>("Updating " + type);
-            }
-
-            if (!Update.hasError())
-            {
-                if (Update.write(data, len) == len)
-                {
-                    ((UpdateDisplay*)currentDisplay.get())->m_progress = index;
-                    ((UpdateDisplay*)currentDisplay.get())->m_total = size;
-                    ((UpdateDisplay*)currentDisplay.get())->redraw();
-                }
-                else
-                {
-                    Update.printError(Serial);
-
-                    ((UpdateDisplay*)currentDisplay.get())->m_error = {};
-                    ((UpdateDisplay*)currentDisplay.get())->m_errorValid = true;
-                    ((UpdateDisplay*)currentDisplay.get())->redraw();
-                }
-            }
-            else
-            {
-                ((UpdateDisplay*)currentDisplay.get())->m_error = {};
-                ((UpdateDisplay*)currentDisplay.get())->m_errorValid = true;
-                ((UpdateDisplay*)currentDisplay.get())->redraw();
-            }
-
-            if (final)
-            {
-                if (Update.end(true))
-                {
-                    //Serial.printf("Update Success: %uB\r\n", index + len);
-
-                    ((UpdateDisplay*)currentDisplay.get())->m_finished = true;
-                    ((UpdateDisplay*)currentDisplay.get())->redraw();
-                }
-                else
-                {
-                    Update.printError(Serial);
-
-                    ((UpdateDisplay*)currentDisplay.get())->m_error = {};
-                    ((UpdateDisplay*)currentDisplay.get())->m_errorValid = true;
-                    ((UpdateDisplay*)currentDisplay.get())->redraw();
-                }
-            }
-        };
-    };
-
-    webServer.on("/updateCode", HTTP_POST, handleUpdate, createHandleUpdtateUpload((ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000, U_FLASH));
-    webServer.on("/updateData", HTTP_POST, handleUpdate, createHandleUpdtateUpload(UPDATE_SIZE_UNKNOWN, U_SPIFFS));
-#endif
 }
 
 void handleWebserver()
@@ -359,7 +266,7 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
         if (const auto result = httpd_query_key_value(query.data(), indexParamName.data(), valueBufEncoded, 256); result == ESP_OK)
         {
             char valueBuf[257];
-            espcpputils::urldecode(valueBuf, valueBufEncoded);
+            esphttpdutils::urldecode(valueBuf, valueBufEncoded);
 
             std::string_view value{valueBuf};
 
@@ -421,7 +328,7 @@ esp_err_t webserver_setValue_handler(httpd_req_t *req)
         if (const auto result = httpd_query_key_value(query.data(), valueParamName.data(), valueBufEncoded, 256); result == ESP_OK)
         {
             char valueBuf[257];
-            espcpputils::urldecode(valueBuf, valueBufEncoded);
+            esphttpdutils::urldecode(valueBuf, valueBufEncoded);
 
             std::string_view value{valueBuf};
 

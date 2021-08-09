@@ -6,9 +6,6 @@
 
 #include <driver/twai.h>
 
-#ifdef FEATURE_ARDUINOOTA
-#include <ArduinoOTA.h>
-#endif
 #ifdef FEATURE_SERIAL
 #include <HardwareSerial.h>
 #endif
@@ -122,22 +119,6 @@ std::string to_string(bobbycar::protocol::ControlMode value)
     }
     return "Unknown ControlMode(" + std::to_string(int(value)) + ')';
 }
-
-#ifdef FEATURE_ARDUINOOTA
-std::string to_string(ota_error_t value)
-{
-    switch (value)
-    {
-    case OTA_AUTH_ERROR: return "OTA_AUTH_ERROR";
-    case OTA_BEGIN_ERROR: return "OTA_BEGIN_ERROR";
-    case OTA_CONNECT_ERROR: return "OTA_CONNECT_ERROR";
-    case OTA_RECEIVE_ERROR: return "OTA_RECEIVE_ERROR";
-    case OTA_END_ERROR: return "OTA_END_ERROR";
-    }
-
-    return "Unknown ota_error_t(" + std::to_string(int(value)) + ')';
-}
-#endif
 
 std::array<std::reference_wrapper<bobbycar::protocol::serial::MotorState>, 2> motorsInController(Controller &controller)
 {

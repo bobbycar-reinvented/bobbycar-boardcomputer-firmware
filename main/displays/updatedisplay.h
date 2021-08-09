@@ -3,8 +3,8 @@
 #include <array>
 #include <string>
 
-#if defined(FEATURE_ARDUINOOTA) || defined(FEATURE_WEBOTA)
-#include <ArduinoOTA.h>
+#ifdef FEATURE_OTA
+#include <espasyncota.h>
 #endif
 
 #include "display.h"
@@ -20,7 +20,7 @@ class StatusDisplay;
 }
 
 namespace {
-#if defined(FEATURE_ARDUINOOTA) || defined(FEATURE_WEBOTA)
+#ifdef FEATURE_OTA
 class UpdateDisplay : public Display, public DummyBack
 {
 public:
@@ -36,8 +36,6 @@ public:
     bool m_finished;
     unsigned int m_progress;
     unsigned int m_total;
-    ota_error_t m_error;
-    bool m_errorValid;
 
 private:
     const std::string m_title;
@@ -60,7 +58,6 @@ void UpdateDisplay::start()
     m_finished = false;
     m_progress = 0;
     m_total = 1;
-    m_errorValid = false;
 }
 
 void UpdateDisplay::initScreen()

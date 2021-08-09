@@ -12,40 +12,35 @@ wifi_stack::config wifi_create_config()
     return wifi_stack::config {
         .wifiEnabled = true,
         .hostname = deviceName,
-        .wifis = std::array<wifi_stack::wifi_entry, 10> {
-            wifi_stack::wifi_entry { .ssid = "realraum",            .key = "r3alraum" },
-            wifi_stack::wifi_entry { .ssid = "McDonalds Free WiFi", .key = "Passwort_123" },
-            wifi_stack::wifi_entry { .ssid = "***REMOVED***",             .key = "***REMOVED***" },
-            wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-            wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-            wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-            wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-            wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-            wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-            wifi_stack::wifi_entry { .ssid = {},                    .key = {} }
-        },
-        .sta_ip = {
-            .staticIpEnabled = false,
-//            .staticIp = {},
-//            .staticGateway = {},
-//            .staticSubnet = {},
-//            .staticDns1 = {},
-//            .staticDns2 = {}
+        .sta = {
+            .wifis = std::array<wifi_stack::wifi_entry, 10> {
+                wifi_stack::wifi_entry { .ssid = "realraum",            .key = "r3alraum" },
+                wifi_stack::wifi_entry { .ssid = "McDonalds Free WiFi", .key = "Passwort_123" },
+                wifi_stack::wifi_entry { .ssid = "***REMOVED***",          .key = "***REMOVED***" },
+                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
+                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
+                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
+                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
+                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
+                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
+                wifi_stack::wifi_entry { .ssid = {},                    .key = {} }
+            },
+            .min_rssi = -90
         },
         .ap = {
-            {
-                .ssid = deviceName,
-                .key = STRING(AP_PASSWORD)
+            .ssid = deviceName,
+            .key = STRING(AP_PASSWORD),
+            .static_ip = {
+                .ip = {10, 0, 0, 1},
+                .subnet = {255, 255, 255, 0},
+                .gateway = {10, 0, 0, 1},
             },
             .channel = 1,
             .authmode = WIFI_AUTH_WPA2_PSK,
             .ssid_hidden = false,
             .max_connection = 4,
-            .beacon_interval = 100,
-            .ip = {10, 0, 0, 1},
-            .subnet = {255, 255, 255, 0}
-        },
-        .min_rssi = -90
+            .beacon_interval = 100
+        }
     };
 }
 

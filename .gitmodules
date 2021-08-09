@@ -43,3 +43,9 @@
 [submodule "components/esp-nimble-cpp"]
 	path = components/esp-nimble-cpp
 	url = git@github.com:0xFEEDC0DE64/esp-nimble-cpp.git
+[submodule "components/espasyncota"]
+	path = components/espasyncota
+	url = git@github.com:0xFEEDC0DE64/espasyncota.git
+[submodule "components/esphttpdutils"]
+	path = components/esphttpdutils
+	url = git@github.com:0xFEEDC0DE64/esphttpdutils.git
