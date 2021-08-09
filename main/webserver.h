@@ -297,7 +297,7 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
     if (!menuDisplay)
         CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, "currentDisplay is not a menu display");
 
-    if (index < 0 || index >= menuDisplay->menuItemCount())
+    if (/*index < 0 ||*/ index >= menuDisplay->menuItemCount())
         CALL_AND_EXIT(httpd_resp_send_err, req, HTTPD_400_BAD_REQUEST, fmt::format("{} out of range", indexParamName).c_str());
 
     menuDisplay->getMenuItem(index).triggered();

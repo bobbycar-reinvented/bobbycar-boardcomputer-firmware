@@ -5,6 +5,10 @@
 
 #include <nvs_flash.h>
 #include <nvs.h>
+#include <esp_log.h>
+
+#include <fmt/core.h>
+#include <cpputils.h>
 
 #include "settings.h"
 #ifdef FEATURE_BLUETOOTH
@@ -18,6 +22,8 @@ class SettingsPersister
 public:
     bool init();
     bool erase();
+    bool openCommon();
+    void closeCommon();
     bool openProfile(uint8_t index);
     void closeProfile();
     bool load(Settings &settings);
@@ -26,6 +32,9 @@ public:
     std::optional<uint8_t> currentlyOpenProfileIndex() const;
 
 private:
+    // for common settings
+    nvs_handle m_handle{};
+
     struct CurrentlyOpenProfile {
         nvs_handle handle;
         uint8_t profileIndex;
@@ -35,17 +44,15 @@ private:
 
 bool SettingsPersister::init()
 {
-    esp_err_t err = nvs_flash_init();
-    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND)
+    if (esp_err_t result = nvs_flash_init();
+        cpputils::is_in(result, ESP_ERR_NVS_NO_FREE_PAGES, ESP_ERR_NVS_NEW_VERSION_FOUND))
     {
-        //Serial.printf("nvs_flash_init() returned: %s, trying to erase\r\n", esp_err_to_name(err));
-
+        ESP_LOGE("BOBBY", "nvs_flash_init() failed with %s, trying to erase...", esp_err_to_name(result));
         return erase();
     }
-
-    if (err != ESP_OK)
+    else if (result != ESP_OK)
     {
-        //Serial.printf("nvs_flash_init() returned: %s\r\n", esp_err_to_name(err));
+        ESP_LOGE("BOBBY", "nvs_flash_init() failed with %s", esp_err_to_name(result));
         return false;
     }
 
@@ -54,21 +61,50 @@ bool SettingsPersister::init()
 
 bool SettingsPersister::erase()
 {
-    esp_err_t err = nvs_flash_erase();
-    if (err != ESP_OK)
+    closeProfile();
+    closeCommon();
+
+    bool result{true};
+
+    if (esp_err_t result = nvs_flash_erase(); result != ESP_OK)
     {
-        //Serial.printf("nvs_flash_erase() returned: %s, aborting\r\n", esp_err_to_name(err));
+        ESP_LOGE("BOBBY", "nvs_flash_erase() failed with %s", esp_err_to_name(result));
+        result = false;
+    }
+
+    if (esp_err_t result = nvs_flash_init(); result != ESP_OK)
+    {
+        ESP_LOGE("BOBBY", "nvs_flash_init() failed with %s", esp_err_to_name(result));
+        result = false;
+    }
+
+    return result;
+}
+
+bool SettingsPersister::openCommon()
+{
+    closeCommon();
+
+    nvs_handle handle;
+    if (esp_err_t result = nvs_open("bobbycar", NVS_READWRITE, &handle); result != ESP_OK)
+    {
+        ESP_LOGE("BOBBY", "nvs_open() COMMON %s failed with %s", "bobbycar", esp_err_to_name(result));
         return false;
     }
 
-    err = nvs_flash_init();
-    if (err != ESP_OK)
-    {
-        //Serial.printf("nvs_flash_init() returned: %s\r\n", esp_err_to_name(err));
-        return false;
-    }
+    m_handle = handle;
 
     return true;
+}
+
+void SettingsPersister::closeCommon()
+{
+    if (!m_handle)
+        return;
+
+    nvs_close(m_handle);
+
+    m_handle = {};
 }
 
 bool SettingsPersister::openProfile(uint8_t index)
@@ -76,10 +112,10 @@ bool SettingsPersister::openProfile(uint8_t index)
     closeProfile();
 
     nvs_handle handle;
-    esp_err_t err = nvs_open(("bobbycar"+std::to_string(index)).c_str(), NVS_READWRITE, &handle);
-    if (err != ESP_OK)
+    const auto name = fmt::format("bobbycar{}", index);
+    if (esp_err_t result = nvs_open(name.c_str(), NVS_READWRITE, &handle); result != ESP_OK)
     {
-        //Serial.printf("nvs_open() returned: %s\r\n", esp_err_to_name(err));
+        ESP_LOGE("BOBBY", "nvs_open() PROFILE %s failed with %s", name.c_str(), esp_err_to_name(result));
         return false;
     }
 
@@ -166,23 +202,41 @@ template<> struct nvsGetterHelper<wifi_mode_t> { static esp_err_t nvs_get(nvs_ha
 
 bool SettingsPersister::load(Settings &settings)
 {
-    if (!m_profile)
-    {
-        //Serial.println("SettingsPersister::load() no profile open currently!");
-        return false;
-    }
-
     bool result{true};
 
-    settings.executeForEverySetting([&](const char *key, auto &value)
+    if (m_handle)
     {
-        esp_err_t err = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(m_profile->handle, key, &value);
-        if (err != ESP_OK)
+        settings.executeForEveryCommonSetting([&](const char *key, auto &value)
         {
-            //Serial.printf("nvs_get_i32() for %s returned: %s\r\n", key, esp_err_to_name(err));
-            result = false;
-        }
-    });
+            if (esp_err_t result = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(m_handle, key, &value); result != ESP_OK)
+            {
+                ESP_LOGE("BOBBY", "nvs_get() COMMON %s failed with %s", key, esp_err_to_name(result));
+                result = false;
+            }
+        });
+    }
+    else
+    {
+        ESP_LOGW("BOBBY", "common nvs handle not valid!");
+        result = false;
+    }
+
+    if (m_profile)
+    {
+        settings.executeForEveryProfileSetting([&](const char *key, auto &value)
+        {
+            if (esp_err_t result = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(m_profile->handle, key, &value); result != ESP_OK)
+            {
+                ESP_LOGE("BOBBY", "nvs_get() PROFILE %s failed with %s", key, esp_err_to_name(result));
+                result = false;
+            }
+        });
+    }
+    else
+    {
+        ESP_LOGW("BOBBY", "no profile open currently!");
+        result = false;
+    }
 
     return result;
 }
@@ -224,23 +278,41 @@ template<> struct nvsSetterHelper<wifi_mode_t> { static esp_err_t nvs_set(nvs_ha
 
 bool SettingsPersister::save(Settings &settings)
 {
-    if (!m_profile)
-    {
-        //Serial.println("SettingsPersister::save() no profile open currently!");
-        return false;
-    }
-
     bool result{true};
 
-    settings.executeForEverySetting([&](const char *key, auto value)
+    if (m_handle)
     {
-        esp_err_t err = nvsSetterHelper<decltype(value)>::nvs_set(m_profile->handle, key, value);
-        if (err != ESP_OK)
+        settings.executeForEveryCommonSetting([&](const char *key, auto value)
         {
-            //Serial.printf("nvs_get_i32() for %s returned: %s\r\n", key, esp_err_to_name(err));
-            result = false;
-        }
-    });
+            if (esp_err_t result = nvsSetterHelper<decltype(value)>::nvs_set(m_handle, key, value); result != ESP_OK)
+            {
+                ESP_LOGE("BOBBY", "nvs_set() PROFILE %s failed with %s", key, esp_err_to_name(result));
+                result = false;
+            }
+        });
+    }
+    else
+    {
+        ESP_LOGW("BOBBY", "common nvs handle not valid!");
+        result = false;
+    }
+
+    if (m_profile)
+    {
+        settings.executeForEveryProfileSetting([&](const char *key, auto value)
+        {
+            if (esp_err_t result = nvsSetterHelper<decltype(value)>::nvs_set(m_profile->handle, key, value); result != ESP_OK)
+            {
+                ESP_LOGE("BOBBY", "nvs_set() PROFILE %s failed with %s", key, esp_err_to_name(result));
+                result = false;
+            }
+        });
+    }
+    else
+    {
+        ESP_LOGW("BOBBY", "no profile open currently!");
+        result = false;
+    }
 
     return result;
 }

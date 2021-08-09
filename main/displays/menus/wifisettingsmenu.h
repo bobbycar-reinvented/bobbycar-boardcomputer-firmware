@@ -24,14 +24,6 @@ class SettingsMenu;
 namespace {
 class WifiSettingsMenu;
 
-using AutoWifiModeChangeDisplay = makeComponent<
-    ChangeValueDisplay<wifi_mode_t>,
-    StaticText<TEXT_AUTOWIFIMODE>,
-    AutoWifiModeAccessor,
-    BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>,
-    SwitchScreenAction<WifiSettingsMenu>
->;
-
 class WifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_WIFISETTINGS>,
@@ -40,8 +32,7 @@ class WifiSettingsMenu :
 public:
     WifiSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOWIFIMODE>,            SwitchScreenAction<AutoWifiModeChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOENABLEAP>,            ToggleBoolAction, CheckboxIcon, AutoEnableApAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFIENABLED>,             ToggleBoolAction, CheckboxIcon, WifiEnabledAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GENERICWIFISETTINGS>,     SwitchScreenAction<GenericWifiSettingsMenu>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATIONWIFISETTINGS>,     SwitchScreenAction<StationWifiSettingsMenu>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFISCAN>,                SwitchScreenAction<WifiScanMenu>, StaticMenuItemIcon<&icons::scan>>>();

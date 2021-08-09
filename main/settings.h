@@ -35,8 +35,7 @@ struct Settings
     } limits;
 
     struct WifiSettings {
-        wifi_mode_t autoWifiMode;
-        bool autoEnableAp;
+        bool wifiEnabled;
     } wifiSettings;
 
 #ifdef FEATURE_BLUETOOTH
@@ -57,6 +56,8 @@ struct Settings
 #ifdef FEATURE_CAN
         bool sendFrontCanCmd;
         bool sendBackCanCmd;
+        int16_t canTransmitTimeout; // in ms
+        int16_t canReceiveTimeout; // in ms
 #endif
     } controllerHardware;
 
@@ -77,6 +78,9 @@ struct Settings
             int16_t statsUpdateRate;
             int16_t displayUpdateRate;
             int16_t displayRedrawRate;
+#ifdef FEATURE_CAN
+            int16_t canReceiveRate;
+#endif
         } timersSettings;
     } boardcomputerHardware;
 
@@ -107,44 +111,24 @@ struct Settings
 
 
     template<typename T>
-    void executeForEverySetting(T &&callable);
+    void executeForEveryCommonSetting(T &&callable);
+
+    template<typename T>
+    void executeForEveryProfileSetting(T &&callable);
 };
 
 template<typename T>
-void Settings::executeForEverySetting(T &&callable)
+void Settings::executeForEveryCommonSetting(T &&callable)
 {
 #ifdef FEATURE_BMS
     callable("autoConnectBms", autoConnectBms);
 #endif
 
-    callable("reverseBeep", reverseBeep);
-    callable("revBeepFreq0", reverseBeepFreq0);
-    callable("revBeepFreq1", reverseBeepFreq1);
-    callable("revBeepDur0", reverseBeepDuration0);
-    callable("revBeepDur1", reverseBeepDuration1);
-
-    callable("iMotMax", limits.iMotMax);
-    callable("iDcMax", limits.iDcMax);
-    callable("nMotMax", limits.nMotMax);
-    callable("fieldWeakMax", limits.fieldWeakMax);
-    callable("phaseAdvMax", limits.phaseAdvMax);
-
 #ifdef FEATURE_BLUETOOTH
     callable("autoBluetoothMo", bluetoothSettings.autoBluetoothMode);
 #endif
 
-    callable("autoWifiMode", wifiSettings.autoWifiMode);
-    callable("autoEnableAp", wifiSettings.autoEnableAp);
-
-    callable("enableFrontLeft", controllerHardware.enableFrontLeft);
-    callable("enableFrontRigh", controllerHardware.enableFrontRight);
-    callable("enableBackLeft", controllerHardware.enableBackLeft);
-    callable("enableBackRight", controllerHardware.enableBackRight);
-
-    callable("invertFrontLeft", controllerHardware.invertFrontLeft);
-    callable("invertFrontRigh", controllerHardware.invertFrontRight);
-    callable("invertBackLeft", controllerHardware.invertBackLeft);
-    callable("invertBackRight", controllerHardware.invertBackRight);
+    callable("wifiEnabled", wifiSettings.wifiEnabled);
 
     callable("wheelDiameter", controllerHardware.wheelDiameter);
     callable("numMagnetPoles", controllerHardware.numMagnetPoles);
@@ -152,6 +136,8 @@ void Settings::executeForEverySetting(T &&callable)
 #ifdef FEATURE_CAN
     callable("sendFrontCanCmd", controllerHardware.sendFrontCanCmd);
     callable("sendBackCanCmd", controllerHardware.sendBackCanCmd);
+    callable("canTransmitTime", controllerHardware.canTransmitTimeout);
+    callable("canReceiveTimeo", controllerHardware.canReceiveTimeout);
 #endif
 
     callable("sampleCount", boardcomputerHardware.sampleCount);
@@ -177,6 +163,35 @@ void Settings::executeForEverySetting(T &&callable)
     callable("statsUpdateRate", boardcomputerHardware.timersSettings.statsUpdateRate);
     callable("displayUpdateRa", boardcomputerHardware.timersSettings.displayUpdateRate);
     callable("displayRedrawRa", boardcomputerHardware.timersSettings.displayRedrawRate);
+#ifdef FEATURE_CAN
+    callable("canReceiveRate", boardcomputerHardware.timersSettings.canReceiveRate);
+#endif
+}
+
+template<typename T>
+void Settings::executeForEveryProfileSetting(T &&callable)
+{
+    callable("reverseBeep", reverseBeep);
+    callable("revBeepFreq0", reverseBeepFreq0);
+    callable("revBeepFreq1", reverseBeepFreq1);
+    callable("revBeepDur0", reverseBeepDuration0);
+    callable("revBeepDur1", reverseBeepDuration1);
+
+    callable("iMotMax", limits.iMotMax);
+    callable("iDcMax", limits.iDcMax);
+    callable("nMotMax", limits.nMotMax);
+    callable("fieldWeakMax", limits.fieldWeakMax);
+    callable("phaseAdvMax", limits.phaseAdvMax);
+
+    callable("enableFrontLeft", controllerHardware.enableFrontLeft);
+    callable("enableFrontRigh", controllerHardware.enableFrontRight);
+    callable("enableBackLeft", controllerHardware.enableBackLeft);
+    callable("enableBackRight", controllerHardware.enableBackRight);
+
+    callable("invertFrontLeft", controllerHardware.invertFrontLeft);
+    callable("invertFrontRigh", controllerHardware.invertFrontRight);
+    callable("invertBackLeft", controllerHardware.invertBackLeft);
+    callable("invertBackRight", controllerHardware.invertBackRight);
 
     callable("default.modelMo", defaultMode.modelMode);
     callable("default.enableS", defaultMode.enableSmoothing);

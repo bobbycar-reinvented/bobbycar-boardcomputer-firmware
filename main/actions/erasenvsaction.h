@@ -1,5 +1,9 @@
 #pragma once
 
+// esp-idf includes
+#include <esp_log.h>
+
+// local includes
 #include "actioninterface.h"
 #include "globals.h"
 #include "presets.h"
@@ -14,25 +18,31 @@ public:
 
         if (!settingsPersister.erase())
         {
-            //Serial.println("EraseNvsAction::triggered() erase failed");
-            return;
+            ESP_LOGE("BOBBY", "erase() failed");
+            //return;
         }
 
         settings = presets::defaultSettings;
 
-        if (!profile)
-            return;
-
-        if (!settingsPersister.openProfile(*profile))
+        if (!settingsPersister.openCommon())
         {
-            //Serial.println("EraseNvsAction::triggered() openProfile failed");
-            return;
+            ESP_LOGE("BOBBY", "openCommon() failed");
+            //return;
+        }
+
+        if (profile)
+        {
+            if (!settingsPersister.openProfile(*profile))
+            {
+                ESP_LOGE("BOBBY", "openProfile(%hhu) failed", *profile);
+                //return;
+            }
         }
 
         if (!settingsPersister.load(settings))
         {
-            //Serial.println("EraseNvsAction::triggered() load failed");
-            return;
+            ESP_LOGE("BOBBY", "load() failed");
+            //return;
         }
     }
 };

@@ -57,6 +57,16 @@ using DisplayRedrawRateChangeDisplay = makeComponent<
     SwitchScreenAction<TimersMenu>
 >;
 
+#ifdef FEATURE_CAN
+using CanReceiveRateChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_CANRECEIVERATE>,
+    CanReceiveRateAccessor,
+    BackActionInterface<SwitchScreenAction<TimersMenu>>,
+    SwitchScreenAction<TimersMenu>
+>;
+#endif
+
 class TimersMenu :
     public MenuDisplay,
     public StaticText<TEXT_TIMERS>,
@@ -70,6 +80,9 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSUPDATERATE>,   SwitchScreenAction<StatsUpdateRateChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISPLAYUPDATERATE>, SwitchScreenAction<DisplayUpdateRateChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISPLAYREDRAWRATE>, SwitchScreenAction<DisplayRedrawRateChangeDisplay>>>();
+#ifdef FEATURE_CAN
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVERATE>,    SwitchScreenAction<CanReceiveRateChangeDisplay>>>();
+#endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };

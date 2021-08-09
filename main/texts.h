@@ -99,13 +99,14 @@ constexpr char TEXT_SWAPFRONTBACK[] = "Swap front/back";
 #ifdef FEATURE_CAN
 constexpr char TEXT_FRONTSENDCAN[] = "Front send CAN";
 constexpr char TEXT_BACKSENDCAN[] = "Back send CAN";
+constexpr char TEXT_CANTRANSMITTIMEOUT[] = "CanTransmitTimeout";
+constexpr char TEXT_CANRECEIVETIMEOUT[] = "CanReceiveTimeout";
 #endif
 //constexpr char TEXT_BACK[] = "Back";
 
 //StationWifiSettingsMenu
 constexpr char TEXT_STATIONWIFISETTINGS[] = "Station WiFi settings";
-constexpr char TEXT_AUTOWIFIMODE[] = "Auto wifi mode";
-constexpr char TEXT_AUTOENABLEAP[] = "Auto enable AP";
+constexpr char TEXT_WIFIENABLED[] = "WiFi enabled";
 constexpr char TEXT_WIFIRECONNECT[] = "reconnect()";
 constexpr char TEXT_WIFIDISCONNECT[] = "disconnect()";
 constexpr char TEXT_WIFICHANGEAUTOCONNECT[] = "Change auto connect";
@@ -310,6 +311,9 @@ constexpr char TEXT_MODEUPDATERATE[] = "Mode update rate";
 constexpr char TEXT_STATSUPDATERATE[] = "Stats update rate";
 constexpr char TEXT_DISPLAYUPDATERATE[] = "Display update rate";
 constexpr char TEXT_DISPLAYREDRAWRATE[] = "Display redraw rate";
+#ifdef FEATURE_CAN
+constexpr char TEXT_CANRECEIVERATE[] = "CAN receive rate";
+#endif
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<BluetoothMode>

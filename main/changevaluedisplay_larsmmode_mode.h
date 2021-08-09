@@ -1,5 +1,7 @@
 #pragma once
 
+#include <esp_log.h>
+
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
 #include "utils.h"
@@ -44,7 +46,7 @@ void ChangeValueDisplay<LarsmModeMode>::start()
     case LarsmModeMode::Mode3: setSelectedIndex(2); break;
     case LarsmModeMode::Mode4: setSelectedIndex(3); break;
     default:
-        //Serial.printf("Unknown LarsmModeMode: %i\r\n", int(value));
+        ESP_LOGW("BOBBY", "Unknown LarsmModeMode: %i", int(value));
         setSelectedIndex(4);
     }
 }

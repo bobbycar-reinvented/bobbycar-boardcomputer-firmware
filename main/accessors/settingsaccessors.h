@@ -32,8 +32,7 @@ struct NMotMaxRpmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &g
 struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.fieldWeakMax; } };
 struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.phaseAdvMax; } };
 
-struct AutoWifiModeAccessor : public RefAccessorSaveSettings<wifi_mode_t> { wifi_mode_t &getRef() const override { return settings.wifiSettings.autoWifiMode; } };
-struct AutoEnableApAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.wifiSettings.autoEnableAp; } };
+struct WifiEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.wifiSettings.wifiEnabled; } };
 
 #ifdef FEATURE_BLUETOOTH
 struct AutoBluetoothModeAccessor : public RefAccessorSaveSettings<BluetoothMode> { BluetoothMode &getRef() const override { return settings.bluetoothSettings.autoBluetoothMode; } };
@@ -65,6 +64,8 @@ struct SwapFrontBackAccessor : public RefAccessorSaveSettings<bool> {
 #ifdef FEATURE_CAN
 struct SendFrontCanCmdAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.sendFrontCanCmd; } };
 struct SendBackCanCmdAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.sendBackCanCmd; } };
+struct CanTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.canTransmitTimeout; } };
+struct CanReceiveTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.canReceiveTimeout; } };
 #endif
 
 struct SampleCountAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.sampleCount; } };
@@ -89,6 +90,9 @@ struct ModeUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_
 struct StatsUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.statsUpdateRate; } };
 struct DisplayUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.displayUpdateRate; } };
 struct DisplayRedrawRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.displayRedrawRate; } };
+#ifdef FEATURE_CAN
+struct CanReceiveRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.canReceiveRate; } };
+#endif
 
 struct DefaultModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.defaultMode.modelMode; } };
 struct DefaultModeSquareGasAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.defaultMode.squareGas; } };

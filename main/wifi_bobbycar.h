@@ -1,5 +1,8 @@
 #pragma once
 
+// esp-idf includes
+#include <esp_log.h>
+
 // 3rdparty lib includes
 #include <espwifistack.h>
 
@@ -10,7 +13,7 @@ namespace {
 wifi_stack::config wifi_create_config()
 {
     static wifi_stack::config config {
-        .wifiEnabled = true,
+        .wifiEnabled = settings.wifiSettings.wifiEnabled,
         .hostname = deviceName,
         .sta = {
             .wifis = std::array<wifi_stack::wifi_entry, 10> {
@@ -49,44 +52,21 @@ wifi_stack::config wifi_create_config()
 void wifi_begin()
 {
     wifi_stack::init(wifi_create_config());
-    //bootLabel.redraw("setHostname");
-    //if (!WiFi.setHostname(deviceName))
-    //{
-        //Serial.println("Could not setHostname");
-    //}
-    //printMemoryStats("setHostname()");
-
-    //bootLabel.redraw("softAPsetHostname");
-    //if (!WiFi.softAPsetHostname(deviceName))
-    //{
-        //Serial.println("Could not softAPsetHostname");
-    //}
-    //printMemoryStats("softAPsetHostname()");
-
-    //bootLabel.redraw("WiFi mode");
-    //if (!WiFi.mode(settings.wifiSettings.autoWifiMode))
-    //{
-        //Serial.println("Could not set mode to WIFI_AP_STA");
-    //}
-    //printMemoryStats("WiFi.mode()");
-
-    //if (settings.wifiSettings.autoEnableAp)
-    //{
-        //bootLabel.redraw("WiFi softAp");
-        //WifiSoftApAction{}.triggered();
-        //printMemoryStats("WifiSoftApAction()");
-    //}
-
-    //bootLabel.redraw("WiFi begin");
-    //if (!WiFi.begin("realraum", "r3alraum"))
-    //{
-        //Serial.println("Could not begin WiFi");
-    //}
-    //printMemoryStats("WiFi.begin()");
 }
 
 void wifi_update()
 {
     wifi_stack::update(wifi_create_config());
+}
+
+esp_err_t wifi_scan()
+{
+    if (const auto result = wifi_stack::begin_scan(wifi_create_config()); result != ESP_OK)
+    {
+        ESP_LOGE("BOBBY", "begin_scan() failed with %s", esp_err_to_name(result));
+        return result;
+    }
+
+    return ESP_OK;
 }
 } // namespace

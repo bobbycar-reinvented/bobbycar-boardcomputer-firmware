@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fmt/core.h>
+
 #include "display.h"
 #include "textinterface.h"
 #include "actioninterface.h"
@@ -120,6 +122,18 @@ void ChangeValueDisplay<Tvalue>::redraw()
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.setTextFont(7);
     m_valueLabel.redraw(std::to_string(m_value));
+}
+
+template<>
+void ChangeValueDisplay<float>::redraw()
+{
+    tft.setTextFont(4);
+    tft.setTextColor(TFT_YELLOW);
+    m_titleLabel.redraw(text());
+
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextFont(7);
+    m_valueLabel.redraw(fmt::format("{:02f}", m_value));
 }
 
 template<typename Tvalue>

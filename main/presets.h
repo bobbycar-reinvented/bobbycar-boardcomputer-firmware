@@ -36,6 +36,8 @@ constexpr Settings::ControllerHardware defaultControllerHardware {
 #ifdef FEATURE_CAN
     .sendFrontCanCmd = true,
     .sendBackCanCmd = true,
+    .canTransmitTimeout = 200,
+    .canReceiveTimeout = 0,
 #endif
 };
 
@@ -56,12 +58,13 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
 #ifdef FEATURE_CAN
     .sendFrontCanCmd = true,
     .sendBackCanCmd = true,
+    .canTransmitTimeout = 200,
+    .canReceiveTimeout = 0,
 #endif
 };
 
 constexpr Settings::WifiSettings defaultWifiSettings {
-    .autoWifiMode = WIFI_MODE_APSTA,
-    .autoEnableAp = true
+    .wifiEnabled = true
 };
 
 #ifdef FEATURE_BLUETOOTH
@@ -87,6 +90,8 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
 #ifdef FEATURE_CAN
     .sendFrontCanCmd = true,
     .sendBackCanCmd = true,
+    .canTransmitTimeout = 200,
+    .canReceiveTimeout = 0,
 #endif
 };
 
@@ -95,7 +100,10 @@ constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings 
     .modeUpdateRate = 50,
     .statsUpdateRate = 50,
     .displayUpdateRate = 50,
-    .displayRedrawRate = 50
+    .displayRedrawRate = 50,
+#ifdef FEATURE_CAN
+    .canReceiveRate = 100,
+#endif
 };
 
 constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {

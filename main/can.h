@@ -10,6 +10,7 @@
 #include <Arduino.h>
 
 #include <espchrono.h>
+#include <tickchrono.h>
 
 #include "bobbycar-can.h"
 
@@ -36,7 +37,7 @@ CanButtonsState lastButtonsState;
 
 void initCan()
 {
-    //Serial.println("initCan()");
+    ESP_LOGI(TAG, "called");
 
     twai_general_config_t g_config = TWAI_GENERAL_CONFIG_DEFAULT(GPIO_NUM_21, GPIO_NUM_22, TWAI_MODE_NORMAL);
     twai_timing_config_t t_config TWAI_TIMING_CONFIG_250KBITS();
@@ -50,29 +51,29 @@ void initCan()
 
     if (const auto result = twai_driver_install(&g_config, &t_config, &f_config); result == ESP_OK)
     {
-        //Serial.printf("CAN info twai_driver_install() succeeded\r\n");
+        ESP_LOGI(TAG, "twai_driver_install() succeeded");
     }
     else
     {
-        //Serial.printf("CAN err twai_driver_install() failed with %s\r\n", esp_err_to_name(result));
+        ESP_LOGE(TAG, "twai_driver_install() failed with %s", esp_err_to_name(result));
         return;
     }
 
     if (const auto result = twai_start(); result == ESP_OK)
     {
-        //Serial.printf("CAN info twai_start() succeeded\r\n");
+        ESP_LOGI(TAG, "twai_start() succeeded");
     }
     else
     {
-        //Serial.printf("CAN err twai_start() failed with %s\r\n", esp_err_to_name(result));
+        ESP_LOGE(TAG, "twai_start() failed with %s", esp_err_to_name(result));
 
         if (const auto result = twai_driver_uninstall(); result == ESP_OK)
         {
-            //Serial.printf("CAN info twai_driver_uninstall() succeeded\r\n");
+            ESP_LOGI(TAG, "twai_driver_uninstall() succeeded");
         }
         else
         {
-            //Serial.printf("CAN err twai_driver_uninstall() failed with %s\r\n", esp_err_to_name(result));
+            ESP_LOGE(TAG, "twai_driver_uninstall() failed with %s", esp_err_to_name(result));
         }
 
         return;
@@ -220,11 +221,12 @@ bool parseBoardcomputerCanMessage(const twai_message_t &message)
 bool tryParseCanInput()
 {
     twai_message_t message;
-    if (const auto result = twai_receive(&message, pdMS_TO_TICKS(10)); result != ESP_OK)
+    const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{settings.controllerHardware.canReceiveTimeout}).count();
+    if (const auto result = twai_receive(&message, timeout); result != ESP_OK)
     {
         if (result != ESP_ERR_TIMEOUT)
         {
-            ESP_LOGE(TAG, "CAN err twai_receive() failed with %s", esp_err_to_name(result));
+            ESP_LOGE(TAG, "twai_receive() failed with %s", esp_err_to_name(result));
         }
 
         if (espchrono::millis_clock::now() - controllers.front.lastCanFeedback > 100ms)
@@ -269,7 +271,7 @@ bool tryParseCanInput()
     if (parseBoardcomputerCanMessage(message))
         return true;
 
-    //Serial.printf("WARNING Unknown CAN info received .identifier = %u\r\n", message.identifier);
+    ESP_LOGW(TAG, "Unknown CAN info received .identifier = %u", message.identifier);
 
     return true;
 }
@@ -291,7 +293,8 @@ void sendCanCommands()
         std::fill(std::begin(message.data), std::end(message.data), 0);
         std::memcpy(message.data, &value, sizeof(value));
 
-        const auto result = twai_transmit(&message, pdMS_TO_TICKS(200));
+        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{settings.controllerHardware.canTransmitTimeout}).count();
+        const auto result = twai_transmit(&message, timeout);
         if (result != ESP_OK && result != ESP_ERR_TIMEOUT)
         {
             ESP_LOGE(TAG, "ERROR: twai_transmit() failed with %s", esp_err_to_name(result));

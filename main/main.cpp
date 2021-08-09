@@ -180,11 +180,17 @@ extern "C" void app_main()
 
     if (settingsPersister.init())
     {
-        if (settingsPersister.openProfile(0))
-        {
-            loadSettings();
-        }
+        if (!settingsPersister.openCommon())
+            ESP_LOGE("BOBBY", "openCommon() failed");
+
+        if (!settingsPersister.openProfile(0))
+            ESP_LOGE("BOBBY", "openProfile(0) failed");
+
+        loadSettings();
     }
+    else
+        ESP_LOGE("BOBBY", "init() failed");
+
     printMemoryStats("loadSettings()");
 
     bootLabel.redraw("deviceName");
@@ -372,8 +378,9 @@ extern "C" void app_main()
         }
 
 #ifdef FEATURE_CAN
-        if (!lastCanParse || now - *lastCanParse >= 50ms)
+        if (!lastCanParse || now - *lastCanParse >= 1000ms/settings.boardcomputerHardware.timersSettings.canReceiveRate)
         {
+            //can::tryParseCanInput();
             can::parseCanInput();
 
             lastCanParse = now;

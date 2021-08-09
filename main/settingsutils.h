@@ -1,5 +1,8 @@
 #pragma once
 
+// esp-idf includes
+#include <esp_log.h>
+
 // local includes
 #include "globals.h"
 #include "presets.h"
@@ -9,16 +12,16 @@ void switchProfile(uint8_t index)
 {
     settings = presets::defaultSettings;
 
-    if (settingsPersister.openProfile(index))
+    if (!settingsPersister.openProfile(index))
     {
-        if (!settingsPersister.load(settings))
-        {
-            //Serial.println("switchProfile() load failed");
-        }
+        ESP_LOGE("BOBBY", "openProfile() failed");
+        return;
     }
-    else
+
+    if (!settingsPersister.load(settings))
     {
-        //Serial.println("switchProfile() openProfile failed");
+        ESP_LOGE("BOBBY", "load() failed");
+        return;
     }
 }
 }

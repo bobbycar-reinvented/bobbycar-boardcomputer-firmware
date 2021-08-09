@@ -46,6 +46,22 @@ using NumMagnetPolesChangeScreen = makeComponent<
     BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>,
     SwitchScreenAction<ControllerHardwareSettingsMenu>
 >;
+#ifdef FEATURE_CAN
+using CanTransmitTimeoutChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_CANTRANSMITTIMEOUT>,
+    CanTransmitTimeoutAccessor,
+    BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>,
+    SwitchScreenAction<ControllerHardwareSettingsMenu>
+>;
+using CanReceiveTimeoutChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_CANRECEIVETIMEOUT>,
+    CanReceiveTimeoutAccessor,
+    BackActionInterface<SwitchScreenAction<ControllerHardwareSettingsMenu>>,
+    SwitchScreenAction<ControllerHardwareSettingsMenu>
+>;
+#endif
 
 class ControllerHardwareSettingsMenu :
     public MenuDisplay,
@@ -62,8 +78,10 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NUMMAGNETPOLES>,    SwitchScreenAction<NumMagnetPolesChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPFRONTBACK>,     ToggleBoolAction, CheckboxIcon, SwapFrontBackAccessor>>();
 #ifdef FEATURE_CAN
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTSENDCAN>,      ToggleBoolAction, CheckboxIcon, SendFrontCanCmdAccessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKSENDCAN>,       ToggleBoolAction, CheckboxIcon, SendBackCanCmdAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTSENDCAN>,       ToggleBoolAction, CheckboxIcon, SendFrontCanCmdAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKSENDCAN>,        ToggleBoolAction, CheckboxIcon, SendBackCanCmdAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANTRANSMITTIMEOUT>, SwitchScreenAction<CanTransmitTimeoutChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVETIMEOUT>,  SwitchScreenAction<CanReceiveTimeoutChangeScreen>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }

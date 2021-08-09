@@ -1,5 +1,7 @@
 #pragma once
 
+#include <esp_log.h>
+
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
 #include "utils.h"
@@ -46,7 +48,7 @@ void ChangeValueDisplay<UnifiedModelMode>::start()
     case UnifiedModelMode::FocSpeed:    setSelectedIndex(3); break;
     case UnifiedModelMode::FocTorque:   setSelectedIndex(4); break;
     default:
-        //Serial.printf("Unknown UnifiedModelMode: %i\r\n", int(value));
+        ESP_LOGW("BOBBY", "Unknown UnifiedModelMode: %i", int(value));
         setSelectedIndex(5);
     }
 }

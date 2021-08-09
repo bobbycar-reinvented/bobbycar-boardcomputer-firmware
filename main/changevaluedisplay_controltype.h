@@ -1,5 +1,7 @@
 #pragma once
 
+#include <esp_log.h>
+
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
 #include "utils.h"
@@ -43,7 +45,7 @@ void ChangeValueDisplay<bobbycar::protocol::ControlType>::start()
     case ControlType::Sinusoidal:           setSelectedIndex(1); break;
     case ControlType::FieldOrientedControl: setSelectedIndex(2); break;
     default:
-        //Serial.printf("Unknown ControlType: %i\r\n", int(value));
+        ESP_LOGW("BOBBY", "Unknown ControlType: %i", int(value));
         setSelectedIndex(3);
     }
 }

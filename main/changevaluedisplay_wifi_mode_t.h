@@ -1,6 +1,7 @@
 #pragma once
 
 #include <esp_wifi_types.h>
+#include <esp_log.h>
 
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
@@ -45,7 +46,7 @@ void ChangeValueDisplay<wifi_mode_t>::start()
     case WIFI_MODE_AP:    setSelectedIndex(2); break;
     case WIFI_MODE_APSTA: setSelectedIndex(3); break;
     default:
-        //Serial.printf("Unknown wifi_mode_t: %i\r\n", int(value));
+        ESP_LOGW("BOBBY", "Unknown wifi_mode_t: %i", int(value));
         setSelectedIndex(4);
     }
 }
