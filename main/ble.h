@@ -1,8 +1,10 @@
 #pragma once
 
+#define FEATURE_BLE
+#define FEATURE_WIRELESS_CONFIG
+
 // esp-idf includes
 #include <esp_log.h>
-
 // 3rdparty lib includes
 #include <ArduinoJson.h>
 #ifdef FEATURE_BLE
@@ -20,6 +22,9 @@ BLEServer *pServer{};
 BLEService *pService{};
 BLECharacteristic *livestatsCharacteristic{};
 BLECharacteristic *remotecontrolCharacteristic{};
+#ifdef FEATURE_WIRELESS_CONFIG
+BLECharacteristic *wirelessConfig{};
+#endif
 
 void createBle();
 void destroyBle();
@@ -30,7 +35,19 @@ public:
     void onWrite(NimBLECharacteristic* pCharacteristic) override;
 };
 
+#ifdef FEATURE_WIRELESS_CONFIG
+class WirelessSettingsCallbacks : public NimBLECharacteristicCallbacks
+{
+public:
+    void onWrite(NimBLECharacteristic* pCharacteristic) override;
+};
+#endif
+
 RemoteControlCallbacks bleRemoteCallbacks;
+
+#ifdef FEATURE_WIRELESS_CONFIG
+WirelessSettingsCallbacks bleWirelessSettingsCallbacks;
+#endif
 
 void initBle()
 {
@@ -150,6 +167,22 @@ void handleBle()
             livestatsCharacteristic->setValue(json);
             livestatsCharacteristic->notify();
         }
+
+#ifdef FEATURE_WIRELESS_CONFIG
+
+        if (wirelessConfig->getSubscribedCount())
+        {
+            StaticJsonDocument<1024> doc;
+            {
+            }
+
+            std::string json;
+            serializeJson(doc, json);
+
+            livestatsCharacteristic->setValue(json);
+            livestatsCharacteristic->notify();
+        }
+#endif
     }
     else if (pServer)
     {
@@ -172,6 +205,10 @@ void createBle()
     livestatsCharacteristic = pService->createCharacteristic("a48321ea-329f-4eab-a401-30e247211524", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     remotecontrolCharacteristic = pService->createCharacteristic("4201def0-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
     remotecontrolCharacteristic->setCallbacks(&bleRemoteCallbacks);
+#ifdef FEATURE_WIRELESS_CONFIG
+    wirelessConfig = pService->createCharacteristic("4201def1-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE);
+    wirelessConfig->setCallbacks(&bleWirelessSettingsCallbacks);
+#endif
 
     pService->start();
 
@@ -191,6 +228,7 @@ void destroyBle()
     pService = {};
     livestatsCharacteristic = {};
     remotecontrolCharacteristic = {};
+    wirelessConfig = {};
 }
 
 void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
@@ -211,5 +249,31 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
         .backRight = doc["br"].as<int16_t>()
     });
 }
+
+#ifdef FEATURE_WIRELESS_CONFIG
+void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
+{
+    const auto &val = pCharacteristic->getValue();
+
+    StaticJsonDocument<256> doc;
+    if (const auto error = deserializeJson(doc, val))
+    {
+        ESP_LOGW(TAG, "ignoring cmd with invalid json: %.*s %s", val.size(), val.data(), error.c_str());
+        return;
+    }
+
+    const char* write_type = doc["type"].as<const char*>();
+
+    if (strcmp(write_type, "wifi") == 0) {
+        const int index = doc["wifi_index"].as<int>();
+        ESP_LOGI(TAG, "Set wifi%i: WiFi-SSID: %s, WiFi-Password: %s", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>(), doc["wifi_pass"].as<const char*>());
+        stringSettings.wifis[index].ssid = doc["wifi_ssid"].as<const char*>();
+        stringSettings.wifis[index].key = doc["wifi_pass"].as<const char*>();
+    } else {
+        const auto deserialized = deserializeJson(doc, val);
+        ESP_LOGW(TAG, "Unkown type %s -> json: %.*s %s", doc["type"].as<const char*>(), val.size(), val.data(), deserialized.c_str());
+    }
+}
+#endif
 #endif
 }
