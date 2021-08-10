@@ -15,6 +15,7 @@
 #include "globals.h"
 #include "futurecpp.h"
 #include "modes/remotecontrolmode.h"
+#include "utils.h"
 
 namespace {
 #ifdef FEATURE_BLE
@@ -270,6 +271,7 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
         ESP_LOGI(TAG, "[ble_config]: Set wifi%i: WiFi-SSID: %s, WiFi-Password: ***", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>());
         stringSettings.wifis[index].ssid = doc["wifi_ssid"].as<const char*>();
         stringSettings.wifis[index].key = doc["wifi_pass"].as<const char*>();
+        saveSettings();
     } else {
         const auto deserialized = deserializeJson(doc, val);
         ESP_LOGW(TAG, "Unkown type %s -> json: %.*s %s", doc["type"].as<const char*>(), val.size(), val.data(), deserialized.c_str());
