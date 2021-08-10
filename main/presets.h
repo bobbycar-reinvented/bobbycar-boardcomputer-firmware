@@ -112,6 +112,9 @@ constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings 
 #ifdef FEATURE_CAN
     .canReceiveRate = 100,
 #endif
+#ifdef FEATURE_CLOUD
+    .cloudSendRate = 1,
+#endif
 };
 
 constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
@@ -134,6 +137,13 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
     .swapScreenBytes = DEFAULT_SWAPSCREENBYTES,
     .timersSettings = defaultTimersSettings
 };
+
+#ifdef FEATURE_CLOUD
+constexpr Settings::CloudSettings defaultCloudSettings {
+    .cloudEnabled = true,
+    .cloudTransmitTimeout = 10
+};
+#endif
 
 constexpr Settings::DefaultMode defaultDefaultMode {
     .modelMode = UnifiedModelMode::FocTorque,
@@ -194,6 +204,9 @@ constexpr Settings defaultSettings {
 #endif
     .controllerHardware = defaultControllerHardware,
     .boardcomputerHardware = defaultBoardcomputerHardware,
+#ifdef FEATURE_CLOUD
+    .cloudSettings = defaultCloudSettings,
+#endif
     .defaultMode = defaultDefaultMode,
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode
@@ -215,7 +228,10 @@ StringSettings makeDefaultStringSettings()
             ConfiguredWifi { .ssid = {}, .key = {} },
             ConfiguredWifi { .ssid = {}, .key = {} },
             ConfiguredWifi { .ssid = {}, .key = {} }
-        }
+        },
+#ifdef FEATURE_CLOUD
+        .cloudUrl = {},
+#endif
     };
 }
 }

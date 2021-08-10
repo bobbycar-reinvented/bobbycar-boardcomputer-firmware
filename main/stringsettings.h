@@ -2,6 +2,7 @@
 
 // system includes
 #include <array>
+#include <string>
 
 namespace {
 struct StringSettings
@@ -12,6 +13,10 @@ struct StringSettings
     };
 
     std::array<ConfiguredWifi, 10> wifis;
+
+#ifdef FEATURE_CLOUD
+    std::string cloudUrl;
+#endif
 
 
     template<typename T>
@@ -44,6 +49,10 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
     callable("key8", wifis[8].key);
     callable("ssid9", wifis[9].ssid);
     callable("key9", wifis[9].key);
+
+#ifdef FEATURE_CLOUD
+    callable("cloudUrl", cloudUrl);
+#endif
 }
 
 template<typename T>

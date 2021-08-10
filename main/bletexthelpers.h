@@ -1,8 +1,5 @@
 #pragma once
 
-// 3rdparty lib includes
-#include <fmt/core.h>
-
 // local includes
 #include "textinterface.h"
 #include "ble.h"

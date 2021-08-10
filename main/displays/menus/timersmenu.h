@@ -67,6 +67,16 @@ using CanReceiveRateChangeDisplay = makeComponent<
 >;
 #endif
 
+#ifdef FEATURE_CLOUD
+using CloudSendRateChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_CLOUDSENDRATE>,
+    CloudSendRateAccessor,
+    BackActionInterface<SwitchScreenAction<TimersMenu>>,
+    SwitchScreenAction<TimersMenu>
+>;
+#endif
+
 class TimersMenu :
     public MenuDisplay,
     public StaticText<TEXT_TIMERS>,
@@ -82,6 +92,9 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISPLAYREDRAWRATE>, SwitchScreenAction<DisplayRedrawRateChangeDisplay>>>();
 #ifdef FEATURE_CAN
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVERATE>,    SwitchScreenAction<CanReceiveRateChangeDisplay>>>();
+#endif
+#ifdef FEATURE_CLOUD
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,     SwitchScreenAction<CloudSendRateChangeDisplay>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }

@@ -90,8 +90,18 @@ struct Settings
 #ifdef FEATURE_CAN
             int16_t canReceiveRate;
 #endif
+#ifdef FEATURE_CLOUD
+            int16_t cloudSendRate;
+#endif
         } timersSettings;
     } boardcomputerHardware;
+
+#ifdef FEATURE_CLOUD
+    struct CloudSettings {
+        bool cloudEnabled;
+        int16_t cloudTransmitTimeout; // in ms
+    } cloudSettings;
+#endif
 
     struct DefaultMode {
         UnifiedModelMode modelMode;
@@ -178,6 +188,14 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("displayRedrawRa", boardcomputerHardware.timersSettings.displayRedrawRate);
 #ifdef FEATURE_CAN
     callable("canReceiveRate", boardcomputerHardware.timersSettings.canReceiveRate);
+#endif
+#ifdef FEATURE_CLOUD
+    callable("cloudSendRate", boardcomputerHardware.timersSettings.cloudSendRate);
+#endif
+
+#ifdef FEATURE_CLOUD
+    callable("cloudEnabled", cloudSettings.cloudEnabled);
+    callable("clodTransmTmout", cloudSettings.cloudTransmitTimeout);
 #endif
 }
 

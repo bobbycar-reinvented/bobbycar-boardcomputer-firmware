@@ -1,106 +1,190 @@
 #pragma once
 
 // esp-idf includes
-#ifdef FEATURE_CLOUD
-#include <esp_websocket_client.h>
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
-#endif
+#include <esp_log.h>
+
+// 3rdparty lib includes
+#include <wrappers/websocket_client.h>
+#include <espwifistack.h>
+
+// local includes
+#include "globals.h"
 
 namespace {
 #ifdef FEATURE_CLOUD
-void cloudTask(void*)
+espcpputils::websocket_client cloudClient;
+bool cloudStarted{};
+espchrono::millis_clock::time_point lastCreateTry;
+espchrono::millis_clock::time_point lastStartTry;
+
+void createCloud();
+void destroyCloud();
+void startCloud();
+
+void initCloud()
 {
+    if (settings.cloudSettings.cloudEnabled)
+    {
+        createCloud();
+        if (!cloudClient)
+            return;
+
+        if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            return;
+
+        startCloud();
+    }
+}
+
+void handleCloud()
+{
+    if (settings.cloudSettings.cloudEnabled)
+    {
+        if (!cloudClient)
+        {
+            if (espchrono::ago(lastCreateTry) < 10s)
+                return;
+            createCloud();
+        }
+        if (!cloudClient)
+            return;
+
+        if (!cloudStarted)
+        {
+            if (espchrono::ago(lastStartTry) < 10s)
+                return;
+
+            if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::WL_CONNECTED)
+                return;
+
+            startCloud();
+        }
+        if (!cloudStarted)
+            return;
+
+        if (!cloudClient.is_connected())
+            return;
+
+        std::string rssi = "null";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto &result = wifi_stack::get_sta_ap_info(); result)
+                rssi = std::to_string(result->rssi);
+
+        std::string msg = "{"
+            "\"type\": \"fullStatus\","
+            "\"partial\": false, "
+            "\"status\": {"
+                "\"millis\":" + std::to_string(std::chrono::milliseconds{espchrono::millis_clock::now().time_since_epoch()}.count()) + ","
+                "\"rssi\":" + rssi + ","
+                "\"front.valid\":" + std::to_string(controllers.front.feedbackValid) + ","
+                "\"back.valid\":" + std::to_string(controllers.back.feedbackValid) + ","
+                "\"front.left.pwm\":" + std::to_string(controllers.front.command.left.pwm) + ","
+                "\"front.right.pwm\":" + std::to_string(controllers.front.command.right.pwm) + ","
+                "\"back.left.pwm\":" + std::to_string(controllers.back.command.left.pwm) + ","
+                "\"back.right.pwm\":" + std::to_string(controllers.back.command.right.pwm) + ","
+                "\"front.volt\":" + std::to_string(controllers.front.feedback.batVoltage) + ","
+                "\"back.volt\":" + std::to_string(controllers.back.feedback.batVoltage) + ","
+                "\"front.temp\":" + std::to_string(controllers.front.feedback.boardTemp) + ","
+                "\"back.temp\":" + std::to_string(controllers.back.feedback.boardTemp) + ","
+                "\"front.bad\":" + std::to_string(controllers.front.feedback.timeoutCntSerial) + ","
+                "\"back.bad\":" + std::to_string(controllers.back.feedback.timeoutCntSerial) + ","
+                "\"front.left.speed\":" + std::to_string(controllers.front.feedback.left.speed) + ","
+                "\"front.right.speed\":" + std::to_string(controllers.front.feedback.right.speed) + ","
+                "\"back.left.speed\":" + std::to_string(controllers.back.feedback.left.speed) + ","
+                "\"back.right.speed\":" + std::to_string(controllers.back.feedback.right.speed) + ","
+                "\"front.left.current\":" + std::to_string(controllers.front.feedback.left.dcLink) + ","
+                "\"front.right.current\":" + std::to_string(controllers.front.feedback.right.dcLink) + ","
+                "\"back.left.current\":" + std::to_string(controllers.back.feedback.left.dcLink) + ","
+                "\"back.right.current\":" + std::to_string(controllers.back.feedback.right.dcLink) + ","
+                "\"front.left.error\":" + std::to_string(controllers.front.feedback.left.error) + ","
+                "\"front.right.error\":" + std::to_string(controllers.front.feedback.right.error) + ","
+                "\"back.left.error\":" + std::to_string(controllers.back.feedback.left.error) + ","
+                "\"back.right.error\":" + std::to_string(controllers.back.feedback.right.error) +
+            "}"
+        "}";
+
+        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{settings.cloudSettings.cloudTransmitTimeout}).count();
+        const auto written = cloudClient.send_text(msg, timeout);
+
+        if (written < 0)
+        {
+            ESP_LOGE("BOBBY", "cloudClient.send_text() failed with %i", written);
+        }
+        else if (written != msg.size())
+        {
+            ESP_LOGE("BOBBY", "websocket sent size mismatch, sent=%i, expected=%i", written, msg.size());
+        }
+    }
+    else if (cloudClient)
+    {
+        destroyCloud();
+    }
+}
+
+void createCloud()
+{
+    ESP_LOGI("BOBBY", "called");
+
+    if (cloudClient)
+    {
+        ESP_LOGE(TAG, "cloud client already created");
+        return;
+    }
+
+    lastCreateTry = espchrono::millis_clock::now();
+
     const esp_websocket_client_config_t config = {
-        .uri = "ws://iot.wattpilot.io:8080/charger/bobbycar1",
+        .uri = stringSettings.cloudUrl.c_str(),
     };
-    esp_websocket_client_handle_t handle = esp_websocket_client_init(&config);
 
-    if (handle)
+    cloudClient = espcpputils::websocket_client{&config};
+
+    if (!cloudClient)
     {
-        //Serial.println("esp websocket init succeeded");
-
-        if (const auto result = esp_websocket_client_start(handle); result == ESP_OK)
-        {
-            //Serial.println("esp websocket start succeeded");
-
-            while (true)
-            {
-                if (esp_websocket_client_is_connected(handle))
-                {
-                    std::string msg = "{"
-                        "\"type\": \"fullStatus\","
-                        "\"partial\": false, "
-                        "\"status\": {"
-                            "\"millis\":" + std::to_string(std::chrono::milliseconds{espchrono::millis_clock::now().time_since_epoch()}.count()) + ","
-                            "\"front.valid\":" + std::to_string(controllers.front.feedbackValid) + ","
-                            "\"back.valid\":" + std::to_string(controllers.back.feedbackValid) + ","
-                            "\"front.left.pwm\":" + std::to_string(controllers.front.command.left.pwm) + ","
-                            "\"front.right.pwm\":" + std::to_string(controllers.front.command.right.pwm) + ","
-                            "\"back.left.pwm\":" + std::to_string(controllers.back.command.left.pwm) + ","
-                            "\"back.right.pwm\":" + std::to_string(controllers.back.command.right.pwm) + ","
-                            "\"front.volt\":" + std::to_string(controllers.front.feedback.batVoltage) + ","
-                            "\"back.volt\":" + std::to_string(controllers.back.feedback.batVoltage) + ","
-                            "\"front.temp\":" + std::to_string(controllers.front.feedback.boardTemp) + ","
-                            "\"back.temp\":" + std::to_string(controllers.back.feedback.boardTemp) + ","
-                            "\"front.bad\":" + std::to_string(controllers.front.feedback.timeoutCntSerial) + ","
-                            "\"back.bad\":" + std::to_string(controllers.back.feedback.timeoutCntSerial) + ","
-                            "\"front.left.speed\":" + std::to_string(controllers.front.feedback.left.speed) + ","
-                            "\"front.right.speed\":" + std::to_string(controllers.front.feedback.right.speed) + ","
-                            "\"back.left.speed\":" + std::to_string(controllers.back.feedback.left.speed) + ","
-                            "\"back.right.speed\":" + std::to_string(controllers.back.feedback.right.speed) + ","
-                            "\"front.left.current\":" + std::to_string(controllers.front.feedback.left.dcLink) + ","
-                            "\"front.right.current\":" + std::to_string(controllers.front.feedback.right.dcLink) + ","
-                            "\"back.left.current\":" + std::to_string(controllers.back.feedback.left.dcLink) + ","
-                            "\"back.right.current\":" + std::to_string(controllers.back.feedback.right.dcLink) + ","
-                            "\"front.left.error\":" + std::to_string(controllers.front.feedback.left.error) + ","
-                            "\"front.right.error\":" + std::to_string(controllers.front.feedback.right.error) + ","
-                            "\"back.left.error\":" + std::to_string(controllers.back.feedback.left.error) + ","
-                            "\"back.right.error\":" + std::to_string(controllers.back.feedback.right.error) +
-                        "}"
-                    "}";
-
-                    const auto sent = esp_websocket_client_send_text(handle, msg.c_str(), msg.length(), 1000 / portTICK_PERIOD_MS);
-                    if (sent == msg.length())
-                    {
-                        //Serial.println("Sent cloud message");
-                    }
-                    else
-                    {
-                        //Serial.printf("sent=%i, msgsize=%i\r\n", sent, msg.length());
-                    }
-                }
-                else
-                {
-                    //Serial.println("Not sending cloud because not connected");
-                }
-
-                delay(100);
-            }
-        }
-        else
-        {
-            //Serial.printf("esp websocket start failed with %s\r\n", esp_err_to_name(result));
-        }
-    }
-    else
-    {
-        //Serial.println("esp websocket init failed");
+        ESP_LOGE(TAG, "websocket could not be constructed");
+        return;
     }
 
-    vTaskDelete(NULL);
+    ESP_LOGI("BOBBY", "cloud client created");
 }
 
 void startCloud()
 {
-    if (const auto result = xTaskCreatePinnedToCore(cloudTask, "cloudTask", 4096, nullptr, 10, nullptr, 1); result == pdTRUE)
+    ESP_LOGI("BOBBY", "called");
+
+    if (!cloudClient)
     {
-        //Serial.println("cloud task create succeeded");
+        ESP_LOGE(TAG, "cloud client not created");
+        return;
     }
-    else
+
+    if (cloudStarted)
     {
-        //Serial.printf("cloud task create failed\r\n");
+        ESP_LOGE(TAG, "cloud client already started");
+        return;
     }
+
+    lastStartTry = espchrono::millis_clock::now();
+
+    const auto result = cloudClient.start();
+    ESP_LOG_LEVEL_LOCAL((result == ESP_OK ? ESP_LOG_INFO : ESP_LOG_ERROR), "BOBBY", "cloudClient.start() returned: %s", esp_err_to_name(result));
+
+    if (result == ESP_OK)
+        cloudStarted = true;
+}
+
+void destroyCloud()
+{
+    ESP_LOGI("BOBBY", "called");
+
+    if (!cloudClient)
+    {
+        ESP_LOGE(TAG, "cloud client not created");
+        return;
+    }
+
+    cloudClient = {};
+    cloudStarted = false;
 }
 #endif
 } // namespace

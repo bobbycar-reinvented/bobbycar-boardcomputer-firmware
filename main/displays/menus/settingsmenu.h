@@ -24,6 +24,7 @@ class LimitsSettingsMenu;
 class WifiSettingsMenu;
 class BluetoothSettingsMenu;
 class BleSettingsMenu;
+class CloudSettingsMenu;
 class ModesSettingsMenu;
 class ControllerHardwareSettingsMenu;
 class BoardcomputerHardwareSettingsMenu;
@@ -61,6 +62,9 @@ public:
 #endif
 #ifdef FEATURE_BLE
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLESETTINGS>,                   SwitchScreenAction<BleSettingsMenu>, StaticMenuItemIcon<&icons::bluetooth>>>();
+#endif
+#ifdef FEATURE_CLOUD
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSETTINGS>,                 SwitchScreenAction<CloudSettingsMenu>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESSETTINGS>,                 SwitchScreenAction<ModesSettingsMenu>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>,    SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::hardware>>>();

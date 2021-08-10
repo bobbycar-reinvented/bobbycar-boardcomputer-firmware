@@ -30,6 +30,9 @@ using namespace std::chrono_literals;
 #ifdef FEATURE_BLE
 #include "displays/menus/blesettingsmenu.h"
 #endif
+#ifdef FEATURE_CLOUD
+#include "displays/menus/cloudsettingsmenu.h"
+#endif
 #include "displays/menus/bmsmenu.h"
 #include "displays/menus/buzzermenu.h"
 #include "displays/menus/commanddebugmenu.h"
@@ -115,6 +118,9 @@ std::optional<espchrono::millis_clock::time_point> lastCanParse;
 #endif
 #ifdef FEATURE_BLE
 std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
+#endif
+#ifdef FEATURE_CLOUD
+std::optional<espchrono::millis_clock::time_point> lastCloudUpdate;
 #endif
 }
 
@@ -258,8 +264,8 @@ extern "C" void app_main()
     readPotis();
 
 #ifdef FEATURE_CLOUD
-    bootLabel.redraw("startCloud");
-    startCloud();
+    bootLabel.redraw("cloud");
+    initCloud();
 #endif
 
     bootLabel.redraw("switchScreen");
@@ -378,6 +384,15 @@ extern "C" void app_main()
             handleBle();
 
             lastBleUpdate = now;
+        }
+#endif
+
+#ifdef FEATURE_CLOUD
+        if (!lastCloudUpdate || now - *lastCloudUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.cloudSendRate)
+        {
+            handleCloud();
+
+            lastCloudUpdate = now;
         }
 #endif
 
