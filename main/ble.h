@@ -270,8 +270,8 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
     if (write_type == "wifi") {
         const int index = doc["wifi_index"].as<int>();
         ESP_LOGI(TAG, "[ble_config]: Set wifi%i: WiFi-SSID: %s, WiFi-Password: ***", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>());
-        stringSettings.wifis[index].ssid = doc["wifi_ssid"].as<const char*>();
-        stringSettings.wifis[index].key = doc["wifi_pass"].as<const char*>();
+        stringSettings.wifis[index].ssid = doc["wifi_ssid"].as<std::string>();
+        stringSettings.wifis[index].key = doc["wifi_pass"].as<std::string>();
         saveSettings();
     } else {
         const auto deserialized = deserializeJson(doc, val);
