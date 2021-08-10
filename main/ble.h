@@ -2,6 +2,7 @@
 
 // esp-idf includes
 #include <esp_log.h>
+
 // 3rdparty lib includes
 #include <ArduinoJson.h>
 #ifdef FEATURE_BLE
