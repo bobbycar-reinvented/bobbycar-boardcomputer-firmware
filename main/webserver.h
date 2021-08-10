@@ -16,6 +16,7 @@
 #include <espstrutils.h>
 #include <strutils.h>
 #include <numberparsing.h>
+#include <esphttpdutils.h>
 
 // local includes
 #include "screens.h"
@@ -26,6 +27,10 @@
 //#include "esputils.h"
 #include "buttons.h"
 #include "esphttpdutils.h"
+#ifdef FEATURE_OTA
+#include "ota.h"
+#endif
+#include "globals.h"
 
 namespace {
 #ifdef FEATURE_WEBSERVER
@@ -70,9 +75,6 @@ private:
     std::string &m_body;
 };
 
-template<typename T> T htmlentities(const T &val) { return val; } // TODO
-template<typename T> T htmlentities(T &&val) { return val; } // TODO
-
 esp_err_t webserver_root_handler(httpd_req_t *req);
 esp_err_t webserver_up_handler(httpd_req_t *req);
 esp_err_t webserver_down_handler(httpd_req_t *req);
@@ -81,6 +83,12 @@ esp_err_t webserver_back_handler(httpd_req_t *req);
 esp_err_t webserver_triggerItem_handler(httpd_req_t *req);
 esp_err_t webserver_setValue_handler(httpd_req_t *req);
 esp_err_t webserver_reboot_handler(httpd_req_t *req);
+#ifdef FEATURE_OTA
+esp_err_t webserver_ota_handler(httpd_req_t *req);
+esp_err_t webserver_trigger_ota_handler(httpd_req_t *req);
+#endif
+esp_err_t webserver_settings_handler(httpd_req_t *req);
+esp_err_t webserver_save_settings_handler(httpd_req_t *req);
 
 void initWebserver()
 {
@@ -89,6 +97,7 @@ void initWebserver()
     {
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
         httpConfig.core_id = 1;
+        httpConfig.max_uri_handlers = 14;
 
         const auto result = httpd_start(&httpdHandle, &httpConfig);
         ESP_LOG_LEVEL_LOCAL((result == ESP_OK ? ESP_LOG_INFO : ESP_LOG_ERROR), TAG, "httpd_start(): %s", esp_err_to_name(result));
@@ -97,14 +106,20 @@ void initWebserver()
     }
 
     for (const httpd_uri_t &uri : {
-         httpd_uri_t { .uri = "/",            .method = HTTP_GET, .handler = webserver_root_handler,        .user_ctx = NULL },
-         httpd_uri_t { .uri = "/up",          .method = HTTP_GET, .handler = webserver_up_handler,          .user_ctx = NULL },
-         httpd_uri_t { .uri = "/down",        .method = HTTP_GET, .handler = webserver_down_handler,        .user_ctx = NULL },
-         httpd_uri_t { .uri = "/confirm",     .method = HTTP_GET, .handler = webserver_confirm_handler,     .user_ctx = NULL },
-         httpd_uri_t { .uri = "/back",        .method = HTTP_GET, .handler = webserver_back_handler,        .user_ctx = NULL },
-         httpd_uri_t { .uri = "/triggerItem", .method = HTTP_GET, .handler = webserver_triggerItem_handler, .user_ctx = NULL },
-         httpd_uri_t { .uri = "/setValue",    .method = HTTP_GET, .handler = webserver_setValue_handler,    .user_ctx = NULL },
-         httpd_uri_t { .uri = "/reboot",      .method = HTTP_GET, .handler = webserver_reboot_handler,      .user_ctx = NULL }
+         httpd_uri_t { .uri = "/",             .method = HTTP_GET, .handler = webserver_root_handler,             .user_ctx = NULL },
+         httpd_uri_t { .uri = "/up",           .method = HTTP_GET, .handler = webserver_up_handler,               .user_ctx = NULL },
+         httpd_uri_t { .uri = "/down",         .method = HTTP_GET, .handler = webserver_down_handler,             .user_ctx = NULL },
+         httpd_uri_t { .uri = "/confirm",      .method = HTTP_GET, .handler = webserver_confirm_handler,          .user_ctx = NULL },
+         httpd_uri_t { .uri = "/back",         .method = HTTP_GET, .handler = webserver_back_handler,             .user_ctx = NULL },
+         httpd_uri_t { .uri = "/triggerItem",  .method = HTTP_GET, .handler = webserver_triggerItem_handler,      .user_ctx = NULL },
+         httpd_uri_t { .uri = "/setValue",     .method = HTTP_GET, .handler = webserver_setValue_handler,         .user_ctx = NULL },
+         httpd_uri_t { .uri = "/reboot",       .method = HTTP_GET, .handler = webserver_reboot_handler,           .user_ctx = NULL },
+#ifdef FEATURE_OTA
+         httpd_uri_t { .uri = "/ota",          .method = HTTP_GET, .handler = webserver_ota_handler,              .user_ctx = NULL },
+         httpd_uri_t { .uri = "/triggerOta",   .method = HTTP_GET, .handler = webserver_trigger_ota_handler,      .user_ctx = NULL },
+#endif
+         httpd_uri_t { .uri = "/settings",     .method = HTTP_GET, .handler = webserver_settings_handler,         .user_ctx = NULL },
+         httpd_uri_t { .uri = "/saveSettings", .method = HTTP_GET, .handler = webserver_save_settings_handler, .user_ctx = NULL },
     })
     {
         const auto result = httpd_register_uri_handler(httpdHandle, &uri);
@@ -154,7 +169,13 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                 body += "<a href=\"/up\">Up</a> "
                         "<a href=\"/down\">Down</a> "
                         "<a href=\"/confirm\">Confirm</a> "
-                        "<a href=\"/back\">Back</a>";
+                        "<a href=\"/back\">Back</a> ";
+
+#ifdef FEATURE_OTA
+                body += "<a href=\"/ota\">Update</a> ";
+#endif
+
+                body += "<a href=\"/settings\">Settings</a>";
             }
 
             if (auto constCurrentDisplay = static_cast<const Display *>(currentDisplay.get()))
@@ -162,7 +183,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                 if (const auto *textInterface = constCurrentDisplay->asTextInterface())
                 {
                     HtmlTag h2Tag{"h2", body};
-                    body += htmlentities(textInterface->text());
+                    body += esphttpdutils::htmlentities(textInterface->text());
                 }
 
                 if (const auto *menuDisplay = constCurrentDisplay->asMenuDisplay())
@@ -175,7 +196,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                                     HtmlTag{"li", "style=\"border: 1px solid black;\"", body} :
                                     HtmlTag{"li", body};
 
-                        body += fmt::format("<a href=\"/triggerItem?index={}\">{}</a>", i, htmlentities(menuItem.text()));
+                        body += fmt::format("<a href=\"/triggerItem?index={}\">{}</a>", i, esphttpdutils::htmlentities(menuItem.text()));
                         i++;
                     });
                 }
@@ -375,6 +396,128 @@ esp_err_t webserver_reboot_handler(httpd_req_t *req)
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
     std::string_view body{"REBOOT called..."};
     CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
+}
+
+#ifdef FEATURE_OTA
+esp_err_t webserver_ota_handler(httpd_req_t *req)
+{
+    std::string body;
+
+    {
+        HtmlTag htmlTag{"html", body};
+
+        {
+            HtmlTag headTag{"head", body};
+
+            {
+                HtmlTag titleTag{"title", body};
+                body += "Update";
+            }
+
+            body += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />";
+        }
+
+        {
+            HtmlTag bodyTag{"body", body};
+
+            {
+                HtmlTag h1Tag{"h1", body};
+                body += "Update";
+            }
+
+            {
+                HtmlTag pTag{"p", body};
+                body += "<a href=\"/\">Remote control</a> "
+                        "<a href=\"/settings\">Settings</a>";
+            }
+
+            {
+                HtmlTag formTag{"form", "action=\"/triggerOta\" method=\"GET\"", body};
+                HtmlTag fieldsetTag{"fieldset", body};
+                {
+                    HtmlTag legendTag{"legend", body};
+                    body += "Trigger Update";
+                }
+
+                body += fmt::format("<input type=\"text\" name=\"url\" value=\"{}\" required />", esphttpdutils::htmlentities(stringSettings.otaUrl));
+
+                {
+                    HtmlTag buttonTag{"button", "type=\"submit\"", body};
+                    body += "Go";
+                }
+            }
+        }
+    }
+
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
+}
+
+esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)
+{
+    return ESP_FAIL;
+}
+#endif
+
+esp_err_t webserver_settings_handler(httpd_req_t *req)
+{
+    std::string body;
+
+    {
+        HtmlTag htmlTag{"html", body};
+
+        {
+            HtmlTag headTag{"head", body};
+
+            {
+                HtmlTag titleTag{"title", body};
+                body += "Settings";
+            }
+
+            body += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />";
+        }
+
+        {
+            HtmlTag bodyTag{"body", body};
+
+            {
+                HtmlTag h1Tag{"h1", body};
+                body += "Settings";
+            }
+
+            {
+                HtmlTag pTag{"p", body};
+                body += "<a href=\"/\">Remote control</a> "
+                        "<a href=\"/ota\">Update</a>";
+            }
+
+            stringSettings.executeForEveryCommonSetting([&](const char *key, auto value){
+                HtmlTag formTag{"form", "action=\"/saveSettings\" method=\"GET\"", body};
+                HtmlTag fieldsetTag{"fieldset", body};
+                {
+                    HtmlTag legendTag{"legend", body};
+                    body += esphttpdutils::htmlentities(key);
+                }
+
+                body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}\" required />",
+                                    esphttpdutils::htmlentities(key),
+                                    esphttpdutils::htmlentities(value));
+
+                {
+                    HtmlTag buttonTag{"button", "type=\"submit\"", body};
+                    body += "Save";
+                }
+            });
+        }
+    }
+
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_type, req, "text/html")
+    CALL_AND_EXIT(httpd_resp_send, req, body.data(), body.size())
+}
+
+esp_err_t webserver_save_settings_handler(httpd_req_t *req)
+{
+    return ESP_FAIL;
 }
 
 #endif
