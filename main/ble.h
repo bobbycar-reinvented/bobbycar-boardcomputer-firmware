@@ -174,13 +174,14 @@ void handleBle()
         {
             StaticJsonDocument<1024> doc;
             {
+                doc.add(42);
             }
 
             std::string json;
             serializeJson(doc, json);
 
-            livestatsCharacteristic->setValue(json);
-            livestatsCharacteristic->notify();
+            wirelessConfig->setValue(json);
+            wirelessConfig->notify();
         }
 #endif
     }
@@ -266,7 +267,7 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
 
     if (strcmp(write_type, "wifi") == 0) {
         const int index = doc["wifi_index"].as<int>();
-        ESP_LOGI(TAG, "Set wifi%i: WiFi-SSID: %s, WiFi-Password: %s", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>(), doc["wifi_pass"].as<const char*>());
+        ESP_LOGI(TAG, "[ble_config]: Set wifi%i: WiFi-SSID: %s, WiFi-Password: ***", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>());
         stringSettings.wifis[index].ssid = doc["wifi_ssid"].as<const char*>();
         stringSettings.wifis[index].key = doc["wifi_pass"].as<const char*>();
     } else {
