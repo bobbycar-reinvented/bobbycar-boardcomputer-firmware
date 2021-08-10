@@ -1,49 +1,52 @@
 #pragma once
 
+// 3rdparty lib includes
 #ifdef FEATURE_OTA
 #include <espasyncota.h>
 #endif
+#include <delayedconstruction.h>
 
-#include "screens.h"
-#include "globals.h"
-#include "displays/updatedisplay.h"
+// local includes
 
 namespace {
 #ifdef FEATURE_OTA
+cpputils::DelayedConstruction<EspAsyncOta> asyncOta;
+bool asyncOtaTaskStarted{};
+
 void initOta()
 {
-//    ArduinoOTA
-//        .onStart([]() {
-//            std::string type;
-//            switch (ArduinoOTA.getCommand())
-//            {
-//            case U_FLASH:  type = "sketch"; break;
-//            case U_SPIFFS: type = "filesystem"; break;
-//            default: type = "unknown";
-//            }
-//            switchScreenImpl<UpdateDisplay>("Updating " + type);
-//        })
-//        .onEnd([]() {
-//            ((UpdateDisplay*)currentDisplay.get())->m_finished = true;
-//            ((UpdateDisplay*)currentDisplay.get())->redraw();
-//        })
-//        .onProgress([](unsigned int progress, unsigned int total) {
-//            ((UpdateDisplay*)currentDisplay.get())->m_progress = progress;
-//            ((UpdateDisplay*)currentDisplay.get())->m_total = total;
-//            ((UpdateDisplay*)currentDisplay.get())->redraw();
-//        })
-//        .onError([](ota_error_t error) {
-//            ((UpdateDisplay*)currentDisplay.get())->m_error = error;
-//            ((UpdateDisplay*)currentDisplay.get())->m_errorValid = true;
-//            ((UpdateDisplay*)currentDisplay.get())->redraw();
-//        });
-
-//    ArduinoOTA.begin();
 }
 
 void handleOta()
 {
-//    ArduinoOTA.handle();
+    if (asyncOta)
+        asyncOta->update();
+}
+
+tl::expected<void, std::string> triggerOta(std::string_view url)
+{
+    ESP_LOGI(TAG, "%.*s", url.size(), url.data());
+
+    if (!asyncOta)
+        asyncOta.construct();
+
+    if (!asyncOtaTaskStarted)
+    {
+        if (const auto result = asyncOta->startTask(); !result)
+        {
+            ESP_LOGE(TAG, "starting OTA task failed: %.*s", result.error().size(), result.error().data());
+            return tl::make_unexpected(fmt::format("starting OTA task failed: {}", result.error()));
+        }
+
+        asyncOtaTaskStarted = true;
+    }
+
+    if (const auto result = asyncOta->trigger(url, {}, {}, {}); !result)
+        return tl::make_unexpected(std::move(result).error());
+
+    wifi_stack::delete_scan_result();
+
+    return {};
 }
 #endif
 }

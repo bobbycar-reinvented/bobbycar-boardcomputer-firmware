@@ -119,6 +119,7 @@ set(headers
     icons/scan.h
     icons/settings.h
     icons/unchecked.h
+    icons/update.h
     icons/wifi.h
     menudisplay.h
     menuitem.h

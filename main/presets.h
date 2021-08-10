@@ -232,6 +232,9 @@ StringSettings makeDefaultStringSettings()
 #ifdef FEATURE_CLOUD
         .cloudUrl = {},
 #endif
+#ifdef FEATURE_OTA
+        .otaUrl = {},
+#endif
     };
 }
 }

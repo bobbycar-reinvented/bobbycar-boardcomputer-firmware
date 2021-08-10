@@ -18,6 +18,10 @@ struct StringSettings
     std::string cloudUrl;
 #endif
 
+#ifdef FEATURE_OTA
+    std::string otaUrl;
+#endif
+
 
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
@@ -52,6 +56,10 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
 
 #ifdef FEATURE_CLOUD
     callable("cloudUrl", cloudUrl);
+#endif
+
+#ifdef FEATURE_OTA
+    callable("otaUrl", otaUrl);
 #endif
 }
 

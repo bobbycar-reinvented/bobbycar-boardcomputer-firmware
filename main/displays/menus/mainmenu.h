@@ -15,6 +15,7 @@
 #include "icons/settings.h"
 #include "icons/lock.h"
 #include "icons/demos.h"
+#include "icons/update.h"
 #include "icons/poweroff.h"
 #include "icons/reboot.h"
 
@@ -31,6 +32,7 @@ class SettingsMenu;
 class Lockscreen;
 class MosfetsMenu;
 class DemosMenu;
+class UpdateDisplay;
 class PoweroffDisplay;
 class DebugMenu;
 } // namespace
@@ -62,6 +64,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFETS>,      SwitchScreenAction<MosfetsMenu>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&icons::demos>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATE>,       SwitchScreenAction<UpdateDisplay>, StaticMenuItemIcon<&icons::update>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,     SwitchScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&icons::poweroff>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>,       RebootAction, StaticMenuItemIcon<&icons::reboot>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        SwitchScreenAction<DebugMenu>>>();
