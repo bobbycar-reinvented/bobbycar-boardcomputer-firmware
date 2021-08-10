@@ -100,7 +100,7 @@ private:
     Label m_labelWifiStatus{35, bottomLines[0]}; // 120, 15
     Label m_labelLimit0{205, bottomLines[0]}; // 35, 15
     Label m_labelIpAddress{25, bottomLines[1]}; // 130, 15
-    Label m_labelSignal{125, bottomLines[1]}; // 130, 15
+    Label m_labelSignal{120, bottomLines[1]}; // 130, 15
     Label m_labelLimit1{205, bottomLines[1]}; // 35, 15
     Label m_labelPerformance{40, bottomLines[2]}; // 40, 15
     Label m_labelFreeMem{70, bottomLines[2]}; // 40, 15

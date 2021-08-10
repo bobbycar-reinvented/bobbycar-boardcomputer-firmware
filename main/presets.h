@@ -75,6 +75,12 @@ constexpr Settings::BluetoothSettings defaultBluetoothSettings {
 };
 #endif
 
+#ifdef FEATURE_BLE
+constexpr Settings::BleSettings defaultBleSettings {
+    .bleEnabled = true
+};
+#endif
+
 constexpr Settings::ControllerHardware spinnerControllerHardware {
     .enableFrontLeft = true,
     .enableFrontRight = true,
@@ -182,6 +188,9 @@ constexpr Settings defaultSettings {
     .wifiSettings = defaultWifiSettings,
 #ifdef FEATURE_BLUETOOTH
     .bluetoothSettings = defaultBluetoothSettings,
+#endif
+#ifdef FEATURE_BLE
+    .bleSettings = defaultBleSettings,
 #endif
     .controllerHardware = defaultControllerHardware,
     .boardcomputerHardware = defaultBoardcomputerHardware,

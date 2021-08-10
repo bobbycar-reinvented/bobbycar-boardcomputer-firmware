@@ -27,6 +27,9 @@ using namespace std::chrono_literals;
 #ifdef FEATURE_BLUETOOTH
 #include "displays/menus/bluetoothsettingsmenu.h"
 #endif
+#ifdef FEATURE_BLE
+#include "displays/menus/blesettingsmenu.h"
+#endif
 #include "displays/menus/bmsmenu.h"
 #include "displays/menus/buzzermenu.h"
 #include "displays/menus/commanddebugmenu.h"

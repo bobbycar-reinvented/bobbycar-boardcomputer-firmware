@@ -47,6 +47,12 @@ struct Settings
     } bluetoothSettings;
 #endif
 
+#ifdef FEATURE_BLE
+    struct BleSettings {
+        bool bleEnabled;
+    } bleSettings;
+#endif
+
     struct ControllerHardware {
         bool enableFrontLeft, enableFrontRight, enableBackLeft, enableBackRight;
         bool invertFrontLeft, invertFrontRight, invertBackLeft, invertBackRight;
@@ -127,11 +133,15 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("autoConnectBms", autoConnectBms);
 #endif
 
+    callable("wifiEnabled", wifiSettings.wifiEnabled);
+
 #ifdef FEATURE_BLUETOOTH
     callable("autoBluetoothMo", bluetoothSettings.autoBluetoothMode);
 #endif
 
-    callable("wifiEnabled", wifiSettings.wifiEnabled);
+#ifdef FEATURE_BLE
+    callable("bleEnabled", bleSettings.bleEnabled);
+#endif
 
     callable("wheelDiameter", controllerHardware.wheelDiameter);
     callable("numMagnetPoles", controllerHardware.numMagnetPoles);

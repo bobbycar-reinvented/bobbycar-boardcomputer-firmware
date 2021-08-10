@@ -31,6 +31,7 @@ set(headers
     actions/updateswapfrontbackaction.h
     bluetoothmode.h
     ble.h
+    bletexthelpers.h
     bmsutils.h
     changevaluedisplay_bluetoothmode.h
     changevaluedisplay_bool.h
@@ -46,6 +47,7 @@ set(headers
     displays/graphdisplay.h
     displays/menus/aboutmenu.h
     displays/menus/accesspointwifisettingsmenu.h
+    displays/menus/blesettingsmenu.h
     displays/menus/bluetoothsettingsmenu.h
     displays/menus/bmsmenu.h
     displays/menus/buzzermenu.h

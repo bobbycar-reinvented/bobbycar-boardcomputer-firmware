@@ -1,5 +1,8 @@
 #pragma once
 
+// esp-idf includes
+#include <esp_log.h>
+
 // 3rdparty lib includes
 #include <ArduinoJson.h>
 #ifdef FEATURE_BLE
@@ -18,6 +21,9 @@ BLEService *pService{};
 BLECharacteristic *livestatsCharacteristic{};
 BLECharacteristic *remotecontrolCharacteristic{};
 
+void createBle();
+void destroyBle();
+
 class RemoteControlCallbacks : public NimBLECharacteristicCallbacks
 {
 public:
@@ -28,6 +34,133 @@ RemoteControlCallbacks bleRemoteCallbacks;
 
 void initBle()
 {
+    if (settings.bleSettings.bleEnabled)
+        createBle();
+}
+
+void handleBle()
+{
+    if (settings.bleSettings.bleEnabled)
+    {
+        if (!pServer)
+            createBle();
+
+        if (livestatsCharacteristic->getSubscribedCount())
+        {
+            StaticJsonDocument<1024> doc;
+            {
+                auto arr = doc.createNestedArray("v");
+                if (controllers.front.feedbackValid)
+                    arr.add(fixBatVoltage(controllers.front.feedback.batVoltage));
+                else
+                    arr.add(nullptr);
+                if (controllers.back.feedbackValid)
+                    arr.add(fixBatVoltage(controllers.back.feedback.batVoltage));
+                else
+                    arr.add(nullptr);
+            }
+
+            {
+                auto arr = doc.createNestedArray("t");
+                if (controllers.front.feedbackValid)
+                    arr.add(fixBoardTemp(controllers.front.feedback.boardTemp));
+                else
+                    arr.add(nullptr);
+                if (controllers.back.feedbackValid)
+                    arr.add(fixBoardTemp(controllers.back.feedback.boardTemp));
+                else
+                    arr.add(nullptr);
+            }
+
+            {
+                auto arr = doc.createNestedArray("e");
+                if (controllers.front.feedbackValid)
+                {
+                    arr.add(controllers.front.feedback.left.error);
+                    arr.add(controllers.front.feedback.right.error);
+                }
+                else
+                {
+                    arr.add(nullptr);
+                    arr.add(nullptr);
+                }
+                if (controllers.back.feedbackValid)
+                {
+                    arr.add(controllers.back.feedback.left.error);
+                    arr.add(controllers.back.feedback.right.error);
+                }
+                else
+                {
+                    arr.add(nullptr);
+                    arr.add(nullptr);
+                }
+            }
+
+            {
+                auto arr = doc.createNestedArray("s");
+                if (controllers.front.feedbackValid)
+                {
+                    arr.add(convertToKmh(controllers.front.feedback.left.speed * (settings.controllerHardware.invertFrontLeft ? -1 : 1)));
+                    arr.add(convertToKmh(controllers.front.feedback.right.speed * (settings.controllerHardware.invertFrontRight ? -1 : 1)));
+                }
+                else
+                {
+                    arr.add(nullptr);
+                    arr.add(nullptr);
+                }
+                if (controllers.back.feedbackValid)
+                {
+                    arr.add(convertToKmh(controllers.back.feedback.left.speed * (settings.controllerHardware.invertBackLeft ? -1 : 1)));
+                    arr.add(convertToKmh(controllers.back.feedback.right.speed * (settings.controllerHardware.invertBackRight ? -1 : 1)));
+                }
+                else
+                {
+                    arr.add(nullptr);
+                    arr.add(nullptr);
+                }
+            }
+
+            {
+                auto arr = doc.createNestedArray("a");
+                if (controllers.front.feedbackValid)
+                {
+                    arr.add(fixCurrent(controllers.front.feedback.left.dcLink) * 2);
+                    arr.add(fixCurrent(controllers.front.feedback.right.dcLink) * 2);
+                }
+                else
+                {
+                    arr.add(nullptr);
+                    arr.add(nullptr);
+                }
+                if (controllers.back.feedbackValid)
+                {
+                    arr.add(fixCurrent(controllers.back.feedback.left.dcLink) * 2);
+                    arr.add(fixCurrent(controllers.back.feedback.right.dcLink) * 2);
+                }
+                else
+                {
+                    arr.add(nullptr);
+                    arr.add(nullptr);
+                }
+            }
+
+            std::string json;
+            serializeJson(doc, json);
+
+            livestatsCharacteristic->setValue(json);
+            livestatsCharacteristic->notify();
+        }
+    }
+    else if (pServer)
+    {
+        destroyBle();
+    }
+}
+
+void createBle()
+{
+    ESP_LOGI("BOBBY", "called");
+
     BLEDevice::init(deviceName);
 
     const auto serviceUuid{"0335e46c-f355-4ce6-8076-017de08cee98"};
@@ -48,113 +181,16 @@ void initBle()
     BLEDevice::startAdvertising();
 }
 
-void handleBle()
+void destroyBle()
 {
-    if (livestatsCharacteristic->getSubscribedCount())
-    {
-        StaticJsonDocument<1024> doc;
-        {
-            auto arr = doc.createNestedArray("v");
-            if (controllers.front.feedbackValid)
-                arr.add(fixBatVoltage(controllers.front.feedback.batVoltage));
-            else
-                arr.add(nullptr);
-            if (controllers.back.feedbackValid)
-                arr.add(fixBatVoltage(controllers.back.feedback.batVoltage));
-            else
-                arr.add(nullptr);
-        }
+    ESP_LOGI("BOBBY", "called");
 
-        {
-            auto arr = doc.createNestedArray("t");
-            if (controllers.front.feedbackValid)
-                arr.add(fixBoardTemp(controllers.front.feedback.boardTemp));
-            else
-                arr.add(nullptr);
-            if (controllers.back.feedbackValid)
-                arr.add(fixBoardTemp(controllers.back.feedback.boardTemp));
-            else
-                arr.add(nullptr);
-        }
+    BLEDevice::deinit(true);
 
-        {
-            auto arr = doc.createNestedArray("e");
-            if (controllers.front.feedbackValid)
-            {
-                arr.add(controllers.front.feedback.left.error);
-                arr.add(controllers.front.feedback.right.error);
-            }
-            else
-            {
-                arr.add(nullptr);
-                arr.add(nullptr);
-            }
-            if (controllers.back.feedbackValid)
-            {
-                arr.add(controllers.back.feedback.left.error);
-                arr.add(controllers.back.feedback.right.error);
-            }
-            else
-            {
-                arr.add(nullptr);
-                arr.add(nullptr);
-            }
-        }
-
-        {
-            auto arr = doc.createNestedArray("s");
-            if (controllers.front.feedbackValid)
-            {
-                arr.add(convertToKmh(controllers.front.feedback.left.speed * (settings.controllerHardware.invertFrontLeft ? -1 : 1)));
-                arr.add(convertToKmh(controllers.front.feedback.right.speed * (settings.controllerHardware.invertFrontRight ? -1 : 1)));
-            }
-            else
-            {
-                arr.add(nullptr);
-                arr.add(nullptr);
-            }
-            if (controllers.back.feedbackValid)
-            {
-                arr.add(convertToKmh(controllers.back.feedback.left.speed * (settings.controllerHardware.invertBackLeft ? -1 : 1)));
-                arr.add(convertToKmh(controllers.back.feedback.right.speed * (settings.controllerHardware.invertBackRight ? -1 : 1)));
-            }
-            else
-            {
-                arr.add(nullptr);
-                arr.add(nullptr);
-            }
-        }
-
-        {
-            auto arr = doc.createNestedArray("a");
-            if (controllers.front.feedbackValid)
-            {
-                arr.add(fixCurrent(controllers.front.feedback.left.dcLink) * 2);
-                arr.add(fixCurrent(controllers.front.feedback.right.dcLink) * 2);
-            }
-            else
-            {
-                arr.add(nullptr);
-                arr.add(nullptr);
-            }
-            if (controllers.back.feedbackValid)
-            {
-                arr.add(fixCurrent(controllers.back.feedback.left.dcLink) * 2);
-                arr.add(fixCurrent(controllers.back.feedback.right.dcLink) * 2);
-            }
-            else
-            {
-                arr.add(nullptr);
-                arr.add(nullptr);
-            }
-        }
-
-        std::string json;
-        serializeJson(doc, json);
-
-        livestatsCharacteristic->setValue(json);
-        livestatsCharacteristic->notify();
-    }
+    pServer = {};
+    pService = {};
+    livestatsCharacteristic = {};
+    remotecontrolCharacteristic = {};
 }
 
 void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)

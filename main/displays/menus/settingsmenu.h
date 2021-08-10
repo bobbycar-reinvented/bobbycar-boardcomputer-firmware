@@ -7,7 +7,7 @@
 #include "actions/switchscreenaction.h"
 #include "checkboxicon.h"
 #include "icons/wifi.h"
-#ifdef FEATURE_BLUETOOTH
+#if defined(FEATURE_BLUETOOTH) || defined(FEATURE_BLE)
 #include "icons/bluetooth.h"
 #endif
 #include "icons/hardware.h"
@@ -23,6 +23,7 @@ namespace {
 class LimitsSettingsMenu;
 class WifiSettingsMenu;
 class BluetoothSettingsMenu;
+class BleSettingsMenu;
 class ModesSettingsMenu;
 class ControllerHardwareSettingsMenu;
 class BoardcomputerHardwareSettingsMenu;
@@ -57,6 +58,9 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFISETTINGS>,                  SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::wifi>>>();
 #ifdef FEATURE_BLUETOOTH
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHSETTINGS>,             SwitchScreenAction<BluetoothSettingsMenu>, StaticMenuItemIcon<&icons::bluetooth>>>();
+#endif
+#ifdef FEATURE_BLE
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLESETTINGS>,                   SwitchScreenAction<BleSettingsMenu>, StaticMenuItemIcon<&icons::bluetooth>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESSETTINGS>,                 SwitchScreenAction<ModesSettingsMenu>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>,    SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::hardware>>>();

@@ -33,6 +33,13 @@ constexpr char TEXT_TURNOFFDISCHARGE[] = "Turn off discharge";
 #endif
 #endif
 
+#ifdef FEATURE_BLE
+//BleSettingsMenu
+constexpr char TEXT_BLESETTINGS[] = "BLE settings";
+constexpr char TEXT_BLEENABLED[] = "BLE enabled";
+//constexpr char TEXT_BACK[] = "Back";
+#endif
+
 //DebugMenu
 constexpr char TEXT_LOADSETTINGS[] = "Load settings";
 constexpr char TEXT_SAVESETTINGS[] = "Save settings";
@@ -74,6 +81,7 @@ constexpr char TEXT_BACKLIGHT[] = "Backlight";
 constexpr char TEXT_LIMITSSETTINGS[] = "Limits settings";
 constexpr char TEXT_WIFISETTINGS[] = "WiFi settings";
 //constexpr char TEXT_BLUETOOTHSETTINGS[] = "Bluetooth settings";
+//constexpr char TEXT_BLESETTINGS[] = "BLE settings";
 constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
 constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
 constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";

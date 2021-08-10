@@ -38,6 +38,10 @@ struct WifiEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef
 struct AutoBluetoothModeAccessor : public RefAccessorSaveSettings<BluetoothMode> { BluetoothMode &getRef() const override { return settings.bluetoothSettings.autoBluetoothMode; } };
 #endif
 
+#ifdef FEATURE_BLE
+struct BleEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.bleSettings.bleEnabled; } };
+#endif
+
 struct FrontLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontLeft; } };
 struct FrontRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontRight; } };
 struct BackLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableBackLeft; } };
