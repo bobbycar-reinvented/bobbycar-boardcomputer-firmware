@@ -1,8 +1,5 @@
 #pragma once
 
-#define FEATURE_BLE
-#define FEATURE_WIRELESS_CONFIG
-
 // esp-idf includes
 #include <esp_log.h>
 // 3rdparty lib includes
