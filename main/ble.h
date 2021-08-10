@@ -9,6 +9,9 @@
 #include <NimBLEDevice.h>
 #endif
 
+#define FEATURE_BLE
+#define FEATURE_WIRELESS_CONFIG
+
 // local includes
 #include "globals.h"
 #include "futurecpp.h"
@@ -262,9 +265,9 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
         return;
     }
 
-    const char* write_type = doc["type"].as<const char*>();
+    auto write_type = doc["type"].as<std::string>();
 
-    if (strcmp(write_type, "wifi") == 0) {
+    if (write_type == "wifi") {
         const int index = doc["wifi_index"].as<int>();
         ESP_LOGI(TAG, "[ble_config]: Set wifi%i: WiFi-SSID: %s, WiFi-Password: ***", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>());
         stringSettings.wifis[index].ssid = doc["wifi_ssid"].as<const char*>();
