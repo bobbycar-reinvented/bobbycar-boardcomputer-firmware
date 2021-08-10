@@ -1,11 +1,14 @@
 #pragma once
 
+// system includes
 #include <cstdint>
+#include <array>
 
+// esp-idf includes
 #include <esp_wifi_types.h>
 
+// local includes
 #include "bobbycar-common.h"
-
 #ifdef FEATURE_BLUETOOTH
 #include "bluetoothmode.h"
 #endif

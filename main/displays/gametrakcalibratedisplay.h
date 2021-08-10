@@ -62,13 +62,13 @@ void GametrakCalibrateDisplay::initScreen()
 
 void GametrakCalibrateDisplay::redraw()
 {
-    m_labels[0].redraw(std::to_string(gametrakX));
+    m_labels[0].redraw(fmt::format("{:.02f}", gametrakX));
     m_labels[1].redraw(std::to_string(raw_gametrakX));
 
-    m_labels[2].redraw(std::to_string(gametrakY));
+    m_labels[2].redraw(fmt::format("{:.02f}", gametrakY));
     m_labels[3].redraw(std::to_string(raw_gametrakY));
 
-    m_labels[4].redraw(std::to_string(gametrakDist));
+    m_labels[4].redraw(fmt::format("{:.02f}", gametrakDist));
     m_labels[5].redraw(std::to_string(raw_gametrakDist));
 
     m_progressBars[0].redraw(gametrakX);

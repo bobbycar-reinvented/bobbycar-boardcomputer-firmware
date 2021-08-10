@@ -16,7 +16,6 @@ class SettingsMenu;
 
 namespace {
 constexpr char TEXT_VERSION[] = "Version: 1.0";
-constexpr char TEXT_ESPINFO[] = "ESP info:";
 
 class AboutMenu :
     public MenuDisplay,
@@ -27,16 +26,14 @@ public:
     AboutMenu()
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VERSION>,                                   DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, EmptyText,                                                  DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPINFO>,                                   DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, EspHeapSizeText,              StaticFont<2>, DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, EspFreeHeapText,              StaticFont<2>, DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, EspMinFreeHeapText,           StaticFont<2>, DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, EspMaxAllocHeapText,          StaticFont<2>, DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, EspPsramSizeText,             StaticFont<2>, DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, EspFreePsramText,             StaticFont<2>, DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, EspMinFreePsramText,          StaticFont<2>, DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, EspMaxAllocPsramText,         StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, HeapTotal8Text,               StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, HeapFree8Text,                StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, HeapMinFree8Text,             StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, HeapLargest8Text,             StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, HeapTotal32Text,              StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, HeapFree32Text,               StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, HeapMinFree32Text,            StaticFont<2>, DisabledColor, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, HeapLargest32Text,            StaticFont<2>, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, EspChipRevisionText,          StaticFont<2>, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, EspCpuFreqMHzText,            StaticFont<2>, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, EspCycleCountText,            StaticFont<2>, DisabledColor, DummyAction>>();

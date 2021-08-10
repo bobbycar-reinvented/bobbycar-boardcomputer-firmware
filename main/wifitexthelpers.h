@@ -1,45 +1,218 @@
 #pragma once
 
+// 3rdparty lib includes
+#include <fmt/core.h>
+#include <espwifistack.h>
+#include <esp_netif.h>
+#include <lwip/dns.h>
+
+// local includes
 #include "textinterface.h"
 
 namespace {
-constexpr char TEXT_STATUSBITS[] = "statusBits: ";
-using WifiStatusBitsText = StaticText<TEXT_STATUSBITS>; //StatusTextHelper<TEXT_STATUSBITS, &WiFi::getStatusBits>;
-constexpr char TEXT_CHANNEL[] = "channel: ";
-using WifiChannelText = StaticText<TEXT_CHANNEL>; //StatusTextHelper<TEXT_CHANNEL, &WiFi::channel>;
+class WifiStatusText : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("Status: {}", wifi_stack::toString(wifi_stack::get_sta_status())); }};
 
-constexpr char TEXT_ISCONNECTED[] = "isConnected: ";
-using WifiIsConnectedText = StaticText<TEXT_ISCONNECTED>; //StatusTextHelper<TEXT_ISCONNECTED, &WiFi.isConnected>
-constexpr char TEXT_LOCALIP[] = "localIP: ";
-using WifiLocalIpText = StaticText<TEXT_LOCALIP>; //StatusTextHelper<TEXT_LOCALIP, &WiFi.localIP>
-constexpr char TEXT_MACADDRESS[] = "macAddress: ";
-using WifiMacAddressText = StaticText<TEXT_MACADDRESS>; //StatusTextHelper<TEXT_MACADDRESS, &WiFi.macAddress>
-constexpr char TEXT_SUBNETMASK[] = "subnetMask: ";
-using WifiSubnetMaskText = StaticText<TEXT_SUBNETMASK>; //StatusTextHelper<TEXT_SUBNETMASK, &WiFi.subnetMask>
-constexpr char TEXT_GATEWAYIP[] = "gatewayIP: ";
-using WifiGatewayIpText = StaticText<TEXT_GATEWAYIP>; //StatusTextHelper<TEXT_GATEWAYIP, &WiFi.gatewayIP>
-constexpr char TEXT_DNSIP[] = "dnsIP: ";
-using WifiDnsIpText = StaticText<TEXT_DNSIP>; //StatusTextHelper<TEXT_DNSIP, &WiFi.dnsIP>
-constexpr char TEXT_BROADCASTIP[] = "broadcastIP: ";
-using WifiBroadcastIpText = StaticText<TEXT_BROADCASTIP>; //StatusTextHelper<TEXT_BROADCASTIP, &WiFi.broadcastIP>
-constexpr char TEXT_NETWORKID[] = "networkID: ";
-using WifiNetworkIdText = StaticText<TEXT_NETWORKID>; //StatusTextHelper<TEXT_NETWORKID, &WiFi.networkID>
-constexpr char TEXT_SUBNETCIDR[] = "subnetCIDR: ";
-using WifiSubnetCIDRText = StaticText<TEXT_SUBNETCIDR>; //StatusTextHelper<TEXT_SUBNETCIDR, &WiFi.subnetCIDR>
-constexpr char TEXT_LOCALIPV6[] = "localIPv6: ";
-using WifiLocalIpV6Text = StaticText<TEXT_LOCALIPV6>; //StatusTextHelper<TEXT_LOCALIPV6, &WiFi.localIPv6>
-constexpr char TEXT_HOSTNAME[] = "hostname: ";
-using WifiHostnameText = StaticText<TEXT_HOSTNAME>; //StatusTextHelper<TEXT_HOSTNAME, &WiFi.getHostname>
-constexpr char TEXT_STATUS2[] = "status: ";
-using WifiStatusText = StaticText<TEXT_STATUS2>; //StatusTextHelper<TEXT_STATUS2, &WiFi.status>
-constexpr char TEXT_SSID[] = "SSID: ";
-using WifiSsidText = StaticText<TEXT_SSID>; //StatusTextHelper<TEXT_SSID, &WiFi.SSID>
-constexpr char TEXT_PSK[] = "psk: ";
-using WifiPskText = StaticText<TEXT_PSK>; //StatusTextHelper<TEXT_PSK, &WiFi.psk>
-constexpr char TEXT_BSSID[] = "BSSID: ";
-using WifiBssidText = StaticText<TEXT_BSSID>; //StatusTextHelper<TEXT_BSSID, &WiFi.BSSIDstr>
-constexpr char TEXT_RSSI[] = "RSSI: ";
-using WifiRssiText = StaticText<TEXT_RSSI>; //StatusTextHelper<TEXT_RSSI, &WiFi.RSSI>
+class WifiScanStatusText : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("ScanStatus: {}", wifi_stack::toString(wifi_stack::get_scan_status())); }};
+
+class WifiHostnameText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "Hostname: ";
+        const char *hostname{};
+        if (const auto result = esp_netif_get_hostname(wifi_stack::esp_netifs[ESP_IF_WIFI_STA], &hostname); result == ESP_OK)
+            if (hostname)
+                text += hostname;
+        return text;
+    }
+};
+
+class WifiMacText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "MAC: ";
+        if (const auto result = wifi_stack::get_base_mac_addr())
+            text += wifi_stack::toString(*result);
+        return text;
+    }
+};
+
+class WifiSsidText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "SSID: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto &result = wifi_stack::get_sta_ap_info(); result)
+                text += std::string_view{reinterpret_cast<const char*>(result->ssid)};
+        return text;
+    }
+};
+
+class WifiBssidText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "BSSID: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto &result = wifi_stack::get_sta_ap_info(); result)
+                text += wifi_stack::toString(wifi_stack::mac_t{result->bssid});
+        return text;
+    }
+};
+
+class WifiRssiText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "RSSI: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto &result = wifi_stack::get_sta_ap_info(); result)
+                text += fmt::format("{}dB", result->rssi);
+        return text;
+    }
+};
+
+class WifiEncryptionTypeText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "encryptionType: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto &result = wifi_stack::get_sta_ap_info(); result)
+                text += wifi_stack::toString(result->authmode);
+        return text;
+    }
+};
+
+class WifiPairwiseCipherText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "pairwiseCipher: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto &result = wifi_stack::get_sta_ap_info(); result)
+                text += wifi_stack::toString(result->pairwise_cipher);
+        return text;
+    }
+};
+
+class WifiGroupCipherText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "groupCipher: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto &result = wifi_stack::get_sta_ap_info(); result)
+                text += wifi_stack::toString(result->group_cipher);
+        return text;
+    }
+};
+
+class WifiIpText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "ip: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+                text += wifi_stack::toString(result->ip);
+        return text;
+    }
+};
+
+class WifiNetmaskText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "netmask: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+                text += wifi_stack::toString(result->netmask);
+        return text;
+    }
+};
+
+class WifiGatewayText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "gateway: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+                text += wifi_stack::toString(result->gw);
+        return text;
+    }
+};
+
+class WifiIpv6LinklocalText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "ipv6: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        {
+            esp_ip6_addr_t addr;
+            if (const auto result = esp_netif_get_ip6_linklocal(wifi_stack::esp_netifs[ESP_IF_WIFI_STA], &addr); result == ESP_OK)
+                text += wifi_stack::toString(addr);
+        }
+        return text;
+    }
+};
+
+class WifiIpv6GlobalText : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "ipv6: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        {
+            esp_ip6_addr_t addr;
+            if (const auto result = esp_netif_get_ip6_global(wifi_stack::esp_netifs[ESP_IF_WIFI_STA], &addr); result == ESP_OK)
+                text += wifi_stack::toString(addr);
+        }
+        return text;
+    }
+};
+
+class WifiDns0Text : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "dns0: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const ip_addr_t *dns_ip = dns_getserver(0))
+                text += wifi_stack::toString(*dns_ip);
+        return text;
+    }
+};
+
+class WifiDns1Text : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "dns1: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const ip_addr_t *dns_ip = dns_getserver(1))
+                text += wifi_stack::toString(*dns_ip);
+        return text;
+    }
+};
+
+class WifiDns2Text : public virtual TextInterface {
+public:
+    std::string text() const override
+    {
+        std::string text = "dns2: ";
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (const ip_addr_t *dns_ip = dns_getserver(2))
+                text += wifi_stack::toString(*dns_ip);
+        return text;
+    }
+};
 
 constexpr char TEXT_SOFTAPGETSTATIONNUM[] = "softAPgetStationNum: ";
 using WifiSoftApGetStationNumText = StaticText<TEXT_SOFTAPGETSTATIONNUM>; //StatusTextHelper<TEXT_SOFTAPGETSTATIONNUM, &WiFi.softAPgetStationNum>

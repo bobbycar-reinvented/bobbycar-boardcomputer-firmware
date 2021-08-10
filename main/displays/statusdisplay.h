@@ -1,11 +1,11 @@
 #pragma once
 
-// system includes
-#include <optional>
+// esp-idf includes
+#include <esp_heap_caps.h>
 
 // 3rdparty lib includes
 #include <fmt/core.h>
-#include <espchrono.h>
+#include <espwifistack.h>
 
 // local includes
 #include "display.h"
@@ -100,22 +100,15 @@ private:
     Label m_labelWifiStatus{35, bottomLines[0]}; // 120, 15
     Label m_labelLimit0{205, bottomLines[0]}; // 35, 15
     Label m_labelIpAddress{25, bottomLines[1]}; // 130, 15
+    Label m_labelSignal{125, bottomLines[1]}; // 130, 15
     Label m_labelLimit1{205, bottomLines[1]}; // 35, 15
-    Label m_labelPerformance{85, bottomLines[2]}; // 40, 15
+    Label m_labelPerformance{40, bottomLines[2]}; // 40, 15
+    Label m_labelFreeMem{70, bottomLines[2]}; // 40, 15
     Label m_labelMode{165, bottomLines[2]}; // 75, 15
     Label m_labelName{40, bottomLines[3]}; // 40, 15
     Label m_labelProfile{205, bottomLines[3]}; // 35, 15
 
     static const constexpr int bottomLines[4] { 251, 266, 281, 296 };
-
-    struct CachedString
-    {
-        std::string text;
-        espchrono::millis_clock::time_point timestamp = espchrono::millis_clock::now();
-    };
-
-    std::optional<CachedString> m_cachedWifiStatus;
-    std::optional<CachedString> m_cachedWifiIP;
 };
 
 void StatusDisplay::initScreen()
@@ -143,10 +136,12 @@ void StatusDisplay::initScreen()
     m_labelLimit0.start();
     tft.drawString("IP:", 0, bottomLines[1]);
     m_labelIpAddress.start();
+    m_labelSignal.start();
     tft.drawString("Limit1:", 160, bottomLines[1]);
     m_labelLimit1.start();
-    tft.drawString("Performance:", 0, bottomLines[2]);
+    tft.drawString("Perf:", 0, bottomLines[2]);
     m_labelPerformance.start();
+    m_labelFreeMem.start();
     tft.drawString("Mode:", 125, bottomLines[2]);
     m_labelMode.start();
     tft.drawString("Name:", 0, bottomLines[3]);
@@ -154,9 +149,6 @@ void StatusDisplay::initScreen()
     m_labelProfile.start();
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
-
-    m_cachedWifiStatus = std::nullopt;
-    m_cachedWifiIP = std::nullopt;
 }
 
 void StatusDisplay::redraw()
@@ -174,38 +166,60 @@ void StatusDisplay::redraw()
 
     tft.setTextFont(2);
 
-    if (!m_cachedWifiStatus || espchrono::ago(m_cachedWifiStatus->timestamp) >= 500ms)
+    const auto staStatus = wifi_stack::get_sta_status();
+    if (staStatus == wifi_stack::WiFiStaStatus::WL_CONNECTED)
     {
-        const auto staStatus = wifi_stack::get_sta_status();
-        if (staStatus == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (const auto result = wifi_stack::get_sta_ap_info(); result)
         {
-            if (const auto result = wifi_stack::get_sta_ap_info(); result)
-            {
-                m_cachedWifiStatus = CachedString{ .text = std::string{reinterpret_cast<const char*>(result->ssid)} };
-            }
-            else
-            {
-                ESP_LOGW("BOBBY", "get_sta_ap_info() failed with %.*s", result.error().size(), result.error().data());
-                goto showStaStatus;
-            }
+            m_labelWifiStatus.redraw(std::string_view{reinterpret_cast<const char*>(result->ssid)});
+            tft.setTextColor(result->rssi < -80 ? TFT_ORANGE : TFT_WHITE, TFT_BLACK);
+            m_labelSignal.redraw(fmt::format("{}dB", result->rssi));
+            tft.setTextColor(TFT_WHITE, TFT_BLACK);
         }
         else
         {
-showStaStatus:
-            m_cachedWifiStatus = CachedString{ .text = wifi_stack::toString(staStatus) };
+            ESP_LOGW("BOBBY", "get_sta_ap_info() failed with %.*s", result.error().size(), result.error().data());
+            goto showStaStatus;
         }
     }
-
-    assert(m_cachedWifiStatus);
-    m_labelWifiStatus.redraw(m_cachedWifiStatus->text);
+    else
+    {
+showStaStatus:
+        m_labelWifiStatus.redraw(wifi_stack::toString(staStatus));
+        m_labelSignal.clear();
+    }
 
     m_labelLimit0.redraw(fmt::format("{}A", controllers.front.command.left.iMotMax));
-    if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA))
-        m_labelIpAddress.redraw(wifi_stack::toString(result->ip));
+
+    if (staStatus == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+    {
+        if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+            m_labelIpAddress.redraw(wifi_stack::toString(result->ip));
+        else
+        {
+            ESP_LOGW("BOBBY", "get_ip_info() failed with %.*s", result.error().size(), result.error().data());
+            goto clearIp;
+        }
+    }
     else
+    {
+clearIp:
         m_labelIpAddress.clear();
+    }
+
     m_labelLimit1.redraw(fmt::format("{}A", controllers.front.command.left.iDcMax));
+
+    tft.setTextColor(performance.last < 35 ? TFT_ORANGE : TFT_WHITE, TFT_BLACK);
     m_labelPerformance.redraw(std::to_string(performance.last));
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+    {
+        const auto freeMem = heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT);
+        tft.setTextColor(freeMem < 70000 ? TFT_ORANGE : TFT_WHITE, TFT_BLACK);
+        m_labelFreeMem.redraw(fmt::format("{}K", freeMem/1000));
+        tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    }
+
     m_labelMode.redraw(currentMode->displayName());
     m_labelName.redraw(deviceName);
     const auto profile = settingsPersister.currentlyOpenProfileIndex();

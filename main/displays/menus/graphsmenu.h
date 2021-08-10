@@ -146,6 +146,14 @@ using MotorCurrentsGraphDisplay = makeComponent<
     BackActionInterface<SwitchScreenAction<GraphsMenu>>
 >;
 
+using RssiGraphDisplay = makeComponent<
+    GraphDisplay<1>,
+    StaticText<TEXT_RSSI>,
+    SingleGraphAccessor<RssiStatistics>,
+    ConfirmActionInterface<SwitchScreenAction<GraphsMenu>>,
+    BackActionInterface<SwitchScreenAction<GraphsMenu>>
+>;
+
 class GraphsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GRAPHS>,
@@ -172,6 +180,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SUMCURRENTSCOMPARISON>, SwitchScreenAction<SumCurrentsComparisonGraphDisplay>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORCURRENTS>,         SwitchScreenAction<MotorCurrentsGraphDisplay>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RSSI>,                  SwitchScreenAction<RssiGraphDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };

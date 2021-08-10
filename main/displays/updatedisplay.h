@@ -1,12 +1,16 @@
 #pragma once
 
+// system includes
 #include <array>
 #include <string>
 
+// 3rdparty lib includes
 #ifdef FEATURE_OTA
 #include <espasyncota.h>
 #endif
+#include <fmt/core.h>
 
+// local includes
 #include "display.h"
 #include "actions/switchscreenaction.h"
 #include "globals.h"
@@ -80,7 +84,7 @@ void UpdateDisplay::initScreen()
 
 void UpdateDisplay::redraw()
 {
-    m_progressLabel.redraw(std::to_string(m_progress) + '/' + std::to_string(m_total));
+    m_progressLabel.redraw(fmt::format("{}/{}", m_progress, m_total));
 
     m_progressBar.redraw(float(m_progress) / m_total * 100.f);
 }

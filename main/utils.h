@@ -1,15 +1,20 @@
 #pragma once
 
+// system includes
 #include <algorithm>
 #include <utility>
 #include <string>
 
+// Arduino includes
 #ifdef FEATURE_SERIAL
 #include <HardwareSerial.h>
 #endif
 
+// 3rdparty lib includes
 #include <espchrono.h>
+#include <futurecpp.h>
 
+// local includes
 #ifdef FEATURE_CAN
 #include "bobbycar-can.h"
 #endif
@@ -102,7 +107,7 @@ std::string to_string(bobbycar::protocol::ControlType value)
     case ControlType::Sinusoidal: return "Sinusoidal";
     case ControlType::FieldOrientedControl: return "FieldOrientedControl";
     }
-    return "Unknown ControlType(" + std::to_string(int(value)) + ')';
+    return fmt::format("Unknown ControlType({})", std::to_underlying(value));
 }
 
 std::string to_string(bobbycar::protocol::ControlMode value)
@@ -115,7 +120,7 @@ std::string to_string(bobbycar::protocol::ControlMode value)
     case ControlMode::Speed: return "Speed";
     case ControlMode::Torque: return "Torque";
     }
-    return "Unknown ControlMode(" + std::to_string(int(value)) + ')';
+    return fmt::format("Unknown ControlMode({})", std::to_underlying(value));
 }
 
 std::array<std::reference_wrapper<bobbycar::protocol::serial::MotorState>, 2> motorsInController(Controller &controller)
@@ -251,11 +256,13 @@ void updateSwapFrontBack()
 void loadSettings()
 {
     settingsPersister.load(settings);
+    settingsPersister.load(stringSettings);
 }
 
 void saveSettings()
 {
     settingsPersister.save(settings);
+    settingsPersister.save(stringSettings);
 }
 
 void updateAccumulators()

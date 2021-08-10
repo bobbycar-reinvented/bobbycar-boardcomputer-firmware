@@ -23,13 +23,13 @@
 
 // forward declares
 namespace {
-class WifiSettingsMenu;
+class StationWifiSettingsMenu;
 } // namespace
 
 using namespace std::chrono_literals;
 
 namespace {
-class WifiScanMenu : public MenuDisplay, public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>
+class WifiScanMenu : public MenuDisplay, public BackActionInterface<SwitchScreenAction<StationWifiSettingsMenu>>
 {
     using Base = MenuDisplay;
 
@@ -50,7 +50,7 @@ private:
 
 WifiScanMenu::WifiScanMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<StationWifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
 }
 
 std::string WifiScanMenu::text() const

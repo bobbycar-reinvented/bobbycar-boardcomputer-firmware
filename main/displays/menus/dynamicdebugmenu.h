@@ -6,6 +6,7 @@
 
 // 3rdparty lib includes
 #include <espchrono.h>
+#include <fmt/core.h>
 
 // local includes
 #include "menudisplay.h"
@@ -33,7 +34,7 @@ public:
         const auto now = espchrono::millis_clock::now();
         if (!m_nextUpdate || now >= *m_nextUpdate)
         {
-            m_title = "Dynamic text: " + std::to_string(random(0, 100));
+            m_title = fmt::format("Dynamic text: {}", random(0, 100));
             m_nextUpdate = now + std::chrono::milliseconds{random(0, 1000)};
         }
 

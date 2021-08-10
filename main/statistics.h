@@ -1,7 +1,10 @@
 #pragma once
 
-#include "ring-buffer.h"
+// 3rdparty lib includes
+#include <ring-buffer.h>
+#include <espwifistack.h>
 
+// local includes
 #include "globals.h"
 #include "bmsutils.h"
 #include "utils.h"
@@ -9,11 +12,11 @@
 namespace {
 namespace statistics {
 using ContainerType = ring_buffer<float, 200>;
-ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent
+ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent,
 #ifdef FEATURE_BMS
-, bmsVoltage, bmsCurrent, bmsPower
+bmsVoltage, bmsCurrent, bmsPower,
 #endif
-;
+rssi;
 }
 
 void pushStats()
@@ -42,6 +45,11 @@ void pushStats()
     statistics::bmsCurrent.push_back(bms::current);
     statistics::bmsPower.push_back(bms::power);
 #endif
+    if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+    {
+        if (const auto &result = wifi_stack::get_sta_ap_info(); result)
+            statistics::rssi.push_back(result->rssi);
+    }
 }
 
 class StatisticsAccessorInterface
@@ -73,4 +81,5 @@ using FrontLeftCurrentStatistics = BufferAccessorImpl<statistics::frontLeftCurre
 using FrontRightCurrentStatistics = BufferAccessorImpl<statistics::frontRightCurrent>;
 using BackLeftCurrentStatistics = BufferAccessorImpl<statistics::backLeftCurrent>;
 using BackRightCurrentStatistics = BufferAccessorImpl<statistics::backRightCurrent>;
+using RssiStatistics = BufferAccessorImpl<statistics::rssi>;
 }

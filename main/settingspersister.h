@@ -26,8 +26,12 @@ public:
     void closeCommon();
     bool openProfile(uint8_t index);
     void closeProfile();
-    bool load(Settings &settings);
-    bool save(Settings &settings);
+
+    template<typename T>
+    bool load(T &settings);
+
+    template<typename T>
+    bool save(T &settings);
 
     std::optional<uint8_t> currentlyOpenProfileIndex() const;
 
@@ -141,6 +145,20 @@ template<> struct nvsGetterHelper<int16_t> { static constexpr auto nvs_get = &nv
 template<> struct nvsGetterHelper<uint16_t> { static constexpr auto nvs_get = &nvs_get_u16; };
 template<> struct nvsGetterHelper<int32_t> { static constexpr auto nvs_get = &nvs_get_i32; };
 template<> struct nvsGetterHelper<uint32_t> { static constexpr auto nvs_get = &nvs_get_u32; };
+template<> struct nvsGetterHelper<std::string> { static esp_err_t nvs_get(nvs_handle handle, const char* key, std::string* out_value)
+{
+    size_t length;
+    if (const esp_err_t result = nvs_get_str(handle, key, nullptr, &length); result != ESP_OK)
+        return result;
+
+    char buf[length];
+    if (const esp_err_t result = nvs_get_str(handle, key, buf, &length); result != ESP_OK)
+        return result;
+
+    *out_value = buf;
+
+    return ESP_OK;
+}};
 template<> struct nvsGetterHelper<bool> { static esp_err_t nvs_get(nvs_handle handle, const char* key, bool* out_value)
 {
     uint8_t tempValue;
@@ -200,7 +218,8 @@ template<> struct nvsGetterHelper<wifi_mode_t> { static esp_err_t nvs_get(nvs_ha
     return err;
 }};
 
-bool SettingsPersister::load(Settings &settings)
+template<typename T>
+bool SettingsPersister::load(T &settings)
 {
     bool result{true};
 
@@ -210,7 +229,8 @@ bool SettingsPersister::load(Settings &settings)
         {
             if (esp_err_t result = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(m_handle, key, &value); result != ESP_OK)
             {
-                ESP_LOGE("BOBBY", "nvs_get() COMMON %s failed with %s", key, esp_err_to_name(result));
+                if (result != ESP_ERR_NVS_NOT_FOUND)
+                    ESP_LOGE("BOBBY", "nvs_get() COMMON %s failed with %s", key, esp_err_to_name(result));
                 result = false;
             }
         });
@@ -227,7 +247,8 @@ bool SettingsPersister::load(Settings &settings)
         {
             if (esp_err_t result = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(m_profile->handle, key, &value); result != ESP_OK)
             {
-                ESP_LOGE("BOBBY", "nvs_get() PROFILE %s failed with %s", key, esp_err_to_name(result));
+                if (result != ESP_ERR_NVS_NOT_FOUND)
+                    ESP_LOGE("BOBBY", "nvs_get() PROFILE %s failed with %s", key, esp_err_to_name(result));
                 result = false;
             }
         });
@@ -249,6 +270,10 @@ template<> struct nvsSetterHelper<uint16_t> { static constexpr auto nvs_set = &n
 template<> struct nvsSetterHelper<int32_t> { static constexpr auto nvs_set = &nvs_set_i32; };
 template<> struct nvsSetterHelper<uint32_t> { static constexpr auto nvs_set = &nvs_set_u32; };
 template<> struct nvsSetterHelper<bool> { static constexpr auto nvs_set = &nvs_set_u8; };
+template<> struct nvsSetterHelper<std::string> { static esp_err_t nvs_set(nvs_handle handle, const char* key, const std::string &value)
+{
+    return nvs_set_str(handle, key, value.c_str());
+}};
 template<> struct nvsSetterHelper<bobbycar::protocol::ControlType> { static esp_err_t nvs_set(nvs_handle handle, const char* key, bobbycar::protocol::ControlType value)
 {
     return nvs_set_u8(handle, key, uint8_t(value));
@@ -276,7 +301,8 @@ template<> struct nvsSetterHelper<wifi_mode_t> { static esp_err_t nvs_set(nvs_ha
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
 
-bool SettingsPersister::save(Settings &settings)
+template<typename T>
+bool SettingsPersister::save(T &settings)
 {
     bool result{true};
 
@@ -286,7 +312,7 @@ bool SettingsPersister::save(Settings &settings)
         {
             if (esp_err_t result = nvsSetterHelper<decltype(value)>::nvs_set(m_handle, key, value); result != ESP_OK)
             {
-                ESP_LOGE("BOBBY", "nvs_set() PROFILE %s failed with %s", key, esp_err_to_name(result));
+                ESP_LOGE("BOBBY", "nvs_set() COMMON %s failed with %s", key, esp_err_to_name(result));
                 result = false;
             }
         });

@@ -81,7 +81,6 @@ using namespace std::chrono_literals;
 #include "ota.h"
 #include "presets.h"
 #include "statistics.h"
-#include "actions/wifisoftapaction.h"
 #ifdef FEATURE_BLUETOOTH
 #include "actions/bluetoothbeginaction.h"
 #include "actions/bluetoothbeginmasteraction.h"
@@ -116,14 +115,6 @@ std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
 #endif
 }
 
-void printMemoryStats(const char *s)
-{
-    //Serial.printf("MEMORY %s 8bit: %u 32bit: %u\r\n",
-    //              s,
-    //              heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT),
-    //              heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_32BIT));
-}
-
 extern "C" void app_main()
 {
     Serial.begin(115200);
@@ -135,14 +126,11 @@ extern "C" void app_main()
     digitalWrite(PINS_LEDBACKLIGHT, ledBacklightInverted ? LOW : HIGH);
 #endif
 
-    printMemoryStats("setup()");
-
     pinMode(3, INPUT_PULLUP);
 
     currentlyReverseBeeping = false;
 
     initScreen();
-    printMemoryStats("initScreen()");
 
 #ifdef FEATURE_DPAD
     bootLabel.redraw("dpad");
@@ -177,6 +165,7 @@ extern "C" void app_main()
 
     bootLabel.redraw("settings");
     settings = presets::defaultSettings;
+    stringSettings = presets::makeDefaultStringSettings();
 
     if (settingsPersister.init())
     {
@@ -191,23 +180,18 @@ extern "C" void app_main()
     else
         ESP_LOGE("BOBBY", "init() failed");
 
-    printMemoryStats("loadSettings()");
-
     bootLabel.redraw("deviceName");
     if (const auto result = wifi_stack::get_default_mac_addr())
         std::sprintf(deviceName, STRING(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", result->at(3), result->at(4), result->at(5));
     else
         ESP_LOGE("MAIN", "get_default_mac_addr() failed: %.*s", result.error().size(), result.error().data());
-    printMemoryStats("deviceName");
 
     bootLabel.redraw("wifi");
     wifi_begin();
-    printMemoryStats("wifi_begin()");
 
 #ifdef FEATURE_SERIAL
     bootLabel.redraw("swap front back");
     updateSwapFrontBack();
-    printMemoryStats("swapFronBack()");
 #endif
 
 #ifdef FEATURE_BLUETOOTH
@@ -215,13 +199,11 @@ extern "C" void app_main()
     {
         bootLabel.redraw("bluetooth begin master");
         BluetoothBeginMasterAction{}.triggered();
-        printMemoryStats("BluetoothBeginMasterAction()");
 #ifdef FEATURE_BMS
         if (settings.autoConnectBms)
         {
             bootLabel.redraw("connect BMS");
             BluetoothConnectBmsAction{}.triggered();
-            printMemoryStats("BluetoothConnectBmsAction()");
         }
 #endif
     }
@@ -229,7 +211,6 @@ extern "C" void app_main()
     {
         bootLabel.redraw("bluetooth begin");
         BluetoothBeginAction{}.triggered();
-        printMemoryStats("BluetoothBeginAction()");
     }
 #endif
 
@@ -258,29 +239,24 @@ extern "C" void app_main()
 #ifdef FEATURE_OTA
     bootLabel.redraw("ota");
     initOta();
-    printMemoryStats("initOta()");
 #endif
 
 #ifdef FEATURE_BLE
     bootLabel.redraw("ble");
     initBle();
-    printMemoryStats("initBle()");
 #endif
 
 #ifdef FEATURE_WEBSERVER
     bootLabel.redraw("webserver");
     initWebserver();
-    printMemoryStats("initWebserver()");
 #endif
 
     bootLabel.redraw("potis");
     readPotis();
-    printMemoryStats("readPotis()");
 
 #ifdef FEATURE_CLOUD
     bootLabel.redraw("startCloud");
     startCloud();
-    printMemoryStats("readPotis()");
 #endif
 
     bootLabel.redraw("switchScreen");
@@ -295,13 +271,8 @@ extern "C" void app_main()
         switchScreen<StatusDisplay>();
 #endif
 
-    printMemoryStats("switchScreen()");
-
     while (true)
     {
-        //Serial.println("loop()");
-        //printMemoryStats("loop()");
-
         const auto now = espchrono::millis_clock::now();
 
         if (!lastWifiUpdate || now - *lastWifiUpdate >= 100ms)

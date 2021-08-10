@@ -1,8 +1,13 @@
 #pragma once
 
+// system includes
 #include <array>
 #include <string>
 
+// 3rdparty lib includes
+#include <fmt/core.h>
+
+// local includes
 #include "display.h"
 #include "actions/switchscreenaction.h"
 #include "globals.h"
@@ -137,7 +142,7 @@ void CalibrateDisplay::update()
 
 void CalibrateDisplay::redraw()
 {
-    m_labels[0].redraw(m_gas ? std::to_string(*m_gas) : "?");
+    m_labels[0].redraw(m_gas ? fmt::format("{:.02f}", *m_gas) : "?");
     m_labels[1].redraw(raw_gas ? std::to_string(*raw_gas) : "?");
     if (m_status == Status::GasMin)
         tft.setTextColor(TFT_RED, TFT_BLACK);
@@ -152,7 +157,7 @@ void CalibrateDisplay::redraw()
 
     m_progressBars[0].redraw(m_gas ? *m_gas : 0);
 
-    m_labels[4].redraw(m_brems ? std::to_string(*m_brems) : "?");
+    m_labels[4].redraw(m_brems ? fmt::format("{:.02f}", *m_brems) : "?");
     m_labels[5].redraw(raw_brems ? std::to_string(*raw_brems) : "?");
     if (m_status == Status::BremsMin)
         tft.setTextColor(TFT_RED, TFT_BLACK);

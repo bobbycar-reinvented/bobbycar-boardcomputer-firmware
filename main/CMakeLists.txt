@@ -26,13 +26,7 @@ set(headers
     actions/switchscreenaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
     actions/toggleboolaction.h
-    actions/wifidisconnectaction.h
-    actions/wifienableipv6action.h
-    actions/wifireconnectaction.h
-    actions/wifisoftapaction.h
-    actions/wifisoftapdisconnectaction.h
-    actions/wifisoftapdisconnectwifioffaction.h
-    actions/wifisoftapenableipv6action.h
+    actions/wifiscanaction.h
     actions/switchprofileaction.h
     actions/updateswapfrontbackaction.h
     bluetoothmode.h
@@ -163,6 +157,7 @@ set(headers
     ota.h
     serialhandler.h
     settings.h
+    stringsettings.h
     settingspersister.h
     settingsutils.h
     statistics.h

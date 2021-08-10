@@ -7,10 +7,6 @@ constexpr char TEXT_BACK[] = "Back";
 
 //AccessPointWifiSettingsMenu
 constexpr char TEXT_ACCESSPOINTWIFISETTINGS[] = "Access Point WiFi settings";
-constexpr char TEXT_WIFISOFTAP[] = "softAP()";
-constexpr char TEXT_WIFISOFTAPDISCONNECT[] = "softAPdisconnect()";
-constexpr char TEXT_WIFISOFTAPDISCONNECTWIFIOFF[] = "softAPdisconnect() wifioff";
-constexpr char TEXT_WIFISOFTAPENABLEIPV6[] = "softAPenableIpV6()";
 //constexpr char TEXT_BACK[] = "Back";
 
 #ifdef FEATURE_BLUETOOTH
@@ -107,11 +103,8 @@ constexpr char TEXT_CANRECEIVETIMEOUT[] = "CanReceiveTimeout";
 //StationWifiSettingsMenu
 constexpr char TEXT_STATIONWIFISETTINGS[] = "Station WiFi settings";
 constexpr char TEXT_WIFIENABLED[] = "WiFi enabled";
-constexpr char TEXT_WIFIRECONNECT[] = "reconnect()";
-constexpr char TEXT_WIFIDISCONNECT[] = "disconnect()";
-constexpr char TEXT_WIFICHANGEAUTOCONNECT[] = "Change auto connect";
-constexpr char TEXT_WIFICHANGEAUTORECONNECT[] = "Change auto reconnect";
-constexpr char TEXT_WIFIENABLEIPV6[] = "enableIpV6()";
+constexpr char TEXT_WIFITRIGGERSCAN[] = "Trigger Scan";
+constexpr char TEXT_WIFISCANRESULTS[] = "WiFi scan results";
 //constexpr char TEXT_BACK[] = "Back";
 
 //DemosMenu
@@ -183,10 +176,6 @@ constexpr char TEXT_GAMETRAKMODESETTINGS[] = "Gametrak mode settings";
 
 //GenericWifiSettingsMenu
 constexpr char TEXT_GENERICWIFISETTINGS[] = "Generic WiFi settings";
-constexpr char TEXT_WIFICHANGEMODE[] = "Change mode";
-constexpr char TEXT_WIFICHANGESLEEP[] = "Change sleep";
-constexpr char TEXT_WIFICHANGETXPOWER[] = "Change tx power";
-constexpr char TEXT_WIFISCAN[] = "WiFi scan";
 //constexpr char TEXT_BACK[] = "Back";
 
 //GraphsMenu
@@ -205,6 +194,7 @@ constexpr char TEXT_BMSCURRENT[] = "BMS current";
 constexpr char TEXT_BMSPOWER[] = "BMS power";
 constexpr char TEXT_SUMCURRENTSCOMPARISON[] = "Sum currents comparison";
 constexpr char TEXT_MOTORCURRENTS[] = "Motor currents";
+constexpr char TEXT_RSSI[] = "RSSI";
 //constexpr char TEXT_BACK[] = "Back";
 
 //InvertMenu
@@ -251,12 +241,12 @@ constexpr char TEXT_NCRUISEMOTTGT[] = "nCruiseMotTgt";
 //BoardcomputerHardwareSettingsMenu
 //constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
 constexpr char TEXT_CALIBRATE[] = "Calibrate";
-constexpr char TEXT_SETSAMPLECOUNT[] = "Set sampleCount";
-constexpr char TEXT_SETGASMIN[] = "Set gasMin";
-constexpr char TEXT_SETGASMAX[] = "Set gasMax";
-constexpr char TEXT_SETBREMSMIN[] = "Set bremsMin";
-constexpr char TEXT_SETBREMSMAX[] = "Set bremsMax";
-constexpr char TEXT_SETDPADDEBOUNCE[] = "Set dpadDebounce";
+constexpr char TEXT_SAMPLECOUNT[] = "sampleCount";
+constexpr char TEXT_GASMIN[] = "gasMin";
+constexpr char TEXT_GASMAX[] = "gasMax";
+constexpr char TEXT_BREMSMIN[] = "bremsMin";
+constexpr char TEXT_BREMSMAX[] = "bremsMax";
+constexpr char TEXT_DPADDEBOUNCE[] = "dpadDebounce";
 constexpr char TEXT_GAMETRAKCALIBRATE[] = "Gametrak calibrate";
 constexpr char TEXT_SETGAMETRAKXMIN[] = "Set gametrakXMin";
 constexpr char TEXT_SETGAMETRAKXMAX[] = "Set gametrakXMax";

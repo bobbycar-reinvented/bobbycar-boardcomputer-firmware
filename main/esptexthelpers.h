@@ -1,34 +1,41 @@
 #pragma once
 
+// esp-idf includes
+#include <esp_heap_caps.h>
+
+// 3rdparty lib includes
+#include <fmt/core.h>
+
+// local includes
 #include "textinterface.h"
 
 namespace {
 //template<const char *Ttext, typename TreturnType, TreturnType (EspClass::*Tmethod)()>
 //using EspStatusTextHelper = StatusTextHelper<Ttext, EspClass, &ESP, TreturnType, Tmethod>;
 
-constexpr char TEXT_ESPHEAPSIZE[] = "Heap size: ";
-using EspHeapSizeText = StaticText<TEXT_ESPHEAPSIZE>; //EspStatusTextHelper<TEXT_ESPHEAPSIZE, uint32_t, &EspClass::getHeapSize>;
+class HeapTotal8Text : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("HeapTotal8: {}", heap_caps_get_total_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)); }};
 
-constexpr char TEXT_ESPFREEHEAP[] = "Free heap: ";
-using EspFreeHeapText = StaticText<TEXT_ESPFREEHEAP>; //EspStatusTextHelper<TEXT_ESPFREEHEAP, uint32_t, &EspClass::getFreeHeap>;
+class HeapFree8Text : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("HeapFree8: {}", heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)); }};
 
-constexpr char TEXT_ESPMINFREEHEAP[] = "Min free heap: ";
-using EspMinFreeHeapText = StaticText<TEXT_ESPMINFREEHEAP>; //EspStatusTextHelper<TEXT_ESPMINFREEHEAP, uint32_t, &EspClass::getMinFreeHeap>;
+class HeapMinFree8Text : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("HeapMinFree8: {}", heap_caps_get_minimum_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)); }};
 
-constexpr char TEXT_ESPMAXALLOCHEAP[] = "Max alloc heap: ";
-using EspMaxAllocHeapText = StaticText<TEXT_ESPMAXALLOCHEAP>; //EspStatusTextHelper<TEXT_ESPMAXALLOCHEAP, uint32_t, &EspClass::getMaxAllocHeap>;
+class HeapLargest8Text : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("HeapLargest8: {}", heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)); }};
 
-constexpr char TEXT_ESPPSRAMSIZE[] = "psram size: ";
-using EspPsramSizeText = StaticText<TEXT_ESPPSRAMSIZE>; //EspStatusTextHelper<TEXT_ESPPSRAMSIZE, uint32_t, &EspClass::getPsramSize>;
+class HeapTotal32Text : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("HeapTotal32: {}", heap_caps_get_total_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_32BIT)); }};
 
-constexpr char TEXT_ESPFREEPSRAM[] = "Free psram: ";
-using EspFreePsramText = StaticText<TEXT_ESPFREEPSRAM>; //EspStatusTextHelper<TEXT_ESPFREEPSRAM, uint32_t, &EspClass::getFreePsram>;
+class HeapFree32Text : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("HeapFree32: {}", heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_32BIT)); }};
 
-constexpr char TEXT_ESPMINFREEPSRAM[] = "Min free psram: ";
-using EspMinFreePsramText = StaticText<TEXT_ESPMINFREEPSRAM>; //EspStatusTextHelper<TEXT_ESPMINFREEPSRAM, uint32_t, &EspClass::getMinFreePsram>;
+class HeapMinFree32Text : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("HeapMinFree32: {}", heap_caps_get_minimum_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_32BIT)); }};
 
-constexpr char TEXT_ESPMAXALLOCPSRAM[] = "Max alloc psram: ";
-using EspMaxAllocPsramText = StaticText<TEXT_ESPMAXALLOCPSRAM>; //EspStatusTextHelper<TEXT_ESPMAXALLOCPSRAM, uint32_t, &EspClass::getMaxAllocPsram>;
+class HeapLargest32Text : public virtual TextInterface { public: std::string text() const override {
+    return fmt::format("HeapLargest32: {}", heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL|MALLOC_CAP_32BIT)); }};
 
 constexpr char TEXT_ESPCHIPREVISION[] = "Chip revision: ";
 using EspChipRevisionText = StaticText<TEXT_ESPCHIPREVISION>; //EspStatusTextHelper<TEXT_ESPCHIPREVISION, uint8_t, &EspClass::getChipRevision>;

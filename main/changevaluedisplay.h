@@ -133,7 +133,7 @@ void ChangeValueDisplay<float>::redraw()
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.setTextFont(7);
-    m_valueLabel.redraw(fmt::format("{:02f}", m_value));
+    m_valueLabel.redraw(fmt::format("{:.02f}", m_value));
 }
 
 template<typename Tvalue>

@@ -1,22 +1,16 @@
 #pragma once
 
 // local includes
-#include "changevaluedisplay.h"
 #include "menudisplay.h"
 #include "utils.h"
 #include "actions/switchscreenaction.h"
-#include "actions/toggleboolaction.h"
-#include "checkboxicon.h"
-#include "icons/scan.h"
 #include "icons/back.h"
 #include "texts.h"
-#include "accessors/settingsaccessors.h"
 
 // forward declares
 namespace {
 class GenericWifiSettingsMenu;
 class StationWifiSettingsMenu;
-class WifiScanMenu;
 class AccessPointWifiSettingsMenu;
 class SettingsMenu;
 } // namespace
@@ -32,10 +26,8 @@ class WifiSettingsMenu :
 public:
     WifiSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFIENABLED>,             ToggleBoolAction, CheckboxIcon, WifiEnabledAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GENERICWIFISETTINGS>,     SwitchScreenAction<GenericWifiSettingsMenu>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATIONWIFISETTINGS>,     SwitchScreenAction<StationWifiSettingsMenu>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFISCAN>,                SwitchScreenAction<WifiScanMenu>, StaticMenuItemIcon<&icons::scan>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ACCESSPOINTWIFISETTINGS>, SwitchScreenAction<AccessPointWifiSettingsMenu>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }

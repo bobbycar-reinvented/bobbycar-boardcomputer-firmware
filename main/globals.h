@@ -23,6 +23,7 @@
 #include "display.h"
 #include "modeinterface.h"
 #include "settings.h"
+#include "stringsettings.h"
 #include "settingspersister.h"
 #include "macros_bobbycar.h"
 
@@ -39,6 +40,7 @@ float avgSpeed, avgSpeedKmh, sumCurrent;
 char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
 
 Settings settings;
+StringSettings stringSettings;
 SettingsPersister settingsPersister;
 
 constexpr auto TFT_GREY = 0x5AEB;

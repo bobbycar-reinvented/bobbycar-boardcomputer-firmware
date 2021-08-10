@@ -12,21 +12,21 @@
 namespace {
 wifi_stack::config wifi_create_config()
 {
-    static wifi_stack::config config {
+    return wifi_stack::config {
         .wifiEnabled = settings.wifiSettings.wifiEnabled,
         .hostname = deviceName,
         .sta = {
             .wifis = std::array<wifi_stack::wifi_entry, 10> {
-                wifi_stack::wifi_entry { .ssid = "realraum",            .key = "r3alraum" },
-                wifi_stack::wifi_entry { .ssid = "McDonalds Free WiFi", .key = "Passwort_123" },
-                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-                wifi_stack::wifi_entry { .ssid = {},                    .key = {} },
-                wifi_stack::wifi_entry { .ssid = {},                    .key = {} }
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[0].ssid, .key = stringSettings.wifis[0].key },
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[1].ssid, .key = stringSettings.wifis[1].key },
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[2].ssid, .key = stringSettings.wifis[2].key },
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[3].ssid, .key = stringSettings.wifis[3].key },
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[4].ssid, .key = stringSettings.wifis[4].key },
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[5].ssid, .key = stringSettings.wifis[5].key },
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[6].ssid, .key = stringSettings.wifis[6].key },
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[7].ssid, .key = stringSettings.wifis[7].key },
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[8].ssid, .key = stringSettings.wifis[8].key },
+                wifi_stack::wifi_entry { .ssid = stringSettings.wifis[9].ssid, .key = stringSettings.wifis[9].key }
             },
             .min_rssi = -90
         },
@@ -45,8 +45,6 @@ wifi_stack::config wifi_create_config()
             .beacon_interval = 100
         }
     };
-
-    return config;
 }
 
 void wifi_begin()

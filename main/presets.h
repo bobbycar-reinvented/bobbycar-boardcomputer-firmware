@@ -1,6 +1,8 @@
 #pragma once
 
+// local includes
 #include "settings.h"
+#include "stringsettings.h"
 
 namespace presets {
 constexpr Settings::Limits defaultLimits {
@@ -167,7 +169,7 @@ constexpr Settings::LarsmMode defaultLarsmMode {
     .iterations = 100
 };
 
-constexpr Settings defaultSettings{
+constexpr Settings defaultSettings {
 #ifdef FEATURE_BMS
     .autoConnectBms = false,
 #endif
@@ -187,4 +189,24 @@ constexpr Settings defaultSettings{
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode
 };
+
+StringSettings makeDefaultStringSettings()
+{
+    using ConfiguredWifi = StringSettings::ConfiguredWifi;
+
+    return {
+        .wifis = std::array<ConfiguredWifi, 10> {
+            ConfiguredWifi { .ssid = {}, .key = {} },
+            ConfiguredWifi { .ssid = {}, .key = {} },
+            ConfiguredWifi { .ssid = {}, .key = {} },
+            ConfiguredWifi { .ssid = {}, .key = {} },
+            ConfiguredWifi { .ssid = {}, .key = {} },
+            ConfiguredWifi { .ssid = {}, .key = {} },
+            ConfiguredWifi { .ssid = {}, .key = {} },
+            ConfiguredWifi { .ssid = {}, .key = {} },
+            ConfiguredWifi { .ssid = {}, .key = {} },
+            ConfiguredWifi { .ssid = {}, .key = {} }
+        }
+    };
+}
 }

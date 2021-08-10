@@ -20,22 +20,6 @@ class WifiSettingsMenu;
 } // namespace
 
 namespace {
-using WifiModeChangeScreen = makeComponent<
-    ChangeValueDisplay<wifi_mode_t>,
-    StaticText<TEXT_WIFICHANGEMODE>,
-    WifiModeAccessor,
-    BackActionInterface<SwitchScreenAction<GenericWifiSettingsMenu>>,
-    SwitchScreenAction<GenericWifiSettingsMenu>
->;
-
-//using WifiTxPowerChangeScreen = makeComponent<
-//    ChangeValueDisplay<wifi_power_t>,
-//    StaticText<TEXT_WIFICHANGETXPOWER>,
-//    WifiTxPowerAccessor,
-//    BackActionInterface<SwitchScreenAction<GenericWifiSettingsMenu>>,
-//    SwitchScreenAction<GenericWifiSettingsMenu>
-//>;
-
 class GenericWifiSettingsMenu :
     public MenuDisplay,
     public StaticText<TEXT_GENERICWIFISETTINGS>,
@@ -44,11 +28,6 @@ class GenericWifiSettingsMenu :
 public:
     GenericWifiSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, WifiStatusBitsText,                 DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, WifiChannelText,                    DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGEMODE>,    SwitchScreenAction<WifiModeChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGESLEEP>,   ToggleBoolAction, CheckboxIcon, WifiSleepAccessor>>();
-        //constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFICHANGETXPOWER>, SwitchScreenAction<WifiTxPowerChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
     }
 };
