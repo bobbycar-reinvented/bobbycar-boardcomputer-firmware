@@ -318,6 +318,8 @@ extern "C" void app_main()
             lastWifiUpdate = now;
         }
 
+        InputDispatcher::update();
+
 #ifdef FEATURE_DPAD
         dpad::update();
 #endif

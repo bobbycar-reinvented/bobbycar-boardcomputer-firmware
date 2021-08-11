@@ -81,15 +81,13 @@ void update()
 
     if (std::get<ButtonUp>(lastState) != std::get<ButtonUp>(state) && now-debounceUp > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<ButtonUp>(state))
-            InputDispatcher::rotate(-1);
+        InputDispatcher::upButton(std::get<ButtonUp>(state));
         std::get<ButtonUp>(lastState) = std::get<ButtonUp>(state);
         debounceUp = now;
     }
     if (std::get<ButtonDown>(lastState) != std::get<ButtonDown>(state) && now-debounceDown > settings.boardcomputerHardware.dpadDebounce)
     {
-        if (std::get<ButtonDown>(state))
-            InputDispatcher::rotate(1);
+        InputDispatcher::downButton(std::get<ButtonDown>(state));
         std::get<ButtonDown>(lastState) = std::get<ButtonDown>(state);
         debounceDown = now;
     }

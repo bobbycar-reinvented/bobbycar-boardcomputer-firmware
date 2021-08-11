@@ -122,15 +122,13 @@ void update()
 
     if (lastState.up != newState.up && now - debounceUp > dpadDebounce)
     {
-        if (newState.up)
-            InputDispatcher::rotate(-1);
+        InputDispatcher::upButton(newState.up);
         debounceUp = now;
     }
 
     if (lastState.down != newState.down && now - debounceDown > dpadDebounce)
     {
-        if (newState.down)
-            InputDispatcher::rotate(1);
+        InputDispatcher::downButton(newState.down);
         debounceDown = now;
     }
 

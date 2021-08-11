@@ -177,12 +177,10 @@ bool parseBoardcomputerCanMessage(const twai_message_t &message)
         };
 
         if (lastButtonsState.up != newState.up)
-            if (newState.up)
-                InputDispatcher::rotate(-1);
+            InputDispatcher::upButton(newState.up);
 
         if (lastButtonsState.down != newState.down)
-            if (newState.down)
-                InputDispatcher::rotate(1);
+            InputDispatcher::downButton(newState.down);
 
         if (lastButtonsState.confirm != newState.confirm)
             InputDispatcher::confirmButton(newState.confirm);

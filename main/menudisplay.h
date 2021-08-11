@@ -168,9 +168,9 @@ void MenuDisplay::update()
             m_selectedIndex = m_selectedIndex + offset;
 
             if (m_selectedIndex < 0)
-                m_selectedIndex = 0;
+                m_selectedIndex += itemCount;
             if (m_selectedIndex >= itemCount)
-                m_selectedIndex = itemCount - 1;
+                m_selectedIndex -= itemCount;
 
             if (m_selectedIndex < m_scrollOffset)
                 m_scrollOffset = m_selectedIndex;
