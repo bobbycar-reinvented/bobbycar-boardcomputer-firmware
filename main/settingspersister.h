@@ -1,15 +1,20 @@
 #pragma once
 
+// system includes
 #include <type_traits>
 #include <optional>
 
+// esp-idf includes
 #include <nvs_flash.h>
 #include <nvs.h>
 #include <esp_log.h>
 
+// 3rdparty lib includes
 #include <fmt/core.h>
 #include <cpputils.h>
+#include <espchrono.h>
 
+// local includes
 #include "settings.h"
 #ifdef FEATURE_BLUETOOTH
 #include "bluetoothmode.h"
@@ -217,6 +222,14 @@ template<> struct nvsGetterHelper<wifi_mode_t> { static esp_err_t nvs_get(nvs_ha
         *out_value = wifi_mode_t(tempValue);
     return err;
 }};
+template<> struct nvsGetterHelper<espchrono::DayLightSavingMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, espchrono::DayLightSavingMode* out_value)
+{
+    uint8_t tempValue;
+    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = espchrono::DayLightSavingMode(tempValue);
+    return err;
+}};
 
 template<typename T>
 bool SettingsPersister::load(T &settings)
@@ -297,6 +310,10 @@ template<> struct nvsSetterHelper<UnifiedModelMode> { static esp_err_t nvs_set(n
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
 template<> struct nvsSetterHelper<wifi_mode_t> { static esp_err_t nvs_set(nvs_handle handle, const char* key, wifi_mode_t value)
+{
+    return nvs_set_u8(handle, key, uint8_t(value));
+}};
+template<> struct nvsSetterHelper<espchrono::DayLightSavingMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, espchrono::DayLightSavingMode value)
 {
     return nvs_set_u8(handle, key, uint8_t(value));
 }};

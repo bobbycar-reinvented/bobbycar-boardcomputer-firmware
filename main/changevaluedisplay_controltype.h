@@ -1,7 +1,9 @@
 #pragma once
 
+// esp-idf includes
 #include <esp_log.h>
 
+// local includes
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
 #include "utils.h"

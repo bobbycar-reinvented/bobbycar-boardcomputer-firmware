@@ -93,6 +93,7 @@ constexpr char TEXT_WIFISETTINGS[] = "WiFi settings";
 //constexpr char TEXT_BLUETOOTHSETTINGS[] = "Bluetooth settings";
 //constexpr char TEXT_BLESETTINGS[] = "BLE settings";
 //constexpr char TEXT_CLOUDSETTINGS[] = "Cloud settings";
+constexpr char TEXT_TIME[] = "Time";
 constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
 constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
 constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
@@ -328,6 +329,12 @@ constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
 #endif
 //constexpr char TEXT_BACK[] = "Back";
 
+//TimeSettingsMenu
+//constexpr char TEXT_TIME[] = "Time";
+constexpr char TEXT_OFFSET[] = "Offset";
+constexpr char TEXT_DAYLIGHTSAVINGMODE[] = "Daylight Saving Mode";
+//constexpr char TEXT_BACK[] = "Back";
+
 //ChangeValueDisplay<BluetoothMode>
 constexpr char TEXT_OFF[] = "Off";
 constexpr char TEXT_MASTER[] = "Master";
@@ -349,6 +356,12 @@ constexpr char TEXT_TORQUE[] = "Torque";
 constexpr char TEXT_COMMUTATION[] = "Commutation";
 constexpr char TEXT_SINUSOIDAL[] = "Sinusoidal";
 constexpr char TEXT_FIELDORIENTEDCONTROL[] = "Field oriented control";
+//constexpr char TEXT_BACK[] = "Back";
+
+//ChangeValueDisplay<espchrono::DayLightSavingMode>
+constexpr char TEXT_NONE[] = "None";
+constexpr char TEXT_EUROPEANSUMMERTIME[] = "EuropeanSummerTime";
+constexpr char TEXT_USDAYLIGHTTIME[] = "UsDaylightTime";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<LarsmMode::Mode>

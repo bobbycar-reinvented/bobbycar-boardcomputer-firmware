@@ -1,7 +1,9 @@
 #pragma once
 
+// 3rdparty lib includes
 #include <fmt/core.h>
 
+// local includes
 #include "display.h"
 #include "textinterface.h"
 #include "actioninterface.h"
@@ -155,6 +157,7 @@ void ChangeValueDisplay<Tvalue>::confirm()
 #endif
 #include "changevaluedisplay_controlmode.h"
 #include "changevaluedisplay_controltype.h"
+#include "changevaluedisplay_daylightsavingmode.h"
 #include "changevaluedisplay_larsmmode_mode.h"
 #include "changevaluedisplay_unifiedmodelmode.h"
 #include "changevaluedisplay_wifi_mode_t.h"

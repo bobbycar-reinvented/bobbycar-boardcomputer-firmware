@@ -68,6 +68,7 @@ using namespace std::chrono_literals;
 #include "displays/menus/settingsmenu.h"
 #include "displays/menus/stationwifisettingsmenu.h"
 #include "displays/menus/timersmenu.h"
+#include "displays/menus/timesettingsmenu.h"
 #include "displays/menus/wifiscanmenu.h"
 #include "displays/menus/wifisettingsmenu.h"
 #ifdef FEATURE_BMS
@@ -132,6 +133,7 @@ using namespace std::chrono_literals;
 #include "cloud.h"
 #endif
 #include "wifi_bobbycar.h"
+#include "time_bobbycar.h"
 
 namespace {
 std::optional<espchrono::millis_clock::time_point> lastWifiUpdate;

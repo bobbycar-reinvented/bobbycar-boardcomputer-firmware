@@ -47,6 +47,9 @@ struct CloudEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRe
 struct CloudTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.cloudSettings.cloudTransmitTimeout; } };
 #endif
 
+struct TimezoneOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.timeSettings.timezoneOffset; } };
+struct DaylightSavingModeAccessor : public RefAccessorSaveSettings<espchrono::DayLightSavingMode> { espchrono::DayLightSavingMode &getRef() const override { return settings.timeSettings.daylightSavingMode; } };
+
 struct FrontLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontLeft; } };
 struct FrontRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontRight; } };
 struct BackLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableBackLeft; } };

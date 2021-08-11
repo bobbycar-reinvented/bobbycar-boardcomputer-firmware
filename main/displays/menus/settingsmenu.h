@@ -10,6 +10,7 @@
 #if defined(FEATURE_BLUETOOTH) || defined(FEATURE_BLE)
 #include "icons/bluetooth.h"
 #endif
+#include "icons/time.h"
 #include "icons/hardware.h"
 #include "icons/buzzer.h"
 #include "icons/info.h"
@@ -25,6 +26,7 @@ class WifiSettingsMenu;
 class BluetoothSettingsMenu;
 class BleSettingsMenu;
 class CloudSettingsMenu;
+class TimeSettingsMenu;
 class ModesSettingsMenu;
 class ControllerHardwareSettingsMenu;
 class BoardcomputerHardwareSettingsMenu;
@@ -66,6 +68,7 @@ public:
 #ifdef FEATURE_CLOUD
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSETTINGS>,                 SwitchScreenAction<CloudSettingsMenu>>>();
 #endif
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIME>,                          SwitchScreenAction<TimeSettingsMenu>, StaticMenuItemIcon<&icons::time>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESSETTINGS>,                 SwitchScreenAction<ModesSettingsMenu>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>,    SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::hardware>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::hardware>>>();

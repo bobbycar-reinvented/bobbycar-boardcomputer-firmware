@@ -1,5 +1,8 @@
 #pragma once
 
+// 3rdparty lib includes
+#include <espchrono.h>
+
 // local includes
 #include "settings.h"
 #include "stringsettings.h"
@@ -19,6 +22,11 @@ constexpr Settings::Limits kidsLimits {
     .nMotMax = 500,
     .fieldWeakMax = 2,
     .phaseAdvMax = 20
+};
+
+constexpr Settings::TimeSettings defaultTimeSettings {
+    .timezoneOffset = 60,
+    .daylightSavingMode = espchrono::DayLightSavingMode::EuropeanSummerTime
 };
 
 constexpr Settings::ControllerHardware defaultControllerHardware {
@@ -202,6 +210,7 @@ constexpr Settings defaultSettings {
 #ifdef FEATURE_BLE
     .bleSettings = defaultBleSettings,
 #endif
+    .timeSettings = defaultTimeSettings,
     .controllerHardware = defaultControllerHardware,
     .boardcomputerHardware = defaultBoardcomputerHardware,
 #ifdef FEATURE_CLOUD

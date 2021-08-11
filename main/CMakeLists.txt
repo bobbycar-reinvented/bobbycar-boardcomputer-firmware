@@ -35,6 +35,7 @@ set(headers
     bmsutils.h
     changevaluedisplay_bluetoothmode.h
     changevaluedisplay_bool.h
+    changevaluedisplay_daylightsavingmode.h
     changevaluedisplay_larsmmode_mode.h
     changevaluedisplay_unifiedmodelmode.h
     changevaluedisplay_wifi_mode_t.h
@@ -72,6 +73,7 @@ set(headers
     displays/menus/stationwifisettingsmenu.h
     displays/menus/tempomatmodesettingsmenu.h
     displays/menus/timersmenu.h
+    displays/menus/timesettingsmenu.h
     displays/menus/wifisettingsmenu.h
     displays/menus/controllerhardwaresettingsmenu.h
     displays/menus/boardcomputerhardwaresettingsmenu.h
@@ -119,6 +121,7 @@ set(headers
     icons/reboot.h
     icons/scan.h
     icons/settings.h
+    icons/time.h
     icons/unchecked.h
     icons/update.h
     icons/wifi.h
@@ -167,6 +170,7 @@ set(headers
     statistics.h
     textinterface.h
     texts.h
+    time_bobbycar.h
     unifiedmodelmode.h
     utils.h
     webserver.h
