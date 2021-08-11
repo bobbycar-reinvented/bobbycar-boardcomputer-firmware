@@ -89,6 +89,7 @@ set(headers
     displays/calibratedisplay.h
     displays/dpad5wiredebugdisplay.h
     displays/gametrakcalibratedisplay.h
+    displays/garagedisplay.h
     displays/lockscreen.h
     displays/metersdisplay.h
     displays/powersupplydisplay.h
@@ -181,7 +182,7 @@ set(dependencies
     libsodium freertos nvs_flash esp_http_server esp_https_ota mdns app_update esp_system esp_websocket_client driver
     arduino-esp32 ArduinoJson esp-nimble-cpp
     bobbycar-protocol cpputils cxx-ring-buffer date
-    espasyncota espchrono espcpputils esphttpdutils espwifistack expected fmt TFT_eSPI
+    espasynchttpreq espasyncota espchrono espcpputils esphttpdutils espwifistack expected fmt TFT_eSPI
 )
 
 idf_component_register(

@@ -49,3 +49,6 @@
 [submodule "components/esphttpdutils"]
 	path = components/esphttpdutils
 	url = git@github.com:0xFEEDC0DE64/esphttpdutils.git
+[submodule "components/espasynchttpreq"]
+	path = components/espasynchttpreq
+	url = git@github.com:0xFEEDC0DE64/espasynchttpreq.git

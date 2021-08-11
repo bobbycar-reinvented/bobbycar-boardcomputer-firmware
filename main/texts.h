@@ -79,6 +79,7 @@ constexpr char TEXT_SETTINGS[] = "Settings";
 constexpr char TEXT_LOCKVEHICLE[] = "Lock vehicle";
 constexpr char TEXT_MOSFETS[] = "Mosfets";
 constexpr char TEXT_DEMOS[] = "Demos";
+constexpr char TEXT_GARAGE[] = "Garage";
 constexpr char TEXT_UPDATE[] = "Update";
 constexpr char TEXT_POWEROFF[] = "Poweroff";
 constexpr char TEXT_REBOOT[] = "Reboot";

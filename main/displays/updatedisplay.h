@@ -10,8 +10,8 @@
 // 3rdparty lib includes
 #ifdef FEATURE_OTA
 #include <espasyncota.h>
+#include <esp_ota_ops.h>
 #endif
-#include <fmt/core.h>
 
 // local includes
 #include "display.h"
@@ -40,8 +40,11 @@ private:
     Label m_statusLabel{120, 75};
     Label m_progressLabel{120, 100};
     Label m_totalLabel{120, 125};
+    Label m_messageLabel{20, 150};
 
     ProgressBar m_progressBar{20, 200, 200, 10, 0, 100};
+
+    Label m_newVersionLabel{20, 275};
 };
 
 void UpdateDisplay::start()
@@ -69,7 +72,18 @@ void UpdateDisplay::initScreen()
     tft.drawString("Total:", 20, m_totalLabel.y());
     m_totalLabel.start();
 
+    m_messageLabel.start();
+
     m_progressBar.start();
+
+    if (const esp_app_desc_t *app_desc = esp_ota_get_app_description())
+    {
+        tft.setTextColor(TFT_ORANGE, TFT_BLACK);
+        tft.drawString(app_desc->version, 20, 250);
+        tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    }
+
+    m_newVersionLabel.start();
 }
 
 void UpdateDisplay::redraw()
@@ -89,22 +103,32 @@ void UpdateDisplay::redraw()
             m_totalLabel.clear();
             m_progressBar.redraw(0);
         }
+        m_messageLabel.redraw(asyncOta->message());
+
+        if (const auto &appDesc = asyncOta->appDesc())
+        {
+            tft.setTextColor(TFT_GREEN, TFT_BLACK);
+            m_newVersionLabel.redraw(appDesc->version);
+            tft.setTextColor(TFT_WHITE, TFT_BLACK);
+        }
+        else
+            m_newVersionLabel.clear();
     }
     else
     {
         m_statusLabel.clear();
         m_progressLabel.clear();
         m_totalLabel.clear();
+        m_messageLabel.clear();
 
         m_progressBar.redraw(0);
+
+        m_newVersionLabel.clear();
     }
 }
 
 void UpdateDisplay::confirm()
 {
-    //if (m_finished)
-    //    switchScreen<StatusDisplay>();
-
     if (const auto result = triggerOta(stringSettings.otaUrl); !result)
         ESP_LOGE("BOBBY", "triggerOta() failed with %.*s", result.error().size(), result.error().data());
 }

@@ -235,6 +235,9 @@ StringSettings makeDefaultStringSettings()
 #ifdef FEATURE_OTA
         .otaUrl = {},
 #endif
+#ifdef FEATURE_GARAGE
+        .garageUrl = "http://insecure.brunner.ninja/tor.php",
+#endif
     };
 }
 }

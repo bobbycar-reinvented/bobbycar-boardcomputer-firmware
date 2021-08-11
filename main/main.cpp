@@ -33,7 +33,9 @@ using namespace std::chrono_literals;
 #ifdef FEATURE_CLOUD
 #include "displays/menus/cloudsettingsmenu.h"
 #endif
+#ifdef FEATURE_BMS
 #include "displays/menus/bmsmenu.h"
+#endif
 #include "displays/menus/buzzermenu.h"
 #include "displays/menus/commanddebugmenu.h"
 #include "displays/menus/debugmenu.h"
@@ -42,7 +44,9 @@ using namespace std::chrono_literals;
 #include "displays/menus/dynamicdebugmenu.h"
 #include "displays/menus/enablemenu.h"
 #include "displays/menus/feedbackdebugmenu.h"
+#ifdef FEATURE_GAMETRAK
 #include "displays/menus/gametrakmodesettingsmenu.h"
+#endif
 #include "displays/menus/genericwifisettingsmenu.h"
 #include "displays/menus/graphsmenu.h"
 #include "displays/menus/controllerhardwaresettingsmenu.h"
@@ -52,7 +56,9 @@ using namespace std::chrono_literals;
 #include "displays/menus/mainmenu.h"
 #include "displays/menus/tempomatmodesettingsmenu.h"
 #include "displays/menus/modessettingsmenu.h"
+#ifdef FEATURE_MOSFETS
 #include "displays/menus/mosfetsmenu.h"
+#endif
 #include "displays/menus/motorfeedbackdebugmenu.h"
 #include "displays/menus/motorstatedebugmenu.h"
 #include "displays/menus/profilesmenu.h"
@@ -64,11 +70,20 @@ using namespace std::chrono_literals;
 #include "displays/menus/timersmenu.h"
 #include "displays/menus/wifiscanmenu.h"
 #include "displays/menus/wifisettingsmenu.h"
+#ifdef FEATURE_BMS
 #include "displays/bmsdisplay.h"
+#endif
 #include "displays/calibratedisplay.h"
+#ifdef FEATURE_DPAD_5WIRESW
 #include "displays/dpad5wiredebugdisplay.h"
+#endif
 #include "displays/gameoflifedisplay.h"
+#ifdef FEATURE_GARAGE
+#include "displays/garagedisplay.h"
+#endif
+#ifdef FEATURE_LOCKSCREEN
 #include "displays/gametrakcalibratedisplay.h"
+#endif
 #include "displays/lockscreen.h"
 #include "displays/metersdisplay.h"
 #include "displays/pingpongdisplay.h"
@@ -77,20 +92,32 @@ using namespace std::chrono_literals;
 #include "displays/spirodisplay.h"
 #include "displays/starfielddisplay.h"
 #include "displays/statusdisplay.h"
+#ifdef FEATURE_OTA
 #include "displays/updatedisplay.h"
+#endif
 #include "screens.h"
 #include "dpad.h"
+#ifdef FEATURE_DPAD_3WIRESW
 #include "dpad3wire.h"
+#endif
+#ifdef FEATURE_DPAD_5WIRESW
 #include "dpad5wire.h"
+#endif
+#ifdef FEATURE_ROTARY
 #include "rotary.h"
+#endif
 #include "serialhandler.h"
+#ifdef FEATURE_OTA
 #include "ota.h"
+#endif
 #include "presets.h"
 #include "statistics.h"
 #ifdef FEATURE_BLUETOOTH
 #include "actions/bluetoothbeginaction.h"
 #include "actions/bluetoothbeginmasteraction.h"
+#ifdef FEATURE_BMS
 #include "actions/bluetoothconnectbmsaction.h"
+#endif
 #endif
 #ifdef FEATURE_BLE
 #include "ble.h"
