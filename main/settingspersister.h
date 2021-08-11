@@ -5,9 +5,13 @@
 #include <optional>
 
 // esp-idf includes
+#include <esp_log.h>
 #include <nvs_flash.h>
 #include <nvs.h>
-#include <esp_log.h>
+#ifdef FEATURE_NTP
+#include <lwip/apps/snmp.h>
+#include <esp_sntp.h>
+#endif
 
 // 3rdparty lib includes
 #include <fmt/core.h>
@@ -230,6 +234,48 @@ template<> struct nvsGetterHelper<espchrono::DayLightSavingMode> { static esp_er
         *out_value = espchrono::DayLightSavingMode(tempValue);
     return err;
 }};
+template<> struct nvsGetterHelper<espchrono::milliseconds32> { static esp_err_t nvs_get(nvs_handle handle, const char* key, espchrono::milliseconds32* out_value)
+{
+    int32_t tempValue;
+    esp_err_t err = nvs_get_i32(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = espchrono::milliseconds32(tempValue);
+    return err;
+}};
+template<> struct nvsGetterHelper<espchrono::seconds32> { static esp_err_t nvs_get(nvs_handle handle, const char* key, espchrono::seconds32* out_value)
+{
+    int32_t tempValue;
+    esp_err_t err = nvs_get_i32(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = espchrono::seconds32(tempValue);
+    return err;
+}};
+template<> struct nvsGetterHelper<espchrono::minutes32> { static esp_err_t nvs_get(nvs_handle handle, const char* key, espchrono::minutes32* out_value)
+{
+    int32_t tempValue;
+    esp_err_t err = nvs_get_i32(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = espchrono::minutes32(tempValue);
+    return err;
+}};
+template<> struct nvsGetterHelper<espchrono::hours32> { static esp_err_t nvs_get(nvs_handle handle, const char* key, espchrono::hours32* out_value)
+{
+    int32_t tempValue;
+    esp_err_t err = nvs_get_i32(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = espchrono::hours32(tempValue);
+    return err;
+}};
+#ifdef FEATURE_NTP
+template<> struct nvsGetterHelper<sntp_sync_mode_t> { static esp_err_t nvs_get(nvs_handle handle, const char* key, sntp_sync_mode_t* out_value)
+{
+    uint8_t tempValue;
+    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = sntp_sync_mode_t(tempValue);
+    return err;
+}};
+#endif
 
 template<typename T>
 bool SettingsPersister::load(T &settings)
@@ -317,6 +363,28 @@ template<> struct nvsSetterHelper<espchrono::DayLightSavingMode> { static esp_er
 {
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
+template<> struct nvsSetterHelper<espchrono::milliseconds32> { static esp_err_t nvs_set(nvs_handle handle, const char* key, espchrono::milliseconds32 value)
+{
+    return nvs_set_i32(handle, key, value.count());
+}};
+template<> struct nvsSetterHelper<espchrono::seconds32> { static esp_err_t nvs_set(nvs_handle handle, const char* key, espchrono::seconds32 value)
+{
+    return nvs_set_i32(handle, key, value.count());
+}};
+template<> struct nvsSetterHelper<espchrono::minutes32> { static esp_err_t nvs_set(nvs_handle handle, const char* key, espchrono::minutes32 value)
+{
+    return nvs_set_i32(handle, key, value.count());
+}};
+template<> struct nvsSetterHelper<espchrono::hours32> { static esp_err_t nvs_set(nvs_handle handle, const char* key, espchrono::hours32 value)
+{
+    return nvs_set_i32(handle, key, value.count());
+}};
+#ifdef FEATURE_NTP
+template<> struct nvsSetterHelper<sntp_sync_mode_t> { static esp_err_t nvs_set(nvs_handle handle, const char* key, sntp_sync_mode_t value)
+{
+    return nvs_set_u8(handle, key, uint8_t(value));
+}};
+#endif
 
 template<typename T>
 bool SettingsPersister::save(T &settings)

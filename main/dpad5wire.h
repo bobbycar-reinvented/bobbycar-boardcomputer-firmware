@@ -1,11 +1,16 @@
 #pragma once
 
+// system includes
 #include <array>
 
+// Arduino includes
 #include <Arduino.h>
 
+// 3rdparty lib includes
 #include <espchrono.h>
+#include <tickchrono.h>
 
+// local includes
 #include "buttons.h"
 #include "types.h"
 
@@ -73,7 +78,7 @@ State Helper<OUT, IN1, IN2, IN3, IN4>::read()
     pinMode(IN3, INPUT_PULLUP);
     pinMode(IN4, INPUT_PULLUP);
 
-    delay(1);
+    vPortYield();
 
     result[0] = digitalRead(IN1)==LOW;
     result[1] = digitalRead(IN2)==LOW;
@@ -87,7 +92,7 @@ State Helper<OUT, IN1, IN2, IN3, IN4>::read()
     pinMode(IN3, INPUT_PULLDOWN);
     pinMode(IN4, INPUT_PULLDOWN);
 
-    delay(1);
+    vPortYield();
 
     result[4] = digitalRead(IN1);
     result[5] = digitalRead(IN2);

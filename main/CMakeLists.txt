@@ -35,6 +35,7 @@ set(headers
     bmsutils.h
     changevaluedisplay_bluetoothmode.h
     changevaluedisplay_bool.h
+    changevaluedisplay_sntp_sync_mode_t.h
     changevaluedisplay_daylightsavingmode.h
     changevaluedisplay_larsmmode_mode.h
     changevaluedisplay_unifiedmodelmode.h

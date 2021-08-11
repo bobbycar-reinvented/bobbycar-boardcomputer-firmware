@@ -151,6 +151,9 @@ std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
 #ifdef FEATURE_CLOUD
 std::optional<espchrono::millis_clock::time_point> lastCloudUpdate;
 #endif
+#ifdef FEATURE_NTP
+std::optional<espchrono::millis_clock::time_point> lastNtpUpdate;
+#endif
 }
 
 extern "C" void app_main()
@@ -297,6 +300,11 @@ extern "C" void app_main()
     initCloud();
 #endif
 
+#ifdef FEATURE_NTP
+    bootLabel.redraw("time");
+    initTime();
+#endif
+
     bootLabel.redraw("switchScreen");
 
 #if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
@@ -424,6 +432,15 @@ extern "C" void app_main()
             handleCloud();
 
             lastCloudUpdate = now;
+        }
+#endif
+
+#ifdef FEATURE_NTP
+        if (!lastNtpUpdate || now - *lastNtpUpdate >= 100ms)
+        {
+            updateTime();
+
+            lastNtpUpdate = now;
         }
 #endif
 

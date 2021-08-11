@@ -6,6 +6,13 @@
 
 // esp-idf includes
 #include <esp_wifi_types.h>
+#ifdef FEATURE_NTP
+#include <lwip/apps/snmp.h>
+#include <esp_sntp.h>
+#endif
+
+// 3rdparty lib includes
+#include <espchrono.h>
 
 // local includes
 #include "bobbycar-common.h"
@@ -54,8 +61,14 @@ struct Settings
 #endif
 
     struct TimeSettings {
-        int16_t timezoneOffset;
+        espchrono::minutes32 timezoneOffset;
         espchrono::DayLightSavingMode daylightSavingMode;
+
+#ifdef FEATURE_NTP
+        bool timeServerEnabled;
+        sntp_sync_mode_t timeSyncMode;
+        espchrono::milliseconds32 timeSyncInterval;
+#endif
     } timeSettings;
 
     struct ControllerHardware {
@@ -160,6 +173,11 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 
     callable("timezoneOffset", timeSettings.timezoneOffset);
     callable("daylightSaving", timeSettings.daylightSavingMode);
+#ifdef FEATURE_NTP
+    callable("timeServerEnab", timeSettings.timeServerEnabled);
+    callable("timeSyncMode", timeSettings.timeSyncMode);
+    callable("timeSyncInterv", timeSettings.timeSyncInterval);
+#endif
 
     callable("wheelDiameter", controllerHardware.wheelDiameter);
     callable("numMagnetPoles", controllerHardware.numMagnetPoles);

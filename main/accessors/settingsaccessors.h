@@ -1,5 +1,6 @@
 #pragma once
 
+// local includes
 #include "globals.h"
 #include "accessorinterface.h"
 #include "utils.h"
@@ -47,8 +48,21 @@ struct CloudEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRe
 struct CloudTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.cloudSettings.cloudTransmitTimeout; } };
 #endif
 
-struct TimezoneOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.timeSettings.timezoneOffset; } };
+struct TimezoneOffsetAccessor : public virtual AccessorInterface<int32_t>
+{
+    int32_t getValue() const override { return settings.timeSettings.timezoneOffset.count(); }
+    void setValue(int32_t value) override { settings.timeSettings.timezoneOffset = espchrono::minutes32{value}; saveSettings(); }
+};
 struct DaylightSavingModeAccessor : public RefAccessorSaveSettings<espchrono::DayLightSavingMode> { espchrono::DayLightSavingMode &getRef() const override { return settings.timeSettings.daylightSavingMode; } };
+#ifdef FEATURE_NTP
+struct TimeServerEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.timeSettings.timeServerEnabled; } };
+struct TimeSyncModeAccessor : public RefAccessorSaveSettings<sntp_sync_mode_t> { sntp_sync_mode_t &getRef() const override { return settings.timeSettings.timeSyncMode; } };
+struct TimeSyncIntervalAccessor : public virtual AccessorInterface<int32_t>
+{
+    int32_t getValue() const override { return settings.timeSettings.timeSyncInterval.count(); }
+    void setValue(int32_t value) override { settings.timeSettings.timeSyncInterval = espchrono::milliseconds32{value}; saveSettings(); }
+};
+#endif
 
 struct FrontLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontLeft; } };
 struct FrontRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontRight; } };

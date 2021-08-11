@@ -1,9 +1,13 @@
 #pragma once
 
+// Arduino includes
 #include <Arduino.h>
 
+// 3rdparty lib includes
 #include <espchrono.h>
+#include <tickchrono.h>
 
+// local includes
 #include "dpad.h"
 #include "buttons.h"
 #include "types.h"
@@ -38,7 +42,7 @@ dpad::State Helper<OUT, IN1, IN2>::read()
     pinMode(IN1, INPUT_PULLUP);
     pinMode(IN2, INPUT_PULLUP);
 
-    delay(1);
+    vPortYield();
 
     const bool result0 = digitalRead(IN1)==LOW;
     const bool result1 = digitalRead(IN2)==LOW;
@@ -48,7 +52,7 @@ dpad::State Helper<OUT, IN1, IN2>::read()
     pinMode(IN1, INPUT_PULLDOWN);
     pinMode(IN2, INPUT_PULLDOWN);
 
-    delay(1);
+    vPortYield();
 
     const bool result2 = digitalRead(IN1);
     const bool result3 = digitalRead(IN2);

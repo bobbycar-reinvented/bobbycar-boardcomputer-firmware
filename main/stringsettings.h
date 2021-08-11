@@ -26,6 +26,10 @@ struct StringSettings
     std::string garageUrl;
 #endif
 
+#ifdef FEATURE_NTP
+    std::string timeServer;
+#endif
+
 
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
@@ -68,6 +72,9 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
 
 #ifdef FEATURE_GARAGE
     callable("garageUrl", garageUrl);
+#endif
+#ifdef FEATURE_NTP
+    callable("timeServer", timeServer);
 #endif
 }
 

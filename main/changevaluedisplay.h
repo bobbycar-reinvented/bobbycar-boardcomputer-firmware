@@ -155,6 +155,9 @@ void ChangeValueDisplay<Tvalue>::confirm()
 #ifdef FEATURE_BLUETOOTH
 #include "changevaluedisplay_bluetoothmode.h"
 #endif
+#ifdef FEATURE_NTP
+#include "changevaluedisplay_sntp_sync_mode_t.h"
+#endif
 #include "changevaluedisplay_controlmode.h"
 #include "changevaluedisplay_controltype.h"
 #include "changevaluedisplay_daylightsavingmode.h"

@@ -332,7 +332,11 @@ constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
 //TimeSettingsMenu
 //constexpr char TEXT_TIME[] = "Time";
 constexpr char TEXT_OFFSET[] = "Offset";
-constexpr char TEXT_DAYLIGHTSAVINGMODE[] = "Daylight Saving Mode";
+constexpr char TEXT_DAYLIGHTSAVINGMODE[] = "Daylight Saving";
+constexpr char TEXT_NTPENABLED[] = "NTP Enabled";
+constexpr char TEXT_NTPSERVER[] = "NTP Server";
+constexpr char TEXT_NTPMODE[] = "NTP Mode";
+constexpr char TEXT_NTPINTERVAL[] = "NTP Interval";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<BluetoothMode>
@@ -343,6 +347,11 @@ constexpr char TEXT_SLAVE[] = "Slave";
 //ChangeValueDisplay<bool>
 constexpr char TEXT_TRUE[] = "true";
 constexpr char TEXT_FALSE[] = "false";
+//constexpr char TEXT_BACK[] = "Back";
+
+//ChangeValueDisplay<sntp_sync_mode_t>
+constexpr char TEXT_IMMED[] = "IMMED";
+constexpr char TEXT_SMOOTH[] = "SMOOTH";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<ControlMode>

@@ -1,11 +1,19 @@
 #pragma once
 
+// esp-idf includes
+#ifdef FEATURE_NTP
+#include <lwip/apps/snmp.h>
+#include <esp_sntp.h>
+#endif
+
 // 3rdparty lib includes
 #include <espchrono.h>
 
 // local includes
 #include "settings.h"
 #include "stringsettings.h"
+
+using namespace std::chrono_literals;
 
 namespace presets {
 constexpr Settings::Limits defaultLimits {
@@ -25,8 +33,13 @@ constexpr Settings::Limits kidsLimits {
 };
 
 constexpr Settings::TimeSettings defaultTimeSettings {
-    .timezoneOffset = 60,
-    .daylightSavingMode = espchrono::DayLightSavingMode::EuropeanSummerTime
+    .timezoneOffset = 60min,
+    .daylightSavingMode = espchrono::DayLightSavingMode::EuropeanSummerTime,
+#ifdef FEATURE_NTP
+    .timeServerEnabled = true,
+    .timeSyncMode = SNTP_SYNC_MODE_IMMED,
+    .timeSyncInterval = espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY},
+#endif
 };
 
 constexpr Settings::ControllerHardware defaultControllerHardware {
@@ -245,7 +258,10 @@ StringSettings makeDefaultStringSettings()
         .otaUrl = {},
 #endif
 #ifdef FEATURE_GARAGE
-        .garageUrl = "http://insecure.brunner.ninja/tor.php",
+        .garageUrl = {},
+#endif
+#ifdef FEATURE_NTP
+        .timeServer = "europe.pool.ntp.org",
 #endif
     };
 }
