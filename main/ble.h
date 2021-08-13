@@ -9,9 +9,6 @@
 #include <NimBLEDevice.h>
 #endif
 
-#define FEATURE_BLE
-#define FEATURE_WIRELESS_CONFIG
-
 // local includes
 #include "globals.h"
 #include "futurecpp.h"
@@ -169,23 +166,6 @@ void handleBle()
             livestatsCharacteristic->setValue(json);
             livestatsCharacteristic->notify();
         }
-
-#ifdef FEATURE_WIRELESS_CONFIG
-
-        if (wirelessConfig->getSubscribedCount())
-        {
-            StaticJsonDocument<1024> doc;
-            {
-                doc.add(42);
-            }
-
-            std::string json;
-            serializeJson(doc, json);
-
-            wirelessConfig->setValue(json);
-            wirelessConfig->notify();
-        }
-#endif
     }
     else if (pServer)
     {
@@ -209,7 +189,7 @@ void createBle()
     remotecontrolCharacteristic = pService->createCharacteristic("4201def0-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
     remotecontrolCharacteristic->setCallbacks(&bleRemoteCallbacks);
 #ifdef FEATURE_WIRELESS_CONFIG
-    wirelessConfig = pService->createCharacteristic("4201def1-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE);
+    wirelessConfig = pService->createCharacteristic("4201def1-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
     wirelessConfig->setCallbacks(&bleWirelessSettingsCallbacks);
 #endif
 
