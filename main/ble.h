@@ -15,6 +15,9 @@
 #include "modes/remotecontrolmode.h"
 #include "utils.h"
 
+//wifistack
+#include "wifi_bobbycar.h"
+
 namespace {
 #ifdef FEATURE_BLE
 BLEServer *pServer{};
@@ -23,6 +26,7 @@ BLECharacteristic *livestatsCharacteristic{};
 BLECharacteristic *remotecontrolCharacteristic{};
 #ifdef FEATURE_WIRELESS_CONFIG
 BLECharacteristic *wirelessConfig{};
+BLECharacteristic *getwifilist{};
 #endif
 
 void createBle();
@@ -40,12 +44,19 @@ class WirelessSettingsCallbacks : public NimBLECharacteristicCallbacks
 public:
     void onWrite(NimBLECharacteristic* pCharacteristic) override;
 };
+
+class WiFiListCallbacks : public NimBLECharacteristicCallbacks
+{
+public:
+    void onRead(NimBLECharacteristic* pCharacteristic) override;
+};
 #endif
 
 RemoteControlCallbacks bleRemoteCallbacks;
 
 #ifdef FEATURE_WIRELESS_CONFIG
 WirelessSettingsCallbacks bleWirelessSettingsCallbacks;
+WiFiListCallbacks bleWiFiListCallbacks;
 #endif
 
 void initBle()
@@ -189,8 +200,10 @@ void createBle()
     remotecontrolCharacteristic = pService->createCharacteristic("4201def0-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
     remotecontrolCharacteristic->setCallbacks(&bleRemoteCallbacks);
 #ifdef FEATURE_WIRELESS_CONFIG
-    wirelessConfig = pService->createCharacteristic("4201def1-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
+    wirelessConfig = pService->createCharacteristic("4201def1-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
     wirelessConfig->setCallbacks(&bleWirelessSettingsCallbacks);
+    getwifilist = pService->createCharacteristic("4201def2-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::READ);
+    getwifilist->setCallbacks(&bleWiFiListCallbacks);
 #endif
 
     pService->start();
@@ -212,6 +225,7 @@ void destroyBle()
     livestatsCharacteristic = {};
     remotecontrolCharacteristic = {};
     wirelessConfig = {};
+    getwifilist = {};
 }
 
 void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
@@ -257,6 +271,28 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
         const auto deserialized = deserializeJson(doc, val);
         ESP_LOGW(TAG, "Unkown type %s -> json: %.*s %s", doc["type"].as<const char*>(), val.size(), val.data(), deserialized.c_str());
     }
+}
+
+void WiFiListCallbacks::onRead(NimBLECharacteristic *pCharacteristic) {
+    StaticJsonDocument<1024> responseDoc;
+    auto wifis = stringSettings.wifis;
+    auto wifiArray = responseDoc.createNestedArray("wifis");
+    ESP_LOGI(TAG, "[ble_wifilist] Got request for listing wifi ssids.");
+    for (unsigned int index = 0; index < wifis.size(); index++) {
+        wifiArray.add(wifis[index].ssid);
+    }
+/*
+    if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+        responseDoc["ip"] = wifi_stack::toString(result->ip);
+    else
+    {
+        ESP_LOGW(TAG, "[ble_wifilist] get_ip_info() failed with %.*s", result.error().size(), result.error().data());
+    }
+*/
+
+    std::string json;
+    serializeJson(responseDoc, json);
+    pCharacteristic->setValue(json);
 }
 #endif
 #endif
