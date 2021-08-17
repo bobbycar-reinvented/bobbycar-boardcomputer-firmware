@@ -127,53 +127,59 @@ void update()
 
     if (lastState.up != newState.up && now - debounceUp > dpadDebounce)
     {
+        lastState.up = newState.up;
         InputDispatcher::upButton(newState.up);
         debounceUp = now;
     }
 
     if (lastState.down != newState.down && now - debounceDown > dpadDebounce)
     {
+        lastState.down = newState.down;
         InputDispatcher::downButton(newState.down);
         debounceDown = now;
     }
 
     if (lastState.confirm != newState.confirm && now - debounceConfirm > dpadDebounce)
     {
+        lastState.confirm = newState.confirm;
         InputDispatcher::confirmButton(newState.confirm);
         debounceConfirm = now;
     }
 
     if (lastState.back != newState.back && now - debounceBack > dpadDebounce)
     {
+        lastState.back = newState.back;
         InputDispatcher::backButton(newState.back);
         debounceBack = now;
     }
 
     if (lastState.profile0 != newState.profile0 && now - debounceProfile0 > dpadDebounce)
     {
+        lastState.profile0 = newState.profile0;
         InputDispatcher::profileButton(0, newState.profile0);
         debounceProfile0 = now;
     }
 
     if (lastState.profile1 != newState.profile1 && now - debounceProfile1 > dpadDebounce)
     {
+        lastState.profile1 = newState.profile1;
         InputDispatcher::profileButton(1, newState.profile1);
         debounceProfile1 = now;
     }
 
     if (lastState.profile2 != newState.profile2 && now - debounceProfile2 > dpadDebounce)
     {
+        lastState.profile2 = newState.profile2;
         InputDispatcher::profileButton(2, newState.profile2);
         debounceProfile2 = now;
     }
 
     if (lastState.profile3 != newState.profile3 && now - debounceProfile3 > dpadDebounce)
     {
+        lastState.profile3 = newState.profile3;
         InputDispatcher::profileButton(3, newState.profile3);
         debounceProfile3 = now;
     }
-
-    lastState = newState;
 }
 #endif
 
