@@ -52,3 +52,6 @@
 [submodule "components/espasynchttpreq"]
 	path = components/espasynchttpreq
 	url = git@github.com:0xFEEDC0DE64/espasynchttpreq.git
+[submodule "components/FastLED-idf"]
+	path = components/FastLED-idf
+	url = git@github.com:0xFEEDC0DE64/FastLED-idf.git

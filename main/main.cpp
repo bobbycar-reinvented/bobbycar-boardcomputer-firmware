@@ -134,6 +134,9 @@ using namespace std::chrono_literals;
 #endif
 #include "wifi_bobbycar.h"
 #include "time_bobbycar.h"
+#ifdef FEATURE_LEDSTRIP
+#include "ledstrip.h"
+#endif
 
 namespace {
 std::optional<espchrono::millis_clock::time_point> lastWifiUpdate;
@@ -154,6 +157,9 @@ std::optional<espchrono::millis_clock::time_point> lastCloudUpdate;
 #ifdef FEATURE_NTP
 std::optional<espchrono::millis_clock::time_point> lastNtpUpdate;
 #endif
+#ifdef FEATURE_LEDSTRIP
+std::optional<espchrono::millis_clock::time_point> lastLedstripUpdate;
+#endif
 }
 
 extern "C" void app_main()
@@ -172,6 +178,32 @@ extern "C" void app_main()
     currentlyReverseBeeping = false;
 
     initScreen();
+
+    bootLabel.redraw("settings");
+    settings = presets::defaultSettings;
+    stringSettings = presets::makeDefaultStringSettings();
+
+    if (settingsPersister.init())
+    {
+        if (!settingsPersister.openCommon())
+            ESP_LOGE("BOBBY", "openCommon() failed");
+
+        if (!settingsPersister.openProfile(0))
+            ESP_LOGE("BOBBY", "openProfile(0) failed");
+
+        loadSettings();
+    }
+    else
+        ESP_LOGE("BOBBY", "init() failed");
+
+    bootLabel.redraw("deviceName");
+    if (const auto result = wifi_stack::get_default_mac_addr())
+        std::sprintf(deviceName, STRING(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", result->at(3), result->at(4), result->at(5));
+    else
+        ESP_LOGE("MAIN", "get_default_mac_addr() failed: %.*s", result.error().size(), result.error().data());
+
+    bootLabel.redraw("wifi");
+    wifi_begin();
 
 #ifdef FEATURE_DPAD
     bootLabel.redraw("dpad");
@@ -204,32 +236,6 @@ extern "C" void app_main()
     digitalWrite(PINS_MOSFET2, LOW);
 #endif
 
-    bootLabel.redraw("settings");
-    settings = presets::defaultSettings;
-    stringSettings = presets::makeDefaultStringSettings();
-
-    if (settingsPersister.init())
-    {
-        if (!settingsPersister.openCommon())
-            ESP_LOGE("BOBBY", "openCommon() failed");
-
-        if (!settingsPersister.openProfile(0))
-            ESP_LOGE("BOBBY", "openProfile(0) failed");
-
-        loadSettings();
-    }
-    else
-        ESP_LOGE("BOBBY", "init() failed");
-
-    bootLabel.redraw("deviceName");
-    if (const auto result = wifi_stack::get_default_mac_addr())
-        std::sprintf(deviceName, STRING(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", result->at(3), result->at(4), result->at(5));
-    else
-        ESP_LOGE("MAIN", "get_default_mac_addr() failed: %.*s", result.error().size(), result.error().data());
-
-    bootLabel.redraw("wifi");
-    wifi_begin();
-
 #ifdef FEATURE_SERIAL
     bootLabel.redraw("swap front back");
     updateSwapFrontBack();
@@ -256,6 +262,7 @@ extern "C" void app_main()
 #endif
 
 #ifdef FEATURE_CAN
+    bootLabel.redraw("can");
     can::initCan();
 #endif
 
@@ -265,6 +272,11 @@ extern "C" void app_main()
 
     bootLabel.redraw("back Serial begin");
     controllers.back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
+#endif
+
+#ifdef FEATURE_LEDSTRIP
+    bootLabel.redraw("LED strip");
+    initLedStrip();
 #endif
 
     raw_gas = std::nullopt;
@@ -450,6 +462,15 @@ extern "C" void app_main()
 
 #ifdef FEATURE_BMS
         bms::update();
+#endif
+
+#ifdef FEATURE_LEDSTRIP
+        if (!lastLedstripUpdate || now - *lastLedstripUpdate >= 1000ms / 60)
+        {
+            updateLedStrip();
+
+            lastLedstripUpdate = now;
+        }
 #endif
     }
 }

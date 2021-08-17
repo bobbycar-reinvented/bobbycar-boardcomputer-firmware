@@ -126,6 +126,7 @@ set(headers
     icons/unchecked.h
     icons/update.h
     icons/wifi.h
+    ledstrip.h
     menudisplay.h
     menuitem.h
     modes/defaultmode.h
@@ -185,9 +186,9 @@ set(sources
 
 set(dependencies
     libsodium freertos nvs_flash esp_http_server esp_https_ota mdns app_update esp_system esp_websocket_client driver
-    arduino-esp32 ArduinoJson esp-nimble-cpp
+    arduino-esp32 ArduinoJson esp-nimble-cpp FastLED-idf TFT_eSPI
     bobbycar-protocol cpputils cxx-ring-buffer date
-    espasynchttpreq espasyncota espchrono espcpputils esphttpdutils espwifistack expected fmt TFT_eSPI
+    espasynchttpreq espasyncota espchrono espcpputils esphttpdutils espwifistack expected fmt
 )
 
 idf_component_register(
