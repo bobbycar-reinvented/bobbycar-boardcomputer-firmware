@@ -208,4 +208,5 @@ target_compile_options(${COMPONENT_TARGET}
         -Wno-deprecated-declarations
         -Wno-missing-field-initializers
         -Wno-parentheses
+        ${BOBBYCAR_BUILDFLAGS}
 )
