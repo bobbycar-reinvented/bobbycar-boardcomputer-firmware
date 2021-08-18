@@ -101,7 +101,6 @@ set(headers
     esp_websocket_client.h
     fontinterface.h
     htmltag.h
-    icon.h
     iconinterface.h
     icons/alert.h
     icons/back.h
@@ -188,7 +187,7 @@ set(dependencies
     libsodium freertos nvs_flash esp_http_server esp_https_ota mdns app_update esp_system esp_websocket_client driver
     arduino-esp32 ArduinoJson esp-nimble-cpp FastLED-idf TFT_eSPI
     bobbycar-protocol cpputils cxx-ring-buffer date
-    espasynchttpreq espasyncota espchrono espcpputils esphttpdutils espwifistack expected fmt
+    espasynchttpreq espasyncota espchrono espcpputils esp-gui-lib esphttpdutils espwifistack expected fmt
 )
 
 idf_component_register(

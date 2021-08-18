@@ -55,3 +55,6 @@
 [submodule "components/FastLED-idf"]
 	path = components/FastLED-idf
 	url = git@github.com:0xFEEDC0DE64/FastLED-idf.git
+[submodule "components/esp-gui-lib"]
+	path = components/esp-gui-lib
+	url = git@github.com:0xFEEDC0DE64/esp-gui-lib.git
