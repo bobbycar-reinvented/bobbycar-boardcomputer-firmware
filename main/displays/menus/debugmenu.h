@@ -16,6 +16,8 @@
 #include "texts.h"
 #include "debugcolorhelpers.h"
 
+using namespace espgui;
+
 // forward declares
 namespace {
 class MainMenu;
@@ -33,6 +35,8 @@ class BackLeftMotorFeedbackDebugMenu;
 class BackRightMotorFeedbackDebugMenu;
 class DynamicDebugMenu;
 } // namespace
+
+using namespace espgui;
 
 namespace {
 class DebugMenu :
@@ -64,7 +68,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKRIGHTFEEDBACK>,    SwitchScreenAction<BackRightMotorFeedbackDebugMenu>, BackFeedbackColor<TFT_WHITE>>>();
         constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          SwitchScreenAction<DynamicDebugMenu>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

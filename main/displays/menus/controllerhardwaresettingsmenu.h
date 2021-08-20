@@ -23,6 +23,8 @@ class InvertMenu;
 class SettingsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 using WheelDiameterMmChangeScreen = makeComponent<
     ChangeValueDisplay<int16_t>,
@@ -83,7 +85,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANTRANSMITTIMEOUT>, SwitchScreenAction<CanTransmitTimeoutChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVETIMEOUT>,  SwitchScreenAction<CanReceiveTimeoutChangeScreen>>>();
 #endif
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

@@ -119,7 +119,6 @@ void redrawDisplay()
 {
     if (currentDisplay)
     {
-        tft.setSwapBytes(settings.boardcomputerHardware.swapScreenBytes);
         currentDisplay->redraw();
     }
 }

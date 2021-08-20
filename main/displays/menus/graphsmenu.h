@@ -16,6 +16,8 @@ class MainMenu;
 class GraphsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 using GasGraphDisplay = makeComponent<
     GraphDisplay<1>,
@@ -181,7 +183,7 @@ public:
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORCURRENTS>,         SwitchScreenAction<MotorCurrentsGraphDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RSSI>,                  SwitchScreenAction<RssiGraphDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

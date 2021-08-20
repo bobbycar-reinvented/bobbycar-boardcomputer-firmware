@@ -27,6 +27,7 @@ class StationWifiSettingsMenu;
 } // namespace
 
 using namespace std::chrono_literals;
+using namespace espgui;
 
 namespace {
 class WifiScanMenu : public MenuDisplay, public BackActionInterface<SwitchScreenAction<StationWifiSettingsMenu>>
@@ -50,7 +51,7 @@ private:
 
 WifiScanMenu::WifiScanMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<StationWifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<StationWifiSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string WifiScanMenu::text() const

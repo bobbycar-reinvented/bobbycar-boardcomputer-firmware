@@ -16,6 +16,8 @@ namespace {
 class SettingsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 #ifdef FEATURE_BLE
 class BleSettingsMenu :
@@ -29,7 +31,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLEENABLED>, ToggleBoolAction, CheckboxIcon, BleEnabledAccessor>>();
         constructMenuItem<makeComponent<MenuItem, BleServerPeerDevicesText,    DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, BleCharacSubscribedText,     DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 #endif

@@ -19,6 +19,8 @@ class GenericWifiSettingsMenu;
 class WifiSettingsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 class GenericWifiSettingsMenu :
     public MenuDisplay,
@@ -28,7 +30,7 @@ class GenericWifiSettingsMenu :
 public:
     GenericWifiSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

@@ -16,6 +16,8 @@ namespace {
 class DebugMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 template<const char *Ttext, typename Ttexts, template<int> class ColorInterface>
 class MotorFeedbackDebugMenu :
@@ -40,7 +42,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcPhaCFixedText,  ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::ChopsText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::HallText,         ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                             SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                             SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 

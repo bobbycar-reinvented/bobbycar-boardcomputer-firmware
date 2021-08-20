@@ -25,6 +25,8 @@ namespace {
 class DebugMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 class RandomText : public virtual TextInterface
 {
@@ -157,7 +159,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
 
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

@@ -4,6 +4,7 @@
 #include "menudisplay.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
+#include "changevaluedisplay_unifiedmodelmode.h"
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
@@ -17,6 +18,8 @@ namespace {
 class TempomatModeSettingsMenu;
 class ModesSettingsMenu;
 } // namespace
+
+using namespace espgui;
 
 namespace {
 using DefaultModeCruiseMotTgtChangeDisplay = makeComponent<
@@ -46,7 +49,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_APPLY, AvgSpeedAccessor>, TempomatModeApplyCurrentSpeedAction>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NCRUISEMOTTGT, TempomatModeCruiseMotTgtAccessor>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

@@ -11,7 +11,7 @@
 #include "texts.h"
 #include "modes/larsmmode.h"
 
-namespace {
+namespace espgui {
 template<>
 class ChangeValueDisplay<LarsmModeMode> :
     public MenuDisplay,
@@ -32,7 +32,7 @@ ChangeValueDisplay<LarsmModeMode>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<LarsmModeMode>, StaticText<TEXT_LARSMMODE2>>>(LarsmModeMode::Mode2, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<LarsmModeMode>, StaticText<TEXT_LARSMMODE3>>>(LarsmModeMode::Mode3, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<LarsmModeMode>, StaticText<TEXT_LARSMMODE4>>>(LarsmModeMode::Mode4, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&icons::back>>>(*this);
+    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&espgui::icons::back>>>(*this);
 }
 
 void ChangeValueDisplay<LarsmModeMode>::start()
@@ -50,4 +50,4 @@ void ChangeValueDisplay<LarsmModeMode>::start()
         setSelectedIndex(4);
     }
 }
-}
+} // namespace espgui

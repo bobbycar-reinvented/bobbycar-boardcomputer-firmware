@@ -8,6 +8,8 @@
 #include "globals.h"
 #include "presets.h"
 
+using namespace espgui;
+
 namespace {
 class EraseNvsAction : public virtual ActionInterface
 {

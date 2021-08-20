@@ -5,6 +5,8 @@
 #include "globals.h"
 #include "modes/tempomatmode.h"
 
+using namespace espgui;
+
 namespace {
 
 struct AvgSpeedAccessor : public RefAccessor<float> { float &getRef() const override { return avgSpeed; } };

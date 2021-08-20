@@ -16,6 +16,8 @@ namespace {
 class MainMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 #ifdef FEATURE_MOSFETS
 template<pin_t PIN>
@@ -41,7 +43,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET0>, ToggleBoolAction, CheckboxIcon, Mosfet0Accessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET1>, ToggleBoolAction, CheckboxIcon, Mosfet1Accessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET2>, ToggleBoolAction, CheckboxIcon, Mosfet2Accessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 #endif

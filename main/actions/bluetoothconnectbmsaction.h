@@ -3,6 +3,8 @@
 #include "actioninterface.h"
 #include "globals.h"
 
+using namespace espgui;
+
 namespace {
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 class BluetoothConnectBmsAction : public virtual ActionInterface

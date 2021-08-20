@@ -2,6 +2,8 @@
 
 #include "actioninterface.h"
 
+using namespace espgui;
+
 namespace {
 template<typename ...T>
 class MultiAction;

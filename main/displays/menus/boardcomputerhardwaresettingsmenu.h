@@ -24,6 +24,8 @@ class TimersMenu;
 class SettingsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 struct GasText : public virtual TextInterface {
 public:
@@ -183,9 +185,8 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMAX>,                          SwitchScreenAction<GametrakDistMaxChangeScreen>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, EmptyText,                                                    DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPSCREENBYTES>,                             ToggleBoolAction, CheckboxIcon, SwapScreenBytesAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIMERS>,                                      SwitchScreenAction<TimersMenu>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

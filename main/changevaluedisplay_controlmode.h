@@ -12,7 +12,7 @@
 #include "icons/back.h"
 #include "texts.h"
 
-namespace {
+namespace espgui {
 template<>
 class ChangeValueDisplay<bobbycar::protocol::ControlMode> :
     public MenuDisplay,
@@ -34,7 +34,7 @@ ChangeValueDisplay<bobbycar::protocol::ControlMode>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<ControlMode>, StaticText<TEXT_VOLTAGE>>>(ControlMode::Voltage, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<ControlMode>, StaticText<TEXT_SPEED>>>(ControlMode::Speed, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<ControlMode>, StaticText<TEXT_TORQUE>>>(ControlMode::Torque, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&icons::back>>>(*this);
+    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&espgui::icons::back>>>(*this);
 }
 
 void ChangeValueDisplay<bobbycar::protocol::ControlMode>::start()
@@ -53,4 +53,4 @@ void ChangeValueDisplay<bobbycar::protocol::ControlMode>::start()
         setSelectedIndex(4);
     }
 }
-}
+} // namespace espgui

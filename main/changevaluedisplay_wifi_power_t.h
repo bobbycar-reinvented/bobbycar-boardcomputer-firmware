@@ -8,7 +8,7 @@
 #include "icons/back.h"
 #include "texts.h"
 
-namespace {
+namespace espgui {
 //template<>
 //class ChangeValueDisplay<wifi_power_t> :
 //    public MenuDisplay,
@@ -37,7 +37,7 @@ namespace {
 //    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<wifi_power_t>, StaticText<TEXT_WIFI_POWER_5dBm>>>(WIFI_POWER_5dBm, *this, *this);
 //    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<wifi_power_t>, StaticText<TEXT_WIFI_POWER_2dBm>>>(WIFI_POWER_2dBm, *this, *this);
 //    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<wifi_power_t>, StaticText<TEXT_WIFI_POWER_MINUS_1dBm>>>(WIFI_POWER_MINUS_1dBm, *this, *this);
-//    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&icons::back>>>(*this);
+//    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&espgui::icons::back>>>(*this);
 //}
 
 //void ChangeValueDisplay<wifi_power_t>::start()
@@ -63,4 +63,4 @@ namespace {
 //        setSelectedIndex(12);
 //    }
 //}
-}
+} // namespace espgui

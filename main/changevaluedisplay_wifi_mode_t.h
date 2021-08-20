@@ -11,7 +11,7 @@
 #include "icons/back.h"
 #include "texts.h"
 
-namespace {
+namespace espgui {
 template<>
 class ChangeValueDisplay<wifi_mode_t> :
     public MenuDisplay,
@@ -32,7 +32,7 @@ ChangeValueDisplay<wifi_mode_t>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<wifi_mode_t>, StaticText<TEXT_WIFI_MODE_STA>>>(WIFI_MODE_STA, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<wifi_mode_t>, StaticText<TEXT_WIFI_MODE_AP>>>(WIFI_MODE_AP, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<wifi_mode_t>, StaticText<TEXT_WIFI_MODE_APSTA>>>(WIFI_MODE_APSTA, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&icons::back>>>(*this);
+    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&espgui::icons::back>>>(*this);
 }
 
 void ChangeValueDisplay<wifi_mode_t>::start()
@@ -50,4 +50,4 @@ void ChangeValueDisplay<wifi_mode_t>::start()
         setSelectedIndex(4);
     }
 }
-}
+} // namespace espgui

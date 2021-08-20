@@ -2,6 +2,9 @@
 
 // local includes
 #include "changevaluedisplay.h"
+#ifdef FEATURE_BLUETOOTH
+#include "changevaluedisplay_bluetoothmode.h"
+#endif
 #include "menudisplay.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -22,6 +25,8 @@
 namespace {
 class SettingsMenu;
 } // namespace
+
+using namespace espgui;
 
 namespace {
 #ifdef FEATURE_BLUETOOTH
@@ -54,7 +59,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHEND>,          BluetoothEndAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHDISCONNECT>,   BluetoothDisconnectAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOBLUETOOTHMODE>,     SwitchScreenAction<AutoBluetoothModeChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 #endif

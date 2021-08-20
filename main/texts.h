@@ -274,7 +274,6 @@ constexpr char TEXT_SETGAMETRAKYMIN[] = "Set gametrakYMin";
 constexpr char TEXT_SETGAMETRAKYMAX[] = "Set gametrakYMax";
 constexpr char TEXT_SETGAMETRAKDISTMIN[] = "Set gametrakDistMin";
 constexpr char TEXT_SETGAMETRAKDISTMAX[] = "Set gametrakDistMax";
-constexpr char TEXT_SWAPSCREENBYTES[] = "Swap screen bytes";
 constexpr char TEXT_TIMERS[] = "Timers";
 //constexpr char TEXT_BACK[] = "Back";
 
@@ -344,16 +343,6 @@ constexpr char TEXT_OFF[] = "Off";
 constexpr char TEXT_MASTER[] = "Master";
 constexpr char TEXT_SLAVE[] = "Slave";
 
-//ChangeValueDisplay<bool>
-constexpr char TEXT_TRUE[] = "true";
-constexpr char TEXT_FALSE[] = "false";
-//constexpr char TEXT_BACK[] = "Back";
-
-//ChangeValueDisplay<sntp_sync_mode_t>
-constexpr char TEXT_IMMED[] = "IMMED";
-constexpr char TEXT_SMOOTH[] = "SMOOTH";
-//constexpr char TEXT_BACK[] = "Back";
-
 //ChangeValueDisplay<ControlMode>
 constexpr char TEXT_OPENMODE[] = "Open mode";
 constexpr char TEXT_VOLTAGE[] = "Voltage";
@@ -365,12 +354,6 @@ constexpr char TEXT_TORQUE[] = "Torque";
 constexpr char TEXT_COMMUTATION[] = "Commutation";
 constexpr char TEXT_SINUSOIDAL[] = "Sinusoidal";
 constexpr char TEXT_FIELDORIENTEDCONTROL[] = "Field oriented control";
-//constexpr char TEXT_BACK[] = "Back";
-
-//ChangeValueDisplay<espchrono::DayLightSavingMode>
-constexpr char TEXT_NONE[] = "None";
-constexpr char TEXT_EUROPEANSUMMERTIME[] = "EuropeanSummerTime";
-constexpr char TEXT_USDAYLIGHTTIME[] = "UsDaylightTime";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ChangeValueDisplay<LarsmMode::Mode>

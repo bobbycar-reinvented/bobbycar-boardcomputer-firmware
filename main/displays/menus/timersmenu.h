@@ -14,6 +14,8 @@ namespace {
 class BoardcomputerHardwareSettingsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 class TimersMenu;
 
@@ -96,7 +98,7 @@ public:
 #ifdef FEATURE_CLOUD
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,     SwitchScreenAction<CloudSendRateChangeDisplay>>>();
 #endif
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

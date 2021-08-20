@@ -5,6 +5,9 @@
 #include <fmt/core.h>
 
 // local includes
+#include "changevaluedisplay.h"
+#include "changevaluedisplay_daylightsavingmode.h"
+#include "changevaluedisplay_sntp_sync_mode_t.h"
 #include "menudisplay.h"
 #include "utils.h"
 #include "actions/toggleboolaction.h"
@@ -20,6 +23,8 @@ namespace {
 class SettingsMenu;
 class TimeSettingsMenu;
 } // namespace
+
+using namespace espgui;
 
 namespace {
 class CurrentUtcDateTimeText : public virtual TextInterface { public:
@@ -84,7 +89,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPINTERVAL>,        SwitchScreenAction<TimeSyncIntervalChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, NtpSyncStatusText,                   DummyAction>>();
 #endif
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

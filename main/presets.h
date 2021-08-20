@@ -155,7 +155,6 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
     .gametrakDistMin = DEFAULT_GAMETRAKDISTMIN,
     .gametrakDistMax = DEFAULT_GAMETRAKDISTMAX,
 #endif
-    .swapScreenBytes = DEFAULT_SWAPSCREENBYTES,
     .timersSettings = defaultTimersSettings
 };
 

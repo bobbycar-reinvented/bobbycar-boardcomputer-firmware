@@ -6,6 +6,7 @@
 
 // 3rdparty lib includes
 #include <fmt/core.h>
+#include <cpputils.h>
 
 // local includes
 #include "display.h"
@@ -130,12 +131,12 @@ void CalibrateDisplay::initScreen()
 void CalibrateDisplay::update()
 {
     if (raw_gas)
-        m_gas = scaleBetween<float>(*raw_gas, m_gasMin, m_gasMax, 0., 1000.);
+        m_gas = cpputils::mapValueClamped<float>(*raw_gas, m_gasMin, m_gasMax, 0., 1000.);
     else
         m_gas = std::nullopt;
 
     if (raw_brems)
-        m_brems = scaleBetween<float>(*raw_brems, m_bremsMin, m_bremsMax, 0., 1000.);
+        m_brems = cpputils::mapValueClamped<float>(*raw_brems, m_bremsMin, m_bremsMax, 0., 1000.);
     else
         m_brems = std::nullopt;
 }

@@ -3,6 +3,8 @@
 #include "actioninterface.h"
 #include "utils.h"
 
+using namespace espgui;
+
 namespace {
 #ifdef FEATURE_SERIAL
 class UpdateSwapFrontBackAction : public virtual ActionInterface

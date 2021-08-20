@@ -7,6 +7,8 @@
 #include "actioninterface.h"
 #include "wifi_bobbycar.h"
 
+using namespace espgui;
+
 namespace {
 class WifiScanAction : public virtual ActionInterface
 {

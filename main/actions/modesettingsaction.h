@@ -11,6 +11,8 @@
 #include "displays/menus/larsmmodesettingsmenu.h"
 #include "displays/menus/gametrakmodesettingsmenu.h"
 
+using namespace espgui;
+
 namespace {
 class ModeSettingsAction : public virtual ActionInterface
 {

@@ -27,6 +27,8 @@
 #include "settingspersister.h"
 #include "macros_bobbycar.h"
 
+using namespace espgui;
+
 namespace {
 std::optional<int16_t> raw_gas, raw_brems;
 std::optional<float> gas, brems;
@@ -42,8 +44,6 @@ char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
 Settings settings;
 StringSettings stringSettings;
 SettingsPersister settingsPersister;
-
-constexpr auto TFT_GREY = 0x5AEB;
 
 class Controllers : public std::array<Controller, 2>
 {
@@ -85,8 +85,6 @@ struct {
 #ifdef FEATURE_BLUETOOTH
 BluetoothSerial bluetoothSerial;
 #endif
-
-TFT_eSPI tft = TFT_eSPI();
 
 ModeInterface *lastMode{};
 ModeInterface *currentMode{};

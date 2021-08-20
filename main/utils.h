@@ -13,6 +13,7 @@
 // 3rdparty lib includes
 #include <espchrono.h>
 #include <futurecpp.h>
+#include <cpputils.h>
 
 // local includes
 #ifdef FEATURE_CAN
@@ -32,31 +33,6 @@ namespace {
 bool currentlyReverseBeeping;
 bool reverseBeepToggle;
 espchrono::millis_clock::time_point lastReverseBeepToggle;
-
-template<typename ...T>
-class makeComponent : public T...
-{};
-
-template <typename T1, typename T2, typename ...T3>
-class makeComponentArgs : public T1, public T2, public T3...
-{
-public:
-    template<typename ...T>
-    makeComponentArgs(T&& ...args) :
-        T2{std::forward<T>(args)...}
-    {
-    }
-};
-
-template<typename T>
-T scaleBetween(T x, T in_min, T in_max, T out_min, T out_max) {
-    if (x < std::min(in_min, in_max))
-        x = std::min(in_min, in_max);
-    else if (x > std::max(in_min, in_max))
-        x = std::max(in_min, in_max);
-
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
 
 float convertToKmh(float val)
 {
@@ -338,23 +314,23 @@ void readPotis()
 #endif
 
     if (raw_gas)
-        gas = scaleBetween<float>(*raw_gas, settings.boardcomputerHardware.gasMin, settings.boardcomputerHardware.gasMax, 0., 1000.);
+        gas = cpputils::mapValueClamped<float>(*raw_gas, settings.boardcomputerHardware.gasMin, settings.boardcomputerHardware.gasMax, 0., 1000.);
     else
         gas = std::nullopt;
     if (raw_brems)
-        brems = scaleBetween<float>(*raw_brems, settings.boardcomputerHardware.bremsMin, settings.boardcomputerHardware.bremsMax, 0., 1000.);
+        brems = cpputils::mapValueClamped<float>(*raw_brems, settings.boardcomputerHardware.bremsMin, settings.boardcomputerHardware.bremsMax, 0., 1000.);
     else
         brems = std::nullopt;
 
 #ifdef FEATURE_GAMETRAK
     raw_gametrakX = sampleMultipleTimes(PINS_GAMETRAKX);
-    gametrakX = scaleBetween<float>(raw_gametrakX, settings.boardcomputerHardware.gametrakXMin, settings.boardcomputerHardware.gametrakXMax, 0., 1000.);
+    gametrakX = cpputils::mapValueClamped<float>(raw_gametrakX, settings.boardcomputerHardware.gametrakXMin, settings.boardcomputerHardware.gametrakXMax, 0., 1000.);
 
     raw_gametrakY = sampleMultipleTimes(PINS_GAMETRAKY);
-    gametrakY = scaleBetween<float>(raw_gametrakY, settings.boardcomputerHardware.gametrakYMin, settings.boardcomputerHardware.gametrakYMax, 0., 1000.);
+    gametrakY = cpputils::mapValueClamped<float>(raw_gametrakY, settings.boardcomputerHardware.gametrakYMin, settings.boardcomputerHardware.gametrakYMax, 0., 1000.);
 
     raw_gametrakDist = sampleMultipleTimes(PINS_GAMETRAKDIST);
-    gametrakDist = scaleBetween<float>(raw_gametrakDist, settings.boardcomputerHardware.gametrakDistMin, settings.boardcomputerHardware.gametrakDistMax, 0., 1000.);
+    gametrakDist = cpputils::mapValueClamped<float>(raw_gametrakDist, settings.boardcomputerHardware.gametrakDistMin, settings.boardcomputerHardware.gametrakDistMax, 0., 1000.);
 #endif
 }
 }

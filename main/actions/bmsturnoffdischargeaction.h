@@ -3,6 +3,8 @@
 #include "actioninterface.h"
 #include "bmsutils.h"
 
+using namespace espgui;
+
 namespace {
 #ifdef FEATURE_BMS
 class BmsTurnOffDischargeAction : public virtual ActionInterface

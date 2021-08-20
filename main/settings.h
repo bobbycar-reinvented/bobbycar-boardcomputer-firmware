@@ -97,7 +97,6 @@ struct Settings
 #ifdef FEATURE_GAMETRAK
         int16_t gametrakXMin, gametrakXMax, gametrakYMin, gametrakYMax, gametrakDistMin, gametrakDistMax;
 #endif
-        bool swapScreenBytes;
 
         struct TimersSettings {
             int16_t potiReadRate;
@@ -205,7 +204,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("gametrakDistMin", boardcomputerHardware.gametrakDistMin);
     callable("gametrakDistMax", boardcomputerHardware.gametrakDistMax);
 #endif
-    callable("swapScreenBytes", boardcomputerHardware.swapScreenBytes);
 
     callable("potiReadRate", boardcomputerHardware.timersSettings.potiReadRate);
     callable("modeUpdateRate", boardcomputerHardware.timersSettings.modeUpdateRate);

@@ -13,6 +13,8 @@ namespace {
 class ModesSettingsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 #ifdef FEATURE_GAMETRAK
 class ContainerModeSettingsMenu :
@@ -23,7 +25,7 @@ class ContainerModeSettingsMenu :
 public:
     ContainerModeSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 #endif

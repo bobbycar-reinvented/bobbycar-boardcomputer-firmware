@@ -3,6 +3,8 @@
 #include "actioninterface.h"
 #include "globals.h"
 
+using namespace espgui;
+
 namespace {
 #ifdef FEATURE_BLUETOOTH
 class BluetoothDisconnectAction : public virtual ActionInterface

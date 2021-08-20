@@ -17,6 +17,8 @@ namespace {
 class MainMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 class ApplyPresetAction : public virtual ActionInterface
 {
@@ -92,7 +94,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SINUSOIDALDEFAULTMODE>,        MultiAction<ApplyDefaultModePresetAction<&presets::sinusoidalDefaultMode>, SwitchScreenAction<MainMenu>>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTTEMPOMATMODE>,          MultiAction<ApplyTempomatModePresetAction<&presets::defaultTempomatMode>, SwitchScreenAction<MainMenu>>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTLARSMMODE>,             MultiAction<ApplyLarsmModePresetAction<&presets::defaultLarsmMode>, SwitchScreenAction<MainMenu>>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

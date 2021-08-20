@@ -3,6 +3,8 @@
 #include "actioninterface.h"
 #include "accessorinterface.h"
 
+using namespace espgui;
+
 namespace {
 class ToggleBoolAction : public virtual ActionInterface, public virtual AccessorInterface<bool>
 {

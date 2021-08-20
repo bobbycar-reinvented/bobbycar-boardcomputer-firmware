@@ -4,6 +4,8 @@
 #include "menudisplay.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
+#include "changevaluedisplay_larsmmode_mode.h"
+#include "changevaluedisplay_unifiedmodelmode.h"
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
@@ -15,6 +17,8 @@ namespace {
 class LarsmModeSettingsMenu;
 class ModesSettingsMenu;
 } // namespace
+
+using namespace espgui;
 
 namespace {
 using LarsmModeModelModeChangeDisplay = makeComponent<
@@ -50,7 +54,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,     SwitchScreenAction<LarsmModeModelModeChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODE>,       SwitchScreenAction<LarsmModeModeChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETITERATIONS>, SwitchScreenAction<LarsmModeIterationsChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,          SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,          SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

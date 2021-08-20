@@ -4,6 +4,7 @@
 #include "menudisplay.h"
 #include "utils.h"
 #include "changevaluedisplay.h"
+#include "changevaluedisplay_unifiedmodelmode.h"
 #include "menuitem.h"
 #include "actions/toggleboolaction.h"
 #include "actions/switchscreenaction.h"
@@ -17,6 +18,8 @@ namespace {
 class DefaultModeSettingsMenu;
 class ModesSettingsMenu;
 } // namespace
+
+using namespace espgui;
 
 namespace {
 using DefaultModeModelModeChangeDisplay = makeComponent<
@@ -103,7 +106,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SUBBRAKEVAL, DefaultModeBrems2WertAccessor>,                     SwitchScreenAction<DefaultModeBrems2WertChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ADDGASVAL, DefaultModeGas1WertAccessor>,                         SwitchScreenAction<DefaultModeGas1WertChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ADDBRAKEVAL, DefaultModeBrems1WertAccessor>,                     SwitchScreenAction<DefaultModeBrems1WertChangeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                    SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                    SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

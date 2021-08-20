@@ -16,6 +16,8 @@ class GametrakModeSettingsMenu;
 class SettingsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 class ModesSettingsMenu :
     public MenuDisplay,
@@ -31,7 +33,7 @@ public:
 #ifdef FEATURE_GAMETRAK
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAKMODESETTINGS>,  SwitchScreenAction<GametrakModeSettingsMenu>>>();
 #endif
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

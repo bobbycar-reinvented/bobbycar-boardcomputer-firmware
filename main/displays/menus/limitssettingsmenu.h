@@ -16,6 +16,8 @@ class LimitsSettingsMenu;
 class SettingsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 using IMotMaxChangeScreen = makeComponent<
     ChangeValueDisplay<int16_t>,
@@ -74,7 +76,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NMOTMAX, NMotMaxRpmAccessor>,        SwitchScreenAction<NMotMaxRpmChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_FIELDWEAKMAX, FieldWeakMaxAccessor>, SwitchScreenAction<FieldWeakMaxChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PHASEADVMAX, PhaseAdvMaxAccessor>,   SwitchScreenAction<PhaseAdvMaxChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                           SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                           SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace

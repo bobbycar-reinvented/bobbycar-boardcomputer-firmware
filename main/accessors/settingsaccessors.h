@@ -5,6 +5,8 @@
 #include "accessorinterface.h"
 #include "utils.h"
 
+using namespace espgui;
+
 namespace {
 //! Special type of RefAccessor that also saves settings after setValue()
 template<typename T>
@@ -110,7 +112,6 @@ struct GametrakYMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t 
 struct GametrakDistMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakDistMin; } };
 struct GametrakDistMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakDistMax; } };
 #endif
-struct SwapScreenBytesAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.boardcomputerHardware.swapScreenBytes; } };
 struct PotiReadRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.potiReadRate; } };
 struct ModeUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.modeUpdateRate; } };
 struct StatsUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.statsUpdateRate; } };

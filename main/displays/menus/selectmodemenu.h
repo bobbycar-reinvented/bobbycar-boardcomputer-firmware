@@ -20,6 +20,8 @@ namespace {
 class MainMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 template<typename T1, T1 &target, typename T2, T2 value>
 class SetterAction : public ActionInterface
@@ -52,7 +54,7 @@ public:
 #ifdef FEATURE_GAMETRAK
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, SwitchScreenAction<MainMenu>>>>();
 #endif
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 
     void start() override;

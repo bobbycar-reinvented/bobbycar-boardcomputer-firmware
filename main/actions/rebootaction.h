@@ -6,6 +6,8 @@
 #include "globals.h"
 #include "texts.h"
 
+using namespace espgui;
+
 namespace {
 class RebootAction : public virtual ActionInterface
 {

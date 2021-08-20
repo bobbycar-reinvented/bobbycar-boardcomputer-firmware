@@ -12,7 +12,7 @@
 #include "bluetoothmode.h"
 #endif
 
-namespace {
+namespace espgui {
 #ifdef FEATURE_BLUETOOTH
 template<>
 class ChangeValueDisplay<BluetoothMode> :
@@ -33,7 +33,7 @@ ChangeValueDisplay<BluetoothMode>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BluetoothMode>, StaticText<TEXT_OFF>>>(BluetoothMode::Off, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BluetoothMode>, StaticText<TEXT_MASTER>>>(BluetoothMode::Master, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BluetoothMode>, StaticText<TEXT_SLAVE>>>(BluetoothMode::Slave, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&icons::back>>>(*this);
+    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&espgui::icons::back>>>(*this);
 }
 
 void ChangeValueDisplay<BluetoothMode>::start()
@@ -51,4 +51,4 @@ void ChangeValueDisplay<BluetoothMode>::start()
     }
 }
 #endif
-}
+} // namespace espgui

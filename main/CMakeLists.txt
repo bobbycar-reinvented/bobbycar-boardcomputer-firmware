@@ -1,10 +1,7 @@
 set(headers
-    accessorinterface.h
     accessors/globalaccessors.h
     accessors/settingsaccessors.h
     accessors/wifiaccessors.h
-    actioninterface.h
-    actions/backproxyaction.h
     actions/bluetoothbeginaction.h
     actions/bluetoothbeginmasteraction.h
     actions/bluetoothconnectbmsaction.h
@@ -15,15 +12,12 @@ set(headers
     actions/bmsturnoffdischargeaction.h
     actions/bmsturnonchargeaction.h
     actions/bmsturnondischargeaction.h
-    actions/dummyaction.h
     actions/erasenvsaction.h
     actions/loadsettingsaction.h
     actions/modesettingsaction.h
     actions/multiaction.h
     actions/rebootaction.h
     actions/savesettingsaction.h
-    actions/setvalueaction.h
-    actions/switchscreenaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
     actions/toggleboolaction.h
     actions/wifiscanaction.h
@@ -34,16 +28,13 @@ set(headers
     bletexthelpers.h
     bmsutils.h
     changevaluedisplay_bluetoothmode.h
-    changevaluedisplay_bool.h
-    changevaluedisplay_sntp_sync_mode_t.h
-    changevaluedisplay_daylightsavingmode.h
+    changevaluedisplay_controlmode.h
+    changevaluedisplay_controltype.h
     changevaluedisplay_larsmmode_mode.h
     changevaluedisplay_unifiedmodelmode.h
     changevaluedisplay_wifi_mode_t.h
     changevaluedisplay_wifi_power_t.h
-    checkboxicon.h
     cloud.h
-    colorinterface.h
     debugcolorhelpers.h
     displays/gameoflifedisplay.h
     displays/graphdisplay.h
@@ -99,15 +90,11 @@ set(headers
     displays/statusdisplay.h
     displays/updatedisplay.h
     esp_websocket_client.h
-    fontinterface.h
     htmltag.h
-    iconinterface.h
     icons/alert.h
-    icons/back.h
     icons/bluetooth.h
     icons/bms.h
     icons/buzzer.h
-    icons/checked.h
     icons/close.h
     icons/demos.h
     icons/graph.h
@@ -122,12 +109,9 @@ set(headers
     icons/scan.h
     icons/settings.h
     icons/time.h
-    icons/unchecked.h
     icons/update.h
     icons/wifi.h
     ledstrip.h
-    menudisplay.h
-    menuitem.h
     modes/defaultmode.h
     modes/gametrakmode.h
     modes/ignoreinputmode.h
@@ -137,23 +121,13 @@ set(headers
     rotary.h
     screens.h
     types.h
-    widgets/progressbar.h
-    widgets/reverseprogressbar.h
-    widgets/verticalmeter.h
-    widgets/vumeter.h
-    widgets/graph.h
-    widgets/label.h
     esptexthelpers.h
     presets.h
     bluetoothtexthelpers.h
     buttons.h
     can.h
-    changevaluedisplay.h
-    changevaluedisplay_controlmode.h
-    changevaluedisplay_controltype.h
     controller.h
     debugtexthelpers.h
-    display.h
     dpad.h
     dpad3wire.h
     dpad5wire.h
@@ -169,7 +143,7 @@ set(headers
     settingspersister.h
     settingsutils.h
     statistics.h
-    textinterface.h
+    statustexthelper.h
     texts.h
     time_bobbycar.h
     unifiedmodelmode.h

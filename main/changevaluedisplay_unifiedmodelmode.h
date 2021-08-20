@@ -11,7 +11,7 @@
 #include "texts.h"
 #include "unifiedmodelmode.h"
 
-namespace {
+namespace espgui {
 template<>
 class ChangeValueDisplay<UnifiedModelMode> :
     public MenuDisplay,
@@ -33,7 +33,7 @@ ChangeValueDisplay<UnifiedModelMode>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_FOCVOLTAGE>>>(UnifiedModelMode::FocVoltage, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_FOCSPEED>>>(UnifiedModelMode::FocSpeed, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_FOCTORQUE>>>(UnifiedModelMode::FocTorque, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&icons::back>>>(*this);
+    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&espgui::icons::back>>>(*this);
 }
 
 void ChangeValueDisplay<UnifiedModelMode>::start()
@@ -52,4 +52,4 @@ void ChangeValueDisplay<UnifiedModelMode>::start()
         setSelectedIndex(5);
     }
 }
-}
+} // namespace espgui

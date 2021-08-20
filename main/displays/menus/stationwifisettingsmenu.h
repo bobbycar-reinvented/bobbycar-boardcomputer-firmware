@@ -22,6 +22,8 @@ class WifiScanMenu;
 class WifiSettingsMenu;
 } // namespace
 
+using namespace espgui;
+
 namespace {
 class StationWifiSettingsMenu :
     public MenuDisplay,
@@ -52,7 +54,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, WifiDns0Text,                     StaticFont<2>, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, WifiDns1Text,                     StaticFont<2>, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, WifiDns2Text,                     StaticFont<2>, DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,            SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,            SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };
 } // namespace
