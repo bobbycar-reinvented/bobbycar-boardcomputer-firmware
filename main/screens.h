@@ -1,48 +1,19 @@
 #pragma once
 
+// system includes
 #include <optional>
 
+// local includes
 #include "globals.h"
 #include "utils.h"
 #include "widgets/label.h"
 #include "icons/logo.h"
+#include "screenmanager.h"
+
+using namespace espgui;
 
 namespace {
 Label bootLabel{32, 250};
-
-void deconstructScreen()
-{
-    if (currentDisplay)
-    {
-        currentDisplay->stop();
-        //currentDisplay->~Display();
-        currentDisplay = nullptr;
-    }
-}
-
-template<typename T, typename... Args>
-void switchScreenImpl(Args&&... args)
-{
-    deconstructScreen();
-
-    std::unique_ptr<T> ptr = std::make_unique<T>(std::forward<Args>(args)...);
-    currentDisplay = std::move(ptr);
-    currentDisplay->start();
-    currentDisplay->initScreen();
-    currentDisplay->update();
-    currentDisplay->redraw();
-}
-
-std::function<void()> changeScreenCallback;
-
-template<typename T, typename... Args>
-void switchScreen(Args&&... args)
-{
-    if (currentDisplay)
-        changeScreenCallback = [&args...](){ switchScreenImpl<T>(std::forward<Args>(args)...); };
-    else
-        switchScreenImpl<T>(std::forward<Args>(args)...);
-}
 
 void initScreen()
 {

@@ -218,9 +218,6 @@ void sendCommands()
 #endif
 }
 
-template<typename T, typename... Args>
-void switchScreen(Args&&... args);
-
 #ifdef FEATURE_SERIAL
 void updateSwapFrontBack()
 {

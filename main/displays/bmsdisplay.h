@@ -1,12 +1,15 @@
 #pragma once
 
+// Arduino includes
 #include <Arduino.h>
 
+// local includes
 #include "display.h"
 #include "actions/switchscreenaction.h"
 #include "globals.h"
 #include "bmsutils.h"
 #include "widgets/label.h"
+#include "screenmanager.h"
 
 namespace {
 class MainMenu;

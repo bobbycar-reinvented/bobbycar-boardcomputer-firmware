@@ -19,7 +19,6 @@ set(headers
     actions/rebootaction.h
     actions/savesettingsaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
-    actions/toggleboolaction.h
     actions/wifiscanaction.h
     actions/switchprofileaction.h
     actions/updateswapfrontbackaction.h

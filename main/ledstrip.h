@@ -21,7 +21,16 @@ void updateLedStrip()
 {
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }
 
-    if (brems && *brems > 50.f)
+    float avgPwm{};
+    for (const Controller &controller : controllers)
+    {
+        avgPwm +=
+            controller.command.left.pwm * (controller.invertLeft ? -1 : 1) +
+            controller.command.right.pwm * (controller.invertRight ? -1 : 1);
+    }
+    avgPwm /= 4;
+
+    if (avgPwm < -50.f)
     {
         auto color = avgSpeedKmh < -0.1f ? CRGB{255, 255, 255} : CRGB{255, 0, 0};
         constexpr auto kleinerOffset = 4;

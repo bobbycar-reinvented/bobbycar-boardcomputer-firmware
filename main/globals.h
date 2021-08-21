@@ -89,8 +89,6 @@ BluetoothSerial bluetoothSerial;
 ModeInterface *lastMode{};
 ModeInterface *currentMode{};
 
-std::unique_ptr<Display> currentDisplay;
-
 #ifdef FEATURE_LEDBACKLIGHT
 constexpr const bool ledBacklightInverted =
 #ifdef LEDBACKLIGHT_INVERTED

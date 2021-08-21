@@ -10,6 +10,7 @@
 #include "displays/menus/tempomatmodesettingsmenu.h"
 #include "displays/menus/larsmmodesettingsmenu.h"
 #include "displays/menus/gametrakmodesettingsmenu.h"
+#include "screenmanager.h"
 
 using namespace espgui;
 
