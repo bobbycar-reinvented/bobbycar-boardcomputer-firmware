@@ -274,22 +274,14 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
 }
 
 void WiFiListCallbacks::onRead(NimBLECharacteristic *pCharacteristic) {
-    StaticJsonDocument<1024> responseDoc;
+    StaticJsonDocument<768> responseDoc;
     auto wifis = stringSettings.wifis;
     auto wifiArray = responseDoc.createNestedArray("wifis");
     ESP_LOGI(TAG, "[ble_wifilist] Got request for listing wifi ssids.");
     for (unsigned int index = 0; index < wifis.size(); index++) {
         wifiArray.add(wifis[index].ssid);
     }
-/*
-    if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
-        responseDoc["ip"] = wifi_stack::toString(result->ip);
-    else
-    {
-        ESP_LOGW(TAG, "[ble_wifilist] get_ip_info() failed with %.*s", result.error().size(), result.error().data());
-    }
-*/
-
+    responseDoc["wifi_count"] = wifis.size();
     std::string json;
     serializeJson(responseDoc, json);
     pCharacteristic->setValue(json);
