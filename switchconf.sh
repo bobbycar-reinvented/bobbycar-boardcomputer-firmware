@@ -1,20 +1,11 @@
 #!/bin/bash
 
-[[ $_ != $0 ]] && HAS_BEEN_SOURCED=1
 
 VALID_CONFIGS=(feedc0de comred)
 
-function print_usage
-{
+print_usage() {
     echo "usage: ./switchconf.sh ${VALID_CONFIGS[@]}"
 }
-
-if [[ ! -z "${HAS_BEEN_SOURCED}" ]]
-then
-    echo "switch.sh cannot be sourced, run in a subshell"
-    print_usage
-    return
-fi
 
 if [[ -z "$1" ]]
 then

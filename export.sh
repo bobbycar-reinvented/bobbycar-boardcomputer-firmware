@@ -1,10 +1,3 @@
-if [[ $_ == $0 ]] && [[ "$1" != "--skip-source-check" ]]
-then
-    echo "export.sh has to be sourced, not run in a subshell"
-    echo ". export.sh"
-    exit 1
-fi
-
 BOBBY_ROOT="$(dirname "$BASH_SOURCE")"
 
 if [[ ! -f "${BOBBY_ROOT}/esp-idf/export.sh" ]]
