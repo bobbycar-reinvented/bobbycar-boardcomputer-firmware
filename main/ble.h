@@ -224,8 +224,10 @@ void destroyBle()
     pService = {};
     livestatsCharacteristic = {};
     remotecontrolCharacteristic = {};
+#ifdef FEATURE_WIRELESS_CONFIG
     wirelessConfig = {};
     getwifilist = {};
+#endif
 }
 
 void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
