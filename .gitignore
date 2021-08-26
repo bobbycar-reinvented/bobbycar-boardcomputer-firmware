@@ -9,5 +9,3 @@ desktop.ini
 /sdkconfig.old*
 /.idea
 /.ccache
-flash.sh
-app-flash.sh
