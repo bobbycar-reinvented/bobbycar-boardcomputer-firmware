@@ -13,6 +13,10 @@
 #include "globals.h"
 #include "futurecpp.h"
 #include "modes/remotecontrolmode.h"
+#include "utils.h"
+
+//wifistack
+#include "wifi_bobbycar.h"
 
 namespace {
 #ifdef FEATURE_BLE
@@ -20,6 +24,10 @@ BLEServer *pServer{};
 BLEService *pService{};
 BLECharacteristic *livestatsCharacteristic{};
 BLECharacteristic *remotecontrolCharacteristic{};
+#ifdef FEATURE_WIRELESS_CONFIG
+BLECharacteristic *wirelessConfig{};
+BLECharacteristic *getwifilist{};
+#endif
 
 void createBle();
 void destroyBle();
@@ -30,7 +38,26 @@ public:
     void onWrite(NimBLECharacteristic* pCharacteristic) override;
 };
 
+#ifdef FEATURE_WIRELESS_CONFIG
+class WirelessSettingsCallbacks : public NimBLECharacteristicCallbacks
+{
+public:
+    void onWrite(NimBLECharacteristic* pCharacteristic) override;
+};
+
+class WiFiListCallbacks : public NimBLECharacteristicCallbacks
+{
+public:
+    void onRead(NimBLECharacteristic* pCharacteristic) override;
+};
+#endif
+
 RemoteControlCallbacks bleRemoteCallbacks;
+
+#ifdef FEATURE_WIRELESS_CONFIG
+WirelessSettingsCallbacks bleWirelessSettingsCallbacks;
+WiFiListCallbacks bleWiFiListCallbacks;
+#endif
 
 void initBle()
 {
@@ -172,6 +199,12 @@ void createBle()
     livestatsCharacteristic = pService->createCharacteristic("a48321ea-329f-4eab-a401-30e247211524", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     remotecontrolCharacteristic = pService->createCharacteristic("4201def0-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
     remotecontrolCharacteristic->setCallbacks(&bleRemoteCallbacks);
+#ifdef FEATURE_WIRELESS_CONFIG
+    wirelessConfig = pService->createCharacteristic("4201def1-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
+    wirelessConfig->setCallbacks(&bleWirelessSettingsCallbacks);
+    getwifilist = pService->createCharacteristic("4201def2-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::READ);
+    getwifilist->setCallbacks(&bleWiFiListCallbacks);
+#endif
 
     pService->start();
 
@@ -191,6 +224,10 @@ void destroyBle()
     pService = {};
     livestatsCharacteristic = {};
     remotecontrolCharacteristic = {};
+#ifdef FEATURE_WIRELESS_CONFIG
+    wirelessConfig = {};
+    getwifilist = {};
+#endif
 }
 
 void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
@@ -211,5 +248,46 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
         .backRight = doc["br"].as<int16_t>()
     });
 }
+
+#ifdef FEATURE_WIRELESS_CONFIG
+void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
+{
+    const auto &val = pCharacteristic->getValue();
+
+    StaticJsonDocument<256> doc;
+    if (const auto error = deserializeJson(doc, val))
+    {
+        ESP_LOGW(TAG, "ignoring cmd with invalid json: %.*s %s", val.size(), val.data(), error.c_str());
+        return;
+    }
+
+    auto write_type = doc["type"].as<std::string>();
+
+    if (write_type == "wifi") {
+        const int index = doc["wifi_index"].as<int>();
+        ESP_LOGI(TAG, "[ble_config]: Set wifi%i: WiFi-SSID: %s, WiFi-Password: ***", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>());
+        stringSettings.wifis[index].ssid = doc["wifi_ssid"].as<std::string>();
+        stringSettings.wifis[index].key = doc["wifi_pass"].as<std::string>();
+        saveSettings();
+    } else {
+        const auto deserialized = deserializeJson(doc, val);
+        ESP_LOGW(TAG, "Unkown type %s -> json: %.*s %s", doc["type"].as<const char*>(), val.size(), val.data(), deserialized.c_str());
+    }
+}
+
+void WiFiListCallbacks::onRead(NimBLECharacteristic *pCharacteristic) {
+    StaticJsonDocument<768> responseDoc;
+    auto wifis = stringSettings.wifis;
+    auto wifiArray = responseDoc.createNestedArray("wifis");
+    ESP_LOGI(TAG, "[ble_wifilist] Got request for listing wifi ssids.");
+    for (unsigned int index = 0; index < wifis.size(); index++) {
+        wifiArray.add(wifis[index].ssid);
+    }
+    responseDoc["wifi_count"] = wifis.size();
+    std::string json;
+    serializeJson(responseDoc, json);
+    pCharacteristic->setValue(json);
+}
+#endif
 #endif
 }
