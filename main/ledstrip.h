@@ -8,8 +8,12 @@
 #include "globals.h"
 
 namespace {
+bool enableLedAnimation{false};
+
 std::array<CRGB, LEDSTRIP_LENGTH> leds;
 uint8_t gHue = 0;
+
+void showDefaultLedstrip();
 
 void initLedStrip()
 {
@@ -21,28 +25,45 @@ void updateLedStrip()
 {
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }
 
-    float avgPwm{};
-    for (const Controller &controller : controllers)
+    if (settings.ledstrip.enableBrakeLights)
     {
-        avgPwm +=
-            controller.command.left.pwm * (controller.invertLeft ? -1 : 1) +
-            controller.command.right.pwm * (controller.invertRight ? -1 : 1);
-    }
-    avgPwm /= 4;
+        float avgPwm{};
+        for (const Controller &controller : controllers)
+        {
+            avgPwm +=
+                controller.command.left.pwm * (controller.invertLeft ? -1 : 1) +
+                controller.command.right.pwm * (controller.invertRight ? -1 : 1);
+        }
+        avgPwm /= 4;
 
-    if (avgPwm < -50.f)
-    {
-        auto color = avgSpeedKmh < -0.1f ? CRGB{255, 255, 255} : CRGB{255, 0, 0};
-        constexpr auto kleinerOffset = 4;
-        constexpr auto grosserOffset = 10;
+        if (avgPwm < -1.f)
+        {
+            auto color = avgSpeedKmh < -0.1f ? CRGB{255, 255, 255} : CRGB{255, 0, 0};
+            constexpr auto kleinerOffset = 4;
+            constexpr auto grosserOffset = 10;
 
-        const auto center = std::begin(leds) + (leds.size() / 2) + 1;
+            const auto center = std::begin(leds) + (leds.size() / 2) + 1;
 
-        std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
-        std::fill(center - grosserOffset, center - kleinerOffset, color);
-        std::fill(center + kleinerOffset, center + grosserOffset, color);
+            std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
+            std::fill(center - grosserOffset, center - kleinerOffset, color);
+            std::fill(center + kleinerOffset, center + grosserOffset, color);
+        }
+        else
+        {
+            showDefaultLedstrip();
+        }
     }
     else
+    {
+        showDefaultLedstrip();
+    }
+
+    FastLED.show();
+}
+
+void showDefaultLedstrip()
+{
+    if (enableLedAnimation)
     {
         fadeToBlackBy(std::begin(leds), leds.size(), 20);
 
@@ -53,8 +74,8 @@ void updateLedStrip()
             dothue += 32;
         }
     }
-
-    FastLED.show();
+    else
+        std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
 }
 } // namespace
 #endif

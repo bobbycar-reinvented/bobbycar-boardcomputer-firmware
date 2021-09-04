@@ -27,6 +27,7 @@
 namespace {
 class StatusDisplay;
 class SelectModeMenu;
+class LedstripMenu;
 class ProfilesMenu;
 class PresetsMenu;
 class GraphsMenu;
@@ -55,6 +56,9 @@ public:
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       SwitchScreenAction<StatusDisplay>, StaticMenuItemIcon<&espgui::icons::back>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,   SwitchScreenAction<SelectModeMenu>, StaticMenuItemIcon<&icons::modes>>>();
+#ifdef FEATURE_LEDSTRIP
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     SwitchScreenAction<LedstripMenu>>>();
+#endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESETTINGS>, ModeSettingsAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&icons::presets>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>();

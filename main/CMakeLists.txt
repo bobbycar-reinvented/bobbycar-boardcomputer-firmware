@@ -54,6 +54,7 @@ set(headers
     displays/menus/graphsmenu.h
     displays/menus/invertmenu.h
     displays/menus/larsmmodesettingsmenu.h
+    displays/menus/ledstripmenu.h
     displays/menus/modessettingsmenu.h
     displays/menus/mosfetsmenu.h
     displays/menus/motorstatedebugmenu.h

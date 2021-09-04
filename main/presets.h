@@ -24,6 +24,14 @@ constexpr Settings::Limits defaultLimits {
     .phaseAdvMax = DEFAULT_FIELDADVMAX
 };
 
+constexpr Settings::Buzzer defaultBuzzer {
+    .reverseBeep = false,
+    .reverseBeepFreq0 = 3,
+    .reverseBeepFreq1 = 0,
+    .reverseBeepDuration0 = 500,
+    .reverseBeepDuration1 = 500,
+};
+
 constexpr Settings::Limits kidsLimits {
     .iMotMax = 5,
     .iDcMax = 7,
@@ -205,15 +213,17 @@ constexpr Settings::LarsmMode defaultLarsmMode {
     .iterations = 100
 };
 
+#ifdef FEATURE_LEDSTRIP
+constexpr Settings::Ledstrip defaultLedstrip {
+    .enableBrakeLights = true
+};
+#endif
+
 constexpr Settings defaultSettings {
 #ifdef FEATURE_BMS
     .autoConnectBms = false,
 #endif
-    .reverseBeep = false,
-    .reverseBeepFreq0 = 3,
-    .reverseBeepFreq1 = 0,
-    .reverseBeepDuration0 = 500,
-    .reverseBeepDuration1 = 500,
+    .buzzer = defaultBuzzer,
     .limits = defaultLimits,
     .wifiSettings = defaultWifiSettings,
 #ifdef FEATURE_BLUETOOTH
@@ -230,7 +240,10 @@ constexpr Settings defaultSettings {
 #endif
     .defaultMode = defaultDefaultMode,
     .tempomatMode = defaultTempomatMode,
-    .larsmMode = defaultLarsmMode
+    .larsmMode = defaultLarsmMode,
+#ifdef FEATURE_LEDSTRIP
+    .ledstrip = defaultLedstrip,
+#endif
 };
 
 StringSettings makeDefaultStringSettings()

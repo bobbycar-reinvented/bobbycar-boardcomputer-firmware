@@ -138,7 +138,7 @@ void fixCommonParams()
         motor.phaseAdvMax = settings.limits.phaseAdvMax;
     }
 
-    if (settings.reverseBeep)
+    if (settings.buzzer.reverseBeep)
     {
         const auto x = motors();
         const auto shouldBeep = std::all_of(std::begin(x), std::end(x), [](const bobbycar::protocol::serial::MotorState &motor){ return motor.pwm < 0; });
@@ -150,7 +150,7 @@ void fixCommonParams()
                 reverseBeepToggle = true;
                 lastReverseBeepToggle = espchrono::millis_clock::now();
                 for (auto &controller : controllers)
-                    controller.command.buzzer = {.freq=settings.reverseBeepFreq0, .pattern=0};
+                    controller.command.buzzer = {.freq=settings.buzzer.reverseBeepFreq0, .pattern=0};
             }
             else
                 for (auto &controller : controllers)
@@ -158,12 +158,12 @@ void fixCommonParams()
 
             currentlyReverseBeeping = shouldBeep;
         }
-        else if (shouldBeep && espchrono::millis_clock::now() - lastReverseBeepToggle >= std::chrono::milliseconds{reverseBeepToggle?settings.reverseBeepDuration0:settings.reverseBeepDuration1})
+        else if (shouldBeep && espchrono::millis_clock::now() - lastReverseBeepToggle >= std::chrono::milliseconds{reverseBeepToggle?settings.buzzer.reverseBeepDuration0:settings.buzzer.reverseBeepDuration1})
         {
             reverseBeepToggle = !reverseBeepToggle;
 
             for (auto &controller : controllers)
-                controller.command.buzzer = {.freq=uint8_t(reverseBeepToggle?settings.reverseBeepFreq0:settings.reverseBeepFreq1), .pattern=0};
+                controller.command.buzzer = {.freq=uint8_t(reverseBeepToggle?settings.buzzer.reverseBeepFreq0:settings.buzzer.reverseBeepFreq1), .pattern=0};
 
             lastReverseBeepToggle = espchrono::millis_clock::now();
         }

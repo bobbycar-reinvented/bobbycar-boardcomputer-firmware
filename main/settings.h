@@ -30,11 +30,13 @@ struct Settings
     bool autoConnectBms;
 #endif
 
-    bool reverseBeep;
-    uint8_t reverseBeepFreq0;
-    uint8_t reverseBeepFreq1;
-    int16_t reverseBeepDuration0;
-    int16_t reverseBeepDuration1;
+    struct Buzzer {
+        bool reverseBeep;
+        uint8_t reverseBeepFreq0;
+        uint8_t reverseBeepFreq1;
+        int16_t reverseBeepDuration0;
+        int16_t reverseBeepDuration1;
+    } buzzer;
 
     struct Limits {
         int16_t iMotMax;      // [A] Maximum motor current limit
@@ -145,6 +147,11 @@ struct Settings
         uint8_t iterations;
     } larsmMode;
 
+#ifdef FEATURE_LEDSTRIP
+    struct Ledstrip {
+        bool enableBrakeLights;
+    } ledstrip;
+#endif
 
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
@@ -159,6 +166,12 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 #ifdef FEATURE_BMS
     callable("autoConnectBms", autoConnectBms);
 #endif
+
+    callable("reverseBeep", buzzer.reverseBeep);
+    callable("revBeepFreq0", buzzer.reverseBeepFreq0);
+    callable("revBeepFreq1", buzzer.reverseBeepFreq1);
+    callable("revBeepDur0", buzzer.reverseBeepDuration0);
+    callable("revBeepDur1", buzzer.reverseBeepDuration1);
 
     callable("wifiEnabled", wifiSettings.wifiEnabled);
 
@@ -221,17 +234,15 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("cloudEnabled", cloudSettings.cloudEnabled);
     callable("clodTransmTmout", cloudSettings.cloudTransmitTimeout);
 #endif
+
+#ifdef FEATURE_LEDSTRIP
+    callable("enableBrakeLigh", ledstrip.enableBrakeLights);
+#endif
 }
 
 template<typename T>
 void Settings::executeForEveryProfileSetting(T &&callable)
 {
-    callable("reverseBeep", reverseBeep);
-    callable("revBeepFreq0", reverseBeepFreq0);
-    callable("revBeepFreq1", reverseBeepFreq1);
-    callable("revBeepDur0", reverseBeepDuration0);
-    callable("revBeepDur1", reverseBeepDuration1);
-
     callable("iMotMax", limits.iMotMax);
     callable("iDcMax", limits.iDcMax);
     callable("nMotMax", limits.nMotMax);

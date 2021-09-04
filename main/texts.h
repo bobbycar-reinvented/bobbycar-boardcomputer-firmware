@@ -232,6 +232,12 @@ constexpr char TEXT_SETMODE[] = "Set mode";
 constexpr char TEXT_SETITERATIONS[] = "Set iterations";
 //constexpr char TEXT_BACK[] = "Back";
 
+//LedstripMenu
+constexpr char TEXT_LEDSTRIP[] = "Ledstrip";
+constexpr char TEXT_LEDANIMATION[] = "LED Animation";
+constexpr char TEXT_BRAKELIGHTS[] = "Brake Lights";
+//constexpr char TEXT_BACK[] = "Back";
+
 //ModesSettingsMenu
 //constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
 constexpr char TEXT_DEFAULTMODESETTIGNS[] = "Default mode settings";
