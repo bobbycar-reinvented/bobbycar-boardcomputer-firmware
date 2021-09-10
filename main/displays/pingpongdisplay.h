@@ -1,7 +1,13 @@
 #pragma once
 
+// system includes
 #include <cstdint>
 
+// 3rdparty lib includes
+#include <randomutils.h>
+#include <esprandom.h>
+
+// local includes
 #include "display.h"
 #include "actions/switchscreenaction.h"
 
@@ -74,8 +80,8 @@ private:
 };
 
 PingPongDisplay::PingPongDisplay() :
-    lpaddle_y(random(0, h - paddle_h)),
-    rpaddle_y(random(0, h - paddle_h)),
+    lpaddle_y(cpputils::randomNumber<uint8_t>(0, h - paddle_h, espcpputils::esp_random_device{})),
+    rpaddle_y(cpputils::randomNumber<uint8_t>(0, h - paddle_h, espcpputils::esp_random_device{})),
     // ball is placed on the center of the left paddle
     ball_y(lpaddle_y + (paddle_h / 2))
 {
@@ -207,11 +213,11 @@ void PingPongDisplay::ball()
 
     if (ball_dx == -1 && ball_x == paddle_w && ball_y + ball_h >= lpaddle_y && ball_y <= lpaddle_y + paddle_h) {
         ball_dx = ball_dx * -1;
-        dly = random(5); // change speed of ball after paddle contact
+        dly = cpputils::randomNumber<uint8_t>(5, espcpputils::esp_random_device{}); // change speed of ball after paddle contact
         calc_target_y();
     } else if (ball_dx == 1 && ball_x + ball_w == w - paddle_w && ball_y + ball_h >= rpaddle_y && ball_y <= rpaddle_y + paddle_h) {
         ball_dx = ball_dx * -1;
-        dly = random(5); // change speed of ball after paddle contact
+        dly = cpputils::randomNumber<uint8_t>(5, espcpputils::esp_random_device{}); // change speed of ball after paddle contact
         calc_target_y();
     } else if ((ball_dx == 1 && ball_x >= w) || (ball_dx == -1 && ball_x + ball_w < 0)) {
         dly = 5;

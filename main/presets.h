@@ -215,7 +215,12 @@ constexpr Settings::LarsmMode defaultLarsmMode {
 
 #ifdef FEATURE_LEDSTRIP
 constexpr Settings::Ledstrip defaultLedstrip {
-    .enableBrakeLights = true
+    .enableLedAnimation = true,
+    .enableBrakeLights = true,
+    .ledsCount = LEDSTRIP_LENGTH,
+    .centerOffset = 1,
+    .smallOffset = 4,
+    .bigOffset = 10
 };
 #endif
 

@@ -1,7 +1,13 @@
 #pragma once
 
+// system includes
 #include <cstdint>
 
+// 3rdparty lib includes
+#include <randomutils.h>
+#include <esprandom.h>
+
+// local includes
 #include "display.h"
 #include "actions/switchscreenaction.h"
 
@@ -42,8 +48,8 @@ void SpiroDisplay::redraw()
         if (i == 0)
         {
             tft.fillScreen(TFT_BLACK);
-            n = random(2, 23);
-            r = random(20, 100);
+            n = cpputils::randomNumber<uint8_t>(2, 23, espcpputils::esp_random_device{});
+            r = cpputils::randomNumber<uint8_t>(20, 100, espcpputils::esp_random_device{});
             colour = 0; //rainbow();
         }
 
@@ -64,7 +70,7 @@ void SpiroDisplay::redraw()
 
         if (i == (360 * n))
         {
-            r = random(20, 100);//r = r / random(2,4);
+            r = cpputils::randomNumber<uint8_t>(20, 100, espcpputils::esp_random_device{});//r = r / random(2,4);
         }
 
         if (i >= (360 * n))

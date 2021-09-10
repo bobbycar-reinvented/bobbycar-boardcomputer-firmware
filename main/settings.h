@@ -149,7 +149,12 @@ struct Settings
 
 #ifdef FEATURE_LEDSTRIP
     struct Ledstrip {
+        bool enableLedAnimation;
         bool enableBrakeLights;
+        int16_t ledsCount;
+        int16_t centerOffset;
+        int16_t smallOffset;
+        int16_t bigOffset;
     } ledstrip;
 #endif
 
@@ -236,7 +241,12 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 #endif
 
 #ifdef FEATURE_LEDSTRIP
+    callable("enableLedAnimat", ledstrip.enableLedAnimation);
     callable("enableBrakeLigh", ledstrip.enableBrakeLights);
+    callable("ledsCount", ledstrip.ledsCount);
+    callable("centerOffset", ledstrip.centerOffset);
+    callable("smallOffset", ledstrip.smallOffset);
+    callable("bigOffset", ledstrip.bigOffset);
 #endif
 }
 

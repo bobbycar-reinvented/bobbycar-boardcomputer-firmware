@@ -13,9 +13,9 @@ namespace {
 wifi_stack::config wifi_create_config()
 {
     return wifi_stack::config {
-        .wifiEnabled = settings.wifiSettings.wifiEnabled,
         .hostname = deviceName,
         .sta = {
+            .enabled = settings.wifiSettings.wifiEnabled,
             .wifis = std::array<wifi_stack::wifi_entry, 10> {
                 wifi_stack::wifi_entry { .ssid = stringSettings.wifis[0].ssid, .key = stringSettings.wifis[0].key },
                 wifi_stack::wifi_entry { .ssid = stringSettings.wifis[1].ssid, .key = stringSettings.wifis[1].key },

@@ -45,7 +45,7 @@ public:
     std::string text() const override
     {
         std::string text = "SSID: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto &result = wifi_stack::get_sta_ap_info(); result)
                 text += std::string_view{reinterpret_cast<const char*>(result->ssid)};
         return text;
@@ -57,7 +57,7 @@ public:
     std::string text() const override
     {
         std::string text = "BSSID: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto &result = wifi_stack::get_sta_ap_info(); result)
                 text += wifi_stack::toString(wifi_stack::mac_t{result->bssid});
         return text;
@@ -69,7 +69,7 @@ public:
     std::string text() const override
     {
         std::string text = "RSSI: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto &result = wifi_stack::get_sta_ap_info(); result)
                 text += fmt::format("{}dB", result->rssi);
         return text;
@@ -81,7 +81,7 @@ public:
     std::string text() const override
     {
         std::string text = "encryptionType: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto &result = wifi_stack::get_sta_ap_info(); result)
                 text += wifi_stack::toString(result->authmode);
         return text;
@@ -93,7 +93,7 @@ public:
     std::string text() const override
     {
         std::string text = "pairwiseCipher: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto &result = wifi_stack::get_sta_ap_info(); result)
                 text += wifi_stack::toString(result->pairwise_cipher);
         return text;
@@ -105,7 +105,7 @@ public:
     std::string text() const override
     {
         std::string text = "groupCipher: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto &result = wifi_stack::get_sta_ap_info(); result)
                 text += wifi_stack::toString(result->group_cipher);
         return text;
@@ -117,7 +117,7 @@ public:
     std::string text() const override
     {
         std::string text = "ip: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
                 text += wifi_stack::toString(result->ip);
         return text;
@@ -129,7 +129,7 @@ public:
     std::string text() const override
     {
         std::string text = "netmask: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
                 text += wifi_stack::toString(result->netmask);
         return text;
@@ -141,7 +141,7 @@ public:
     std::string text() const override
     {
         std::string text = "gateway: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
                 text += wifi_stack::toString(result->gw);
         return text;
@@ -153,7 +153,7 @@ public:
     std::string text() const override
     {
         std::string text = "ipv6: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
         {
             esp_ip6_addr_t addr;
             if (const auto result = esp_netif_get_ip6_linklocal(wifi_stack::esp_netifs[ESP_IF_WIFI_STA], &addr); result == ESP_OK)
@@ -168,7 +168,7 @@ public:
     std::string text() const override
     {
         std::string text = "ipv6: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
         {
             esp_ip6_addr_t addr;
             if (const auto result = esp_netif_get_ip6_global(wifi_stack::esp_netifs[ESP_IF_WIFI_STA], &addr); result == ESP_OK)
@@ -183,7 +183,7 @@ public:
     std::string text() const override
     {
         std::string text = "dns0: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const ip_addr_t *dns_ip = dns_getserver(0))
                 text += wifi_stack::toString(*dns_ip);
         return text;
@@ -195,7 +195,7 @@ public:
     std::string text() const override
     {
         std::string text = "dns1: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const ip_addr_t *dns_ip = dns_getserver(1))
                 text += wifi_stack::toString(*dns_ip);
         return text;
@@ -207,7 +207,7 @@ public:
     std::string text() const override
     {
         std::string text = "dns2: ";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const ip_addr_t *dns_ip = dns_getserver(2))
                 text += wifi_stack::toString(*dns_ip);
         return text;

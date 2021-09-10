@@ -144,6 +144,11 @@ struct LarsmModeModeAccessor : public RefAccessorSaveSettings<LarsmModeMode> { L
 struct LarsmModeIterationsAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.larsmMode.iterations; } };
 
 #ifdef FEATURE_LEDSTRIP
+struct EnableLedAnimationAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableLedAnimation; } };
 struct EnableBrakeLightsAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableBrakeLights; } };
+struct LedsCountAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.ledsCount; } };
+struct CenterOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.centerOffset; } };
+struct SmallOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.smallOffset; } };
+struct BigOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.bigOffset; } };
 #endif
 }

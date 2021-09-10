@@ -163,6 +163,12 @@ CONFIG_ARDUINO_SELECTIVE_Wire=y
 # end of Arduino Configuration
 
 #
+# ESP Gui settings
+#
+CONFIG_ESPGUI_MENUDISPLAY_ROWS=10
+# end of ESP Gui settings
+
+#
 # Simple Async HTTP Request
 #
 # CONFIG_LOG_LOCAL_LEVEL_ASYNC_HTTP_NONE is not set

@@ -167,7 +167,7 @@ void StatusDisplay::redraw()
     tft.setTextFont(2);
 
     const auto staStatus = wifi_stack::get_sta_status();
-    if (staStatus == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+    if (staStatus == wifi_stack::WiFiStaStatus::CONNECTED)
     {
         if (const auto result = wifi_stack::get_sta_ap_info(); result)
         {
@@ -191,7 +191,7 @@ showStaStatus:
 
     m_labelLimit0.redraw(fmt::format("{}A", controllers.front.command.left.iMotMax));
 
-    if (staStatus == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+    if (staStatus == wifi_stack::WiFiStaStatus::CONNECTED)
     {
         if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
             m_labelIpAddress.redraw(wifi_stack::toString(result->ip));

@@ -1,8 +1,14 @@
 #pragma once
 
+// system includes
 #include <bitset>
 #include <memory>
 
+// 3rdparty lib includes
+#include <randomutils.h>
+#include <esprandom.h>
+
+// local includes
 #include "display.h"
 #include "actions/switchscreenaction.h"
 
@@ -132,7 +138,7 @@ void GameOfLifeDisplay::initGrid()
                 (*m_grid)[index(x,y)] = 0;
             else
             {
-                if (random(3) == 1)
+                if (cpputils::randomNumber<uint8_t>(4, espcpputils::esp_random_device{}) == 1)
                     (*m_grid)[index(x,y)] = 1;
                 else
                     (*m_grid)[index(x,y)] = 0;

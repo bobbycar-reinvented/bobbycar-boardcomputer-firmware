@@ -236,6 +236,11 @@ constexpr char TEXT_SETITERATIONS[] = "Set iterations";
 constexpr char TEXT_LEDSTRIP[] = "Ledstrip";
 constexpr char TEXT_LEDANIMATION[] = "LED Animation";
 constexpr char TEXT_BRAKELIGHTS[] = "Brake Lights";
+constexpr char TEXT_BLINKANIMATION[] = "Blink animation";
+constexpr char TEXT_LEDSCOUNT[] = "LEDs Count";
+constexpr char TEXT_CENTEROFFSET[] = "Center Offset";
+constexpr char TEXT_SMALLOFFSET[] = "Small Offset";
+constexpr char TEXT_BIGOFFSET[] = "Big Offset";
 //constexpr char TEXT_BACK[] = "Back";
 
 //ModesSettingsMenu

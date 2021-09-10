@@ -29,7 +29,7 @@ void initCloud()
         if (!cloudClient)
             return;
 
-        if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::CONNECTED)
             return;
 
         startCloud();
@@ -54,7 +54,7 @@ void handleCloud()
             if (espchrono::ago(lastStartTry) < 10s)
                 return;
 
-            if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::WL_CONNECTED)
+            if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::CONNECTED)
                 return;
 
             startCloud();
@@ -66,7 +66,7 @@ void handleCloud()
             return;
 
         std::string rssi = "null";
-        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+        if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
             if (const auto &result = wifi_stack::get_sta_ap_info(); result)
                 rssi = std::to_string(result->rssi);
 

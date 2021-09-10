@@ -1,9 +1,13 @@
 #pragma once
 
+// system includes
 #include <cstdint>
 
-#include <Arduino.h>
+// 3rdparty lib includes
+#include <randomutils.h>
+#include <esprandom.h>
 
+// local includes
 #include "display.h"
 #include "actions/switchscreenaction.h"
 #include "globals.h"
@@ -36,10 +40,10 @@ private:
 };
 
 StarfieldDisplay::StarfieldDisplay() :
-    za(random(256)),
-    zb(random(256)),
-    zc(random(256)),
-    zx(random(256))
+    za(cpputils::randomNumber<uint8_t>(256, espcpputils::esp_random_device{})),
+    zb(cpputils::randomNumber<uint8_t>(256, espcpputils::esp_random_device{})),
+    zc(cpputils::randomNumber<uint8_t>(256, espcpputils::esp_random_device{})),
+    zx(cpputils::randomNumber<uint8_t>(256, espcpputils::esp_random_device{}))
 {
 }
 

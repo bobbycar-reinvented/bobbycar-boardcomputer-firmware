@@ -45,7 +45,7 @@ void pushStats()
     statistics::bmsCurrent.push_back(bms::current);
     statistics::bmsPower.push_back(bms::power);
 #endif
-    if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::WL_CONNECTED)
+    if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
     {
         if (const auto &result = wifi_stack::get_sta_ap_info(); result)
             statistics::rssi.push_back(result->rssi);

@@ -7,6 +7,8 @@
 // 3rdparty lib includes
 #include <espchrono.h>
 #include <fmt/core.h>
+#include <randomutils.h>
+#include <esprandom.h>
 
 // local includes
 #include "menudisplay.h"
@@ -36,8 +38,8 @@ public:
         const auto now = espchrono::millis_clock::now();
         if (!m_nextUpdate || now >= *m_nextUpdate)
         {
-            m_title = fmt::format("Dynamic text: {}", random(0, 100));
-            m_nextUpdate = now + std::chrono::milliseconds{random(0, 1000)};
+            m_title = fmt::format("Dynamic text: {}", cpputils::randomNumber<uint8_t>(100, espcpputils::esp_random_device{}));
+            m_nextUpdate = now + std::chrono::milliseconds{cpputils::randomNumber<long>(100, 1000, espcpputils::esp_random_device{})};
         }
 
         return m_title;
@@ -57,8 +59,8 @@ public:
         if (!m_nextUpdate || now >= *m_nextUpdate)
         {
             const auto count = std::size(default_4bit_palette);
-            m_color = default_4bit_palette[random(0, count)];
-            m_nextUpdate = now + std::chrono::milliseconds{random(0, 1000)};
+            m_color = default_4bit_palette[cpputils::randomNumber<uint32_t>(count-1, espcpputils::esp_random_device{})];
+            m_nextUpdate = now + std::chrono::milliseconds{cpputils::randomNumber<long>(100, 1000, espcpputils::esp_random_device{})};
         }
 
         return m_color;
@@ -77,8 +79,9 @@ public:
         const auto now = espchrono::millis_clock::now();
         if (!m_nextUpdate || now >= *m_nextUpdate)
         {
-            m_font = random(1, 5);
-            m_nextUpdate = now + std::chrono::milliseconds{random(0, 1000)};
+            constexpr const int fonts[] = { 2, 4 };
+            m_font = fonts[cpputils::randomNumber<uint32_t>(std::size(fonts)-1, espcpputils::esp_random_device{})];
+            m_nextUpdate = now + std::chrono::milliseconds{cpputils::randomNumber<long>(100, 1000, espcpputils::esp_random_device{})};
         }
 
         return m_font;
@@ -101,7 +104,7 @@ public:
                 m_icon = nullptr;
             else
                 m_icon = &icons::lock;
-            m_nextUpdate = now + std::chrono::milliseconds{random(0, 1000)};
+            m_nextUpdate = now + std::chrono::milliseconds{cpputils::randomNumber<long>(100, 1000, espcpputils::esp_random_device{})};
         }
 
         return m_icon;
