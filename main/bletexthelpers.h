@@ -2,7 +2,7 @@
 
 // local includes
 #include "textinterface.h"
-#include "ble.h"
+#include "bobby_ble.h"
 
 namespace {
 #ifdef FEATURE_BLE

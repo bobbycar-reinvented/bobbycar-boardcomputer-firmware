@@ -23,7 +23,7 @@ set(headers
     actions/switchprofileaction.h
     actions/updateswapfrontbackaction.h
     bluetoothmode.h
-    ble.h
+        bobby_ble.h
     bletexthelpers.h
     bmsutils.h
     changevaluedisplay_bluetoothmode.h

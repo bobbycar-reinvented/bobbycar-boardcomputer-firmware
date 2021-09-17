@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VALID_CONFIGS=(feedc0de comred mick)
+VALID_CONFIGS=(feedc0de comred mick peter)
 
 print_usage() {
     echo "usage: ./switchconf.sh ${VALID_CONFIGS[@]}"
