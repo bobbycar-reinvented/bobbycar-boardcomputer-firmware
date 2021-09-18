@@ -1,6 +1,6 @@
 # bobbycar-boardcomputer-firmware
 
-[![Build Status](https://travis-ci.org/bobbycar-graz/bobbycar-boardcomputer-firmware.svg?branch=master)](https://travis-ci.org/bobbycar-graz/bobbycar-boardcomputer-firmware)
+![Build Status](https://github.com/bobbycar-graz/bobbycar-boardcomputer-firmware/actions/workflows/main.yml/badge.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/04c264db40c44276833f43b9c083dc14)](https://app.codacy.com/gh/bobbycar-graz/bobbycar-boardcomputer-firmware?utm_source=github.com&utm_medium=referral&utm_content=bobbycar-graz/bobbycar-boardcomputer-firmware&utm_campaign=Badge_Grade_Dashboard)
 
 ## How to clone ? (READ THIS OR YOU WILL FAIL)
