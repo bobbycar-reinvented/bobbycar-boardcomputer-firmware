@@ -59,7 +59,7 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
                         "<b>Settings</b>";
             }
 
-            stringSettings.executeForEveryCommonSetting([&](const char *key, auto value){
+            stringSettings.executeForEveryCommonSetting([&](const char *key, const auto &value){
                 HtmlTag formTag{"form", "action=\"/saveSettings\" method=\"GET\"", body};
                 HtmlTag fieldsetTag{"fieldset", body};
                 {
@@ -84,7 +84,57 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
 
 esp_err_t webserver_save_settings_handler(httpd_req_t *req)
 {
-    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "not yet implemented")
+    std::string query;
+    if (auto result = esphttpdutils::webserver_get_query(req))
+        query = *result;
+    else
+    {
+        ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
+    }
+
+    std::string body;
+    bool success{true};
+
+    stringSettings.executeForEveryCommonSetting([&](const char *key, auto &value){
+        char valueBufEncoded[256];
+        if (const auto result = httpd_query_key_value(query.data(), key, valueBufEncoded, 256); result != ESP_OK && result != ESP_ERR_NOT_FOUND)
+        {
+            const auto msg = fmt::format("{}: httpd_query_key_value() failed with {}", key, esp_err_to_name(result));
+            ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+            body += msg;
+            body += '\n';
+            success = false;
+            return;
+        }
+
+        char valueBuf[257];
+        esphttpdutils::urldecode(valueBuf, valueBufEncoded);
+
+        value = valueBuf;
+        body += fmt::format("{}: applied", key);
+        body += '\n';
+    });
+
+    if (body.empty())
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "nothing changed?!")
+
+    if (settingsPersister.save(stringSettings))
+        body += "settings persisted successfully";
+    else
+    {
+        body += "error while persisting settings";
+        success = false;
+    }
+
+    if (success)
+        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+
+    CALL_AND_EXIT(esphttpdutils::webserver_resp_send,
+                  req,
+                  success ? esphttpdutils::ResponseStatus::TemporaryRedirect : esphttpdutils::ResponseStatus::BadRequest,
+                  "text/plain",
+                  body)
 }
 } // namespace
 

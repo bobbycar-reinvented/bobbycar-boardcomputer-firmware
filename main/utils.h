@@ -226,16 +226,24 @@ void updateSwapFrontBack()
 }
 #endif
 
-void loadSettings()
+bool loadSettings()
 {
-    settingsPersister.load(settings);
-    settingsPersister.load(stringSettings);
+    bool result{true};
+    if (!settingsPersister.load(settings))
+        result = false;
+    if (!settingsPersister.load(stringSettings))
+        result = false;
+    return result;
 }
 
-void saveSettings()
+bool saveSettings()
 {
-    settingsPersister.save(settings);
-    settingsPersister.save(stringSettings);
+    bool result{true};
+    if (!settingsPersister.save(settings))
+        result = false;
+    if (!settingsPersister.save(stringSettings))
+        result = false;
+    return result;
 }
 
 void updateAccumulators()
