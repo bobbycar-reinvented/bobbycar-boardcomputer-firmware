@@ -151,4 +151,8 @@ struct CenterOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t 
 struct SmallOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.smallOffset; } };
 struct BigOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.bigOffset; } };
 #endif
+
+struct LockscreenAllowPresetSwitchAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.allowPresetSwitch; } };
+template<uint8_t index>
+struct LockscreenPinDigitAccessor : public RefAccessorSaveSettings<int8_t> { int8_t &getRef() const override { return settings.lockscreen.pin[index]; } };
 }

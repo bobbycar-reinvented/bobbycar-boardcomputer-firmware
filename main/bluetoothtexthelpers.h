@@ -1,5 +1,8 @@
 #pragma once
 
+// 3rdparty lib includes
+#include <fmt/core.h>
+
 // local includes
 #include "textinterface.h"
 #include "globals.h"
@@ -20,21 +23,21 @@ using BluetoothHasClientText = BluetoothStatusTextHelper<TEXT_BLUETOOTHHASCLIENT
 //using BluetoothConnectedText = BluetoothStatusTextHelper<TEXT_BLUETOOTHCONNECTED, bool, &BluetoothSerial::connected>;
 struct BluetoothConnectedText : public virtual TextInterface {
 public:
-    std::string text() const override { return std::string{"connected: "} + to_string(bluetoothSerial.connected()); }
+    std::string text() const override { return fmt::format("{}: {}", TEXT_BLUETOOTHCONNECTED, to_string(bluetoothSerial.connected())); }
 };
 
 //constexpr char TEXT_BLUETOOTHISREADY[] = "Is ready: ";
 //using BluetoothIsReadyText = BluetoothStatusTextHelper<TEXT_BLUETOOTHISREADY, bool, &BluetoothSerial::isReady>;
 struct BluetoothIsReadyText : public virtual TextInterface {
 public:
-    std::string text() const override { return std::string{"isReady: "} + to_string(bluetoothSerial.isReady()); }
+    std::string text() const override { return fmt::format("{}: {}", TEXT_BLUETOOTHISREADY, to_string(bluetoothSerial.isReady())); }
 };
 
 //constexpr char TEXT_BLUETOOTHISREADYMASTER[] = "Is ready (M): ";
 //using BluetoothIsReadyMasterText = BluetoothStatusTextHelper<TEXT_BLUETOOTHISREADYMASTER, bool, &BluetoothSerial::isReady>;
 class BluetoothIsReadyMasterText : public virtual TextInterface {
 public:
-    std::string text() const override { return std::string{"isReady (M): "} + to_string(bluetoothSerial.isReady(true)); }
+    std::string text() const override { return fmt::format("{}: {}", TEXT_BLUETOOTHISREADYMASTER, to_string(bluetoothSerial.isReady(true))); }
 };
 #endif
 }

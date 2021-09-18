@@ -10,6 +10,7 @@
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
 #include "actions/toggleboolaction.h"
+#include "icons/lock.h"
 #include "icons/back.h"
 #include "checkboxicon.h"
 #include "texts.h"
@@ -18,6 +19,7 @@
 // forward declares
 namespace {
 class BoardcomputerHardwareSettingsMenu;
+class LockscreenSettingsMenu;
 class CalibrateDisplay;
 class GametrakCalibrateDisplay;
 class TimersMenu;
@@ -31,20 +33,20 @@ struct GasText : public virtual TextInterface {
 public:
     std::string text() const override
     {
-        return std::string{"gas: "} +
-            (raw_gas ? std::to_string(*raw_gas) : "?") +
-            ": " +
-            (gas ? fmt::format("{:.02f}", *gas) : "?");
+        return fmt::format("{}: {}: {}",
+                           "gas",
+                           raw_gas ? std::to_string(*raw_gas) : "?",
+                           gas ? fmt::format("{:.02f}", *gas) : "?");
     }
 };
 struct BremsText : public virtual TextInterface {
 public:
     std::string text() const override
     {
-        return std::string{"brems: "} +
-            (raw_brems ? std::to_string(*raw_brems) : "?") +
-            ": " +
-            (brems ? fmt::format("{:.02f}", *brems) : "?");
+        return fmt::format("{}: {}: {}",
+                           "brems",
+                           raw_brems ? std::to_string(*raw_brems) : "?",
+                           brems ? fmt::format("{:.02f}", *brems) : "?");
     }
 };
 
@@ -160,6 +162,7 @@ class BoardcomputerHardwareSettingsMenu :
 public:
     BoardcomputerHardwareSettingsMenu()
     {
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          SwitchScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&icons::lock>>>();
         constructMenuItem<makeComponent<MenuItem, GasText,                                                      DisabledColor, StaticFont<2>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, BremsText,                                                    DisabledColor, StaticFont<2>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CALIBRATE>,                                   SwitchScreenAction<CalibrateDisplay>>>();

@@ -71,6 +71,7 @@ set(headers
     displays/menus/boardcomputerhardwaresettingsmenu.h
     displays/menus/dynamicdebugmenu.h
     displays/menus/limitssettingsmenu.h
+    displays/menus/lockscreensettingsmenu.h
     displays/menus/mainmenu.h
     displays/menus/motorfeedbackdebugmenu.h
     displays/menus/wifiscanmenu.h

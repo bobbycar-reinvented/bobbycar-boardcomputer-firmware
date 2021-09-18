@@ -224,6 +224,11 @@ constexpr Settings::Ledstrip defaultLedstrip {
 };
 #endif
 
+constexpr Settings::LockscreenSettings defaultLockscreen {
+    .allowPresetSwitch = true,
+    .pin = { 1, 2, 3, 4 }
+};
+
 constexpr Settings defaultSettings {
 #ifdef FEATURE_BMS
     .autoConnectBms = false,
@@ -249,6 +254,7 @@ constexpr Settings defaultSettings {
 #ifdef FEATURE_LEDSTRIP
     .ledstrip = defaultLedstrip,
 #endif
+    .lockscreen = defaultLockscreen
 };
 
 StringSettings makeDefaultStringSettings()

@@ -40,10 +40,10 @@ private:
 };
 
 StarfieldDisplay::StarfieldDisplay() :
-    za(cpputils::randomNumber<uint8_t>(256, espcpputils::esp_random_device{})),
-    zb(cpputils::randomNumber<uint8_t>(256, espcpputils::esp_random_device{})),
-    zc(cpputils::randomNumber<uint8_t>(256, espcpputils::esp_random_device{})),
-    zx(cpputils::randomNumber<uint8_t>(256, espcpputils::esp_random_device{}))
+    za(cpputils::randomNumber<uint8_t>(espcpputils::esp_random_device{})),
+    zb(cpputils::randomNumber<uint8_t>(espcpputils::esp_random_device{})),
+    zc(cpputils::randomNumber<uint8_t>(espcpputils::esp_random_device{})),
+    zx(cpputils::randomNumber<uint8_t>(espcpputils::esp_random_device{}))
 {
 }
 

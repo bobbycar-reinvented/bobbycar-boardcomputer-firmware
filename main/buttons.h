@@ -19,6 +19,8 @@ bool confirmButtonLongPressed{};
 bool backButtonPressed{};
 bool backButtonLongPressed{};
 
+bool profileButtonDisabled{};
+
 std::optional<espchrono::millis_clock::time_point> upPressedSince;
 int upPressRepeat{};
 std::optional<espchrono::millis_clock::time_point> downPressedSince;
@@ -124,6 +126,9 @@ public:
     static void profileButton(uint8_t index, bool pressed)
     {
         if (!pressed)
+            return;
+
+        if (profileButtonDisabled)
             return;
 
         switchProfile(index);

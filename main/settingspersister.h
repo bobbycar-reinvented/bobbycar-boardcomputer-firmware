@@ -17,6 +17,7 @@
 #include <fmt/core.h>
 #include <cpputils.h>
 #include <espchrono.h>
+#include <futurecpp.h>
 
 // local includes
 #include "settings.h"
@@ -276,6 +277,22 @@ template<> struct nvsGetterHelper<sntp_sync_mode_t> { static esp_err_t nvs_get(n
     return err;
 }};
 #endif
+template<> struct nvsGetterHelper<std::array<int8_t, 4>> { static esp_err_t nvs_get(nvs_handle handle, const char* key, std::array<int8_t, 4>* out_value)
+{
+    uint32_t tempValue;
+    esp_err_t err = nvs_get_u32(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = std::bit_cast<std::array<int8_t, 4>>(tempValue);
+    return err;
+}};
+template<> struct nvsGetterHelper<std::array<uint8_t, 4>> { static esp_err_t nvs_get(nvs_handle handle, const char* key, std::array<uint8_t, 4>* out_value)
+{
+    uint32_t tempValue;
+    esp_err_t err = nvs_get_u32(handle, key, &tempValue);
+    if (err == ESP_OK)
+        *out_value = std::bit_cast<std::array<uint8_t, 4>>(tempValue);
+    return err;
+}};
 
 template<typename T>
 bool SettingsPersister::load(T &settings)
@@ -385,6 +402,14 @@ template<> struct nvsSetterHelper<sntp_sync_mode_t> { static esp_err_t nvs_set(n
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
 #endif
+template<> struct nvsSetterHelper<std::array<int8_t, 4>> { static esp_err_t nvs_set(nvs_handle handle, const char* key, std::array<int8_t, 4> value)
+{
+    return nvs_set_u32(handle, key, std::bit_cast<uint32_t>(value));
+}};
+template<> struct nvsSetterHelper<std::array<uint8_t, 4>> { static esp_err_t nvs_set(nvs_handle handle, const char* key, std::array<uint8_t, 4> value)
+{
+    return nvs_set_u32(handle, key, std::bit_cast<uint32_t>(value));
+}};
 
 template<typename T>
 bool SettingsPersister::save(T &settings)

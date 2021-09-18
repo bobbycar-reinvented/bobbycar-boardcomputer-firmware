@@ -1,13 +1,16 @@
 #pragma once
 
+// system includes
 #include <array>
 
+// local includes
 #include "display.h"
 #include "widgets/label.h"
 #include "globals.h"
 #include "utils.h"
 #include "texts.h"
 #include "modes/ignoreinputmode.h"
+#include "buttons.h"
 
 namespace {
 class MainMenu;
@@ -25,7 +28,7 @@ class Lockscreen : public Display, public DummyBack
 public:
     void start() override;
     void initScreen() override;
-    void update() override {}
+    void update() override;
     void redraw() override;
     void stop() override;
 
@@ -62,6 +65,8 @@ void Lockscreen::start()
 
     m_oldMode = currentMode;
     currentMode = &m_mode;
+
+    profileButtonDisabled = !settings.lockscreen.allowPresetSwitch;
 }
 
 void Lockscreen::initScreen()
@@ -95,6 +100,12 @@ void Lockscreen::initScreen()
     m_labels[0].redraw(std::to_string(m_numbers[0]));
 }
 
+void Lockscreen::update()
+{
+    // just in case someone changes that settings somehow
+    profileButtonDisabled = !settings.lockscreen.allowPresetSwitch;
+}
+
 void Lockscreen::redraw()
 {
     if (m_pressed)
@@ -104,7 +115,7 @@ void Lockscreen::redraw()
 
         if (++m_currentIndex>=4)
         {
-            if (m_numbers == decltype(m_numbers){1,2,3,4})
+            if (m_numbers == settings.lockscreen.pin)
             {
                 switchScreen<MainMenu>();
                 return;
@@ -150,6 +161,8 @@ void Lockscreen::stop()
 
         currentMode = m_oldMode;
     }
+
+    profileButtonDisabled = false;
 }
 
 void Lockscreen::confirm()

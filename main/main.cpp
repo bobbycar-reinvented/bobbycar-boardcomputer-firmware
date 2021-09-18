@@ -56,6 +56,7 @@ using namespace std::chrono_literals;
 #include "displays/menus/ledstripmenu.h"
 #endif
 #include "displays/menus/limitssettingsmenu.h"
+#include "displays/menus/lockscreensettingsmenu.h"
 #include "displays/menus/mainmenu.h"
 #include "displays/menus/tempomatmodesettingsmenu.h"
 #include "displays/menus/modessettingsmenu.h"

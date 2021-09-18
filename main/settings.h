@@ -158,6 +158,11 @@ struct Settings
     } ledstrip;
 #endif
 
+    struct LockscreenSettings {
+        bool allowPresetSwitch;
+        std::array<int8_t, 4> pin;
+    } lockscreen;
+
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
 
@@ -248,6 +253,9 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("smallOffset", ledstrip.smallOffset);
     callable("bigOffset", ledstrip.bigOffset);
 #endif
+
+    callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
+    callable("lockscreenPin", lockscreen.pin);
 }
 
 template<typename T>

@@ -243,6 +243,15 @@ constexpr char TEXT_SMALLOFFSET[] = "Small Offset";
 constexpr char TEXT_BIGOFFSET[] = "Big Offset";
 //constexpr char TEXT_BACK[] = "Back";
 
+//LockscreenSettingsMenu
+constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
+constexpr char TEXT_ALLOWPRESETSWITCH[] = "Allow preset switch";
+constexpr char TEXT_PINDIGIT0[] = "PIN digit0";
+constexpr char TEXT_PINDIGIT1[] = "PIN digit1";
+constexpr char TEXT_PINDIGIT2[] = "PIN digit2";
+constexpr char TEXT_PINDIGIT3[] = "PIN digit3";
+//constexpr char TEXT_BACK[] = "Back";
+
 //ModesSettingsMenu
 //constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
 constexpr char TEXT_DEFAULTMODESETTIGNS[] = "Default mode settings";
@@ -271,6 +280,7 @@ constexpr char TEXT_NCRUISEMOTTGT[] = "nCruiseMotTgt";
 
 //BoardcomputerHardwareSettingsMenu
 //constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
+//constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
 constexpr char TEXT_CALIBRATE[] = "Calibrate";
 constexpr char TEXT_SAMPLECOUNT[] = "sampleCount";
 constexpr char TEXT_GASMIN[] = "gasMin";
