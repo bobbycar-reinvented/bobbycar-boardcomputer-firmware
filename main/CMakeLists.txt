@@ -23,7 +23,7 @@ set(headers
     actions/switchprofileaction.h
     actions/updateswapfrontbackaction.h
     bluetoothmode.h
-        bobby_ble.h
+    ble_bobby.h
     bletexthelpers.h
     bmsutils.h
     changevaluedisplay_bluetoothmode.h
@@ -91,7 +91,6 @@ set(headers
     displays/statusdisplay.h
     displays/updatedisplay.h
     esp_websocket_client.h
-    htmltag.h
     icons/alert.h
     icons/bluetooth.h
     icons/bms.h
@@ -134,7 +133,6 @@ set(headers
     dpad5wire.h
     feedbackparser.h
     globals.h
-    htmlutils.h
     macros_bobbycar.h
     modeinterface.h
     ota.h
@@ -150,6 +148,9 @@ set(headers
     unifiedmodelmode.h
     utils.h
     webserver.h
+    webserver_displaycontrol.h
+    webserver_ota.h
+    webserver_settings.h
     wifitexthelpers.h
     wifi_bobbycar.h
 )
