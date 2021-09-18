@@ -20,6 +20,7 @@
 #include "webserver_ota.h"
 #endif
 #include "webserver_settings.h"
+#include "webserver_stringsettings.h"
 
 #ifdef FEATURE_WEBSERVER
 namespace {
@@ -49,17 +50,19 @@ void initWebserver()
     }
 
     for (const httpd_uri_t &uri : {
-         httpd_uri_t { .uri = "/",              .method = HTTP_GET, .handler = webserver_root_handler,          .user_ctx = NULL },
-         httpd_uri_t { .uri = "/triggerButton", .method = HTTP_GET, .handler = webserver_triggerButton_handler, .user_ctx = NULL },
-         httpd_uri_t { .uri = "/triggerItem",   .method = HTTP_GET, .handler = webserver_triggerItem_handler,   .user_ctx = NULL },
-         httpd_uri_t { .uri = "/setValue",      .method = HTTP_GET, .handler = webserver_setValue_handler,      .user_ctx = NULL },
-         httpd_uri_t { .uri = "/reboot",        .method = HTTP_GET, .handler = webserver_reboot_handler,        .user_ctx = NULL },
+         httpd_uri_t { .uri = "/",                   .method = HTTP_GET, .handler = webserver_root_handler,               .user_ctx = NULL },
+         httpd_uri_t { .uri = "/triggerButton",      .method = HTTP_GET, .handler = webserver_triggerButton_handler,      .user_ctx = NULL },
+         httpd_uri_t { .uri = "/triggerItem",        .method = HTTP_GET, .handler = webserver_triggerItem_handler,        .user_ctx = NULL },
+         httpd_uri_t { .uri = "/setValue",           .method = HTTP_GET, .handler = webserver_setValue_handler,           .user_ctx = NULL },
+         httpd_uri_t { .uri = "/reboot",             .method = HTTP_GET, .handler = webserver_reboot_handler,             .user_ctx = NULL },
 #ifdef FEATURE_OTA
-         httpd_uri_t { .uri = "/ota",           .method = HTTP_GET, .handler = webserver_ota_handler,           .user_ctx = NULL },
-         httpd_uri_t { .uri = "/triggerOta",    .method = HTTP_GET, .handler = webserver_trigger_ota_handler,   .user_ctx = NULL },
+         httpd_uri_t { .uri = "/ota",                .method = HTTP_GET, .handler = webserver_ota_handler,                .user_ctx = NULL },
+         httpd_uri_t { .uri = "/triggerOta",         .method = HTTP_GET, .handler = webserver_trigger_ota_handler,        .user_ctx = NULL },
 #endif
-         httpd_uri_t { .uri = "/settings",      .method = HTTP_GET, .handler = webserver_settings_handler,      .user_ctx = NULL },
-         httpd_uri_t { .uri = "/saveSettings",  .method = HTTP_GET, .handler = webserver_save_settings_handler, .user_ctx = NULL },
+         httpd_uri_t { .uri = "/settings",           .method = HTTP_GET, .handler = webserver_settings_handler,           .user_ctx = NULL },
+         httpd_uri_t { .uri = "/saveSettings",       .method = HTTP_GET, .handler = webserver_saveSettings_handler,       .user_ctx = NULL },
+         httpd_uri_t { .uri = "/stringSettings",     .method = HTTP_GET, .handler = webserver_stringSettings_handler,     .user_ctx = NULL },
+         httpd_uri_t { .uri = "/saveStringSettings", .method = HTTP_GET, .handler = webserver_saveStringSettings_handler, .user_ctx = NULL },
     })
     {
         const auto result = httpd_register_uri_handler(httpdHandle, &uri);

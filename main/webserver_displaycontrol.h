@@ -59,12 +59,13 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
             {
                 HtmlTag pTag{"p", body};
-                body += "<b>Display control</b> "
+                body += "<b>Display control</b> - "
 #ifdef FEATURE_OTA
-                        "<a href=\"/ota\">Update</a> "
+                        "<a href=\"/ota\">Update</a> - "
 #endif
 
-                        "<a href=\"/settings\">Settings</a>";
+                        "<a href=\"/settings\">Settings</a> - "
+                        "<a href=\"/stringSettings\">String Settings</a>";
             }
 
             {

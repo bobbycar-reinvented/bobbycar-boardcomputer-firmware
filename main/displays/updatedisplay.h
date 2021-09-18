@@ -93,7 +93,7 @@ void UpdateDisplay::redraw()
         m_statusLabel.redraw(toString(asyncOta->status()));
         const auto progress = asyncOta->progress();
         m_progressLabel.redraw(std::to_string(progress));
-        if (const auto totalSize = asyncOta->totalSize())
+        if (const auto totalSize = asyncOta->totalSize(); totalSize && *totalSize > 0)
         {
             m_totalLabel.redraw(std::to_string(*totalSize));
             m_progressBar.redraw(float(progress) / *totalSize * 100);

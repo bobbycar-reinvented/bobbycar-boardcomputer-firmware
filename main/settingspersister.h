@@ -303,7 +303,7 @@ bool SettingsPersister::load(T &settings)
     {
         settings.executeForEveryCommonSetting([&](const char *key, auto &value)
         {
-            if (esp_err_t result = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(m_handle, key, &value); result != ESP_OK)
+            if (esp_err_t result = nvsGetterHelper<std::decay_t<decltype(value)>>::nvs_get(m_handle, key, &value); result != ESP_OK)
             {
                 if (result != ESP_ERR_NVS_NOT_FOUND)
                     ESP_LOGE("BOBBY", "nvs_get() COMMON %s failed with %s", key, esp_err_to_name(result));
@@ -321,7 +321,7 @@ bool SettingsPersister::load(T &settings)
     {
         settings.executeForEveryProfileSetting([&](const char *key, auto &value)
         {
-            if (esp_err_t result = nvsGetterHelper<std::remove_reference_t<decltype(value)>>::nvs_get(m_profile->handle, key, &value); result != ESP_OK)
+            if (esp_err_t result = nvsGetterHelper<std::decay_t<decltype(value)>>::nvs_get(m_profile->handle, key, &value); result != ESP_OK)
             {
                 if (result != ESP_ERR_NVS_NOT_FOUND)
                     ESP_LOGE("BOBBY", "nvs_get() PROFILE %s failed with %s", key, esp_err_to_name(result));
@@ -418,9 +418,9 @@ bool SettingsPersister::save(T &settings)
 
     if (m_handle)
     {
-        settings.executeForEveryCommonSetting([&](const char *key, auto value)
+        settings.executeForEveryCommonSetting([&](const char *key, const auto &value)
         {
-            if (esp_err_t result = nvsSetterHelper<decltype(value)>::nvs_set(m_handle, key, value); result != ESP_OK)
+            if (esp_err_t result = nvsSetterHelper<std::decay_t<decltype(value)>>::nvs_set(m_handle, key, value); result != ESP_OK)
             {
                 ESP_LOGE("BOBBY", "nvs_set() COMMON %s failed with %s", key, esp_err_to_name(result));
                 result = false;
@@ -435,9 +435,9 @@ bool SettingsPersister::save(T &settings)
 
     if (m_profile)
     {
-        settings.executeForEveryProfileSetting([&](const char *key, auto value)
+        settings.executeForEveryProfileSetting([&](const char *key, const auto &value)
         {
-            if (esp_err_t result = nvsSetterHelper<decltype(value)>::nvs_set(m_profile->handle, key, value); result != ESP_OK)
+            if (esp_err_t result = nvsSetterHelper<std::decay_t<decltype(value)>>::nvs_set(m_profile->handle, key, value); result != ESP_OK)
             {
                 ESP_LOGE("BOBBY", "nvs_set() PROFILE %s failed with %s", key, esp_err_to_name(result));
                 result = false;

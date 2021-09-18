@@ -1,8 +1,5 @@
 #pragma once
 
-// system includes
-#include <limits>
-
 // esp-idf includes
 #ifdef FEATURE_WEBSERVER
 #include <esp_http_server.h>
@@ -14,54 +11,20 @@
 #include <fmt/core.h>
 #include <espcppmacros.h>
 #include <esphttpdutils.h>
-#include <numberparsing.h>
 
 // local includes
 #include "globals.h"
 
 #ifdef FEATURE_WEBSERVER
 namespace {
-esp_err_t webserver_settings_handler(httpd_req_t *req);
-esp_err_t webserver_saveSettings_handler(httpd_req_t *req);
+esp_err_t webserver_stringSettings_handler(httpd_req_t *req);
+esp_err_t webserver_saveStringSettings_handler(httpd_req_t *req);
 } // namespace
 
 using esphttpdutils::HtmlTag;
 
 namespace {
-template<typename T>
-typename std::enable_if<!std::is_same<T, bool>::value && !std::is_integral<T>::value, bool>::type
-showInputForSetting(std::string_view key, T value, std::string &body)
-{
-    HtmlTag spanTag{"span", "style=\"color: red;\"", body};
-    body += "Unsupported config type";
-    return false;
-}
-
-template<typename T>
-typename std::enable_if<std::is_same<T, bool>::value, bool>::type
-showInputForSetting(std::string_view key, T value, std::string &body)
-{
-    body += fmt::format("<input type=\"hidden\" name=\"{}\" value=\"false\" />"
-                        "<input type=\"checkbox\" name=\"{}\" value=\"true\" {}/>",
-                        esphttpdutils::htmlentities(key),
-                        esphttpdutils::htmlentities(key),
-                        value ? "checked " : "");
-    return true;
-}
-
-template<typename T>
-typename std::enable_if<!std::is_same<T, bool>::value && std::is_integral<T>::value, bool>::type
-showInputForSetting(std::string_view key, T value, std::string &body)
-{
-    body += fmt::format("<input type=\"number\" name=\"{}\" value=\"{}\" min=\"{}\" max=\"{}\" step=\"1\" required />",
-                        esphttpdutils::htmlentities(key),
-                        value,
-                        std::numeric_limits<T>::min(),
-                        std::numeric_limits<T>::max());
-    return true;
-}
-
-esp_err_t webserver_settings_handler(httpd_req_t *req)
+esp_err_t webserver_stringSettings_handler(httpd_req_t *req)
 {
     std::string body;
 
@@ -73,7 +36,7 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
 
             {
                 HtmlTag titleTag{"title", body};
-                body += "Settings";
+                body += "String Settings";
             }
 
             body += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />";
@@ -100,7 +63,7 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
 
             {
                 HtmlTag h1Tag{"h1", body};
-                body += "Settings";
+                body += "String Settings";
             }
 
             {
@@ -109,13 +72,13 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
 #ifdef FEATURE_OTA
                         "<a href=\"/ota\">Update</a> - "
 #endif
-                        "<b>Settings</b> - "
-                        "<a href=\"/stringSettings\">String Settings</a>";
+                        "<a href=\"/settings\">Settings</a> - "
+                        "<b>String Settings</b>";
             }
 
             HtmlTag divTag{"div", "class=\"form-table\"", body};
-            settings.executeForEveryCommonSetting([&](std::string_view key, const auto &value){
-                HtmlTag formTag{"form", "class=\"form-table-row\" action=\"/saveSettings\" method=\"GET\"", body};
+            stringSettings.executeForEveryCommonSetting([&](std::string_view key, const auto &value){
+                HtmlTag formTag{"form", "class=\"form-table-row\" action=\"/saveStringSettings\" method=\"GET\"", body};
 
                 {
                     HtmlTag divTag{"div", "class=\"form-table\"", body};
@@ -125,7 +88,9 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
 
                 {
                     HtmlTag divTag{"div", "class=\"form-table-cell\"", body};
-                    showInputForSetting(key, value, body);
+                    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}\" required />",
+                                        esphttpdutils::htmlentities(key),
+                                        esphttpdutils::htmlentities(value));
                 }
 
                 {
@@ -140,55 +105,7 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/html", body)
 }
 
-template<typename T>
-typename std::enable_if<!std::is_same<T, bool>::value && !std::is_integral<T>::value, bool>::type
-saveSetting(T &value, std::string_view newValue, std::string &body)
-{
-    body += "Unsupported config type";
-    return false;
-}
-
-template<typename T>
-typename std::enable_if<std::is_same<T, bool>::value, bool>::type
-saveSetting(T &value, std::string_view newValue, std::string &body)
-{
-    if (newValue == "true")
-    {
-        value = true;
-        body += "applied";
-        return true;
-    }
-    else if (newValue == "false")
-    {
-        value = false;
-        body += "applied";
-        return true;
-    }
-    else
-    {
-        body += fmt::format("only true and false allowed, not {}", newValue);
-        return false;
-    }
-}
-
-template<typename T>
-typename std::enable_if<!std::is_same<T, bool>::value && std::is_integral<T>::value, bool>::type
-saveSetting(T &value, std::string_view newValue, std::string &body)
-{
-    if (auto parsed = cpputils::fromString<T>(newValue))
-    {
-        value = *parsed;
-        body += "applied";
-        return true;
-    }
-    else
-    {
-        body += fmt::format("could not parse {}", newValue);
-        return false;
-    }
-}
-
-esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
+esp_err_t webserver_saveStringSettings_handler(httpd_req_t *req)
 {
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
@@ -202,7 +119,7 @@ esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
     std::string body;
     bool success{true};
 
-    settings.executeForEveryCommonSetting([&](std::string_view key, auto &value){
+    stringSettings.executeForEveryCommonSetting([&](std::string_view key, auto &value){
         char valueBufEncoded[256];
         if (const auto result = httpd_query_key_value(query.data(), key.data(), valueBufEncoded, 256); result != ESP_OK && result != ESP_ERR_NOT_FOUND)
         {
@@ -217,27 +134,26 @@ esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
         char valueBuf[257];
         esphttpdutils::urldecode(valueBuf, valueBufEncoded);
 
-        body += key;
-        if (!saveSetting(value, valueBuf, body))
-            success = false;
+        value = valueBuf;
+        body += fmt::format("{}: applied", key);
         body += '\n';
     });
 
     if (body.empty())
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "nothing changed?!")
 
-    if (settingsPersister.save(settings))
-        body += "settings persisted successfully";
+    if (settingsPersister.save(stringSettings))
+        body += "string settings persisted successfully";
     else
     {
-        body += "error while persisting settings";
+        body += "error while persisting string settings";
         success = false;
     }
 
     if (success)
     {
-        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/settings")
-        body += "\nOk, continue at /settings";
+        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/stringSettings")
+        body += "\nOk, continue at /stringSettings";
     }
 
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send,
@@ -249,3 +165,4 @@ esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
 } // namespace
 
 #endif
+

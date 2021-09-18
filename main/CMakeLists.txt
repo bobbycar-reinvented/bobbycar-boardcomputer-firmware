@@ -150,6 +150,7 @@ set(headers
     webserver_displaycontrol.h
     webserver_ota.h
     webserver_settings.h
+    webserver_stringsettings.h
     wifitexthelpers.h
     wifi_bobbycar.h
 )
