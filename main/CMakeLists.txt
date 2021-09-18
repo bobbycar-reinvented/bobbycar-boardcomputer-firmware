@@ -90,7 +90,6 @@ set(headers
     displays/powersupplydisplay.h
     displays/statusdisplay.h
     displays/updatedisplay.h
-    esp_websocket_client.h
     icons/alert.h
     icons/bluetooth.h
     icons/bms.h
