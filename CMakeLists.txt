@@ -30,7 +30,7 @@ project(${BOBBY_APP_NAME})
 set(expected_build_folder "${CMAKE_CURRENT_SOURCE_DIR}/build")
 file(READ_SYMLINK "${expected_build_folder}" expected_build_folder_resolved)
 if(NOT IS_ABSOLUTE "${expected_build_folder_resolved}")
-  get_filename_component(dir "${linkname}" DIRECTORY)
+  get_filename_component(dir "${expected_build_folder}" DIRECTORY)
   set(expected_build_folder_resolved "${dir}/${expected_build_folder_resolved}")
 endif()
 
