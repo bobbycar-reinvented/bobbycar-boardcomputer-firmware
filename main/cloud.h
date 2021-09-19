@@ -1,5 +1,5 @@
 #pragma once
-
+#define FEATURE_CLOUD
 // esp-idf includes
 #include <esp_log.h>
 
@@ -7,9 +7,11 @@
 #include <wrappers/websocket_client.h>
 #include <espwifistack.h>
 #include <esphttpdutils.h>
+#include <fmt/core.h>
 
 // local includes
 #include "globals.h"
+#include "utils.h"
 
 namespace {
 #ifdef FEATURE_CLOUD
@@ -70,43 +72,72 @@ void handleCloud()
         if (!cloudClient.is_connected())
             return;
 
-        std::string rssi = "null";
+        static std::string msg;
+        msg = fmt::format("[{},{},{}",
+                          std::chrono::milliseconds{espchrono::millis_clock::now().time_since_epoch()}.count(),
+                          std::chrono::milliseconds{espchrono::utc_clock::now().time_since_epoch()}.count(),
+                          heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT));
         if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
+        {
             if (const auto &result = wifi_stack::get_sta_ap_info(); result)
-                rssi = std::to_string(result->rssi);
+                msg += fmt::format(",{}", result->rssi);
+            else
+                msg += ",null";
+        }
+        else
+            msg += ",null";
 
-        std::string msg = "{"
-            "\"type\": \"fullStatus\","
-            "\"partial\": false, "
-            "\"status\": {"
-                "\"millis\":" + std::to_string(std::chrono::milliseconds{espchrono::millis_clock::now().time_since_epoch()}.count()) + ","
-                "\"rssi\":" + rssi + ","
-                "\"front.valid\":" + std::to_string(controllers.front.feedbackValid) + ","
-                "\"back.valid\":" + std::to_string(controllers.back.feedbackValid) + ","
-                "\"front.left.pwm\":" + std::to_string(controllers.front.command.left.pwm) + ","
-                "\"front.right.pwm\":" + std::to_string(controllers.front.command.right.pwm) + ","
-                "\"back.left.pwm\":" + std::to_string(controllers.back.command.left.pwm) + ","
-                "\"back.right.pwm\":" + std::to_string(controllers.back.command.right.pwm) + ","
-                "\"front.volt\":" + std::to_string(controllers.front.feedback.batVoltage) + ","
-                "\"back.volt\":" + std::to_string(controllers.back.feedback.batVoltage) + ","
-                "\"front.temp\":" + std::to_string(controllers.front.feedback.boardTemp) + ","
-                "\"back.temp\":" + std::to_string(controllers.back.feedback.boardTemp) + ","
-                "\"front.bad\":" + std::to_string(controllers.front.feedback.timeoutCntSerial) + ","
-                "\"back.bad\":" + std::to_string(controllers.back.feedback.timeoutCntSerial) + ","
-                "\"front.left.speed\":" + std::to_string(controllers.front.feedback.left.speed) + ","
-                "\"front.right.speed\":" + std::to_string(controllers.front.feedback.right.speed) + ","
-                "\"back.left.speed\":" + std::to_string(controllers.back.feedback.left.speed) + ","
-                "\"back.right.speed\":" + std::to_string(controllers.back.feedback.right.speed) + ","
-                "\"front.left.current\":" + std::to_string(controllers.front.feedback.left.dcLink) + ","
-                "\"front.right.current\":" + std::to_string(controllers.front.feedback.right.dcLink) + ","
-                "\"back.left.current\":" + std::to_string(controllers.back.feedback.left.dcLink) + ","
-                "\"back.right.current\":" + std::to_string(controllers.back.feedback.right.dcLink) + ","
-                "\"front.left.error\":" + std::to_string(controllers.front.feedback.left.error) + ","
-                "\"front.right.error\":" + std::to_string(controllers.front.feedback.right.error) + ","
-                "\"back.left.error\":" + std::to_string(controllers.back.feedback.left.error) + ","
-                "\"back.right.error\":" + std::to_string(controllers.back.feedback.right.error) +
-            "}"
-        "}";
+        if (raw_gas)
+            msg += fmt::format(",{}", *raw_gas);
+        else
+            msg += ",null";
+
+        if (raw_brems)
+            msg += fmt::format(",{}", *raw_brems);
+        else
+            msg += ",null";
+
+        if (gas)
+            msg += fmt::format(",{:.1f}", *gas);
+        else
+            msg += ",null";
+
+        if (brems)
+            msg += fmt::format(",{:.1f}", *brems);
+        else
+            msg += ",null";
+
+        constexpr const auto addController = [](const Controller &controller){
+            if (!controller.feedbackValid)
+            {
+                msg += ",null";
+                return;
+            }
+
+            msg += fmt::format(",[{:.02f},{:.02f}",
+                               fixBatVoltage(controller.feedback.batVoltage),
+                               fixBoardTemp(controller.feedback.boardTemp));
+
+            constexpr const auto addMotor = [](const bobbycar::protocol::serial::MotorState &command,
+                                               const bobbycar::protocol::serial::MotorFeedback &feedback,
+                                               bool invert){
+                msg += fmt::format(",[{},{:.2f},{:.2f},{}]",
+                                   command.pwm * (invert?-1:1),
+                                   convertToKmh(feedback.speed) * (invert?-1:1),
+                                   fixCurrent(feedback.dcLink) * (invert?-1:1),
+                                   feedback.error);
+            };
+
+            addMotor(controller.command.left, controller.feedback.left, controller.invertLeft);
+            addMotor(controller.command.right, controller.feedback.right, controller.invertRight);
+
+            msg += ']';
+        };
+
+        addController(controllers.front);
+        addController(controllers.back);
+
+        msg += ']';
 
         const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{settings.cloudSettings.cloudTransmitTimeout}).count();
         const auto written = cloudClient.send_text(msg, timeout);
