@@ -11,11 +11,14 @@
 #include <fmt/core.h>
 #include <espcppmacros.h>
 #include <esphttpdutils.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
 
 // local includes
 #ifdef FEATURE_OTA
 #include "ota.h"
 #endif
+#include "webserver_lock.h"
 
 #if defined(FEATURE_WEBSERVER) && defined(FEATURE_OTA)
 namespace {
@@ -28,6 +31,14 @@ using esphttpdutils::HtmlTag;
 namespace {
 esp_err_t webserver_ota_handler(httpd_req_t *req)
 {
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
     std::string body;
 
     {
@@ -208,6 +219,14 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
 
 esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)
 {
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
         query = *result;

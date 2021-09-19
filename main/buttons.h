@@ -31,14 +31,14 @@ class InputDispatcher
 public:
     static void update()
     {
-        if (upPressedSince && espchrono::ago(*upPressedSince) > (upPressRepeat > 3 ? 100ms : 500ms))
+        if (upPressedSince && espchrono::ago(*upPressedSince) > (upPressRepeat > 2 ? 50ms : 400ms))
         {
             upPressedSince = espchrono::millis_clock::now();
             upPressRepeat++;
             rotated -= 1;
         }
 
-        if (downPressedSince && espchrono::ago(*downPressedSince) > (downPressRepeat > 3 ? 100ms : 500ms))
+        if (downPressedSince && espchrono::ago(*downPressedSince) > (downPressRepeat > 2 ? 50ms : 400ms))
         {
             downPressedSince = espchrono::millis_clock::now();
             downPressRepeat++;

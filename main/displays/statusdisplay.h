@@ -100,7 +100,7 @@ private:
     Label m_labelWifiStatus{35, bottomLines[0]}; // 120, 15
     Label m_labelLimit0{205, bottomLines[0]}; // 35, 15
     Label m_labelIpAddress{25, bottomLines[1]}; // 130, 15
-    Label m_labelSignal{120, bottomLines[1]}; // 130, 15
+    Label m_labelSignal{125, bottomLines[1]}; // 130, 15
     Label m_labelLimit1{205, bottomLines[1]}; // 35, 15
     Label m_labelPerformance{40, bottomLines[2]}; // 40, 15
     Label m_labelFreeMem{70, bottomLines[2]}; // 40, 15
@@ -132,12 +132,12 @@ void StatusDisplay::initScreen()
     tft.setTextFont(2);
     tft.drawString("WiFi:", 0, bottomLines[0]);
     m_labelWifiStatus.start();
-    tft.drawString("Limit0:", 160, bottomLines[0]);
+    tft.drawString("Lim0:", 173, bottomLines[0]);
     m_labelLimit0.start();
     tft.drawString("IP:", 0, bottomLines[1]);
     m_labelIpAddress.start();
     m_labelSignal.start();
-    tft.drawString("Limit1:", 160, bottomLines[1]);
+    tft.drawString("Lim1:", 173, bottomLines[1]);
     m_labelLimit1.start();
     tft.drawString("Perf:", 0, bottomLines[2]);
     m_labelPerformance.start();

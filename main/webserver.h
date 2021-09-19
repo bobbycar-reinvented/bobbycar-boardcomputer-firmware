@@ -15,6 +15,7 @@
 #include <esphttpdutils.h>
 
 // local includes
+#include "webserver_lock.h"
 #include "webserver_displaycontrol.h"
 #ifdef FEATURE_OTA
 #include "webserver_ota.h"
@@ -26,8 +27,6 @@
 namespace {
 httpd_handle_t httpdHandle;
 
-std::atomic<bool> shouldReboot;
-
 void initWebserver();
 void handleWebserver();
 esp_err_t webserver_reboot_handler(httpd_req_t *req);
@@ -36,7 +35,8 @@ esp_err_t webserver_reboot_handler(httpd_req_t *req);
 namespace {
 void initWebserver()
 {
-    shouldReboot = false;
+    webserver_lock.construct();
+    webserver_lock->take(portMAX_DELAY);
 
     {
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
@@ -74,16 +74,13 @@ void initWebserver()
 
 void handleWebserver()
 {
-    if (shouldReboot)
-    {
-        shouldReboot = false;
-        esp_restart();
-    }
+    webserver_lock->give();
+    webserver_lock->take(portMAX_DELAY);
 }
 
 esp_err_t webserver_reboot_handler(httpd_req_t *req)
 {
-    shouldReboot = true;
+    esp_restart();
 
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "REBOOT called...")
 }

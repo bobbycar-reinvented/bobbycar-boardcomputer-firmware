@@ -148,6 +148,7 @@ set(headers
     utils.h
     webserver.h
     webserver_displaycontrol.h
+    webserver_lock.h
     webserver_ota.h
     webserver_settings.h
     webserver_stringsettings.h

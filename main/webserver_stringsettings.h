@@ -11,9 +11,12 @@
 #include <fmt/core.h>
 #include <espcppmacros.h>
 #include <esphttpdutils.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
 
 // local includes
 #include "globals.h"
+#include "webserver_lock.h"
 
 #ifdef FEATURE_WEBSERVER
 namespace {
@@ -26,6 +29,14 @@ using esphttpdutils::HtmlTag;
 namespace {
 esp_err_t webserver_stringSettings_handler(httpd_req_t *req)
 {
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
     std::string body;
 
     {
@@ -107,6 +118,14 @@ esp_err_t webserver_stringSettings_handler(httpd_req_t *req)
 
 esp_err_t webserver_saveStringSettings_handler(httpd_req_t *req)
 {
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
         query = *result;
@@ -121,13 +140,16 @@ esp_err_t webserver_saveStringSettings_handler(httpd_req_t *req)
 
     stringSettings.executeForEveryCommonSetting([&](std::string_view key, auto &value){
         char valueBufEncoded[256];
-        if (const auto result = httpd_query_key_value(query.data(), key.data(), valueBufEncoded, 256); result != ESP_OK && result != ESP_ERR_NOT_FOUND)
+        if (const auto result = httpd_query_key_value(query.data(), key.data(), valueBufEncoded, 256); result != ESP_OK)
         {
-            const auto msg = fmt::format("{}: httpd_query_key_value() failed with {}", key, esp_err_to_name(result));
-            ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
-            body += msg;
-            body += '\n';
-            success = false;
+            if (result != ESP_ERR_NOT_FOUND)
+            {
+                const auto msg = fmt::format("{}: httpd_query_key_value() failed with {}", key, esp_err_to_name(result));
+                ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+                body += msg;
+                body += '\n';
+                success = false;
+            }
             return;
         }
 

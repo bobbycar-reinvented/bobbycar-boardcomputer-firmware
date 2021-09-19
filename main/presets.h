@@ -168,7 +168,7 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
 
 #ifdef FEATURE_CLOUD
 constexpr Settings::CloudSettings defaultCloudSettings {
-    .cloudEnabled = true,
+    .cloudEnabled = false,
     .cloudTransmitTimeout = 10
 };
 #endif

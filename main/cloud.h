@@ -6,6 +6,7 @@
 // 3rdparty lib includes
 #include <wrappers/websocket_client.h>
 #include <espwifistack.h>
+#include <esphttpdutils.h>
 
 // local includes
 #include "globals.h"
@@ -23,7 +24,9 @@ void startCloud();
 
 void initCloud()
 {
-    if (settings.cloudSettings.cloudEnabled)
+    if (settings.cloudSettings.cloudEnabled &&
+        !stringSettings.cloudUrl.empty() &&
+        esphttpdutils::urlverify(stringSettings.cloudUrl))
     {
         createCloud();
         if (!cloudClient)
@@ -38,7 +41,9 @@ void initCloud()
 
 void handleCloud()
 {
-    if (settings.cloudSettings.cloudEnabled)
+    if (settings.cloudSettings.cloudEnabled &&
+        !stringSettings.cloudUrl.empty() &&
+        esphttpdutils::urlverify(stringSettings.cloudUrl))
     {
         if (!cloudClient)
         {

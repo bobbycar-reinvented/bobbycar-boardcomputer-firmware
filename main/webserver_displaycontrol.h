@@ -15,10 +15,13 @@
 #include <textinterface.h>
 #include <menudisplay.h>
 #include <changevaluedisplay.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
 
 // local includes
 #include "buttons.h"
 #include "globals.h"
+#include "webserver_lock.h"
 
 #ifdef FEATURE_WEBSERVER
 namespace {
@@ -33,6 +36,14 @@ using esphttpdutils::HtmlTag;
 namespace {
 esp_err_t webserver_root_handler(httpd_req_t *req)
 {
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
     std::string body;
 
     {
@@ -125,6 +136,14 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 {
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
         query = *result;
@@ -233,6 +252,14 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 {
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
         query = *result;
@@ -311,6 +338,14 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 
 esp_err_t webserver_setValue_handler(httpd_req_t *req)
 {
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
         query = *result;
