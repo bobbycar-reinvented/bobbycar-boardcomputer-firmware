@@ -1,4 +1,4 @@
-set(BOBBY_APP_NAME bobbyquad_comred)
+set(BOBBY_APP_NAME bobbyquad_greyhash)
 
 add_definitions(
   -DUSER_SETUP_LOADED=1
