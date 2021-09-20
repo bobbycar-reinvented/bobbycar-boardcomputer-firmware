@@ -124,7 +124,7 @@ void handleCloud()
                 msg += fmt::format(",[{},{:.2f},{:.2f},{}]",
                                    command.pwm * (invert?-1:1),
                                    convertToKmh(feedback.speed) * (invert?-1:1),
-                                   fixCurrent(feedback.dcLink) * (invert?-1:1),
+                                   fixCurrent(feedback.dcLink),
                                    feedback.error);
             };
 
