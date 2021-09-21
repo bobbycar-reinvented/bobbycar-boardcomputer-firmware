@@ -8,6 +8,9 @@
 #ifdef FEATURE_BLE
 #include <NimBLEDevice.h>
 #endif
+#ifdef FEATURE_LEDSTRIP
+#include "ledstrip.h"
+#endif
 
 // local includes
 #include "globals.h"
@@ -240,6 +243,11 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
         ESP_LOGW(TAG, "ignoring cmd with invalid json: %.*s %s", val.size(), val.data(), error.c_str());
         return;
     }
+
+#ifdef FEATURE_LEDSTRIP
+    auto newBlinkAnimation = doc["anim"].as<int16_t>();
+    if (blinkAnimation != newBlinkAnimation) blinkAnimation = newBlinkAnimation;
+#endif
 
     modes::remoteControlMode.setCommand(RemoteCommand{
         .frontLeft = doc["fl"].as<int16_t>(),
