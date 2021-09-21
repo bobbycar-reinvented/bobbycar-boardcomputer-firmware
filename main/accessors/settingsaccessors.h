@@ -121,6 +121,7 @@ struct DisplayRedrawRateAccessor : public RefAccessorSaveSettings<int16_t> { int
 struct CanReceiveRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.canReceiveRate; } };
 #endif
 #ifdef FEATURE_CLOUD
+struct CloudCollectRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.cloudCollectRate; } };
 struct CloudSendRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.cloudSendRate; } };
 #endif
 

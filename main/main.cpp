@@ -162,7 +162,8 @@ std::optional<espchrono::millis_clock::time_point> lastCanParse;
 std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
 #endif
 #ifdef FEATURE_CLOUD
-std::optional<espchrono::millis_clock::time_point> lastCloudUpdate;
+std::optional<espchrono::millis_clock::time_point> lastCloudCollect;
+std::optional<espchrono::millis_clock::time_point> lastCloudSend;
 #endif
 #ifdef FEATURE_NTP
 std::optional<espchrono::millis_clock::time_point> lastNtpUpdate;
@@ -459,11 +460,18 @@ extern "C" void app_main()
 #endif
 
 #ifdef FEATURE_CLOUD
-        if (!lastCloudUpdate || now - *lastCloudUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.cloudSendRate)
+        if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{settings.boardcomputerHardware.timersSettings.cloudCollectRate})
         {
-            handleCloud();
+            cloudCollect();
 
-            lastCloudUpdate = now;
+            lastCloudCollect = now;
+        }
+
+        if (!lastCloudSend || now - *lastCloudSend >= 1000ms/settings.boardcomputerHardware.timersSettings.cloudSendRate)
+        {
+            cloudSend();
+
+            lastCloudSend = now;
         }
 #endif
 

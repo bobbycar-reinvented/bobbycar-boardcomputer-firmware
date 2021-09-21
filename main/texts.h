@@ -45,6 +45,8 @@ constexpr char TEXT_BLEENABLED[] = "BLE enabled";
 constexpr char TEXT_CLOUDSETTINGS[] = "Cloud settings";
 constexpr char TEXT_CLOUDENABLED[] = "Cloud enabled";
 constexpr char TEXT_CLOUDTRANSMITTIMEOUT[] = "Transmit timeout";
+constexpr char TEXT_CLOUDCOLLECTRATE[] = "Cloud collect rate";
+constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
 //constexpr char TEXT_BACK[] = "Back";
 #endif
 
@@ -343,9 +345,6 @@ constexpr char TEXT_DISPLAYUPDATERATE[] = "Display update rate";
 constexpr char TEXT_DISPLAYREDRAWRATE[] = "Display redraw rate";
 #ifdef FEATURE_CAN
 constexpr char TEXT_CANRECEIVERATE[] = "CAN receive rate";
-#endif
-#ifdef FEATURE_CLOUD
-constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
 #endif
 //constexpr char TEXT_BACK[] = "Back";
 

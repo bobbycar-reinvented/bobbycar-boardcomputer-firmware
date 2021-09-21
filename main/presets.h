@@ -142,6 +142,7 @@ constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings 
     .canReceiveRate = 100,
 #endif
 #ifdef FEATURE_CLOUD
+    .cloudCollectRate = 100,
     .cloudSendRate = 1,
 #endif
 };

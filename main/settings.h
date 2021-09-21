@@ -110,6 +110,7 @@ struct Settings
             int16_t canReceiveRate;
 #endif
 #ifdef FEATURE_CLOUD
+            int16_t cloudCollectRate;
             int16_t cloudSendRate;
 #endif
         } timersSettings;
@@ -237,6 +238,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("canReceiveRate", boardcomputerHardware.timersSettings.canReceiveRate);
 #endif
 #ifdef FEATURE_CLOUD
+    callable("cloudCollectRat", boardcomputerHardware.timersSettings.cloudCollectRate);
     callable("cloudSendRate", boardcomputerHardware.timersSettings.cloudSendRate);
 #endif
 
