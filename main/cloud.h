@@ -73,7 +73,7 @@ void handleCloud()
             return;
 
         static std::string msg;
-        msg = fmt::format("[{},{},{}",
+        msg = fmt::format("[[{},{},{}",
                           std::chrono::milliseconds{espchrono::millis_clock::now().time_since_epoch()}.count(),
                           std::chrono::milliseconds{espchrono::utc_clock::now().time_since_epoch()}.count(),
                           heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT));
@@ -137,7 +137,7 @@ void handleCloud()
         addController(controllers.front);
         addController(controllers.back);
 
-        msg += ']';
+        msg += "]]";
 
         const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{settings.cloudSettings.cloudTransmitTimeout}).count();
         const auto written = cloudClient.send_text(msg, timeout);
