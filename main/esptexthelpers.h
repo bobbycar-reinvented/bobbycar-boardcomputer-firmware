@@ -37,6 +37,48 @@ class HeapMinFree32Text : public virtual TextInterface { public: std::string tex
 class HeapLargest32Text : public virtual TextInterface { public: std::string text() const override {
     return fmt::format("HeapLargest32: {}", heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL|MALLOC_CAP_32BIT)); }};
 
+class LastRebootReasonText : public virtual TextInterface { public: std::string text() const override {
+    std::string reset_reason_string;
+    switch (esp_reset_reason()) {
+    case 0:
+        reset_reason_string = "Unkown";
+        break;
+    case 1:
+        reset_reason_string = "Power on";
+        break;
+    case 2:
+        reset_reason_string = "External Pin";
+        break;
+    case 3:
+        reset_reason_string = "esp_restart";
+        break;
+    case 4:
+        reset_reason_string = "Exception/panic";
+        break;
+    case 5:
+        reset_reason_string = "Interrupt wd";
+        break;
+    case 6:
+        reset_reason_string = "Task wd";
+        break;
+    case 7:
+        reset_reason_string = "Other wd";
+        break;
+    case 8:
+        reset_reason_string = "Deepsleep";
+        break;
+    case 9:
+        reset_reason_string = "Brownout";
+        break;
+    case 10:
+        reset_reason_string = "SDIO";
+        break;
+    default:
+        return fmt::format("Last Reboot Reason: {}", esp_reset_reason());
+    }
+
+    return fmt::format("Last Reboot Reason: {}", reset_reason_string); }};
+
 constexpr char TEXT_ESPCHIPREVISION[] = "Chip revision: ";
 using EspChipRevisionText = StaticText<TEXT_ESPCHIPREVISION>; //EspStatusTextHelper<TEXT_ESPCHIPREVISION, uint8_t, &EspClass::getChipRevision>;
 
