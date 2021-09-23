@@ -32,7 +32,11 @@ using esphttpdutils::HtmlTag;
 
 namespace {
 template<typename T>
-typename std::enable_if<!std::is_same<T, bool>::value && !std::is_integral<T>::value, bool>::type
+typename std::enable_if<
+    !std::is_same<T, bool>::value &&
+    !std::is_integral<T>::value &&
+    !std::is_same<T, std::array<int8_t, 4>>::value
+, bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
     HtmlTag spanTag{"span", "style=\"color: red;\"", body};
@@ -41,7 +45,9 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 }
 
 template<typename T>
-typename std::enable_if<std::is_same<T, bool>::value, bool>::type
+typename std::enable_if<
+    std::is_same<T, bool>::value
+, bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
     body += fmt::format("<input type=\"checkbox\" name=\"{}\" value=\"true\" {}/>"
@@ -53,7 +59,10 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 }
 
 template<typename T>
-typename std::enable_if<!std::is_same<T, bool>::value && std::is_integral<T>::value, bool>::type
+typename std::enable_if<
+    !std::is_same<T, bool>::value &&
+    std::is_integral<T>::value
+, bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
     body += fmt::format("<input type=\"number\" name=\"{}\" value=\"{}\" min=\"{}\" max=\"{}\" step=\"1\" required />",
@@ -61,6 +70,21 @@ showInputForSetting(std::string_view key, T value, std::string &body)
                         value,
                         std::numeric_limits<T>::min(),
                         std::numeric_limits<T>::max());
+    return true;
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same<T, std::array<int8_t, 4>>::value
+, bool>::type
+showInputForSetting(std::string_view key, T value, std::string &body)
+{
+    body += fmt::format("<input type=\"text\" name=\"{}{}{}{}\" value=\"{}\" pattern=\"[0-9]{4}\" required />",
+                        esphttpdutils::htmlentities(key),
+                        value[0],
+                        value[1],
+                        value[2],
+                        value[3]);
     return true;
 }
 
@@ -152,7 +176,11 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
 }
 
 template<typename T>
-typename std::enable_if<!std::is_same<T, bool>::value && !std::is_integral<T>::value, bool>::type
+typename std::enable_if<
+    !std::is_same<T, bool>::value &&
+    !std::is_integral<T>::value &&
+    !std::is_same<T, std::array<int8_t, 4>>::value
+, bool>::type
 saveSetting(T &value, std::string_view newValue, std::string &body)
 {
     body += "Unsupported config type";
@@ -160,7 +188,9 @@ saveSetting(T &value, std::string_view newValue, std::string &body)
 }
 
 template<typename T>
-typename std::enable_if<std::is_same<T, bool>::value, bool>::type
+typename std::enable_if<
+    std::is_same<T, bool>::value
+, bool>::type
 saveSetting(T &value, std::string_view newValue, std::string &body)
 {
     if (newValue == "true")
@@ -183,12 +213,34 @@ saveSetting(T &value, std::string_view newValue, std::string &body)
 }
 
 template<typename T>
-typename std::enable_if<!std::is_same<T, bool>::value && std::is_integral<T>::value, bool>::type
+typename std::enable_if<
+    !std::is_same<T, bool>::value &&
+    std::is_integral<T>::value
+, bool>::type
 saveSetting(T &value, std::string_view newValue, std::string &body)
 {
     if (auto parsed = cpputils::fromString<T>(newValue))
     {
         value = *parsed;
+        body += "applied";
+        return true;
+    }
+    else
+    {
+        body += fmt::format("could not parse {}", newValue);
+        return false;
+    }
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same<T, std::array<int8_t, 4>>::value
+, bool>::type
+saveSetting(T &value, std::string_view newValue, std::string &body)
+{
+    if (std::array<int8_t, 4> parsed; std::sscanf(newValue.data(), "%1hhi%1hhi%1hhi%1hhi", &parsed[0], &parsed[1], &parsed[2], &parsed[3]) == 4)
+    {
+        value = parsed;
         body += "applied";
         return true;
     }
