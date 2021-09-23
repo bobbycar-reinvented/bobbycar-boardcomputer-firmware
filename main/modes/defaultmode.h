@@ -98,7 +98,8 @@ void DefaultMode::update()
                 }
             }
         }
-        else {
+        else
+        {
             pwm = (gas_processed/1000.*settings.defaultMode.gas2_wert) - (brems_processed/1000.*settings.defaultMode.brems2_wert);
             if (
                     (settings.defaultMode.enableFieldWeakSmoothingUp || settings.defaultMode.enableFieldWeakSmoothingDown) &&
