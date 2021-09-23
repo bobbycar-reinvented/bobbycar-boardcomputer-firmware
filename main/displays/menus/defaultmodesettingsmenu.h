@@ -36,6 +36,13 @@ using DefaultModeSmoothingChangeDisplay = makeComponent<
     BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
     SwitchScreenAction<DefaultModeSettingsMenu>
 >;
+using DefaultModeFwSmoothingLowerLimitChangeDisplay = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_FWSMOOTHING_LIMIT>,
+    DefaultModeEnableFieldWeakSmoothingLowerLimitAccessor,
+    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
+    SwitchScreenAction<DefaultModeSettingsMenu>
+>;
 using DefaultModeFrontPercentageChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
     StaticText<TEXT_FRONTPERCENTAGE>,
@@ -97,7 +104,11 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          SwitchScreenAction<DefaultModeModelModeChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREGAS>,          ToggleBoolAction, CheckboxIcon,  DefaultModeSquareGasAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREBREMS>,        ToggleBoolAction, CheckboxIcon,  DefaultModeSquareBremsAccessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHING>,    ToggleBoolAction, CheckboxIcon,  DefaultModeEnableSmoothingAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHINGUP>,    ToggleBoolAction, CheckboxIcon,  DefaultModeEnableSmoothingUpAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHINGDOWN>,    ToggleBoolAction, CheckboxIcon,  DefaultModeEnableSmoothingDownAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEFWSMOOTHINGUP>,  ToggleBoolAction, CheckboxIcon,  DefaultModeEnableFieldWeakSmoothingUpAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEFWSMOOTHINGDOWN>,  ToggleBoolAction, CheckboxIcon,  DefaultModeEnableFieldWeakSmoothingDownAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_FWSMOOTHING_LIMIT, DefaultModeEnableFieldWeakSmoothingLowerLimitAccessor>, SwitchScreenAction<DefaultModeFwSmoothingLowerLimitChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMOOTHINGVAL, DefaultModeSmoothingAccessor>,                     SwitchScreenAction<DefaultModeSmoothingChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_FRONTPERCENTAGE, DefaultModeFrontPercentageAccessor>, SwitchScreenAction<DefaultModeFrontPercentageChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BACKPERCENTAGE, DefaultModeBackPercentageAccessor>,   SwitchScreenAction<DefaultModeBackPercentageChangeDisplay>>>();

@@ -127,7 +127,10 @@ struct Settings
         UnifiedModelMode modelMode;
         bool squareGas;
         bool squareBrems;
-        bool enableSmoothing;
+        bool enableSmoothingUp;
+        bool enableSmoothingDown;
+        bool enableFieldWeakSmoothingUp;
+        bool enableFieldWeakSmoothingDown;
         int16_t smoothing;
         int16_t frontPercentage;
         int16_t backPercentage;
@@ -136,6 +139,7 @@ struct Settings
         int16_t gas2_wert;
         int16_t brems1_wert;
         int16_t brems2_wert;
+        int16_t fwSmoothLowerLimit;
     } defaultMode;
 
     struct TempomatMode {
@@ -280,7 +284,11 @@ void Settings::executeForEveryProfileSetting(T &&callable)
     callable("invertBackRight", controllerHardware.invertBackRight);
 
     callable("default.modelMo", defaultMode.modelMode);
-    callable("default.enableS", defaultMode.enableSmoothing);
+    callable("default.enSmUp_", defaultMode.enableSmoothingUp);
+    callable("default.enSmDow", defaultMode.enableSmoothingDown);
+    callable("default.enSmFUp", defaultMode.enableFieldWeakSmoothingUp);
+    callable("default.enSmFDo", defaultMode.enableFieldWeakSmoothingDown);
+    callable("default.fwSmLLi", defaultMode.fwSmoothLowerLimit);
     callable("default.smoothi", defaultMode.smoothing);
     callable("default.frontPe", defaultMode.frontPercentage);
     callable("default.backPer", defaultMode.backPercentage);
