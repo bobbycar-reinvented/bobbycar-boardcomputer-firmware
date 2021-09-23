@@ -1,10 +1,10 @@
 #!/bin/bash
 
 VALID_CONFIGS=(
-    "feedc0de"
     "comred"
-    "mick"
     "peter"
+    "feedc0de"
+    "mick"
     "greyhash"
 )
 
