@@ -178,7 +178,10 @@ constexpr Settings::DefaultMode defaultDefaultMode {
     .modelMode = UnifiedModelMode::FocTorque,
     .squareGas = true,
     .squareBrems = true,
-    .enableSmoothing = true,
+    .enableSmoothingUp = true,
+    .enableSmoothingDown = true,
+    .enableFieldWeakSmoothingUp = false,
+    .enableFieldWeakSmoothingDown = false,
     .smoothing = 20,
     .frontPercentage = 100,
     .backPercentage = 100,
@@ -186,14 +189,18 @@ constexpr Settings::DefaultMode defaultDefaultMode {
     .gas1_wert = 1250,
     .gas2_wert = 1250,
     .brems1_wert = 250,
-    .brems2_wert = 750
+    .brems2_wert = 750,
+    .fwSmoothLowerLimit = 800
 };
 
 constexpr Settings::DefaultMode sinusoidalDefaultMode {
     .modelMode = UnifiedModelMode::Sinusoidal,
     .squareGas = true,
     .squareBrems = true,
-    .enableSmoothing = true,
+    .enableSmoothingUp = true,
+    .enableSmoothingDown = true,
+    .enableFieldWeakSmoothingUp = false,
+    .enableFieldWeakSmoothingDown = false,
     .smoothing = 20,
     .frontPercentage = 100,
     .backPercentage = 100,
@@ -201,7 +208,8 @@ constexpr Settings::DefaultMode sinusoidalDefaultMode {
     .gas1_wert = 1250,
     .gas2_wert = 1250,
     .brems1_wert = 150,
-    .brems2_wert = 1000
+    .brems2_wert = 1000,
+    .fwSmoothLowerLimit = 800
 };
 
 constexpr Settings::TempomatMode defaultTempomatMode {
