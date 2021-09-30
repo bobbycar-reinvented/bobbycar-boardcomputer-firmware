@@ -143,14 +143,14 @@ public:
         if(!pressed)return;
 
 #ifdef FEATURE_LEDSTRIP
-        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULTRAINBOW){ //transition from off to left
-            blinkAnimation = LEDSTRIP_ANIMATION_BLINKLEFT;
+        if(blinkAnimation == LEDSTRIP_OVERWRITE_NONE){ //transition from off to left
+            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKLEFT;
         }
-        else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKRIGHT){ // transition to warning
-            blinkAnimation = LEDSTRIP_ANIMATION_BLINKBOTH;
+        else if(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKRIGHT){ // transition to warning
+            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKBOTH;
         }
         else{ // transition to off
-            blinkAnimation = 0;
+            blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
         }
 #endif
     }
@@ -158,14 +158,14 @@ public:
     static void blinkRightButton(bool pressed){
         if(!pressed)return;
 #ifdef FEATURE_LEDSTRIP
-        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULTRAINBOW){ //transition from off to right
-            blinkAnimation = LEDSTRIP_ANIMATION_BLINKRIGHT;
+        if(blinkAnimation == LEDSTRIP_OVERWRITE_NONE){ //transition from off to right
+            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKRIGHT;
         }
-        else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKLEFT){ // transition to warning
-            blinkAnimation = LEDSTRIP_ANIMATION_BLINKBOTH;
+        else if(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKLEFT){ // transition to warning
+            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKBOTH;
         }
         else{ // transition to off
-            blinkAnimation = 0;
+            blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
         }
 #endif
     }

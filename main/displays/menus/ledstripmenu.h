@@ -6,6 +6,7 @@
 #include "actions/toggleboolaction.h"
 #include "actions/switchscreenaction.h"
 #include "ledstripselectanimationmenu.h"
+#include "ledstripselectblinkmenu.h"
 #include "texts.h"
 #include "icons/back.h"
 #include "checkboxicon.h"
@@ -27,16 +28,6 @@ namespace {
 #ifdef FEATURE_LEDSTRIP
 class LedstripMenu;
 class LedstripSelectAnimationMenu;
-
-struct BlinkAnimationAccessor : public RefAccessor<int16_t> { int16_t &getRef() const override { return blinkAnimation; } };
-
-using BlinkAnimationChangeScreen = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_BLINKANIMATION>,
-    BlinkAnimationAccessor,
-    BackActionInterface<SwitchScreenAction<LedstripMenu>>,
-    SwitchScreenAction<LedstripMenu>
->;
 
 using LedsCountChangeScreen = makeComponent<
     ChangeValueDisplay<int16_t>,
@@ -86,10 +77,10 @@ class LedstripMenu :
 public:
     LedstripMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDANIMATION>, ToggleBoolAction, CheckboxIcon, EnableLedAnimationAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDANIMATION>, ToggleBoolAction, CheckboxIcon,    EnableLedAnimationAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BRAKELIGHTS>,  ToggleBoolAction, CheckboxIcon,    EnableBrakeLightsAccessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTANIMATION>,        SwitchScreenAction<LedstripSelectAnimationMenu>>>();
-//        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BLINKANIMATION, BlinkAnimationAccessor>, SwitchScreenAction<BlinkAnimationChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTANIMATION>,                                 SwitchScreenAction<LedstripSelectAnimationMenu>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLINKANIMATION>,                                  SwitchScreenAction<LedstripSelectBlinkMenu>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSCOUNT, LedsCountAccessor>,           SwitchScreenAction<LedsCountChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CENTEROFFSET, CenterOffsetAccessor>,     SwitchScreenAction<CenterOffsetChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMALLOFFSET, SmallOffsetAccessor>,       SwitchScreenAction<SmallOffsetChangeScreen>>>();

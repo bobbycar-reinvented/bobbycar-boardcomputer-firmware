@@ -12,36 +12,18 @@ namespace {
 class LedstripAnimationDefaultRainbowAction : public virtual ActionInterface
 {
 public:
-    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_DEFAULTRAINBOW; }
-};
-
-class LedstripAnimationBlinkLeftAction : public virtual ActionInterface
-{
-public:
-    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_BLINKLEFT; }
-};
-
-class LedstripAnimationBlinkRightAction : public virtual ActionInterface
-{
-public:
-    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_BLINKRIGHT; }
-};
-
-class LedstripAnimationBlinkBothAction : public virtual ActionInterface
-{
-public:
-    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_BLINKBOTH; }
+    void triggered() override { animation_type = LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW; }
 };
 
 class LedstripAnimationBetterRainbowAction : public virtual ActionInterface
 {
 public:
-    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_BETTERRAINBOW; }
+    void triggered() override { animation_type = LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW; }
 };
 
 class LedstripAnimationSyncToSpeedAction : public virtual ActionInterface
 {
 public:
-    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_SPEEDSYNCANIMATION; }
+    void triggered() override { animation_type = LEDSTRIP_ANIMATION_TYPE_SPEEDSYNCANIMATION; }
 };
 }

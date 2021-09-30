@@ -13,7 +13,8 @@ namespace {
 std::vector<CRGB> leds;
 uint8_t gHue = 0;
 
-int16_t blinkAnimation = LEDSTRIP_ANIMATION_DEFAULT;
+int16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
+int16_t animation_type = LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW;
 
 void showDefaultLedstrip();
 void showAnimation();
@@ -31,7 +32,7 @@ void updateLedStrip()
 {
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }
 
-    if (cpputils::is_in(blinkAnimation, LEDSTRIP_ANIMATION_BLINKLEFT, LEDSTRIP_ANIMATION_BLINKRIGHT, LEDSTRIP_ANIMATION_BLINKBOTH))
+    if (cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH))
     {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
 
@@ -40,15 +41,15 @@ void updateLedStrip()
             auto color = CRGB{255, 255, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
-#ifndef LEDSTRIP_WRONG_DIRECTION
-            if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKRIGHT)
+#ifdef LEDSTRIP_WRONG_DIRECTION
+            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT)
                 std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
-            if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKLEFT)
+            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT)
                 std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
 #else
-            if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKLEFT)
+            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT)
                 std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
-            if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKRIGHT)
+            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT)
                 std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
 #endif
         }
@@ -92,9 +93,9 @@ void updateLedStrip()
 }
 
 void showAnimation() {
-    if (blinkAnimation == LEDSTRIP_ANIMATION_DEFAULTRAINBOW) showDefaultLedstrip();
-    else if (blinkAnimation == LEDSTRIP_ANIMATION_BETTERRAINBOW) showBetterRainbow();
-    else if (blinkAnimation == LEDSTRIP_ANIMATION_SPEEDSYNCANIMATION) showSpeedSyncAnimation();
+    if (animation_type == LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW) showDefaultLedstrip();
+    else if (animation_type == LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW) showBetterRainbow();
+    else if (animation_type == LEDSTRIP_ANIMATION_TYPE_SPEEDSYNCANIMATION) showSpeedSyncAnimation();
     else showDefaultLedstrip();
 }
 
