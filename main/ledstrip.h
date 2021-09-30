@@ -8,12 +8,13 @@
 #include "globals.h"
 #include "cpputils.h"
 #include "espchrono.h"
+#include "ledstripdefines.h"
 
 namespace {
 std::vector<CRGB> leds;
 uint8_t gHue = 0;
 
-int16_t blinkAnimation = 0;
+int16_t blinkAnimation = LEDSTRIP_ANIMATION_DEFAULT;
 
 void showDefaultLedstrip();
 
@@ -28,7 +29,7 @@ void updateLedStrip()
 {
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }
 
-    if (cpputils::is_in(blinkAnimation, 1, 2, 3))
+    if (cpputils::is_in(blinkAnimation, LEDSTRIP_ANIMATION_BLINKLEFT, LEDSTRIP_ANIMATION_BLINKRIGHT, LEDSTRIP_ANIMATION_BLINKBOTH))
     {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
 
@@ -37,9 +38,9 @@ void updateLedStrip()
             auto color = CRGB{255, 255, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
-            if (blinkAnimation != 2)
+            if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKLEFT)
                 std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
-            if (blinkAnimation != 1)
+            if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKRIGHT)
                 std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
         }
     }
