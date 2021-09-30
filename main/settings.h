@@ -160,6 +160,7 @@ struct Settings
         int16_t centerOffset;
         int16_t smallOffset;
         int16_t bigOffset;
+        int16_t deziampere;
     } ledstrip;
 #endif
 
@@ -258,6 +259,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("centerOffset", ledstrip.centerOffset);
     callable("smallOffset", ledstrip.smallOffset);
     callable("bigOffset", ledstrip.bigOffset);
+    callable("deziampere", ledstrip.deziampere);
 #endif
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);

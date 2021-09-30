@@ -229,7 +229,8 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .ledsCount = LEDSTRIP_LENGTH,
     .centerOffset = 1,
     .smallOffset = 4,
-    .bigOffset = 10
+    .bigOffset = 10,
+    .deziampere = 30
 };
 #endif
 

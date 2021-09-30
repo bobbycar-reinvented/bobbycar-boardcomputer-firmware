@@ -12,7 +12,7 @@ namespace {
 class LedstripAnimationDefaultRainbowAction : public virtual ActionInterface
 {
 public:
-    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_DEFAULTRAINBOW; }
+    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_DEFAULT; }
 };
 
 class LedstripAnimationBlinkLeftAction : public virtual ActionInterface

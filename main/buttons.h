@@ -8,6 +8,11 @@
 
 // local includes
 #include "settingsutils.h"
+#include "ledstripdefines.h"
+
+#ifdef FEATURE_LEDSTRIP
+#include "ledstrip.h"
+#endif
 
 namespace {
 
@@ -132,6 +137,45 @@ public:
             return;
 
         switchProfile(index);
+    }
+
+    static void blinkLeftButton(bool pressed){
+        if(!pressed)return;
+
+#ifdef FEATURE_LEDSTRIP
+        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULT){ //transition from off to left
+            blinkAnimation = LEDSTRIP_ANIMATION_BLINKLEFT;
+        }
+        else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKRIGHT){ // transition to warning
+            blinkAnimation = LEDSTRIP_ANIMATION_BLINKBOTH;
+        }
+        else{ // transition to off
+            blinkAnimation = 0;
+        }
+#endif
+    }
+
+    static void blinkRightButton(bool pressed){
+        if(!pressed)return;
+#ifdef FEATURE_LEDSTRIP
+        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULT){ //transition from off to right
+            blinkAnimation = LEDSTRIP_ANIMATION_BLINKRIGHT;
+        }
+        else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKLEFT){ // transition to warning
+            blinkAnimation = LEDSTRIP_ANIMATION_BLINKBOTH;
+        }
+        else{ // transition to off
+            blinkAnimation = 0;
+        }
+#endif
+    }
+
+    static void quickActionButtonDown(bool pressed){
+
+    }
+
+    static void quickActionButtonUp(bool pressed){
+
     }
 };
 }

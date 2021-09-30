@@ -38,6 +38,14 @@ void updateLedStrip()
             auto color = CRGB{255, 255, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
+            #ifdef LEDSTRIP_WRONG_DIRECTION
+                if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKLEFT){
+                    blinkAnimation = LEDSTRIP_ANIMATION_BLINKRIGHT;
+                } else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKRIGHT){
+                    blinkAnimation = LEDSTRIP_ANIMATION_BLINKLEFT;
+                }
+            #endif
+
             if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKLEFT)
                 std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
             if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKRIGHT)
@@ -78,6 +86,7 @@ void updateLedStrip()
         }
     }
 
+    FastLED.setMaxPowerInVoltsAndMilliamps(5,settings.ledstrip.deziampere * 100);
     FastLED.show();
 }
 
