@@ -8,6 +8,7 @@
 
 // local includes
 #include "settingsutils.h"
+#include "ledstripdefines.h"
 
 #ifdef FEATURE_LEDSTRIP
 #include "ledstrip.h"
@@ -142,11 +143,11 @@ public:
         if(!pressed)return;
 
 #ifdef FEATURE_LEDSTRIP
-        if(blinkAnimation == 0){ //transition from off to left
-            blinkAnimation = 2;
+        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULT){ //transition from off to left
+            blinkAnimation = LEDSTRIP_ANIMATION_BLINKLEFT;
         }
-        else if(blinkAnimation == 1){ // transition to warning
-            blinkAnimation = 3;
+        else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKRIGHT){ // transition to warning
+            blinkAnimation = LEDSTRIP_ANIMATION_BLINKBOTH;
         }
         else{ // transition to off
             blinkAnimation = 0;
@@ -157,11 +158,11 @@ public:
     static void blinkRightButton(bool pressed){
         if(!pressed)return;
 #ifdef FEATURE_LEDSTRIP
-        if(blinkAnimation == 0){ //transition from off to right
-            blinkAnimation = 1;
+        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULT){ //transition from off to right
+            blinkAnimation = LEDSTRIP_ANIMATION_BLINKRIGHT;
         }
-        else if(blinkAnimation == 2){ // transition to warning
-            blinkAnimation = 3;
+        else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKLEFT){ // transition to warning
+            blinkAnimation = LEDSTRIP_ANIMATION_BLINKBOTH;
         }
         else{ // transition to off
             blinkAnimation = 0;

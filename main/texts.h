@@ -250,6 +250,13 @@ constexpr char TEXT_BIGOFFSET[] = "Big Offset";
 constexpr char TEXT_LEDSTRIP_MILLIAMP[] = "Ledstrip 0.1A";
 //constexpr char TEXT_BACK[] = "Back";
 
+//LedstripSelectAnimationMenu
+constexpr char TEXT_SELECTANIMATION[] = "Select Animation";
+constexpr char TEXT_ANIMATION_DEFAULTRAINBOW[] = "Default Rainbow";
+constexpr char TEXT_ANIMATION_BLINKLEFT[] = "Blink Left";
+constexpr char TEXT_ANIMATION_BLINKRIGHT[] = "Blink Right";
+constexpr char TEXT_ANIMATION_BLINKBOTH[] = "Blink Both";
+
 //LockscreenSettingsMenu
 constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
 constexpr char TEXT_ALLOWPRESETSWITCH[] = "Allow preset switch";
