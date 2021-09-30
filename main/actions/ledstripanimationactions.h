@@ -32,4 +32,16 @@ class LedstripAnimationBlinkBothAction : public virtual ActionInterface
 public:
     void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_BLINKBOTH; }
 };
+
+class LedstripAnimationBetterRainbowAction : public virtual ActionInterface
+{
+public:
+    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_BETTERRAINBOW; }
+};
+
+class LedstripAnimationSyncToSpeedAction : public virtual ActionInterface
+{
+public:
+    void triggered() override { blinkAnimation = LEDSTRIP_ANIMATION_SPEEDSYNCANIMATION; }
+};
 }

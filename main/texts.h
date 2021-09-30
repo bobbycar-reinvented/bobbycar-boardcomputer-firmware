@@ -256,6 +256,8 @@ constexpr char TEXT_ANIMATION_DEFAULTRAINBOW[] = "Default Rainbow";
 constexpr char TEXT_ANIMATION_BLINKLEFT[] = "Blink Left";
 constexpr char TEXT_ANIMATION_BLINKRIGHT[] = "Blink Right";
 constexpr char TEXT_ANIMATION_BLINKBOTH[] = "Blink Both";
+constexpr char TEXT_ANIMATION_BETTERRAINBOW[] = "Better Rainbow";
+constexpr char TEXT_ANIMATION_SPEEDSYNCANIMATION[] = "Speed Sync";
 
 //LockscreenSettingsMenu
 constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
