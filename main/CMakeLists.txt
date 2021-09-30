@@ -13,6 +13,7 @@ set(headers
     actions/bmsturnonchargeaction.h
     actions/bmsturnondischargeaction.h
     actions/erasenvsaction.h
+    actions/ledstripanimationactions.h
     actions/loadsettingsaction.h
     actions/modesettingsaction.h
     actions/multiaction.h
@@ -55,6 +56,7 @@ set(headers
     displays/menus/invertmenu.h
     displays/menus/larsmmodesettingsmenu.h
     displays/menus/ledstripmenu.h
+    displays/menus/ledstripselectanimationmenu.h
     displays/menus/modessettingsmenu.h
     displays/menus/mosfetsmenu.h
     displays/menus/motorstatedebugmenu.h
@@ -111,6 +113,7 @@ set(headers
     icons/update.h
     icons/wifi.h
     ledstrip.h
+    ledstripdefines.h
     modes/defaultmode.h
     modes/gametrakmode.h
     modes/ignoreinputmode.h
