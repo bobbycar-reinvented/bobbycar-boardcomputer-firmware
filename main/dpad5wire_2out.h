@@ -45,8 +45,8 @@ public:
     bool &profile2{this->at(DPAD_5WIRESW_PROFILE2)};
     bool &profile3{this->at(DPAD_5WIRESW_PROFILE3)};
 
-    bool &blink_left{this->at(DPAD_5WIRESW_BLINK_RIGHT)};
-    bool &blink_right{this->at(DPAD_5WIRESW_BLINK_LEFT)};
+    bool &blink_left{this->at(DPAD_5WIRESW_BLINK_LEFT)};
+    bool &blink_right{this->at(DPAD_5WIRESW_BLINK_RIGHT)};
     bool &quickaction_down{this->at(DPAD_5WIRESW_QUICKACTION_DOWN)};
     bool &quickaction_up{this->at(DPAD_5WIRESW_QUICKACTION_UP)};
 };

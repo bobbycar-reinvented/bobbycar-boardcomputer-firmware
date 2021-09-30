@@ -12,6 +12,7 @@
 // local includes
 #include "settings.h"
 #include "stringsettings.h"
+#include "ledstripdefines.h"
 
 using namespace std::chrono_literals;
 
@@ -231,7 +232,12 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .smallOffset = 4,
     .bigOffset = 10,
     .deziampere = 30,
-    .enableBeepWhenBlink = false
+    .enableBeepWhenBlink = false,
+#ifdef LEDSTRIP_ANIMATION_DEFAULT
+    .animationType = LEDSTRIP_ANIMATION_DEFAULT
+#else
+    .animationType = LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW
+#endif
 };
 #endif
 

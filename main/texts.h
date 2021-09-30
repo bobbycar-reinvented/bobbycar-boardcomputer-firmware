@@ -243,6 +243,7 @@ constexpr char TEXT_LEDSTRIP[] = "Ledstrip";
 constexpr char TEXT_LEDANIMATION[] = "LED Animation";
 constexpr char TEXT_BRAKELIGHTS[] = "Brake Lights";
 constexpr char TEXT_BLINKANIMATION[] = "Blink animation";
+constexpr char TEXT_ANIMATION_TYPE[] = "Blink animation";
 constexpr char TEXT_LEDSCOUNT[] = "LEDs Count";
 constexpr char TEXT_CENTEROFFSET[] = "Center Offset";
 constexpr char TEXT_SMALLOFFSET[] = "Small Offset";
@@ -254,11 +255,14 @@ constexpr char TEXT_BLINKBEEP[] = "Blink Beep";
 //LedstripSelectAnimationMenu
 constexpr char TEXT_SELECTANIMATION[] = "Select Animation";
 constexpr char TEXT_ANIMATION_DEFAULTRAINBOW[] = "Default Rainbow";
+constexpr char TEXT_ANIMATION_BETTERRAINBOW[] = "Better Rainbow";
+constexpr char TEXT_ANIMATION_SPEEDSYNCANIMATION[] = "Speed Sync";
+
+//LedstripSelectBlinkMenu
+constexpr char TEXT_ANIMATION_BLINKNONE[] = "Blink Off";
 constexpr char TEXT_ANIMATION_BLINKLEFT[] = "Blink Left";
 constexpr char TEXT_ANIMATION_BLINKRIGHT[] = "Blink Right";
 constexpr char TEXT_ANIMATION_BLINKBOTH[] = "Blink Both";
-constexpr char TEXT_ANIMATION_BETTERRAINBOW[] = "Better Rainbow";
-constexpr char TEXT_ANIMATION_SPEEDSYNCANIMATION[] = "Speed Sync";
 
 //LockscreenSettingsMenu
 constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
