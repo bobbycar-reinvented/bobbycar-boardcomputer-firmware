@@ -1,5 +1,5 @@
 #pragma once
-
+#define FEATURE_LEDSTRIP
 // local includes
 #include "menudisplay.h"
 #include "menuitem.h"
@@ -88,7 +88,9 @@ public:
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDANIMATION>, ToggleBoolAction, CheckboxIcon, EnableLedAnimationAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BRAKELIGHTS>,  ToggleBoolAction, CheckboxIcon,    EnableBrakeLightsAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLINKBEEP>,    ToggleBoolAction, CheckboxIcon, EnableBeepWhenBlinkAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTANIMATION>,        SwitchScreenAction<LedstripSelectAnimationMenu>>>();
+
 //        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BLINKANIMATION, BlinkAnimationAccessor>, SwitchScreenAction<BlinkAnimationChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSCOUNT, LedsCountAccessor>,           SwitchScreenAction<LedsCountChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CENTEROFFSET, CenterOffsetAccessor>,     SwitchScreenAction<CenterOffsetChangeScreen>>>();

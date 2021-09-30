@@ -37,6 +37,11 @@ void updateLedStrip()
 
         if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms)
         {
+            if (settings.ledstrip.enableBeepWhenBlink)
+            {
+            for (Controller &controller : controllers)
+                controller.command.buzzer.freq = 3;
+            }
             auto color = CRGB{255, 255, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
@@ -51,6 +56,12 @@ void updateLedStrip()
             if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKRIGHT)
                 std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
 #endif
+        } else {
+            if (settings.ledstrip.enableBeepWhenBlink)
+            {
+            for (Controller &controller : controllers)
+                controller.command.buzzer.freq = 0;
+            }
         }
     }
     else

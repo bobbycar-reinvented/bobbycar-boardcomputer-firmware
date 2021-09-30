@@ -161,6 +161,7 @@ struct Settings
         int16_t smallOffset;
         int16_t bigOffset;
         int16_t deziampere;
+        bool enableBeepWhenBlink;
     } ledstrip;
 #endif
 
@@ -260,6 +261,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("smallOffset", ledstrip.smallOffset);
     callable("bigOffset", ledstrip.bigOffset);
     callable("deziampere", ledstrip.deziampere);
+    callable("beeppwhenblink", ledstrip.enableBeepWhenBlink);
 #endif
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);

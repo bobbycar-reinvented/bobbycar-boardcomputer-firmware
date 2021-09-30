@@ -230,7 +230,8 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .centerOffset = 1,
     .smallOffset = 4,
     .bigOffset = 10,
-    .deziampere = 30
+    .deziampere = 30,
+    .enableBeepWhenBlink = false
 };
 #endif
 
