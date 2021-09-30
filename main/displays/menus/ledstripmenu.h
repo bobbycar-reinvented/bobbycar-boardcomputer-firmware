@@ -1,5 +1,4 @@
 #pragma once
-#define FEATURE_LEDSTRIP
 // local includes
 #include "menudisplay.h"
 #include "menuitem.h"
