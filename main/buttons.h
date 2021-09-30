@@ -142,16 +142,10 @@ public:
         if(!pressed)return;
 
 #ifdef FEATURE_LEDSTRIP
-
-#ifdef LEDSTRIP_WRONG_DIRECTION
-        const auto target_blinkAnimation = 1;
-#else
-        const auto target_blinkAnimation = 2;
-#endif
         if(blinkAnimation == 0){ //transition from off to left
-            blinkAnimation = target_blinkAnimation;
+            blinkAnimation = 2;
         }
-        else if(blinkAnimation == 3 - target_blinkAnimation){ // transition to warning
+        else if(blinkAnimation == 1){ // transition to warning
             blinkAnimation = 3;
         }
         else{ // transition to off
@@ -163,16 +157,10 @@ public:
     static void blinkRightButton(bool pressed){
         if(!pressed)return;
 #ifdef FEATURE_LEDSTRIP
-
-        #ifdef LEDSTRIP_WRONG_DIRECTION
-        const auto target_blinkAnimation = 2;
-#else
-        const auto target_blinkAnimation = 1;
-#endif
-        if(blinkAnimation == 0){ //transition from off to left
-            blinkAnimation = target_blinkAnimation;
+        if(blinkAnimation == 0){ //transition from off to right
+            blinkAnimation = 1;
         }
-        else if(blinkAnimation == 3 - target_blinkAnimation){ // transition to warning
+        else if(blinkAnimation == 2){ // transition to warning
             blinkAnimation = 3;
         }
         else{ // transition to off

@@ -37,6 +37,12 @@ void updateLedStrip()
             auto color = CRGB{255, 255, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
+            #ifdef LEDSTRIP_WRONG_DIRECTION
+                if(cpputils::is_in(blinkAnimation, 1, 2)){
+                    blinkAnimation = 3 - blinkAnimation;
+                }
+            #endif
+
             if (blinkAnimation != 2)
                 std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
             if (blinkAnimation != 1)
