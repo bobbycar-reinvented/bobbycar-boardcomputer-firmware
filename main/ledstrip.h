@@ -101,7 +101,7 @@ void showAnimation() {
 void showBetterRainbow() {
     if (settings.ledstrip.enableLedAnimation)
     {
-        //fill_rainbow(); // Will implement later
+        fill_rainbow(&*std::begin(leds), leds.size(), gHue);
     }
     else
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
