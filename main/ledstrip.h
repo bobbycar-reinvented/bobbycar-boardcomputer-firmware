@@ -38,9 +38,9 @@ void updateLedStrip()
             auto color = CRGB{255, 255, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
-            if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKRIGHT)
-                std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
             if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKLEFT)
+                std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
+            if (blinkAnimation != LEDSTRIP_ANIMATION_BLINKRIGHT)
                 std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
         }
     }
