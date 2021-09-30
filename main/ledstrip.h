@@ -23,6 +23,7 @@ void showSpeedSyncAnimation();
 
 void initLedStrip()
 {
+    animation_type = settings.ledstrip.animationType;
     leds.resize(settings.ledstrip.ledsCount);
     FastLED.addLeds<NEOPIXEL, PINS_LEDSTRIP>(&*std::begin(leds), leds.size())
         .setCorrection(TypicalSMD5050);
@@ -41,7 +42,7 @@ void updateLedStrip()
             auto color = CRGB{255, 255, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
-#ifdef LEDSTRIP_WRONG_DIRECTION
+#ifndef LEDSTRIP_WRONG_DIRECTION
             if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT)
                 std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
             if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT)
