@@ -92,7 +92,7 @@ void updateLedStrip()
 }
 
 void showAnimation() {
-    if (blinkAnimation == LEDSTRIP_ANIMATION_DEFAULT) showDefaultLedstrip();
+    if (blinkAnimation == LEDSTRIP_ANIMATION_DEFAULTRAINBOW) showDefaultLedstrip();
     else if (blinkAnimation == LEDSTRIP_ANIMATION_BETTERRAINBOW) showBetterRainbow();
     else if (blinkAnimation == LEDSTRIP_ANIMATION_SPEEDSYNCANIMATION) showSpeedSyncAnimation();
     else showDefaultLedstrip();

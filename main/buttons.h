@@ -143,7 +143,7 @@ public:
         if(!pressed)return;
 
 #ifdef FEATURE_LEDSTRIP
-        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULT){ //transition from off to left
+        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULTRAINBOW){ //transition from off to left
             blinkAnimation = LEDSTRIP_ANIMATION_BLINKLEFT;
         }
         else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKRIGHT){ // transition to warning
@@ -158,7 +158,7 @@ public:
     static void blinkRightButton(bool pressed){
         if(!pressed)return;
 #ifdef FEATURE_LEDSTRIP
-        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULT){ //transition from off to right
+        if(blinkAnimation == LEDSTRIP_ANIMATION_DEFAULTRAINBOW){ //transition from off to right
             blinkAnimation = LEDSTRIP_ANIMATION_BLINKRIGHT;
         }
         else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKLEFT){ // transition to warning
