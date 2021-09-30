@@ -1,5 +1,4 @@
 #pragma once
-
 // local includes
 #include "menudisplay.h"
 #include "menuitem.h"
