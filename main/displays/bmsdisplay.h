@@ -1,7 +1,7 @@
 #pragma once
 
-// Arduino includes
-#include <Arduino.h>
+// 3rdparty lib includes
+#include <fmt/core.h>
 
 // local includes
 #include "display.h"
@@ -95,11 +95,11 @@ void BmsDisplay::redraw()
 
     if (bluetoothSerial.hasClient())
     {
-        m_voltageLabel.redraw(std::to_string(bms::voltage) + 'V');
-        m_capacityLabel.redraw(std::to_string(int(bms::capacity)) + "mAh");
-        m_socLabel.redraw(std::to_string(bms::soc) + '%');
-        m_powerLabel.redraw(std::to_string(bms::power) + 'W');
-        m_currentLabel.redraw(std::to_string(bms::current) + 'A');
+        m_voltageLabel.redraw(fmt::format("{:.02f}V", bms::voltage));
+        m_capacityLabel.redraw(fmt::format("{:.02f} mAh", bms::capacity));
+        m_socLabel.redraw(fmt::format("{:.02f}%", bms::soc));
+        m_powerLabel.redraw(fmt::format("{:.02f}W", bms::power));
+        m_currentLabel.redraw(fmt::format("{:.02f}A", bms::current));
     }
     else
     {
@@ -110,18 +110,18 @@ void BmsDisplay::redraw()
         m_currentLabel.clear();
     }
 
-    m_speedLabel.redraw(std::to_string(avgSpeedKmh) + "kmh");
+    m_speedLabel.redraw(fmt::format("{:.02f}kmh", avgSpeedKmh));
 
     if (bluetoothSerial.hasClient())
-        m_powerPerSpeedLabel.redraw(std::to_string(avgSpeedKmh < 1 ? 0 : bms::power / avgSpeedKmh) + "W/kmh");
+        m_powerPerSpeedLabel.redraw(fmt::format("{:.02f}W/kmh", avgSpeedKmh < 1 ? 0 : bms::power / avgSpeedKmh));
     else
         m_powerPerSpeedLabel.clear();
 
     for (int i = 0; i < 12; i++)
-        m_battLabels[i].redraw(std::to_string(bms::batt[i]));
+        m_battLabels[i].redraw(fmt::format("{:.02f}", bms::batt[i]));
 
     if (bluetoothSerial.hasClient())
-        m_cycleLabel.redraw(std::to_string(bms::cycle) + "AH");
+        m_cycleLabel.redraw(fmt::format("{:.02f}AH", bms::cycle));
     else
         m_cycleLabel.clear();
 }
