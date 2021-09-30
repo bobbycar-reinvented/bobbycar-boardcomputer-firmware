@@ -39,8 +39,10 @@ void updateLedStrip()
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
             #ifdef LEDSTRIP_WRONG_DIRECTION
-                if(cpputils::is_in(blinkAnimation, 1, 2)){
-                    blinkAnimation = 3 - blinkAnimation;
+                if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKLEFT){
+                    blinkAnimation = LEDSTRIP_ANIMATION_BLINKRIGHT;
+                } else if(blinkAnimation == LEDSTRIP_ANIMATION_BLINKRIGHT){
+                    blinkAnimation = LEDSTRIP_ANIMATION_BLINKLEFT;
                 }
             #endif
 
