@@ -85,6 +85,8 @@ set(headers
     displays/bmsdisplay.h
     displays/calibratedisplay.h
     displays/dpad5wiredebugdisplay.h
+    displays/dpad5wire2outdebugdisplay.h
+    displays/dpad6wiredebugdisplay.h
     displays/gametrakcalibratedisplay.h
     displays/garagedisplay.h
     displays/lockscreen.h
@@ -133,6 +135,8 @@ set(headers
     dpad.h
     dpad3wire.h
     dpad5wire.h
+    dpad5wire_2out.h
+    dpad6wire.h
     feedbackparser.h
     globals.h
     macros_bobbycar.h

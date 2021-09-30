@@ -154,7 +154,7 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
     .gasMax = DEFAULT_GASMAX,
     .bremsMin = DEFAULT_BREMSMIN,
     .bremsMax = DEFAULT_BREMSMAX,
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
     .dpadDebounce = 25,
 #endif
 #ifdef FEATURE_GAMETRAK
