@@ -93,7 +93,7 @@ struct Settings
     struct BoardcomputerHardware {
         int16_t sampleCount;
         int16_t gasMin, gasMax, bremsMin, bremsMax;
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
         uint8_t dpadDebounce;
 #endif
 #ifdef FEATURE_GAMETRAK

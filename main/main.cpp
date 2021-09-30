@@ -85,6 +85,9 @@ using namespace std::chrono_literals;
 #ifdef FEATURE_DPAD_5WIRESW_2OUT
 #include "displays/dpad5wire2outdebugdisplay.h"
 #endif
+#ifdef FEATURE_DPAD_6WIRESW
+#include "displays/dpad6wiredebugdisplay.h"
+#endif
 #include "displays/gameoflifedisplay.h"
 #ifdef FEATURE_GARAGE
 #include "displays/garagedisplay.h"
@@ -113,6 +116,9 @@ using namespace std::chrono_literals;
 #endif
 #ifdef FEATURE_DPAD_5WIRESW_2OUT
 #include "dpad5wire_2out.h"
+#endif
+#ifdef FEATURE_DPAD_6WIRESW
+#include "dpad6wire.h"
 #endif
 #ifdef FEATURE_ROTARY
 #include "rotary.h"
@@ -236,6 +242,11 @@ extern "C" void app_main()
     dpad5wire_2out::init();
 #endif
 
+#ifdef FEATURE_DPAD_6WIRESW
+    bootLabel.redraw("dpad6wire");
+    dpad6wire::init();
+#endif
+
 #ifdef FEATURE_ROTARY
     bootLabel.redraw("rotary");
     initRotary();
@@ -339,6 +350,8 @@ extern "C" void app_main()
     switchScreen<DPad5WireDebugDisplay>();
 #elif defined(FEATURE_DPAD_5WIRESW_2OUT) && defined(DPAD_5WIRESW_DEBUG)
     switchScreen<DPad5Wire2OutDebugDisplay>();
+#elif defined(FEATURE_DPAD_6WIRESW) && defined(DPAD_6WIRESW_DEBUG)
+    switchScreen<DPad6WireDebugDisplay>();
 #else
 
     if (!gas || !brems || *gas > 200.f || *brems > 200.f)
@@ -373,6 +386,9 @@ extern "C" void app_main()
 #endif
 #ifdef FEATURE_DPAD_5WIRESW_2OUT
         dpad5wire_2out::update();
+#endif
+#ifdef FEATURE_DPAD_6WIRESW
+        dpad6wire::update();
 #endif
 
         if (!lastPotiRead || now - *lastPotiRead >= 1000ms/settings.boardcomputerHardware.timersSettings.potiReadRate)
