@@ -77,6 +77,7 @@ void updateLedStrip()
         }
     }
 
+    FastLED.setMaxPowerInVoltsAndMilliamps(5,settings.ledstrip.deziampere * 100);
     FastLED.show();
 }
 

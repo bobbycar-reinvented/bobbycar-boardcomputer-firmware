@@ -9,6 +9,10 @@
 // local includes
 #include "settingsutils.h"
 
+#ifdef FEATURE_LEDSTRIP
+#include "ledstrip.h"
+#endif
+
 namespace {
 
 int rotated{};
@@ -132,6 +136,57 @@ public:
             return;
 
         switchProfile(index);
+    }
+
+    static void blinkLeftButton(bool pressed){
+        if(!pressed)return;
+
+#ifdef FEATURE_LEDSTRIP
+
+#ifdef LEDSTRIP_WRONG_DIRECTION
+        const auto target_blinkAnimation = 1;
+#else
+        const auto target_blinkAnimation = 2;
+#endif
+        if(blinkAnimation == 0){ //transition from off to left
+            blinkAnimation = target_blinkAnimation;
+        }
+        else if(blinkAnimation == 3 - target_blinkAnimation){ // transition to warning
+            blinkAnimation = 3;
+        }
+        else{ // transition to off
+            blinkAnimation = 0;
+        }
+#endif
+    }
+
+    static void blinkRightButton(bool pressed){
+        if(!pressed)return;
+#ifdef FEATURE_LEDSTRIP
+
+        #ifdef LEDSTRIP_WRONG_DIRECTION
+        const auto target_blinkAnimation = 2;
+#else
+        const auto target_blinkAnimation = 1;
+#endif
+        if(blinkAnimation == 0){ //transition from off to left
+            blinkAnimation = target_blinkAnimation;
+        }
+        else if(blinkAnimation == 3 - target_blinkAnimation){ // transition to warning
+            blinkAnimation = 3;
+        }
+        else{ // transition to off
+            blinkAnimation = 0;
+        }
+#endif
+    }
+
+    static void quickActionButtonDown(bool pressed){
+
+    }
+
+    static void quickActionButtonUp(bool pressed){
+
     }
 };
 }

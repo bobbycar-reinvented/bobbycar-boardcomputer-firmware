@@ -68,6 +68,14 @@ using BigOffsetChangeScreen = makeComponent<
     SwitchScreenAction<LedstripMenu>
 >;
 
+using DeziampereChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_LEDSTRIP_MILLIAMP>,
+    DeziampereAccessor,
+    BackActionInterface<SwitchScreenAction<LedstripMenu>>,
+    SwitchScreenAction<LedstripMenu>
+>;
+
 class LedstripMenu :
     public MenuDisplay,
     public StaticText<TEXT_LEDSTRIP>,
@@ -83,6 +91,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CENTEROFFSET, CenterOffsetAccessor>,     SwitchScreenAction<CenterOffsetChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMALLOFFSET, SmallOffsetAccessor>,       SwitchScreenAction<SmallOffsetChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BIGOFFSET, BigOffsetAccessor>,           SwitchScreenAction<BigOffsetChangeScreen>>>();
+        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSTRIP_MILLIAMP, DeziampereAccessor>,  SwitchScreenAction<DeziampereChangeScreen>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                            SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };

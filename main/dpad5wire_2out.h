@@ -227,24 +227,28 @@ void update()
     if (lastState.blink_left != newState.blink_left && now - debounceBlinkLeft > dpadDebounce)
     {
         lastState.blink_left = newState.blink_left;
+        InputDispatcher::blinkLeftButton(newState.blink_left);
         debounceBlinkLeft = now;
     }
 
     if (lastState.blink_right != newState.blink_right && now - debounceBlinkRight > dpadDebounce)
     {
         lastState.blink_right = newState.blink_right;
+        InputDispatcher::blinkRightButton(newState.blink_right);
         debounceBlinkRight = now;
     }
 
     if (lastState.quickaction_down != newState.quickaction_down && now - debounceQuickactionDown > dpadDebounce)
     {
         lastState.quickaction_down = newState.quickaction_down;
+        InputDispatcher::quickActionButtonDown(newState.quickaction_down);
         debounceQuickactionDown = now;
     }
 
     if (lastState.quickaction_up != newState.quickaction_up && now - debounceQuickactionUp > dpadDebounce)
     {
         lastState.quickaction_up = newState.quickaction_up;
+        InputDispatcher::quickActionButtonUp(newState.quickaction_up);
         debounceQuickactionUp = now;
     }
 }
