@@ -1,5 +1,4 @@
 #pragma once
-#define FEATURE_LEDSTRIP
 #ifdef FEATURE_LEDSTRIP
 // 3rdparty lib includes
 #include <FastLED.h>
@@ -142,10 +141,50 @@ void showBetterRainbow() {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
 }
 
+void fill_rainbow_invert_at( struct CRGB * pFirstLED, int numToFill, int invertAtLed,
+                  uint8_t initialhue,
+                  float deltahue )
+{
+    float huecalc = initialhue;
+    CHSV hsv;
+    hsv.hue = initialhue;
+    hsv.val = 255;
+    hsv.sat = 240;
+    for( int i = 0; i < numToFill; i++) {
+        hsv.hue = huecalc;
+        pFirstLED[i] = hsv;
+        if(i>invertAtLed){
+            huecalc -= deltahue;
+        }else{
+            huecalc += deltahue;
+        }
+    }
+}
+
 void showSpeedSyncAnimation() {
     if (settings.ledstrip.enableLedAnimation)
     {
-        // Code that shows static animation relative to the ground
+#ifdef LEDS_PER_METER
+        const float leds_per_meter = LEDS_PER_METER;
+#else
+        const float leds_per_meter = 144;
+#endif
+
+        static auto last_interval = espchrono::millis_clock::now();
+        auto difference_ms = espchrono::ago(last_interval).count();
+
+        static float hue_result = 0;
+
+        const float hue_per_led = .1;
+        const float meter_per_second = avgSpeedKmh / 3.6;
+        const float leds_per_second = meter_per_second * leds_per_meter;
+        const float hue_per_second = leds_per_second * hue_per_led;
+
+        hue_result += hue_per_second * difference_ms / 1000.f;
+
+        fill_rainbow_invert_at(&*std::begin(leds), leds.size(),leds.size()/2, hue_result,-hue_per_led);
+
+        last_interval = espchrono::millis_clock::now();
     }
     else
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
