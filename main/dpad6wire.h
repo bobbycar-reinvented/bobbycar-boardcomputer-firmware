@@ -1,5 +1,4 @@
 #pragma once
-#define FEATURE_DPAD_6WIRESW
 // system includes
 #include <array>
 
