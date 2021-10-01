@@ -1,4 +1,5 @@
 #pragma once
+#define FEATURE_LEDSTRIP
 #ifdef FEATURE_LEDSTRIP
 // 3rdparty lib includes
 #include <FastLED.h>
@@ -32,37 +33,43 @@ void initLedStrip()
 void updateLedStrip()
 {
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }
+    static bool have_disabled_beeper = false;
 
     if (cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH))
     {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
-
         if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms)
         {
             if (settings.ledstrip.enableBeepWhenBlink)
             {
-            for (Controller &controller : controllers)
-                controller.command.buzzer.freq = 3;
+                for (Controller &controller : controllers)
+                    controller.command.buzzer.freq = 3;
             }
             auto color = CRGB{255, 255, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
-#ifndef LEDSTRIP_WRONG_DIRECTION
-            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT)
+            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && !settings.ledstrip.enableFullBlink)
+            {
                 std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
-            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT)
+            }
+            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && settings.ledstrip.enableFullBlink)
+            {
+                std::fill(std::begin(leds), center, color);
+            }
+            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && !settings.ledstrip.enableFullBlink)
+            {
                 std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
-#else
-            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT)
-                std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
-            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT)
-                std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
-#endif
+            }
+            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && settings.ledstrip.enableFullBlink)
+            {
+                std::fill(center, std::end(leds), color);
+            }
+
         } else {
             if (settings.ledstrip.enableBeepWhenBlink)
             {
-            for (Controller &controller : controllers)
-                controller.command.buzzer.freq = 0;
+                for (Controller &controller : controllers)
+                    controller.command.buzzer.freq = 0;
             }
         }
     }
@@ -86,8 +93,15 @@ void updateLedStrip()
                 const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
                 std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
-                std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
-                std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
+                if (settings.ledstrip.enableFullBlink)
+                {
+                    std::fill(std::begin(leds), std::end(leds), color);
+                }
+                else
+                {
+                    std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
+                    std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
+                }
             }
             else
             {
@@ -99,6 +113,14 @@ void updateLedStrip()
             showAnimation();
         }
     }
+
+    if (have_disabled_beeper == false && (!(cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) || !settings.ledstrip.enableBeepWhenBlink))
+    {
+        for (Controller &controller : controllers)
+            controller.command.buzzer.freq = 0;
+        have_disabled_beeper = true;
+    }
+    else if ((cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) && settings.ledstrip.enableBeepWhenBlink) have_disabled_beeper = false;
 
     FastLED.setMaxPowerInVoltsAndMilliamps(5,settings.ledstrip.deziampere * 100);
     FastLED.show();

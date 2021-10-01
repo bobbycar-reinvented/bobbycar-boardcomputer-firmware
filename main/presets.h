@@ -234,10 +234,11 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .deziampere = 30,
     .enableBeepWhenBlink = false,
 #ifdef LEDSTRIP_ANIMATION_DEFAULT
-    .animationType = LEDSTRIP_ANIMATION_DEFAULT
+    .animationType = LEDSTRIP_ANIMATION_DEFAULT,
 #else
-    .animationType = LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW
+    .animationType = LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW,
 #endif
+    .enableFullBlink = false
 };
 #endif
 

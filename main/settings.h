@@ -163,6 +163,7 @@ struct Settings
         int16_t deziampere;
         bool enableBeepWhenBlink;
         int16_t animationType;
+        bool enableFullBlink;
     } ledstrip;
 #endif
 
@@ -264,6 +265,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("deziampere", ledstrip.deziampere);
     callable("beeppwhenblink", ledstrip.enableBeepWhenBlink);
 //    callable("animationType", ledstrip.animationType);
+    callable("fullblink", ledstrip.enableFullBlink);
 #endif
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
