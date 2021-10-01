@@ -249,6 +249,8 @@ constexpr char TEXT_CENTEROFFSET[] = "Center Offset";
 constexpr char TEXT_SMALLOFFSET[] = "Small Offset";
 constexpr char TEXT_BIGOFFSET[] = "Big Offset";
 constexpr char TEXT_LEDSTRIP_MILLIAMP[] = "Ledstrip 0.1A";
+constexpr char TEXT_BLINKBEEP[] = "Blink Beep";
+constexpr char TEXT_FULLBLINK[] = "Full blink";
 //constexpr char TEXT_BACK[] = "Back";
 
 //LedstripSelectAnimationMenu

@@ -18,13 +18,29 @@ public:
 class LedstripAnimationBlinkLeftAction : public virtual ActionInterface
 {
 public:
-    void triggered() override { blinkAnimation = LEDSTRIP_OVERWRITE_BLINKLEFT; }
+#ifndef LEDSTRIP_WRONG_DIRECTION
+    void triggered() override {
+        blinkAnimation = LEDSTRIP_OVERWRITE_BLINKLEFT;
+    }
+#else
+    void triggered() override {
+        blinkAnimation = LEDSTRIP_OVERWRITE_BLINKRIGHT;
+    }
+#endif
 };
 
 class LedstripAnimationBlinkRightAction : public virtual ActionInterface
 {
 public:
-    void triggered() override { blinkAnimation = LEDSTRIP_OVERWRITE_BLINKRIGHT; }
+#ifndef LEDSTRIP_WRONG_DIRECTION
+    void triggered() override {
+        blinkAnimation = LEDSTRIP_OVERWRITE_BLINKRIGHT;
+    }
+#else
+    void triggered() override {
+        blinkAnimation = LEDSTRIP_OVERWRITE_BLINKLEFT;
+    }
+#endif
 };
 
 class LedstripAnimationBlinkBothAction : public virtual ActionInterface

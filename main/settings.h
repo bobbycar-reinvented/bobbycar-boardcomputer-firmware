@@ -93,7 +93,7 @@ struct Settings
     struct BoardcomputerHardware {
         int16_t sampleCount;
         int16_t gasMin, gasMax, bremsMin, bremsMax;
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT)
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
         uint8_t dpadDebounce;
 #endif
 #ifdef FEATURE_GAMETRAK
@@ -161,7 +161,9 @@ struct Settings
         int16_t smallOffset;
         int16_t bigOffset;
         int16_t deziampere;
+        bool enableBeepWhenBlink;
         int16_t animationType;
+        bool enableFullBlink;
     } ledstrip;
 #endif
 
@@ -260,8 +262,10 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("centerOffset", ledstrip.centerOffset);
     callable("smallOffset", ledstrip.smallOffset);
     callable("bigOffset", ledstrip.bigOffset);
-    //callable("deziampere", ledstrip.deziampere);
-    callable("animationType", ledstrip.animationType);
+    callable("deziampere", ledstrip.deziampere);
+    callable("beeppwhenblink", ledstrip.enableBeepWhenBlink);
+//    callable("animationType", ledstrip.animationType);
+    callable("fullblink", ledstrip.enableFullBlink);
 #endif
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
