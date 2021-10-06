@@ -106,6 +106,7 @@ set(headers
     icons/lock.h
     icons/logo.h
     icons/modes.h
+    icons/neopixel.h
     icons/poweroff.h
     icons/presets.h
     icons/reboot.h

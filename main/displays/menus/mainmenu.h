@@ -20,6 +20,9 @@
 #ifdef FEATURE_OTA
 #include "icons/update.h"
 #endif
+#ifdef FEATURE_LEDSTRIP
+#include "icons/neopixel.h"
+#endif
 #include "icons/poweroff.h"
 #include "icons/reboot.h"
 
@@ -57,7 +60,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       SwitchScreenAction<StatusDisplay>, StaticMenuItemIcon<&espgui::icons::back>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,   SwitchScreenAction<SelectModeMenu>, StaticMenuItemIcon<&icons::modes>>>();
 #ifdef FEATURE_LEDSTRIP
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     SwitchScreenAction<LedstripMenu>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     SwitchScreenAction<LedstripMenu>,   StaticMenuItemIcon<&icons::neopixel>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESETTINGS>, ModeSettingsAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&icons::presets>>>();
