@@ -166,12 +166,9 @@ struct Settings
         bool enableStVO;
         int16_t stvoFrontOffset;
         int16_t stvoFrontLength;
-<<<<<<< HEAD
-=======
         bool stvoFrontEnable;
         int16_t animationMultiplier;
         uint8_t brightness;
->>>>>>> 3dff172 (Added led brightness and animation speed)
     } ledstrip;
 #endif
 
