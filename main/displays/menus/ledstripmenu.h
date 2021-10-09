@@ -68,6 +68,38 @@ using DeziampereChangeScreen = makeComponent<
     SwitchScreenAction<LedstripMenu>
 >;
 
+using StVOOffsetChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_STVO_FRONTOFFSET>,
+    LedsStVOFrontOffsetAccessor,
+    BackActionInterface<SwitchScreenAction<LedstripMenu>>,
+    SwitchScreenAction<LedstripMenu>
+>;
+
+using StVOLengthChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_STVO_FRONTLENGTH>,
+    LedsStVOFrontLengthAccessor,
+    BackActionInterface<SwitchScreenAction<LedstripMenu>>,
+    SwitchScreenAction<LedstripMenu>
+>;
+
+using animationMultiplierChangeScreen = makeComponent<
+    ChangeValueDisplay<int16_t>,
+    StaticText<TEXT_ANIMATION_MULTIPLIER>,
+    AnimationMultiplierAccessor,
+    BackActionInterface<SwitchScreenAction<LedstripMenu>>,
+    SwitchScreenAction<LedstripMenu>
+>;
+
+using ledstripBrightnessChangeScreen = makeComponent<
+    ChangeValueDisplay<uint8_t>,
+    StaticText<TEXT_LEDSTRIP_BRIGHTNESS>,
+    LedstripBrightnessAccessor,
+    BackActionInterface<SwitchScreenAction<LedstripMenu>>,
+    SwitchScreenAction<LedstripMenu>
+>;
+
 class LedstripMenu :
     public MenuDisplay,
     public StaticText<TEXT_LEDSTRIP>,
@@ -80,12 +112,19 @@ public:
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BRAKELIGHTS>,  ToggleBoolAction, CheckboxIcon,    EnableBrakeLightsAccessor>>();
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLINKBEEP>, ToggleBoolAction, CheckboxIcon,       EnableBeepWhenBlinkAccessor>>();
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FULLBLINK>, ToggleBoolAction, CheckboxIcon,       EnableFullBlinkAccessor>>();
+
+                    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_STVO>, ToggleBoolAction, CheckboxIcon,   EnableLedstripStVOAccessor>>();
+                    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTOFFSET, LedsStVOFrontOffsetAccessor>,    SwitchScreenAction<StVOOffsetChangeScreen>>>();
+                    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTLENGTH, LedsStVOFrontLengthAccessor>,    SwitchScreenAction<StVOLengthChangeScreen>>>();
+
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTANIMATION>,                                 SwitchScreenAction<LedstripSelectAnimationMenu>>>();
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLINKANIMATION>,                                  SwitchScreenAction<LedstripSelectBlinkMenu>>>();
+                    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_MULTIPLIER>,                            SwitchScreenAction<animationMultiplierChangeScreen>>>();
  if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSCOUNT, LedsCountAccessor>,           SwitchScreenAction<LedsCountChangeScreen>>>(); }
  if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CENTEROFFSET, CenterOffsetAccessor>,     SwitchScreenAction<CenterOffsetChangeScreen>>>(); }
  if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMALLOFFSET, SmallOffsetAccessor>,       SwitchScreenAction<SmallOffsetChangeScreen>>>(); }
  if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BIGOFFSET, BigOffsetAccessor>,           SwitchScreenAction<BigOffsetChangeScreen>>>(); }
+ if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_BRIGHTNESS>,                             SwitchScreenAction<ledstripBrightnessChangeScreen>>>(); }
  if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSTRIP_MILLIAMP, DeziampereAccessor>,  SwitchScreenAction<DeziampereChangeScreen>>>(); }
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                            SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }

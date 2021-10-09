@@ -238,7 +238,13 @@ constexpr Settings::Ledstrip defaultLedstrip {
 #else
     .animationType = LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW,
 #endif
-    .enableFullBlink = false
+    .enableFullBlink = false,
+    .enableStVO = false,
+    .stvoFrontOffset = 0,
+    .stvoFrontLength = 10,
+    .stvoFrontEnable = false,
+    .animationMultiplier = 10,
+    .brightness = 255
 };
 #endif
 
