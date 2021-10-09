@@ -254,6 +254,9 @@ constexpr char TEXT_FULLBLINK[] = "Full blink";
 constexpr char TEXT_LEDSTRIP_STVO[] = "Enable StVO";
 constexpr char TEXT_STVO_FRONTOFFSET[] = "StVO Front Offset";
 constexpr char TEXT_STVO_FRONTLENGTH[] = "StVO Front Length";
+constexpr char TEXT_STVO_ENABLEFRONTLIGHT[] = "StVO Front Enable";
+constexpr char TEXT_ANIMATION_MULTIPLIER[] = "Animation Multiplier";
+constexpr char TEXT_LEDSTRIP_BRIGHTNESS[] = "Ledstrip Brightness";
 //constexpr char TEXT_BACK[] = "Back";
 
 //LedstripSelectAnimationMenu

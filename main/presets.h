@@ -241,7 +241,10 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .enableFullBlink = false,
     .enableStVO = false,
     .stvoFrontOffset = 0,
-    .stvoFrontLength = 10
+    .stvoFrontLength = 10,
+    .stvoFrontEnable = false,
+    .animationMultiplier = 10,
+    .brightness = 255
 };
 #endif
 

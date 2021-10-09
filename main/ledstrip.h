@@ -126,17 +126,26 @@ void updateLedStrip()
     {
        const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
-       std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, CRGB{0, 0, 0});
-       std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, CRGB{0, 0, 0});
+       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKLEFT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms) || settings.ledstrip.enableFullBlink) // Condition for right
+       {
+           std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, CRGB{0, 0, 0});
+           std::fill(center - settings.ledstrip.bigOffset - 1U, center - settings.ledstrip.smallOffset - 1U, CRGB{255, 0, 0}); // Right
+       }
+       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKRIGHT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms) || settings.ledstrip.enableFullBlink) // Condition for left
+       {
+           std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, CRGB{0, 0, 0});
+           std::fill(center + settings.ledstrip.smallOffset + 1U, center + settings.ledstrip.bigOffset + 1U, CRGB{255, 0, 0}); // Left
+       }
 
-       std::fill(center - settings.ledstrip.bigOffset - 2U, center - settings.ledstrip.smallOffset - 2U, CRGB{255, 0, 0});
-       std::fill(center + settings.ledstrip.smallOffset + 2U, center + settings.ledstrip.bigOffset + 2U, CRGB{255, 0, 0});
-
+       if (settings.ledstrip.stvoFrontEnable)
+       {
        std::fill(std::begin(leds) + settings.ledstrip.stvoFrontOffset, std::begin(leds) + settings.ledstrip.stvoFrontOffset + settings.ledstrip.stvoFrontLength, CRGB{255, 255, 255});
        std::fill(std::end(leds) - settings.ledstrip.stvoFrontOffset - settings.ledstrip.stvoFrontLength, std::end(leds) - settings.ledstrip.stvoFrontOffset, CRGB{255, 255, 255});
+       }
     }
 
     FastLED.setMaxPowerInVoltsAndMilliamps(5,settings.ledstrip.deziampere * 100);
+    FastLED.setBrightness(settings.ledstrip.brightness);
     FastLED.show();
 }
 
@@ -190,7 +199,7 @@ void showSpeedSyncAnimation() {
 
         static float hue_result = 0;
 
-        const float hue_per_led = .1;
+        const float hue_per_led = 1. / std::max(uint8_t(1), uint8_t(settings.ledstrip.animationMultiplier));
         const float meter_per_second = avgSpeedKmh / 3.6;
         const float leds_per_second = meter_per_second * leds_per_meter;
         const float hue_per_second = leds_per_second * hue_per_led;
