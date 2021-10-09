@@ -41,6 +41,12 @@ float avgSpeed, avgSpeedKmh, sumCurrent;
 
 char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
 
+#if defined(SIMPLIFIED_TRIGGER_TRIGGERONPRESET)
+bool simplified = true;
+#else
+bool simplified = false;
+#endif
+
 Settings settings;
 StringSettings stringSettings;
 SettingsPersister settingsPersister;

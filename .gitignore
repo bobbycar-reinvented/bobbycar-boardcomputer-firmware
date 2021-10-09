@@ -7,5 +7,6 @@ desktop.ini
 /config.cmake
 /sdkconfig
 /sdkconfig.old*
+/ignore
 /.idea
 /.ccache

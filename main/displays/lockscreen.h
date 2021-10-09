@@ -12,6 +12,10 @@
 #include "modes/ignoreinputmode.h"
 #include "buttons.h"
 
+#ifdef LOCKSCREEN_PLUGIN
+#include "ledstrip.h"
+#endif
+
 namespace {
 class MainMenu;
 }
@@ -118,6 +122,10 @@ void Lockscreen::redraw()
             if (m_numbers == settings.lockscreen.pin)
             {
                 switchScreen<MainMenu>();
+#ifdef LOCKSCREEN_PLUGIN
+#pragma message "Activating Lockscreen Plugin"
+#include LOCKSCREEN_PLUGIN
+#endif
                 return;
             }
 
