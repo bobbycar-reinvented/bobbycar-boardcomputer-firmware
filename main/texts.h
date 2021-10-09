@@ -251,6 +251,9 @@ constexpr char TEXT_BIGOFFSET[] = "Big Offset";
 constexpr char TEXT_LEDSTRIP_MILLIAMP[] = "Ledstrip 0.1A";
 constexpr char TEXT_BLINKBEEP[] = "Blink Beep";
 constexpr char TEXT_FULLBLINK[] = "Full blink";
+constexpr char TEXT_LEDSTRIP_STVO[] = "Enable StVO";
+constexpr char TEXT_STVO_FRONTOFFSET[] = "StVO Front Offset";
+constexpr char TEXT_STVO_FRONTLENGTH[] = "StVO Front Length";
 //constexpr char TEXT_BACK[] = "Back";
 
 //LedstripSelectAnimationMenu

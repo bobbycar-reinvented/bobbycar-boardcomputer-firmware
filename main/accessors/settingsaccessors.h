@@ -160,6 +160,9 @@ struct BigOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &ge
 struct DeziampereAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.deziampere; } };
 struct EnableBeepWhenBlinkAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableBeepWhenBlink; } };
 struct EnableFullBlinkAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableFullBlink; } };
+struct EnableLedstripStVOAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableStVO; } };
+struct LedsStVOFrontOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.stvoFrontOffset; } };
+struct LedsStVOFrontLengthAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.stvoFrontLength; } };
 #endif
 
 struct LockscreenAllowPresetSwitchAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.allowPresetSwitch; } };

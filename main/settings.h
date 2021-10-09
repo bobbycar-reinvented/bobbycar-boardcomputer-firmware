@@ -163,6 +163,9 @@ struct Settings
         bool enableBeepWhenBlink;
         int16_t animationType;
         bool enableFullBlink;
+        bool enableStVO;
+        int16_t stvoFrontOffset;
+        int16_t stvoFrontLength;
     } ledstrip;
 #endif
 
@@ -265,6 +268,9 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("beeppwhenblink", ledstrip.enableBeepWhenBlink);
 //    callable("animationType", ledstrip.animationType);
     callable("fullblink", ledstrip.enableFullBlink);
+    callable("ledstvo", ledstrip.enableStVO);
+    callable("ledstvofoff", ledstrip.stvoFrontOffset);
+    callable("ledstvoflen", ledstrip.stvoFrontLength);
 #endif
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);

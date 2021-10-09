@@ -1,4 +1,5 @@
 #pragma once
+#define FEATURE_LEDSTRIP
 #ifdef FEATURE_LEDSTRIP
 // 3rdparty lib includes
 #include <FastLED.h>
@@ -120,6 +121,20 @@ void updateLedStrip()
         have_disabled_beeper = true;
     }
     else if ((cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) && settings.ledstrip.enableBeepWhenBlink) have_disabled_beeper = false;
+
+    if (simplified || settings.ledstrip.enableStVO)
+    {
+       const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
+
+       std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, CRGB{0, 0, 0});
+       std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, CRGB{0, 0, 0});
+
+       std::fill(center - settings.ledstrip.bigOffset - 2U, center - settings.ledstrip.smallOffset - 2U, CRGB{255, 0, 0});
+       std::fill(center + settings.ledstrip.smallOffset + 2U, center + settings.ledstrip.bigOffset + 2U, CRGB{255, 0, 0});
+
+       std::fill(std::begin(leds) + settings.ledstrip.stvoFrontOffset, std::begin(leds) + settings.ledstrip.stvoFrontOffset + settings.ledstrip.stvoFrontLength, CRGB{255, 255, 255});
+       std::fill(std::end(leds) - settings.ledstrip.stvoFrontOffset - settings.ledstrip.stvoFrontLength, std::end(leds) - settings.ledstrip.stvoFrontOffset, CRGB{255, 255, 255});
+    }
 
     FastLED.setMaxPowerInVoltsAndMilliamps(5,settings.ledstrip.deziampere * 100);
     FastLED.show();
