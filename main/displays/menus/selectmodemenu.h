@@ -47,14 +47,14 @@ class SelectModeMenu :
 public:
     SelectModeMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,       MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>>();
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_TEMPOMAT, AvgSpeedAccessor>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,         MultiAction<SetLarsmModeAction, SwitchScreenAction<MainMenu>>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REMOTECONTROL>, MultiAction<SetRemoteControlModeAction, SwitchScreenAction<MainMenu>>>>();
+                      constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,       MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>>();
+   if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_TEMPOMAT, AvgSpeedAccessor>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>>(); }
+                      constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,         MultiAction<SetLarsmModeAction, SwitchScreenAction<MainMenu>>>>();
+   if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REMOTECONTROL>, MultiAction<SetRemoteControlModeAction, SwitchScreenAction<MainMenu>>>>(); }
 #ifdef FEATURE_GAMETRAK
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, SwitchScreenAction<MainMenu>>>>();
+                constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, SwitchScreenAction<MainMenu>>>>();
 #endif
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+                constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 
     void start() override;

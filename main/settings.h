@@ -29,7 +29,6 @@ struct Settings
 #ifdef FEATURE_BMS
     bool autoConnectBms;
 #endif
-
     struct Buzzer {
         bool reverseBeep;
         uint8_t reverseBeepFreq0;

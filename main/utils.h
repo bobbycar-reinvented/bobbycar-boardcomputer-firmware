@@ -238,6 +238,7 @@ bool loadSettings()
 
 bool saveSettings()
 {
+    if (simplified) return true;
     bool result{true};
     if (!settingsPersister.save(settings))
         result = false;

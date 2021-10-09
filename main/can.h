@@ -17,7 +17,13 @@
 #include "globals.h"
 #include "buttons.h"
 
+#ifdef CAN_PLUGIN
+#pragma message "Activating Can Plugin"
+#include CAN_PLUGIN
+#endif
+
 namespace can {
+
 namespace {
 std::optional<int16_t> can_gas, can_brems;
 espchrono::millis_clock::time_point last_can_gas{}, last_can_brems{};
@@ -366,28 +372,40 @@ void sendCanCommands()
         if (back) send(MotorController<true, true>::Command::CtrlMod, back->command.right.ctrlMod);
         break;
     case 3:
-        if (front) send(MotorController<false, false>::Command::IMotMax, front->command.left.iMotMax);
-        if (front) send(MotorController<false, true>::Command::IMotMax, front->command.right.iMotMax);
-        if (back) send(MotorController<true, false>::Command::IMotMax, back->command.left.iMotMax);
-        if (back) send(MotorController<true, true>::Command::IMotMax, back->command.right.iMotMax);
+#if defined(HAS_SIMPLIFIED)
+        SIMPLIFIED_IMOTMAX
+#endif
+            if (front) send(MotorController<false, false>::Command::IMotMax, front->command.left.iMotMax);
+            if (front) send(MotorController<false, true>::Command::IMotMax, front->command.right.iMotMax);
+            if (back) send(MotorController<true, false>::Command::IMotMax, back->command.left.iMotMax);
+            if (back) send(MotorController<true, true>::Command::IMotMax, back->command.right.iMotMax);
         break;
     case 4:
-        if (front) send(MotorController<false, false>::Command::IDcMax, front->command.left.iDcMax);
-        if (front) send(MotorController<false, true>::Command::IDcMax, front->command.right.iDcMax);
-        if (back) send(MotorController<true, false>::Command::IDcMax, back->command.left.iDcMax);
-        if (back) send(MotorController<true, true>::Command::IDcMax, back->command.right.iDcMax);
+#if defined(HAS_SIMPLIFIED)
+        SIMPLIFIED_IDCMAX
+#endif
+            if (front) send(MotorController<false, false>::Command::IDcMax, front->command.left.iDcMax);
+            if (front) send(MotorController<false, true>::Command::IDcMax, front->command.right.iDcMax);
+            if (back) send(MotorController<true, false>::Command::IDcMax, back->command.left.iDcMax);
+            if (back) send(MotorController<true, true>::Command::IDcMax, back->command.right.iDcMax);
         break;
     case 5:
-        if (front) send(MotorController<false, false>::Command::NMotMax, front->command.left.nMotMax);
-        if (front) send(MotorController<false, true>::Command::NMotMax, front->command.right.nMotMax);
-        if (back) send(MotorController<true, false>::Command::NMotMax, back->command.left.nMotMax);
-        if (back) send(MotorController<true, true>::Command::NMotMax, back->command.right.nMotMax);
+#if defined(HAS_SIMPLIFIED)
+        SIMPLIFIED_NMOTMAX
+#endif
+            if (front) send(MotorController<false, false>::Command::NMotMax, front->command.left.nMotMax);
+            if (front) send(MotorController<false, true>::Command::NMotMax, front->command.right.nMotMax);
+            if (back) send(MotorController<true, false>::Command::NMotMax, back->command.left.nMotMax);
+            if (back) send(MotorController<true, true>::Command::NMotMax, back->command.right.nMotMax);
         break;
     case 6:
-        if (front) send(MotorController<false, false>::Command::FieldWeakMax, front->command.left.fieldWeakMax);
-        if (front) send(MotorController<false, true>::Command::FieldWeakMax, front->command.right.fieldWeakMax);
-        if (back) send(MotorController<true, false>::Command::FieldWeakMax, back->command.left.fieldWeakMax);
-        if (back) send(MotorController<true, true>::Command::FieldWeakMax, back->command.right.fieldWeakMax);
+#if defined(HAS_SIMPLIFIED)
+        SIMPLIFIED_FIELDWEAKMAX
+#endif
+            if (front) send(MotorController<false, false>::Command::FieldWeakMax, front->command.left.fieldWeakMax);
+            if (front) send(MotorController<false, true>::Command::FieldWeakMax, front->command.right.fieldWeakMax);
+            if (back) send(MotorController<true, false>::Command::FieldWeakMax, back->command.left.fieldWeakMax);
+            if (back) send(MotorController<true, true>::Command::FieldWeakMax, back->command.right.fieldWeakMax);
         break;
     case 7:
         if (front) send(MotorController<false, false>::Command::PhaseAdvMax, front->command.left.phaseAdvMax);

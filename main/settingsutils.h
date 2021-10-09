@@ -13,6 +13,13 @@ void switchProfile(uint8_t index)
     settings = presets::defaultSettings;
     stringSettings = presets::makeDefaultStringSettings();
 
+#ifdef SIMPLIFIED_TRIGGER_TRIGGERONPRESET
+    if (index == SIMPLIFIED_TRIGGER_TRIGGERONPRESET)
+    {
+        simplified = true;
+    }
+#endif
+
     if (!settingsPersister.openProfile(index))
     {
         ESP_LOGE("BOBBY", "openProfile() failed");

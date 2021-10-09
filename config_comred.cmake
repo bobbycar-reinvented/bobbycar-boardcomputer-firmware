@@ -115,3 +115,8 @@ set(BOBBYCAR_BUILDFLAGS
    -DLEDSTRIP_ANIMATION_DEFAULT=1
    -DLEDS_PER_METER=60
 )
+
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ignore/lockscreen_plugin.cmake")
+    include("${CMAKE_CURRENT_SOURCE_DIR}/ignore/lockscreen_plugin.cmake")
+    message(WARNING "Including lockscreen_plugin")
+endif()
