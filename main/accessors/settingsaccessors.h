@@ -173,6 +173,7 @@ struct BatterySeriesCellsAccessor : public RefAccessorSaveSettings<uint8_t> { ui
 struct BatteryParallelCellsAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.battery.cellsParallel; } };
 struct BatteryWHperKMAccessor : public RefAccessorSaveSettings<uint16_t> { uint16_t &getRef() const override { return settings.battery.watthoursPerKilometer; } };
 
+
 struct LockscreenAllowPresetSwitchAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.allowPresetSwitch; } };
 template<uint8_t index>
 struct LockscreenPinDigitAccessor : public RefAccessorSaveSettings<int8_t> { int8_t &getRef() const override { return settings.lockscreen.pin[index]; } };

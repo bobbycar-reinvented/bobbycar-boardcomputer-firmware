@@ -100,6 +100,14 @@ constexpr char TEXT_BATTERY_TYPE_MH1[] = "MH1 cells";
 constexpr char TEXT_BATTERY_TYPE_VTC5[] = "VTC5 cells";
 constexpr char TEXT_BATTERY_WHKM[] = "Wh per km";
 
+//CalibrateVoltageDisplay
+constexpr char TEXT_VOLTAGECALIBRATION_30V[] = "Calibrate 30.0V";
+constexpr char TEXT_VOLTAGECALIBRATION_50V[] = "Calibrate 50.0V";
+constexpr char TEXT_VOLTAGECALIBRATION_VALUE_30_FRONT[] = "30V Front";
+constexpr char TEXT_VOLTAGECALIBRATION_VALUE_30_BACK[] = "30V Back";
+constexpr char TEXT_VOLTAGECALIBRATION_VALUE_50_FRONT[] = "50V Front";
+constexpr char TEXT_VOLTAGECALIBRATION_VALUE_50_BACK[] = "50V Back";
+
 //SettingsMenu
 //constexpr char TEXT_SETTINGS[] = "Settings";
 constexpr char TEXT_BACKLIGHT[] = "Backlight";

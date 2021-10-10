@@ -176,6 +176,10 @@ struct Settings
         uint8_t cellsParallel;
         uint8_t cellType;
         uint16_t watthoursPerKilometer;
+        int16_t front30VoltCalibration;
+        int16_t back30VoltCalibration;
+        int16_t front50VoltCalibration;
+        int16_t back50VoltCalibration;
     } battery;
 
 #endif
@@ -291,6 +295,10 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("batteryCP", battery.cellsParallel);
     callable("batteryType", battery.cellType);
     callable("whkm", battery.watthoursPerKilometer);
+    callable("batF30VCal", battery.front30VoltCalibration);
+    callable("batB30VCal", battery.back30VoltCalibration);
+    callable("batF50VCal", battery.front50VoltCalibration);
+    callable("batB50VCal", battery.back50VoltCalibration);
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
     callable("lockscreenPin", lockscreen.pin);

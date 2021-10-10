@@ -11,12 +11,39 @@
 #include "actions/switchscreenaction.h"
 #include "battery.h"
 #include "menus/batterymenu.h"
+#include "widgets/label.h"
+#include "globals.h"
 
 using namespace espgui;
 
 namespace  {
     class CalibrateVoltageDisplay;
     class BatteryMenu;
+
+    class Save30VCalibrationAction : public virtual ActionInterface
+    {
+    public:
+        void triggered() override {
+            settings.battery.front30VoltCalibration = controllers.front.feedback.batVoltage;
+            settings.battery.back30VoltCalibration = controllers.back.feedback.batVoltage;
+            saveSettings();
+        }
+    };
+
+    class Save50VCalibrationAction : public virtual ActionInterface
+    {
+    public:
+        void triggered() override {
+            settings.battery.front50VoltCalibration = controllers.front.feedback.batVoltage;
+            settings.battery.back50VoltCalibration = controllers.back.feedback.batVoltage;
+            saveSettings();
+        }
+    };
+
+    class BatteryVoltageCalibrationFront30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Front: {:.2f}V", fixBatVoltage(settings.battery.front30VoltCalibration)); } };
+    class BatteryVoltageCalibrationBack30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Back: {:.2f}V", fixBatVoltage(settings.battery.back30VoltCalibration)); } };
+    class BatteryVoltageCalibrationFront50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Front: {:.2f}V", fixBatVoltage(settings.battery.front50VoltCalibration)); } };
+    class BatteryVoltageCalibrationBack50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Back: {:.2f}V", fixBatVoltage(settings.battery.back50VoltCalibration)); } };
 }
 
 namespace  {
@@ -28,7 +55,17 @@ namespace  {
     public:
         CalibrateVoltageDisplay()
         {
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_30V>,                                                                      Save30VCalibrationAction>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_50V>,                                                                      Save50VCalibrationAction>>();
+
+            constructMenuItem<makeComponent<MenuItem, EmptyText,                                                                                                    DummyAction>>();
+
+            constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationFront30VText,           DisabledColor, DummyAction>>();
+            constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationBack30VText,             DisabledColor, DummyAction>>();
+            constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationFront50VText,           DisabledColor, DummyAction>>();
+            constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationBack50VText,             DisabledColor, DummyAction>>();
+
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                                        SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
         }
     };
 } // Namespace
