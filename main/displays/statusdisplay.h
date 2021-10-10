@@ -16,6 +16,7 @@
 #include "widgets/label.h"
 #include "widgets/progressbar.h"
 #include "icons/alert.h"
+#include "battery.h"
 
 // forward declares
 namespace {
@@ -94,6 +95,8 @@ private:
     Label m_labelBrems{90, 15}; // 60, 15
     ProgressBar m_progressBarBrems{150, 15, 90, 15, 0, 1000};
 
+    Label m_batterypercent{0, 30};
+
     BoardStatus m_frontStatus{42};
     BoardStatus m_backStatus{142};
 
@@ -125,6 +128,8 @@ void StatusDisplay::initScreen()
     m_labelRawBrems.start();
     m_labelBrems.start();
     m_progressBarBrems.start();
+
+    m_batterypercent.start();
 
     m_frontStatus.start();
     m_backStatus.start();
@@ -160,6 +165,8 @@ void StatusDisplay::redraw()
     m_labelRawBrems.redraw(raw_brems ? std::to_string(*raw_brems) : "?");
     m_labelBrems.redraw(brems ? fmt::format("{:.2f}", *brems) : "?");
     m_progressBarBrems.redraw(brems ? *brems : 0);
+
+    m_batterypercent.redraw(getBatteryPercentageString());
 
     m_frontStatus.redraw(controllers.front);
     m_backStatus.redraw(controllers.back);

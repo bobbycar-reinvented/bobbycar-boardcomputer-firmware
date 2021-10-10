@@ -256,7 +256,8 @@ constexpr Settings::LockscreenSettings defaultLockscreen {
 constexpr Settings::Battery defaultBattery {
     .cellsSeries = 12,
     .cellsParallel = 4,
-    .cellType = 0
+    .cellType = 0,
+    .watthoursPerKilometer = 10
 };
 
 constexpr Settings defaultSettings {

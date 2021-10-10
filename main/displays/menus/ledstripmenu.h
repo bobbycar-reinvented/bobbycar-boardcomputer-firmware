@@ -113,9 +113,10 @@ public:
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLINKBEEP>, ToggleBoolAction, CheckboxIcon,       EnableBeepWhenBlinkAccessor>>();
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FULLBLINK>, ToggleBoolAction, CheckboxIcon,       EnableFullBlinkAccessor>>();
 
-                    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_STVO>, ToggleBoolAction, CheckboxIcon,   EnableLedstripStVOAccessor>>();
-                    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTOFFSET, LedsStVOFrontOffsetAccessor>,    SwitchScreenAction<StVOOffsetChangeScreen>>>();
-                    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTLENGTH, LedsStVOFrontLengthAccessor>,    SwitchScreenAction<StVOLengthChangeScreen>>>();
+ if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_STVO>, ToggleBoolAction, CheckboxIcon,   EnableLedstripStVOAccessor>>(); }
+                    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STVO_ENABLEFRONTLIGHT>, ToggleBoolAction, CheckboxIcon,   EnableLedstripStVOFrontlight>>();
+ if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTOFFSET, LedsStVOFrontOffsetAccessor>,    SwitchScreenAction<StVOOffsetChangeScreen>>>(); }
+ if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTLENGTH, LedsStVOFrontLengthAccessor>,    SwitchScreenAction<StVOLengthChangeScreen>>>(); }
 
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTANIMATION>,                                 SwitchScreenAction<LedstripSelectAnimationMenu>>>();
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLINKANIMATION>,                                  SwitchScreenAction<LedstripSelectBlinkMenu>>>();

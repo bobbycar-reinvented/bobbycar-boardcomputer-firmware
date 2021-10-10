@@ -37,6 +37,7 @@ set(headers
     changevaluedisplay_wifi_power_t.h
     cloud.h
     debugcolorhelpers.h
+    displays/calibratevoltagedisplay.h
     displays/gameoflifedisplay.h
     displays/graphdisplay.h
     displays/menus/aboutmenu.h

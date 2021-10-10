@@ -98,6 +98,7 @@ constexpr char TEXT_BATTERY_TYPE_22P[] = "22P cells";
 constexpr char TEXT_BATTERY_TYPE_HG2[] = "HG2 cells";
 constexpr char TEXT_BATTERY_TYPE_MH1[] = "MH1 cells";
 constexpr char TEXT_BATTERY_TYPE_VTC5[] = "VTC5 cells";
+constexpr char TEXT_BATTERY_WHKM[] = "Wh per km";
 
 //SettingsMenu
 //constexpr char TEXT_SETTINGS[] = "Settings";

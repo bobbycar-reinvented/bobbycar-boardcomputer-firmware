@@ -175,6 +175,7 @@ struct Settings
         uint8_t cellsSeries;
         uint8_t cellsParallel;
         uint8_t cellType;
+        uint16_t watthoursPerKilometer;
     } battery;
 
 #endif
@@ -289,6 +290,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("batteryCS", battery.cellsSeries);
     callable("batteryCP", battery.cellsParallel);
     callable("batteryType", battery.cellType);
+    callable("whkm", battery.watthoursPerKilometer);
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
     callable("lockscreenPin", lockscreen.pin);
