@@ -170,6 +170,13 @@ struct Settings
         int16_t animationMultiplier;
         uint8_t brightness;
     } ledstrip;
+
+    struct Battery {
+        uint8_t cellsSeries;
+        uint8_t cellsParallel;
+        uint8_t cellType;
+    } battery;
+
 #endif
 
     struct LockscreenSettings {
@@ -275,9 +282,13 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("ledstvofoff", ledstrip.stvoFrontOffset);
     callable("ledstvoflen", ledstrip.stvoFrontLength);
     callable("ledstvoen", ledstrip.stvoFrontEnable);
-    callable("ledAnimMultiplier", ledstrip.animationMultiplier);
+    callable("ledAnimMul", ledstrip.animationMultiplier);
     callable("ledbrightness", ledstrip.brightness);
 #endif
+
+    callable("batteryCS", battery.cellsSeries);
+    callable("batteryCP", battery.cellsParallel);
+    callable("batteryType", battery.cellType);
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
     callable("lockscreenPin", lockscreen.pin);

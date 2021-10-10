@@ -86,6 +86,18 @@ constexpr char TEXT_UPDATE[] = "Update";
 constexpr char TEXT_POWEROFF[] = "Poweroff";
 constexpr char TEXT_REBOOT[] = "Reboot";
 constexpr char TEXT_DEBUG[] = "Debug";
+constexpr char TEXT_BATTERY[] = "Battery";
+
+//BatteryMenu
+constexpr char TEXT_CELL_SERIES[] = "Cells (Series)";
+constexpr char TEXT_CELL_PARALLEL[] = "Cells (Parallel)";
+constexpr char TEXT_SELECT_CELL_TYPE[] = "Select Cell Type";
+constexpr char TEXT_CELL_TYPE[] = "Cell Type";
+constexpr char TEXT_BATTERY_CALIBRATE[] = "Calibrate Voltages";
+constexpr char TEXT_BATTERY_TYPE_22P[] = "22P cells";
+constexpr char TEXT_BATTERY_TYPE_HG2[] = "HG2 cells";
+constexpr char TEXT_BATTERY_TYPE_MH1[] = "MH1 cells";
+constexpr char TEXT_BATTERY_TYPE_VTC5[] = "VTC5 cells";
 
 //SettingsMenu
 //constexpr char TEXT_SETTINGS[] = "Settings";
