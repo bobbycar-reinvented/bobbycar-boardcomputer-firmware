@@ -100,6 +100,7 @@ constexpr char TEXT_BATTERY_TYPE_MH1[] = "MH1 cells";
 constexpr char TEXT_BATTERY_TYPE_VTC5[] = "VTC5 cells";
 constexpr char TEXT_BATTERY_WHKM[] = "Wh per km";
 constexpr char TEXT_BATTERY_APPLYCALIB[] = "Apply calibration";
+constexpr char TEXT_VOLTAGECALIBRATION_RESET[] = "Reset calibration";
 
 //CalibrateVoltageDisplay
 constexpr char TEXT_VOLTAGECALIBRATION_30V[] = "Calibrate 30.0V";

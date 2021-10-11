@@ -40,10 +40,23 @@ namespace  {
         }
     };
 
+    class ResetCalibrationAction : public virtual ActionInterface
+    {
+    public:
+        void triggered() override {
+            settings.battery.front30VoltCalibration = 3000;
+            settings.battery.back30VoltCalibration = 3000;
+            settings.battery.front50VoltCalibration = 5000;
+            settings.battery.back50VoltCalibration = 5000;
+            saveSettings();
+        }
+    };
+
     class BatteryVoltageCalibrationFront30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Front: {:.2f}V", fixBatVoltage(settings.battery.front30VoltCalibration)); } };
     class BatteryVoltageCalibrationBack30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Back: {:.2f}V", fixBatVoltage(settings.battery.back30VoltCalibration)); } };
     class BatteryVoltageCalibrationFront50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Front: {:.2f}V", fixBatVoltage(settings.battery.front50VoltCalibration)); } };
     class BatteryVoltageCalibrationBack50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Back: {:.2f}V", fixBatVoltage(settings.battery.back50VoltCalibration)); } };
+    class BatteryVoltageCalibratedText : public virtual TextInterface { public: std::string text() const override { if (settings.battery.applyCalibration) return fmt::format("F{:.2f}V B{:.2f}", fixFrontBatVoltage(controllers.front.feedback.batVoltage), fixFrontBatVoltage(controllers.back.feedback.batVoltage)); else return "Not activated"; } };
 }
 
 namespace  {
@@ -55,18 +68,19 @@ namespace  {
     public:
         CalibrateVoltageDisplay()
         {
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_30V>,                                                                      Save30VCalibrationAction>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_50V>,                                                                      Save50VCalibrationAction>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_APPLYCALIB>,                                                                          ToggleBoolAction, CheckboxIcon, BatteryApplyCalibrationAccessor>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                                        SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_30V>,          Save30VCalibrationAction>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_50V>,          Save50VCalibrationAction>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_APPLYCALIB>,              ToggleBoolAction, CheckboxIcon, BatteryApplyCalibrationAccessor>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                            SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 
-            constructMenuItem<makeComponent<MenuItem, EmptyText,                                                                                                    DummyAction>>();
+            constructMenuItem<makeComponent<MenuItem, EmptyText,                                        DummyAction>>();
 
-            constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationFront30VText,           DisabledColor, DummyAction>>();
+            constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationFront30VText,            DisabledColor, DummyAction>>();
             constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationBack30VText,             DisabledColor, DummyAction>>();
-            constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationFront50VText,           DisabledColor, DummyAction>>();
+            constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationFront50VText,            DisabledColor, DummyAction>>();
             constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationBack50VText,             DisabledColor, DummyAction>>();
-
+            constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibratedText,                     DisabledColor, DummyAction>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_RESET>,        ResetCalibrationAction>>();
         }
     };
 } // Namespace
