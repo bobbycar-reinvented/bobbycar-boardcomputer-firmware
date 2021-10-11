@@ -180,6 +180,7 @@ struct Settings
         int16_t back30VoltCalibration;
         int16_t front50VoltCalibration;
         int16_t back50VoltCalibration;
+        bool applyCalibration;
     } battery;
 
 #endif
@@ -299,6 +300,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("batB30VCal", battery.back30VoltCalibration);
     callable("batF50VCal", battery.front50VoltCalibration);
     callable("batB50VCal", battery.back50VoltCalibration);
+    callable("applyBatCal", battery.applyCalibration);
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
     callable("lockscreenPin", lockscreen.pin);

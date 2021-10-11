@@ -64,6 +64,16 @@ float fixBatVoltage(int16_t value)
     return value/100.;
 }
 
+float fixFrontBatVoltage(int16_t value)
+{
+    float frontVoltage = fixBatVoltage(value);
+    // settings.battery.front30VoltCalibration // Front 30.0V
+    // settings.battery.back30VoltCalibration // Back 30.0V
+    // settings.battery.front50VoltCalibration // Front 50.0V
+    // settings.battery.back50VoltCalibration // Back 50.0V
+    return frontVoltage;
+}
+
 float fixBoardTemp(int16_t value)
 {
     return value/10.;

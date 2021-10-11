@@ -172,6 +172,7 @@ struct LedstripBrightnessAccessor : public RefAccessorSaveSettings<uint8_t> { ui
 struct BatterySeriesCellsAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.battery.cellsSeries; } };
 struct BatteryParallelCellsAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.battery.cellsParallel; } };
 struct BatteryWHperKMAccessor : public RefAccessorSaveSettings<uint16_t> { uint16_t &getRef() const override { return settings.battery.watthoursPerKilometer; } };
+struct BatteryApplyCalibrationAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.battery.applyCalibration; } };
 
 
 struct LockscreenAllowPresetSwitchAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.allowPresetSwitch; } };

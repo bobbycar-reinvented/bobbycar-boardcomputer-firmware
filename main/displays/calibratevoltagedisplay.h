@@ -57,6 +57,8 @@ namespace  {
         {
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_30V>,                                                                      Save30VCalibrationAction>>();
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_50V>,                                                                      Save50VCalibrationAction>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_APPLYCALIB>,                                                                          ToggleBoolAction, CheckboxIcon, BatteryApplyCalibrationAccessor>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                                        SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 
             constructMenuItem<makeComponent<MenuItem, EmptyText,                                                                                                    DummyAction>>();
 
@@ -65,7 +67,6 @@ namespace  {
             constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationFront50VText,           DisabledColor, DummyAction>>();
             constructMenuItem<makeComponent<MenuItem, BatteryVoltageCalibrationBack50VText,             DisabledColor, DummyAction>>();
 
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                                        SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
         }
     };
 } // Namespace
