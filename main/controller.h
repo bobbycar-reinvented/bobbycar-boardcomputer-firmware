@@ -52,8 +52,12 @@ struct Controller {
     bool feedbackValid{};
     bobbycar::protocol::serial::Feedback feedback{};
 
+
 #ifdef FEATURE_SERIAL
     FeedbackParser parser{serial, feedbackValid, feedback};
 #endif
+    struct Calibrated {
+        float batVoltage;
+    } calibrated;
 };
 }

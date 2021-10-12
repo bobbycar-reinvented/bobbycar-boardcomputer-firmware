@@ -67,6 +67,7 @@ float fixBatVoltage(int16_t value)
 float fixFrontBatVoltage(int16_t value)
 {
     float frontVoltage = fixBatVoltage(value);
+    if (!settings.battery.applyCalibration) return frontVoltage;
     frontVoltage = ((frontVoltage - fixBatVoltage(settings.battery.front30VoltCalibration)) * (20.f / (fixBatVoltage(settings.battery.front50VoltCalibration) - fixBatVoltage(settings.battery.front30VoltCalibration))) + 30.f);
     return frontVoltage;
 }
@@ -74,6 +75,7 @@ float fixFrontBatVoltage(int16_t value)
 float fixBackBatVoltage(int16_t value)
 {
     float backVoltage = fixBatVoltage(value);
+    if (!settings.battery.applyCalibration) return backVoltage;
     backVoltage = ((backVoltage - fixBatVoltage(settings.battery.back30VoltCalibration)) * (20.f / (fixBatVoltage(settings.battery.back50VoltCalibration) - fixBatVoltage(settings.battery.back30VoltCalibration))) + 30.f);
     return backVoltage;
 }

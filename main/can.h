@@ -22,6 +22,11 @@
 #include CAN_PLUGIN
 #endif
 
+namespace  {
+    float fixFrontBatVoltage(int16_t value);
+    float fixBackBatVoltage(int16_t value);
+}
+
 namespace can {
 
 namespace {
@@ -252,6 +257,7 @@ bool tryParseCanInput()
 
         front.lastCanFeedback = espchrono::millis_clock::now();
         front.feedbackValid = true;
+        front.calibrated.batVoltage = fixFrontBatVoltage(front.feedback.batVoltage);
         return true;
     }
     else
@@ -264,6 +270,7 @@ bool tryParseCanInput()
     {
         back.lastCanFeedback = espchrono::millis_clock::now();
         back.feedbackValid = true;
+        back.calibrated.batVoltage = fixBackBatVoltage(back.feedback.batVoltage);
         return true;
     }
     else
