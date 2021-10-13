@@ -297,14 +297,7 @@ void StatusDisplay::BoardStatus::redraw(const Controller &controller)
 
     if (controller.feedbackValid)
     {
-        if (settings.battery.applyCalibration)
-        {
-            m_labelVoltage.redraw(fmt::format("{:.2f}V", controller.calibrated.batVoltage));
-        }
-        else
-        {
-            m_labelVoltage.redraw(fmt::format("{:.2f}V", fixBatVoltage(controller.feedback.batVoltage)));
-        }
+        m_labelVoltage.redraw(fmt::format("{:.2f}V", controller.getCalibratedVoltage()));
         m_labelTemperature.redraw(fmt::format("{:.2f}C", fixBoardTemp(controller.feedback.boardTemp)));
         m_leftMotor.redraw(controller.feedback.left);
         m_rightMotor.redraw(controller.feedback.right);

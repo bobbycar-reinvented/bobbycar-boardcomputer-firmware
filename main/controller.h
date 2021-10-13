@@ -56,8 +56,26 @@ struct Controller {
 #ifdef FEATURE_SERIAL
     FeedbackParser parser{serial, feedbackValid, feedback};
 #endif
-    struct Calibrated {
-        float batVoltage;
-    } calibrated;
+
+    float getCalibratedVoltage() const
+    {
+        return 0.f;
+    }
+
+//    float fixFrontBatVoltage(int16_t value)
+//    {
+//        float frontVoltage = value;
+//        if (settings.battery.applyCalibration)
+//            frontVoltage = ((frontVoltage - float(settings.battery.front30VoltCalibration)) * (20.f / (float(settings.battery.front50VoltCalibration) - float(settings.battery.front30VoltCalibration))) + 30.f);
+//        return frontVoltage;
+//    }
+
+//    float fixBackBatVoltage(int16_t value)
+//    {
+//        float backVoltage = value;
+//        if (settings.battery.applyCalibration)
+//            backVoltage = ((backVoltage - float(settings.battery.back30VoltCalibration)) * (20.f / (float(settings.battery.back50VoltCalibration) - float(settings.battery.back30VoltCalibration))) + 30.f);
+//        return backVoltage;
+//    }
 };
 }

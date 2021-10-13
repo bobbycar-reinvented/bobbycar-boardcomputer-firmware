@@ -262,7 +262,7 @@ constexpr Settings::Battery defaultBattery {
     .back30VoltCalibration = 30,
     .front50VoltCalibration = 50,
     .back50VoltCalibration = 50,
-    .applyCalibration = false
+    .applyCalibration = true
 };
 
 constexpr Settings defaultSettings {

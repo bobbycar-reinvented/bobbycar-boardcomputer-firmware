@@ -52,11 +52,11 @@ namespace  {
         }
     };
 
-    class BatteryVoltageCalibrationFront30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Front: {:.2f}V", fixBatVoltage(settings.battery.front30VoltCalibration)); } };
-    class BatteryVoltageCalibrationBack30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Back: {:.2f}V", fixBatVoltage(settings.battery.back30VoltCalibration)); } };
-    class BatteryVoltageCalibrationFront50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Front: {:.2f}V", fixBatVoltage(settings.battery.front50VoltCalibration)); } };
-    class BatteryVoltageCalibrationBack50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Back: {:.2f}V", fixBatVoltage(settings.battery.back50VoltCalibration)); } };
-    class BatteryVoltageCalibratedText : public virtual TextInterface { public: std::string text() const override { if (settings.battery.applyCalibration) return fmt::format("F{:.2f}V B{:.2f}", fixFrontBatVoltage(controllers.front.feedback.batVoltage), fixFrontBatVoltage(controllers.back.feedback.batVoltage)); else return "Not activated"; } };
+    class BatteryVoltageCalibrationFront30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Front: {}", settings.battery.front30VoltCalibration); } };
+    class BatteryVoltageCalibrationBack30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Back: {}", settings.battery.back30VoltCalibration); } };
+    class BatteryVoltageCalibrationFront50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Front: {}", settings.battery.front50VoltCalibration); } };
+    class BatteryVoltageCalibrationBack50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Back: {}", settings.battery.back50VoltCalibration); } };
+    class BatteryVoltageCalibratedText : public virtual TextInterface { public: std::string text() const override { if (settings.battery.applyCalibration) return fmt::format("F{:.2f}V B{:.2f}", controllers.front.getCalibratedVoltage(), controllers.back.getCalibratedVoltage()); else return "Not activated"; } };
 }
 
 namespace  {
