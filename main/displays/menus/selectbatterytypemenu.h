@@ -20,30 +20,13 @@ namespace  {
     class BatteryTypeMenu;
     class BatteryMenu;
 
-    class BatterySelectType22PAction : public virtual ActionInterface
+    template<BatteryCellType T>
+    class BatterySelectTypeAction : public virtual ActionInterface
     {
     public:
-        void triggered() override { settings.battery.cellType = BATTERY_CELLTYPE_22P; saveSettings(); }
+        void triggered() override { settings.battery.cellType = uint8_t(T); saveSettings(); }
     };
-
-    class BatterySelectTypeHG2Action : public virtual ActionInterface
-    {
-    public:
-        void triggered() override { settings.battery.cellType = BATTERY_CELLTYPE_HG2; saveSettings(); }
-    };
-
-    class BatterySelectTypeMH1Action : public virtual ActionInterface
-    {
-    public:
-        void triggered() override { settings.battery.cellType = BATTERY_CELLTYPE_MH1; saveSettings(); }
-    };
-
-    class BatterySelectTypeVTC5Action : public virtual ActionInterface
-    {
-    public:
-        void triggered() override { settings.battery.cellType = BATTERY_CELLTYPE_VTC5; saveSettings(); }
-    };
-}
+} // namespace
 
 namespace  {
     class BatteryTypeMenu :
@@ -55,10 +38,10 @@ namespace  {
         BatteryTypeMenu()
         {
             constructMenuItem<makeComponent<MenuItem, currentBatteryType,                            DisabledColor, DummyAction>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_22P>,             BatterySelectType22PAction>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_HG2>,             BatterySelectTypeHG2Action>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_MH1>,             BatterySelectTypeMH1Action>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_VTC5>,            BatterySelectTypeVTC5Action>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_22P>,             BatterySelectTypeAction<BatteryCellType::_22P>>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_HG2>,             BatterySelectTypeAction<BatteryCellType::HG2>>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_MH1>,             BatterySelectTypeAction<BatteryCellType::MH1>>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_VTC5>,            BatterySelectTypeAction<BatteryCellType::VTC5>>>();
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
         }
     };
