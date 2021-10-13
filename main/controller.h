@@ -29,11 +29,13 @@ struct Controller {
 #ifdef FEATURE_SERIAL
         HardwareSerial &serial,
 #endif
-        bool &enableLeft, bool &enableRight, bool &invertLeft, bool &invertRight) :
+        bool &enableLeft, bool &enableRight, bool &invertLeft, bool &invertRight,
+        int16_t &voltageCalib30V, int16_t &voltageCalib50V) :
 #ifdef FEATURE_SERIAL
         serial{serial},
 #endif
-        enableLeft{enableLeft}, enableRight{enableRight}, invertLeft{invertLeft}, invertRight{invertRight}
+        enableLeft{enableLeft}, enableRight{enableRight}, invertLeft{invertLeft}, invertRight{invertRight},
+        voltageCalib30V{voltageCalib30V}, voltageCalib50V{voltageCalib50V}
     {
     }
 //    Controller(const Controller &) = delete;
@@ -43,6 +45,7 @@ struct Controller {
     std::reference_wrapper<HardwareSerial> serial;
 #endif
     bool &enableLeft, &enableRight, &invertLeft, &invertRight;
+    int16_t &voltageCalib30V, &voltageCalib50V;
 
     bobbycar::protocol::serial::Command command{};
 
@@ -59,23 +62,10 @@ struct Controller {
 
     float getCalibratedVoltage() const
     {
-        return 0.f;
+        float voltage = feedback.batVoltage;
+        //if (settings.battery.applyCalibration)
+            voltage = ((voltage - float(voltageCalib30V)) * (20.f / (float(voltageCalib50V) - float(voltageCalib30V))) + 30.f);
+        return voltage;
     }
-
-//    float fixFrontBatVoltage(int16_t value)
-//    {
-//        float frontVoltage = value;
-//        if (settings.battery.applyCalibration)
-//            frontVoltage = ((frontVoltage - float(settings.battery.front30VoltCalibration)) * (20.f / (float(settings.battery.front50VoltCalibration) - float(settings.battery.front30VoltCalibration))) + 30.f);
-//        return frontVoltage;
-//    }
-
-//    float fixBackBatVoltage(int16_t value)
-//    {
-//        float backVoltage = value;
-//        if (settings.battery.applyCalibration)
-//            backVoltage = ((backVoltage - float(settings.battery.back30VoltCalibration)) * (20.f / (float(settings.battery.back50VoltCalibration) - float(settings.battery.back30VoltCalibration))) + 30.f);
-//        return backVoltage;
-//    }
 };
 }
