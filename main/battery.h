@@ -20,7 +20,7 @@ namespace {
 float mapFloat(float x, float in_min, float in_max, float out_min, float out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
-#define CURVE(higherVoltage,lowerVoltage,fromAh,toAh) if(cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) return 100 * mapFloat(cellVoltage, higherVoltage, lowerVoltage, fromAh, toAh) / expected_ah;
+#define CURVE(higherVoltage,lowerVoltage,fromAh,toAh) if(cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) return 100 * (expected_ah - mapFloat(cellVoltage, higherVoltage, lowerVoltage, fromAh, toAh)) / expected_ah;
 
 float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
 {
@@ -29,6 +29,9 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
     switch (cellType) {
         case BatteryCellType::_22P: {
             const float expected_ah = 2.2;
+            if(cellVoltage > 4.15){
+                return 100;
+            }
             CURVE(4.15, 4.04, 0, 0.25)
             CURVE(4.04, 3.95, 0.25, 0.5)
             CURVE(3.95, 3.86, 0.5, 0.75)
@@ -43,6 +46,9 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
         }
         case BatteryCellType::MH1: {
             const float expected_ah = 3.2;
+            if(cellVoltage > 4.15){
+                return 100;
+            }
             CURVE(4.15, 4.09, 0, 0.25)
             CURVE(4.09, 4.04, 0.25, 0.5)
             CURVE(4.04, 3.95, 0.5, 0.75)
@@ -60,6 +66,9 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
         }
         case BatteryCellType::HG2: {
             const float expected_ah = 3.0;
+            if(cellVoltage > 4.15){
+                return 100;
+            }
             CURVE(4.15, 4.08, 0, 0.25)
             CURVE(4.08, 4.01, 0.25, 0.5)
             CURVE(4.01, 3.92, 0.5, 0.75)
@@ -76,6 +85,9 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
         }
         case BatteryCellType::VTC5: {
             const float expected_ah = 2.6;
+            if(cellVoltage > 4.15){
+                return 100;
+            }
             CURVE(4.15, 4.08, 0, 0.25)
             CURVE(4.08, 3.98, 0.25, 0.5)
             CURVE(3.98, 3.89, 0.5, 0.75)
