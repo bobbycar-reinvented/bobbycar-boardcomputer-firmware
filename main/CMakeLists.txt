@@ -23,6 +23,7 @@ set(headers
     actions/wifiscanaction.h
     actions/switchprofileaction.h
     actions/updateswapfrontbackaction.h
+    battery.h
     bluetoothmode.h
     ble_bobby.h
     bletexthelpers.h
@@ -36,10 +37,12 @@ set(headers
     changevaluedisplay_wifi_power_t.h
     cloud.h
     debugcolorhelpers.h
+    displays/calibratevoltagedisplay.h
     displays/gameoflifedisplay.h
     displays/graphdisplay.h
     displays/menus/aboutmenu.h
     displays/menus/accesspointwifisettingsmenu.h
+    displays/menus/batterymenu.h
     displays/menus/blesettingsmenu.h
     displays/menus/bluetoothsettingsmenu.h
     displays/menus/bmsmenu.h
@@ -63,6 +66,7 @@ set(headers
     displays/menus/presetsmenu.h
     displays/menus/profilesmenu.h
     displays/menus/selectmodemenu.h
+    displays/menus/selectbatterytypemenu.h
     displays/menus/settingsmenu.h
     displays/menus/stationwifisettingsmenu.h
     displays/menus/tempomatmodesettingsmenu.h
@@ -95,6 +99,7 @@ set(headers
     displays/statusdisplay.h
     displays/updatedisplay.h
     icons/alert.h
+    icons/battery.h
     icons/bluetooth.h
     icons/bms.h
     icons/buzzer.h
@@ -189,6 +194,7 @@ target_compile_options(${COMPONENT_TARGET}
     PRIVATE
         -fstack-reuse=all
         -fstack-protector-all
+        -fdiagnostics-color=always
         -Wno-unused-function
         -Wno-deprecated-declarations
         -Wno-missing-field-initializers

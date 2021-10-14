@@ -16,6 +16,7 @@
 #include "widgets/label.h"
 #include "widgets/progressbar.h"
 #include "icons/alert.h"
+#include "battery.h"
 
 // forward declares
 namespace {
@@ -94,8 +95,12 @@ private:
     Label m_labelBrems{90, 15}; // 60, 15
     ProgressBar m_progressBarBrems{150, 15, 90, 15, 0, 1000};
 
-    BoardStatus m_frontStatus{42};
-    BoardStatus m_backStatus{142};
+    Label m_batterypercent{0, 30};
+    Label m_watthoursleft{110, 30};
+    Label m_kilometersleft{175, 30};
+
+    BoardStatus m_frontStatus{45};
+    BoardStatus m_backStatus{145};
 
     Label m_labelWifiStatus{35, bottomLines[0]}; // 120, 15
     Label m_labelLimit0{205, bottomLines[0]}; // 35, 15
@@ -125,6 +130,10 @@ void StatusDisplay::initScreen()
     m_labelRawBrems.start();
     m_labelBrems.start();
     m_progressBarBrems.start();
+
+    m_batterypercent.start();
+    m_watthoursleft.start();
+    m_kilometersleft.start();
 
     m_frontStatus.start();
     m_backStatus.start();
@@ -160,6 +169,10 @@ void StatusDisplay::redraw()
     m_labelRawBrems.redraw(raw_brems ? std::to_string(*raw_brems) : "?");
     m_labelBrems.redraw(brems ? fmt::format("{:.2f}", *brems) : "?");
     m_progressBarBrems.redraw(brems ? *brems : 0);
+
+    m_batterypercent.redraw(getBatteryPercentageString());
+    m_watthoursleft.redraw(getBatteryRemainingWattHoursString());
+    m_kilometersleft.redraw(getRemainingRangeString());
 
     m_frontStatus.redraw(controllers.front);
     m_backStatus.redraw(controllers.back);
@@ -290,7 +303,7 @@ void StatusDisplay::BoardStatus::redraw(const Controller &controller)
 
     if (controller.feedbackValid)
     {
-        m_labelVoltage.redraw(fmt::format("{:.2f}V", fixBatVoltage(controller.feedback.batVoltage)));
+        m_labelVoltage.redraw(fmt::format("{:.2f}V", controller.getCalibratedVoltage(settings.battery.applyCalibration)));
         m_labelTemperature.redraw(fmt::format("{:.2f}C", fixBoardTemp(controller.feedback.boardTemp)));
         m_leftMotor.redraw(controller.feedback.left);
         m_rightMotor.redraw(controller.feedback.right);

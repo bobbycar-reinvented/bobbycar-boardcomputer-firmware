@@ -170,6 +170,19 @@ struct Settings
         int16_t animationMultiplier;
         uint8_t brightness;
     } ledstrip;
+
+    struct Battery {
+        uint8_t cellsSeries;
+        uint8_t cellsParallel;
+        uint8_t cellType;
+        uint16_t watthoursPerKilometer;
+        int16_t front30VoltCalibration;
+        int16_t back30VoltCalibration;
+        int16_t front50VoltCalibration;
+        int16_t back50VoltCalibration;
+        bool applyCalibration;
+    } battery;
+
 #endif
 
     struct LockscreenSettings {
@@ -275,9 +288,19 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("ledstvofoff", ledstrip.stvoFrontOffset);
     callable("ledstvoflen", ledstrip.stvoFrontLength);
     callable("ledstvoen", ledstrip.stvoFrontEnable);
-    callable("ledAnimMultiplier", ledstrip.animationMultiplier);
+    callable("ledAnimMul", ledstrip.animationMultiplier);
     callable("ledbrightness", ledstrip.brightness);
 #endif
+
+    callable("batteryCS", battery.cellsSeries);
+    callable("batteryCP", battery.cellsParallel);
+    callable("batteryType", battery.cellType);
+    callable("whkm", battery.watthoursPerKilometer);
+    callable("batF30VCal", battery.front30VoltCalibration);
+    callable("batB30VCal", battery.back30VoltCalibration);
+    callable("batF50VCal", battery.front50VoltCalibration);
+    callable("batB50VCal", battery.back50VoltCalibration);
+    callable("applyBatCal", battery.applyCalibration);
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
     callable("lockscreenPin", lockscreen.pin);

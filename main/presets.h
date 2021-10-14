@@ -253,6 +253,18 @@ constexpr Settings::LockscreenSettings defaultLockscreen {
     .pin = { 1, 2, 3, 4 }
 };
 
+constexpr Settings::Battery defaultBattery {
+    .cellsSeries = 12,
+    .cellsParallel = 4,
+    .cellType = 0,
+    .watthoursPerKilometer = 20,
+    .front30VoltCalibration = 30,
+    .back30VoltCalibration = 30,
+    .front50VoltCalibration = 50,
+    .back50VoltCalibration = 50,
+    .applyCalibration = true
+};
+
 constexpr Settings defaultSettings {
 #ifdef FEATURE_BMS
     .autoConnectBms = false,
@@ -278,6 +290,7 @@ constexpr Settings defaultSettings {
 #ifdef FEATURE_LEDSTRIP
     .ledstrip = defaultLedstrip,
 #endif
+    .battery = defaultBattery,
     .lockscreen = defaultLockscreen
 };
 

@@ -3,11 +3,13 @@
 // local includes
 #include "menudisplay.h"
 #include "menuitem.h"
+#include "batterymenu.h"
 #include "actions/switchscreenaction.h"
 #include "actions/modesettingsaction.h"
 #include "actions/rebootaction.h"
 #include "texts.h"
 #include "icons/back.h"
+#include "icons/battery.h"
 #include "icons/modes.h"
 #include "icons/presets.h"
 #include "icons/graph.h"
@@ -44,6 +46,7 @@ class GarageDisplay;
 class UpdateDisplay;
 class PoweroffDisplay;
 class DebugMenu;
+class BatteryMenu;
 } // namespace
 
 using namespace espgui;
@@ -66,6 +69,7 @@ public:
     if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&icons::presets>>>(); }
     if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>(); }
     if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&icons::graph>>>(); }
+    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY>,      SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&icons::battery>>>(); }
 #if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
     if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWERSUPPLY>,  SwitchScreenAction<PowerSupplyDisplay>>>(); }
 #endif

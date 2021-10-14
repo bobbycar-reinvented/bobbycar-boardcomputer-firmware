@@ -59,11 +59,6 @@ float fixCurrent(int16_t value)
     return -value/50.;
 }
 
-float fixBatVoltage(int16_t value)
-{
-    return value/100.;
-}
-
 float fixBoardTemp(int16_t value)
 {
     return value/10.;

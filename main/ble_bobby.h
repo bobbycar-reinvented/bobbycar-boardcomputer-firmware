@@ -81,11 +81,11 @@ void handleBle()
             {
                 auto arr = doc.createNestedArray("v");
                 if (controllers.front.feedbackValid)
-                    arr.add(fixBatVoltage(controllers.front.feedback.batVoltage));
+                    arr.add(controllers.front.getCalibratedVoltage(settings.battery.applyCalibration));
                 else
                     arr.add(nullptr);
                 if (controllers.back.feedbackValid)
-                    arr.add(fixBatVoltage(controllers.back.feedback.batVoltage));
+                    arr.add(controllers.back.getCalibratedVoltage(settings.battery.applyCalibration));
                 else
                     arr.add(nullptr);
             }

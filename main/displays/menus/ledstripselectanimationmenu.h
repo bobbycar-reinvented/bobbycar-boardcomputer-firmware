@@ -11,6 +11,22 @@
 #include "actions/dummyaction.h"
 #include "actions/ledstripanimationactions.h"
 #include "actions/switchscreenaction.h"
+#include "ledstrip.h"
+#include "ledstripdefines.h"
+
+class currentSelectedAnimationText : public virtual TextInterface { public: std::string text() const override {
+        switch (animation_type) {
+            case LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW:
+                return TEXT_ANIMATION_DEFAULTRAINBOW;
+            case LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW:
+                return TEXT_ANIMATION_BETTERRAINBOW;
+            case LEDSTRIP_ANIMATION_TYPE_SPEEDSYNCANIMATION:
+                return TEXT_ANIMATION_SPEEDSYNCANIMATION;
+            default:
+                return "Animation Unkown";
+        }
+    };
+};
 
 using namespace espgui;
 
@@ -27,6 +43,8 @@ namespace  {
     public:
         LedstripSelectAnimationMenu()
         {
+            constructMenuItem<makeComponent<MenuItem, currentSelectedAnimationText,                  DisabledColor, DummyAction>>();
+            constructMenuItem<makeComponent<MenuItem, EmptyText,                                     DummyAction>>();
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_DEFAULTRAINBOW>,     LedstripAnimationDefaultRainbowAction>>();
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BETTERRAINBOW>,      LedstripAnimationBetterRainbowAction>>();
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_SPEEDSYNCANIMATION>, LedstripAnimationSyncToSpeedAction>>();

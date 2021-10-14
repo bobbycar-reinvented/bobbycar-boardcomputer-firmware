@@ -1,5 +1,4 @@
 #pragma once
-#define FEATURE_LEDSTRIP
 #ifdef FEATURE_LEDSTRIP
 // 3rdparty lib includes
 #include <FastLED.h>
