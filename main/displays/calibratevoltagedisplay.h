@@ -52,10 +52,15 @@ namespace  {
         }
     };
 
-    class BatteryVoltageCalibrationFront30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Front: {}", settings.battery.front30VoltCalibration); } };
-    class BatteryVoltageCalibrationBack30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Back: {}", settings.battery.back30VoltCalibration); } };
-    class BatteryVoltageCalibrationFront50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Front: {}", settings.battery.front50VoltCalibration); } };
-    class BatteryVoltageCalibrationBack50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Back: {}", settings.battery.back50VoltCalibration); } };
+    float convertToFloat(int16_t value)
+    {
+        return value/100.;
+    }
+
+    class BatteryVoltageCalibrationFront30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Front: {}", convertToFloat(settings.battery.front30VoltCalibration)); } };
+    class BatteryVoltageCalibrationBack30VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("30V Back: {}", convertToFloat(settings.battery.back30VoltCalibration)); } };
+    class BatteryVoltageCalibrationFront50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Front: {}", convertToFloat(settings.battery.front50VoltCalibration)); } };
+    class BatteryVoltageCalibrationBack50VText : public virtual TextInterface { public: std::string text() const override { return fmt::format("50V Back: {}", convertToFloat(settings.battery.back50VoltCalibration)); } };
     class BatteryVoltageCalibratedText : public virtual TextInterface { public: std::string text() const override { if (settings.battery.applyCalibration) return fmt::format("F{:.2f}V B{:.2f}", controllers.front.getCalibratedVoltage(), controllers.back.getCalibratedVoltage()); else return "Not activated"; } };
 }
 
