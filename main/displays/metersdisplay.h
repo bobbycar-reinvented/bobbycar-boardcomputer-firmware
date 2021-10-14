@@ -74,8 +74,8 @@ void MetersDisplay::redraw()
     tft.setTextFont(2);
     m_sumCurrentLabel.redraw(std::to_string(sumCurrent) + 'A');
 
-    meters[0].redraw(controllers.front.getCalibratedVoltage(), 35, 50);
-    meters[1].redraw(controllers.back.getCalibratedVoltage(), 35, 50);
+    meters[0].redraw(controllers.front.getCalibratedVoltage(settings.battery.applyCalibration), 35, 50);
+    meters[1].redraw(controllers.back.getCalibratedVoltage(settings.battery.applyCalibration), 35, 50);
     meters[2].redraw(fixCurrent(controllers.front.feedback.left.dcLink), -10, 10);
     meters[3].redraw(fixCurrent(controllers.front.feedback.right.dcLink), -10, 10);
     meters[4].redraw(fixCurrent(controllers.back.feedback.left.dcLink), -10, 10);

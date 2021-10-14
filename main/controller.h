@@ -24,6 +24,7 @@ class HardwareSerial;
 #endif
 
 namespace {
+
 struct Controller {
     Controller(
 #ifdef FEATURE_SERIAL
@@ -60,11 +61,17 @@ struct Controller {
     FeedbackParser parser{serial, feedbackValid, feedback};
 #endif
 
-    float getCalibratedVoltage() const
+    float getCalibratedVoltage(bool applyCalibration) const
     {
         float voltage = feedback.batVoltage;
-        //if (settings.battery.applyCalibration)
+        if (applyCalibration)
+        {
             voltage = ((voltage - float(voltageCalib30V)) * (20.f / (float(voltageCalib50V) - float(voltageCalib30V))) + 30.f);
+        }
+        else
+        {
+            voltage = voltage / 100.;
+        }
         return voltage;
     }
 };

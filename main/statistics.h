@@ -30,13 +30,13 @@ void pushStats()
     statistics::sumCurrent.push_back(sumCurrent);
     if (controllers.front.feedbackValid)
     {
-        statistics::frontVoltage.push_back(controllers.front.getCalibratedVoltage());
+        statistics::frontVoltage.push_back(controllers.front.getCalibratedVoltage(settings.battery.applyCalibration));
         statistics::frontLeftCurrent.push_back(fixCurrent(controllers.front.feedback.left.dcLink));
         statistics::frontRightCurrent.push_back(fixCurrent(controllers.front.feedback.right.dcLink));
     }
     if (controllers.back.feedbackValid)
     {
-        statistics::backVoltage.push_back(controllers.back.getCalibratedVoltage());
+        statistics::backVoltage.push_back(controllers.back.getCalibratedVoltage(settings.battery.applyCalibration));
         statistics::backLeftCurrent.push_back(fixCurrent(controllers.back.feedback.left.dcLink));
         statistics::backRightCurrent.push_back(fixCurrent(controllers.back.feedback.right.dcLink));
     }

@@ -16,11 +16,33 @@
 DECLARE_TYPESAFE_ENUM(BatteryCellType, : uint8_t, BatteryCellTypeValues)
 
 namespace {
-float battery_percentage = 42.f;
+
+float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
+{
+    float percentage = 0;
+    switch (cellType) {
+        case BatteryCellType::_22P:
+            break;
+        case BatteryCellType::MH1:
+            break;
+        case BatteryCellType::HG2:
+            break;
+        case BatteryCellType::VTC5:
+            break;
+    }
+    return percentage;
+}
 
 std::string getBatteryPercentageString()
 {
-    std::string output = fmt::format("Battery: {:.1f}%", battery_percentage);
+    float avgVoltage = 0;
+    for (auto &controller : controllers)
+    {
+        avgVoltage += controller.getCalibratedVoltage(settings.battery.applyCalibration);
+    }
+    avgVoltage = avgVoltage / controllers.size();
+
+    std::string output = fmt::format("Battery: {:.1f}%", getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType)));
     return output;
 }
 

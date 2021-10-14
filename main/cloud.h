@@ -109,7 +109,7 @@ void cloudCollect()
         }
 
         cloudBuffer += fmt::format(",[{:.02f},{:.02f}",
-                           controller.getCalibratedVoltage(),
+                           controller.getCalibratedVoltage(settings.battery.applyCalibration),
                            fixBoardTemp(controller.feedback.boardTemp));
 
         constexpr const auto addMotor = [](const bobbycar::protocol::serial::MotorState &command,

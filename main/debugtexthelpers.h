@@ -48,7 +48,7 @@ public:
     using RightCommand = CommandTexts<LeftCommandGetter>;
 
     //struct BatVoltageText : public virtual TextInterface { public: std::string text() const override { std::string line{"batVoltage: "}; if (controller::get().feedbackValid) line += std::to_string(controller::get().feedback.batVoltage); return line; } };
-    struct BatVoltageFixedText : public virtual TextInterface { public: std::string text() const override { std::string line{"batVoltage: "}; if (controller::get().feedbackValid) line += fmt::format("{:.2f}V", controller::get().getCalibratedVoltage()); return line; } };
+    struct BatVoltageFixedText : public virtual TextInterface { public: std::string text() const override { std::string line{"batVoltage: "}; if (controller::get().feedbackValid) line += fmt::format("{:.2f}V", controller::get().getCalibratedVoltage(settings.battery.applyCalibration)); return line; } };
     //struct BoardTempText : public virtual TextInterface { public: std::string text() const override { std::string line{"boardTemp: "}; if (controller::get().feedbackValid) line += std::to_string(controller::get().feedback.boardTemp); return line; } };
     struct BoardTempFixedText : public virtual TextInterface { public: std::string text() const override { std::string line{"boardTemp: "}; if (controller::get().feedbackValid) line += fmt::format("{:.2f}C", fixBoardTemp(controller::get().feedback.boardTemp)); return line; } };
     struct TimeoutCntSerialText : public virtual TextInterface { public: std::string text() const override { std::string line{"timeoutCntSerial: "}; if (controller::get().feedbackValid) line += std::to_string(controller::get().feedback.timeoutCntSerial); return line; } };

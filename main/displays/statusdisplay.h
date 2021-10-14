@@ -97,8 +97,8 @@ private:
 
     Label m_batterypercent{0, 30};
 
-    BoardStatus m_frontStatus{42};
-    BoardStatus m_backStatus{142};
+    BoardStatus m_frontStatus{45};
+    BoardStatus m_backStatus{145};
 
     Label m_labelWifiStatus{35, bottomLines[0]}; // 120, 15
     Label m_labelLimit0{205, bottomLines[0]}; // 35, 15
@@ -297,7 +297,7 @@ void StatusDisplay::BoardStatus::redraw(const Controller &controller)
 
     if (controller.feedbackValid)
     {
-        m_labelVoltage.redraw(fmt::format("{:.2f}V", controller.getCalibratedVoltage()));
+        m_labelVoltage.redraw(fmt::format("{:.2f}V", controller.getCalibratedVoltage(settings.battery.applyCalibration)));
         m_labelTemperature.redraw(fmt::format("{:.2f}C", fixBoardTemp(controller.feedback.boardTemp)));
         m_leftMotor.redraw(controller.feedback.left);
         m_rightMotor.redraw(controller.feedback.right);
