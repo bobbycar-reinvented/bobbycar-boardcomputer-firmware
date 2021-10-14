@@ -19,7 +19,7 @@ namespace {
 
 float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
 {
-    float percentage = 0;
+    float percentage = 12.34;
     switch (cellType) {
         case BatteryCellType::_22P:
             break;
@@ -31,6 +31,11 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
             break;
     }
     return percentage;
+}
+
+float getRemainingWattHours()
+{
+    return 42.69;
 }
 
 std::string getBatteryPercentageString()
@@ -46,8 +51,19 @@ std::string getBatteryPercentageString()
     return output;
 }
 
+std::string getBatteryRemainingWattHoursString()
+{
+    return fmt::format("{:.1f} Wh", getRemainingWattHours());
+}
+
 std::string getBatteryCellTypeString()
 {
     return fmt::format("Cells: {}", toString(BatteryCellType(settings.battery.cellType)));
 }
+
+std::string getRemainingRangeString()
+{
+    return fmt::format("{:.1f} km", getRemainingWattHours() / settings.battery.watthoursPerKilometer);
+}
+
 } // namespace

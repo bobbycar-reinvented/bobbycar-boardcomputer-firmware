@@ -96,6 +96,8 @@ private:
     ProgressBar m_progressBarBrems{150, 15, 90, 15, 0, 1000};
 
     Label m_batterypercent{0, 30};
+    Label m_watthoursleft{110, 30};
+    Label m_kilometersleft{175, 30};
 
     BoardStatus m_frontStatus{45};
     BoardStatus m_backStatus{145};
@@ -130,6 +132,8 @@ void StatusDisplay::initScreen()
     m_progressBarBrems.start();
 
     m_batterypercent.start();
+    m_watthoursleft.start();
+    m_kilometersleft.start();
 
     m_frontStatus.start();
     m_backStatus.start();
@@ -167,6 +171,8 @@ void StatusDisplay::redraw()
     m_progressBarBrems.redraw(brems ? *brems : 0);
 
     m_batterypercent.redraw(getBatteryPercentageString());
+    m_watthoursleft.redraw(getBatteryRemainingWattHoursString());
+    m_kilometersleft.redraw(getRemainingRangeString());
 
     m_frontStatus.redraw(controllers.front);
     m_backStatus.redraw(controllers.back);
