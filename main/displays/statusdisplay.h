@@ -23,6 +23,8 @@ namespace {
 class MainMenu;
 class BmsDisplay;
 class MetersDisplay;
+
+static uint16_t counter = 24;
 }
 
 namespace {
@@ -158,6 +160,7 @@ void StatusDisplay::initScreen()
     m_labelProfile.start();
 
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    counter = 0;
 }
 
 void StatusDisplay::redraw()
@@ -170,9 +173,15 @@ void StatusDisplay::redraw()
     m_labelBrems.redraw(brems ? fmt::format("{:.2f}", *brems) : "?");
     m_progressBarBrems.redraw(brems ? *brems : 0);
 
-    m_batterypercent.redraw(getBatteryPercentageString());
-    m_watthoursleft.redraw(getBatteryRemainingWattHoursString());
-    m_kilometersleft.redraw(getRemainingRangeString());
+    if (counter < 1)
+    {
+        counter = 25;
+        m_batterypercent.redraw(getBatteryPercentageString());
+        m_watthoursleft.redraw(getBatteryRemainingWattHoursString());
+        m_kilometersleft.redraw(getRemainingRangeString());
+    }
+    else
+        counter--;
 
     m_frontStatus.redraw(controllers.front);
     m_backStatus.redraw(controllers.back);
@@ -241,6 +250,7 @@ clearIp:
 
 void StatusDisplay::rotate(int offset)
 {
+    counter = 0;
     if (offset < 0)
 #ifdef FEATURE_BMS
         switchScreen<BmsDisplay>();

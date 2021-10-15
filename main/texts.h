@@ -9,6 +9,10 @@ constexpr char TEXT_BACK[] = "Back";
 constexpr char TEXT_ACCESSPOINTWIFISETTINGS[] = "Access Point WiFi settings";
 //constexpr char TEXT_BACK[] = "Back";
 
+#ifdef TEXTS_PLUGIN
+#include TEXTS_PLUGIN
+#endif
+
 #ifdef FEATURE_BLUETOOTH
 //BluetoothSettingsMenu
 constexpr char TEXT_BLUETOOTHSETTINGS[] = "Bluetooth settings";

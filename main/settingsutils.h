@@ -17,6 +17,9 @@ void switchProfile(uint8_t index)
     if (index == SIMPLIFIED_TRIGGER_TRIGGERONPRESET)
     {
         simplified = true;
+#ifdef SETTINGSUTILS_PLUGIN
+#include SETTINGSUTILS_PLUGIN
+#endif
         return;
     }
 #endif

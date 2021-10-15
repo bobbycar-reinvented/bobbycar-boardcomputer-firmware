@@ -258,10 +258,10 @@ constexpr Settings::Battery defaultBattery {
     .cellsParallel = 4,
     .cellType = 0,
     .watthoursPerKilometer = 20,
-    .front30VoltCalibration = 30,
-    .back30VoltCalibration = 30,
-    .front50VoltCalibration = 50,
-    .back50VoltCalibration = 50,
+    .front30VoltCalibration = 3000,
+    .back30VoltCalibration = 3000,
+    .front50VoltCalibration = 5000,
+    .back50VoltCalibration = 5000,
     .applyCalibration = true
 };
 

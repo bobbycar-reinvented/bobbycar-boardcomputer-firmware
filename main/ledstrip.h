@@ -149,19 +149,21 @@ void updateLedStrip()
 }
 
 void showAnimation() {
-    if (animation_type == LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW) showDefaultLedstrip();
-    else if (animation_type == LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW) showBetterRainbow();
-    else if (animation_type == LEDSTRIP_ANIMATION_TYPE_SPEEDSYNCANIMATION) showSpeedSyncAnimation();
-    else showDefaultLedstrip();
+    if (settings.ledstrip.enableLedAnimation && !simplified)
+    {
+        if (animation_type == LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW) showDefaultLedstrip();
+        else if (animation_type == LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW) showBetterRainbow();
+        else if (animation_type == LEDSTRIP_ANIMATION_TYPE_SPEEDSYNCANIMATION) showSpeedSyncAnimation();
+        else showDefaultLedstrip();
+    }
+    else
+    {
+        std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
+    }
 }
 
 void showBetterRainbow() {
-    if (settings.ledstrip.enableLedAnimation)
-    {
-        fill_rainbow(&*std::begin(leds), leds.size(), gHue);
-    }
-    else
-        std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
+    fill_rainbow(&*std::begin(leds), leds.size(), gHue);
 }
 
 void fill_rainbow_invert_at( struct CRGB * pFirstLED, int numToFill, int invertAtLed,
@@ -185,49 +187,39 @@ void fill_rainbow_invert_at( struct CRGB * pFirstLED, int numToFill, int invertA
 }
 
 void showSpeedSyncAnimation() {
-    if (settings.ledstrip.enableLedAnimation)
-    {
 #ifdef LEDS_PER_METER
-        const float leds_per_meter = LEDS_PER_METER;
+    const float leds_per_meter = LEDS_PER_METER;
 #else
-        const float leds_per_meter = 144;
+    const float leds_per_meter = 144;
 #endif
 
-        static auto last_interval = espchrono::millis_clock::now();
-        auto difference_ms = espchrono::ago(last_interval).count();
+    static auto last_interval = espchrono::millis_clock::now();
+    auto difference_ms = espchrono::ago(last_interval).count();
 
-        static float hue_result = 0;
+    static float hue_result = 0;
 
-        const float hue_per_led = 1. / std::max(uint8_t(1), uint8_t(settings.ledstrip.animationMultiplier));
-        const float meter_per_second = avgSpeedKmh / 3.6;
-        const float leds_per_second = meter_per_second * leds_per_meter;
-        const float hue_per_second = leds_per_second * hue_per_led;
+    const float hue_per_led = 1. / std::max(uint8_t(1), uint8_t(settings.ledstrip.animationMultiplier));
+    const float meter_per_second = avgSpeedKmh / 3.6;
+    const float leds_per_second = meter_per_second * leds_per_meter;
+    const float hue_per_second = leds_per_second * hue_per_led;
 
-        hue_result += hue_per_second * difference_ms / 1000.f;
+    hue_result += hue_per_second * difference_ms / 1000.f;
 
-        fill_rainbow_invert_at(&*std::begin(leds), leds.size(),leds.size()/2, hue_result,-hue_per_led);
+    fill_rainbow_invert_at(&*std::begin(leds), leds.size(),leds.size()/2, hue_result,-hue_per_led);
 
-        last_interval = espchrono::millis_clock::now();
-    }
-    else
-        std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
+    last_interval = espchrono::millis_clock::now();
 }
 
 void showDefaultLedstrip()
 {
-    if (settings.ledstrip.enableLedAnimation)
-    {
-        fadeToBlackBy(&*std::begin(leds), leds.size(), 20);
+    fadeToBlackBy(&*std::begin(leds), leds.size(), 20);
 
-        uint8_t dothue = 0;
-        for (int i = 0; i < 8; i++)
-        {
-            leds[beatsin16(i + 7, 0, leds.size())] |= CHSV(dothue, 200, 255);
-            dothue += 32;
-        }
+    uint8_t dothue = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        leds[beatsin16(i + 7, 0, leds.size())] |= CHSV(dothue, 200, 255);
+        dothue += 32;
     }
-    else
-        std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
 }
 } // namespace
 #endif

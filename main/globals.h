@@ -41,7 +41,11 @@ float avgSpeed, avgSpeedKmh, sumCurrent;
 
 char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
 
-#if defined(SIMPLIFIED_TRIGGER_TRIGGERONPRESET)
+#ifdef GLOBALS_PLUGIN
+#include GLOBALS_PLUGIN
+#endif
+
+#if defined(HAS_SIMPLIFIED)
 bool simplified = true;
 #else
 bool simplified = false;
