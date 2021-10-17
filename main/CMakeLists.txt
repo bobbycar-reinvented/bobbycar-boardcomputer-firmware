@@ -102,6 +102,7 @@ set(headers
     displays/menus/cloudsettingsmenu.h
     displays/menus/commanddebugmenu.h
     displays/menus/controllerhardwaresettingsmenu.h
+    displays/menus/crashmenu.h
     displays/menus/debugmenu.h
     displays/menus/defaultmodesettingsmenu.h
     displays/menus/demosmenu.h
@@ -278,6 +279,7 @@ set(sources
     displays/menus/cloudsettingsmenu.cpp
     displays/menus/commanddebugmenu.cpp
     displays/menus/controllerhardwaresettingsmenu.cpp
+    displays/menus/crashmenu.cpp
     displays/menus/debugmenu.cpp
     displays/menus/defaultmodesettingsmenu.cpp
     displays/menus/demosmenu.cpp

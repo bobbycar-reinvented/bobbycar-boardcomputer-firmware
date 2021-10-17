@@ -10,9 +10,6 @@
 namespace {
 void switchProfile(uint8_t index)
 {
-    settings = presets::defaultSettings;
-    stringSettings = presets::makeDefaultStringSettings();
-
 #ifdef SIMPLIFIED_TRIGGER_TRIGGERONPRESET
     if (index == SIMPLIFIED_TRIGGER_TRIGGERONPRESET)
     {
@@ -23,6 +20,9 @@ void switchProfile(uint8_t index)
         return;
     }
 #endif
+
+    settings = presets::defaultSettings;
+    stringSettings = presets::makeDefaultStringSettings();
 
     if (!settingsPersister.openProfile(index))
     {

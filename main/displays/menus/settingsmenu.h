@@ -14,6 +14,7 @@
 #include "icons/hardware.h"
 #include "icons/buzzer.h"
 #include "icons/info.h"
+#include "icons/demos.h"
 #include "icons/back.h"
 #include "texts.h"
 #include "globals.h"
@@ -33,6 +34,7 @@ class BoardcomputerHardwareSettingsMenu;
 class BuzzerMenu;
 class AboutMenu;
 class MainMenu;
+class CrashMenu;
 }
 
 using namespace espgui;
@@ -83,6 +85,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUZZER>,                        SwitchScreenAction<BuzzerMenu>, StaticMenuItemIcon<&bobbyicons::buzzer>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTLED>,                      ToggleBoolAction, CheckboxIcon, FrontLedAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLED>,                       ToggleBoolAction, CheckboxIcon, BackLedAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRASHMENU>,                     SwitchScreenAction<CrashMenu>,  StaticMenuItemIcon<&bobbyicons::demos>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ABOUT>,                         SwitchScreenAction<AboutMenu>, StaticMenuItemIcon<&bobbyicons::info>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                          SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
