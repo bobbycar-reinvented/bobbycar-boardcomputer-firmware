@@ -9,6 +9,10 @@ constexpr char TEXT_BACK[] = "Back";
 constexpr char TEXT_ACCESSPOINTWIFISETTINGS[] = "Access Point WiFi settings";
 //constexpr char TEXT_BACK[] = "Back";
 
+#ifdef TEXTS_PLUGIN
+#include TEXTS_PLUGIN
+#endif
+
 #ifdef FEATURE_BLUETOOTH
 //BluetoothSettingsMenu
 constexpr char TEXT_BLUETOOTHSETTINGS[] = "Bluetooth settings";
@@ -461,6 +465,15 @@ constexpr char TEXT_WIFI_POWER_5dBm[] = "5dBm";
 constexpr char TEXT_WIFI_POWER_2dBm[] = "2dBm";
 constexpr char TEXT_WIFI_POWER_MINUS_1dBm[] = "-1dBm";
 //constexpr char TEXT_BACK[] = "Back";
+
+//Crashmenu
+constexpr char TEXT_CRASHMENU[] = "Crash Menu";
+constexpr char TEXT_CRASH_ASSERT[] = "assert(0)";
+constexpr char TEXT_CRASH_DIVZERO[] = "42 / 0";
+
+//SelectBuildServerMenu
+constexpr char TEXT_SELECTBUILDSERVERMENU[] = "Select Buildserver";
+constexpr char TEXT_NOBUILDSERVERCONFIGURED[] = "Not configured";
 
 #ifdef FEATURE_CAN
 constexpr char TEXT_POWERSUPPLY[] = "Powersupply";

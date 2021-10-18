@@ -5,6 +5,7 @@ set(headers
     bluetoothmode.h
     bluetoothtexthelpers.h
     bmsutils.h
+    buildserver.h
     buttons.h
     can.h
     changevaluedisplay_bluetoothmode.h
@@ -76,6 +77,7 @@ set(headers
     actions/multiaction.h
     actions/rebootaction.h
     actions/savesettingsaction.h
+    actions/selectbuildserveraction.h
     actions/switchprofileaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
     actions/updateswapfrontbackaction.h
@@ -102,6 +104,7 @@ set(headers
     displays/menus/cloudsettingsmenu.h
     displays/menus/commanddebugmenu.h
     displays/menus/controllerhardwaresettingsmenu.h
+    displays/menus/crashmenu.h
     displays/menus/debugmenu.h
     displays/menus/defaultmodesettingsmenu.h
     displays/menus/demosmenu.h
@@ -126,6 +129,7 @@ set(headers
     displays/menus/presetsmenu.h
     displays/menus/profilesmenu.h
     displays/menus/selectbatterytypemenu.h
+    displays/menus/selectbuildservermenu.h
     displays/menus/selectmodemenu.h
     displays/menus/settingsmenu.h
     displays/menus/stationwifisettingsmenu.h
@@ -278,6 +282,7 @@ set(sources
     displays/menus/cloudsettingsmenu.cpp
     displays/menus/commanddebugmenu.cpp
     displays/menus/controllerhardwaresettingsmenu.cpp
+    displays/menus/crashmenu.cpp
     displays/menus/debugmenu.cpp
     displays/menus/defaultmodesettingsmenu.cpp
     displays/menus/demosmenu.cpp

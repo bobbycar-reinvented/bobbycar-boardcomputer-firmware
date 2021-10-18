@@ -38,6 +38,7 @@ using namespace std::chrono_literals;
 #endif
 #include "displays/menus/buzzermenu.h"
 #include "displays/menus/commanddebugmenu.h"
+#include "displays/menus/crashmenu.h"
 #include "displays/menus/debugmenu.h"
 #include "displays/menus/defaultmodesettingsmenu.h"
 #include "displays/menus/demosmenu.h"
@@ -126,6 +127,7 @@ using namespace std::chrono_literals;
 #include "serialhandler.h"
 #ifdef FEATURE_OTA
 #include "ota.h"
+#include "displays/menus/selectbuildservermenu.h"
 #endif
 #include "presets.h"
 #include "statistics.h"

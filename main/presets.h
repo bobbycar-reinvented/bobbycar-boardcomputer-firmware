@@ -258,10 +258,10 @@ constexpr Settings::Battery defaultBattery {
     .cellsParallel = 4,
     .cellType = 0,
     .watthoursPerKilometer = 20,
-    .front30VoltCalibration = 30,
-    .back30VoltCalibration = 30,
-    .front50VoltCalibration = 50,
-    .back50VoltCalibration = 50,
+    .front30VoltCalibration = 3000,
+    .back30VoltCalibration = 3000,
+    .front50VoltCalibration = 5000,
+    .back50VoltCalibration = 5000,
     .applyCalibration = true
 };
 
@@ -297,6 +297,7 @@ constexpr Settings defaultSettings {
 StringSettings makeDefaultStringSettings()
 {
     using ConfiguredWifi = StringSettings::ConfiguredWifi;
+    using ConfiguredOtaServer = StringSettings::ConfiguredOtaServer;
 
     return {
         .wifis = std::array<ConfiguredWifi, 10> {
@@ -322,6 +323,20 @@ StringSettings makeDefaultStringSettings()
 #endif
 #ifdef FEATURE_NTP
         .timeServer = "europe.pool.ntp.org",
+#endif
+#ifdef FEATURE_OTA
+        .otaServers = std::array<ConfiguredOtaServer, 2> {
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },/*
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },*/
+        },
 #endif
     };
 }

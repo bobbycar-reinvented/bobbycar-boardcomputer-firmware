@@ -27,6 +27,9 @@
 #endif
 #include "icons/poweroff.h"
 #include "icons/reboot.h"
+#ifdef MAINMENU_PLUGIN
+#include MAINMENU_PLUGIN
+#endif
 
 // forward declares
 namespace {
@@ -47,6 +50,14 @@ class UpdateDisplay;
 class PoweroffDisplay;
 class DebugMenu;
 class BatteryMenu;
+#ifdef MAINMENU_PLUGIN
+    GMEN2
+#endif
+#if !defined(MAINMENU_PLUGIN) and !defined(GMEN3)
+#define SHOWITEM !simplified
+#else
+#define SHOWITEM GMEN3
+#endif
 } // namespace
 
 using namespace espgui;
@@ -65,32 +76,35 @@ public:
 #ifdef FEATURE_LEDSTRIP
                          constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     SwitchScreenAction<LedstripMenu>,   StaticMenuItemIcon<&bobbyicons::neopixel>>>();
 #endif
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESETTINGS>, ModeSettingsAction>>(); }
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>(); }
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&bobbyicons::graph>>>(); }
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY>,      SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESETTINGS>, ModeSettingsAction>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&bobbyicons::graph>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY>,      SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>(); }
 #if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWERSUPPLY>,  SwitchScreenAction<PowerSupplyDisplay>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWERSUPPLY>,  SwitchScreenAction<PowerSupplyDisplay>>>(); }
 #endif
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMS>,          SwitchScreenAction<BmsMenu>, StaticMenuItemIcon<&bobbyicons::bms>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMS>,          SwitchScreenAction<BmsMenu>, StaticMenuItemIcon<&bobbyicons::bms>>>(); }
 #endif
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,     SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>(); }
-                         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>,  SwitchScreenAction<Lockscreen>, StaticMenuItemIcon<&bobbyicons::lock>>>();
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,     SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>(); }
 #ifdef FEATURE_MOSFETS
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFETS>,      SwitchScreenAction<MosfetsMenu>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFETS>,      SwitchScreenAction<MosfetsMenu>>>(); }
 #endif
                          constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
+                         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>,  SwitchScreenAction<Lockscreen>, StaticMenuItemIcon<&bobbyicons::lock>>>();
 #ifdef FEATURE_GARAGE
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GARAGE>,       SwitchScreenAction<GarageDisplay>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GARAGE>,       SwitchScreenAction<GarageDisplay>>>(); }
 #endif
 #ifdef FEATURE_OTA
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATE>,       SwitchScreenAction<UpdateDisplay>, StaticMenuItemIcon<&bobbyicons::update>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATE>,       SwitchScreenAction<UpdateDisplay>, StaticMenuItemIcon<&bobbyicons::update>>>(); }
 #endif
                          constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,     SwitchScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&bobbyicons::poweroff>>>();
                          constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>,       RebootAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
-    if (!simplified)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        SwitchScreenAction<DebugMenu>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        SwitchScreenAction<DebugMenu>>>(); }
+#ifdef MAINMENU_PLUGIN
+    GMEN1
+#endif
     }
 };
 } // namespace
