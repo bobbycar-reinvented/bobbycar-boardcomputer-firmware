@@ -27,17 +27,25 @@ class SelectBuildServerMenu :
 public:
     SelectBuildServerMenu() {
 
-        /*
+        auto numDisplayedServers = 0;
+
         for (auto index = 0; index < stringSettings.otaServers.size(); index++)
         {
             auto otaServer = stringSettings.otaServers[index];
             std::string url = otaServer.url;
             std::string name = (otaServer.name.empty()) ? url : otaServer.name;
 
-            auto menuitem = constructMenuItem<makeComponent<MenuItem, ChangeableText, DummyAction>>();
-            menuitem.setTitle(name);
+            if (!name.empty()) {
+                auto menuitem = constructMenuItem<makeComponent<MenuItem, ChangeableText, DummyAction>>();
+                menuitem.setTitle(name);
+                numDisplayedServers++;
+            }
         }
-        */
+
+        if (!numDisplayedServers)
+        {
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NOBUILDSERVERCONFIGURED>, DummyAction>>();
+        }
 
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }

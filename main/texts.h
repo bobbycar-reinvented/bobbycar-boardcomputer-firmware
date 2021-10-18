@@ -473,6 +473,7 @@ constexpr char TEXT_CRASH_DIVZERO[] = "42 / 0";
 
 //SelectBuildServerMenu
 constexpr char TEXT_SELECTBUILDSERVERMENU[] = "Select Buildserver";
+constexpr char TEXT_NOBUILDSERVERCONFIGURED[] = "Not configured";
 
 #ifdef FEATURE_CAN
 constexpr char TEXT_POWERSUPPLY[] = "Powersupply";

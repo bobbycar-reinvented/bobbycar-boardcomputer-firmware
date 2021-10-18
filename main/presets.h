@@ -325,7 +325,9 @@ StringSettings makeDefaultStringSettings()
         .timeServer = "europe.pool.ntp.org",
 #endif
 #ifdef FEATURE_OTA
-        .otaServers = std::array<ConfiguredOtaServer, 10> {
+        .otaServers = std::array<ConfiguredOtaServer, 2> {
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },/*
             ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },
@@ -333,9 +335,7 @@ StringSettings makeDefaultStringSettings()
             ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },
-            ConfiguredOtaServer { .name = {}, .url = {} },
-            ConfiguredOtaServer { .name = {}, .url = {} },
-            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },*/
         },
 #endif
     };
