@@ -170,6 +170,7 @@ struct Settings
         int16_t animationMultiplier;
         uint8_t brightness;
     } ledstrip;
+#endif
 
     struct Battery {
         uint8_t cellsSeries;
@@ -182,8 +183,6 @@ struct Settings
         int16_t back50VoltCalibration;
         bool applyCalibration;
     } battery;
-
-#endif
 
     struct LockscreenSettings {
         bool allowPresetSwitch;
