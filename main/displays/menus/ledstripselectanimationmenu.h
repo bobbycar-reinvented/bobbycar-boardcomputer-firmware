@@ -45,9 +45,9 @@ namespace  {
         {
             constructMenuItem<makeComponent<MenuItem, currentSelectedAnimationText,                  DisabledColor, DummyAction>>();
             constructMenuItem<makeComponent<MenuItem, EmptyText,                                     DummyAction>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_DEFAULTRAINBOW>,     LedstripAnimationDefaultRainbowAction>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BETTERRAINBOW>,      LedstripAnimationBetterRainbowAction>>();
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_SPEEDSYNCANIMATION>, LedstripAnimationSyncToSpeedAction>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_DEFAULTRAINBOW>,     LedStripSetAnimationAction<LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW>>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BETTERRAINBOW>,      LedStripSetAnimationAction<LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW>>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_SPEEDSYNCANIMATION>, LedStripSetAnimationAction<LEDSTRIP_ANIMATION_TYPE_SPEEDSYNCANIMATION>>>();
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<LedstripMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
         }
     };
