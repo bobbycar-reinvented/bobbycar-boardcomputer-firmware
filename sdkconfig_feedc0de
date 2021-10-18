@@ -193,7 +193,7 @@ CONFIG_ESPCPPUTILS_LOG_LOCAL_LEVEL=3
 # end of espcpputils settings
 
 #
-# Simple WiFi Stack settings
+# ESP WiFi Stack settings
 #
 # CONFIG_LOG_LOCAL_LEVEL_WIFI_STACK_NONE is not set
 # CONFIG_LOG_LOCAL_LEVEL_WIFI_STACK_ERROR is not set
@@ -202,7 +202,7 @@ CONFIG_LOG_LOCAL_LEVEL_WIFI_STACK_INFO=y
 # CONFIG_LOG_LOCAL_LEVEL_WIFI_STACK_DEBUG is not set
 # CONFIG_LOG_LOCAL_LEVEL_WIFI_STACK_VERBOSE is not set
 CONFIG_LOG_LOCAL_LEVEL_WIFI_STACK=3
-# end of Simple WiFi Stack settings
+# end of ESP WiFi Stack settings
 
 #
 # Compiler options
