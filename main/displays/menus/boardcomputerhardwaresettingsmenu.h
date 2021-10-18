@@ -162,7 +162,7 @@ class BoardcomputerHardwareSettingsMenu :
 public:
     BoardcomputerHardwareSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          SwitchScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&icons::lock>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          SwitchScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
         constructMenuItem<makeComponent<MenuItem, GasText,                                                      DisabledColor, StaticFont<2>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, BremsText,                                                    DisabledColor, StaticFont<2>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CALIBRATE>,                                   SwitchScreenAction<CalibrateDisplay>>>();

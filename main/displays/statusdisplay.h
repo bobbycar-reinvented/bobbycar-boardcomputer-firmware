@@ -293,7 +293,7 @@ void StatusDisplay::BoardStatus::redraw(const Controller &controller)
             tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
             tft.setSwapBytes(true);
-            tft.pushImage(10, m_y+40, icons::alert.WIDTH, icons::alert.HEIGHT, icons::alert.buffer);
+            tft.pushImage(10, m_y+40, bobbyicons::alert.WIDTH, bobbyicons::alert.HEIGHT, bobbyicons::alert.buffer);
             tft.setSwapBytes(false);
         }
 

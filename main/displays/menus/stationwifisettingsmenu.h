@@ -35,7 +35,7 @@ public:
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFIENABLED>,     ToggleBoolAction, CheckboxIcon, WifiEnabledAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFITRIGGERSCAN>, WifiScanAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFISCANRESULTS>, SwitchScreenAction<WifiScanMenu>, StaticMenuItemIcon<&icons::scan>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFISCANRESULTS>, SwitchScreenAction<WifiScanMenu>, StaticMenuItemIcon<&bobbyicons::scan>>>();
         constructMenuItem<makeComponent<MenuItem, WifiStatusText,                   StaticFont<2>, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, WifiScanStatusText,               StaticFont<2>, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, WifiHostnameText,                 StaticFont<2>, DisabledColor, DummyAction>>();
