@@ -16,6 +16,7 @@
 #include "icons/info.h"
 #include "icons/demos.h"
 #include "icons/back.h"
+#include "icons/update.h"
 #include "texts.h"
 #include "globals.h"
 #include "accessors/settingsaccessors.h"
@@ -35,6 +36,7 @@ class BuzzerMenu;
 class AboutMenu;
 class MainMenu;
 class CrashMenu;
+class SelectBuildServerMenu;
 }
 
 using namespace espgui;
@@ -74,6 +76,9 @@ public:
 #endif
 #ifdef FEATURE_CLOUD
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSETTINGS>,                 SwitchScreenAction<CloudSettingsMenu>>>();
+#endif
+#ifdef FEATURE_OTA
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILDSERVERMENU>,         SwitchScreenAction<SelectBuildServerMenu>, StaticMenuItemIcon<&icons::update>>>();
 #endif
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIME>,                          SwitchScreenAction<TimeSettingsMenu>, StaticMenuItemIcon<&bobbyicons::time>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESSETTINGS>,                 SwitchScreenAction<ModesSettingsMenu>>>();

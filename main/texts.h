@@ -471,6 +471,9 @@ constexpr char TEXT_CRASHMENU[] = "Crash Menu";
 constexpr char TEXT_CRASH_ASSERT[] = "assert(0)";
 constexpr char TEXT_CRASH_DIVZERO[] = "42 / 0";
 
+//SelectBuildServerMenu
+constexpr char TEXT_SELECTBUILDSERVERMENU[] = "Select Buildserver";
+
 #ifdef FEATURE_CAN
 constexpr char TEXT_POWERSUPPLY[] = "Powersupply";
 #endif

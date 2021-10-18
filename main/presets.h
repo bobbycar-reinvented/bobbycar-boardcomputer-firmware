@@ -297,6 +297,7 @@ constexpr Settings defaultSettings {
 StringSettings makeDefaultStringSettings()
 {
     using ConfiguredWifi = StringSettings::ConfiguredWifi;
+    using ConfiguredOtaServer = StringSettings::ConfiguredOtaServer;
 
     return {
         .wifis = std::array<ConfiguredWifi, 10> {
@@ -322,6 +323,20 @@ StringSettings makeDefaultStringSettings()
 #endif
 #ifdef FEATURE_NTP
         .timeServer = "europe.pool.ntp.org",
+#endif
+#ifdef FEATURE_OTA
+        .otaServers = std::array<ConfiguredOtaServer, 10> {
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+        },
 #endif
     };
 }

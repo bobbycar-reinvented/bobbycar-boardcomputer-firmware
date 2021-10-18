@@ -127,6 +127,7 @@ using namespace std::chrono_literals;
 #include "serialhandler.h"
 #ifdef FEATURE_OTA
 #include "ota.h"
+#include "displays/menus/selectbuildservermenu.h"
 #endif
 #include "presets.h"
 #include "statistics.h"

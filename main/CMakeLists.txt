@@ -5,6 +5,7 @@ set(headers
     bluetoothmode.h
     bluetoothtexthelpers.h
     bmsutils.h
+    buildserver.h
     buttons.h
     can.h
     changevaluedisplay_bluetoothmode.h
@@ -76,6 +77,7 @@ set(headers
     actions/multiaction.h
     actions/rebootaction.h
     actions/savesettingsaction.h
+    actions/selectbuildserveraction.h
     actions/switchprofileaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
     actions/updateswapfrontbackaction.h
@@ -127,6 +129,7 @@ set(headers
     displays/menus/presetsmenu.h
     displays/menus/profilesmenu.h
     displays/menus/selectbatterytypemenu.h
+    displays/menus/selectbuildservermenu.h
     displays/menus/selectmodemenu.h
     displays/menus/settingsmenu.h
     displays/menus/stationwifisettingsmenu.h
