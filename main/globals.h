@@ -45,7 +45,7 @@ char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
 #include GLOBALS_PLUGIN
 #endif
 
-#if !defined(HAS_SIMPLIFIED)
+#if defined(HAS_SIMPLIFIED)
 bool simplified = true;
 #else
 bool simplified = false;
