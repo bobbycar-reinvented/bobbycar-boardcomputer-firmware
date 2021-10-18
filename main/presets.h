@@ -297,7 +297,9 @@ constexpr Settings defaultSettings {
 StringSettings makeDefaultStringSettings()
 {
     using ConfiguredWifi = StringSettings::ConfiguredWifi;
+#ifdef FEATURE_OTA
     using ConfiguredOtaServer = StringSettings::ConfiguredOtaServer;
+#endif
 
     return {
         .wifis = std::array<ConfiguredWifi, 10> {
