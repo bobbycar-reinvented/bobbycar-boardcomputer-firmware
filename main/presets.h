@@ -265,6 +265,13 @@ constexpr Settings::Battery defaultBattery {
     .applyCalibration = true
 };
 
+constexpr Settings::Hybrid defaultHybrid {
+    .hybridMode = UnifiedModelMode::FocTorque,
+    .enable = false,
+    .activationLimit = 1000,
+    .deactivationLimit = 950,
+};
+
 constexpr Settings defaultSettings {
 #ifdef FEATURE_BMS
     .autoConnectBms = false,
@@ -291,6 +298,7 @@ constexpr Settings defaultSettings {
     .ledstrip = defaultLedstrip,
 #endif
     .battery = defaultBattery,
+    .hybrid = defaultHybrid,
     .lockscreen = defaultLockscreen
 };
 
@@ -327,18 +335,19 @@ StringSettings makeDefaultStringSettings()
         .timeServer = "europe.pool.ntp.org",
 #endif
 #ifdef FEATURE_OTA
-        .otaServers = std::array<ConfiguredOtaServer, 2> {
+        .otaServers = std::array<ConfiguredOtaServer, 5> {
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
+            ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },/*
             ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },
-            ConfiguredOtaServer { .name = {}, .url = {} },
-            ConfiguredOtaServer { .name = {}, .url = {} },
-            ConfiguredOtaServer { .name = {}, .url = {} },
             ConfiguredOtaServer { .name = {}, .url = {} },*/
         },
+        .otaServerUrl = {},
 #endif
     };
 }

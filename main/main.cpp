@@ -61,6 +61,9 @@ using namespace std::chrono_literals;
 #include "displays/menus/mainmenu.h"
 #include "displays/menus/tempomatmodesettingsmenu.h"
 #include "displays/menus/modessettingsmenu.h"
+#ifdef FEATURE_LEDSTRIP
+#include "displays/menus/ledstripcolorsmenu.h"
+#endif
 #ifdef FEATURE_MOSFETS
 #include "displays/menus/mosfetsmenu.h"
 #endif
@@ -106,6 +109,8 @@ using namespace std::chrono_literals;
 #include "displays/statusdisplay.h"
 #ifdef FEATURE_OTA
 #include "displays/updatedisplay.h"
+#include "displays/menus/otamenu.h"
+#include "displays/menus/selectotabuildmenu.h"
 #endif
 #include "screens.h"
 #include "dpad.h"

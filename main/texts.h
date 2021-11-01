@@ -195,6 +195,7 @@ constexpr char TEXT_DYNAMICMENU[] = "Dynamic menu";
 //DefaultModeSettingsMenu
 //constexpr char TEXT_DEFAULTMODESETTINGS[] = "Default mode settings";
 constexpr char TEXT_MODELMODE[] = "Model mode";
+constexpr char TEXT_HYBRIDMODE[] = "Hybrid mode";
 constexpr char TEXT_SQUAREGAS[] = "Square gas";
 constexpr char TEXT_SQUAREBREMS[] = "Square brems";
 constexpr char TEXT_ENABLESMOOTHINGUP[] = "Enable up smoothing";
@@ -210,6 +211,10 @@ constexpr char TEXT_SUBGASVAL[] = "Add Gas";
 constexpr char TEXT_SUBBRAKEVAL[] = "Add Brake";
 constexpr char TEXT_ADDGASVAL[] = "Sub Gas";
 constexpr char TEXT_ADDBRAKEVAL[] = "Sub Brake";
+constexpr char TEXT_HYBRIDENABLE[] = "Enable Hybrid mode";
+constexpr char TEXT_HYBRIDACTIVATIONLIMIT[] = "Hybrid activation-limit";
+constexpr char TEXT_HYBRIDDEACTIVATIONLIMIT[] = "Hybrid deactivation-limit";
+constexpr char TEXT_LIMITS_TO_NEAR[] = "Hybrid limits too near (>20)";
 //constexpr char TEXT_BACK[] = "Back";
 
 //DynamicDebugMenu
@@ -284,6 +289,7 @@ constexpr char TEXT_STVO_FRONTLENGTH[] = "StVO Front Length";
 constexpr char TEXT_STVO_ENABLEFRONTLIGHT[] = "StVO Front Enable";
 constexpr char TEXT_ANIMATION_MULTIPLIER[] = "Animation Multiplier";
 constexpr char TEXT_LEDSTRIP_BRIGHTNESS[] = "Ledstrip Brightness";
+constexpr char TEXT_LEDSTRIP_ALLCUSTOMOFF[] = "All custom off";
 //constexpr char TEXT_BACK[] = "Back";
 
 //LedstripSelectAnimationMenu
@@ -291,6 +297,7 @@ constexpr char TEXT_SELECTANIMATION[] = "Select Animation";
 constexpr char TEXT_ANIMATION_DEFAULTRAINBOW[] = "Default Rainbow";
 constexpr char TEXT_ANIMATION_BETTERRAINBOW[] = "Better Rainbow";
 constexpr char TEXT_ANIMATION_SPEEDSYNCANIMATION[] = "Speed Sync";
+constexpr char TEXT_ANIMATION_CUSTOMCOLOR[] = "Custom Color";
 
 //LedstripSelectBlinkMenu
 constexpr char TEXT_ANIMATION_BLINKNONE[] = "Blink Off";
@@ -474,6 +481,18 @@ constexpr char TEXT_CRASH_DIVZERO[] = "42 / 0";
 //SelectBuildServerMenu
 constexpr char TEXT_SELECTBUILDSERVERMENU[] = "Select Buildserver";
 constexpr char TEXT_NOBUILDSERVERCONFIGURED[] = "Not configured";
+
+//Otamenu
+constexpr char TEXT_UPDATENOW[] = "Update now";
+constexpr char TEXT_SELECTBUILD[] = "Select build";
+constexpr char TEXT_OTA_NOBUILDSERVERAVAILABLE[] = "E:No server saved.";
+constexpr char TEXT_OTA_NOBUILDSERVERSELECTED[] = "E:No server selected.";
+constexpr char TEXT_OTA_NOCONNECTION[] = "E:No internet.";
+constexpr char TEXT_OTA_WAITFORRESPONSE[] = "Wait for response...";
+constexpr char TEXT_REDOWNLOAD[] = "Reload list";
+
+//LedstripColorMenu
+constexpr char TEXT_LEDSTRIPCOLORMENU[] = "Customize Ledstrip";
 
 #ifdef FEATURE_CAN
 constexpr char TEXT_POWERSUPPLY[] = "Powersupply";

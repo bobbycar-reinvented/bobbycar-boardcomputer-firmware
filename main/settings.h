@@ -3,6 +3,7 @@
 // system includes
 #include <cstdint>
 #include <array>
+#include <FastLED.h>
 
 // esp-idf includes
 #include <esp_wifi_types.h>
@@ -184,6 +185,13 @@ struct Settings
         bool applyCalibration;
     } battery;
 
+    struct Hybrid {
+        UnifiedModelMode hybridMode;
+        bool enable;
+        int16_t activationLimit;
+        int16_t deactivationLimit;
+    } hybrid;
+
     struct LockscreenSettings {
         bool allowPresetSwitch;
         std::array<int8_t, 4> pin;
@@ -300,6 +308,11 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("batF50VCal", battery.front50VoltCalibration);
     callable("batB50VCal", battery.back50VoltCalibration);
     callable("applyBatCal", battery.applyCalibration);
+
+    callable("hybridMode", hybrid.hybridMode);
+    callable("hybridEn", hybrid.enable);
+    callable("hybridAcL", hybrid.activationLimit);
+    callable("hybridDeacL", hybrid.deactivationLimit);
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
     callable("lockscreenPin", lockscreen.pin);

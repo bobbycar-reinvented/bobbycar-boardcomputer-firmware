@@ -89,6 +89,26 @@ void handleSerial()
             InputDispatcher::backButton(true);
             InputDispatcher::backButton(false);
             break;
+        case 'z':
+        case 'Z':
+#ifndef LEDSTRIP_WRONG_DIRECTION
+            InputDispatcher::blinkLeftButton(true);
+            InputDispatcher::blinkLeftButton(false);
+#else
+            InputDispatcher::blinkRightButton(true);
+            InputDispatcher::blinkRightButton(false);
+#endif
+            break;
+        case 'u':
+        case 'U':
+#ifndef LEDSTRIP_WRONG_DIRECTION
+            InputDispatcher::blinkRightButton(true);
+            InputDispatcher::blinkRightButton(false);
+#else
+            InputDispatcher::blinkLeftButton(true);
+            InputDispatcher::blinkLeftButton(false);
+#endif
+            break;
         }
     }
 }

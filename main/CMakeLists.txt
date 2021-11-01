@@ -77,7 +77,6 @@ set(headers
     actions/multiaction.h
     actions/rebootaction.h
     actions/savesettingsaction.h
-    actions/selectbuildserveraction.h
     actions/switchprofileaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
     actions/updateswapfrontbackaction.h
@@ -117,6 +116,7 @@ set(headers
     displays/menus/invertmenu.h
     displays/menus/larsmmodesettingsmenu.h
     displays/menus/ledstripmenu.h
+    displays/menus/ledstripcolorsmenu.h
     displays/menus/ledstripselectanimationmenu.h
     displays/menus/ledstripselectblinkmenu.h
     displays/menus/limitssettingsmenu.h
@@ -126,6 +126,8 @@ set(headers
     displays/menus/mosfetsmenu.h
     displays/menus/motorfeedbackdebugmenu.h
     displays/menus/motorstatedebugmenu.h
+    displays/menus/otamenu.h
+    displays/menus/selectotabuildmenu.h
     displays/menus/presetsmenu.h
     displays/menus/profilesmenu.h
     displays/menus/selectbatterytypemenu.h
@@ -151,6 +153,7 @@ set(headers
     icons/battery.h
     icons/bluetooth.h
     icons/bms.h
+    icons/bobbycar.h
     icons/buzzer.h
     icons/close.h
     icons/demos.h
@@ -328,6 +331,7 @@ set(sources
     icons/battery.cpp
     icons/bluetooth.cpp
     icons/bms.cpp
+    icons/bobbycar.cpp
     icons/buzzer.cpp
     icons/close.cpp
     icons/demos.cpp
