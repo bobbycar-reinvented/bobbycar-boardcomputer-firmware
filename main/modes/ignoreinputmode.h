@@ -1,12 +1,9 @@
 #pragma once
 
-#include "modeinterface.h"
-#include "globals.h"
-#include "utils.h"
-
+// local includes
 #include "bobbycar-common.h"
+#include "modeinterface.h"
 
-namespace {
 class IgnoreInputMode : public ModeInterface
 {
 public:
@@ -24,20 +21,3 @@ private:
     const bobbycar::protocol::ControlType m_ctrlTyp;
     const bobbycar::protocol::ControlMode m_ctrlMod;
 };
-
-void IgnoreInputMode::update()
-{
-    for (bobbycar::protocol::serial::MotorState &motor : motors())
-    {
-        motor.ctrlTyp = m_ctrlTyp;
-        motor.ctrlMod = m_ctrlMod;
-        motor.pwm = m_pwm;
-        motor.cruiseCtrlEna = false;
-        motor.nCruiseMotTgt = 0;
-    }
-
-    fixCommonParams();
-
-    sendCommands();
-}
-}

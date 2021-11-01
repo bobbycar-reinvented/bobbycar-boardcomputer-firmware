@@ -4,7 +4,6 @@
 #include <array>
 #include <string>
 
-namespace {
 struct StringSettings
 {
     struct ConfiguredWifi {
@@ -29,7 +28,6 @@ struct StringSettings
 #ifdef FEATURE_NTP
     std::string timeServer;
 #endif
-
 
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
@@ -96,17 +94,17 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
     callable("otaName3",    otaServers[3].name);
     callable("otaUrl3",     otaServers[3].url);
     callable("otaName4",    otaServers[4].name);
-    callable("otaUrl4",     otaServers[4].url);/*
-    callable("otaName5",    otaServers[5].name);
-    callable("otaUrl5",     otaServers[5].url);
-    callable("otaName6",    otaServers[6].name);
-    callable("otaUrl6",     otaServers[6].url);
-    callable("otaName7",    otaServers[7].name);
-    callable("otaUrl7",     otaServers[7].url);
-    callable("otaName8",    otaServers[8].name);
-    callable("otaUrl8",     otaServers[8].url);
-    callable("otaName9",    otaServers[9].name);
-    callable("otaUrl9",     otaServers[9].url);*/
+    callable("otaUrl4",     otaServers[4].url);
+//    callable("otaName5",    otaServers[5].name);
+//    callable("otaUrl5",     otaServers[5].url);
+//    callable("otaName6",    otaServers[6].name);
+//    callable("otaUrl6",     otaServers[6].url);
+//    callable("otaName7",    otaServers[7].name);
+//    callable("otaUrl7",     otaServers[7].url);
+//    callable("otaName8",    otaServers[8].name);
+//    callable("otaUrl8",     otaServers[8].url);
+//    callable("otaName9",    otaServers[9].name);
+//    callable("otaUrl9",     otaServers[9].url);
 
     callable("otaserver", otaServerUrl);
 #endif
@@ -115,5 +113,4 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
 template<typename T>
 void StringSettings::executeForEveryProfileSetting(T &&callable)
 {
-}
 }

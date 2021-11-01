@@ -22,7 +22,6 @@
 #endif
 #include "unifiedmodelmode.h"
 
-namespace {
 enum class LarsmModeMode : uint8_t { Mode1, Mode2, Mode3, Mode4 };
 
 struct Settings
@@ -357,5 +356,4 @@ void Settings::executeForEveryProfileSetting(T &&callable)
     callable("larsm.modelMode", larsmMode.modelMode);
     callable("larsm.mode", larsmMode.mode);
     callable("larsm.iters", larsmMode.iterations);
-}
 }
