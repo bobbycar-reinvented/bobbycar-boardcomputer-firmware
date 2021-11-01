@@ -96,7 +96,8 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
 };
 
 constexpr Settings::WifiSettings defaultWifiSettings {
-    .wifiEnabled = true
+    .wifiStaEnabled = true,
+    .wifiApEnabled = true
 };
 
 #ifdef FEATURE_BLUETOOTH

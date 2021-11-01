@@ -57,7 +57,7 @@ wifi_stack::config wifi_create_config()
 
 std::optional<wifi_stack::sta_config> wifi_create_sta_config()
 {
-    if (!settings.wifiSettings.wifiEnabled)
+    if (!settings.wifiSettings.wifiStaEnabled)
         return std::nullopt;
 
     return wifi_stack::sta_config {
@@ -80,6 +80,9 @@ std::optional<wifi_stack::sta_config> wifi_create_sta_config()
 
 std::optional<wifi_stack::ap_config> wifi_create_ap_config()
 {
+    if (!settings.wifiSettings.wifiApEnabled)
+        return std::nullopt;
+
     return wifi_stack::ap_config {
         .hostname = deviceName,
         .ssid = deviceName,

@@ -5,8 +5,11 @@
 #include "menuitem.h"
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
+#include "actions/toggleboolaction.h"
+#include "checkboxicon.h"
 #include "icons/back.h"
 #include "wifitexthelpers.h"
+#include "accessors/settingsaccessors.h"
 #include "texts.h"
 
 // forward declares
@@ -25,6 +28,7 @@ class AccessPointWifiSettingsMenu :
 public:
     AccessPointWifiSettingsMenu()
     {
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFIAPENABLED>,  ToggleBoolAction, CheckboxIcon, WifiApEnabledAccessor>>();
         constructMenuItem<makeComponent<MenuItem, WifiSoftApGetStationNumText,                  StaticFont<2>, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, WifiSoftApIpText,                             StaticFont<2>, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, WifiSoftApBroadcastIpText,                    StaticFont<2>, DisabledColor, DummyAction>>();

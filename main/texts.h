@@ -7,6 +7,7 @@ constexpr char TEXT_BACK[] = "Back";
 
 //AccessPointWifiSettingsMenu
 constexpr char TEXT_ACCESSPOINTWIFISETTINGS[] = "Access Point WiFi settings";
+constexpr char TEXT_WIFIAPENABLED[] = "AP enabled";
 //constexpr char TEXT_BACK[] = "Back";
 
 #ifdef TEXTS_PLUGIN
@@ -151,7 +152,7 @@ constexpr char TEXT_CANRECEIVETIMEOUT[] = "CanReceiveTimeout";
 
 //StationWifiSettingsMenu
 constexpr char TEXT_STATIONWIFISETTINGS[] = "Station WiFi settings";
-constexpr char TEXT_WIFIENABLED[] = "WiFi enabled";
+constexpr char TEXT_WIFISTAENABLED[] = "STA enabled";
 constexpr char TEXT_WIFITRIGGERSCAN[] = "Trigger Scan";
 constexpr char TEXT_WIFISCANRESULTS[] = "WiFi scan results";
 //constexpr char TEXT_BACK[] = "Back";

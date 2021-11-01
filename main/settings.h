@@ -46,7 +46,8 @@ struct Settings
     } limits;
 
     struct WifiSettings {
-        bool wifiEnabled;
+        bool wifiStaEnabled;
+        bool wifiApEnabled;
     } wifiSettings;
 
 #ifdef FEATURE_BLUETOOTH
@@ -216,7 +217,8 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("revBeepDur0", buzzer.reverseBeepDuration0);
     callable("revBeepDur1", buzzer.reverseBeepDuration1);
 
-    callable("wifiEnabled", wifiSettings.wifiEnabled);
+    callable("wifiStaEnabled", wifiSettings.wifiStaEnabled);
+    callable("wifiApEnabled", wifiSettings.wifiApEnabled);
 
 #ifdef FEATURE_BLUETOOTH
     callable("autoBluetoothMo", bluetoothSettings.autoBluetoothMode);
