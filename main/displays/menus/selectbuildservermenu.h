@@ -45,7 +45,6 @@ public:
             stringSettings.otaUrl = m_buildserver_url;
         }
         saveSettings();
-        redownload = true;
         url_for_latest.clear();
         url_for_hashes.clear();
         availableVersions = {};
