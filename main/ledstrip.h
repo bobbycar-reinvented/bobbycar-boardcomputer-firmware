@@ -149,13 +149,10 @@ void updateLedStrip()
            std::fill(center + settings.ledstrip.smallOffset + 1U, center + settings.ledstrip.bigOffset + 1U, CRGB{255, 0, 0}); // Left
        }
 
-       if (settings.ledstrip.stvoFrontEnable && settings.ledstrip.stvoFrontLength > 0)
+       if (settings.ledstrip.stvoFrontEnable)
        {
-
-           std::fill(std::begin(leds) + settings.ledstrip.stvoFrontOffset, std::begin(leds) + settings.ledstrip.stvoFrontOffset + settings.ledstrip.stvoFrontLength - settings.ledstrip.centerOffset, CRGB{255,255,255});
-           std::fill(std::end(leds) - settings.ledstrip.stvoFrontOffset, std::end(leds) - settings.ledstrip.stvoFrontOffset - settings.ledstrip.stvoFrontLength + settings.ledstrip.centerOffset, CRGB{255,255,255});
-           // std::fill(std::begin(leds) + settings.ledstrip.stvoFrontOffset, std::begin(leds) + settings.ledstrip.stvoFrontOffset + settings.ledstrip.stvoFrontLength, CRGB{255, 255, 255});
-           // std::fill(std::end(leds) - settings.ledstrip.stvoFrontOffset - settings.ledstrip.stvoFrontLength, std::end(leds) - settings.ledstrip.stvoFrontOffset, CRGB{255, 255, 255});
+           std::fill(std::begin(leds) + settings.ledstrip.stvoFrontOffset, std::begin(leds) + settings.ledstrip.stvoFrontOffset + settings.ledstrip.stvoFrontLength, CRGB{255, 255, 255});
+           std::fill(std::end(leds) - settings.ledstrip.stvoFrontOffset - settings.ledstrip.stvoFrontLength, std::end(leds) - settings.ledstrip.stvoFrontOffset, CRGB{255, 255, 255});
        }
     }
 
