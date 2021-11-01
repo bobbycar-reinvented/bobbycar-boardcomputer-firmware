@@ -51,7 +51,14 @@ wifi_stack::config wifi_create_config()
 {
     return wifi_stack::config {
         .sta = wifi_create_sta_config(),
-        .ap = wifi_create_ap_config()
+        .ap = wifi_create_ap_config(),
+        .country = wifi_country_t {
+             .cc = { 'A', 'T', '\0' },
+             .schan = 1,
+             .nchan = 13,
+             .max_tx_power = 30,
+             .policy = WIFI_COUNTRY_POLICY_MANUAL
+         }
     };
 }
 
