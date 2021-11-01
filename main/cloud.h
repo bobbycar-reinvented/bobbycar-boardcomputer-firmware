@@ -8,6 +8,7 @@
 #include <espwifistack.h>
 #include <esphttpdutils.h>
 #include <fmt/core.h>
+#include <tickchrono.h>
 
 // local includes
 #include "globals.h"

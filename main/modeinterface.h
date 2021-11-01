@@ -1,9 +1,7 @@
 #pragma once
 
-#include <string>
-
-namespace {
-class ModeInterface {
+class ModeInterface
+{
 public:
     virtual ~ModeInterface() = default;
 
@@ -13,4 +11,4 @@ public:
 
     virtual const char *displayName() const = 0;
 };
-}
+

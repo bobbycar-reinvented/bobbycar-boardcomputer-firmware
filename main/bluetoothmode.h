@@ -2,7 +2,6 @@
 
 #include <cstdint>
 
-namespace {
 #ifdef FEATURE_BLUETOOTH
 enum class BluetoothMode : uint8_t
 {
@@ -11,4 +10,3 @@ enum class BluetoothMode : uint8_t
     Slave
 };
 #endif
-}

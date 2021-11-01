@@ -27,35 +27,34 @@
 #include "settingspersister.h"
 #include "macros_bobbycar.h"
 
-using namespace espgui;
-
-namespace {
-std::optional<int16_t> raw_gas, raw_brems;
-std::optional<float> gas, brems;
+extern std::optional<int16_t> raw_gas, raw_brems;
+extern std::optional<float> gas, brems;
 
 #ifdef FEATURE_GAMETRAK
-int16_t raw_gametrakX, raw_gametrakY, raw_gametrakDist;
-float gametrakX, gametrakY, gametrakDist;
+extern int16_t raw_gametrakX;
+extern int16_t raw_gametrakY;
+extern int16_t raw_gametrakDist;
+extern float gametrakX;
+extern float gametrakY;
+extern float gametrakDist;
 #endif
-float avgSpeed, avgSpeedKmh, sumCurrent;
+extern float avgSpeed;
+extern float avgSpeedKmh;
+extern float sumCurrent;
 
-char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
+extern char deviceName[32];
 
 #ifdef GLOBALS_PLUGIN
 #include GLOBALS_PLUGIN
 #endif
 
-#if defined(HAS_SIMPLIFIED)
-bool simplified = true;
-#else
-bool simplified = false;
-#endif
+extern bool simplified;
 
-Settings settings;
-StringSettings stringSettings;
-SettingsPersister settingsPersister;
+extern Settings settings;
+extern StringSettings stringSettings;
+extern SettingsPersister settingsPersister;
 
-std::array<CRGB, 8> ledstrip_custom_colors = {};
+extern std::array<CRGB, 8> ledstrip_custom_colors;
 
 class Controllers : public std::array<Controller, 2>
 {
@@ -86,22 +85,23 @@ public:
     Controller &back{operator[](1)};
 };
 
-Controllers controllers;
+extern Controllers controllers;
 struct FrontControllerGetter { static Controller &get() { return controllers.front; }};
 struct BackControllerGetter { static Controller &get() { return controllers.back; }};
 
-struct {
+struct Performance {
     espchrono::millis_clock::time_point lastTime;
     int current{};
     int last{};
-} performance;
+};
+extern Performance performance;
 
 #ifdef FEATURE_BLUETOOTH
-BluetoothSerial bluetoothSerial;
+extern BluetoothSerial bluetoothSerial;
 #endif
 
-ModeInterface *lastMode{};
-ModeInterface *currentMode{};
+extern ModeInterface *lastMode;
+extern ModeInterface *currentMode;
 
 #ifdef FEATURE_LEDBACKLIGHT
 constexpr const bool ledBacklightInverted =
@@ -112,4 +112,3 @@ constexpr const bool ledBacklightInverted =
 #endif
 ;
 #endif
-}

@@ -1,0 +1,43 @@
+#include "globals.h"
+
+std::optional<int16_t> raw_gas, raw_brems;
+std::optional<float> gas, brems;
+
+#ifdef FEATURE_GAMETRAK
+int16_t raw_gametrakX{};
+int16_t raw_gametrakY{};
+int16_t raw_gametrakDist{};
+float gametrakX;
+float gametrakY;
+float gametrakDist;
+#endif
+float avgSpeed{};
+float avgSpeedKmh{};
+float sumCurrent{};
+
+char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
+
+bool simplified =
+#if defined(HAS_SIMPLIFIED)
+    true
+#else
+    false
+#endif
+;
+
+Settings settings;
+StringSettings stringSettings;
+SettingsPersister settingsPersister;
+
+std::array<CRGB, 8> ledstrip_custom_colors;
+
+Controllers controllers;
+
+Performance performance;
+
+#ifdef FEATURE_BLUETOOTH
+BluetoothSerial bluetoothSerial;
+#endif
+
+ModeInterface *lastMode{};
+ModeInterface *currentMode{};

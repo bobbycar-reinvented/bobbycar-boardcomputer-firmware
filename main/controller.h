@@ -23,22 +23,14 @@
 class HardwareSerial;
 #endif
 
-namespace {
-
-struct Controller {
+struct Controller
+{
     Controller(
 #ifdef FEATURE_SERIAL
         HardwareSerial &serial,
 #endif
         bool &enableLeft, bool &enableRight, bool &invertLeft, bool &invertRight,
-        int16_t &voltageCalib30V, int16_t &voltageCalib50V) :
-#ifdef FEATURE_SERIAL
-        serial{serial},
-#endif
-        enableLeft{enableLeft}, enableRight{enableRight}, invertLeft{invertLeft}, invertRight{invertRight},
-        voltageCalib30V{voltageCalib30V}, voltageCalib50V{voltageCalib50V}
-    {
-    }
+        int16_t &voltageCalib30V, int16_t &voltageCalib50V);
 //    Controller(const Controller &) = delete;
 //    Controller &operator=(const Controller &) = delete;
 
@@ -61,18 +53,5 @@ struct Controller {
     FeedbackParser parser{serial, feedbackValid, feedback};
 #endif
 
-    float getCalibratedVoltage(bool applyCalibration) const
-    {
-        float voltage = feedback.batVoltage;
-        if (applyCalibration)
-        {
-            voltage = ((voltage - float(voltageCalib30V)) * (20.f / (float(voltageCalib50V) - float(voltageCalib30V))) + 30.f);
-        }
-        else
-        {
-            voltage = voltage / 100.;
-        }
-        return voltage;
-    }
+    float getCalibratedVoltage(bool applyCalibration) const;
 };
-}
