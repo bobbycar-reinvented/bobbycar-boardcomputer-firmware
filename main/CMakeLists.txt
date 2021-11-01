@@ -30,6 +30,7 @@ set(headers
     globals.h
     ledstripdefines.h
     ledstrip.h
+    newsettings.h
     macros_bobbycar.h
     modeinterface.h
     ota.h
@@ -59,6 +60,7 @@ set(headers
     accessors/globalaccessors.h
     accessors/settingsaccessors.h
     accessors/wifiaccessors.h
+    actions/assertaction.h
     actions/bluetoothbeginaction.h
     actions/bluetoothbeginmasteraction.h
     actions/bluetoothconnectbmsaction.h
@@ -69,6 +71,7 @@ set(headers
     actions/bmsturnoffdischargeaction.h
     actions/bmsturnonchargeaction.h
     actions/bmsturnondischargeaction.h
+    actions/dividebyzeroaction.h
     actions/erasenvsaction.h
     actions/ledstripanimationactions.h
     actions/ledstripblinkactions.h
@@ -91,6 +94,7 @@ set(headers
     displays/gametrakcalibratedisplay.h
     displays/garagedisplay.h
     displays/graphdisplay.h
+    displays/ledstripcolorsdisplay.h
     displays/lockscreen.h
     displays/menus/aboutmenu.h
     displays/menus/accesspointwifisettingsmenu.h
@@ -116,7 +120,6 @@ set(headers
     displays/menus/invertmenu.h
     displays/menus/larsmmodesettingsmenu.h
     displays/menus/ledstripmenu.h
-    displays/menus/ledstripcolorsmenu.h
     displays/menus/ledstripselectanimationmenu.h
     displays/menus/ledstripselectblinkmenu.h
     displays/menus/limitssettingsmenu.h
@@ -211,6 +214,7 @@ set(sources
     globals.cpp
     ledstrip.cpp
     ledstripdefines.cpp
+    newsettings.cpp
     macros_bobbycar.cpp
     main.cpp
     modeinterface.cpp
@@ -241,6 +245,7 @@ set(sources
     accessors/globalaccessors.cpp
     accessors/settingsaccessors.cpp
     accessors/wifiaccessors.cpp
+    actions/assertaction.cpp
     actions/bluetoothbeginaction.cpp
     actions/bluetoothbeginmasteraction.cpp
     actions/bluetoothconnectbmsaction.cpp
@@ -251,6 +256,7 @@ set(sources
     actions/bmsturnoffdischargeaction.cpp
     actions/bmsturnonchargeaction.cpp
     actions/bmsturnondischargeaction.cpp
+    actions/dividebyzeroaction.cpp
     actions/erasenvsaction.cpp
     actions/ledstripanimationactions.cpp
     actions/ledstripblinkactions.cpp
@@ -273,6 +279,7 @@ set(sources
     displays/gametrakcalibratedisplay.cpp
     displays/garagedisplay.cpp
     displays/graphdisplay.cpp
+    displays/ledstripcolorsdisplay.cpp
     displays/lockscreen.cpp
     displays/menus/aboutmenu.cpp
     displays/menus/accesspointwifisettingsmenu.cpp
@@ -362,7 +369,7 @@ set(dependencies
     libsodium freertos nvs_flash esp_http_server esp_https_ota mdns app_update esp_system esp_websocket_client driver
     arduino-esp32 ArduinoJson esp-nimble-cpp FastLED-idf TFT_eSPI
     bobbycar-protocol cpputils cxx-ring-buffer date
-    espasynchttpreq espasyncota espchrono espcpputils esp-gui-lib esphttpdutils espwifistack expected fmt
+    espasynchttpreq espasyncota espchrono espcpputils espconfiglib esp-gui-lib esphttpdutils espwifistack expected fmt
 )
 
 idf_component_register(

@@ -58,3 +58,6 @@
 [submodule "components/esp-gui-lib"]
 	path = components/esp-gui-lib
 	url = ../../0xFEEDC0DE64/esp-gui-lib.git
+[submodule "components/espconfiglib"]
+	path = components/espconfiglib
+	url = ../../0xFEEDC0DE64/espconfiglib.git

@@ -1,18 +1,17 @@
 #pragma once
 
+// 3rdparty lib includes
+#include <accessorinterface.h>
+
 // local includes
 #include "globals.h"
-#include "accessorinterface.h"
 #include "utils.h"
 
-using namespace espgui;
-
-namespace {
 //! Special type of RefAccessor that also saves settings after setValue()
 template<typename T>
-struct RefAccessorSaveSettings : public virtual RefAccessor<T>
+struct RefAccessorSaveSettings : public virtual espgui::RefAccessor<T>
 {
-    void setValue(T value) override { RefAccessor<T>::setValue(value); saveSettings(); };
+    void setValue(T value) override { espgui::RefAccessor<T>::setValue(value); saveSettings(); };
 };
 
 #ifdef FEATURE_BMS
@@ -26,7 +25,7 @@ struct ReverseBeepDuration1Accessor : public RefAccessorSaveSettings<int16_t> { 
 
 struct IMotMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.iMotMax; } };
 struct IDcMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.iDcMax; } };
-struct NMotMaxKmhAccessor : public virtual AccessorInterface<int16_t>
+struct NMotMaxKmhAccessor : public virtual espgui::AccessorInterface<int16_t>
 {
     int16_t getValue() const override { return convertToKmh(settings.limits.nMotMax); }
     void setValue(int16_t value) override { settings.limits.nMotMax = convertFromKmh(value); saveSettings(); }
@@ -50,7 +49,7 @@ struct CloudEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRe
 struct CloudTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.cloudSettings.cloudTransmitTimeout; } };
 #endif
 
-struct TimezoneOffsetAccessor : public virtual AccessorInterface<int32_t>
+struct TimezoneOffsetAccessor : public virtual espgui::AccessorInterface<int32_t>
 {
     int32_t getValue() const override { return settings.timeSettings.timezoneOffset.count(); }
     void setValue(int32_t value) override { settings.timeSettings.timezoneOffset = espchrono::minutes32{value}; saveSettings(); }
@@ -59,7 +58,7 @@ struct DaylightSavingModeAccessor : public RefAccessorSaveSettings<espchrono::Da
 #ifdef FEATURE_NTP
 struct TimeServerEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.timeSettings.timeServerEnabled; } };
 struct TimeSyncModeAccessor : public RefAccessorSaveSettings<sntp_sync_mode_t> { sntp_sync_mode_t &getRef() const override { return settings.timeSettings.timeSyncMode; } };
-struct TimeSyncIntervalAccessor : public virtual AccessorInterface<int32_t>
+struct TimeSyncIntervalAccessor : public virtual espgui::AccessorInterface<int32_t>
 {
     int32_t getValue() const override { return settings.timeSettings.timeSyncInterval.count(); }
     void setValue(int32_t value) override { settings.timeSettings.timeSyncInterval = espchrono::milliseconds32{value}; saveSettings(); }
@@ -77,7 +76,7 @@ struct BackLeftInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &g
 struct BackRightInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.invertBackRight; } };
 
 struct WheelDiameterMmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.wheelDiameter; } };
-struct WheelDiameterInchAccessor : public virtual AccessorInterface<float>
+struct WheelDiameterInchAccessor : public virtual espgui::AccessorInterface<float>
 {
     float getValue() const override { return convertToInch(settings.controllerHardware.wheelDiameter); }
     void setValue(float value) override { settings.controllerHardware.wheelDiameter = convertFromInch(value); saveSettings(); }
@@ -183,4 +182,3 @@ struct BatteryApplyCalibrationAccessor : public RefAccessorSaveSettings<bool> { 
 struct LockscreenAllowPresetSwitchAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.allowPresetSwitch; } };
 template<uint8_t index>
 struct LockscreenPinDigitAccessor : public RefAccessorSaveSettings<int8_t> { int8_t &getRef() const override { return settings.lockscreen.pin[index]; } };
-}

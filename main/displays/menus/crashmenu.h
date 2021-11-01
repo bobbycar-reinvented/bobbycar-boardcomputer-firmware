@@ -4,19 +4,14 @@
 #include "menudisplay.h"
 #include "utils.h"
 #include "actions/dummyaction.h"
+#include "actions/assertaction.h"
+#include "actions/dividebyzeroaction.h"
 #include "icons/back.h"
 #include "texts.h"
-#include <esp_log.h>
-
 
 // forward declares
 namespace {
 class SettingsMenu;
-
-class AssertAction : public virtual ActionInterface { public: void triggered() override { assert(0); } };
-class DivideByZeroAction : public virtual ActionInterface { public: void triggered() override { int goodbye = 42 / 0; ESP_LOGW("divByZero", "%i", goodbye); } };
-
-
 } // namespace
 
 using namespace espgui;

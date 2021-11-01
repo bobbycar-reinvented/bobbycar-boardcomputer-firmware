@@ -62,7 +62,7 @@ using namespace std::chrono_literals;
 #include "displays/menus/tempomatmodesettingsmenu.h"
 #include "displays/menus/modessettingsmenu.h"
 #ifdef FEATURE_LEDSTRIP
-#include "displays/menus/ledstripcolorsmenu.h"
+#include "displays/ledstripcolorsdisplay.h"
 #endif
 #ifdef FEATURE_MOSFETS
 #include "displays/menus/mosfetsmenu.h"

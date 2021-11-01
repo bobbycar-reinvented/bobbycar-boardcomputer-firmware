@@ -1,31 +1,31 @@
 #pragma once
 
+// esp-idf includes
+#include <esp_log.h>
+
+// 3rdparty lib includes
 #include <TFT_eSPI.h>
 #include <FastLED.h>
 #include <cpputils.h>
+#include <menuitem.h>
+#include <actions/switchscreenaction.h>
+#include <actioninterface.h>
 
-// Local includes
+// local includes
 #include "menudisplay.h"
 #include "utils.h"
-#include "menuitem.h"
 #include "ledstrip.h"
 #include "icons/back.h"
 #include "icons/bobbycar.h"
 #include "texts.h"
 #include "actions/dummyaction.h"
-#include "actions/switchscreenaction.h"
-#include "actioninterface.h"
 #include "globals.h"
-#include "esp_log.h"
-
-using namespace espgui;
 
 namespace  {
-    class LedstripMenu;
+class LedstripMenu;
 }
 
 namespace {
-
 static int8_t selected_side = 7;
 static int8_t selected_color;
 bool state_select_color{false};
@@ -53,46 +53,56 @@ const std::array<uint16_t, 8> tft_colors = {
     TFT_MAGENTA
 };
 
-class LedstripColorsMenuBackAction : ActionInterface
+class LedstripColorsDisplay : public espgui::DisplayWithTitle
 {
-public:
-    void triggered() {
-        if(!state_select_color)
-        {
-            switchScreen<LedstripMenu>();
-        }
-        else
-        {
-            state_select_color = false;
-            tft.fillRect(0, 228, tft.width(), ((tft.width() - 40) / 8) + 4, TFT_BLACK);
-        }
-    }
-};
+    using Base = espgui::DisplayWithTitle;
 
-class LedstripColorsMenu :
-        public MenuDisplay,
-        public StaticText<TEXT_LEDSTRIPCOLORMENU>,
-        public BackActionInterface<LedstripColorsMenuBackAction>
-{
-    using Base = MenuDisplay;
 public:
+    std::string text() const override;
+    void back() override;
+    void initScreen() override;
     void redraw() override;
     void rotate(int offset) override;
     void confirm() override;
+
     void drawColors();
     void drawSide(Bobbycar_Side side, unsigned int color);
     void clearSides();
-    LedstripColorsMenu() {}
+
 private:
     bool already_drew_circle{false};
 };
 
-void LedstripColorsMenu::redraw()
+std::string LedstripColorsDisplay::text() const
 {
-    Base::redraw();
+    return TEXT_LEDSTRIPCOLORMENU;
+}
+
+void LedstripColorsDisplay::back()
+{
+    if(!state_select_color)
+    {
+        switchScreen<LedstripMenu>();
+    }
+    else
+    {
+        state_select_color = false;
+        tft.fillRect(0, 228, tft.width(), ((tft.width() - 40) / 8) + 4, TFT_BLACK);
+    }
+}
+
+void LedstripColorsDisplay::initScreen()
+{
+    Base::initScreen();
+
     tft.setSwapBytes(true);
     tft.pushImage(70, 60, bobbyicons::bobbycar.WIDTH, bobbyicons::bobbycar.HEIGHT, bobbyicons::bobbycar.buffer);
     tft.setSwapBytes(false);
+}
+
+void LedstripColorsDisplay::redraw()
+{
+    Base::redraw();
 
     auto y_pos = ((tft.width() - 40) / 8 + 4) + 240;
     if (last_state != state_select_color)
@@ -103,22 +113,19 @@ void LedstripColorsMenu::redraw()
 
     tft.setTextFont(2);
     tft.setTextColor(TFT_WHITE);
-    if(state_select_color)
+
+    tft.drawString(state_select_color ?
+                       "Please select a color!" :
+                       "Please select a side!", 50, y_pos);
+
+    if (!already_drew_circle)
     {
-        tft.drawString("Please select a color!", 50, y_pos);
-    }
-    else
-    {
-        tft.drawString("Please select a side!", 50, y_pos);
-    }
-    if(!already_drew_circle)
-    {
-        this->drawSide(static_cast<Bobbycar_Side>(selected_side), TFT_GOLD);
+        drawSide(static_cast<Bobbycar_Side>(selected_side), TFT_GOLD);
         already_drew_circle = true;
     }
 }
 
-void LedstripColorsMenu::rotate(int offset)
+void LedstripColorsDisplay::rotate(int offset)
 {
     if (offset < 0)
     {
@@ -161,22 +168,22 @@ void LedstripColorsMenu::rotate(int offset)
 
     if (state_select_color)
     {
-        this->drawColors();
+        drawColors();
     }
     else
     {
         tft.fillRect(0, 228, tft.width(), ((tft.width() - 40) / 8) + 4, TFT_BLACK);
-        this->clearSides();
-        this->drawSide(static_cast<Bobbycar_Side>(selected_side), TFT_GOLD);
+        clearSides();
+        drawSide(static_cast<Bobbycar_Side>(selected_side), TFT_GOLD);
     }
 }
 
-void LedstripColorsMenu::confirm()
+void LedstripColorsDisplay::confirm()
 {
     if(!state_select_color)
     {
         state_select_color = true;
-        this->drawColors();
+        drawColors();
     }
     else
     {
@@ -189,7 +196,7 @@ void LedstripColorsMenu::confirm()
     }
 }
 
-void LedstripColorsMenu::drawColors()
+void LedstripColorsDisplay::drawColors()
 {
     uint16_t width = (tft.width() - 40);
     auto cube_width = width / 8;
@@ -205,15 +212,15 @@ void LedstripColorsMenu::drawColors()
     }
 }
 
-void LedstripColorsMenu::clearSides()
+void LedstripColorsDisplay::clearSides()
 {
     for(int index = 0; index < 8; index++)
     {
-        this->drawSide(static_cast<Bobbycar_Side>(index), TFT_BLACK);
+        drawSide(static_cast<Bobbycar_Side>(index), TFT_BLACK);
     }
 }
 
-void LedstripColorsMenu::drawSide(Bobbycar_Side side, unsigned int color)
+void LedstripColorsDisplay::drawSide(Bobbycar_Side side, unsigned int color)
 {
     const auto middle = tft.width() / 2;
     const auto width = bobbyicons::bobbycar.WIDTH;

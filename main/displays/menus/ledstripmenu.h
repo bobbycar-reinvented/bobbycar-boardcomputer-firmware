@@ -23,7 +23,7 @@
 // forward declares
 namespace {
 class MainWindow;
-class LedstripColorsMenu;
+class LedstripColorsDisplay;
 } // namespace
 
 using namespace espgui;
@@ -124,7 +124,7 @@ class LedstripMenu :
 public:
     LedstripMenu()
     {
-                    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIPCOLORMENU>,                               SwitchScreenAction<LedstripColorsMenu>>>();
+                    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIPCOLORMENU>,                               SwitchScreenAction<LedstripColorsDisplay>>>();
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDANIMATION>, ToggleBoolAction, CheckboxIcon,    EnableLedAnimationAccessor>>();
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BRAKELIGHTS>,  ToggleBoolAction, CheckboxIcon,    EnableBrakeLightsAccessor>>();
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLINKBEEP>, ToggleBoolAction, CheckboxIcon,       EnableBeepWhenBlinkAccessor>>();
