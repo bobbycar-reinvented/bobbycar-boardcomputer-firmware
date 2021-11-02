@@ -1,76 +1,17 @@
 #pragma once
 
-// local includes
+// 3rdparty lib includes
 #include "menudisplay.h"
-#include "utils.h"
-#include "changevaluedisplay.h"
-#include "menuitem.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
+
+// local includes
 #include "texts.h"
-#include "accessors/settingsaccessors.h"
-
-using namespace espgui;
-
-namespace {
-using IMotMaxChangeScreen = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_IMOTMAX>,
-    IMotMaxAccessor,
-    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
-    SwitchScreenAction<LimitsSettingsMenu>
->;
-using IDcMaxChangeScreen = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_IDCMAX>,
-    IDcMaxAccessor,
-    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
-    SwitchScreenAction<LimitsSettingsMenu>
->;
-using NMotMaxKmhChangeScreen = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_NMOTMAXKMH>,
-    NMotMaxKmhAccessor,
-    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
-    SwitchScreenAction<LimitsSettingsMenu>
->;
-using NMotMaxRpmChangeScreen = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_NMOTMAX>,
-    NMotMaxRpmAccessor,
-    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
-    SwitchScreenAction<LimitsSettingsMenu>
->;
-using FieldWeakMaxChangeScreen = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_FIELDWEAKMAX>,
-    FieldWeakMaxAccessor,
-    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
-    SwitchScreenAction<LimitsSettingsMenu>
->;
-using PhaseAdvMaxChangeScreen = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_PHASEADVMAX>,
-    PhaseAdvMaxAccessor,
-    BackActionInterface<SwitchScreenAction<LimitsSettingsMenu>>,
-    SwitchScreenAction<LimitsSettingsMenu>
->;
 
 class LimitsSettingsMenu :
-    public MenuDisplay,
-    public StaticText<TEXT_LIMITSSETTINGS>,
-    public BackActionInterface<SwitchScreenAction<SettingsMenu>>
+    public espgui::MenuDisplay,
+    public espgui::StaticText<TEXT_LIMITSSETTINGS>
 {
 public:
-    LimitsSettingsMenu()
-    {
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_IMOTMAX, IMotMaxAccessor>,           SwitchScreenAction<IMotMaxChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_IDCMAX, IDcMaxAccessor>,             SwitchScreenAction<IDcMaxChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NMOTMAXKMH, NMotMaxKmhAccessor>,     SwitchScreenAction<NMotMaxKmhChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NMOTMAX, NMotMaxRpmAccessor>,        SwitchScreenAction<NMotMaxRpmChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_FIELDWEAKMAX, FieldWeakMaxAccessor>, SwitchScreenAction<FieldWeakMaxChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PHASEADVMAX, PhaseAdvMaxAccessor>,   SwitchScreenAction<PhaseAdvMaxChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                           SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
-    }
+    LimitsSettingsMenu();
+
+    void back() override;
 };
-} // namespace

@@ -15,9 +15,12 @@
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/lockscreensettingsmenu.h"
 #include "displays/calibratedisplay.h"
+#include "displays/menus/timersmenu.h"
+#include "displays/menus/settingsmenu.h"
 
 namespace {
-struct GasText : public virtual espgui::TextInterface {
+struct GasText : public virtual espgui::TextInterface
+{
 public:
     std::string text() const override
     {
@@ -27,7 +30,8 @@ public:
                            gas ? fmt::format("{:.02f}", *gas) : "?");
     }
 };
-struct BremsText : public virtual espgui::TextInterface {
+struct BremsText : public virtual espgui::TextInterface
+{
 public:
     std::string text() const override
     {

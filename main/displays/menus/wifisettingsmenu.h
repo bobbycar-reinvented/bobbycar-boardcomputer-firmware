@@ -1,29 +1,17 @@
 #pragma once
 
-// local includes
+// 3rdparty lib includes
 #include "menudisplay.h"
-#include "utils.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
+
+// local includes
 #include "texts.h"
 
-using namespace espgui;
-
-namespace {
-class WifiSettingsMenu;
-
 class WifiSettingsMenu :
-    public MenuDisplay,
-    public StaticText<TEXT_WIFISETTINGS>,
-    public BackActionInterface<SwitchScreenAction<SettingsMenu>>
+    public espgui::MenuDisplay,
+    public espgui::StaticText<TEXT_WIFISETTINGS>
 {
 public:
-    WifiSettingsMenu()
-    {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GENERICWIFISETTINGS>,     SwitchScreenAction<GenericWifiSettingsMenu>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATIONWIFISETTINGS>,     SwitchScreenAction<StationWifiSettingsMenu>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ACCESSPOINTWIFISETTINGS>, SwitchScreenAction<AccessPointWifiSettingsMenu>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
-    }
+    WifiSettingsMenu();
+
+    void back() override;
 };
-} // namespace

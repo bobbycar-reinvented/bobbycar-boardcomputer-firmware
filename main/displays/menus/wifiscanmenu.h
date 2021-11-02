@@ -21,11 +21,6 @@
 #include "texts.h"
 #include "wifi_bobbycar.h"
 
-// forward declares
-namespace {
-class StationWifiSettingsMenu;
-} // namespace
-
 using namespace std::chrono_literals;
 using namespace espgui;
 

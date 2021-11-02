@@ -12,11 +12,6 @@
 #include "accessors/settingsaccessors.h"
 #include "texts.h"
 
-// forward declares
-namespace {
-class WifiSettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

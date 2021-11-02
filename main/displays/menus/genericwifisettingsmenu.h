@@ -13,12 +13,6 @@
 #include "accessors/wifiaccessors.h"
 #include "texts.h"
 
-// forward declares
-namespace {
-class GenericWifiSettingsMenu;
-class WifiSettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {
