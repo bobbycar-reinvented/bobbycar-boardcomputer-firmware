@@ -16,6 +16,7 @@
 #include "cloud.h"
 #include "displays/menus/settingsmenu.h"
 
+#ifdef FEATURE_CLOUD
 namespace {
 using CloudTransmitTimeoutChangeScreen = espgui::makeComponent<
     espgui::ChangeValueDisplay<int16_t>,
@@ -70,3 +71,4 @@ void CloudSettingsMenu::back()
 {
     switchScreen<SettingsMenu>();
 }
+#endif

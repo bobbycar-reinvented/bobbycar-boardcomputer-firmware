@@ -22,6 +22,7 @@
 #include "globals.h"
 #include "displays/menus/ledstripmenu.h"
 
+#ifdef FEATURE_LEDSTRIP
 int8_t selected_side = 7;
 int8_t selected_color;
 bool state_select_color{false};
@@ -238,3 +239,4 @@ void LedstripColorsDisplay::drawSide(Bobbycar_Side side, unsigned int color)
     }
     // espgui::tft.fillCircle(espgui::tft.width() / 2, 140, 100, TFT_BLACK);
 }
+#endif

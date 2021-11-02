@@ -16,6 +16,7 @@
 #include "displays/menus/selectbuildservermenu.h"
 #include "displays/menus/mainmenu.h"
 
+#ifdef FEATURE_OTA
 namespace {
 
 class RedownloadJsonAction : public virtual espgui::ActionInterface
@@ -44,3 +45,4 @@ void OtaMenu::back()
 {
     switchScreen<MainMenu>();
 }
+#endif

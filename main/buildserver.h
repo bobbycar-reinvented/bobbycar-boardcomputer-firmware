@@ -16,6 +16,7 @@
 // esp-idf
 #include "esp_http_client.h"
 
+#ifdef FEATURE_OTA
 namespace {
     void buildMenuFromJson(std::string json);
     void buildMenuRequestError(std::string error);
@@ -191,3 +192,4 @@ namespace {
         return request_running;
     }
 }
+#endif

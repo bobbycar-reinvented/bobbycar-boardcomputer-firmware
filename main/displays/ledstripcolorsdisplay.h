@@ -10,6 +10,7 @@
 // local includes
 #include "ledstrip.h"
 
+#ifdef FEATURE_LEDSTRIP
 extern int8_t selected_side;
 extern int8_t selected_color;
 extern bool state_select_color;
@@ -38,3 +39,4 @@ public:
 private:
     bool already_drew_circle{false};
 };
+#endif

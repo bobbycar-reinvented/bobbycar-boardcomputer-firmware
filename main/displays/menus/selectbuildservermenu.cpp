@@ -10,6 +10,7 @@
 // local includes
 #include "displays/menus/settingsmenu.h"
 
+#ifdef FEATURE_OTA
 namespace {
 class BuildserverMenuItem : public espgui::MenuItem
 {
@@ -69,3 +70,4 @@ void SelectBuildServerMenu::back()
 {
     espgui::switchScreen<SettingsMenu>();
 }
+#endif
