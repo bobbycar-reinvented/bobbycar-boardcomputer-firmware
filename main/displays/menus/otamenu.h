@@ -11,15 +11,6 @@
 #include "texts.h"
 #include "buildserver.h"
 
-
-// forward declares
-namespace {
-class MainMenu;
-class UpdateDisplay;
-class SelectBuildMenu;
-class SelectBuildServerMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

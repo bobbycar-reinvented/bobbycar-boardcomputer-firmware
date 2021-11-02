@@ -17,12 +17,6 @@
 #include "accessors/settingsaccessors.h"
 #include "cloud.h"
 
-// forward declares
-namespace {
-class CloudSettingsMenu;
-class SettingsMenu;
-} // namespace
-
 namespace {
 using CloudTransmitTimeoutChangeScreen = makeComponent<
     ChangeValueDisplay<int16_t>,

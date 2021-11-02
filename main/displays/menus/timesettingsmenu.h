@@ -18,12 +18,6 @@
 #include "accessors/settingsaccessors.h"
 #include "espstrutils.h"
 
-// forward declares
-namespace {
-class SettingsMenu;
-class TimeSettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

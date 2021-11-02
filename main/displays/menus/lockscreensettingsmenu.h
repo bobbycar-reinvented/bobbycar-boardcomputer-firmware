@@ -12,12 +12,6 @@
 #include "accessors/settingsaccessors.h"
 #include "changevaluedisplay.h"
 
-// forward declares
-namespace {
-class BoardcomputerHardwareSettingsMenu;
-class LockscreenSettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

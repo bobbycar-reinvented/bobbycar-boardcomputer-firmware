@@ -1,0 +1,90 @@
+#include "mainmenu.h"
+
+// 3rdparty lib includes
+#include "actions/switchscreenaction.h"
+#include "icons/back.h"
+
+// local includes
+#include "displays/statusdisplay.h"
+#include "displays/menus/selectmodemenu.h"
+#include "displays/menus/selectmodemenu.h"
+#include "displays/menus/ledstripmenu.h"
+#include "actions/modesettingsaction.h"
+#include "displays/menus/presetsmenu.h"
+#include "displays/menus/profilesmenu.h"
+#include "displays/menus/graphsmenu.h"
+#include "displays/menus/batterymenu.h"
+#include "displays/powersupplydisplay.h"
+#include "displays/menus/bmsmenu.h"
+#include "displays/menus/settingsmenu.h"
+#include "displays/menus/mosfetsmenu.h"
+#include "displays/menus/demosmenu.h"
+#include "displays/lockscreen.h"
+#include "displays/garagedisplay.h"
+#include "displays/menus/otamenu.h"
+#include "displays/poweroffdisplay.h"
+#include "actions/rebootaction.h"
+#include "displays/menus/debugmenu.h"
+#include "icons/battery.h"
+#include "icons/modes.h"
+#include "icons/presets.h"
+#include "icons/graph.h"
+#ifdef FEATURE_BMS
+#include "icons/bms.h"
+#endif
+#include "icons/settings.h"
+#include "icons/lock.h"
+#include "icons/demos.h"
+#ifdef FEATURE_OTA
+#include "icons/update.h"
+#endif
+#ifdef FEATURE_LEDSTRIP
+#include "icons/neopixel.h"
+#endif
+#include "icons/poweroff.h"
+#include "icons/reboot.h"
+
+using namespace espgui;
+
+MainMenu::MainMenu()
+{
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       SwitchScreenAction<StatusDisplay>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,   SwitchScreenAction<SelectModeMenu>, StaticMenuItemIcon<&bobbyicons::modes>>>();
+#ifdef FEATURE_LEDSTRIP
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     SwitchScreenAction<LedstripMenu>,   StaticMenuItemIcon<&bobbyicons::neopixel>>>();
+#endif
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESETTINGS>, ModeSettingsAction>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&bobbyicons::graph>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY>,      SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>(); }
+#if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWERSUPPLY>,  SwitchScreenAction<PowerSupplyDisplay>>>(); }
+#endif
+#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMS>,          SwitchScreenAction<BmsMenu>, StaticMenuItemIcon<&bobbyicons::bms>>>(); }
+#endif
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,     SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>(); }
+#ifdef FEATURE_MOSFETS
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFETS>,      SwitchScreenAction<MosfetsMenu>>>(); }
+#endif
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>,  SwitchScreenAction<Lockscreen>, StaticMenuItemIcon<&bobbyicons::lock>>>();
+#ifdef FEATURE_GARAGE
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GARAGE>,       SwitchScreenAction<GarageDisplay>>>(); }
+#endif
+#ifdef FEATURE_OTA
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATE>,       SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&bobbyicons::update>>>(); }
+#endif
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,     SwitchScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&bobbyicons::poweroff>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>,       RebootAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        SwitchScreenAction<DebugMenu>>>(); }
+#ifdef MAINMENU_PLUGIN
+    GMEN1
+#endif
+}
+
+void MainMenu::back()
+{
+    switchScreen<StatusDisplay>();
+}

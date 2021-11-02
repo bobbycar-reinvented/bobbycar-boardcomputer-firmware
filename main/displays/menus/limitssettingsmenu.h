@@ -10,12 +10,6 @@
 #include "texts.h"
 #include "accessors/settingsaccessors.h"
 
-// forward declares
-namespace {
-class LimitsSettingsMenu;
-class SettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

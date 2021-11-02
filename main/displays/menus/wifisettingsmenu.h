@@ -7,14 +7,6 @@
 #include "icons/back.h"
 #include "texts.h"
 
-// forward declares
-namespace {
-class GenericWifiSettingsMenu;
-class StationWifiSettingsMenu;
-class AccessPointWifiSettingsMenu;
-class SettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

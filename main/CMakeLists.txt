@@ -317,6 +317,7 @@ set(sources
     displays/menus/presetsmenu.cpp
     displays/menus/profilesmenu.cpp
     displays/menus/selectbatterytypemenu.cpp
+    displays/menus/selectbuildservermenu.cpp
     displays/menus/selectmodemenu.cpp
     displays/menus/settingsmenu.cpp
     displays/menus/stationwifisettingsmenu.cpp

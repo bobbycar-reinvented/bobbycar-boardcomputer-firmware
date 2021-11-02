@@ -10,11 +10,6 @@
 #include "widgets/label.h"
 
 namespace {
-class MainMenu;
-class MetersDisplay;
-class StatusDisplay;
-}
-namespace {
 #if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
 class PowerSupplyDisplay : public Display, public DummyConfirm, public BackActionInterface<SwitchScreenAction<MainMenu>>
 {

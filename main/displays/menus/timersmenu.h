@@ -9,11 +9,6 @@
 #include "texts.h"
 #include "accessors/settingsaccessors.h"
 
-// forward declares
-namespace {
-class BoardcomputerHardwareSettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

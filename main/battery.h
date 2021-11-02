@@ -3,10 +3,10 @@
 // 3rdparty lib includes
 #include <fmt/core.h>
 #include <cpptypesafeenum.h>
+#include <cpputils.h>
 
 // local includes
 #include "globals.h"
-#include "cpputils.h"
 
 #define BatteryCellTypeValues(x) \
     x(_22P) \
@@ -16,91 +16,94 @@
 DECLARE_TYPESAFE_ENUM(BatteryCellType, : uint8_t, BatteryCellTypeValues)
 
 namespace {
-
-float mapFloat(float x, float in_min, float in_max, float out_min, float out_max) {
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-#define CURVE(higherVoltage,lowerVoltage,fromAh,toAh) if(cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) return 100 * (expected_ah - mapFloat(cellVoltage, higherVoltage, lowerVoltage, fromAh, toAh)) / expected_ah;
+#define CURVE(higherVoltage,lowerVoltage,fromAh,toAh) \
+    if (cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) \
+        return 100 * (expected_ah - cpputils::mapValue<float>(cellVoltage, higherVoltage, lowerVoltage, fromAh, toAh)) / expected_ah;
 
 float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
 {
     const float cellVoltage = batVoltage / settings.battery.cellsSeries;
 
-    switch (cellType) {
-        case BatteryCellType::_22P: {
-            const float expected_ah = 2.2;
-            if(cellVoltage > 4.15){
-                return 100;
-            }
-            CURVE(4.15, 4.04, 0, 0.25)
-            CURVE(4.04, 3.95, 0.25, 0.5)
-            CURVE(3.95, 3.86, 0.5, 0.75)
-            CURVE(3.86, 3.74, 0.75, 1.0)
-            CURVE(3.74, 3.64, 1.0, 1.25)
-            CURVE(3.64, 3.59, 1.25, 1.5)
-            CURVE(3.59, 3.54, 1.5, 1.75)
-            CURVE(3.54, 3.43, 1.75, 2.0)
-            CURVE(3.43, 3.35, 2.0, 2.1)
-            CURVE(3.35, 2.50, 2.1, 2.2)
-            break;
-        }
-        case BatteryCellType::MH1: {
-            const float expected_ah = 3.2;
-            if(cellVoltage > 4.15){
-                return 100;
-            }
-            CURVE(4.15, 4.09, 0, 0.25)
-            CURVE(4.09, 4.04, 0.25, 0.5)
-            CURVE(4.04, 3.95, 0.5, 0.75)
-            CURVE(3.95, 3.88, 0.75, 1.0)
-            CURVE(3.88, 3.79, 1.0, 1.25)
-            CURVE(3.79, 3.70, 1.25, 1.5)
-            CURVE(3.70, 3.65, 1.5, 1.75)
-            CURVE(3.65, 3.60, 1.75, 2.0)
-            CURVE(3.60, 3.56, 2.0, 2.25)
-            CURVE(3.56, 3.50, 2.25, 2.5)
-            CURVE(3.50, 3.40, 2.5, 2.75)
-            CURVE(3.40, 3.30, 2.75, 3.0)
-            CURVE(3.30, 2.5, 3.0, 3.2)
-            break;
-        }
-        case BatteryCellType::HG2: {
-            const float expected_ah = 3.0;
-            if(cellVoltage > 4.15){
-                return 100;
-            }
-            CURVE(4.15, 4.08, 0, 0.25)
-            CURVE(4.08, 4.01, 0.25, 0.5)
-            CURVE(4.01, 3.92, 0.5, 0.75)
-            CURVE(3.92, 3.84, 0.75, 1.0)
-            CURVE(3.84, 3.75, 1.0, 1.25)
-            CURVE(3.75, 3.67, 1.25, 1.5)
-            CURVE(3.67, 3.62, 1.5, 1.75)
-            CURVE(3.62, 3.55, 1.75, 2.0)
-            CURVE(3.55, 3.44, 2.0, 2.25)
-            CURVE(3.44, 3.30, 2.25, 2.5)
-            CURVE(3.30, 3.05, 2.5, 2.75)
-            CURVE(3.05, 2.50, 2.75, 3.0)
-            break;
-        }
-        case BatteryCellType::VTC5: {
-            const float expected_ah = 2.6;
-            if(cellVoltage > 4.15){
-                return 100;
-            }
-            CURVE(4.15, 4.08, 0, 0.25)
-            CURVE(4.08, 3.98, 0.25, 0.5)
-            CURVE(3.98, 3.89, 0.5, 0.75)
-            CURVE(3.89, 3.79, 0.75, 1.0)
-            CURVE(3.79, 3.71, 1.0, 1.25)
-            CURVE(3.71, 3.64, 1.25, 1.5)
-            CURVE(3.64, 3.53, 1.5, 1.75)
-            CURVE(3.53, 3.44, 1.75, 2.0)
-            CURVE(3.44, 3.20, 2.0, 2.25)
-            CURVE(3.20, 2.80, 2.25, 2.5)
-            CURVE(2.80, 2.50, 2.5, 2.60)
-            break;
-        }
+    switch (cellType)
+    {
+    case BatteryCellType::_22P:
+    {
+        const float expected_ah = 2.2;
+        if (cellVoltage > 4.15)
+            return 100;
+
+        CURVE(4.15, 4.04, 0, 0.25)
+        CURVE(4.04, 3.95, 0.25, 0.5)
+        CURVE(3.95, 3.86, 0.5, 0.75)
+        CURVE(3.86, 3.74, 0.75, 1.0)
+        CURVE(3.74, 3.64, 1.0, 1.25)
+        CURVE(3.64, 3.59, 1.25, 1.5)
+        CURVE(3.59, 3.54, 1.5, 1.75)
+        CURVE(3.54, 3.43, 1.75, 2.0)
+        CURVE(3.43, 3.35, 2.0, 2.1)
+        CURVE(3.35, 2.50, 2.1, 2.2)
+        break;
+    }
+    case BatteryCellType::MH1:
+    {
+        const float expected_ah = 3.2;
+        if (cellVoltage > 4.15)
+            return 100;
+
+        CURVE(4.15, 4.09, 0, 0.25)
+        CURVE(4.09, 4.04, 0.25, 0.5)
+        CURVE(4.04, 3.95, 0.5, 0.75)
+        CURVE(3.95, 3.88, 0.75, 1.0)
+        CURVE(3.88, 3.79, 1.0, 1.25)
+        CURVE(3.79, 3.70, 1.25, 1.5)
+        CURVE(3.70, 3.65, 1.5, 1.75)
+        CURVE(3.65, 3.60, 1.75, 2.0)
+        CURVE(3.60, 3.56, 2.0, 2.25)
+        CURVE(3.56, 3.50, 2.25, 2.5)
+        CURVE(3.50, 3.40, 2.5, 2.75)
+        CURVE(3.40, 3.30, 2.75, 3.0)
+        CURVE(3.30, 2.5, 3.0, 3.2)
+        break;
+    }
+    case BatteryCellType::HG2:
+    {
+        const float expected_ah = 3.0;
+        if (cellVoltage > 4.15)
+            return 100;
+
+        CURVE(4.15, 4.08, 0, 0.25)
+        CURVE(4.08, 4.01, 0.25, 0.5)
+        CURVE(4.01, 3.92, 0.5, 0.75)
+        CURVE(3.92, 3.84, 0.75, 1.0)
+        CURVE(3.84, 3.75, 1.0, 1.25)
+        CURVE(3.75, 3.67, 1.25, 1.5)
+        CURVE(3.67, 3.62, 1.5, 1.75)
+        CURVE(3.62, 3.55, 1.75, 2.0)
+        CURVE(3.55, 3.44, 2.0, 2.25)
+        CURVE(3.44, 3.30, 2.25, 2.5)
+        CURVE(3.30, 3.05, 2.5, 2.75)
+        CURVE(3.05, 2.50, 2.75, 3.0)
+        break;
+    }
+    case BatteryCellType::VTC5:
+    {
+        const float expected_ah = 2.6;
+        if (cellVoltage > 4.15)
+            return 100;
+
+        CURVE(4.15, 4.08, 0, 0.25)
+        CURVE(4.08, 3.98, 0.25, 0.5)
+        CURVE(3.98, 3.89, 0.5, 0.75)
+        CURVE(3.89, 3.79, 0.75, 1.0)
+        CURVE(3.79, 3.71, 1.0, 1.25)
+        CURVE(3.71, 3.64, 1.25, 1.5)
+        CURVE(3.64, 3.53, 1.5, 1.75)
+        CURVE(3.53, 3.44, 1.75, 2.0)
+        CURVE(3.44, 3.20, 2.0, 2.25)
+        CURVE(3.20, 2.80, 2.25, 2.5)
+        CURVE(2.80, 2.50, 2.5, 2.60)
+        break;
+    }
     }
     return 0.f;
 }
@@ -116,7 +119,7 @@ float getRemainingWattHours()
     float avgVoltage = 0;
     for (auto &controller : controllers)
     {
-        avgVoltage += controller.getCalibratedVoltage(settings.battery.applyCalibration);
+        avgVoltage += controller.getCalibratedVoltage();
     }
     avgVoltage = avgVoltage / controllers.size();
 
@@ -128,7 +131,7 @@ std::string getBatteryPercentageString()
     float avgVoltage = 0;
     for (auto &controller : controllers)
     {
-        avgVoltage += controller.getCalibratedVoltage(settings.battery.applyCalibration);
+        avgVoltage += controller.getCalibratedVoltage();
     }
     avgVoltage = avgVoltage / controllers.size();
 

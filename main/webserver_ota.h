@@ -5,6 +5,7 @@
 #include <esp_http_server.h>
 #endif
 #include <esp_log.h>
+#include <esp_ota_ops.h>
 
 // 3rdparty lib includes
 #include <htmlbuilder.h>
@@ -13,6 +14,7 @@
 #include <esphttpdutils.h>
 #include <lockhelper.h>
 #include <tickchrono.h>
+#include <espstrutils.h>
 
 // local includes
 #ifdef FEATURE_OTA

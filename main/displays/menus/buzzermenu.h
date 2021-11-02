@@ -13,12 +13,6 @@
 #include "globals.h"
 #include "accessors/settingsaccessors.h"
 
-// forward declares
-namespace {
-class BuzzerMenu;
-class SettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

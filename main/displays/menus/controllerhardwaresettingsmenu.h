@@ -14,15 +14,6 @@
 #include "globals.h"
 #include "accessors/settingsaccessors.h"
 
-// forward declares
-namespace {
-class ControllerHardwareSettingsMenu;
-class BoardcomputerHardwareSettingsMenu;
-class EnableMenu;
-class InvertMenu;
-class SettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

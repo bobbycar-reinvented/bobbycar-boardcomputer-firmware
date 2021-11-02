@@ -7,15 +7,6 @@
 #include "icons/back.h"
 #include "texts.h"
 
-// forward declares
-namespace {
-class DefaultModeSettingsMenu;
-class TempomatModeSettingsMenu;
-class LarsmModeSettingsMenu;
-class GametrakModeSettingsMenu;
-class SettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {
