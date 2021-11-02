@@ -18,11 +18,6 @@
 
 #define MESSAGE(text) constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>()
 
-// forward declares
-namespace {
-class OtaMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

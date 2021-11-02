@@ -311,6 +311,8 @@ set(sources
     displays/menus/mosfetsmenu.cpp
     displays/menus/motorfeedbackdebugmenu.cpp
     displays/menus/motorstatedebugmenu.cpp
+    displays/menus/otamenu.cpp
+    displays/menus/selectotabuildmenu.cpp
     displays/menus/presetsmenu.cpp
     displays/menus/profilesmenu.cpp
     displays/menus/selectbatterytypemenu.cpp
