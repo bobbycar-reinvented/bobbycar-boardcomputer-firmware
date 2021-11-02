@@ -8,11 +8,6 @@
 #include "icons/back.h"
 #include "texts.h"
 
-// forward declares
-namespace {
-class ModesSettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

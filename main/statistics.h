@@ -1,7 +1,7 @@
 #pragma once
 
 // 3rdparty lib includes
-#include <ring-buffer.h>
+#include "graphdisplay.h"
 #include <espwifistack.h>
 
 // local includes
@@ -30,13 +30,13 @@ void pushStats()
     statistics::sumCurrent.push_back(sumCurrent);
     if (controllers.front.feedbackValid)
     {
-        statistics::frontVoltage.push_back(controllers.front.getCalibratedVoltage(settings.battery.applyCalibration));
+        statistics::frontVoltage.push_back(controllers.front.getCalibratedVoltage());
         statistics::frontLeftCurrent.push_back(fixCurrent(controllers.front.feedback.left.dcLink));
         statistics::frontRightCurrent.push_back(fixCurrent(controllers.front.feedback.right.dcLink));
     }
     if (controllers.back.feedbackValid)
     {
-        statistics::backVoltage.push_back(controllers.back.getCalibratedVoltage(settings.battery.applyCalibration));
+        statistics::backVoltage.push_back(controllers.back.getCalibratedVoltage());
         statistics::backLeftCurrent.push_back(fixCurrent(controllers.back.feedback.left.dcLink));
         statistics::backRightCurrent.push_back(fixCurrent(controllers.back.feedback.right.dcLink));
     }

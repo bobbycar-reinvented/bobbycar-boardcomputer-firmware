@@ -53,5 +53,5 @@ struct Controller
     FeedbackParser parser{serial, feedbackValid, feedback};
 #endif
 
-    float getCalibratedVoltage(bool applyCalibration) const;
+    float getCalibratedVoltage() const;
 };

@@ -20,98 +20,6 @@ using namespace std::chrono_literals;
 #include "bobbycar-serial.h"
 #include "macros_bobbycar.h"
 #include "globals.h"
-#include "modes/defaultmode.h"
-#include "modes/tempomatmode.h"
-#include "displays/menus/aboutmenu.h"
-#include "displays/menus/accesspointwifisettingsmenu.h"
-#ifdef FEATURE_BLUETOOTH
-#include "displays/menus/bluetoothsettingsmenu.h"
-#endif
-#ifdef FEATURE_BLE
-#include "displays/menus/blesettingsmenu.h"
-#endif
-#ifdef FEATURE_CLOUD
-#include "displays/menus/cloudsettingsmenu.h"
-#endif
-#ifdef FEATURE_BMS
-#include "displays/menus/bmsmenu.h"
-#endif
-#include "displays/menus/buzzermenu.h"
-#include "displays/menus/commanddebugmenu.h"
-#include "displays/menus/crashmenu.h"
-#include "displays/menus/debugmenu.h"
-#include "displays/menus/defaultmodesettingsmenu.h"
-#include "displays/menus/demosmenu.h"
-#include "displays/menus/dynamicdebugmenu.h"
-#include "displays/menus/enablemenu.h"
-#include "displays/menus/feedbackdebugmenu.h"
-#ifdef FEATURE_GAMETRAK
-#include "displays/menus/gametrakmodesettingsmenu.h"
-#endif
-#include "displays/menus/genericwifisettingsmenu.h"
-#include "displays/menus/graphsmenu.h"
-#include "displays/menus/controllerhardwaresettingsmenu.h"
-#include "displays/menus/invertmenu.h"
-#include "displays/menus/larsmmodesettingsmenu.h"
-#ifdef FEATURE_LEDSTRIP
-#include "displays/menus/ledstripmenu.h"
-#endif
-#include "displays/menus/limitssettingsmenu.h"
-#include "displays/menus/lockscreensettingsmenu.h"
-#include "displays/menus/mainmenu.h"
-#include "displays/menus/tempomatmodesettingsmenu.h"
-#include "displays/menus/modessettingsmenu.h"
-#ifdef FEATURE_LEDSTRIP
-#include "displays/ledstripcolorsdisplay.h"
-#endif
-#ifdef FEATURE_MOSFETS
-#include "displays/menus/mosfetsmenu.h"
-#endif
-#include "displays/menus/motorfeedbackdebugmenu.h"
-#include "displays/menus/motorstatedebugmenu.h"
-#include "displays/menus/profilesmenu.h"
-#include "displays/menus/presetsmenu.h"
-#include "displays/menus/boardcomputerhardwaresettingsmenu.h"
-#include "displays/menus/selectmodemenu.h"
-#include "displays/menus/settingsmenu.h"
-#include "displays/menus/stationwifisettingsmenu.h"
-#include "displays/menus/timersmenu.h"
-#include "displays/menus/timesettingsmenu.h"
-#include "displays/menus/wifiscanmenu.h"
-#include "displays/menus/wifisettingsmenu.h"
-#ifdef FEATURE_BMS
-#include "displays/bmsdisplay.h"
-#endif
-#include "displays/calibratedisplay.h"
-#ifdef FEATURE_DPAD_5WIRESW
-#include "displays/dpad5wiredebugdisplay.h"
-#endif
-#ifdef FEATURE_DPAD_5WIRESW_2OUT
-#include "displays/dpad5wire2outdebugdisplay.h"
-#endif
-#ifdef FEATURE_DPAD_6WIRESW
-#include "displays/dpad6wiredebugdisplay.h"
-#endif
-#include "displays/gameoflifedisplay.h"
-#ifdef FEATURE_GARAGE
-#include "displays/garagedisplay.h"
-#endif
-#ifdef FEATURE_LOCKSCREEN
-#include "displays/gametrakcalibratedisplay.h"
-#endif
-#include "displays/lockscreen.h"
-#include "displays/metersdisplay.h"
-#include "displays/pingpongdisplay.h"
-#include "displays/poweroffdisplay.h"
-#include "displays/powersupplydisplay.h"
-#include "displays/spirodisplay.h"
-#include "displays/starfielddisplay.h"
-#include "displays/statusdisplay.h"
-#ifdef FEATURE_OTA
-#include "displays/updatedisplay.h"
-#include "displays/menus/otamenu.h"
-#include "displays/menus/selectotabuildmenu.h"
-#endif
 #include "screens.h"
 #include "dpad.h"
 #ifdef FEATURE_DPAD_3WIRESW
@@ -160,6 +68,9 @@ using namespace std::chrono_literals;
 #ifdef FEATURE_LEDSTRIP
 #include "ledstrip.h"
 #endif
+#include "modes/defaultmode.h"
+#include "displays/statusdisplay.h"
+#include "displays/calibratedisplay.h"
 
 namespace {
 std::optional<espchrono::millis_clock::time_point> lastWifiUpdate;
@@ -362,9 +273,9 @@ extern "C" void app_main()
 #else
 
     if (!gas || !brems || *gas > 200.f || *brems > 200.f)
-        switchScreen<CalibrateDisplay>(true);
+        espgui::switchScreen<CalibrateDisplay>(true);
     else
-        switchScreen<StatusDisplay>();
+        espgui::switchScreen<StatusDisplay>();
 #endif
 
     while (true)

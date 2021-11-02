@@ -8,6 +8,7 @@
 
 using namespace espgui;
 
+#ifdef FEATURE_LEDSTRIP
 namespace {
 class LedstripAnimationBlinkNoneAction : public virtual ActionInterface
 {
@@ -49,3 +50,4 @@ public:
     void triggered() override { blinkAnimation = LEDSTRIP_OVERWRITE_BLINKBOTH; }
 };
 }
+#endif

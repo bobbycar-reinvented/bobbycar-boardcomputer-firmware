@@ -1,6 +1,5 @@
 #pragma once
 
-namespace {
 //AboutMenu
 constexpr char TEXT_ABOUT[] = "About";
 constexpr char TEXT_BACK[] = "Back";
@@ -498,4 +497,3 @@ constexpr char TEXT_LEDSTRIPCOLORMENU[] = "Customize Ledstrip";
 #ifdef FEATURE_CAN
 constexpr char TEXT_POWERSUPPLY[] = "Powersupply";
 #endif
-}

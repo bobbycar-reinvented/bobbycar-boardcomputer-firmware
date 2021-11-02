@@ -13,6 +13,7 @@
 #include "actions/switchscreenaction.h"
 #include "ledstripdefines.h"
 
+#ifdef FEATURE_LEDSTRIP
 class currentSelectedBlinkAnimationText : public virtual TextInterface { public: std::string text() const override {
         switch (blinkAnimation) {
             case LEDSTRIP_OVERWRITE_BLINKLEFT:
@@ -37,11 +38,7 @@ class currentSelectedBlinkAnimationText : public virtual TextInterface { public:
 
 using namespace espgui;
 
-namespace  {
-    class LedstripMenu;
-}
-
-namespace  {
+namespace {
     class LedstripSelectBlinkMenu :
             public MenuDisplay,
             public StaticText<TEXT_BLINKANIMATION>,
@@ -60,3 +57,4 @@ namespace  {
         }
     };
 } // Namespace
+#endif

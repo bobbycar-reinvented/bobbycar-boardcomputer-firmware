@@ -17,6 +17,7 @@
 #include <changevaluedisplay.h>
 #include <lockhelper.h>
 #include <tickchrono.h>
+#include <screenmanager.h>
 
 // local includes
 #include "buttons.h"
@@ -91,20 +92,20 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                         "<a href=\"/triggerButton?button=profile3\">Profile3</a> ";
             }
 
-            if (auto constCurrentDisplay = static_cast<const Display *>(currentDisplay.get()))
+            if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
             {
-                if (const auto *textInterface = constCurrentDisplay->asTextInterface())
+                if (const auto *textInterface = currentDisplay->asTextInterface())
                 {
                     HtmlTag h2Tag{"h2", body};
                     body += esphttpdutils::htmlentities(textInterface->text());
                 }
 
-                if (const auto *menuDisplay = constCurrentDisplay->asMenuDisplay())
+                if (const auto *menuDisplay = currentDisplay->asMenuDisplay())
                 {
                     HtmlTag ulTag{"ul", body};
 
                     int i{0};
-                    menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const MenuItem &menuItem){
+                    menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
                         HtmlTag liTag = i == selectedIndex ?
                                     HtmlTag{"li", "style=\"border: 1px solid black;\"", body} :
                                     HtmlTag{"li", body};
@@ -113,7 +114,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                         i++;
                     });
                 }
-                else if (const auto *changeValueDisplay = constCurrentDisplay->asChangeValueDisplayInterface())
+                else if (const auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface())
                 {
                     HtmlTag formTag{"form", "action=\"/setValue\" method=\"GET\"", body};
                     body += fmt::format("<input type=\"number\" name=\"value\" value=\"{}\" />", changeValueDisplay->shownValue());
@@ -308,17 +309,17 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
         }
     }
 
-    if (!currentDisplay)
+    if (!espgui::currentDisplay)
     {
-        constexpr const std::string_view msg = "currentDisplay is null";
+        constexpr const std::string_view msg = "espgui::currentDisplay is null";
         ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 
-    auto *menuDisplay = currentDisplay->asMenuDisplay();
+    auto *menuDisplay = espgui::currentDisplay->asMenuDisplay();
     if (!menuDisplay)
     {
-        constexpr const std::string_view msg = "currentDisplay is not a menu display";
+        constexpr const std::string_view msg = "espgui::currentDisplay is not a menu display";
         ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
@@ -394,17 +395,17 @@ esp_err_t webserver_setValue_handler(httpd_req_t *req)
         }
     }
 
-    if (!currentDisplay)
+    if (!espgui::currentDisplay)
     {
-        constexpr const std::string_view msg = "currentDisplay is null";
+        constexpr const std::string_view msg = "espgui::currentDisplay is null";
         ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 
-    auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface();
+    auto *changeValueDisplay = espgui::currentDisplay->asChangeValueDisplayInterface();
     if (!changeValueDisplay)
     {
-        constexpr const std::string_view msg = "currentDisplay is not a change value display";
+        constexpr const std::string_view msg = "espgui::currentDisplay is not a change value display";
         ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }

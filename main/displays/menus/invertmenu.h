@@ -11,11 +11,6 @@
 #include "texts.h"
 #include "accessors/settingsaccessors.h"
 
-// forward declares
-namespace {
-class ControllerHardwareSettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

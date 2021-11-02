@@ -18,13 +18,9 @@
 
 #define MESSAGE(text) constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>()
 
-// forward declares
-namespace {
-class OtaMenu;
-} // namespace
-
 using namespace espgui;
 
+#ifdef FEATURE_OTA
 namespace {
 
 // ToDo: if (request_failed) => MESSAGE("An error occurred")
@@ -152,3 +148,4 @@ void SelectBuildMenu::buildMenuRequestError(std::string error)
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 } // namespace
+#endif

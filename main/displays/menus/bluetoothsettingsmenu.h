@@ -21,11 +21,6 @@
 #include "icons/back.h"
 #include "texts.h"
 
-// forward declares
-namespace {
-class SettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

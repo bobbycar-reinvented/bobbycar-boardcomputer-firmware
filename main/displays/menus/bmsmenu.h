@@ -18,11 +18,6 @@
 #include "icons/back.h"
 #include "texts.h"
 
-//forward declares
-namespace {
-class MainMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

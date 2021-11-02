@@ -9,6 +9,7 @@
 using namespace espgui;
 
 namespace {
+#ifdef FEATURE_LEDSTRIP
 template<int16_t type>
 class LedStripSetAnimationAction : public virtual ActionInterface
 {
@@ -35,4 +36,5 @@ public:
     void triggered() override { animation_type = LEDSTRIP_ANIMATION_TYPE_SPEEDSYNCANIMATION; }
 };
 */
+#endif
 }

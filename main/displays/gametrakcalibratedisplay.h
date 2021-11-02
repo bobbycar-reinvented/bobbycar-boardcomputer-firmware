@@ -12,11 +12,6 @@
 #include "modes/ignoreinputmode.h"
 
 namespace {
-class StatusDisplay;
-class BoardcomputerHardwareSettingsMenu;
-}
-
-namespace {
 #ifdef FEATURE_GAMETRAK
 class GametrakCalibrateDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>, public BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 {

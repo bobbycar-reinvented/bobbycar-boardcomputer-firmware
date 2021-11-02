@@ -1,5 +1,8 @@
 #include "controller.h"
 
+// local includes
+#include "globals.h"
+
 Controller::Controller(
 #ifdef FEATURE_SERIAL
     HardwareSerial &serial,
@@ -15,10 +18,10 @@ Controller::Controller(
 {
 }
 
-float Controller::getCalibratedVoltage(bool applyCalibration) const
+float Controller::getCalibratedVoltage() const
 {
     float voltage = feedback.batVoltage;
-    if (applyCalibration)
+    if (settings.battery.applyCalibration)
     {
         voltage = ((voltage - float(voltageCalib30V)) * (20.f / (float(voltageCalib50V) - float(voltageCalib30V))) + 30.f);
     }

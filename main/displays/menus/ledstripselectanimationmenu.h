@@ -14,6 +14,7 @@
 #include "ledstrip.h"
 #include "ledstripdefines.h"
 
+#ifdef FEATURE_LEDSTRIP
 class currentSelectedAnimationText : public virtual TextInterface { public: std::string text() const override {
         switch (animation_type) {
             case LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW:
@@ -31,10 +32,6 @@ class currentSelectedAnimationText : public virtual TextInterface { public: std:
 };
 
 using namespace espgui;
-
-namespace  {
-    class LedstripMenu;
-}
 
 namespace  {
     class LedstripSelectAnimationMenu :
@@ -55,3 +52,4 @@ namespace  {
         }
     };
 } // Namespace
+#endif

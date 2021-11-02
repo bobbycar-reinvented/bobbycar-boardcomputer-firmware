@@ -12,11 +12,6 @@
 #include "screenmanager.h"
 
 namespace {
-class MainMenu;
-class MetersDisplay;
-class StatusDisplay;
-}
-namespace {
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 class BmsDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<MainMenu>>, public DummyBack
 {

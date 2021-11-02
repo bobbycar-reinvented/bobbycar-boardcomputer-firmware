@@ -11,11 +11,6 @@
 #include "debugtexthelpers.h"
 #include "debugcolorhelpers.h"
 
-// forward declares
-namespace {
-class DebugMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

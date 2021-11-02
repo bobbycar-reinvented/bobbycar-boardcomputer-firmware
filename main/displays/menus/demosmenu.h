@@ -1,38 +1,17 @@
 #pragma once
 
-// local includes
+// 3rdparty lib includes
 #include "menudisplay.h"
-#include "utils.h"
-#include "menuitem.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
+
+// local includes
 #include "texts.h"
 
-// forward declares
-namespace {
-class StarfieldDisplay;
-class PingPongDisplay;
-class SpiroDisplay;
-class GameOfLifeDisplay;
-class MainMenu;
-} // namespace
-
-using namespace espgui;
-
-namespace {
 class DemosMenu :
-    public MenuDisplay,
-    public StaticText<TEXT_DEMOS>,
-    public BackActionInterface<SwitchScreenAction<MainMenu>>
+    public espgui::MenuDisplay,
+    public espgui::StaticText<TEXT_DEMOS>
 {
 public:
-    DemosMenu()
-    {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STARFIELD>,  SwitchScreenAction<StarfieldDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PINGPONG>,   SwitchScreenAction<PingPongDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SPIRO>,      SwitchScreenAction<SpiroDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMEOFLIFE>, SwitchScreenAction<GameOfLifeDisplay>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
-    }
+    DemosMenu();
+
+    void back() override;
 };
-} // namespace
