@@ -37,11 +37,7 @@ class currentSelectedBlinkAnimationText : public virtual TextInterface { public:
 
 using namespace espgui;
 
-namespace  {
-    class LedstripMenu;
-}
-
-namespace  {
+namespace {
     class LedstripSelectBlinkMenu :
             public MenuDisplay,
             public StaticText<TEXT_BLINKANIMATION>,

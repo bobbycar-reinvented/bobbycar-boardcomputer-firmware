@@ -33,10 +33,6 @@ class currentSelectedAnimationText : public virtual TextInterface { public: std:
 using namespace espgui;
 
 namespace  {
-    class LedstripMenu;
-}
-
-namespace  {
     class LedstripSelectAnimationMenu :
             public MenuDisplay,
             public StaticText<TEXT_SELECTANIMATION>,
