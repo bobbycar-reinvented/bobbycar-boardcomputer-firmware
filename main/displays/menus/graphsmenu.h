@@ -10,12 +10,6 @@
 #include "displays/splitgraphdisplay.h"
 #include "statistics.h"
 
-// forward declares
-namespace {
-class MainMenu;
-class GraphsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

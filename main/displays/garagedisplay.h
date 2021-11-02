@@ -16,10 +16,6 @@
 #include "widgets/label.h"
 
 namespace {
-class MainMenu;
-}
-
-namespace {
 #ifdef FEATURE_GARAGE
 class GarageDisplay : public Display, public BackActionInterface<SwitchScreenAction<MainMenu>>
 {

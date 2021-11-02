@@ -1,55 +1,17 @@
 #pragma once
 
-// local includes
+// 3rdparty lib includes
 #include "menudisplay.h"
-#include "utils.h"
-#include "changevaluedisplay.h"
-#include "changevaluedisplay_unifiedmodelmode.h"
-#include "menuitem.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
+
+// local includes
 #include "texts.h"
-#include "accessors/settingsaccessors.h"
-#include "accessors/globalaccessors.h"
-#include "actions/tempomatmodeapplycurrentpeedaction.h"
-
-// forward declares
-namespace {
-class TempomatModeSettingsMenu;
-class ModesSettingsMenu;
-} // namespace
-
-using namespace espgui;
-
-namespace {
-using DefaultModeCruiseMotTgtChangeDisplay = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_NCRUISEMOTTGT>,
-    TempomatModeCruiseMotTgtAccessor,
-    BackActionInterface<SwitchScreenAction<DefaultModeSettingsMenu>>,
-    SwitchScreenAction<DefaultModeSettingsMenu>
->;
-
-using TempomatModeModelModeChangeScreen = makeComponent<
-    ChangeValueDisplay<UnifiedModelMode>,
-    StaticText<TEXT_MODELMODE>,
-    TempomatModeModelModeAccessor,
-    BackActionInterface<SwitchScreenAction<TempomatModeSettingsMenu>>,
-    SwitchScreenAction<TempomatModeSettingsMenu>
->;
 
 class TempomatModeSettingsMenu :
-    public MenuDisplay,
-    public StaticText<TEXT_TEMPOMATMODESETTINGS>,
-    public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>
+    public espgui::MenuDisplay,
+    public espgui::StaticText<TEXT_TEMPOMATMODESETTINGS>
 {
 public:
-    TempomatModeSettingsMenu()
-    {
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_APPLY, AvgSpeedAccessor>, TempomatModeApplyCurrentSpeedAction>>();
-        constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NCRUISEMOTTGT, TempomatModeCruiseMotTgtAccessor>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
-    }
+    TempomatModeSettingsMenu();
+
+    void back() override;
 };
-} // namespace

@@ -12,11 +12,6 @@
 #include "presets.h"
 #include "globals.h"
 
-// forward declares
-namespace {
-class MainMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

@@ -15,11 +15,6 @@
 #include "modes/remotecontrolmode.h"
 #include "modes/gametrakmode.h"
 
-// forward declares
-namespace {
-class MainMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

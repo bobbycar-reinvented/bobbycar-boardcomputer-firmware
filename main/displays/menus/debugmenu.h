@@ -18,26 +18,6 @@
 
 using namespace espgui;
 
-// forward declares
-namespace {
-class MainMenu;
-class FrontCommandDebugMenu;
-class BackCommandDebugMenu;
-class FrontLeftMotorStateDebugMenu;
-class FrontRightMotorStateDebugMenu;
-class BackLeftMotorStateDebugMenu;
-class BackRightMotorStateDebugMenu;
-class FrontFeedbackDebugMenu;
-class BackFeedbackDebugMenu;
-class FrontLeftMotorFeedbackDebugMenu;
-class FrontRightMotorFeedbackDebugMenu;
-class BackLeftMotorFeedbackDebugMenu;
-class BackRightMotorFeedbackDebugMenu;
-class DynamicDebugMenu;
-} // namespace
-
-using namespace espgui;
-
 namespace {
 class DebugMenu :
     public MenuDisplay,

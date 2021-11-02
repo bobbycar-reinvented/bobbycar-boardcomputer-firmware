@@ -12,12 +12,6 @@
 #include "texts.h"
 #include "accessors/settingsaccessors.h"
 
-// forward declares
-namespace {
-class LarsmModeSettingsMenu;
-class ModesSettingsMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

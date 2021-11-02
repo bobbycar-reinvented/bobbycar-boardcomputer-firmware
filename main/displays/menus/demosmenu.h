@@ -8,15 +8,6 @@
 #include "icons/back.h"
 #include "texts.h"
 
-// forward declares
-namespace {
-class StarfieldDisplay;
-class PingPongDisplay;
-class SpiroDisplay;
-class GameOfLifeDisplay;
-class MainMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

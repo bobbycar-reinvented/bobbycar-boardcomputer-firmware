@@ -11,11 +11,6 @@
 #include "texts.h"
 #include "types.h"
 
-// forward declares
-namespace {
-class MainMenu;
-} // namespace
-
 using namespace espgui;
 
 namespace {

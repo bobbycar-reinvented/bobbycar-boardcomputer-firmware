@@ -17,10 +17,6 @@
 #endif
 
 namespace {
-class MainMenu;
-}
-
-namespace {
 class Lockscreen : public Display, public DummyBack
 {
     using Base = Display;

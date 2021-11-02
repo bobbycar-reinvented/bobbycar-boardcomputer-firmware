@@ -10,10 +10,6 @@
 #include "texts.h"
 
 namespace {
-class MainMenu;
-}
-
-namespace {
 class PoweroffDisplay : public Display, public DummyConfirm, public DummyBack
 {
 public:
