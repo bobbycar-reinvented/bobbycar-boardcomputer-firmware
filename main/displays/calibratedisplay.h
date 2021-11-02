@@ -35,9 +35,8 @@ public:
 
     void rotate(int offset) override;
 
-    void back() override;
-
     void confirm() override;
+    void back() override;
 
 private:
     void copyFromSettings();

@@ -179,33 +179,8 @@ void CalibrateDisplay::rotate(int offset)
         m_selectedButton = 0;
 }
 
-void CalibrateDisplay::back()
-{
-    Base::back();
-
-    switch (m_status)
-    {
-    case Status::Begin:
-        if (m_bootup)
-            espgui::switchScreen<StatusDisplay>();
-        else
-            espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
-        break;
-    case Status::GasMin:
-    case Status::GasMax:
-    case Status::BremsMin:
-    case Status::BremsMax:
-    case Status::Confirm:
-        m_selectedButton = 0;
-        m_status = Status::Begin;
-        copyFromSettings();
-    }
-}
-
 void CalibrateDisplay::confirm()
 {
-    Base::confirm();
-
     switch (m_selectedButton)
     {
     case 0: // left button pressed
@@ -256,6 +231,27 @@ void CalibrateDisplay::confirm()
         break;
     case 1: // right button pressed
         back();
+    }
+}
+
+void CalibrateDisplay::back()
+{
+    switch (m_status)
+    {
+    case Status::Begin:
+        if (m_bootup)
+            espgui::switchScreen<StatusDisplay>();
+        else
+            espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
+        break;
+    case Status::GasMin:
+    case Status::GasMax:
+    case Status::BremsMin:
+    case Status::BremsMax:
+    case Status::Confirm:
+        m_selectedButton = 0;
+        m_status = Status::Begin;
+        copyFromSettings();
     }
 }
 
