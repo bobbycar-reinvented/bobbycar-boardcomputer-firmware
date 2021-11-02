@@ -9,8 +9,8 @@
 // local includes
 
 #ifdef FEATURE_OTA
-cpputils::DelayedConstruction<EspAsyncOta> asyncOta;
-bool asyncOtaTaskStarted{};
+extern cpputils::DelayedConstruction<EspAsyncOta> asyncOta;
+extern bool asyncOtaTaskStarted;
 
 void initOta();
 void handleOta();

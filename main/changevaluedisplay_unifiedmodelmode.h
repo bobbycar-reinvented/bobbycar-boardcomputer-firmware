@@ -1,14 +1,13 @@
 #pragma once
 
-#include <esp_log.h>
-
+// 3rdparty lib includes
 #include "changevaluedisplay.h"
 #include "menudisplay.h"
-#include "utils.h"
 #include "actions/setvalueaction.h"
 #include "actions/backproxyaction.h"
 #include "icons/back.h"
-#include "texts.h"
+
+// local includes
 #include "unifiedmodelmode.h"
 
 namespace espgui {
@@ -25,31 +24,4 @@ public:
 
     void start() override;
 };
-
-ChangeValueDisplay<UnifiedModelMode>::ChangeValueDisplay()
-{
-    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_COMMUTATION>>>(UnifiedModelMode::Commutation, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_SINUSOIDAL>>>(UnifiedModelMode::Sinusoidal, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_FOCVOLTAGE>>>(UnifiedModelMode::FocVoltage, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_FOCSPEED>>>(UnifiedModelMode::FocSpeed, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_FOCTORQUE>>>(UnifiedModelMode::FocTorque, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&espgui::icons::back>>>(*this);
-}
-
-void ChangeValueDisplay<UnifiedModelMode>::start()
-{
-    Base::start();
-
-    switch (const auto value = getValue())
-    {
-    case UnifiedModelMode::Commutation: setSelectedIndex(0); break;
-    case UnifiedModelMode::Sinusoidal:  setSelectedIndex(1); break;
-    case UnifiedModelMode::FocVoltage:  setSelectedIndex(2); break;
-    case UnifiedModelMode::FocSpeed:    setSelectedIndex(3); break;
-    case UnifiedModelMode::FocTorque:   setSelectedIndex(4); break;
-    default:
-        ESP_LOGW("BOBBY", "Unknown UnifiedModelMode: %i", int(value));
-        setSelectedIndex(5);
-    }
-}
 } // namespace espgui

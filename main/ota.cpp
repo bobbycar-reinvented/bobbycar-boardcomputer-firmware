@@ -7,8 +7,8 @@
 #include <espwifistack.h>
 
 #ifdef FEATURE_OTA
-extern cpputils::DelayedConstruction<EspAsyncOta> asyncOta;
-extern bool asyncOtaTaskStarted;
+cpputils::DelayedConstruction<EspAsyncOta> asyncOta;
+bool asyncOtaTaskStarted{};
 
 namespace {
 constexpr const char * const TAG = "BOBBYOTA";
