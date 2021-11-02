@@ -93,7 +93,6 @@ set(headers
     displays/gameoflifedisplay.h
     displays/gametrakcalibratedisplay.h
     displays/garagedisplay.h
-    displays/graphdisplay.h
     displays/ledstripcolorsdisplay.h
     displays/lockscreen.h
     displays/menus/aboutmenu.h
@@ -148,7 +147,6 @@ set(headers
     displays/poweroffdisplay.h
     displays/powersupplydisplay.h
     displays/spirodisplay.h
-    displays/splitgraphdisplay.h
     displays/starfielddisplay.h
     displays/statusdisplay.h
     displays/updatedisplay.h
@@ -278,7 +276,6 @@ set(sources
     displays/gameoflifedisplay.cpp
     displays/gametrakcalibratedisplay.cpp
     displays/garagedisplay.cpp
-    displays/graphdisplay.cpp
     displays/ledstripcolorsdisplay.cpp
     displays/lockscreen.cpp
     displays/menus/aboutmenu.cpp
@@ -331,7 +328,6 @@ set(sources
     displays/poweroffdisplay.cpp
     displays/powersupplydisplay.cpp
     displays/spirodisplay.cpp
-    displays/splitgraphdisplay.cpp
     displays/starfielddisplay.cpp
     displays/statusdisplay.cpp
     displays/updatedisplay.cpp

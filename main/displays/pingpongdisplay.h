@@ -12,10 +12,6 @@
 #include "actions/switchscreenaction.h"
 
 namespace {
-class DemosMenu;
-}
-
-namespace {
 class PingPongDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<DemosMenu>>, public BackActionInterface<SwitchScreenAction<DemosMenu>>
 {
 public:

@@ -13,10 +13,6 @@
 #include "actions/switchscreenaction.h"
 
 namespace {
-class DemosMenu;
-}
-
-namespace {
 class GameOfLifeDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<DemosMenu>>, public BackActionInterface<SwitchScreenAction<DemosMenu>>
 {
 public:

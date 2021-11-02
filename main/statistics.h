@@ -1,7 +1,7 @@
 #pragma once
 
 // 3rdparty lib includes
-#include <ring-buffer.h>
+#include "graphdisplay.h"
 #include <espwifistack.h>
 
 // local includes

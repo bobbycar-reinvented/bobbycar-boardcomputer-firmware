@@ -12,10 +12,6 @@
 #include "actions/switchscreenaction.h"
 
 namespace {
-class DemosMenu;
-}
-
-namespace {
 class SpiroDisplay : public Display, public DummyConfirm, public BackActionInterface<SwitchScreenAction<DemosMenu>>
 {
 public:
