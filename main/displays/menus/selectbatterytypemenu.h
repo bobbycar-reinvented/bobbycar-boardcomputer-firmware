@@ -42,6 +42,7 @@ namespace  {
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_HG2>,             BatterySelectTypeAction<BatteryCellType::HG2>>>();
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_MH1>,             BatterySelectTypeAction<BatteryCellType::MH1>>>();
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_VTC5>,            BatterySelectTypeAction<BatteryCellType::VTC5>>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_BAK_25R>,         BatterySelectTypeAction<BatteryCellType::BAK_25R>>>();
             constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
         }
     };

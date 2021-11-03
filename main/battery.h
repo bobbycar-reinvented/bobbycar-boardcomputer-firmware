@@ -12,7 +12,8 @@
     x(_22P) \
     x(HG2) \
     x(MH1) \
-    x(VTC5)
+    x(VTC5) \
+    x(BAK_25R)
 DECLARE_TYPESAFE_ENUM(BatteryCellType, : uint8_t, BatteryCellTypeValues)
 
 namespace {
@@ -61,7 +62,7 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
             CURVE(3.56, 3.50, 2.25, 2.5)
             CURVE(3.50, 3.40, 2.5, 2.75)
             CURVE(3.40, 3.30, 2.75, 3.0)
-            CURVE(3.30, 2.5, 3.0, 3.2)
+            CURVE(3.30, 2.50, 3.0, 3.2)
             break;
         }
         case BatteryCellType::HG2: {
@@ -99,6 +100,23 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
             CURVE(3.44, 3.20, 2.0, 2.25)
             CURVE(3.20, 2.80, 2.25, 2.5)
             CURVE(2.80, 2.50, 2.5, 2.60)
+            break;
+        }
+        case BatteryCellType::BAK_25R: {
+            const float expected_ah = 2.5;
+            if(cellVoltage > 4.15){
+                return 100;
+            }
+            CURVE(4.15, 4.06, 0, 0.25)
+            CURVE(4.06, 3.96, 0.25, 0.5)
+            CURVE(3.96, 3.88, 0.5, 0.75)
+            CURVE(3.88, 3.77, 0.75, 1)
+            CURVE(3.77, 3.68, 1, 1.25)
+            CURVE(3.68, 3.62, 1.25, 1.5)
+            CURVE(3.62, 3.56, 1.5, 1.75)
+            CURVE(3.56, 3.47, 1.75, 2)
+            CURVE(3.47, 3.31, 2, 2.25)
+            CURVE(3.31, 2.50, 2.25, 2.5)
             break;
         }
     }
