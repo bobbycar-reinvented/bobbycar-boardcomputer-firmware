@@ -56,3 +56,5 @@ bool loadSettings();
 bool saveSettings();
 void updateAccumulators();
 void readPotis();
+float wattToAmpere(float watt);
+float wattToMotorCurrent(float watt);

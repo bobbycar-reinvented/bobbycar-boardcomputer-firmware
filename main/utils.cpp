@@ -306,3 +306,14 @@ void readPotis()
     gametrakDist = cpputils::mapValueClamped<float>(raw_gametrakDist, settings.boardcomputerHardware.gametrakDistMin, settings.boardcomputerHardware.gametrakDistMax, 0., 1000.);
 #endif
 }
+
+float wattToAmpere(float watt) {
+    float voltage = std::max(controllers.front.feedback.batVoltage, controllers.back.feedback.batVoltage);
+    if (voltage > 50) voltage = 50;
+    if (voltage < 30) voltage = 30;
+    return watt / voltage;
+}
+
+float wattToMotorCurrent(float watt) {
+    return wattToAmpere(watt) / 4;
+}
