@@ -102,6 +102,7 @@ constexpr char TEXT_BATTERY_TYPE_22P[] = "22P cells";
 constexpr char TEXT_BATTERY_TYPE_HG2[] = "HG2 cells";
 constexpr char TEXT_BATTERY_TYPE_MH1[] = "MH1 cells";
 constexpr char TEXT_BATTERY_TYPE_VTC5[] = "VTC5 cells";
+constexpr char TEXT_BATTERY_TYPE_BAK_25R[] = "BAK / 25R cells";
 constexpr char TEXT_BATTERY_WHKM[] = "Wh per km";
 constexpr char TEXT_BATTERY_APPLYCALIB[] = "Apply calibration";
 constexpr char TEXT_VOLTAGECALIBRATION_RESET[] = "Reset calibration";
@@ -489,7 +490,6 @@ constexpr char TEXT_OTA_NOBUILDSERVERAVAILABLE[] = "E:No server saved.";
 constexpr char TEXT_OTA_NOBUILDSERVERSELECTED[] = "E:No server selected.";
 constexpr char TEXT_OTA_NOCONNECTION[] = "E:No internet.";
 constexpr char TEXT_OTA_WAITFORRESPONSE[] = "Wait for response...";
-constexpr char TEXT_REDOWNLOAD[] = "Reload list";
 
 //LedstripColorMenu
 constexpr char TEXT_LEDSTRIPCOLORMENU[] = "Customize Ledstrip";

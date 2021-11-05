@@ -32,6 +32,5 @@ void showSpeedSyncAnimation();
 void showCustomColor();
 
 void initLedStrip();
-
 void updateLedStrip();
 #endif
