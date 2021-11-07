@@ -24,6 +24,7 @@ WirelessSettingsCallbacks bleWirelessSettingsCallbacks;
 WiFiListCallbacks bleWiFiListCallbacks;
 #endif
 
+namespace {
 void createBle()
 {
     ESP_LOGI("BOBBY", "called");
@@ -69,6 +70,7 @@ void destroyBle()
     getwifilist = {};
 #endif
 }
+} // namespace
 
 void initBle()
 {

@@ -14,168 +14,43 @@
 #include "ledstrip.h"
 #endif
 
-namespace {
+extern int rotated;
+extern bool requestFullRedraw;
 
-int rotated{};
-bool requestFullRedraw{};
+extern bool confirmButtonPressed;
+extern bool confirmButtonLongPressed;
+extern bool backButtonPressed;
+extern bool backButtonLongPressed;
 
-bool confirmButtonPressed{};
-bool confirmButtonLongPressed{};
-bool backButtonPressed{};
-bool backButtonLongPressed{};
+extern bool profileButtonDisabled;
 
-bool profileButtonDisabled{};
-
-std::optional<espchrono::millis_clock::time_point> upPressedSince;
-int upPressRepeat{};
-std::optional<espchrono::millis_clock::time_point> downPressedSince;
-int downPressRepeat{};
+extern std::optional<espchrono::millis_clock::time_point> upPressedSince;
+extern int upPressRepeat;
+extern std::optional<espchrono::millis_clock::time_point> downPressedSince;
+extern int downPressRepeat;
 
 class InputDispatcher
 {
 public:
-    static void update()
-    {
-        if (upPressedSince && espchrono::ago(*upPressedSince) > (upPressRepeat > 2 ? 50ms : 400ms))
-        {
-            upPressedSince = espchrono::millis_clock::now();
-            upPressRepeat++;
-            rotated -= 1;
-        }
+    static void update();
 
-        if (downPressedSince && espchrono::ago(*downPressedSince) > (downPressRepeat > 2 ? 50ms : 400ms))
-        {
-            downPressedSince = espchrono::millis_clock::now();
-            downPressRepeat++;
-            rotated += 1;
-        }
-    }
+    static void rotate(int offset);
 
-    static void rotate(int offset)
-    {
-        rotated += offset;
-    }
+    static void upButton(bool pressed);
 
-    static void upButton(bool pressed)
-    {
-        if (pressed)
-        {
-            upPressedSince = espchrono::millis_clock::now();
-            upPressRepeat = 0;
-            rotated -= 1;
-        }
-        else
-        {
-            upPressedSince = std::nullopt;
-        }
-    }
+    static void downButton(bool pressed);
 
-    static void downButton(bool pressed)
-    {
-        if (pressed)
-        {
-            downPressedSince = espchrono::millis_clock::now();
-            downPressRepeat = 0;
-            rotated += 1;
-        }
-        else
-        {
-            downPressedSince = std::nullopt;
-        }
-    }
+    static void confirmButton(bool pressed);
 
-    static void confirmButton(bool pressed)
-    {
-        static espchrono::millis_clock::time_point pressBegin{};
+    static void backButton(bool pressed);
 
-        const auto now = espchrono::millis_clock::now();
+    static void profileButton(uint8_t index, bool pressed);
 
-        if (pressed)
-            pressBegin = now;
-        else
-        {
-            const auto duration = now - pressBegin;
+    static void blinkLeftButton(bool pressed);
 
-            if (duration < 500ms)
-                confirmButtonPressed = true;
-            else if (duration < 2000ms)
-                confirmButtonLongPressed = true;
-            else
-                requestFullRedraw = true;
+    static void blinkRightButton(bool pressed);
 
-            pressBegin = {};
-        }
-    }
+    static void quickActionButtonDown(bool pressed);
 
-    static void backButton(bool pressed)
-    {
-        static espchrono::millis_clock::time_point pressBegin{};
-
-        const auto now = espchrono::millis_clock::now();
-
-        if (pressed)
-            pressBegin = now;
-        else
-        {
-            const auto duration = now - pressBegin;
-
-            if (duration < 500ms)
-                backButtonPressed = true;
-            else
-                backButtonLongPressed = true;
-
-            pressBegin = {};
-        }
-    }
-
-    static void profileButton(uint8_t index, bool pressed)
-    {
-        if (!pressed)
-            return;
-
-        if (profileButtonDisabled)
-            return;
-
-        switchProfile(index);
-    }
-
-    static void blinkLeftButton(bool pressed){
-        if(!pressed)return;
-
-#ifdef FEATURE_LEDSTRIP
-        if(blinkAnimation == LEDSTRIP_OVERWRITE_NONE){ //transition from off to left
-            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKLEFT;
-        }
-        else if(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKRIGHT){ // transition to warning
-            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKBOTH;
-        }
-        else{ // transition to off
-            blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
-        }
-#endif
-    }
-
-    static void blinkRightButton(bool pressed){
-        if(!pressed)return;
-#ifdef FEATURE_LEDSTRIP
-        if(blinkAnimation == LEDSTRIP_OVERWRITE_NONE){ //transition from off to right
-            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKRIGHT;
-        }
-        else if(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKLEFT){ // transition to warning
-            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKBOTH;
-        }
-        else{ // transition to off
-            blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
-        }
-#endif
-    }
-
-    static void quickActionButtonDown(bool pressed){
-
-    }
-
-    static void quickActionButtonUp(bool pressed){
-
-    }
+    static void quickActionButtonUp(bool pressed);
 };
-}

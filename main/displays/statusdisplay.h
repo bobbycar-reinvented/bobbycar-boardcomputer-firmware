@@ -17,8 +17,7 @@
 #include "battery.h"
 
 class StatusDisplay :
-    public espgui::Display,
-    public espgui::DummyBack
+    public espgui::Display
 {
     using Base = espgui::Display;
 
@@ -27,6 +26,7 @@ public:
     void redraw() override;
 
     void confirm() override;
+    void back() override;
     void rotate(int offset) override;
 
 private:

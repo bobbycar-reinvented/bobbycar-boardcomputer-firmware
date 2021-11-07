@@ -28,9 +28,6 @@ extern BLECharacteristic *wirelessConfig;
 extern BLECharacteristic *getwifilist;
 #endif
 
-void createBle();
-void destroyBle();
-
 class RemoteControlCallbacks : public NimBLECharacteristicCallbacks
 {
 public:
