@@ -1,5 +1,8 @@
 #include "statusdisplay.h"
 
+// esp-idf includes
+#include <esp_log.h>
+
 // 3rdparty lib includes
 #include <fmt/core.h>
 #include <espwifistack.h>
@@ -14,6 +17,10 @@
 #endif
 
 using namespace espgui;
+
+namespace {
+constexpr const char * const TAG = "STATUS";
+} // namespace
 
 void StatusDisplay::initScreen()
 {
@@ -143,7 +150,13 @@ clearIp:
 
 void StatusDisplay::confirm()
 {
+    ESP_LOGI(TAG, "called");
     switchScreen<MainMenu>();
+}
+
+void StatusDisplay::back()
+{
+
 }
 
 void StatusDisplay::rotate(int offset)
