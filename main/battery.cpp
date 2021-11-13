@@ -144,7 +144,7 @@ std::string getBatteryPercentageString()
 
 std::string getBatteryRemainingWattHoursString()
 {
-    return fmt::format("{:.1f} Wh", getRemainingWattHours());
+    return fmt::format("{:.1f}Wh", getRemainingWattHours());
 }
 
 std::string getBatteryCellTypeString()
