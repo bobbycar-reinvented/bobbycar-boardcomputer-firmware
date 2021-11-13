@@ -48,3 +48,4 @@ then
     echo "run ./switchconf.sh to fix all listed issues"
     return
 fi
+export PATH=$PATH:$(pwd)/tools
