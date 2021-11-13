@@ -49,3 +49,4 @@ then
     return
 fi
 export PATH=$PATH:$(pwd)/tools
+alias open-ide=open_ide
