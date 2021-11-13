@@ -27,3 +27,5 @@ std::string getBatteryRemainingWattHoursString();
 std::string getBatteryCellTypeString();
 
 std::string getRemainingRangeString();
+
+std::string getBatteryDebugString();

@@ -156,3 +156,14 @@ std::string getRemainingRangeString()
 {
     return fmt::format("{:.1f} km", getRemainingWattHours() / settings.battery.watthoursPerKilometer);
 }
+
+std::string getBatteryDebugString()
+{
+    float avgVoltage = 0;
+    for (auto &controller : controllers)
+    {
+        avgVoltage += controller.getCalibratedVoltage();
+    }
+    avgVoltage = avgVoltage / controllers.size();
+    return fmt::format("{:.1f}V {}A", avgVoltage, sumCurrent);
+}
