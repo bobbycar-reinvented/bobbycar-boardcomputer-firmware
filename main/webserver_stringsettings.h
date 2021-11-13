@@ -84,7 +84,8 @@ esp_err_t webserver_stringSettings_handler(httpd_req_t *req)
                         "<a href=\"/ota\">Update</a> - "
 #endif
                         "<a href=\"/settings\">Settings</a> - "
-                        "<b>String Settings</b>";
+                        "<b>String Settings</b> - "
+                        "<a href=\"/dumpnvs\">Dump NVS</a>";
             }
 
             HtmlTag divTag{"div", "class=\"form-table\"", body};

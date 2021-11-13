@@ -55,6 +55,7 @@ set(headers
     webserver_ota.h
     webserver_settings.h
     webserver_stringsettings.h
+    webserver_dumpnvs.h
     wifi_bobbycar.h
     wifitexthelpers.h
     accessors/globalaccessors.h
@@ -238,6 +239,7 @@ set(sources
     webserver_ota.cpp
     webserver_settings.cpp
     webserver_stringsettings.cpp
+    webserver_dumpnvs.cpp
     wifi_bobbycar.cpp
     wifitexthelpers.cpp
     accessors/globalaccessors.cpp

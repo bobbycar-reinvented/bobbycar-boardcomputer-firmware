@@ -22,6 +22,10 @@
 #endif
 #include "webserver_settings.h"
 #include "webserver_stringsettings.h"
+#ifdef OLD_NVS
+#include "webserver_dumpnvs.h"
+using namespace dump_nvs_handler;
+#endif
 
 #ifdef FEATURE_WEBSERVER
 namespace {
@@ -30,6 +34,7 @@ httpd_handle_t httpdHandle;
 void initWebserver();
 void handleWebserver();
 esp_err_t webserver_reboot_handler(httpd_req_t *req);
+
 }
 
 namespace {
@@ -63,6 +68,9 @@ void initWebserver()
          httpd_uri_t { .uri = "/saveSettings",       .method = HTTP_GET, .handler = webserver_saveSettings_handler,       .user_ctx = NULL },
          httpd_uri_t { .uri = "/stringSettings",     .method = HTTP_GET, .handler = webserver_stringSettings_handler,     .user_ctx = NULL },
          httpd_uri_t { .uri = "/saveStringSettings", .method = HTTP_GET, .handler = webserver_saveStringSettings_handler, .user_ctx = NULL },
+#ifdef OLD_NVS
+         // httpd_uri_t { .uri = "/dumpnvs",            .method = HTTP_GET, .handler = webserver_dump_nvs_handler,           .user_ctx = NULL },
+#endif
     })
     {
         const auto result = httpd_register_uri_handler(httpdHandle, &uri);
