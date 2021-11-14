@@ -11,6 +11,7 @@
 #include <fmt/core.h>
 #include <espcppmacros.h>
 #include <esphttpdutils.h>
+#include <espchrono.h>
 #include <lockhelper.h>
 #include <tickchrono.h>
 #include <ArduinoJson.h>
@@ -26,6 +27,7 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req);
 } // namespace
 
 using esphttpdutils::HtmlTag;
+using namespace espchrono;
 
 namespace dump_nvs_handler {
 
@@ -34,7 +36,10 @@ typename std::enable_if<
     !std::is_same<T, bool>::value &&
     !std::is_integral<T>::value &&
     !std::is_same<T, std::array<int8_t, 4>>::value &&
-    !std::is_same<T, std::string>::value
+    !std::is_same<T, std::string>::value &&
+    !std::is_same<T, espchrono::minutes32>::value &&
+    !std::is_same<T, espchrono::DayLightSavingMode>::value &&
+    !std::is_same<T, UnifiedModelMode>::value
 , bool>::type
 showInputForSetting(std::string_view key, T value, JsonObject &body)
 {
@@ -81,6 +86,36 @@ typename std::enable_if<
 showInputForSetting(std::string_view key, T value, JsonObject &body)
 {
     body[key] = value;
+    return true;
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same<T, espchrono::minutes32>::value
+, bool>::type
+showInputForSetting(std::string_view key, T value, JsonObject &body)
+{
+    body[key] = value.count();
+    return true;
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same<T, espchrono::DayLightSavingMode>::value
+, bool>::type
+showInputForSetting(std::string_view key, T value, JsonObject &body)
+{
+    body[key] = toString(espchrono::DayLightSavingMode(value));
+    return true;
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same<T, UnifiedModelMode>::value
+, bool>::type
+showInputForSetting(std::string_view key, T value, JsonObject &body)
+{
+    body[key] = int(value);
     return true;
 }
 
