@@ -96,6 +96,7 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
     }
 
     std::string body;
+    body.reserve(1024*60);
     const auto profile = settingsPersister.currentlyOpenProfileIndex();
     const auto switchBackProfile = profile ? int(*profile) : 0;
 
@@ -190,18 +191,15 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
                 }
             });
 
-            // ToDo: Do something that it does not crash (std::string probabbly gets to big)
-            // After that, change "profile_num < 1" to "profile_num < 4", uncomment the "switchProfile(profile_num);" and reenable the url in webserver.h
-
             // Profile settings
-            for (uint8_t profile_num = 0; profile_num < 1; profile_num++) {
+            for (uint8_t profile_num = 0; profile_num < 4; profile_num++) {
 
 #ifdef SIMPLIFIED_TRIGGER_TRIGGERONPRESET
                 if (profile_num == SIMPLIFIED_TRIGGER_TRIGGERONPRESET) {
                     continue;
                 }
 #endif
-                // switchProfile(profile_num);
+                switchProfile(profile_num);
 
                 const auto cur_profile = settingsPersister.currentlyOpenProfileIndex();
                 const auto cur_profile_int = profile ? int(*cur_profile) : 0;

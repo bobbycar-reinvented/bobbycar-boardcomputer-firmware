@@ -10,14 +10,22 @@
 #include "displays/menus/stationwifisettingsmenu.h"
 #include "displays/menus/accesspointwifisettingsmenu.h"
 #include "displays/menus/settingsmenu.h"
+#include "globals.h"
 
 using namespace espgui;
+
+class ResendDNSRequest : public virtual ActionInterface
+{
+public:
+    void triggered() override { dns_lastIpAddress_v4 = "---"; dns_lastIpAddress_v6 = "---"; dns_lastIpAddress_v6_global = "---"; }
+};
 
 WifiSettingsMenu::WifiSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GENERICWIFISETTINGS>,     SwitchScreenAction<GenericWifiSettingsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATIONWIFISETTINGS>,     SwitchScreenAction<StationWifiSettingsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ACCESSPOINTWIFISETTINGS>, SwitchScreenAction<AccessPointWifiSettingsMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESEND_DNS>,              ResendDNSRequest>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

@@ -25,6 +25,12 @@ bool simplified =
 #endif
 ;
 
+#ifdef FEATURE_DNS_NS
+std::string dns_lastIpAddress_v4 = "";
+std::string dns_lastIpAddress_v6 = "";
+std::string dns_lastIpAddress_v6_global = "";
+#endif
+
 Settings settings;
 StringSettings stringSettings;
 SettingsPersister settingsPersister;

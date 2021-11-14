@@ -43,6 +43,7 @@ struct StringSettings
 
     std::array<ConfiguredOtaServer, 5> otaServers;
     std::string otaServerUrl;
+    std::string dns_key;
 #endif
 };
 
@@ -108,6 +109,7 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
 
     callable("otaserver", otaServerUrl);
 #endif
+    callable("dnskey", dns_key);
 }
 
 template<typename T>
