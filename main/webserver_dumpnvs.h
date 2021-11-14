@@ -13,6 +13,7 @@
 #include <esphttpdutils.h>
 #include <lockhelper.h>
 #include <tickchrono.h>
+#include <ArduinoJson.h>
 
 // local includes
 #include "globals.h"
@@ -32,12 +33,12 @@ template<typename T>
 typename std::enable_if<
     !std::is_same<T, bool>::value &&
     !std::is_integral<T>::value &&
-    !std::is_same<T, std::array<int8_t, 4>>::value
+    !std::is_same<T, std::array<int8_t, 4>>::value &&
+    !std::is_same<T, std::string>::value
 , bool>::type
-showInputForSetting(std::string_view key, T value, std::string &body)
+showInputForSetting(std::string_view key, T value, JsonObject &body)
 {
-    HtmlTag spanTag{"span", "style=\"color: red;\"", body};
-    body += "Unsupported config type";
+    body[key] = nullptr;
     return false;
 }
 
@@ -45,13 +46,9 @@ template<typename T>
 typename std::enable_if<
     std::is_same<T, bool>::value
 , bool>::type
-showInputForSetting(std::string_view key, T value, std::string &body)
+showInputForSetting(std::string_view key, T value, JsonObject &body)
 {
-    body += fmt::format("<input type=\"checkbox\" readonly name=\"{}\" value=\"true\" {}/>"
-                        "<input type=\"hidden\" readonly name=\"{}\" value=\"false\" />",
-                        esphttpdutils::htmlentities(key),
-                        value ? "checked " : "",
-                        esphttpdutils::htmlentities(key));
+    body[key] = value;
     return true;
 }
 
@@ -60,13 +57,9 @@ typename std::enable_if<
     !std::is_same<T, bool>::value &&
     std::is_integral<T>::value
 , bool>::type
-showInputForSetting(std::string_view key, T value, std::string &body)
+showInputForSetting(std::string_view key, T value, JsonObject &body)
 {
-    body += fmt::format("<input type=\"number\" name=\"{}\" value=\"{}\" min=\"{}\" max=\"{}\" step=\"1\" required readonly/>",
-                        esphttpdutils::htmlentities(key),
-                        value,
-                        std::numeric_limits<T>::min(),
-                        std::numeric_limits<T>::max());
+    body[key] = value;
     return true;
 }
 
@@ -74,16 +67,23 @@ template<typename T>
 typename std::enable_if<
     std::is_same<T, std::array<int8_t, 4>>::value
 , bool>::type
-showInputForSetting(std::string_view key, T value, std::string &body)
+showInputForSetting(std::string_view key, T value, JsonObject &body)
 {
-    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}{}{}{}\" pattern=\"[0-9]{{4}}\" required readonly/>",
-                        esphttpdutils::htmlentities(key),
-                        value[0],
-                        value[1],
-                        value[2],
-                        value[3]);
+    std::string array_str = fmt::format("{}{}{}{}", value[0], value[1], value[2], value[3]);
+    body[key] = array_str;
     return true;
 }
+
+template<typename T>
+typename std::enable_if<
+    std::is_same<T, std::string>::value
+, bool>::type
+showInputForSetting(std::string_view key, T value, JsonObject &body)
+{
+    body[key] = value;
+    return true;
+}
+
 
 esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
 {
@@ -95,160 +95,53 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 
-    std::string body;
-    body.reserve(1024*60);
+    DynamicJsonDocument doc(6144);
     const auto profile = settingsPersister.currentlyOpenProfileIndex();
     const auto switchBackProfile = profile ? int(*profile) : 0;
 
-    {
-        HtmlTag htmlTag{"html", body};
+    JsonObject json_settings = doc.createNestedObject("settings");
+    settings.executeForEveryCommonSetting([&](std::string_view key, const auto &value){
+        showInputForSetting(key, value, json_settings);
+    });
 
-        {
-            HtmlTag headTag{"head", body};
+    JsonObject json_stringSettings = doc.createNestedObject("stringSettings");
+    stringSettings.executeForEveryCommonSetting([&](std::string_view key, const auto &value){
+        showInputForSetting(key, value, json_stringSettings);
+    });
 
-            {
-                HtmlTag titleTag{"title", body};
-                body += "NVS dump";
-            }
+    JsonObject profiles = doc.createNestedObject("profiles");
 
-            body += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />";
-
-            HtmlTag styleTag{"style", "type=\"text/css\"", body};
-            body +=
-                ".form-table {"
-                    "display: table;"
-                    "border-collapse: separate;"
-                    "border-spacing: 10px 0;"
-                "}"
-
-                ".form-table .form-table-row {"
-                    "display: table-row;"
-                "}"
-
-                ".form-table .form-table-row .form-table-cell {"
-                    "display: table-cell;"
-                "}";
-        }
-
-        {
-            HtmlTag bodyTag{"body", body};
-
-            {
-                HtmlTag h1Tag{"h1", body};
-                body += "NVS dump";
-            }
-
-            {
-                HtmlTag pTag{"p", body};
-                body += "<a href=\"/\">Display control</a> - "
-#ifdef FEATURE_OTA
-                        "<a href=\"/ota\">Update</a> - "
-#endif
-                        "<a href=\"/settings\">Settings</a> - "
-                        "<a href=\"/stringSettings\">String Settings</a> - "
-                        "<b>Dump NVS</b>";
-            }
-
-            HtmlTag divTag{"div", "class=\"form-table\"", body};
-            // Common setting
-            {
-                HtmlTag h1Tag{"h1", body};
-                body += "stringSettings";
-            }
-            stringSettings.executeForEveryCommonSetting([&](std::string_view key, const auto &value){
-                HtmlTag divTag{"div", "class=\"form-table-row\"", body};
-
-                {
-                    HtmlTag divTag{"div", "class=\"form-table\"", body};
-                    HtmlTag bTag{"b", body};
-                    body += esphttpdutils::htmlentities(key);
-                }
-
-                {
-                    HtmlTag divTag{"div", "class=\"form-table-cell\"", body};
-                    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}\" required readonly/>",
-                                        esphttpdutils::htmlentities(key),
-                                        esphttpdutils::htmlentities(value));
-                }
-            });
-
-            {
-                HtmlTag h1Tag{"h1", body};
-                body += "settings";
-            }
-            settings.executeForEveryCommonSetting([&](std::string_view key, const auto &value){
-                HtmlTag divTag{"div", "class=\"form-table-row\"", body};
-
-                {
-                    HtmlTag divTag{"div", "class=\"form-table\"", body};
-                    HtmlTag bTag{"b", body};
-                    body += esphttpdutils::htmlentities(key);
-                }
-
-                {
-                    HtmlTag divTag{"div", "class=\"form-table-cell\"", body};
-                    showInputForSetting(key, value, body);
-                }
-            });
-
-            // Profile settings
-            for (uint8_t profile_num = 0; profile_num < 4; profile_num++) {
+    // Profile settings
+    for (uint8_t profile_num = 0; profile_num < 4; profile_num++) {
 
 #ifdef SIMPLIFIED_TRIGGER_TRIGGERONPRESET
-                if (profile_num == SIMPLIFIED_TRIGGER_TRIGGERONPRESET) {
-                    continue;
-                }
-#endif
-                switchProfile(profile_num);
-
-                const auto cur_profile = settingsPersister.currentlyOpenProfileIndex();
-                const auto cur_profile_int = profile ? int(*cur_profile) : 0;
-                {
-                    HtmlTag h1Tag{"h1", body};
-                    body += fmt::format("stringSettings (Profile {})", cur_profile_int);
-                }
-                stringSettings.executeForEveryProfileSetting([&](const char *key, auto &value){
-                    HtmlTag divTag{"div", "class=\"form-table-row\"", body};
-
-                    {
-                        HtmlTag divTag{"div", "class=\"form-table\"", body};
-                        HtmlTag bTag{"b", body};
-                        body += esphttpdutils::htmlentities(key);
-                    }
-
-                    {
-                        HtmlTag divTag{"div", "class=\"form-table-cell\"", body};
-                        body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}\" required readonly/>",
-                                            esphttpdutils::htmlentities(key),
-                                            esphttpdutils::htmlentities(value));
-                    }
-                });
-
-                {
-                    HtmlTag h1Tag{"h1", body};
-                    body += fmt::format("settings (Profile {})", cur_profile_int);
-                }
-                settings.executeForEveryProfileSetting([&](const char *key, auto &value){
-                    HtmlTag divTag{"div", "class=\"form-table-row\"", body};
-
-                    {
-                        HtmlTag divTag{"div", "class=\"form-table\"", body};
-                        HtmlTag bTag{"b", body};
-                        body += esphttpdutils::htmlentities(key);
-                    }
-
-                    {
-                        HtmlTag divTag{"div", "class=\"form-table-cell\"", body};
-                        showInputForSetting(key, value, body);
-                    }
-                });
-            }
+        if (profile_num == SIMPLIFIED_TRIGGER_TRIGGERONPRESET) {
+            continue;
         }
+#endif
+        switchProfile(profile_num);
+
+        const auto cur_profile = settingsPersister.currentlyOpenProfileIndex();
+        const auto profile_str = cur_profile ? std::to_string(*cur_profile) : "-";
+
+        JsonObject profile = profiles.createNestedObject(profile_str);
+        JsonObject profile_stringSettings = profile.createNestedObject("stringSettings");
+        JsonObject profile_settings = profile.createNestedObject("settings");
+
+        stringSettings.executeForEveryProfileSetting([&](const char *key, auto &value){
+            showInputForSetting(key, value, profile_stringSettings);
+        });
+
+        settings.executeForEveryProfileSetting([&](const char *key, auto &value){
+            showInputForSetting(key, value, profile_settings);
+        });
     }
 
     switchProfile(switchBackProfile);
 
-    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/html", body)
+    std::string body;
+    serializeJson(doc, body);
+    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "application/json", body)
 }
 } // namespace
 
