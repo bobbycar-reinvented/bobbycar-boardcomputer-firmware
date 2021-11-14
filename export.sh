@@ -10,6 +10,7 @@ fi
 . ${BOBBY_ROOT}/esp-idf/export.sh
 
 complete -W "$(./switchconf.sh --list)" ./switchconf.sh
+complete -W "$(./switchconf.sh --list)" switchconf
 
 BOBBY_INIT_FAILED=
 
@@ -50,3 +51,5 @@ then
 fi
 export PATH=$PATH:$(pwd)/tools
 alias open-ide=open_ide
+alias switchconf=./switchconf.sh
+alias bobby-build="idf.py build"
