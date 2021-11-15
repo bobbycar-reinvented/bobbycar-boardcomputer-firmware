@@ -6,6 +6,9 @@
 #include "actioninterface.h"
 #include "fmt/core.h"
 #include "utils.h"
+#include "icons/time.h"
+#include "icons/reboot.h"
+#include "icons/update.h"
 
 using namespace espgui;
 
@@ -38,7 +41,13 @@ class CurrentKilometersText : public virtual espgui::TextInterface {
 
 class TotalKilometersText : public virtual espgui::TextInterface {
     public: std::string text() const override {
-        return fmt::format("total: {:.2f}m", drivingStatistics.totalMeters );
+        return fmt::format("total: {:.1f}km", drivingStatistics.totalMeters / 1000.f );
+    }
+};
+
+class TotalMetersText : public virtual espgui::TextInterface {
+    public: std::string text() const override {
+        return fmt::format("total: {:.0f}m", drivingStatistics.totalMeters );
     }
 };
 
@@ -74,13 +83,15 @@ public:
 StatisticsMenu::StatisticsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, WhPerKmText,                                      DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, UptimeText,                                       DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, UptimeText,                                       DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
     constructMenuItem<makeComponent<MenuItem, CurrentKilometersText,                            DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CurrentDrivingTimeText,                           DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TotalKilometersText,                              DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, SavedTotalCentimetersText,                        DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSSAVE>,                       SaveKilometersAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSCLEAR>,                      ClearCurrentStatsAction>>();
+    constructMenuItem<makeComponent<MenuItem, TotalMetersText,                                  DummyAction>>();
+//  constructMenuItem<makeComponent<MenuItem, SavedTotalCentimetersText,                        DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, EmptyText,                                        DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSSAVE>,                       SaveKilometersAction, StaticMenuItemIcon<&bobbyicons::update>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSCLEAR>,                      ClearCurrentStatsAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                            SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
