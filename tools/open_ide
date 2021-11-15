@@ -5,4 +5,4 @@ then
     source export.sh --skip-source-check
 fi
 
-qtcreator "bobbycar-boardcomputer-firmware" 2>&1 >/dev/null &
+qtcreator . 2>&1 >/dev/null &
