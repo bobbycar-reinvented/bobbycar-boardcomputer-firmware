@@ -197,6 +197,10 @@ struct Settings
         std::array<int8_t, 4> pin;
     } lockscreen;
 
+    struct SavedStatistics {
+        uint32_t totalCentimeters;
+    } savedStatistics;
+
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
 
@@ -317,6 +321,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
     callable("lockscreenPin", lockscreen.pin);
+    callable("totalCentimeter", savedStatistics.totalCentimeters);
 }
 
 template<typename T>

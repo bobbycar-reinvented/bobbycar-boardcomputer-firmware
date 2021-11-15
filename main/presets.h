@@ -273,6 +273,10 @@ constexpr Settings::Hybrid defaultHybrid {
     .deactivationLimit = 950,
 };
 
+constexpr Settings::SavedStatistics defaultSavedStatistics {
+    .totalCentimeters = 0,
+};
+
 constexpr Settings defaultSettings {
 #ifdef FEATURE_BMS
     .autoConnectBms = false,
@@ -300,7 +304,8 @@ constexpr Settings defaultSettings {
 #endif
     .battery = defaultBattery,
     .hybrid = defaultHybrid,
-    .lockscreen = defaultLockscreen
+    .lockscreen = defaultLockscreen,
+    .savedStatistics = defaultSavedStatistics,
 };
 
 StringSettings makeDefaultStringSettings();

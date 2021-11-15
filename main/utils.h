@@ -58,3 +58,6 @@ void updateAccumulators();
 void readPotis();
 float wattToAmpere(float watt);
 float wattToMotorCurrent(float watt);
+std::string get_current_uptime_string();
+std::string get_current_driving_time_string();
+void secondsToHMS( const float seconds, uint16_t &h, uint8_t &m, uint8_t &s );

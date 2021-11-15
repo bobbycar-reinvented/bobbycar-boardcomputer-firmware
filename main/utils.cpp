@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "globals.h"
 
 using namespace std::chrono_literals;
 
@@ -316,4 +317,33 @@ float wattToAmpere(float watt) {
 
 float wattToMotorCurrent(float watt) {
     return wattToAmpere(watt) / 4;
+}
+
+std::string get_current_uptime_string() {
+    const auto uptime_time_point = espchrono::utc_clock::now();
+    const auto dateTimeUptime = espchrono::toDateTime(uptime_time_point);
+    std::string out = fmt::format("Up: {:02d}:{:02d}:{:02d}", dateTimeUptime.hour, dateTimeUptime.minute, dateTimeUptime.second);
+    return out;
+}
+
+void secondsToHMS( const float seconds, uint16_t &h, uint16_t &m, uint16_t &s )
+{
+    uint32_t t = seconds;
+
+    s = t % 60;
+
+    t = (t - s)/60;
+    m = t % 60;
+
+    t = (t - m)/60;
+    h = t;
+}
+
+std::string get_current_driving_time_string() {
+    uint16_t hour{};
+    uint16_t minute{};
+    uint16_t second{};
+    secondsToHMS(drivingStatistics.currentDrivingTime, hour, minute, second);
+    std::string out = fmt::format("Drive: {:02d}:{:02d}:{:02d}", hour, minute, second);
+    return out;
 }

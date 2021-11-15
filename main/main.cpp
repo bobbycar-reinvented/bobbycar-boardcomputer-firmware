@@ -524,5 +524,33 @@ extern "C" void app_main()
             dns_lastIpAddress_v6_global = "-";
         }
 #endif
+        EVERY_N_MILLIS( 10 ) {
+
+            if ((settings.savedStatistics.totalCentimeters / 100.f) > drivingStatistics.totalMeters)
+            {
+                drivingStatistics.totalMeters = settings.savedStatistics.totalCentimeters / 100.f;
+                drivingStatistics.last_cm_written = settings.savedStatistics.totalCentimeters;
+            }
+
+            static auto last_km_calculation = espchrono::millis_clock::now();
+            const auto duration = espchrono::ago(last_km_calculation).count() / 1000.0f;
+            last_km_calculation = espchrono::millis_clock::now();
+
+            const float meters_driven_now = (abs(avgSpeedKmh) / 3.6) * duration;
+            drivingStatistics.meters_driven += meters_driven_now;
+            drivingStatistics.totalMeters += meters_driven_now;
+
+            if (abs(avgSpeedKmh) > 1)
+            {
+                drivingStatistics.currentDrivingTime += duration;
+            }
+
+            if (drivingStatistics.totalMeters > ((drivingStatistics.last_cm_written / 100.f) + 100))
+            {
+                drivingStatistics.last_cm_written = drivingStatistics.totalMeters * 100;
+                settings.savedStatistics.totalCentimeters = drivingStatistics.last_cm_written;
+                saveSettings();
+            }
+        }
     }
 }

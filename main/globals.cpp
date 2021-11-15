@@ -47,3 +47,5 @@ BluetoothSerial bluetoothSerial;
 
 ModeInterface *lastMode{};
 ModeInterface *currentMode{};
+
+DrivingStatistics drivingStatistics;
