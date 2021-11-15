@@ -7,6 +7,7 @@
 #include <FastLED.h>
 
 #ifdef FEATURE_LEDSTRIP
+#define crgb_iterator __gnu_cxx::__normal_iterator<CRGB *, std::vector<CRGB>>
 enum Bobbycar_Side
 {
     FRONT_RIGHT,

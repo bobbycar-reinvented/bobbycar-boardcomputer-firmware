@@ -170,6 +170,7 @@ struct Settings
         bool stvoFrontEnable;
         int16_t animationMultiplier;
         uint8_t brightness;
+        bool enableAnimBlink;
     } ledstrip;
 #endif
 
@@ -302,6 +303,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("ledstvoen", ledstrip.stvoFrontEnable);
     callable("ledAnimMul", ledstrip.animationMultiplier);
     callable("ledbrightness", ledstrip.brightness);
+    callable("enAnimBlink", ledstrip.enableAnimBlink);
 #endif
 
     callable("batteryCS", battery.cellsSeries);

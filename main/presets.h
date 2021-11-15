@@ -245,7 +245,8 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .stvoFrontLength = 10,
     .stvoFrontEnable = false,
     .animationMultiplier = 10,
-    .brightness = 255
+    .brightness = 255,
+    .enableAnimBlink = false
 };
 #endif
 

@@ -7,6 +7,7 @@
 #include "cpputils.h"
 #include "espchrono.h"
 #include "ledstripdefines.h"
+#include "utils.h"
 
 using namespace std::chrono_literals;
 
@@ -34,32 +35,96 @@ void updateLedStrip()
     if (cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH))
     {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
-        if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms)
+        const bool enAnim = settings.ledstrip.enableAnimBlink;
+        if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms || enAnim)
         {
+            const auto anim_to_fill = time_to_percent(750ms, 500ms, 100ms, settings.ledstrip.enableFullBlink ? (leds.size() / 2) : settings.ledstrip.bigOffset - settings.ledstrip.smallOffset, settings.ledstrip.enableFullBlink);
             if (settings.ledstrip.enableBeepWhenBlink)
             {
-                for (Controller &controller : controllers)
-                    controller.command.buzzer.freq = 3;
+                if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms)
+                    for (Controller &controller : controllers)
+                        controller.command.buzzer.freq = 3;
+                else
+                    for (Controller &controller : controllers)
+                        controller.command.buzzer.freq = 0;
             }
-            auto color = CRGB{255, 255, 0};
+            auto color = CRGB{255, 200, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
-            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && !settings.ledstrip.enableFullBlink)
+            if (settings.ledstrip.enableFullBlink)
             {
-                std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
+                // Full
+                if (BLINK_LEFT_EXPR)
+                {
+                    // Blink left
+                    if (!enAnim)
+                    {
+                        std::fill(std::begin(leds), center, color);
+                    }
+                    else
+                    {
+                        std::fill(std::begin(leds)+anim_to_fill, center, color);
+                    }
+                }
+                if (BLINK_RIGHT_EXPR)
+                {
+                    // Blink right
+                    if (!enAnim)
+                    {
+                        std::fill(center, std::end(leds), color);
+                    }
+                    else
+                    {
+                        std::fill(center, std::end(leds) - anim_to_fill, color);
+                    }
+                }
             }
-            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && settings.ledstrip.enableFullBlink)
+            else
             {
-                std::fill(std::begin(leds), center, color);
+                // Only in the back
+                if (BLINK_LEFT_EXPR)
+                {
+                    // Blink left
+                    if (!enAnim)
+                    {
+                        std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
+                    }
+                    else
+                    {
+                        std::fill(center - settings.ledstrip.smallOffset - anim_to_fill, center - settings.ledstrip.smallOffset, color);
+                    }
+                }
+                if (BLINK_RIGHT_EXPR)
+                {
+                    // Blink right
+                    if (!enAnim)
+                    {
+                        std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
+                    }
+                    else
+                    {
+                        std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.smallOffset + anim_to_fill, color);
+                    }
+                }
             }
-            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && !settings.ledstrip.enableFullBlink)
-            {
-                std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
-            }
-            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && settings.ledstrip.enableFullBlink)
-            {
-                std::fill(center, std::end(leds), color);
-            }
+
+// Old way to blink
+//            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && !settings.ledstrip.enableFullBlink)
+//            {
+//                std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
+//            }
+//            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && settings.ledstrip.enableFullBlink)
+//            {
+//                std::fill(std::begin(leds), center, color);
+//            }
+//            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && !settings.ledstrip.enableFullBlink)
+//            {
+//                std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
+//            }
+//            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && settings.ledstrip.enableFullBlink)
+//            {
+//                std::fill(center, std::end(leds), color);
+//            }
 
         } else {
             if (settings.ledstrip.enableBeepWhenBlink)
@@ -93,10 +158,10 @@ void updateLedStrip()
                 {
                     std::fill(std::begin(leds), std::end(leds), color);
                 }
-                else
+                else if(!settings.ledstrip.enableAnimBlink)
                 {
-                    std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
-                    std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
+                    std::fill(center - settings.ledstrip.bigOffset - 2, center - settings.ledstrip.smallOffset + 2, color);
+                    std::fill(center + settings.ledstrip.smallOffset - 2, center + settings.ledstrip.bigOffset + 2, color);
                 }
             }
             else
