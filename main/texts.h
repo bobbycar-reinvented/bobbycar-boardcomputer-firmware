@@ -92,6 +92,7 @@ constexpr char TEXT_POWEROFF[] = "Poweroff";
 constexpr char TEXT_REBOOT[] = "Reboot";
 constexpr char TEXT_DEBUG[] = "Debug";
 constexpr char TEXT_BATTERY[] = "Battery";
+constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
 
 //BatteryMenu
 constexpr char TEXT_CELL_SERIES[] = "Cells (Series)";
@@ -494,6 +495,11 @@ constexpr char TEXT_OTA_WAITFORRESPONSE[] = "Wait for response...";
 
 //LedstripColorMenu
 constexpr char TEXT_LEDSTRIPCOLORMENU[] = "Customize Ledstrip";
+
+//StatisticsMenu
+constexpr char TEXT_STATISTICSMENU[] = "Statistics";
+constexpr char TEXT_STATSSAVE[] = "Save kilometers";
+constexpr char TEXT_STATSCLEAR[] = "Clear current km";
 
 #ifdef FEATURE_CAN
 constexpr char TEXT_POWERSUPPLY[] = "Powersupply";
