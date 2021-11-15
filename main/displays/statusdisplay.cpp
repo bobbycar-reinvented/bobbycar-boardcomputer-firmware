@@ -1,8 +1,5 @@
 #include "statusdisplay.h"
 
-// esp-idf includes
-#include <esp_log.h>
-
 // 3rdparty lib includes
 #include <fmt/core.h>
 #include <espwifistack.h>
@@ -150,7 +147,6 @@ clearIp:
 
 void StatusDisplay::confirm()
 {
-    ESP_LOGI(TAG, "called");
     switchScreen<MainMenu>();
 }
 
