@@ -449,6 +449,7 @@ extern "C" void app_main()
                 if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
                 {
                     std::string curIpAddress = wifi_stack::toString(result->ip);
+                    if (curIpAddress == "0.0.0.0") goto lookupIPv6;
                     if (dns_lastIpAddress_v4 != curIpAddress)
                     {
                         dns_lastIpAddress_v4 = curIpAddress;
@@ -468,7 +469,7 @@ extern "C" void app_main()
                 {
                     ESP_LOGW("BOBBY", "get_ip_info() failed with %.*s", result.error().size(), result.error().data());
                 }
-
+lookupIPv6:
                 esp_ip6_addr_t tmpv6addr;
                 if (const auto result = esp_netif_get_ip6_linklocal(wifi_stack::esp_netifs[ESP_IF_WIFI_STA], &tmpv6addr); result == ESP_OK)
                 {
@@ -525,6 +526,7 @@ extern "C" void app_main()
         }
 #endif
         EVERY_N_MILLIS( 10 ) {
+            static bool saveTotal = false;
 
             if ((settings.savedStatistics.totalCentimeters / 100.f) > drivingStatistics.totalMeters)
             {
@@ -542,11 +544,19 @@ extern "C" void app_main()
 
             if (abs(avgSpeedKmh) > 1)
             {
+                if (!saveTotal && abs(avgSpeedKmh) > 5)
+                {
+                    saveTotal = true;
+                }
                 drivingStatistics.currentDrivingTime += duration;
             }
 
-            if (drivingStatistics.totalMeters > ((drivingStatistics.last_cm_written / 100.f) + 100))
+            if ((drivingStatistics.totalMeters > ((drivingStatistics.last_cm_written / 100.f) + 100)) || (saveTotal && abs(avgSpeedKmh) < 0.5))
             {
+                if (saveTotal)
+                {
+                    saveTotal = false;
+                }
                 drivingStatistics.last_cm_written = drivingStatistics.totalMeters * 100;
                 settings.savedStatistics.totalCentimeters = drivingStatistics.last_cm_written;
                 saveSettings();
