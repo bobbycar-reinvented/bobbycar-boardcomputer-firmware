@@ -454,8 +454,8 @@ extern "C" void app_main()
                     {
                         dns_lastIpAddress_v4 = curIpAddress;
                         ip_addr_t tmpIpResolved;
-                        std::string toLookup = fmt::format("{}__{}.announce.{}.bobbycar.cloud", randDNSName, curIpAddress, OTA_USERNAME);
-                        ESP_LOGW("BOBBY", "Trying to look up %s", toLookup.c_str());
+                        std::string toLookup = fmt::format("{}__{}.{}.announce.bobbycar.cloud", randDNSName, curIpAddress, OTA_USERNAME);
+                        ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
                         if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
                         {
                             ESP_LOGW("BOBBY", "There is a error in the matrix (dns ipv4 lookup failed) -> %d", err);
@@ -479,8 +479,8 @@ lookupIPv6:
                     {
                         dns_lastIpAddress_v6 = curIpV6Address;
                         ip_addr_t tmpIpResolved;
-                        std::string toLookup = fmt::format("{}__{}.announce6.{}.bobbycar.cloud", randDNSName, curIpV6Address, OTA_USERNAME);
-                        ESP_LOGW("BOBBY", "Trying to look up %s", toLookup.c_str());
+                        std::string toLookup = fmt::format("{}__{}.{}.announce6.bobbycar.cloud", randDNSName, curIpV6Address, OTA_USERNAME);
+                        ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
                         if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
                         {
                             ESP_LOGW("BOBBY", "There is a error in the matrix (dns ipv6 local lookup failed) -> %d", err);
@@ -499,8 +499,8 @@ lookupIPv6:
                         dns_lastIpAddress_v6_global = curIpV6Address;
                         std::replace(curIpV6Address.begin(), curIpV6Address.end(), ':', '-');
                         ip_addr_t tmpIpResolved;
-                        std::string toLookup = fmt::format("{}__{}.announce6.{}.bobbycar.cloud", randDNSName, curIpV6Address, OTA_USERNAME);
-                        ESP_LOGW("BOBBY", "Trying to look up %s", toLookup.c_str());
+                        std::string toLookup = fmt::format("{}global__{}.{}.announce6.bobbycar.cloud", randDNSName, curIpV6Address, OTA_USERNAME);
+                        ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
                         if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
                         {
                             ESP_LOGW("BOBBY", "There is a error in the matrix (dns ipv6 global lookup failed) -> %d", err);
