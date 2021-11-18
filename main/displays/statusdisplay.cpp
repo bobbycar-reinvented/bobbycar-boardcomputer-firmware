@@ -12,6 +12,7 @@
 #else
 #include "displays/metersdisplay.h"
 #endif
+#include "drivingstatistics.h"
 
 using namespace espgui;
 
@@ -78,7 +79,13 @@ void StatusDisplay::redraw()
 
     m_batterypercent.redraw(getBatteryPercentageString());
     m_watthoursleft.redraw(getBatteryRemainingWattHoursString());
+    const uint16_t efficiencyColor = getEfficiencyClassColor();
+//    if (abs(avgSpeedKmh) > 2)
+    {
+        tft.setTextColor(efficiencyColor, TFT_BLACK);
+    }
     m_kilometersleft.redraw(getRemainingRangeString());
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
     m_frontStatus.redraw(controllers.front);
     m_backStatus.redraw(controllers.back);
