@@ -1,4 +1,5 @@
 // 3rd party
+#ifdef FEATURE_DNS_NS
 #include <randomutils.h>
 #include <esprandom.h>
 #include <FastLED.h>
@@ -97,3 +98,4 @@ void handle_dns_announce()
         dns_lastIpAddress_v6_global = "-";
     }
 }
+#endif
