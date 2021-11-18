@@ -72,10 +72,9 @@ using namespace std::chrono_literals;
 #include "displays/statusdisplay.h"
 #include "displays/calibratedisplay.h"
 #ifdef FEATURE_DNS_NS
-#include "lwip/dns.h"
-#include <randomutils.h>
-#include <esprandom.h>
+#include "dnsannounce.h"
 #endif
+#include "drivingstatistics.h"
 
 namespace {
 std::optional<espchrono::millis_clock::time_point> lastWifiUpdate;
@@ -440,127 +439,8 @@ extern "C" void app_main()
         }
 #endif
 #ifdef FEATURE_DNS_NS
-        const auto staStatus = wifi_stack::get_sta_status();
-        const auto randDNSName = cpputils::randomNumber<uint16_t>(espcpputils::esp_random_device{});
-        if (staStatus == wifi_stack::WiFiStaStatus::CONNECTED)
-        {
-            EVERY_N_SECONDS ( 2 ) {
-                // Get IPv4
-                if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
-                {
-                    std::string curIpAddress = wifi_stack::toString(result->ip);
-                    if (curIpAddress == "0.0.0.0") goto lookupIPv6;
-                    if (dns_lastIpAddress_v4 != curIpAddress)
-                    {
-                        dns_lastIpAddress_v4 = curIpAddress;
-                        ip_addr_t tmpIpResolved;
-                        std::string toLookup = fmt::format("{}__{}.{}.announce.bobbycar.cloud", randDNSName, curIpAddress, OTA_USERNAME);
-                        ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
-                        if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
-                        {
-                            ESP_LOGW("BOBBY", "There is a error in the matrix (dns ipv4 lookup failed) -> %d", err);
-                            dns_lastIpAddress_v4 = "-";
-                            dns_lastIpAddress_v6 = "-";
-                            dns_lastIpAddress_v6_global = "-";
-                        }
-                    }
-                }
-                else
-                {
-                    ESP_LOGW("BOBBY", "get_ip_info() failed with %.*s", result.error().size(), result.error().data());
-                }
-lookupIPv6:
-                esp_ip6_addr_t tmpv6addr;
-                if (const auto result = esp_netif_get_ip6_linklocal(wifi_stack::esp_netifs[ESP_IF_WIFI_STA], &tmpv6addr); result == ESP_OK)
-                {
-                    std::string curIpV6Address = wifi_stack::toString(tmpv6addr);
-                    std::replace(curIpV6Address.begin(), curIpV6Address.end(), ':', '-');
-                    if (dns_lastIpAddress_v6 != curIpV6Address)
-                    {
-                        dns_lastIpAddress_v6 = curIpV6Address;
-                        ip_addr_t tmpIpResolved;
-                        std::string toLookup = fmt::format("{}__{}.{}.announce6.bobbycar.cloud", randDNSName, curIpV6Address, OTA_USERNAME);
-                        ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
-                        if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
-                        {
-                            ESP_LOGW("BOBBY", "There is a error in the matrix (dns ipv6 local lookup failed) -> %d", err);
-                            dns_lastIpAddress_v4 = "-";
-                            dns_lastIpAddress_v6 = "-";
-                            dns_lastIpAddress_v6_global = "-";
-                        }
-                    }
-                }
-
-                if (const auto result = esp_netif_get_ip6_global(wifi_stack::esp_netifs[ESP_IF_WIFI_STA], &tmpv6addr); result == ESP_OK)
-                {
-                    std::string curIpV6Address = wifi_stack::toString(tmpv6addr);
-                    if (dns_lastIpAddress_v6_global != curIpV6Address)
-                    {
-                        dns_lastIpAddress_v6_global = curIpV6Address;
-                        std::replace(curIpV6Address.begin(), curIpV6Address.end(), ':', '-');
-                        ip_addr_t tmpIpResolved;
-                        std::string toLookup = fmt::format("{}global__{}.{}.announce6.bobbycar.cloud", randDNSName, curIpV6Address, OTA_USERNAME);
-                        ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
-                        if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
-                        {
-                            ESP_LOGW("BOBBY", "There is a error in the matrix (dns ipv6 global lookup failed) -> %d", err);
-                            dns_lastIpAddress_v4 = "-";
-                            dns_lastIpAddress_v6 = "-";
-                            dns_lastIpAddress_v6_global = "-";
-                        }
-                    }
-                }
-            }
-
-            EVERY_N_SECONDS( 120 ) {
-                dns_lastIpAddress_v4 = "-";
-                dns_lastIpAddress_v6 = "-";
-                dns_lastIpAddress_v6_global = "-";
-            }
-        }
-        else
-        {
-            dns_lastIpAddress_v4 = "-";
-            dns_lastIpAddress_v6 = "-";
-            dns_lastIpAddress_v6_global = "-";
-        }
+        handle_dns_announce();
 #endif
-        EVERY_N_MILLIS( 10 ) {
-            static bool saveTotal = false;
-
-            if ((settings.savedStatistics.totalCentimeters / 100.f) > drivingStatistics.totalMeters)
-            {
-                drivingStatistics.totalMeters = settings.savedStatistics.totalCentimeters / 100.f;
-                drivingStatistics.last_cm_written = settings.savedStatistics.totalCentimeters;
-            }
-
-            static auto last_km_calculation = espchrono::millis_clock::now();
-            const auto duration = espchrono::ago(last_km_calculation).count() / 1000.0f;
-            last_km_calculation = espchrono::millis_clock::now();
-
-            const float meters_driven_now = (abs(avgSpeedKmh) / 3.6) * duration;
-            drivingStatistics.meters_driven += meters_driven_now;
-            drivingStatistics.totalMeters += meters_driven_now;
-
-            if (abs(avgSpeedKmh) > 1)
-            {
-                if (!saveTotal && abs(avgSpeedKmh) > 5)
-                {
-                    saveTotal = true;
-                }
-                drivingStatistics.currentDrivingTime += duration;
-            }
-
-            if ((drivingStatistics.totalMeters > ((drivingStatistics.last_cm_written / 100.f) + 100)) || (saveTotal && abs(avgSpeedKmh) < 0.5))
-            {
-                if (saveTotal)
-                {
-                    saveTotal = false;
-                }
-                drivingStatistics.last_cm_written = drivingStatistics.totalMeters * 100;
-                settings.savedStatistics.totalCentimeters = drivingStatistics.last_cm_written;
-                saveSettings();
-            }
-        }
+        calculateStatistics();
     }
 }
