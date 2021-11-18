@@ -13,6 +13,7 @@
 #include "settings.h"
 #include "stringsettings.h"
 #include "ledstripdefines.h"
+#include "ledstrip.h"
 
 using namespace std::chrono_literals;
 
@@ -246,7 +247,8 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .stvoFrontEnable = false,
     .animationMultiplier = 10,
     .brightness = 255,
-    .enableAnimBlink = false
+    .enableAnimBlink = false,
+    .otaMode = OtaAnimationModes::GreenProgressBar
 };
 #endif
 

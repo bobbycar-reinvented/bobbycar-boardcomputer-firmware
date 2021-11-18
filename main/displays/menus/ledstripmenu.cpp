@@ -17,6 +17,7 @@
 #include "accessors/settingsaccessors.h"
 #ifdef FEATURE_LEDSTRIP
 #include "ledstrip.h"
+#include "displays/menus/ledstripselectotamode.h"
 #endif
 #include "displays/ledstripcolorsdisplay.h"
 #include "displays/menus/mainmenu.h"
@@ -125,6 +126,7 @@ LedstripMenu::LedstripMenu()
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTLENGTH, LedsStVOFrontLengthAccessor>,    SwitchScreenAction<StVOLengthChangeScreen>>>(); }
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTANIMATION>,                                 SwitchScreenAction<LedstripSelectAnimationMenu>>>();
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_CHANGE_OTA_ANIM>,     SwitchScreenAction<ledstripOtaAnimationChangeMenu>>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLINKANIMATION>,                                  SwitchScreenAction<LedstripSelectBlinkMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_MULTIPLIER>,                            SwitchScreenAction<animationMultiplierChangeScreen>>>();
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSCOUNT, LedsCountAccessor>,           SwitchScreenAction<LedsCountChangeScreen>>>(); }

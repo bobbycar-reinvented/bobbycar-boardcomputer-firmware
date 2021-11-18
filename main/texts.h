@@ -294,6 +294,11 @@ constexpr char TEXT_ANIMATION_MULTIPLIER[] = "Animation Multiplier";
 constexpr char TEXT_LEDSTRIP_BRIGHTNESS[] = "Ledstrip Brightness";
 constexpr char TEXT_LEDSTRIP_ALLCUSTOMOFF[] = "All custom off";
 constexpr char TEXT_LEDSTRIP_EN_BLINK_ANIM[] = "Animated Blink";
+constexpr char TEXT_LEDSTRIP_CHANGE_OTA_ANIM[] = "Change Ota animation";
+
+constexpr char TEXT_OTAANIM_NONE[] = "None";
+constexpr char TEXT_OTAANIM_PROGRESS[] = "Progress Bar";
+constexpr char TEXT_OTAANIM_COLOR[] = "Color change";
 //constexpr char TEXT_BACK[] = "Back";
 
 //LedstripSelectAnimationMenu

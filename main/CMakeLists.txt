@@ -155,6 +155,7 @@ set(headers
     displays/starfielddisplay.h
     displays/statusdisplay.h
     displays/updatedisplay.h
+    displays/menus/ledstripselectotamode.h
     icons/alert.h
     icons/battery.h
     icons/bluetooth.h
@@ -336,6 +337,7 @@ set(sources
     displays/menus/timesettingsmenu.cpp
     displays/menus/wifiscanmenu.cpp
     displays/menus/wifisettingsmenu.cpp
+    displays/menus/ledstripselectotamode.cpp
     displays/metersdisplay.cpp
     displays/pingpongdisplay.cpp
     displays/poweroffdisplay.cpp

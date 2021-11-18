@@ -21,6 +21,7 @@
 #include "bluetoothmode.h"
 #endif
 #include "unifiedmodelmode.h"
+#include "ledstrip.h"
 
 enum class LarsmModeMode : uint8_t { Mode1, Mode2, Mode3, Mode4 };
 
@@ -171,6 +172,7 @@ struct Settings
         int16_t animationMultiplier;
         uint8_t brightness;
         bool enableAnimBlink;
+        OtaAnimationModes otaMode;
     } ledstrip;
 #endif
 
@@ -304,6 +306,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("ledAnimMul", ledstrip.animationMultiplier);
     callable("ledbrightness", ledstrip.brightness);
     callable("enAnimBlink", ledstrip.enableAnimBlink);
+    callable("ledOtaAnim", ledstrip.otaMode);
 #endif
 
     callable("batteryCS", battery.cellsSeries);
