@@ -24,7 +24,7 @@ namespace {
     static std::string url_for_latest = "";
     static std::array<std::string, 10> availableVersions = {};
     bool request_running = false;
-    uint16_t request_failed = false;
+    std::string request_failed;
     bool parsing_finished = false;
     cpputils::DelayedConstruction<AsyncHttpRequest> request;
 
@@ -69,20 +69,9 @@ namespace {
         return url_for_latest;
     }
 
-    std::string fix_url(std::string url)
-    {
-        std::string fixed_url = url;
-        if (fixed_url.find("http") == std::string::npos)
-        {
-            fixed_url = fmt::format("http://{}", fixed_url);
-        }
-        return fixed_url;
-    }
-
     std::string get_descriptor_url(std::string base_url)
     {
-        std::string url = fix_url(base_url);
-        return fmt::format("{}/otaDescriptor?username={}", url, OTA_USERNAME);
+        return fmt::format("{}/otaDescriptor?username={}", base_url, OTA_USERNAME);
     }
 
     void parse_response_into_variables(std::string response)
@@ -110,8 +99,8 @@ namespace {
 
         index = 0;
 
-        url_for_latest = fix_url(fmt::format("{}{}", stringSettings.otaServerUrl, doc["latest"].as<std::string>()));
-        url_for_hashes = fix_url(fmt::format("{}{}", stringSettings.otaServerUrl, doc["url"].as<std::string>()));
+        url_for_latest = fmt::format("{}{}", stringSettings.otaServerUrl, doc["latest"].as<std::string>());
+        url_for_hashes = fmt::format("{}{}", stringSettings.otaServerUrl, doc["url"].as<std::string>());
         parsing_finished = true;
     }
 
@@ -137,7 +126,7 @@ namespace {
             return;
         }
         request_running = true;
-        request_failed = false;
+        request_failed = {};
         url_for_latest.clear();
         url_for_hashes.clear();
         availableVersions = {};
@@ -150,7 +139,7 @@ namespace {
         {
             ESP_LOGW("BOBBY", "request is im oarsch");
             request_running = false;
-            request_failed = true;
+            request_failed = "request is im oarsch";
             return;
         }
 
@@ -166,10 +155,7 @@ namespace {
         if (const auto result = request->result(); !result)
         {
             ESP_LOGW("BOBBY", "request failed: %.*s", result.error().size(), result.error().data());
-            std::string failed_str = result.error().data();
-            auto statuscode = failed_str.substr(failed_str.length() - 3);
-            request_running = false;
-            request_failed = std::stoi(statuscode);
+            request_failed = result.error();
             return;
         }
 
@@ -177,7 +163,7 @@ namespace {
         ESP_LOGW("BOBBY", "Request finished: %s", content.c_str());
         parse_response_into_variables(content);
         request_running = false;
-        request_failed = false;
+        request_failed = {};
     }
 
     bool get_request_running()
