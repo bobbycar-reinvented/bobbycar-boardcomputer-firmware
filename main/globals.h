@@ -61,6 +61,8 @@ struct DrivingStatistics {
     float currentDrivingTime;
     double totalMeters;
     uint32_t last_cm_written;
+    float wh_used;
+    float batteryWhEstimate;
 };
 
 extern DrivingStatistics drivingStatistics;
