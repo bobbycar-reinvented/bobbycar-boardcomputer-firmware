@@ -6,6 +6,7 @@
 #include "fmt/core.h"
 
 class CurrentBatteryStatusText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryPercentageString(); } };
+class CurrentAdvancedBatteryPercentage : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryAdvancedPercentageString(); } };
 
 class BatteryDebugText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryDebugString(); } };
 class BatteryDebug2Text : public virtual espgui::TextInterface {
@@ -33,6 +34,7 @@ BatteryDebugMenu::BatteryDebugMenu()
     constructMenuItem<makeComponent<MenuItem, BatteryDebugText,                                                         DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BatteryDebug2Text,                                                        DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BatteryDebug3Text,                                                        DisabledColor, DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, BatteryDebug3Text,                                                        CurrentAdvancedBatteryPercentage, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

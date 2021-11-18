@@ -29,3 +29,8 @@ std::string getBatteryCellTypeString();
 std::string getRemainingRangeString();
 
 std::string getBatteryDebugString();
+
+std::string getBatteryAdvancedPercentageString();
+
+float getPercentageByWh(float wh);
+float getTarget_mAh();

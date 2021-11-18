@@ -112,12 +112,7 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
 
 float getRemainingWattHours()
 {
-    float target_mah = 2000; //default
-    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::_22P) target_mah = 2200;
-    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::HG2) target_mah = 3000;
-    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::MH1) target_mah = 3200;
-    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::VTC5) target_mah = 2600;
-    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::BAK_25R) target_mah = 2500;
+    float target_mah = getTarget_mAh();
 
     float avgVoltage = 0;
     for (auto &controller : controllers)
@@ -127,6 +122,23 @@ float getRemainingWattHours()
     avgVoltage = avgVoltage / controllers.size();
 
     return (target_mah / 1000.f) * 3.7 * settings.battery.cellsParallel * settings.battery.cellsSeries * (getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType)) / 100);
+}
+
+float getPercentageByWh(float wh)
+{
+    const float maxWh = (getTarget_mAh() / 1000.f) * 3.7 * settings.battery.cellsParallel * settings.battery.cellsSeries;
+    return maxWh / wh;
+}
+
+float getTarget_mAh()
+{
+    float target_mah = 2000; //default
+    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::_22P) target_mah = 2200;
+    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::HG2) target_mah = 3000;
+    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::MH1) target_mah = 3200;
+    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::VTC5) target_mah = 2600;
+    if(BatteryCellType(settings.battery.cellType) == BatteryCellType::BAK_25R) target_mah = 2500;
+    return target_mah;
 }
 
 std::string getBatteryPercentageString()
@@ -139,6 +151,12 @@ std::string getBatteryPercentageString()
     avgVoltage = avgVoltage / controllers.size();
 
     std::string output = fmt::format("Battery: {:.1f}%", getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType)));
+    return output;
+}
+
+std::string getBatteryAdvancedPercentageString()
+{
+    std::string output = fmt::format("Battery: {:.1f}%", getPercentageByWh(drivingStatistics.batteryWhEstimate));
     return output;
 }
 
