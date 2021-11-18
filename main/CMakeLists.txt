@@ -25,6 +25,8 @@ set(headers
     dpad5wire.h
     dpad6wire.h
     dpad.h
+    dnsannounce.h
+    drivingstatistics.h
     esptexthelpers.h
     feedbackparser.h
     globals.h
@@ -55,6 +57,7 @@ set(headers
     webserver_ota.h
     webserver_settings.h
     webserver_stringsettings.h
+    webserver_dumpnvs.h
     wifi_bobbycar.h
     wifitexthelpers.h
     accessors/globalaccessors.h
@@ -98,6 +101,7 @@ set(headers
     displays/menus/aboutmenu.h
     displays/menus/accesspointwifisettingsmenu.h
     displays/menus/batterymenu.h
+    displays/menus/batterydebugmenu.h
     displays/menus/blesettingsmenu.h
     displays/menus/bluetoothsettingsmenu.h
     displays/menus/bmsmenu.h
@@ -137,6 +141,7 @@ set(headers
     displays/menus/selectmodemenu.h
     displays/menus/settingsmenu.h
     displays/menus/stationwifisettingsmenu.h
+    displays/menus/statisticsmenu.h
     displays/menus/tempomatmodesettingsmenu.h
     displays/menus/timersmenu.h
     displays/menus/timesettingsmenu.h
@@ -150,6 +155,7 @@ set(headers
     displays/starfielddisplay.h
     displays/statusdisplay.h
     displays/updatedisplay.h
+    displays/menus/ledstripselectotamode.h
     icons/alert.h
     icons/battery.h
     icons/bluetooth.h
@@ -173,6 +179,7 @@ set(headers
     icons/time.h
     icons/update.h
     icons/wifi.h
+    icons/statistics.h
     modes/defaultmode.h
     modes/gametrakmode.h
     modes/ignoreinputmode.h
@@ -207,6 +214,8 @@ set(sources
     dpad5wire.cpp
     dpad6wire.cpp
     dpad.cpp
+    dnsannounce.cpp
+    drivingstatistics.cpp
     esptexthelpers.cpp
     feedbackparser.cpp
     globals.cpp
@@ -238,6 +247,7 @@ set(sources
     webserver_ota.cpp
     webserver_settings.cpp
     webserver_stringsettings.cpp
+    webserver_dumpnvs.cpp
     wifi_bobbycar.cpp
     wifitexthelpers.cpp
     accessors/globalaccessors.cpp
@@ -281,6 +291,7 @@ set(sources
     displays/menus/aboutmenu.cpp
     displays/menus/accesspointwifisettingsmenu.cpp
     displays/menus/batterymenu.cpp
+    displays/menus/batterydebugmenu.cpp
     displays/menus/blesettingsmenu.cpp
     displays/menus/bluetoothsettingsmenu.cpp
     displays/menus/bmsmenu.cpp
@@ -313,6 +324,7 @@ set(sources
     displays/menus/motorstatedebugmenu.cpp
     displays/menus/otamenu.cpp
     displays/menus/selectotabuildmenu.cpp
+    displays/menus/statisticsmenu.cpp
     displays/menus/presetsmenu.cpp
     displays/menus/profilesmenu.cpp
     displays/menus/selectbatterytypemenu.cpp
@@ -325,6 +337,7 @@ set(sources
     displays/menus/timesettingsmenu.cpp
     displays/menus/wifiscanmenu.cpp
     displays/menus/wifisettingsmenu.cpp
+    displays/menus/ledstripselectotamode.cpp
     displays/metersdisplay.cpp
     displays/pingpongdisplay.cpp
     displays/poweroffdisplay.cpp
@@ -356,6 +369,7 @@ set(sources
     icons/time.cpp
     icons/update.cpp
     icons/wifi.cpp
+    icons/statistics.cpp
     modes/defaultmode.cpp
     modes/gametrakmode.cpp
     modes/ignoreinputmode.cpp

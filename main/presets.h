@@ -13,6 +13,7 @@
 #include "settings.h"
 #include "stringsettings.h"
 #include "ledstripdefines.h"
+#include "ledstrip.h"
 
 using namespace std::chrono_literals;
 
@@ -245,7 +246,9 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .stvoFrontLength = 10,
     .stvoFrontEnable = false,
     .animationMultiplier = 10,
-    .brightness = 255
+    .brightness = 255,
+    .enableAnimBlink = false,
+    .otaMode = OtaAnimationModes::GreenProgressBar
 };
 #endif
 
@@ -271,6 +274,10 @@ constexpr Settings::Hybrid defaultHybrid {
     .enable = false,
     .activationLimit = 1000,
     .deactivationLimit = 950,
+};
+
+constexpr Settings::SavedStatistics defaultSavedStatistics {
+    .totalCentimeters = 0,
 };
 
 constexpr Settings defaultSettings {
@@ -300,7 +307,8 @@ constexpr Settings defaultSettings {
 #endif
     .battery = defaultBattery,
     .hybrid = defaultHybrid,
-    .lockscreen = defaultLockscreen
+    .lockscreen = defaultLockscreen,
+    .savedStatistics = defaultSavedStatistics,
 };
 
 StringSettings makeDefaultStringSettings();

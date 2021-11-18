@@ -23,6 +23,7 @@
 #include "displays/garagedisplay.h"
 #include "displays/menus/otamenu.h"
 #include "displays/poweroffdisplay.h"
+#include "displays/menus/statisticsmenu.h"
 #include "actions/rebootaction.h"
 #include "displays/menus/debugmenu.h"
 #include "icons/battery.h"
@@ -43,16 +44,18 @@
 #endif
 #include "icons/poweroff.h"
 #include "icons/reboot.h"
+#include "icons/statistics.h"
 
 using namespace espgui;
 
 MainMenu::MainMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       SwitchScreenAction<StatusDisplay>, StaticMenuItemIcon<&espgui::icons::back>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,   SwitchScreenAction<SelectModeMenu>, StaticMenuItemIcon<&bobbyicons::modes>>>();
 #ifdef FEATURE_LEDSTRIP
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     SwitchScreenAction<LedstripMenu>,   StaticMenuItemIcon<&bobbyicons::neopixel>>>();
 #endif
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATISTICSMENU>, SwitchScreenAction<StatisticsMenu>, StaticMenuItemIcon<&bobbyicons::statistics>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,   SwitchScreenAction<SelectModeMenu>, StaticMenuItemIcon<&bobbyicons::modes>>>();
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESETTINGS>, ModeSettingsAction>>(); }
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>(); }

@@ -171,6 +171,8 @@ struct LedsStVOFrontLengthAccessor : public RefAccessorSaveSettings<int16_t> { i
 struct EnableLedstripStVOFrontlight : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.stvoFrontEnable; } };
 struct AnimationMultiplierAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.animationMultiplier; } };
 struct LedstripBrightnessAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.ledstrip.brightness; } };
+struct LedstripEnableBlinkAnimation : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableAnimBlink; } };
+struct LedstripOtaAnimationAccessor : public RefAccessorSaveSettings<OtaAnimationModes> { OtaAnimationModes &getRef() const override { return settings.ledstrip.otaMode; } };
 #endif
 
 // Battery

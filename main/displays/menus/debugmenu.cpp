@@ -14,6 +14,7 @@
 #include "actions/savesettingsaction.h"
 #include "actions/erasenvsaction.h"
 #include "icons/lock.h"
+#include "icons/battery.h"
 #include "debugcolorhelpers.h"
 #include "esptexthelpers.h"
 #include "displays/menus/commanddebugmenu.h"
@@ -22,6 +23,7 @@
 #include "displays/menus/motorfeedbackdebugmenu.h"
 #include "displays/menus/dynamicdebugmenu.h"
 #include "displays/menus/mainmenu.h"
+#include "displays/menus/batterydebugmenu.h"
 
 using namespace espgui;
 
@@ -50,6 +52,8 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKRIGHTFEEDBACK>,    SwitchScreenAction<BackRightMotorFeedbackDebugMenu>, BackFeedbackColor<TFT_WHITE>>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          SwitchScreenAction<DynamicDebugMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         SwitchScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

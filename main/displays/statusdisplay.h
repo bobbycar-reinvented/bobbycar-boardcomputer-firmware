@@ -78,8 +78,8 @@ private:
     espgui::ProgressBar m_progressBarBrems{150, 15, 90, 15, 0, 1000};
 
     espgui::Label m_batterypercent{0, 30};
-    espgui::Label m_watthoursleft{110, 30};
-    espgui::Label m_kilometersleft{175, 30};
+    espgui::Label m_watthoursleft{107, 30};
+    espgui::Label m_kilometersleft{176, 30};
 
     BoardStatus m_frontStatus{45};
     BoardStatus m_backStatus{145};

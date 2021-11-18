@@ -71,6 +71,10 @@ using namespace std::chrono_literals;
 #include "modes/defaultmode.h"
 #include "displays/statusdisplay.h"
 #include "displays/calibratedisplay.h"
+#ifdef FEATURE_DNS_NS
+#include "dnsannounce.h"
+#endif
+#include "drivingstatistics.h"
 
 namespace {
 std::optional<espchrono::millis_clock::time_point> lastWifiUpdate;
@@ -434,5 +438,9 @@ extern "C" void app_main()
             lastLedstripUpdate = now;
         }
 #endif
+#ifdef FEATURE_DNS_NS
+        handle_dns_announce();
+#endif
+        calculateStatistics();
     }
 }

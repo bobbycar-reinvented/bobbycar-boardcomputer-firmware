@@ -7,6 +7,7 @@
 #include <FastLED.h>
 
 #ifdef FEATURE_LEDSTRIP
+#define crgb_iterator __gnu_cxx::__normal_iterator<CRGB *, std::vector<CRGB>>
 enum Bobbycar_Side
 {
     FRONT_RIGHT,
@@ -17,6 +18,13 @@ enum Bobbycar_Side
     LEFT,
     FRONT_LEFT,
     FRONT
+};
+
+enum OtaAnimationModes
+{
+    None,
+    GreenProgressBar,
+    ColorChangeAll
 };
 
 extern std::vector<CRGB> leds;
@@ -30,8 +38,8 @@ void showAnimation();
 void showBetterRainbow();
 void showSpeedSyncAnimation();
 void showCustomColor();
+void showOtaAnimation();
 
 void initLedStrip();
-
 void updateLedStrip();
 #endif

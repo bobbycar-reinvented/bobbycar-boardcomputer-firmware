@@ -7,6 +7,7 @@
 #include "mainmenu.h"
 #include "displays/calibratevoltagedisplay.h"
 #include "accessors/settingsaccessors.h"
+#include "fmt/core.h"
 
 class CurrentBatteryStatusText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryPercentageString(); } };
 

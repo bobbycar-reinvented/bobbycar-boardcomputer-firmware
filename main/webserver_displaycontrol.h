@@ -77,7 +77,8 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 #endif
 
                         "<a href=\"/settings\">Settings</a> - "
-                        "<a href=\"/stringSettings\">String Settings</a>";
+                        "<a href=\"/stringSettings\">String Settings</a> - "
+                        "<a href=\"/dumpnvs\">Dump NVS</a>";
             }
 
             {

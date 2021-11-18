@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "globals.h"
 
 using namespace std::chrono_literals;
 
@@ -305,4 +306,69 @@ void readPotis()
     raw_gametrakDist = sampleMultipleTimes(PINS_GAMETRAKDIST);
     gametrakDist = cpputils::mapValueClamped<float>(raw_gametrakDist, settings.boardcomputerHardware.gametrakDistMin, settings.boardcomputerHardware.gametrakDistMax, 0., 1000.);
 #endif
+}
+
+float wattToAmpere(float watt) {
+    float voltage = std::max(controllers.front.feedback.batVoltage, controllers.back.feedback.batVoltage);
+    if (voltage > 50) voltage = 50;
+    if (voltage < 30) voltage = 30;
+    return watt / voltage;
+}
+
+float wattToMotorCurrent(float watt) {
+    return wattToAmpere(watt) / 4;
+}
+
+std::string get_current_uptime_string() {
+    const auto uptime_time_point = espchrono::utc_clock::now();
+    const auto dateTimeUptime = espchrono::toDateTime(uptime_time_point);
+    std::string out = fmt::format("Up: {:02d}:{:02d}:{:02d}", dateTimeUptime.hour, dateTimeUptime.minute, dateTimeUptime.second);
+    return out;
+}
+
+void secondsToHMS( const float seconds, uint16_t &h, uint16_t &m, uint16_t &s )
+{
+    uint32_t t = seconds;
+
+    s = t % 60;
+
+    t = (t - s)/60;
+    m = t % 60;
+
+    t = (t - m)/60;
+    h = t;
+}
+
+std::string get_current_driving_time_string()
+{
+    uint16_t hour{};
+    uint16_t minute{};
+    uint16_t second{};
+    secondsToHMS(drivingStatistics.currentDrivingTime, hour, minute, second);
+    std::string out = fmt::format("Drive: {:02d}:{:02d}:{:02d}", hour, minute, second);
+    return out;
+}
+
+uint8_t time_to_percent(std::chrono::duration<long, std::ratio<1,1000>> repeat, std::chrono::duration<long, std::ratio<1,1000>> riseTime, std::chrono::duration<long, std::ratio<1,1000>> fullTime, size_t numLeds, bool invert)
+{
+    const auto now = espchrono::millis_clock::now().time_since_epoch() % repeat;
+    int activated = invert ? numLeds : 0;
+    if (now <= riseTime)
+    {
+        if (invert)
+        {
+            activated = numLeds - ((now*numLeds) / riseTime);
+        }
+        else
+        {
+            activated = (now*numLeds) / riseTime;
+        }
+    }
+    else if (now < riseTime + fullTime)
+    {
+        activated = invert ? 0 : numLeds;
+    }
+    else
+        activated = invert ? numLeds : 0;
+    return activated;
 }

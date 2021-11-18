@@ -7,6 +7,8 @@
 #include "cpputils.h"
 #include "espchrono.h"
 #include "ledstripdefines.h"
+#include "utils.h"
+#include "ota.h"
 
 using namespace std::chrono_literals;
 
@@ -30,36 +32,100 @@ void updateLedStrip()
 {
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }
     static bool have_disabled_beeper = false;
+    const bool enAnim = settings.ledstrip.enableAnimBlink;
 
     if (cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH))
     {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
-        if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms)
+        if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms || enAnim)
         {
+            const auto anim_to_fill = time_to_percent(750ms, 500ms, 100ms, settings.ledstrip.enableFullBlink ? (leds.size() / 2) : settings.ledstrip.bigOffset - settings.ledstrip.smallOffset, settings.ledstrip.enableFullBlink);
             if (settings.ledstrip.enableBeepWhenBlink)
             {
-                for (Controller &controller : controllers)
-                    controller.command.buzzer.freq = 3;
+                if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms)
+                    for (Controller &controller : controllers)
+                        controller.command.buzzer.freq = 3;
+                else
+                    for (Controller &controller : controllers)
+                        controller.command.buzzer.freq = 0;
             }
-            auto color = CRGB{255, 255, 0};
+            auto color = CRGB{255, 200, 0};
             const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
-            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && !settings.ledstrip.enableFullBlink)
+            if (settings.ledstrip.enableFullBlink)
             {
-                std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
+                // Full
+                if (BLINK_LEFT_EXPR)
+                {
+                    // Blink left
+                    if (!enAnim)
+                    {
+                        std::fill(std::begin(leds), center, color);
+                    }
+                    else
+                    {
+                        std::fill(std::begin(leds)+anim_to_fill, center, color);
+                    }
+                }
+                if (BLINK_RIGHT_EXPR)
+                {
+                    // Blink right
+                    if (!enAnim)
+                    {
+                        std::fill(center, std::end(leds), color);
+                    }
+                    else
+                    {
+                        std::fill(center, std::end(leds) - anim_to_fill, color);
+                    }
+                }
             }
-            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && settings.ledstrip.enableFullBlink)
+            else
             {
-                std::fill(std::begin(leds), center, color);
+                // Only in the back
+                if (BLINK_LEFT_EXPR)
+                {
+                    // Blink left
+                    if (!enAnim)
+                    {
+                        std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
+                    }
+                    else
+                    {
+                        std::fill(center - settings.ledstrip.smallOffset - anim_to_fill, center - settings.ledstrip.smallOffset, color);
+                    }
+                }
+                if (BLINK_RIGHT_EXPR)
+                {
+                    // Blink right
+                    if (!enAnim)
+                    {
+                        std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
+                    }
+                    else
+                    {
+                        std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.smallOffset + anim_to_fill, color);
+                    }
+                }
             }
-            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && !settings.ledstrip.enableFullBlink)
-            {
-                std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
-            }
-            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && settings.ledstrip.enableFullBlink)
-            {
-                std::fill(center, std::end(leds), color);
-            }
+
+// Old way to blink
+//            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && !settings.ledstrip.enableFullBlink)
+//            {
+//                std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
+//            }
+//            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT && settings.ledstrip.enableFullBlink)
+//            {
+//                std::fill(std::begin(leds), center, color);
+//            }
+//            if (blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && !settings.ledstrip.enableFullBlink)
+//            {
+//                std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
+//            }
+//            else if(blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT && settings.ledstrip.enableFullBlink)
+//            {
+//                std::fill(center, std::end(leds), color);
+//            }
 
         } else {
             if (settings.ledstrip.enableBeepWhenBlink)
@@ -93,10 +159,10 @@ void updateLedStrip()
                 {
                     std::fill(std::begin(leds), std::end(leds), color);
                 }
-                else
+                else if(!settings.ledstrip.enableAnimBlink)
                 {
-                    std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, color);
-                    std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, color);
+                    std::fill(center - settings.ledstrip.bigOffset - 2, center - settings.ledstrip.smallOffset + 2, color);
+                    std::fill(center + settings.ledstrip.smallOffset - 2, center + settings.ledstrip.bigOffset + 2, color);
                 }
             }
             else
@@ -147,7 +213,7 @@ void updateLedStrip()
 
 void showAnimation()
 {
-    if (settings.ledstrip.enableLedAnimation && !simplified)
+    if (settings.ledstrip.enableLedAnimation && !simplified && (!asyncOtaTaskStarted || settings.ledstrip.otaMode != OtaAnimationModes::None))
     {
         if (animation_type == LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW) showDefaultLedstrip();
         else if (animation_type == LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW) showBetterRainbow();
@@ -155,9 +221,44 @@ void showAnimation()
         else if (animation_type == LEDSTRIP_ANIMATION_TYPE_CUSTOMCOLOR) showCustomColor();
         else showDefaultLedstrip();
     }
+    else if (asyncOtaTaskStarted && settings.ledstrip.otaMode != OtaAnimationModes::None)
+    {
+        // show ota animation
+        showOtaAnimation();
+    }
     else
     {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
+    }
+}
+
+void showOtaAnimation()
+{
+    std::fill(std::begin(leds), std::end(leds), CRGB{0,0,0});
+    const auto leds_count = leds.size();
+    const int one_percent = leds_count / 100;
+    float percentage = 0;
+
+    const auto progress = asyncOta->progress();
+    if (const auto totalSize = asyncOta->totalSize(); totalSize && *totalSize > 0)
+    {
+        percentage = (float(progress) / *totalSize * 100);
+        if (settings.ledstrip.otaMode == OtaAnimationModes::GreenProgressBar)
+        {
+            int numLeds = one_percent * percentage;
+            if (numLeds >= leds_count)
+            {
+                numLeds = leds_count - 1;
+            }
+            std::fill(std::begin(leds), std::begin(leds) + numLeds, CRGB{0,255,0});
+        }
+        else if (settings.ledstrip.otaMode == OtaAnimationModes::ColorChangeAll)
+        {
+            const uint8_t redChannel = 255 - (2.55 * percentage);
+            const uint8_t greenChannel = 2.55 * percentage;
+
+            std::fill(std::begin(leds), std::end(leds), CRGB{redChannel, greenChannel, 0});
+        }
     }
 }
 

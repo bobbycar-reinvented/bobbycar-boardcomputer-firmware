@@ -90,7 +90,7 @@ public:
                     auto filename = serverUrl.substr(last_slash_index+1);
                     auto hash = filename.substr(0, filename.length() - 4);
                     menuitem.setHash(hash);
-                    menuitem.setUrl(fix_url(serverUrl));
+                    menuitem.setUrl(serverUrl);
                     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
                 }
                 else
@@ -108,10 +108,10 @@ void SelectBuildMenu::update()
     if(get_request_running())
     {
         check_descriptor_request();
-        if (request_failed)
+        if (!request_failed.empty())
         {
-            this->buildMenuRequestError(fmt::format("Error: {}", request_failed));
-            request_failed = false;
+            this->buildMenuRequestError(request_failed);
+            request_failed = {};
         }
     }
 

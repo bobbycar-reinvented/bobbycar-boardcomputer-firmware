@@ -7,6 +7,7 @@ constexpr char TEXT_BACK[] = "Back";
 //AccessPointWifiSettingsMenu
 constexpr char TEXT_ACCESSPOINTWIFISETTINGS[] = "Access Point WiFi settings";
 constexpr char TEXT_WIFIAPENABLED[] = "AP enabled";
+constexpr char TEXT_RESEND_DNS[] = "Resend DNS";
 //constexpr char TEXT_BACK[] = "Back";
 
 #ifdef TEXTS_PLUGIN
@@ -91,6 +92,7 @@ constexpr char TEXT_POWEROFF[] = "Poweroff";
 constexpr char TEXT_REBOOT[] = "Reboot";
 constexpr char TEXT_DEBUG[] = "Debug";
 constexpr char TEXT_BATTERY[] = "Battery";
+constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
 
 //BatteryMenu
 constexpr char TEXT_CELL_SERIES[] = "Cells (Series)";
@@ -102,6 +104,7 @@ constexpr char TEXT_BATTERY_TYPE_22P[] = "22P cells";
 constexpr char TEXT_BATTERY_TYPE_HG2[] = "HG2 cells";
 constexpr char TEXT_BATTERY_TYPE_MH1[] = "MH1 cells";
 constexpr char TEXT_BATTERY_TYPE_VTC5[] = "VTC5 cells";
+constexpr char TEXT_BATTERY_TYPE_BAK_25R[] = "BAK / 25R cells";
 constexpr char TEXT_BATTERY_WHKM[] = "Wh per km";
 constexpr char TEXT_BATTERY_APPLYCALIB[] = "Apply calibration";
 constexpr char TEXT_VOLTAGECALIBRATION_RESET[] = "Reset calibration";
@@ -290,6 +293,12 @@ constexpr char TEXT_STVO_ENABLEFRONTLIGHT[] = "StVO Front Enable";
 constexpr char TEXT_ANIMATION_MULTIPLIER[] = "Animation Multiplier";
 constexpr char TEXT_LEDSTRIP_BRIGHTNESS[] = "Ledstrip Brightness";
 constexpr char TEXT_LEDSTRIP_ALLCUSTOMOFF[] = "All custom off";
+constexpr char TEXT_LEDSTRIP_EN_BLINK_ANIM[] = "Animated Blink";
+constexpr char TEXT_LEDSTRIP_CHANGE_OTA_ANIM[] = "Change Ota animation";
+
+constexpr char TEXT_OTAANIM_NONE[] = "None";
+constexpr char TEXT_OTAANIM_PROGRESS[] = "Progress Bar";
+constexpr char TEXT_OTAANIM_COLOR[] = "Color change";
 //constexpr char TEXT_BACK[] = "Back";
 
 //LedstripSelectAnimationMenu
@@ -489,10 +498,14 @@ constexpr char TEXT_OTA_NOBUILDSERVERAVAILABLE[] = "E:No server saved.";
 constexpr char TEXT_OTA_NOBUILDSERVERSELECTED[] = "E:No server selected.";
 constexpr char TEXT_OTA_NOCONNECTION[] = "E:No internet.";
 constexpr char TEXT_OTA_WAITFORRESPONSE[] = "Wait for response...";
-constexpr char TEXT_REDOWNLOAD[] = "Reload list";
 
 //LedstripColorMenu
 constexpr char TEXT_LEDSTRIPCOLORMENU[] = "Customize Ledstrip";
+
+//StatisticsMenu
+constexpr char TEXT_STATISTICSMENU[] = "Statistics";
+constexpr char TEXT_STATSSAVE[] = "Save kilometers";
+constexpr char TEXT_STATSCLEAR[] = "Clear current km";
 
 #ifdef FEATURE_CAN
 constexpr char TEXT_POWERSUPPLY[] = "Powersupply";

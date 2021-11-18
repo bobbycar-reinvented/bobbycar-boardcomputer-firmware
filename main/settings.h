@@ -21,6 +21,7 @@
 #include "bluetoothmode.h"
 #endif
 #include "unifiedmodelmode.h"
+#include "ledstrip.h"
 
 enum class LarsmModeMode : uint8_t { Mode1, Mode2, Mode3, Mode4 };
 
@@ -170,6 +171,8 @@ struct Settings
         bool stvoFrontEnable;
         int16_t animationMultiplier;
         uint8_t brightness;
+        bool enableAnimBlink;
+        OtaAnimationModes otaMode;
     } ledstrip;
 #endif
 
@@ -196,6 +199,10 @@ struct Settings
         bool allowPresetSwitch;
         std::array<int8_t, 4> pin;
     } lockscreen;
+
+    struct SavedStatistics {
+        uint32_t totalCentimeters;
+    } savedStatistics;
 
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
@@ -298,6 +305,8 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("ledstvoen", ledstrip.stvoFrontEnable);
     callable("ledAnimMul", ledstrip.animationMultiplier);
     callable("ledbrightness", ledstrip.brightness);
+    callable("enAnimBlink", ledstrip.enableAnimBlink);
+    callable("ledOtaAnim", ledstrip.otaMode);
 #endif
 
     callable("batteryCS", battery.cellsSeries);
@@ -317,6 +326,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
     callable("lockscreenPin", lockscreen.pin);
+    callable("totalCentimeter", savedStatistics.totalCentimeters);
 }
 
 template<typename T>

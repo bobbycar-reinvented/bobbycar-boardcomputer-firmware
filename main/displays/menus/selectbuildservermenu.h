@@ -12,6 +12,7 @@
 #include "buildserver.h"
 
 #ifdef FEATURE_OTA
+
 class SelectBuildServerMenu :
     public espgui::MenuDisplay,
     public espgui::StaticText<TEXT_SELECTBUILDSERVERMENU>
