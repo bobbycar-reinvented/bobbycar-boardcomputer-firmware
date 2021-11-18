@@ -39,8 +39,10 @@ typename std::enable_if<
     !std::is_same<T, std::string>::value &&
     !std::is_same<T, espchrono::minutes32>::value &&
     !std::is_same<T, espchrono::DayLightSavingMode>::value &&
-    !std::is_same<T, UnifiedModelMode>::value &&
-    !std::is_same<T, OtaAnimationModes>::value
+    !std::is_same<T, UnifiedModelMode>::value
+#if defined(FEATURE_LEDSTRIP) && defined(FEATURE_OTA)
+    && !std::is_same<T, OtaAnimationModes>::value
+#endif
 , bool>::type
 showInputForSetting(std::string_view key, T value, JsonObject &body)
 {
@@ -120,6 +122,8 @@ showInputForSetting(std::string_view key, T value, JsonObject &body)
     return true;
 }
 
+#if defined(FEATURE_LEDSTRIP) && defined(FEATURE_OTA)
+
 template<typename T>
 typename std::enable_if<
     std::is_same<T, OtaAnimationModes>::value
@@ -129,6 +133,7 @@ showInputForSetting(std::string_view key, T value, JsonObject &body)
     body[key] = int(value);
     return true;
 }
+#endif
 
 esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
 {
