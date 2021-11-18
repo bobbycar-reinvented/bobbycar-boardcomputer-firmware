@@ -25,6 +25,8 @@ set(headers
     dpad5wire.h
     dpad6wire.h
     dpad.h
+    dnsannounce.h
+    drivingstatistics.h
     esptexthelpers.h
     feedbackparser.h
     globals.h
@@ -211,6 +213,8 @@ set(sources
     dpad5wire.cpp
     dpad6wire.cpp
     dpad.cpp
+    dnsannounce.cpp
+    drivingstatistics.cpp
     esptexthelpers.cpp
     feedbackparser.cpp
     globals.cpp
