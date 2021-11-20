@@ -4,8 +4,4 @@
 #include <delayedconstruction.h>
 #include <wrappers/mutex_semaphore.h>
 
-namespace {
-
-cpputils::DelayedConstruction<espcpputils::mutex_semaphore> webserver_lock;
-
-} // namespace
+extern cpputils::DelayedConstruction<espcpputils::mutex_semaphore> webserver_lock;
