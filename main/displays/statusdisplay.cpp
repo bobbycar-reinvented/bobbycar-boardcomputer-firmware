@@ -13,6 +13,7 @@
 #include "displays/metersdisplay.h"
 #endif
 #include "drivingstatistics.h"
+#include "udpcloud.h"
 
 using namespace espgui;
 
@@ -91,6 +92,16 @@ void StatusDisplay::redraw()
     m_backStatus.redraw(controllers.back);
 
     tft.setTextFont(2);
+#ifdef FEATURE_CLOUD
+    if(settings.cloudSettings.udpCloudEnabled)
+    {
+        tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? TFT_WHITE : TFT_BLACK);
+    }
+    else
+    {
+        tft.fillRect(125, 258, 8, 8, TFT_BLACK);
+    }
+#endif
 
     const auto staStatus = wifi_stack::get_sta_status();
     if (staStatus == wifi_stack::WiFiStaStatus::CONNECTED)
