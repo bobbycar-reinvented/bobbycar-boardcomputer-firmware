@@ -59,6 +59,4 @@ void readPotis();
 float wattToAmpere(float watt);
 float wattToMotorCurrent(float watt);
 std::string get_current_uptime_string();
-std::string get_current_driving_time_string();
-void secondsToHMS( const float seconds, uint16_t &h, uint8_t &m, uint8_t &s );
 uint8_t time_to_percent(std::chrono::duration<long, std::ratio<1,1000>> repeat, std::chrono::duration<long, std::ratio<1,1000>> riseTime, std::chrono::duration<long, std::ratio<1,1000>> fullTime, size_t numLeds, bool invert);

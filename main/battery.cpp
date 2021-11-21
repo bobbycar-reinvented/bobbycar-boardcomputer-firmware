@@ -1,5 +1,13 @@
 #include "battery.h"
 
+// 3rdparty lib includes
+#include <fmt/core.h>
+#include <cpputils.h>
+
+// local includes
+#include "drivingstatistics.h"
+#include "globals.h"
+
 #define CURVE(higherVoltage,lowerVoltage,fromAh,toAh) \
 if (cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) \
         return 100 * (expected_ah - cpputils::mapValue<float>(cellVoltage, higherVoltage, lowerVoltage, fromAh, toAh)) / expected_ah;

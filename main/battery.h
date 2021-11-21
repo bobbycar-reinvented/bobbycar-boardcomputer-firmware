@@ -1,12 +1,10 @@
 #pragma once
 
-// 3rdparty lib includes
-#include <fmt/core.h>
-#include <cpptypesafeenum.h>
-#include <cpputils.h>
+// system includes
+#include <cstdint>
 
-// local includes
-#include "globals.h"
+// 3rdparty lib includes
+#include <cpptypesafeenum.h>
 
 #define BatteryCellTypeValues(x) \
     x(_22P) \

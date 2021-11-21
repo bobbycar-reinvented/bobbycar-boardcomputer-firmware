@@ -103,7 +103,7 @@ class ClearCurrentStatsAction : public virtual ActionInterface {
 public:
     void triggered() override {
         drivingStatistics.meters_driven = 0.;
-        drivingStatistics.currentDrivingTime = 0;
+        drivingStatistics.currentDrivingTime = {};
         drivingStatistics.wh_used = 0;
         drivingStatistics.batteryWhEstimate = 0;
     }

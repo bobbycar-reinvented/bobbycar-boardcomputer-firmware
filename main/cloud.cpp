@@ -123,6 +123,8 @@ void cloudCollect()
     addController(controllers.front);
     addController(controllers.back);
 
+    //cloudBuffer += fmt::format("", );
+
     cloudBuffer += "]";
 }
 

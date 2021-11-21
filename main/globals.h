@@ -56,17 +56,6 @@ extern std::string dns_lastIpAddress_v6_global;
 
 extern bool simplified;
 
-struct DrivingStatistics {
-    float meters_driven;
-    float currentDrivingTime;
-    double totalMeters;
-    uint32_t last_cm_written;
-    float wh_used;
-    float batteryWhEstimate;
-};
-
-extern DrivingStatistics drivingStatistics;
-
 extern Settings settings;
 extern StringSettings stringSettings;
 extern SettingsPersister settingsPersister;
