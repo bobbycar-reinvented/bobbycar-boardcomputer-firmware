@@ -82,8 +82,8 @@ std::string buildUdpCloudJson()
             arr[!isBack ? "frE":"brE"] = controller.feedback.right.error;
 
             // Speed
-            arr[!isBack ? "flS":"blS"] = convertToKmh(controller.feedback.left.speed);
-            arr[!isBack ? "frS":"brS"] = convertToKmh(controller.feedback.right.speed);
+            arr[!isBack ? "flS":"blS"] = convertToKmh(controller.feedback.left.speed) * (controller.invertLeft?-1:1);
+            arr[!isBack ? "frS":"brS"] = convertToKmh(controller.feedback.right.speed) * (controller.invertRight?-1:1);
         }
     };
 
