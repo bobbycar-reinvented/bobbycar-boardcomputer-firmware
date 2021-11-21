@@ -23,6 +23,7 @@ StringSettings makeDefaultStringSettings()
         },
 #ifdef FEATURE_CLOUD
         .cloudUrl = {},
+        .udpCloudUrl = {},
 #endif
 #ifdef FEATURE_OTA
         .otaUrl = {},

@@ -121,6 +121,7 @@ struct Settings
     struct CloudSettings {
         bool cloudEnabled;
         int16_t cloudTransmitTimeout; // in ms
+        uint32_t udpUid;
     } cloudSettings;
 #endif
 
@@ -286,6 +287,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 #ifdef FEATURE_CLOUD
     callable("cloudEnabled", cloudSettings.cloudEnabled);
     callable("clodTransmTmout", cloudSettings.cloudTransmitTimeout);
+    callable("cloudUDPUid", cloudSettings.udpUid);
 #endif
 
 #ifdef FEATURE_LEDSTRIP

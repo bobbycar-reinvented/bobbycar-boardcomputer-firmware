@@ -49,6 +49,7 @@ set(headers
     texts.h
     time_bobbycar.h
     types.h
+    udpcloud.h
     unifiedmodelmode.h
     utils.h
     webserver_displaycontrol.h
@@ -239,6 +240,7 @@ set(sources
     texts.cpp
     time_bobbycar.cpp
     types.cpp
+    udpcloud.cpp
     unifiedmodelmode.cpp
     utils.cpp
     webserver.cpp
