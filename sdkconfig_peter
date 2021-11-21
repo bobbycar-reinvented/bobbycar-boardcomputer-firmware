@@ -181,6 +181,12 @@ CONFIG_LOG_LOCAL_LEVEL_ASYNC_HTTP=3
 # end of Simple Async HTTP Request
 
 #
+# espchrono Configuration
+#
+CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE=y
+# end of espchrono Configuration
+
+#
 # ESP Config lib settings
 #
 # CONFIG_LOG_LOCAL_LEVEL_CONFIG_NONE is not set

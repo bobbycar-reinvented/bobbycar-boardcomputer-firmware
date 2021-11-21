@@ -1,5 +1,7 @@
 #include "timesettingsmenu.h"
 
+#include "sdkconfig.h"
+
 // 3rdparty lib includes
 #include <espchrono.h>
 #include <fmt/core.h>
@@ -32,7 +34,11 @@ class CurrentLocalDateTimeText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
+#ifdef CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE
         return fmt::format("local: {}", espchrono::toString(espchrono::toDateTime(espchrono::local_clock::now())));
+#else
+        return "TODO";
+#endif
     }
 };
 

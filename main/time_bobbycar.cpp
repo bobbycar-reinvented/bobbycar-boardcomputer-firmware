@@ -10,6 +10,22 @@
 // 3rdparty lib includes
 #include <espstrutils.h>
 
+// local includes
+#include "globals.h"
+
+espchrono::time_zone get_default_timezone() noexcept
+{
+    using namespace espchrono;
+    return time_zone{minutes32{settings.timeSettings.timezoneOffset}, settings.timeSettings.daylightSavingMode};
+}
+
+#ifdef CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE
+espchrono::time_zone espchrono::get_default_timezone() noexcept
+{
+    return ::get_default_timezone();
+}
+#endif
+
 namespace {
 constexpr const char * const TAG = "BOBBYTIME";
 } // namespace
