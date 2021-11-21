@@ -36,17 +36,17 @@ esp_err_t webserver_stringSettings_handler(httpd_req_t *req)
             HtmlTag styleTag{"style", "type=\"text/css\"", body};
             body +=
                 ".form-table {"
-                "display: table;"
-                "border-collapse: separate;"
-                "border-spacing: 10px 0;"
+                    "display: table;"
+                    "border-collapse: separate;"
+                    "border-spacing: 10px 0;"
                 "}"
 
                 ".form-table .form-table-row {"
-                "display: table-row;"
+                    "display: table-row;"
                 "}"
 
                 ".form-table .form-table-row .form-table-cell {"
-                "display: table-cell;"
+                    "display: table-cell;"
                 "}";
         }
 
