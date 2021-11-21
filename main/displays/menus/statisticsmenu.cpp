@@ -11,50 +11,83 @@
 #include "icons/update.h"
 #include "drivingstatistics.h"
 
-using namespace espgui;
-
-class WhPerKmText : public virtual espgui::TextInterface {
-    public: std::string text() const override {
+class WhPerKmText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
         float avgVoltage = 0;
         for (auto &controller : controllers)
-        {
             avgVoltage += controller.getCalibratedVoltage();
-        }
         avgVoltage = avgVoltage / controllers.size();
 
         auto watt = sumCurrent * avgVoltage;
-        auto w_per_kmh = watt / avgSpeedKmh;
+        auto w_per_kmh = watt / std::abs(avgSpeedKmh);
         return fmt::format("{:.0f} Wh/km", w_per_kmh);
     }
 };
 
-class UptimeText : public virtual espgui::TextInterface {
-    public: std::string text() const override {
-        return get_current_uptime_string();
+class UptimeText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        const auto uptime = espchrono::millis_clock::now().time_since_epoch();
+        auto converted = date::make_time(uptime);
+        auto msecs = uptime
+                     - converted.hours()
+                     - converted.minutes()
+                     - converted.seconds();
+        return fmt::format("Up: {:02d}:{:02d}:{:02d}&7.{:03d}",
+                           converted.hours().count(),
+                           converted.minutes().count(),
+                           converted.seconds().count(),
+                           msecs.count());
     }
 };
 
-class CurrentKilometersText : public virtual espgui::TextInterface {
-    public: std::string text() const override {
+class CurrentKilometersText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
         return fmt::format("Curr: {:.2f}m", drivingStatistics.meters_driven);
     }
 };
 
-class TotalKilometersText : public virtual espgui::TextInterface {
-    public: std::string text() const override {
-        return fmt::format("total: {:.1f}km", drivingStatistics.totalMeters / 1000.f );
+class TotalKilometersText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        return fmt::format("total: {:.1f}km", drivingStatistics.totalMeters / 1000.f);
     }
 };
 
-class TotalMetersText : public virtual espgui::TextInterface {
-    public: std::string text() const override {
-        return fmt::format("total: {:.0f}m", drivingStatistics.totalMeters );
+class TotalMetersText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        return fmt::format("total: {:.0f}m", drivingStatistics.totalMeters);
     }
 };
 
-class CurrentDrivingTimeText : public virtual espgui::TextInterface {
-    public: std::string text() const override {
-        return get_current_driving_time_string();
+class CurrentDrivingTimeText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        auto converted = date::make_time(drivingStatistics.currentDrivingTime);
+        auto msecs = drivingStatistics.currentDrivingTime
+                     - converted.hours()
+                     - converted.minutes()
+                     - converted.seconds();
+        return fmt::format("Drive: {:02d}:{:02d}:{:02d}&s&7.{:03d}",
+                           converted.hours().count(),
+                           converted.minutes().count(),
+                           converted.seconds().count(),
+                           msecs.count());
     }
 };
 
@@ -90,24 +123,30 @@ public:
     }
 };
 
-class SaveKilometersAction : public virtual ActionInterface {
+class SaveKilometersAction : public virtual espgui::ActionInterface
+{
 public:
-    void triggered() override {
+    void triggered() override
+    {
         drivingStatistics.last_cm_written = drivingStatistics.totalMeters * 100;
         settings.savedStatistics.totalCentimeters = drivingStatistics.last_cm_written;
         saveSettings();
     }
 };
 
-class ClearCurrentStatsAction : public virtual ActionInterface {
+class ClearCurrentStatsAction : public virtual espgui::ActionInterface
+{
 public:
-    void triggered() override {
+    void triggered() override
+    {
         drivingStatistics.meters_driven = 0.;
         drivingStatistics.currentDrivingTime = {};
         drivingStatistics.wh_used = 0;
         drivingStatistics.batteryWhEstimate = 0;
     }
 };
+
+using namespace espgui;
 
 StatisticsMenu::StatisticsMenu()
 {

@@ -58,5 +58,4 @@ void updateAccumulators();
 void readPotis();
 float wattToAmpere(float watt);
 float wattToMotorCurrent(float watt);
-std::string get_current_uptime_string();
-uint8_t time_to_percent(std::chrono::duration<long, std::ratio<1,1000>> repeat, std::chrono::duration<long, std::ratio<1,1000>> riseTime, std::chrono::duration<long, std::ratio<1,1000>> fullTime, size_t numLeds, bool invert);
+uint8_t time_to_percent(espchrono::milliseconds32 repeat, espchrono::milliseconds32 riseTime, espchrono::milliseconds32 fullTime, size_t numLeds, bool invert);

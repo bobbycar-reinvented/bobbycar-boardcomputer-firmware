@@ -20,4 +20,3 @@ void calculateStatistics();
 float getAvgWhPerKm();
 std::string getEfficiencyClassString();
 uint16_t getEfficiencyClassColor();
-std::string get_current_driving_time_string();

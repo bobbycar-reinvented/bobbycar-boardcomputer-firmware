@@ -106,17 +106,3 @@ void calculateStatistics()
         }
     }
 }
-
-std::string get_current_driving_time_string()
-{
-    auto converted = date::make_time(drivingStatistics.currentDrivingTime);
-    auto msecs = drivingStatistics.currentDrivingTime
-                 - converted.hours()
-                 - converted.minutes()
-                 - converted.seconds();
-    return fmt::format("Drive: {:02d}:{:02d}:{:02d}.{:03d}",
-                       converted.hours().count(),
-                       converted.minutes().count(),
-                       converted.seconds().count(),
-                       msecs.count());
-}
