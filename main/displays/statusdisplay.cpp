@@ -95,7 +95,7 @@ void StatusDisplay::redraw()
 #ifdef FEATURE_CLOUD
     if(settings.cloudSettings.udpCloudEnabled)
     {
-        tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? TFT_WHITE : TFT_BLACK);
+        tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? TFT_DARKGREY : TFT_BLACK);
     }
     else
     {
