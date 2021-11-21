@@ -117,7 +117,7 @@ std::string buildUdpCloudJson()
     // doc["mM"] = currentMode->displayName();
     doc["mN"] = drivingStatistics.meters_driven;
     doc["mT"] = drivingStatistics.totalMeters;
-    doc["dT"] = drivingStatistics.currentDrivingTime;
+    doc["dT"] = drivingStatistics.currentDrivingTime.count();
     doc["cW"] = watt;
     doc["wN"] = drivingStatistics.wh_used;
     doc["wL"] = getRemainingWattHours();
