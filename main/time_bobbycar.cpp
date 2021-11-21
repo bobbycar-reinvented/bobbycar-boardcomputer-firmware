@@ -8,20 +8,11 @@
 #endif
 
 // 3rdparty lib includes
-#include <espchrono.h>
 #include <espstrutils.h>
-
-// local includes
-#include "globals.h"
 
 namespace {
 constexpr const char * const TAG = "BOBBYTIME";
 } // namespace
-
-auto espchrono::local_clock::timezone() noexcept -> time_zone
-{
-    return time_zone{minutes32{settings.timeSettings.timezoneOffset}, settings.timeSettings.daylightSavingMode};
-}
 
 #ifdef FEATURE_NTP
 void time_sync_notification_cb(struct timeval *tv);
