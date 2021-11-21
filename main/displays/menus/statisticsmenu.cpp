@@ -38,7 +38,7 @@ public:
                      - converted.hours()
                      - converted.minutes()
                      - converted.seconds();
-        return fmt::format("Up: {:02d}:{:02d}:{:02d}&7.{:03d}",
+        return fmt::format("Up: {:02d}:{:02d}:{:02d}&s&7.{:03d}",
                            converted.hours().count(),
                            converted.minutes().count(),
                            converted.seconds().count(),
