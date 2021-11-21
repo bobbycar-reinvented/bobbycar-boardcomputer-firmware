@@ -75,6 +75,7 @@ using namespace std::chrono_literals;
 #include "dnsannounce.h"
 #endif
 #include "drivingstatistics.h"
+#include "newsettings.h"
 
 namespace {
 std::optional<espchrono::millis_clock::time_point> lastWifiUpdate;
@@ -119,6 +120,10 @@ extern "C" void app_main()
     initScreen();
 
     bootLabel.redraw("settings");
+
+    if (const auto result = configs.init("bobbycar"); result != ESP_OK)
+        ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
+
     settings = presets::defaultSettings;
     stringSettings = presets::makeDefaultStringSettings();
 
