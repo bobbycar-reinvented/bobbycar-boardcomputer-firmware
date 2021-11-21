@@ -448,6 +448,8 @@ extern "C" void app_main()
         handle_dns_announce();
 #endif
         calculateStatistics();
+#ifdef FEATURE_CLOUD
         sendUdpCloudPacket();
+#endif
     }
 }

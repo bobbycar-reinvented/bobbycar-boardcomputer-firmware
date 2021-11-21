@@ -1,5 +1,6 @@
 constexpr const char * const TAG = "bobbycloud";
 
+#ifdef FEATURE_CLOUD
 // 3rd party includes
 #include <ArduinoJson.h>
 #include <FastLED.h>
@@ -174,3 +175,4 @@ void sendUdpCloudPacket()
         ESP_LOGD(TAG, "now: %s", buf.c_str());
         }
 }
+#endif
