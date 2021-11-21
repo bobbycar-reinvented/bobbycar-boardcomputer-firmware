@@ -4,6 +4,11 @@ constexpr const char * const TAG = "bobbycloud";
 // 3rd party includes
 #include <ArduinoJson.h>
 #include <FastLED.h>
+#ifdef FEATURE_OTA
+#include <espcppmacros.h>
+#include <espstrutils.h>
+#include <esp_ota_ops.h>
+#endif
 
 // local includes
 #include "udpcloud.h"
@@ -19,6 +24,8 @@ constexpr const char * const TAG = "bobbycloud";
 #include "drivingstatistics.h"
 
 using namespace std::chrono_literals;
+// Little "flash" on statusdisplay when udp stuff is happening
+bool visualSendUdpPacket;
 
 espchrono::millis_clock::time_point timestampLastFailed;
 
@@ -115,6 +122,14 @@ std::string buildUdpCloudJson()
     doc["wN"] = drivingStatistics.wh_used;
     doc["wL"] = getRemainingWattHours();
     doc["kmL"] = getRemainingWattHours() / settings.battery.watthoursPerKilometer;
+//#ifdef FEATURE_OTA
+//    if (const esp_app_desc_t *app_desc = esp_ota_get_app_description())
+//    {
+//        doc["ver"] = espcpputils::toHexString({app_desc->app_elf_sha256, 8});
+//    }
+//#else
+//    doc["ver"] = "-";
+//#endif
 
     serializeJson(doc, buf);
     return buf;
@@ -122,17 +137,22 @@ std::string buildUdpCloudJson()
 
 void sendUdpCloudPacket()
 {
-    EVERY_N_MILLIS(30) {
+    EVERY_N_MILLIS(settings.boardcomputerHardware.timersSettings.udpSendRateMs) {
         if (espchrono::ago(timestampLastFailed) < 3s)
+        {
+            visualSendUdpPacket = false;
             return;
+        }
 
         if (stringSettings.udpCloudUrl.empty())
         {
+            visualSendUdpPacket = false;
             return;
         }
 
         if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::CONNECTED)
         {
+            visualSendUdpPacket = false;
             return;
         }
 
@@ -149,12 +169,14 @@ void sendUdpCloudPacket()
                 ESP_LOGE(TAG, "dns_gethostbyname() failed because: %i", res);
             }
             timestampLastFailed = espchrono::millis_clock::now();
+            visualSendUdpPacket = false;
             return;
         }
 
         if (udpCloudIp.type != IPADDR_TYPE_V4)
         {
             ESP_LOGE(TAG, "unsupported ip type: %hhu", udpCloudIp.type);
+            visualSendUdpPacket = false;
             return;
         }
 
@@ -173,6 +195,7 @@ void sendUdpCloudPacket()
         }
 
         ESP_LOGD(TAG, "now: %s", buf.c_str());
+        visualSendUdpPacket = !visualSendUdpPacket;
         }
 }
 #endif

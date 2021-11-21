@@ -123,6 +123,8 @@ struct CanReceiveRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_
 #ifdef FEATURE_CLOUD
 struct CloudCollectRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.cloudCollectRate; } };
 struct CloudSendRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.cloudSendRate; } };
+struct UdpCloudSendIntervalAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.udpSendRateMs; } };
+struct UdpCloudEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.cloudSettings.udpCloudEnabled; } };
 #endif
 
 struct DefaultModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.defaultMode.modelMode; } };
@@ -171,7 +173,7 @@ struct LedsStVOFrontLengthAccessor : public RefAccessorSaveSettings<int16_t> { i
 struct EnableLedstripStVOFrontlight : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.stvoFrontEnable; } };
 struct AnimationMultiplierAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.animationMultiplier; } };
 struct LedstripBrightnessAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.ledstrip.brightness; } };
-struct LedstripEnableBlinkAnimation : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableAnimBlink; } };
+struct LedstripEnableBlinkAnimationAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableAnimBlink; } };
 struct LedstripOtaAnimationAccessor : public RefAccessorSaveSettings<OtaAnimationModes> { OtaAnimationModes &getRef() const override { return settings.ledstrip.otaMode; } };
 #endif
 

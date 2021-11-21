@@ -147,6 +147,7 @@ constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings 
 #ifdef FEATURE_CLOUD
     .cloudCollectRate = 100,
     .cloudSendRate = 1,
+    .udpSendRateMs = 65,
 #endif
 };
 
@@ -175,6 +176,7 @@ constexpr Settings::CloudSettings defaultCloudSettings {
     .cloudEnabled = false,
     .cloudTransmitTimeout = 10,
     .udpUid = 0,
+    .udpCloudEnabled = false,
 };
 #endif
 

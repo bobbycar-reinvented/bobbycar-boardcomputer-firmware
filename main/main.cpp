@@ -449,7 +449,8 @@ extern "C" void app_main()
 #endif
         calculateStatistics();
 #ifdef FEATURE_CLOUD
-        sendUdpCloudPacket();
+        if (settings.cloudSettings.udpCloudEnabled)
+            sendUdpCloudPacket();
 #endif
     }
 }
