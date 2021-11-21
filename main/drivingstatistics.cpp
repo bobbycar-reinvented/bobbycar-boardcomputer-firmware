@@ -10,6 +10,8 @@
 #include "battery.h"
 #include "utils.h"
 
+using namespace std::chrono_literals;
+
 DrivingStatistics drivingStatistics;
 
 float getAvgWhPerKm()
@@ -62,7 +64,7 @@ void calculateStatistics()
         const auto duration = espchrono::ago(last_km_calculation);
         last_km_calculation = espchrono::millis_clock::now();
 
-        const float meters_driven_now = (abs(avgSpeedKmh) / 3.6) * std::chrono::floor<espchrono::seconds32>(duration).count();
+        const float meters_driven_now = (abs(avgSpeedKmh) / 3.6) * (duration.count() / 1000.);
         drivingStatistics.meters_driven += meters_driven_now;
         drivingStatistics.totalMeters += meters_driven_now; // Udate meters driven
 
@@ -82,13 +84,13 @@ void calculateStatistics()
             avgVoltage = avgVoltage / controllers.size();
 
             auto watt = sumCurrent * avgVoltage;
-            const float ws_driven_now = watt * std::chrono::floor<espchrono::seconds32>(duration).count();
+            const float ws_driven_now = watt * (duration.count() / 1000.);
             drivingStatistics.wh_used += ws_driven_now / 3600; // Wh
             drivingStatistics.batteryWhEstimate -= ws_driven_now / 3600;
         }
         else
         {
-            drivingStatistics.wh_used += (13 * std::chrono::floor<espchrono::seconds32>(duration).count()) / 3600; // Wh
+            drivingStatistics.wh_used += (13 * (duration.count() / 1000.)) / 3600; // Wh
             drivingStatistics.batteryWhEstimate = getRemainingWattHours();
         }
 
@@ -108,8 +110,13 @@ void calculateStatistics()
 std::string get_current_driving_time_string()
 {
     auto converted = date::make_time(drivingStatistics.currentDrivingTime);
-    return fmt::format("Drive: {:02d}:{:02d}:{:02d}",
+    auto msecs = drivingStatistics.currentDrivingTime
+                 - converted.hours()
+                 - converted.minutes()
+                 - converted.seconds();
+    return fmt::format("Drive: {:02d}:{:02d}:{:02d}.{:03d}",
                        converted.hours().count(),
                        converted.minutes().count(),
-                       converted.seconds().count());
+                       converted.seconds().count(),
+                       msecs.count());
 }
