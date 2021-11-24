@@ -81,7 +81,7 @@ esp_err_t webserver_stringSettings_handler(httpd_req_t *req)
 
                 {
                     HtmlTag divTag{"div", "class=\"form-table-cell\"", body};
-                    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}\" required />",
+                    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}\" />",
                                         esphttpdutils::htmlentities(key),
                                         esphttpdutils::htmlentities(value));
                 }
