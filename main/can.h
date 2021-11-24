@@ -1,4 +1,5 @@
 #pragma once
+#ifdef FEATURE_CAN
 
 // system includes
 #include <optional>
@@ -35,3 +36,4 @@ bool tryParseCanInput();
 void parseCanInput();
 void sendCanCommands();
 } // namespace can
+#endif
