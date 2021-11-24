@@ -124,6 +124,7 @@ struct Settings
         int16_t cloudTransmitTimeout; // in ms
         uint32_t udpUid;
         bool udpCloudEnabled;
+        bool enableCloudDebug;
     } cloudSettings;
 #endif
 
@@ -292,6 +293,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("clodTransmTmout", cloudSettings.cloudTransmitTimeout);
     callable("cloudUDPUid", cloudSettings.udpUid);
     callable("enUdpCloud", cloudSettings.udpCloudEnabled);
+    callable("debugCloud", cloudSettings.enableCloudDebug);
 #endif
 
 #ifdef FEATURE_LEDSTRIP

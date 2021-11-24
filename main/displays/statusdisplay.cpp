@@ -93,14 +93,14 @@ void StatusDisplay::redraw()
 
     tft.setTextFont(2);
 #ifdef FEATURE_CLOUD
-    if(settings.cloudSettings.udpCloudEnabled)
+    if(settings.cloudSettings.udpCloudEnabled && settings.cloudSettings.enableCloudDebug)
     {
         tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? TFT_DARKGREY : TFT_BLACK);
     }
-    else
-    {
-        tft.fillRect(125, 258, 8, 8, TFT_BLACK);
-    }
+//    else // is not needed because of redraw
+//    {
+//        tft.fillRect(125, 258, 8, 8, TFT_BLACK);
+//    }
 #endif
 
     const auto staStatus = wifi_stack::get_sta_status();

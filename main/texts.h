@@ -95,6 +95,7 @@ constexpr char TEXT_REBOOT[] = "Reboot";
 constexpr char TEXT_DEBUG[] = "Debug";
 constexpr char TEXT_BATTERY[] = "Battery";
 constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
+constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
 
 //BatteryMenu
 constexpr char TEXT_CELL_SERIES[] = "Cells (Series)";

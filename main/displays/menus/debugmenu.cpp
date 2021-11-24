@@ -7,6 +7,7 @@
 #include "actions/toggleboolaction.h"
 #include "checkboxicon.h"
 #include "icons/back.h"
+#include "accessors/settingsaccessors.h"
 
 // local includes
 #include "utils.h"
@@ -54,6 +55,7 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          SwitchScreenAction<DynamicDebugMenu>>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         SwitchScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TOGGLECLOUDDEBUG>,     ToggleBoolAction, CheckboxIcon, CloudDebugEnableAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
