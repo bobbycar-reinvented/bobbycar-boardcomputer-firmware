@@ -48,10 +48,12 @@ constexpr char TEXT_BLEENABLED[] = "BLE enabled";
 #ifdef FEATURE_CLOUD
 //CloudSettingsMenu
 constexpr char TEXT_CLOUDSETTINGS[] = "Cloud settings";
-constexpr char TEXT_CLOUDENABLED[] = "Cloud enabled";
+constexpr char TEXT_CLOUDENABLED[] = "Tcp Cloud enabled";
+constexpr char TEXT_UDPCLOUDENABLED[] = "Udp Cloud enabled";
 constexpr char TEXT_CLOUDTRANSMITTIMEOUT[] = "Transmit timeout";
 constexpr char TEXT_CLOUDCOLLECTRATE[] = "Cloud collect rate";
 constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
+constexpr char TEXT_UDPSENDRATE[] = "Udp send rate";
 //constexpr char TEXT_BACK[] = "Back";
 #endif
 
@@ -93,6 +95,7 @@ constexpr char TEXT_REBOOT[] = "Reboot";
 constexpr char TEXT_DEBUG[] = "Debug";
 constexpr char TEXT_BATTERY[] = "Battery";
 constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
+constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
 
 //BatteryMenu
 constexpr char TEXT_CELL_SERIES[] = "Cells (Series)";

@@ -47,4 +47,9 @@ jobs:
         uses: actions/upload-artifact@v2.2.4
         with:
           name: bobbyquad_${{ matrix.node }}
-          path: build_${{ matrix.node }}/bobbyquad_${{ matrix.node }}.bin
+          path: |
+            build_${{ matrix.node }}/bobbyquad_${{ matrix.node }}.bin
+            build_${{ matrix.node }}/bobbyquad_${{ matrix.node }}.elf
+            build_${{ matrix.node }}/bootloader/bootloader.bin
+            build_${{ matrix.node }}/bootloader/bootloader.elf
+            build_${{ matrix.node }}/partition_table/partition-table.bin

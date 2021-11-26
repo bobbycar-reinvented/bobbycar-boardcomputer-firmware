@@ -62,6 +62,7 @@ using namespace std::chrono_literals;
 #endif
 #ifdef FEATURE_CLOUD
 #include "cloud.h"
+#include "udpcloud.h"
 #endif
 #include "wifi_bobbycar.h"
 #include "time_bobbycar.h"
@@ -447,5 +448,9 @@ extern "C" void app_main()
         handle_dns_announce();
 #endif
         calculateStatistics();
+#ifdef FEATURE_CLOUD
+        if (settings.cloudSettings.udpCloudEnabled)
+            sendUdpCloudPacket();
+#endif
     }
 }

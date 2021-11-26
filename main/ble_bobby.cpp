@@ -214,11 +214,13 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
     if (blinkAnimation != newBlinkAnimation) blinkAnimation = newBlinkAnimation;
 #endif
 
+    const bool isInverted = (settings.controllerHardware.invertFrontLeft && !settings.controllerHardware.invertFrontRight);
+
     if (!simplified)
     {
         modes::remoteControlMode.setCommand(RemoteCommand{
-            .frontLeft = doc["fl"].as<int16_t>(),
-            .frontRight = doc["fr"].as<int16_t>(),
+            .frontLeft = doc[isInverted ? "fr":"fl"].as<int16_t>(),
+            .frontRight = doc[isInverted ? "fl":"fr"].as<int16_t>(),
             .backLeft = doc["bl"].as<int16_t>(),
             .backRight = doc["br"].as<int16_t>()
         });

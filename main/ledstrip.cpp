@@ -213,7 +213,7 @@ void updateLedStrip()
 
 void showAnimation()
 {
-    if (settings.ledstrip.enableLedAnimation && !simplified && (!asyncOtaTaskStarted || settings.ledstrip.otaMode != OtaAnimationModes::None))
+    if (settings.ledstrip.enableLedAnimation && !simplified && !(asyncOtaTaskStarted && settings.ledstrip.otaMode != OtaAnimationModes::None))
     {
         if (animation_type == LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW) showDefaultLedstrip();
         else if (animation_type == LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW) showBetterRainbow();

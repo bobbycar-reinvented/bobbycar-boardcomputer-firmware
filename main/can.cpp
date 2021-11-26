@@ -1,4 +1,5 @@
 #include "can.h"
+#ifdef FEATURE_CAN
 
 // system includes
 #include <cstring>
@@ -453,3 +454,4 @@ void sendCanCommands()
 }
 
 } // namespace can
+#endif

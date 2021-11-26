@@ -22,6 +22,7 @@ void Lockscreen::start()
     currentMode = &m_mode;
 
     profileButtonDisabled = !settings.lockscreen.allowPresetSwitch;
+    isLocked = true;
 }
 
 void Lockscreen::initScreen()
@@ -122,6 +123,7 @@ void Lockscreen::stop()
     }
 
     profileButtonDisabled = false;
+    isLocked = false;
 }
 
 void Lockscreen::confirm()

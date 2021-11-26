@@ -14,6 +14,7 @@ float gametrakDist;
 float avgSpeed{};
 float avgSpeedKmh{};
 float sumCurrent{};
+bool isLocked{};
 
 char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
 

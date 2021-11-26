@@ -185,7 +185,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                     body += "Trigger Update";
                 }
 
-                body += fmt::format("<input type=\"text\" name=\"url\" value=\"{}\" required />", esphttpdutils::htmlentities(stringSettings.otaUrl));
+                body += fmt::format("<input type=\"text\" name=\"url\" value=\"{}\" />", esphttpdutils::htmlentities(stringSettings.otaUrl));
 
                 {
                     HtmlTag buttonTag{"button", "type=\"submit\"", body};

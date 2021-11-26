@@ -42,7 +42,7 @@ typename std::enable_if<
     , bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
-    body += fmt::format("<input type=\"number\" name=\"{}\" value=\"{}\" min=\"{}\" max=\"{}\" step=\"1\" required />",
+    body += fmt::format("<input type=\"number\" name=\"{}\" value=\"{}\" min=\"{}\" max=\"{}\" step=\"1\" />",
                         esphttpdutils::htmlentities(key),
                         value,
                         std::numeric_limits<T>::min(),
@@ -56,7 +56,7 @@ typename std::enable_if<
     , bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
-    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}{}{}{}\" pattern=\"[0-9]{{4}}\" required />",
+    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}{}{}{}\" pattern=\"[0-9]{{4}}\" />",
                         esphttpdutils::htmlentities(key),
                         value[0],
                         value[1],

@@ -113,6 +113,7 @@ struct Settings
 #ifdef FEATURE_CLOUD
             int16_t cloudCollectRate;
             int16_t cloudSendRate;
+            int16_t udpSendRateMs;
 #endif
         } timersSettings;
     } boardcomputerHardware;
@@ -121,6 +122,9 @@ struct Settings
     struct CloudSettings {
         bool cloudEnabled;
         int16_t cloudTransmitTimeout; // in ms
+        uint32_t udpUid;
+        bool udpCloudEnabled;
+        bool enableCloudDebug;
     } cloudSettings;
 #endif
 
@@ -281,11 +285,15 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 #ifdef FEATURE_CLOUD
     callable("cloudCollectRat", boardcomputerHardware.timersSettings.cloudCollectRate);
     callable("cloudSendRate", boardcomputerHardware.timersSettings.cloudSendRate);
+    callable("udpSendRate", boardcomputerHardware.timersSettings.udpSendRateMs);
 #endif
 
 #ifdef FEATURE_CLOUD
     callable("cloudEnabled", cloudSettings.cloudEnabled);
     callable("clodTransmTmout", cloudSettings.cloudTransmitTimeout);
+    callable("cloudUDPUid", cloudSettings.udpUid);
+    callable("enUdpCloud", cloudSettings.udpCloudEnabled);
+    callable("debugCloud", cloudSettings.enableCloudDebug);
 #endif
 
 #ifdef FEATURE_LEDSTRIP
