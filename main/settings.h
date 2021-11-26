@@ -125,6 +125,7 @@ struct Settings
         uint32_t udpUid;
         bool udpCloudEnabled;
         bool enableCloudDebug;
+        bool udpUseStdString;
     } cloudSettings;
 #endif
 
@@ -294,6 +295,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("cloudUDPUid", cloudSettings.udpUid);
     callable("enUdpCloud", cloudSettings.udpCloudEnabled);
     callable("debugCloud", cloudSettings.enableCloudDebug);
+    callable("udpusestdstr", cloudSettings.udpUseStdString);
 #endif
 
 #ifdef FEATURE_LEDSTRIP

@@ -52,6 +52,18 @@ void spamUdpBroadcast()
 
 std::string buildUdpCloudJson()
 {
+    static std::string version_string;
+    if (version_string.empty() || version_string == "-")
+    {
+        if (const esp_app_desc_t *app_desc = esp_ota_get_app_description())
+        {
+            version_string = app_desc->version;
+        }
+        else
+        {
+            version_string = "-";
+        }
+    }
     StaticJsonDocument<1024> doc;
     std::string buf;
     const auto uptime = espchrono::millis_clock::now().time_since_epoch().count();
@@ -92,6 +104,10 @@ std::string buildUdpCloudJson()
             arr[!isBack ? "flS":"blS"] = convertToKmh(controller.feedback.left.speed) * (controller.invertLeft?-1:1);
             arr[!isBack ? "frS":"brS"] = convertToKmh(controller.feedback.right.speed) * (controller.invertRight?-1:1);
         }
+        else
+        {
+            doc[!isBack ? "f":"b"] = nullptr;
+        }
     };
 
     addController(controllers.front, false);
@@ -114,7 +130,6 @@ std::string buildUdpCloudJson()
     doc["bP"] = getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType));
     doc["bV"] = avgVoltage;
     doc["l"] = isLocked;
-    // doc["mM"] = currentMode->displayName();
     doc["mN"] = drivingStatistics.meters_driven;
     doc["mT"] = drivingStatistics.totalMeters;
     doc["dT"] = drivingStatistics.currentDrivingTime.count();
@@ -122,16 +137,158 @@ std::string buildUdpCloudJson()
     doc["wN"] = drivingStatistics.wh_used;
     doc["wL"] = getRemainingWattHours();
     doc["kmL"] = getRemainingWattHours() / settings.battery.watthoursPerKilometer;
-//#ifdef FEATURE_OTA
-//    if (const esp_app_desc_t *app_desc = esp_ota_get_app_description())
-//    {
-//        doc["ver"] = espcpputils::toHexString({app_desc->app_elf_sha256, 8});
-//    }
-//#else
-//    doc["ver"] = "-";
-//#endif
+    doc["ver"] = version_string.substr(0, 6);
 
     serializeJson(doc, buf);
+    return buf;
+}
+
+// Same as buildUdpCloudJson, but doesnt use ArduinoJson (Probably will not expand; added for performance testing)
+std::string buildUdpCloudString()
+{
+    static std::string version_string;
+    if (version_string.empty() || version_string == "-")
+    {
+        if (const esp_app_desc_t *app_desc = esp_ota_get_app_description())
+        {
+            version_string = app_desc->version;
+        }
+        else
+        {
+            version_string = "-";
+        }
+    }
+//    StaticJsonDocument<1024> doc;
+    std::string buf;
+    buf.reserve(1024);
+
+    const auto uptime = espchrono::millis_clock::now().time_since_epoch().count();
+
+    float avgVoltage = 0;
+    for (auto &controller : controllers)
+    {
+        avgVoltage += controller.getCalibratedVoltage();
+    }
+    avgVoltage = avgVoltage / controllers.size();
+
+    const auto watt = sumCurrent * avgVoltage;
+    // const auto w_per_kmh = watt / avgSpeedKmh;
+
+    buf += "{";
+
+    // User ID
+    if(settings.cloudSettings.udpUid)
+        buf += fmt::format("\"uid\":{},", settings.cloudSettings.udpUid);
+    else
+        buf += "\"uid\":null,";
+
+    if(uptime)
+        buf += fmt::format("\"upt\":{},", uptime);
+    else
+        buf += "\"uid\":null,";
+
+    const auto addController = [&](const Controller &controller, const bool isBack) {
+        if (controller.feedbackValid)
+        {
+            buf += fmt::format("\"{}\":{", !isBack ? "f":"b");
+            // Voltage
+            if (controller.getCalibratedVoltage())
+                buf += fmt::format("\"V\":{},", controller.getCalibratedVoltage());
+            else
+                buf += "\"V\":null,";
+
+            // Amperes
+            if (controller.feedback.left.dcLink)
+                buf += fmt::format("\"lA\":{},", fixCurrent(controller.feedback.left.dcLink));
+            else
+                buf += "\"lA\":null,";
+
+            if (controller.feedback.right.dcLink)
+                buf += fmt::format("\"rA\":{},", fixCurrent(controller.feedback.right.dcLink));
+            else
+                buf += "\"rA\":null,";
+
+            // Temperature
+            if (controller.feedback.right.dcLink)
+                buf += fmt::format("\"{}\":{},", !isBack ? "fT":"bT", fixBoardTemp(controller.feedback.boardTemp));
+            else
+                buf += fmt::format("\"{}\":null,", !isBack ? "fT":"bT");
+
+            // Errors
+            if (controller.feedback.left.error)
+                buf += fmt::format("\"{}\":{},", !isBack ? "flE":"blE", controller.feedback.left.error);
+            else
+                buf += fmt::format("\"{}\":null,", !isBack ? "flE":"blE");
+
+            if (controller.feedback.right.error)
+                buf += fmt::format("\"{}\":{},", !isBack ? "frE":"brE", controller.feedback.right.error);
+            else
+                buf += fmt::format("\"{}\":null,", !isBack ? "frE":"brE");
+
+
+            // Speed
+            if (controller.feedback.left.speed)
+                buf += fmt::format("\"{}\":{},", !isBack ? "flS":"blS", convertToKmh(controller.feedback.left.speed) * (controller.invertLeft?-1:1));
+            else
+                buf += fmt::format("\"{}\":null,", !isBack ? "flS":"blS");
+
+            if (controller.feedback.right.speed)
+                buf += fmt::format("\"{}\":{},", !isBack ? "frS":"brS", convertToKmh(controller.feedback.right.speed) * (controller.invertRight?-1:1));
+            else
+                buf += fmt::format("\"{}\":null,", !isBack ? "frS":"brS");
+
+            buf += "},";
+        }
+        else
+        {
+            buf += fmt::format("\"{}\":null,", !isBack ? "f":"b");
+        }
+    };
+
+    addController(controllers.front, false);
+    addController(controllers.back, true);
+
+    // Potis
+    {
+        buf += "\"p\":{";
+        if (gas)
+            buf += fmt::format("\"g\":{},",*gas);
+        else
+            buf += "\"g\":null,";
+
+        if (raw_gas)
+            buf += fmt::format("\"rg\":{},",*raw_gas);
+        else
+            buf += "\"rg\":null,";
+
+        if (brems)
+            buf += fmt::format("\"b\":{},",*brems);
+        else
+            buf += "\"b\":null,";
+
+        if (raw_brems)
+            buf += fmt::format("\"rb\":{},",*raw_brems);
+        else
+            buf += "\"rb\":null,";
+
+        buf += "},";
+    }
+
+    // Statistics
+    buf += fmt::format("\"bP\":{},", getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType)));
+    buf += fmt::format("\"bV\":{},", avgVoltage);
+    buf += fmt::format("\"l\":{},", isLocked);
+    buf += fmt::format("\"mN\":{},", drivingStatistics.meters_driven);
+    buf += fmt::format("\"mT\":{},", drivingStatistics.totalMeters);
+    buf += fmt::format("\"dT\":{},", drivingStatistics.currentDrivingTime.count());
+    buf += fmt::format("\"cW\":{},", watt);
+    buf += fmt::format("\"wN\":{},", drivingStatistics.wh_used);
+    buf += fmt::format("\"wL\":{},", getRemainingWattHours());
+    buf += fmt::format("\"kmL\":{},", getRemainingWattHours() / settings.battery.watthoursPerKilometer);
+    buf += fmt::format("\"ver\":{}", version_string.substr(0, 6));
+
+    buf += "}";
+
     return buf;
 }
 
@@ -186,12 +343,13 @@ void sendUdpCloudPacket()
         receipient.sin_family = AF_INET;
 
         wifi_stack::UdpSender udpCloudSender;
-        std::string buf = buildUdpCloudJson();
+        std::string buf;
+            buf = settings.cloudSettings.udpUseStdString ? buildUdpCloudString() : buildUdpCloudJson();
 
 
         if (const auto result = udpCloudSender.send(receipient, buf); !result)
         {
-            ESP_LOGE(TAG, "send to cloud failed");
+            ESP_LOGE(TAG, "send to cloud failed: %.*s", result.error().size(), result.error().data());
         }
 
         ESP_LOGD(TAG, "now: %s", buf.c_str());

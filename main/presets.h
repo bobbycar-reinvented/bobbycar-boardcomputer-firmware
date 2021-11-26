@@ -177,7 +177,8 @@ constexpr Settings::CloudSettings defaultCloudSettings {
     .cloudTransmitTimeout = 10,
     .udpUid = 0,
     .udpCloudEnabled = false,
-    .enableCloudDebug = false
+    .enableCloudDebug = false,
+    .udpUseStdString = false
 };
 #endif
 

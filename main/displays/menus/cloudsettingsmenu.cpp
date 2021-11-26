@@ -66,6 +66,7 @@ CloudSettingsMenu::CloudSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDENABLED>,         ToggleBoolAction, CheckboxIcon, CloudEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPCLOUDENABLED>,      ToggleBoolAction, CheckboxIcon, UdpCloudEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPUSESTRING>,         ToggleBoolAction, CheckboxIcon, UdpUseStdStringAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDTRANSMITTIMEOUT>, SwitchScreenAction<CloudTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, CloudCreatedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudStartedText,                      DisabledColor, DummyAction>>();

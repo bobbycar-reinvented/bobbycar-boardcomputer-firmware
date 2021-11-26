@@ -54,6 +54,7 @@ constexpr char TEXT_CLOUDTRANSMITTIMEOUT[] = "Transmit timeout";
 constexpr char TEXT_CLOUDCOLLECTRATE[] = "Cloud collect rate";
 constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
 constexpr char TEXT_UDPSENDRATE[] = "Udp send rate";
+constexpr char TEXT_UDPUSESTRING[] = "Udp use std::string";
 //constexpr char TEXT_BACK[] = "Back";
 #endif
 

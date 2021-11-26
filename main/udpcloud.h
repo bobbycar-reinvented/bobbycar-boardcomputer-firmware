@@ -6,4 +6,5 @@ extern bool visualSendUdpPacket;
 
 void spamUdpBroadcast();
 std::string buildUdpCloudJson();
+std::string buildUdpCloudString();
 void sendUdpCloudPacket();

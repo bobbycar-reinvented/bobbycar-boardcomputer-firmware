@@ -126,6 +126,7 @@ struct CloudSendRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t
 struct UdpCloudSendIntervalAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.udpSendRateMs; } };
 struct UdpCloudEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.cloudSettings.udpCloudEnabled; } };
 struct CloudDebugEnableAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.cloudSettings.enableCloudDebug; } };
+struct UdpUseStdStringAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.cloudSettings.udpUseStdString; } };
 #endif
 
 struct DefaultModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.defaultMode.modelMode; } };
