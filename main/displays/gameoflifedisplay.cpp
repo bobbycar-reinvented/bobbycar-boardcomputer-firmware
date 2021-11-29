@@ -6,6 +6,9 @@
 #include <tftinstance.h>
 #include <screenmanager.h>
 
+// local includes
+#include "displays/menus/demosmenu.h"
+
 void GameOfLifeDisplay::start()
 {
     m_grid = std::make_unique<std::bitset<GRIDX*GRIDY>>();
@@ -44,12 +47,12 @@ void GameOfLifeDisplay::stop()
 
 void GameOfLifeDisplay::confirm()
 {
-
+    espgui::switchScreen<DemosMenu>();
 }
 
 void GameOfLifeDisplay::back()
 {
-
+    espgui::switchScreen<DemosMenu>();
 }
 
 void GameOfLifeDisplay::drawGrid()
