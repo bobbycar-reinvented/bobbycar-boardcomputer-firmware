@@ -22,19 +22,21 @@ void handle_dns_announce()
             if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
             {
                 std::string curIpAddress = wifi_stack::toString(result->ip);
-                if (curIpAddress == "0.0.0.0") goto lookupIPv6;
-                if (dns_lastIpAddress_v4 != curIpAddress)
+                if (curIpAddress == "0.0.0.0")
                 {
-                    dns_lastIpAddress_v4 = curIpAddress;
-                    ip_addr_t tmpIpResolved;
-                    std::string toLookup = fmt::format("{}__{}.{}.announce.bobbycar.cloud", randDNSName, curIpAddress, OTA_USERNAME);
-                    ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
-                    if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
+                    if (dns_lastIpAddress_v4 != curIpAddress)
                     {
-                        ESP_LOGW("BOBBY", "There is a error in the matrix (dns ipv4 lookup failed) -> %d", err);
-                        dns_lastIpAddress_v4 = "-";
-                        dns_lastIpAddress_v6 = "-";
-                        dns_lastIpAddress_v6_global = "-";
+                        dns_lastIpAddress_v4 = curIpAddress;
+                        ip_addr_t tmpIpResolved;
+                        std::string toLookup = fmt::format("{}__{}.{}.announce.bobbycar.cloud", randDNSName, curIpAddress, OTA_USERNAME);
+                        ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
+                        if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
+                        {
+                            ESP_LOGW("BOBBY", "There is a error in the matrix (dns ipv4 lookup failed) -> %d", err);
+                            dns_lastIpAddress_v4 = "-";
+                            dns_lastIpAddress_v6 = "-";
+                            dns_lastIpAddress_v6_global = "-";
+                        }
                     }
                 }
             }
@@ -42,7 +44,6 @@ void handle_dns_announce()
             {
                 ESP_LOGW("BOBBY", "get_ip_info() failed with %.*s", result.error().size(), result.error().data());
             }
-    lookupIPv6:
             esp_ip6_addr_t tmpv6addr;
             if (const auto result = esp_netif_get_ip6_linklocal(wifi_stack::esp_netifs[ESP_IF_WIFI_STA], &tmpv6addr); result == ESP_OK)
             {
