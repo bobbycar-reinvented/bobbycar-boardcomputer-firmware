@@ -35,7 +35,7 @@ public:
     std::string text() const override { return "Open popup"; }
     void triggered() override
     {
-        auto newDisplay = std::make_unique<AlertDisplay>(std::move(currentDisplay));
+        auto newDisplay = std::make_unique<AlertDisplay>("Das\nist\nein sehr langer text, der nicht in eine zeile passt", std::move(currentDisplay));
         newDisplay->initOverlay();
         currentDisplay = std::move(newDisplay);
     }

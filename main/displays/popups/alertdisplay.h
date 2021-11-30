@@ -9,7 +9,7 @@
 class AlertDisplay : public espgui::Display
 {
 public:
-    AlertDisplay(std::unique_ptr<Display> &&lastDisplay);
+    AlertDisplay(std::string &&message, std::unique_ptr<Display> &&lastDisplay);
 
     //void start() override;
     void initScreen() override;
@@ -23,5 +23,6 @@ public:
     void closeOverlay();
 
 private:
+    std::string m_message;
     std::unique_ptr<Display> m_lastDisplay;
 };
