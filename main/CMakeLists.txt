@@ -352,7 +352,7 @@ set(sources
     displays/starfielddisplay.cpp
     displays/statusdisplay.cpp
     displays/updatedisplay.cpp
-    displays/popups/alertdisplay.h
+    displays/popups/alertdisplay.cpp
     icons/alert.cpp
     icons/battery.cpp
     icons/bluetooth.cpp
