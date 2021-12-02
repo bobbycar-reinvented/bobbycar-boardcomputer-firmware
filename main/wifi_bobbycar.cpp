@@ -93,7 +93,7 @@ std::optional<wifi_stack::ap_config> wifi_create_ap_config()
     return wifi_stack::ap_config {
         .hostname = deviceName,
         .ssid = deviceName,
-        .key = STRING(AP_PASSWORD),
+        .key = stringSettings.ap_password,
         .static_ip = {
             .ip = {10, 0, 0, 1},
             .subnet = {255, 255, 255, 0},

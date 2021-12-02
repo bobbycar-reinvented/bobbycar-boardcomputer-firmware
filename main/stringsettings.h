@@ -48,6 +48,7 @@ struct StringSettings
 #ifdef FEATURE_DNS_NS
     std::string dns_key;
 #endif
+    std::string ap_password;
 };
 
 template<typename T>
@@ -116,6 +117,7 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
 #ifdef FEATURE_DNS_NS
     callable("dnskey", dns_key);
 #endif
+    callable("ap_pw", ap_password);
 }
 
 template<typename T>

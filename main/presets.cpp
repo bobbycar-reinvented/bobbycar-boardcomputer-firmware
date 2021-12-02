@@ -1,4 +1,5 @@
 #include "presets.h"
+#include "macros_bobbycar.h"
 
 namespace presets {
 StringSettings makeDefaultStringSettings()
@@ -49,6 +50,7 @@ StringSettings makeDefaultStringSettings()
         },
         .otaServerUrl = {},
 #endif
+        .ap_password = STRING(AP_PASSWORD),
     };
 }
 } // namespace presets
