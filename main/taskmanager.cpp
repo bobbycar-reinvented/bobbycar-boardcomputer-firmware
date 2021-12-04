@@ -64,6 +64,7 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_MOSFETS
     espcpputils::SchedulerTask { "mosfets",        init_mosfets,          update_mosfets,          {}    },
 #endif
+    espcpputils::SchedulerTask { "wifi",        wifi_begin,        wifi_update,        100ms },
 };
 } // namespace
 
