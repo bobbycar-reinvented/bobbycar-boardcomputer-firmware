@@ -179,6 +179,7 @@ set(headers
     statistics.h
     statustexthelper.h
     stringsettings.h
+    taskmanager.h
     texts.h
     time_bobbycar.h
     types.h
@@ -379,6 +380,7 @@ set(sources
     statistics.cpp
     statustexthelper.cpp
     stringsettings.cpp
+    taskmanager.cpp
     texts.cpp
     time_bobbycar.cpp
     types.cpp
