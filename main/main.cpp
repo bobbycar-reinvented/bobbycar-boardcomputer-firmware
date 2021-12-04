@@ -18,6 +18,7 @@ constexpr const char * const TAG = "BOBBY";
 #include <espchrono.h>
 using namespace std::chrono_literals;
 #include <espwifistack.h>
+#include <schedulertask.h>
 
 // local includes
 #include "bobbycar-common.h"
@@ -81,9 +82,9 @@ using namespace std::chrono_literals;
 #endif
 #include "drivingstatistics.h"
 #include "newsettings.h"
+#include "taskmanager.h"
 
 namespace {
-std::optional<espchrono::millis_clock::time_point> lastWifiUpdate;
 std::optional<espchrono::millis_clock::time_point> lastPotiRead;
 std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
@@ -151,8 +152,12 @@ extern "C" void app_main()
     else
         ESP_LOGE("MAIN", "get_default_mac_addr() failed: %.*s", result.error().size(), result.error().data());
 
-    bootLabel.redraw("wifi");
-    wifi_begin();
+
+    for (const auto &task : schedulerTasks)
+    {
+        bootLabel.redraw(task.name());
+        task.setup();
+    }
 
 #ifdef FEATURE_DPAD
     bootLabel.redraw("dpad");
@@ -296,11 +301,10 @@ extern "C" void app_main()
     {
         const auto now = espchrono::millis_clock::now();
 
-        if (!lastWifiUpdate || now - *lastWifiUpdate >= 100ms)
+        for (auto &schedulerTask : schedulerTasks)
         {
-            wifi_update();
+            schedulerTask.loop();
 
-            lastWifiUpdate = now;
         }
 
         InputDispatcher::update();
