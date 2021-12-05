@@ -31,6 +31,7 @@ private:
     espchrono::millis_clock::time_point m_lastTime{espchrono::millis_clock::now()};
     float m_lastPwm{0};
     std::optional<espchrono::millis_clock::time_point> m_stillSince;
+    std::optional<espchrono::millis_clock::time_point> m_handbrems_timer;
 };
 
 namespace modes {
