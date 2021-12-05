@@ -69,6 +69,7 @@ void DefaultMode::update()
         }
         else if ((abs(avgSpeedKmh) <= 2) && (overrideHandbremse || espchrono::ago(*m_stillSince) >= espchrono::milliseconds32(settings.handbremse.triggerTimeout)))
         {
+            handbremse::handbremseAngezogen = true;
             fixCommonParams();
 
             for (bobbycar::protocol::serial::MotorState &motor : motors())
@@ -95,6 +96,7 @@ void DefaultMode::update()
         else
         {
 hell:
+            handbremse::handbremseAngezogen = false;
             float pwm;
             if (gas_processed >= settings.defaultMode.add_schwelle)
             {

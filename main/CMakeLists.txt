@@ -327,6 +327,7 @@ set(sources
     esptexthelpers.cpp
     feedbackparser.cpp
     globals.cpp
+    handbremse.cpp
     icons/alert.cpp
     icons/battery.cpp
     icons/bluetooth.cpp

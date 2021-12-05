@@ -11,3 +11,7 @@
     x(OPENMODE) \
     x(SPEED_0)
 DECLARE_TYPESAFE_ENUM(HandbremseMode, : uint8_t, HandbremseModeValues)
+
+namespace handbremse {
+extern bool handbremseAngezogen;
+} // namespace

@@ -70,7 +70,7 @@ void StatusDisplay::initScreen()
 void StatusDisplay::redraw()
 {
     Base::redraw();
-    if (modes::defaultMode.overrideHandbremse)
+    if (modes::defaultMode.overrideHandbremse || handbremse::handbremseAngezogen)
         tft.fillRect(0, 0, tft.width(), 2, TFT_RED);
     else
         tft.fillRect(0, 0, tft.width(), 2, TFT_BLACK);
