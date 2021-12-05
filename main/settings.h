@@ -220,6 +220,7 @@ struct Settings
         uint16_t triggerTimeout;
         bool automatic;
         bool enable;
+        bool visualize;
     } handbremse;
 
     template<typename T>
@@ -356,6 +357,7 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("handBremsA", handbremse.automatic);
     callable("handBremsM", handbremse.mode);
     callable("handBremsT", handbremse.triggerTimeout);
+    callable("handBremsV", handbremse.visualize);
 }
 
 template<typename T>

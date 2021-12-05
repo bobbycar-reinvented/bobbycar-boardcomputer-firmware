@@ -223,8 +223,9 @@ char TEXT_HYBRIDACTIVATIONLIMIT[] = "Hybrid activation-limit";
 char TEXT_HYBRIDDEACTIVATIONLIMIT[] = "Hybrid deactivation-limit";
 char TEXT_LIMITS_TO_NEAR[] = "Hybrid limits too near (>20)";
 
-char TEXT_HANDBREMSE_ENABLE[] = "Enable Handbrems";
-char TEXT_HANDBREMSE_AUTOMATIC[] = "Automatic Handbrems";
+char TEXT_HANDBREMSE_ENABLE[] = "Enable Handbremse";
+char TEXT_HANDBREMSE_AUTOMATIC[] = "Automatic Handbremse";
+char TEXT_HANDBREMSE_VISUALIZE[] = "Visualize Handbremse";
 char TEXT_HANDBREMSE_MODE[] = "Handbrems Mode";
 char TEXT_HANDBREMSE_TRIGGERTIMEOUT[] = "Handbrems Timeout";
 //char TEXT_BACK[] = "Back";

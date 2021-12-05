@@ -239,7 +239,8 @@ constexpr Settings::Handbremse defaultHandbremse {
     .mode = HandbremseMode::MOSFETS_OFF,
     .triggerTimeout = 10,
     .automatic = false,
-    .enable = false
+    .enable = false,
+    .visualize = true,
 };
 
 #ifdef FEATURE_LEDSTRIP

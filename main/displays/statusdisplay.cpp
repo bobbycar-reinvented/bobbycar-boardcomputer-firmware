@@ -70,10 +70,10 @@ void StatusDisplay::initScreen()
 void StatusDisplay::redraw()
 {
     Base::redraw();
-    if (modes::defaultMode.overrideHandbremse || handbremse::handbremseAngezogen)
-        tft.fillRect(0, 0, tft.width(), 2, TFT_RED);
+    if (settings.handbremse.enable && settings.handbremse.visualize && (modes::defaultMode.overrideHandbremse || handbremse::handbremseAngezogen))
+        tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_RED);
     else
-        tft.fillRect(0, 0, tft.width(), 2, TFT_BLACK);
+        tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_BLACK);
 
     tft.setTextFont(2);
     m_labelRawGas.redraw(raw_gas ? std::to_string(*raw_gas) : "?");
