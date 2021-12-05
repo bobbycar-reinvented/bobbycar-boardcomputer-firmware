@@ -1,5 +1,7 @@
 #include "taskmanager.h"
 
+#include "sdkconfig.h"
+
 // system includes
 #include <iterator>
 #include <chrono>
@@ -12,6 +14,26 @@
 
 // local includes
 #include "wifi_bobbycar.h"
+#include "buttons.h"
+#include "dpad.h"
+#ifdef FEATURE_DPAD_3WIRESW
+#include "dpad3wire.h"
+#endif
+#ifdef FEATURE_DPAD_5WIRESW
+#include "dpad5wire.h"
+#endif
+#ifdef FEATURE_DPAD_5WIRESW_2OUT
+#include "dpad5wire_2out.h"
+#endif
+#ifdef FEATURE_DPAD_6WIRESW
+#include "dpad6wire.h"
+#endif
+#ifdef FEATURE_ROTARY
+#include "rotary.h"
+#endif
+#ifdef FEATURE_MOSFETS
+#include "mosfets.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -19,7 +41,29 @@ namespace {
 constexpr const char * const TAG = "TASKS";
 
 espcpputils::SchedulerTask schedulerTasksArr[] {
-    espcpputils::SchedulerTask { "wifi",        wifi_begin,        wifi_update,        100ms },
+    espcpputils::SchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms },
+    espcpputils::SchedulerTask { "input",          InputDispatcher::init, InputDispatcher::update, {}    },
+#ifdef FEATURE_DPAD
+    espcpputils::SchedulerTask { "dpad",           dpad::init,            dpad::update,            {}    },
+#endif
+#ifdef FEATURE_DPAD_3WIRESW
+    espcpputils::SchedulerTask { "dpad3wire",      dpad3wire::init,       dpad3wire::update,       {}    },
+#endif
+#ifdef FEATURE_DPAD_5WIRESW
+    espcpputils::SchedulerTask { "dpad5wire",      dpad5wire::init,       dpad5wire::update,       {}    },
+#endif
+#ifdef FEATURE_DPAD_5WIRESW_2OUT
+    espcpputils::SchedulerTask { "dpad5wire_2out", dpad5wire_2out::init,  dpad5wire_2out::update,  {}    },
+#endif
+#ifdef FEATURE_DPAD_6WIRESW
+    espcpputils::SchedulerTask { "dpad6wire",      dpad6wire::init,       dpad6wire::update,       {}    },
+#endif
+#ifdef FEATURE_ROTARY
+    espcpputils::SchedulerTask { "rotary",         initRotary,            updateRotary,            {}    },
+#endif
+#ifdef FEATURE_MOSFETS
+    espcpputils::SchedulerTask { "mosfets",        init_mosfets,          update_mosfets,          {}    },
+#endif
 };
 } // namespace
 

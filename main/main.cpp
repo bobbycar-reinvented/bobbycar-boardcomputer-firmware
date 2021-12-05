@@ -8,7 +8,6 @@ constexpr const char * const TAG = "BOBBY";
 #include <cstdio>
 
 // esp-idf includes
-#include <esp_wifi_types.h>
 #include <esp_log.h>
 
 // Arduino includes
@@ -26,22 +25,6 @@ using namespace std::chrono_literals;
 #include "macros_bobbycar.h"
 #include "globals.h"
 #include "screens.h"
-#include "dpad.h"
-#ifdef FEATURE_DPAD_3WIRESW
-#include "dpad3wire.h"
-#endif
-#ifdef FEATURE_DPAD_5WIRESW
-#include "dpad5wire.h"
-#endif
-#ifdef FEATURE_DPAD_5WIRESW_2OUT
-#include "dpad5wire_2out.h"
-#endif
-#ifdef FEATURE_DPAD_6WIRESW
-#include "dpad6wire.h"
-#endif
-#ifdef FEATURE_ROTARY
-#include "rotary.h"
-#endif
 #include "serialhandler.h"
 #ifdef FEATURE_OTA
 #include "ota.h"
@@ -152,58 +135,11 @@ extern "C" void app_main()
     else
         ESP_LOGE("MAIN", "get_default_mac_addr() failed: %.*s", result.error().size(), result.error().data());
 
-
     for (const auto &task : schedulerTasks)
     {
         bootLabel.redraw(task.name());
         task.setup();
     }
-
-#ifdef FEATURE_DPAD
-    bootLabel.redraw("dpad");
-    dpad::init();
-#endif
-
-#ifdef FEATURE_DPAD_3WIRESW
-    bootLabel.redraw("dpad3wire");
-    dpad3wire::init();
-#endif
-
-#ifdef FEATURE_DPAD_5WIRESW
-    bootLabel.redraw("dpad5wire");
-    dpad5wire::init();
-#endif
-
-#ifdef FEATURE_DPAD_5WIRESW_2OUT
-    bootLabel.redraw("dpad5wire_2out");
-    dpad5wire_2out::init();
-#endif
-
-#ifdef FEATURE_DPAD_6WIRESW
-    bootLabel.redraw("dpad6wire");
-    dpad6wire::init();
-#endif
-
-#ifdef FEATURE_ROTARY
-    bootLabel.redraw("rotary");
-    initRotary();
-#endif
-
-#ifdef FEATURE_MOSFETS
-    bootLabel.redraw("mosfets");
-    pinMode(PINS_MOSFET0, OUTPUT);
-    pinMode(PINS_MOSFET1, OUTPUT);
-    pinMode(PINS_MOSFET2, OUTPUT);
-
-    digitalWrite(PINS_MOSFET0, LOW);
-    digitalWrite(PINS_MOSFET1, LOW);
-    digitalWrite(PINS_MOSFET2, LOW);
-#endif
-
-#ifdef FEATURE_SERIAL
-    bootLabel.redraw("swap front back");
-    updateSwapFrontBack();
-#endif
 
 #ifdef FEATURE_BLUETOOTH
     if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Master)
@@ -236,6 +172,9 @@ extern "C" void app_main()
 
     bootLabel.redraw("back Serial begin");
     controllers.back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
+
+    bootLabel.redraw("swap front back");
+    updateSwapFrontBack();
 #endif
 
 #ifdef FEATURE_LEDSTRIP
@@ -306,26 +245,6 @@ extern "C" void app_main()
             schedulerTask.loop();
 
         }
-
-        InputDispatcher::update();
-
-#ifdef FEATURE_DPAD
-        dpad::update();
-#endif
-
-#ifdef FEATURE_DPAD_3WIRESW
-        dpad3wire::update();
-#endif
-
-#ifdef FEATURE_DPAD_5WIRESW
-        dpad5wire::update();
-#endif
-#ifdef FEATURE_DPAD_5WIRESW_2OUT
-        dpad5wire_2out::update();
-#endif
-#ifdef FEATURE_DPAD_6WIRESW
-        dpad6wire::update();
-#endif
 
         if (!lastPotiRead || now - *lastPotiRead >= 1000ms/settings.boardcomputerHardware.timersSettings.potiReadRate)
         {

@@ -167,6 +167,7 @@ set(headers
     modes/motortestmode.h
     modes/remotecontrolmode.h
     modes/tempomatmode.h
+    mosfets.h
     newsettings.h
     ota.h
     presets.h
@@ -368,6 +369,7 @@ set(sources
     modes/motortestmode.cpp
     modes/remotecontrolmode.cpp
     modes/tempomatmode.cpp
+    mosfets.cpp
     newsettings.cpp
     ota.cpp
     presets.cpp
