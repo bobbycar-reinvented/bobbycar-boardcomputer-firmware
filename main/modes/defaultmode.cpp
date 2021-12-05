@@ -50,7 +50,13 @@ void DefaultMode::update()
 
         const auto now = espchrono::millis_clock::now();
 
-        if (gas_processed > 10 || (!overrideHandbremse && (abs(avgSpeedKmh) > 2 || !controllers.front.feedbackValid || !controllers.back.feedbackValid || settings.handbremse.triggerTimeout < 1 || !settings.handbremse.enable || !settings.handbremse.automatic)))
+        if (!settings.handbremse.enable)
+            goto hell;
+
+        if (settings.handbremse.automatic && settings.handbremse.enable && settings.handbremse.mode == HandbremseMode::SPEED_0 && (abs(gas_processed) > 0 || abs(brems_processed) > 0))
+            goto hell;
+
+        if ((abs(gas_processed) > 10 || abs(brems_processed) > 10) || (!overrideHandbremse && (abs(avgSpeedKmh) > 2 || !controllers.front.feedbackValid || !controllers.back.feedbackValid || settings.handbremse.triggerTimeout < 1 || !settings.handbremse.automatic)))
         {
             m_stillSince = std::nullopt;
             overrideHandbremse = false;
@@ -61,19 +67,29 @@ void DefaultMode::update()
             m_stillSince = now;
             goto hell;
         }
-        else if ((overrideHandbremse && abs(avgSpeedKmh) <= 2) && espchrono::ago(*m_stillSince) >= espchrono::milliseconds32(settings.handbremse.triggerTimeout))
+        else if ((abs(avgSpeedKmh) <= 2) && (overrideHandbremse || espchrono::ago(*m_stillSince) >= espchrono::milliseconds32(settings.handbremse.triggerTimeout)))
         {
             fixCommonParams();
 
             for (bobbycar::protocol::serial::MotorState &motor : motors())
             {
                 motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
-                motor.ctrlMod = ((settings.handbremse.mode == HandbremseMode::SPEED_0) ? bobbycar::protocol::ControlMode::Speed : bobbycar::protocol::ControlMode::OpenMode);
+                switch (settings.handbremse.mode)
+                {
+                case HandbremseMode::MOSFETS_OFF:
+                    motor.ctrlMod = bobbycar::protocol::ControlMode::Torque;
+                    motor.enable = false;
+                    break;
+                case HandbremseMode::OPENMODE:
+                    motor.ctrlMod = bobbycar::protocol::ControlMode::OpenMode;
+                    break;
+                case HandbremseMode::SPEED_0:
+                    motor.ctrlMod = bobbycar::protocol::ControlMode::Speed;
+                    break;
+                }
                 motor.pwm = 0;
                 motor.cruiseCtrlEna = false;
-                motor.nCruiseMotTgt = 0;
-                if (settings.handbremse.mode == HandbremseMode::MOSFETS_OFF)
-                    motor.enable = false;
+                motor.nCruiseMotTgt = 0;                    
             }
         }
         else
@@ -174,8 +190,8 @@ hell:
                 motor.cruiseCtrlEna = false;
                 motor.nCruiseMotTgt = 0;
             }
+            fixCommonParams();
         }
-        fixCommonParams();
     }
 
     sendCommands();
