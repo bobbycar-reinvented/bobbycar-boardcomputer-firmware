@@ -49,6 +49,7 @@ struct StringSettings
     std::string dns_key;
 #endif
     std::string ap_password;
+    std::string otaServerBranch;
 };
 
 template<typename T>
@@ -118,6 +119,7 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
     callable("dnskey", dns_key);
 #endif
     callable("ap_pw", ap_password);
+    callable("otaBranch", otaServerBranch);
 }
 
 template<typename T>

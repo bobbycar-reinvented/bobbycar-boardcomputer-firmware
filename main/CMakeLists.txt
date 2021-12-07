@@ -100,6 +100,7 @@ set(headers
     displays/menus/presetsmenu.h
     displays/menus/profilesmenu.h
     displays/menus/selectbatterytypemenu.h
+    displays/menus/selectbuildserverbranch.h
     displays/menus/selectbuildservermenu.h
     displays/menus/selectmodemenu.h
     displays/menus/selectotabuildmenu.h
@@ -297,6 +298,7 @@ set(sources
     displays/menus/presetsmenu.cpp
     displays/menus/profilesmenu.cpp
     displays/menus/selectbatterytypemenu.cpp
+    displays/menus/selectbuildserverbranch.cpp
     displays/menus/selectbuildservermenu.cpp
     displays/menus/selectmodemenu.cpp
     displays/menus/selectotabuildmenu.cpp
