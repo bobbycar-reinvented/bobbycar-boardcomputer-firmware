@@ -19,7 +19,7 @@
 #define MESSAGE(text) constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>()
 
 using namespace espgui;
-using namespace buildserver;
+using namespace buildserver::SelectBuild;
 
 namespace {
 template<int item_color>
@@ -50,7 +50,7 @@ private:
 
 SelectBuildMenu::SelectBuildMenu()
 {
-    if (count_available_buildserver() < 1)
+    if (buildserver::count_available_buildserver() < 1)
     {
         MESSAGE(TEXT_OTA_NOBUILDSERVERAVAILABLE);
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
@@ -115,6 +115,7 @@ void SelectBuildMenu::update()
 
 void SelectBuildMenu::buildMenuFromJson()
 {
+    ESP_LOGW("BOBBY", "Building menu");
     auto &latest = constructMenuItem<VersionMenuItem<TFT_GREEN>>();
     latest.setHash("latest");
     latest.setUrl(url_for_latest);

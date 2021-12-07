@@ -15,7 +15,7 @@
 
 #ifdef FEATURE_OTA
 
-using namespace buildserver;
+using namespace buildserver::SelectBuild;
 using namespace espgui;
 
 namespace {
