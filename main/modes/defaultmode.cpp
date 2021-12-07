@@ -109,10 +109,11 @@ hell:
 
             if (m_handbrems_timer && settings.handbremse.automatic && settings.handbremse.enable && settings.handbremse.mode == HandbremseMode::SPEED_0 && (abs(c_gas_processed) > 0 || abs(c_brems_processed) > 0))
             {
-                if (espchrono::ago(*m_handbrems_timer) < 400ms)
+                if (espchrono::ago(*m_handbrems_timer) < 300ms)
                 {
                     gas_processed = 0;
                     brems_processed = 0;
+                    m_lastPwm = 0;
                 }
             }
 
@@ -214,7 +215,7 @@ hell:
 
             if (m_handbrems_timer && settings.handbremse.automatic && settings.handbremse.enable && settings.handbremse.mode == HandbremseMode::SPEED_0 && (abs(c_gas_processed) > 0 || abs(c_brems_processed) > 0))
             {
-                if (espchrono::ago(*m_handbrems_timer) < 200ms)
+                if (espchrono::ago(*m_handbrems_timer) < 100ms)
                 {
                     for (bobbycar::protocol::serial::MotorState &motor : motors())
                     {
