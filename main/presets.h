@@ -256,7 +256,7 @@ constexpr Settings::Ledstrip defaultLedstrip {
 #ifdef LEDSTRIP_ANIMATION_DEFAULT
     .animationType = LEDSTRIP_ANIMATION_DEFAULT,
 #else
-    .animationType = LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW,
+    .animationType = LedstripAnimation::DefaultRainbow,
 #endif
     .enableFullBlink = false,
     .enableStVO = false,

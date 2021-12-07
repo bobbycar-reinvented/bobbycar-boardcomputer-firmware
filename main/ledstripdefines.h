@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 /*
  * This file contains a few defines, so you don't have to remember which ledstrip animation is which number
  */
@@ -13,11 +14,12 @@
 #endif
 #define LEDSTRIP_OVERWRITE_BLINKBOTH  3
 
-
-#define LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW 0
-#define LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW 1
-#define LEDSTRIP_ANIMATION_TYPE_SPEEDSYNCANIMATION 2
-#define LEDSTRIP_ANIMATION_TYPE_CUSTOMCOLOR 3
+enum LedstripAnimation : uint16_t {
+    DefaultRainbow,
+    BetterRainbow,
+    SpeedSync,
+    CustomColor
+};
 
 #define BLINK_LEFT_EXPR blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT
 #define BLINK_RIGHT_EXPR blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT

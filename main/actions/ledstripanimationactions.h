@@ -10,7 +10,7 @@ using namespace espgui;
 
 namespace {
 #ifdef FEATURE_LEDSTRIP
-template<int16_t type>
+template<uint16_t type>
 class LedStripSetAnimationAction : public virtual ActionInterface
 {
 public:
