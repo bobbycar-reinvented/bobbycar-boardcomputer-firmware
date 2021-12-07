@@ -29,8 +29,8 @@ enum OtaAnimationModes
 extern std::vector<CRGB> leds;
 extern uint8_t gHue;
 
-extern int16_t blinkAnimation;
-extern int16_t animation_type;
+extern uint16_t blinkAnimation;
+extern uint16_t animation_type;
 
 void showDefaultLedstrip();
 void showAnimation();

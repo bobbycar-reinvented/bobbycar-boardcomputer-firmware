@@ -532,6 +532,10 @@ extern char TEXT_STATSCLEAR[];
 extern char TEXT_POWERSUPPLY[];
 #endif
 extern char TEXT_REENABLE_MENUITEMS[];
+
+//SelectBuildserverBranchMenu
+extern char TEXT_SELECT_BRANCH[];
+extern char TEXT_SELECT_BRANCH_CLEAR[];
 } // namespace
 
 using namespace bobbytexts;

@@ -8,6 +8,24 @@
 
 #ifdef FEATURE_OTA
 namespace buildserver {
+
+uint16_t count_available_buildserver();
+
+namespace SelectBranch {
+    extern cpputils::DelayedConstruction<AsyncHttpRequest> request;
+    extern bool request_running;
+    extern bool constructedMenu;
+    void setup_request();
+    void start_descriptor_request(std::string server_base_url);
+    void check_descriptor_request();
+    void parse_response(std::string response);
+    bool get_request_running();
+    extern std::string request_failed;
+    extern std::vector<std::string> branches;
+} // namespace SelectBranch
+
+namespace SelectBuild {
+
     void buildMenuFromJson(std::string json);
     void buildMenuRequestError(std::string error);
 
@@ -20,7 +38,6 @@ namespace buildserver {
     extern cpputils::DelayedConstruction<AsyncHttpRequest> request;
 
     std::string get_ota_url_from_index(uint16_t index);
-    uint16_t count_available_buildserver();
     std::string get_hash_url(std::string hash);
     std::string get_latest_url();
     std::string get_descriptor_url(std::string base_url);
@@ -29,5 +46,6 @@ namespace buildserver {
     void start_descriptor_request(std::string server_base_url);
     void check_descriptor_request();
     bool get_request_running();
-}
+} // namespace SelectBuild
+} // namespace buildserver
 #endif

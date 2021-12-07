@@ -51,6 +51,7 @@ StringSettings makeDefaultStringSettings()
         .otaServerUrl = {},
 #endif
         .ap_password = STRING(AP_PASSWORD),
+        .otaServerBranch = {}
     };
 }
 } // namespace presets

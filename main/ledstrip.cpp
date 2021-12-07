@@ -16,8 +16,8 @@ using namespace std::chrono_literals;
 std::vector<CRGB> leds;
 uint8_t gHue = 0;
 
-int16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
-int16_t animation_type = LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW;
+uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
+uint16_t animation_type = LedstripAnimation::DefaultRainbow;
 
 
 void initLedStrip()
@@ -215,10 +215,10 @@ void showAnimation()
 {
     if (settings.ledstrip.enableLedAnimation && !simplified && !(asyncOtaTaskStarted && settings.ledstrip.otaMode != OtaAnimationModes::None))
     {
-        if (animation_type == LEDSTRIP_ANIMATION_TYPE_DEFAULTRAINBOW) showDefaultLedstrip();
-        else if (animation_type == LEDSTRIP_ANIMATION_TYPE_BETTERRAINBOW) showBetterRainbow();
-        else if (animation_type == LEDSTRIP_ANIMATION_TYPE_SPEEDSYNCANIMATION) showSpeedSyncAnimation();
-        else if (animation_type == LEDSTRIP_ANIMATION_TYPE_CUSTOMCOLOR) showCustomColor();
+        if (animation_type == LedstripAnimation::DefaultRainbow) showDefaultLedstrip();
+        else if (animation_type == LedstripAnimation::BetterRainbow) showBetterRainbow();
+        else if (animation_type == LedstripAnimation::SpeedSync) showSpeedSyncAnimation();
+        else if (animation_type == LedstripAnimation::CustomColor) showCustomColor();
         else showDefaultLedstrip();
     }
     else if (asyncOtaTaskStarted && settings.ledstrip.otaMode != OtaAnimationModes::None)
