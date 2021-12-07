@@ -115,7 +115,6 @@ void SelectBuildMenu::update()
 
 void SelectBuildMenu::buildMenuFromJson()
 {
-    ESP_LOGW("BOBBY", "Building menu");
     auto &latest = constructMenuItem<VersionMenuItem<TFT_GREEN>>();
     latest.setHash("latest");
     latest.setUrl(url_for_latest);
