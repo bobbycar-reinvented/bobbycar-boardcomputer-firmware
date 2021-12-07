@@ -98,6 +98,8 @@ jobs:
             mv /home/github/tmp/${{ matrix.node }}/* /home/github/builds/${{ matrix.node }}/
             rm /home/github/tmp/${{ matrix.node }} -rf
             rm -f /home/github/builds/${{ matrix.node }}/latest.bin
+            rm -f /home/github/builds/${{ matrix.node }}/${{ steps.vars.outputs.branch }}.latest.bin
             ln -s /home/github/builds/${{ matrix.node }}/${{ steps.vars.outputs.sha_short }}.${{ steps.vars.outputs.branch }}.bin /home/github/builds/${{ matrix.node }}/latest.bin
+            ln -s /home/github/builds/${{ matrix.node }}/${{ steps.vars.outputs.sha_short }}.${{ steps.vars.outputs.branch }}.bin /home/github/builds/${{ matrix.node }}/${{ steps.vars.outputs.branch }}.latest.bin
             cd bobbycar-boardcomputer-firmware
             git pull
