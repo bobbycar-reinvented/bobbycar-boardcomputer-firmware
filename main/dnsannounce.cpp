@@ -17,12 +17,13 @@ void handle_dns_announce()
     const auto randDNSName = cpputils::randomNumber<uint16_t>(espcpputils::esp_random_device{});
     if (staStatus == wifi_stack::WiFiStaStatus::CONNECTED)
     {
-        EVERY_N_SECONDS ( 2 ) {
+        EVERY_N_SECONDS ( 2 )
+        {
             // Get IPv4
             if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
             {
                 std::string curIpAddress = wifi_stack::toString(result->ip);
-                if (curIpAddress == "0.0.0.0")
+                if (curIpAddress != "0.0.0.0")
                 {
                     if (dns_lastIpAddress_v4 != curIpAddress)
                     {
