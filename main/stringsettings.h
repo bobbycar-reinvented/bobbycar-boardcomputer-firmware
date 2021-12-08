@@ -49,7 +49,10 @@ struct StringSettings
     std::string dns_key;
 #endif
     std::string ap_password;
+#ifdef FEATURE_OTA
     std::string otaServerBranch;
+#endif
+    std::string webserver_password;
 };
 
 template<typename T>
@@ -114,12 +117,13 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
 //    callable("otaUrl9",     otaServers[9].url);
 
     callable("otaserver", otaServerUrl);
+    callable("otaBranch", otaServerBranch);
 #endif
 #ifdef FEATURE_DNS_NS
     callable("dnskey", dns_key);
 #endif
     callable("ap_pw", ap_password);
-    callable("otaBranch", otaServerBranch);
+    callable("webpw", webserver_password);
 }
 
 template<typename T>
