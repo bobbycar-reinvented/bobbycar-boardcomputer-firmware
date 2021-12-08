@@ -1,5 +1,9 @@
 constexpr const char * const TAG = "BOBBY";
 
+#ifndef OTA_USERNAME
+#error No OTA username!
+#endif
+
 // system includes
 #include <cstdio>
 
