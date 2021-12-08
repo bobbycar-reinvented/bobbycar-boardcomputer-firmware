@@ -23,6 +23,70 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
 
     std::string body;
 
+    std::string wants_json_query;
+    if (auto result = esphttpdutils::webserver_get_query(req))
+        wants_json_query = *result;
+    else
+    {
+        ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
+    }
+
+    char tmpBuf[256];
+    const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
+    if (key_result == ESP_OK)
+    {
+        body += "{";
+
+        if (const esp_app_desc_t *app_desc = esp_ota_get_app_description())
+        {
+            body += fmt::format("\"cur_name\":\"{}\",", app_desc->project_name);
+            body += fmt::format("\"cur_ver\":\"{}\",", app_desc->version);
+            body += fmt::format("\"cur_secver\":\"{}\",", app_desc->secure_version);
+            body += fmt::format("\"cur_ts\":\"{}\",", app_desc->time);
+            body += fmt::format("\"cur_idf\":\"{}\",", app_desc->idf_ver);
+            body += fmt::format("\"cur_sha\":\"{}\",", espcpputils::toHexString({app_desc->app_elf_sha256, 8}));
+        }
+        else
+        {
+            body += "\"err\":\"Could not access esp_ota_get_app_description()\",";
+        }
+
+        body += "\"updater\":{";
+
+        if (asyncOta)
+        {
+            body += fmt::format("\"status\":\"{}\"", toString(asyncOta->status()));
+
+            if (const auto &appDesc = asyncOta->appDesc())
+            {
+                const auto progress = asyncOta->progress();
+                const auto totalSize = asyncOta->totalSize();
+
+                body += fmt::format("\"cur_ota_percent\":\"{}\",", (totalSize && *totalSize > 0) ? fmt::format("{:.02f}", float(progress) / *totalSize * 100) : "?");
+                body += fmt::format("\"cur_ota_progress\":\"{}\",", progress);
+                body += fmt::format("\"cur_ota_total\":\"{}\",", totalSize ? std::to_string(*totalSize) : "?");
+                body += fmt::format("\"new_name\":\"{}\",", appDesc->project_name);
+                body += fmt::format("\"new_ver\":\"{}\",", appDesc->version);
+                body += fmt::format("\"new_secver\":\"{}\",", appDesc->secure_version);
+                body += fmt::format("\"new_ts\":\"{}\",", appDesc->time);
+                body += fmt::format("\"new_idf\":\"{}\",", appDesc->idf_ver);
+                body += fmt::format("\"new_sha\":\"{}\",", espcpputils::toHexString({appDesc->app_elf_sha256, 8}));
+
+            }
+            else
+            {
+                body += "\"err\":\"Could not access asyncOta->appDesc()\",";
+            }
+        }
+        else
+        {
+            body += "\"info\":\"Updater is not constructed.\"";
+        }
+
+        body += "}}";
+    }
+    else
     {
         HtmlTag htmlTag{"html", body};
 
@@ -197,7 +261,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
         }
     }
 
-    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/html", body)
+    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, (key_result == ESP_OK) ? "application/json" : "text/html", body)
 }
 
 esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)

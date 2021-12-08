@@ -19,6 +19,54 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
     std::string body;
 
+    std::string wants_json_query;
+    if (auto result = esphttpdutils::webserver_get_query(req))
+        wants_json_query = *result;
+    else
+    {
+        ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
+    }
+
+    char tmpBuf[256];
+    const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
+    if (key_result == ESP_OK)
+    {
+        body += "{";
+        if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
+        {
+            body.reserve(4096);
+            if (const auto *textInterface = currentDisplay->asTextInterface())
+            {
+                body += fmt::format("\"name:\"{}\",", textInterface->text());
+            }
+
+            if (const auto *menuDisplay = currentDisplay->asMenuDisplay())
+            {
+                body += fmt::format("\"index\":{},\"items\":[", menuDisplay->selectedIndex());
+                menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
+                    body += "{";
+                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\"", menuItem.text(), "none"); // menuItem.icon()->name
+                    body += "},";
+                });
+                body += "],";
+            }
+            else if (const auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface())
+            {
+                body += fmt::format("\"value\":\"{}\",", changeValueDisplay->shownValue());
+            }
+            else
+            {
+                body += "\"err\":\"Screen not implemented yet.\",";
+            }
+        }
+        else
+        {
+            body += "\"err\":\"Currently no screen instantiated.\",";
+        }
+        body += "}";
+    }
+    else
     {
         HtmlTag htmlTag{"html", body};
 
@@ -105,7 +153,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
         }
     }
 
-    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/html", body)
+    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, (key_result == ESP_OK) ? "application/json":"text/html", body)
 }
 
 esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
