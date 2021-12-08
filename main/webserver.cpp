@@ -10,7 +10,9 @@ httpd_handle_t httpdHandle;
 void initWebserver()
 {
     webserver_lock.construct();
+#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     webserver_lock->take(portMAX_DELAY);
+#endif
 
     {
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
@@ -51,8 +53,10 @@ void initWebserver()
 
 void handleWebserver()
 {
+#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     webserver_lock->give();
     webserver_lock->take(portMAX_DELAY);
+#endif
 }
 
 esp_err_t webserver_reboot_handler(httpd_req_t *req)
