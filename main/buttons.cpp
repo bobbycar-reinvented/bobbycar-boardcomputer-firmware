@@ -156,8 +156,18 @@ void InputDispatcher::blinkRightButton(bool pressed)
 
 void InputDispatcher::quickActionButtonDown(bool pressed)
 {
+    using namespace handbremse;
+
     if(!pressed)return;
-    modes::defaultMode.overrideHandbremse = pressed;
+
+    if (settings.handbremse.enable)
+    {
+        if (angezogen)
+            stateWish = StateWish::release;
+        else
+            stateWish = StateWish::brake;
+        wishTimer = espchrono::millis_clock::now();
+    }
 }
 
 void InputDispatcher::quickActionButtonUp(bool pressed)

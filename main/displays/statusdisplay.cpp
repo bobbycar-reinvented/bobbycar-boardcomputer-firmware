@@ -70,8 +70,10 @@ void StatusDisplay::initScreen()
 void StatusDisplay::redraw()
 {
     Base::redraw();
-    if (settings.handbremse.enable && settings.handbremse.visualize && (modes::defaultMode.overrideHandbremse || handbremse::handbremseAngezogen))
+    if (settings.handbremse.enable && settings.handbremse.visualize && handbremse::angezogen)
         tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_RED);
+    else if (settings.handbremse.enable && settings.handbremse.visualize && handbremse::stateWish == handbremse::StateWish::brake)
+        tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_YELLOW);
     else
         tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_BLACK);
 
