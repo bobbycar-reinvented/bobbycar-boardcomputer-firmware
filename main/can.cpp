@@ -360,6 +360,7 @@ void sendCanCommands()
         if (front) send(MotorController<false, true>::Command::CtrlMod, front->command.right.ctrlMod);
         if (back) send(MotorController<true, false>::Command::CtrlMod, back->command.left.ctrlMod);
         if (back) send(MotorController<true, true>::Command::CtrlMod, back->command.right.ctrlMod);
+        handbremse::finishedMotorUpdate = true;
         break;
     case 3:
 #if defined(HAS_SIMPLIFIED)
