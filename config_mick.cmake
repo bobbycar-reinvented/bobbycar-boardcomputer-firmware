@@ -44,7 +44,7 @@ set(BOBBYCAR_BUILDFLAGS
   -DAP_PASSWORD=Passwort_123
   -DFEATURE_WEBSERVER
 #  -DFEATURE_OTA
-#  -DOTA_USERNAME="mick"
+  -DOTA_USERNAME="mick"
 #  -DFEATURE_DPAD_5WIRESW
 #  -DPINS_DPAD_5WIRESW_OUT=4
 #  -DPINS_DPAD_5WIRESW_IN1=5
@@ -92,3 +92,8 @@ set(BOBBYCAR_BUILDFLAGS
     -DOLD_NVS
 #    -DFEATURE_DNS_NS
 )
+
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ignore/lockscreen_plugin.cmake")
+    include("${CMAKE_CURRENT_SOURCE_DIR}/ignore/lockscreen_plugin.cmake")
+    message(WARNING "Including lockscreen_plugin")
+endif()
