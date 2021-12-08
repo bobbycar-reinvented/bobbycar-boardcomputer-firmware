@@ -236,7 +236,6 @@ void showOtaAnimation()
 {
     std::fill(std::begin(leds), std::end(leds), CRGB{0,0,0});
     const auto leds_count = leds.size();
-    const int one_percent = leds_count / 100;
     float percentage = 0;
 
     const auto progress = asyncOta->progress();
@@ -245,7 +244,7 @@ void showOtaAnimation()
         percentage = (float(progress) / *totalSize * 100);
         if (settings.ledstrip.otaMode == OtaAnimationModes::GreenProgressBar)
         {
-            int numLeds = one_percent * percentage;
+            int numLeds = (leds_count * percentage) / 100;
             if (numLeds >= leds_count)
             {
                 numLeds = leds_count - 1;
