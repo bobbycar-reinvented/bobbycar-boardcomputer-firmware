@@ -213,7 +213,12 @@ void updateLedStrip()
 
 void showAnimation()
 {
-    if (settings.ledstrip.enableLedAnimation && !simplified && !(asyncOtaTaskStarted && settings.ledstrip.otaMode != OtaAnimationModes::None))
+    if (settings.ledstrip.enableLedAnimation
+        && !simplified
+#ifdef FEATURE_OTA
+        && !(asyncOtaTaskStarted && settings.ledstrip.otaMode != OtaAnimationModes::None)
+#endif
+        )
     {
         if (animation_type == LedstripAnimation::DefaultRainbow) showDefaultLedstrip();
         else if (animation_type == LedstripAnimation::BetterRainbow) showBetterRainbow();
@@ -221,17 +226,20 @@ void showAnimation()
         else if (animation_type == LedstripAnimation::CustomColor) showCustomColor();
         else showDefaultLedstrip();
     }
+#ifdef FEATURE_OTA
     else if (asyncOtaTaskStarted && settings.ledstrip.otaMode != OtaAnimationModes::None)
     {
         // show ota animation
         showOtaAnimation();
     }
+#endif
     else
     {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
     }
 }
 
+#ifdef FEATURE_OTA
 void showOtaAnimation()
 {
     std::fill(std::begin(leds), std::end(leds), CRGB{0,0,0});
@@ -260,6 +268,7 @@ void showOtaAnimation()
         }
     }
 }
+#endif
 
 void showBetterRainbow()
 {

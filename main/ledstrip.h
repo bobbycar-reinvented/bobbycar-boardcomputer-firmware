@@ -19,12 +19,14 @@ enum Bobbycar_Side
     FRONT
 };
 
+#ifdef FEATURE_OTA
 enum OtaAnimationModes
 {
     None,
     GreenProgressBar,
     ColorChangeAll
 };
+#endif
 
 extern std::vector<CRGB> leds;
 extern uint8_t gHue;
@@ -37,7 +39,9 @@ void showAnimation();
 void showBetterRainbow();
 void showSpeedSyncAnimation();
 void showCustomColor();
+#ifdef FEATURE_OTA
 void showOtaAnimation();
+#endif
 
 void initLedStrip();
 void updateLedStrip();

@@ -183,7 +183,9 @@ struct Settings
         int16_t animationMultiplier;
         uint8_t brightness;
         bool enableAnimBlink;
+#ifdef FEATURE_OTA
         OtaAnimationModes otaMode;
+#endif
     } ledstrip;
 #endif
 
@@ -330,7 +332,9 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("ledAnimMul", ledstrip.animationMultiplier);
     callable("ledbrightness", ledstrip.brightness);
     callable("enAnimBlink", ledstrip.enableAnimBlink);
+#ifdef FEATURE_OTA
     callable("ledOtaAnim", ledstrip.otaMode);
+#endif
 #endif
 
     callable("batteryCS", battery.cellsSeries);
