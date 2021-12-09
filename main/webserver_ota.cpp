@@ -11,6 +11,61 @@ namespace {
 constexpr const char * const TAG = "BOBBYWEB";
 } // namespace
 
+esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
+{
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
+    std::string body;
+
+    std::string wants_json_query;
+    if (auto result = esphttpdutils::webserver_get_query(req))
+        wants_json_query = *result;
+    else
+    {
+        ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
+    }
+
+    char tmpBuf[256];
+    const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
+    if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
+    {
+        body += "{";
+        if (asyncOta)
+        {
+            if (const auto &appDesc = asyncOta->appDesc())
+            {
+                const auto progress = asyncOta->progress();
+                const auto totalSize = asyncOta->totalSize();
+
+                body += fmt::format("\"cur_ota_percent\":\"{}\",", (totalSize && *totalSize > 0) ? fmt::format("{:.02f}", float(progress) / *totalSize * 100) : "?");
+            }
+            else
+            {
+                body += "\"err\":\"Could not access asyncOta->appDesc()\",";
+            }
+        }
+        else
+        {
+            body += "\"info\":\"Updater is not constructed.\"";
+        }
+
+        body += "}";
+    }
+    else if (tmpBuf != stringSettings.webserver_password)
+    {
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
+    }
+
+    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, (key_result == ESP_OK) ? "application/json" : "text/html", body)
+}
+
 esp_err_t webserver_ota_handler(httpd_req_t *req)
 {
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
@@ -34,7 +89,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
 
     char tmpBuf[256];
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
-    if (key_result == ESP_OK)
+    if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
     {
         body += "{";
 
@@ -85,6 +140,10 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
         }
 
         body += "}}";
+    }
+    else if (tmpBuf != stringSettings.webserver_password)
+    {
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }
     else
     {

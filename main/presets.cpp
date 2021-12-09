@@ -58,7 +58,7 @@ StringSettings makeDefaultStringSettings()
 #ifdef FEATURE_OTA
         .otaServerBranch = {},
 #endif
-        .webserver_password = STRING(AP_PASSWORD),
+        .webserver_password = {},
     };
 }
 } // namespace presets

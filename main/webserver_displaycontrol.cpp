@@ -30,7 +30,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
     char tmpBuf[256];
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
-    if (key_result == ESP_OK)
+    if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
     {
         body += "{";
         if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
@@ -46,7 +46,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                 body += fmt::format("\"index\":{},\"items\":[", menuDisplay->selectedIndex());
                 menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
                     body += "{";
-                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\"", menuItem.text(), "none"); // menuItem.icon()->name
+                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\"", menuItem.text(), menuItem.icon()->name);
                     body += "},";
                 });
                 body += "],";
@@ -65,6 +65,10 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
             body += "\"err\":\"Currently no screen instantiated.\",";
         }
         body += "}";
+    }
+    else if (tmpBuf != stringSettings.webserver_password)
+    {
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }
     else
     {
