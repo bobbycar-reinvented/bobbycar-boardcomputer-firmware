@@ -4,7 +4,7 @@
 
 | Service | Status |
 | :---                |                                                                                                                   ---: |
-| Actions (master) | ![Build Status](https://github.com/bobbycar-graz/bobbycar-boardcomputer-firmware/actions/workflows/main.yml/badge.svg) |
+| Actions | ![Build Status](https://github.com/bobbycar-graz/bobbycar-boardcomputer-firmware/actions/workflows/main.yml/badge.svg) |
 
 ## How to clone ? (READ THIS OR YOU WILL FAIL)
 
