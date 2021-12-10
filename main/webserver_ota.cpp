@@ -151,7 +151,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
         if (std::string::npos != lastEckig)
             body = body.erase(lastEckig+1, 1);
     }
-    else if (tmpBuf != stringSettings.webserver_password)
+    else if (key_result != ESP_ERR_NOT_FOUND && tmpBuf != stringSettings.webserver_password)
     {
         httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
