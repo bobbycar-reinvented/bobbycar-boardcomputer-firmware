@@ -70,6 +70,7 @@ esp_err_t webserver_reboot_handler(httpd_req_t *req)
 
 esp_err_t webserver_status_handler(httpd_req_t *req)
 {
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -77,8 +78,6 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
-
-    std::string body;
 
     std::string wants_json_query;
     if (auto result = esphttpdutils::webserver_get_query(req))

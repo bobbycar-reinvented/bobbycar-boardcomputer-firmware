@@ -32,13 +32,14 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
     if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
     {
+        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
         body += "{";
         if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
         {
             body.reserve(4096);
             if (const auto *textInterface = currentDisplay->asTextInterface())
             {
-                body += fmt::format("\"name:\"{}\",", textInterface->text());
+                body += fmt::format("\"name\":\"{}\",", textInterface->text());
             }
 
             if (const auto *menuDisplay = currentDisplay->asMenuDisplay())
@@ -46,7 +47,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                 body += fmt::format("\"index\":{},\"items\":[", menuDisplay->selectedIndex());
                 menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
                     body += "{";
-                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\"", menuItem.text(), menuItem.icon()->name);
+                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\"", menuItem.text(), (menuItem.icon()) ? menuItem.icon()->name : "");
                     body += "},";
                 });
                 body += "],";
@@ -68,6 +69,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
     }
     else if (tmpBuf != stringSettings.webserver_password)
     {
+        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }
     else
