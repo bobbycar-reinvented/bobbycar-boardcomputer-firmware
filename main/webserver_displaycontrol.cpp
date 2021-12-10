@@ -122,7 +122,6 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
     }
     else if (key_result != ESP_ERR_NOT_FOUND && tmpBuf != stringSettings.webserver_password)
     {
-        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }
     else
@@ -217,6 +216,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 {
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -333,6 +333,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 {
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -419,6 +420,7 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 
 esp_err_t webserver_setValue_handler(httpd_req_t *req)
 {
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
