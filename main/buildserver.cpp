@@ -1,4 +1,3 @@
-#pragma once
 #include "buildserver.h"
 
 #include <ArduinoJson.h>
