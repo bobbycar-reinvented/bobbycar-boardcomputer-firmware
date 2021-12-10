@@ -52,10 +52,18 @@ esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
 
         body += "}";
     }
-    else if (tmpBuf != stringSettings.webserver_password)
+    else if (key_result != ESP_ERR_NOT_FOUND && tmpBuf != stringSettings.webserver_password)
     {
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }
+
+    size_t lastGesch = body.rfind("},");
+    if (std::string::npos != lastGesch)
+        body = body.erase(lastGesch+1, 1);
+
+    size_t lastEckig = body.rfind("],");
+    if (std::string::npos != lastEckig)
+        body = body.erase(lastEckig+1, 1);
 
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, (key_result == ESP_OK) ? "application/json" : "text/html", body)
 }
@@ -135,6 +143,13 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
         }
 
         body += "}}";
+        size_t lastGesch = body.rfind("},");
+        if (std::string::npos != lastGesch)
+            body = body.erase(lastGesch+1, 1);
+
+        size_t lastEckig = body.rfind("],");
+        if (std::string::npos != lastEckig)
+            body = body.erase(lastEckig+1, 1);
     }
     else if (tmpBuf != stringSettings.webserver_password)
     {

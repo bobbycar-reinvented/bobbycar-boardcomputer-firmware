@@ -47,7 +47,52 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                 body += fmt::format("\"index\":{},\"items\":[", menuDisplay->selectedIndex());
                 menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
                     body += "{";
-                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\"", menuItem.text(), (menuItem.icon()) ? menuItem.icon()->name : "");
+                    const auto itemName = menuItem.text();
+                    std::string color{};
+                    std::string font{};
+                    switch (menuItem.color()) {
+                    case TFT_RED:
+                        color = "&1";
+                        break;
+                    case TFT_GREEN:
+                        color = "&2";
+                        break;
+                    case TFT_BLUE:
+                        color = "&3";
+                        break;
+                    case TFT_YELLOW:
+                        color = "&4";
+                        break;
+                    case TFT_BLACK:
+                        color = "&5";
+                        break;
+                    case TFT_WHITE:
+                        color = "&6";
+                        break;
+                    case TFT_GREY:
+                    case TFT_DARKGREY:
+                        color = "&7";
+                        break;
+                    default:
+                        color = "";
+                        break;
+                    }
+
+                    switch (menuItem.font())
+                    {
+                    case 2:
+                        font = "&s";
+                        break;
+                    case 4:
+                        font = "&m";
+                        break;
+                    default:
+                        font = "";
+                        break;
+                    }
+
+                    std::string menuItemName = font + color + itemName;
+                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\",\"index\":{}", menuItemName, (menuItem.icon()) ? menuItem.icon()->name : "", selectedIndex);
                     body += "},";
                 });
                 body += "],";
@@ -66,8 +111,16 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
             body += "\"err\":\"Currently no screen instantiated.\",";
         }
         body += "}";
+
+        size_t lastGesch = body.rfind("},");
+        if (std::string::npos != lastGesch)
+            body = body.erase(lastGesch+1, 1);
+
+        size_t lastEckig = body.rfind("],");
+        if (std::string::npos != lastEckig)
+            body = body.erase(lastEckig+1, 1);
     }
-    else if (tmpBuf != stringSettings.webserver_password)
+    else if (key_result != ESP_ERR_NOT_FOUND && tmpBuf != stringSettings.webserver_password)
     {
         httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
