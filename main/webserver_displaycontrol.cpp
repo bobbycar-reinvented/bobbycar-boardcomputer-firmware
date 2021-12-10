@@ -19,6 +19,113 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
     std::string body;
 
+    std::string wants_json_query;
+    if (auto result = esphttpdutils::webserver_get_query(req))
+        wants_json_query = *result;
+    else
+    {
+        ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
+    }
+
+    char tmpBuf[256];
+    const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
+    if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
+    {
+        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+        body += "{";
+        if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
+        {
+            body.reserve(4096);
+            if (const auto *textInterface = currentDisplay->asTextInterface())
+            {
+                body += fmt::format("\"name\":\"{}\",", textInterface->text());
+            }
+
+            if (const auto *menuDisplay = currentDisplay->asMenuDisplay())
+            {
+                body += fmt::format("\"index\":{},\"items\":[", menuDisplay->selectedIndex());
+                menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
+                    body += "{";
+                    const auto itemName = menuItem.text();
+                    std::string color{};
+                    std::string font{};
+                    switch (menuItem.color()) {
+                    case TFT_RED:
+                        color = "&1";
+                        break;
+                    case TFT_GREEN:
+                        color = "&2";
+                        break;
+                    case TFT_BLUE:
+                        color = "&3";
+                        break;
+                    case TFT_YELLOW:
+                        color = "&4";
+                        break;
+                    case TFT_BLACK:
+                        color = "&5";
+                        break;
+                    case TFT_WHITE:
+                        color = "&6";
+                        break;
+                    case TFT_GREY:
+                    case TFT_DARKGREY:
+                        color = "&7";
+                        break;
+                    default:
+                        color = "";
+                        break;
+                    }
+
+                    switch (menuItem.font())
+                    {
+                    case 2:
+                        font = "&s";
+                        break;
+                    case 4:
+                        font = "&m";
+                        break;
+                    default:
+                        font = "";
+                        break;
+                    }
+
+                    std::string menuItemName = font + color + itemName;
+                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\",\"index\":{}", menuItemName, (menuItem.icon()) ? menuItem.icon()->name : "", selectedIndex);
+                    body += "},";
+                });
+                body += "],";
+            }
+            else if (const auto *changeValueDisplay = currentDisplay->asChangeValueDisplayInterface())
+            {
+                body += fmt::format("\"value\":\"{}\",", changeValueDisplay->shownValue());
+            }
+            else
+            {
+                body += "\"err\":\"Screen not implemented yet.\",";
+            }
+        }
+        else
+        {
+            body += "\"err\":\"Currently no screen instantiated.\",";
+        }
+        body += "}";
+
+        size_t lastGesch = body.rfind("},");
+        if (std::string::npos != lastGesch)
+            body = body.erase(lastGesch+1, 1);
+
+        size_t lastEckig = body.rfind("],");
+        if (std::string::npos != lastEckig)
+            body = body.erase(lastEckig+1, 1);
+    }
+    else if (key_result != ESP_ERR_NOT_FOUND && tmpBuf != stringSettings.webserver_password)
+    {
+        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
+    }
+    else
     {
         HtmlTag htmlTag{"html", body};
 
@@ -105,7 +212,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
         }
     }
 
-    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/html", body)
+    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, (key_result == ESP_OK) ? "application/json":"text/html", body)
 }
 
 esp_err_t webserver_triggerButton_handler(httpd_req_t *req)

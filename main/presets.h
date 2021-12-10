@@ -266,7 +266,9 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .animationMultiplier = 10,
     .brightness = 255,
     .enableAnimBlink = false,
+#ifdef FEATURE_OTA
     .otaMode = OtaAnimationModes::GreenProgressBar
+#endif
 };
 #endif
 

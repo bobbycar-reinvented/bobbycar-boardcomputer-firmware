@@ -33,6 +33,7 @@ void initWebserver()
              httpd_uri_t { .uri = "/reboot",             .method = HTTP_GET, .handler = webserver_reboot_handler,             .user_ctx = NULL },
 #ifdef FEATURE_OTA
              httpd_uri_t { .uri = "/ota",                .method = HTTP_GET, .handler = webserver_ota_handler,                .user_ctx = NULL },
+             httpd_uri_t { .uri = "/otaPercent",         .method = HTTP_GET, .handler = webserver_ota_percentage_handler,     .user_ctx = NULL },
              httpd_uri_t { .uri = "/triggerOta",         .method = HTTP_GET, .handler = webserver_trigger_ota_handler,        .user_ctx = NULL },
 #endif
              httpd_uri_t { .uri = "/settings",           .method = HTTP_GET, .handler = webserver_settings_handler,           .user_ctx = NULL },
@@ -42,6 +43,7 @@ void initWebserver()
 #ifdef OLD_NVS
              httpd_uri_t { .uri = "/dumpnvs",            .method = HTTP_GET, .handler = webserver_dump_nvs_handler,           .user_ctx = NULL },
 #endif
+             httpd_uri_t { .uri = "/check",              .method = HTTP_GET, .handler = webserver_status_handler,             .user_ctx = NULL },
          })
     {
         const auto result = httpd_register_uri_handler(httpdHandle, &uri);
@@ -64,6 +66,38 @@ esp_err_t webserver_reboot_handler(httpd_req_t *req)
     esp_restart();
 
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "REBOOT called...")
+}
+
+esp_err_t webserver_status_handler(httpd_req_t *req)
+{
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
+    std::string wants_json_query;
+    if (auto result = esphttpdutils::webserver_get_query(req))
+        wants_json_query = *result;
+    else
+    {
+        ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
+    }
+
+    char tmpBuf[256];
+    const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
+    if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
+    {
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "Ok.");
+    }
+    else
+    {
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
+    }
 }
 
 #endif

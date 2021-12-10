@@ -32,4 +32,5 @@ extern httpd_handle_t httpdHandle;
 void initWebserver();
 void handleWebserver();
 esp_err_t webserver_reboot_handler(httpd_req_t *req);
+esp_err_t webserver_status_handler(httpd_req_t *req);
 #endif

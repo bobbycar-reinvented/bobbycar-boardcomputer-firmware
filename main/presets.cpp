@@ -50,8 +50,15 @@ StringSettings makeDefaultStringSettings()
         },
         .otaServerUrl = {},
 #endif
+#ifdef AP_PASSWORD
         .ap_password = STRING(AP_PASSWORD),
-        .otaServerBranch = {}
+#else
+        .ap_password = "Bobbycar_123",
+#endif
+#ifdef FEATURE_OTA
+        .otaServerBranch = {},
+#endif
+        .webserver_password = {},
     };
 }
 } // namespace presets

@@ -11,7 +11,7 @@
 #include "accessors/settingsaccessors.h"
 #include "ledstripmenu.h"
 
-#ifdef FEATURE_LEDSTRIP
+#if defined(FEATURE_LEDSTRIP) && defined(FEATURE_OTA)
 using namespace espgui;
 
 template <OtaAnimationModes mode>

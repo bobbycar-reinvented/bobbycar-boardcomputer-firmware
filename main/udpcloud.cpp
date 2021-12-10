@@ -4,11 +4,9 @@ constexpr const char * const TAG = "bobbycloud";
 // 3rd party includes
 #include <ArduinoJson.h>
 #include <FastLED.h>
-#ifdef FEATURE_OTA
 #include <espcppmacros.h>
 #include <espstrutils.h>
 #include <esp_ota_ops.h>
-#endif
 
 // local includes
 #include "udpcloud.h"
