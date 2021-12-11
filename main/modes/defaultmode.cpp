@@ -90,6 +90,16 @@ void DefaultMode::update()
                 }
         }
 
+        if (handbremse::wishTimer)
+        {
+            using namespace handbremse;
+            if (espchrono::ago(*wishTimer) > 5s)
+            {
+                stateWish = StateWish::none;
+                wishTimer = std::nullopt;
+            }
+        }
+
         if (handbremse::angezogen)
         {
             using namespace handbremse;
@@ -99,15 +109,6 @@ void DefaultMode::update()
             const bool valid = (controllers.front.feedbackValid && controllers.back.feedbackValid);
             const bool gas_oder_brems = (gas_processed > 10 || brems_processed > 10);
             fixCommonParams();
-
-            if (wishTimer)
-            {
-                if (espchrono::ago(*wishTimer) > 10s)
-                {
-                    stateWish = StateWish::none;
-                    wishTimer = std::nullopt;
-                }
-            }
 
             if (stateWish == StateWish::release)
             {

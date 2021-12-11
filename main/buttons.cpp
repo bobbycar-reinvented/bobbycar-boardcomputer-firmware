@@ -162,7 +162,7 @@ void InputDispatcher::quickActionButtonDown(bool pressed)
 
     if (settings.handbremse.enable)
     {
-        if (angezogen)
+        if (stateWish == StateWish::brake || angezogen)
             stateWish = StateWish::release;
         else
             stateWish = StateWish::brake;
