@@ -193,3 +193,7 @@ std::string getBatteryDebugString()
     avgVoltage = avgVoltage / controllers.size();
     return fmt::format("{:.1f}V {}A", avgVoltage, sumCurrent);
 }
+
+namespace battery {
+float bootBatPercentage{-1};
+}

@@ -192,6 +192,7 @@ set(headers
     webserver_ota.h
     webserver_settings.h
     webserver_stringsettings.h
+    widgets/doubleprogressbar.h
     wifi_bobbycar.h
     wifitexthelpers.h
 )
@@ -391,6 +392,7 @@ set(sources
     webserver_ota.cpp
     webserver_settings.cpp
     webserver_stringsettings.cpp
+    widgets/doubleprogressbar.cpp
     wifi_bobbycar.cpp
     wifitexthelpers.cpp
 )

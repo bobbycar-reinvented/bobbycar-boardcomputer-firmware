@@ -143,7 +143,7 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
     else
     {
         ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
-        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
     }
 
@@ -153,7 +153,7 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
     {
         if (!menuDisplayChanged())
         {
-            httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
             CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "Ok.");
         }
         else
@@ -163,7 +163,7 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
     }
     else
     {
-        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }
 }

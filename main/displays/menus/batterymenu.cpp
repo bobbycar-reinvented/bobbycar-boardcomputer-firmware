@@ -8,6 +8,7 @@
 #include "displays/calibratevoltagedisplay.h"
 #include "accessors/settingsaccessors.h"
 #include "fmt/core.h"
+#include "battery.h"
 
 class CurrentBatteryStatusText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryPercentageString(); } };
 
@@ -36,6 +37,27 @@ using BatteryWHperKMChangeScreen = espgui::makeComponent<
 >;
 
 using namespace espgui;
+
+void BatteryMenu::start()
+{
+    Base::start();
+    m_doubleProgressBarBatPercentage.start();
+}
+
+void BatteryMenu::redraw()
+{
+    Base::redraw();
+
+    float avgVoltage = 0;
+    for (auto &controller : controllers)
+    {
+        avgVoltage += controller.getCalibratedVoltage();
+    }
+    avgVoltage = avgVoltage / controllers.size();
+
+    const auto batPercent = getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType));
+    m_doubleProgressBarBatPercentage.redraw(batPercent, battery::bootBatPercentage);
+}
 
 BatteryMenu::BatteryMenu()
 {

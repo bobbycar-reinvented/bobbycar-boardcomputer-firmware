@@ -34,7 +34,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
     if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
     {
-        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
         body += "{";
         if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
         {
@@ -219,7 +219,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 {
-    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
 #ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
@@ -338,7 +338,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 {
-    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
 #ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
@@ -427,7 +427,7 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 
 esp_err_t webserver_setValue_handler(httpd_req_t *req)
 {
-    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
 #ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())

@@ -456,5 +456,19 @@ extern "C" void app_main()
         if (settings.cloudSettings.udpCloudEnabled)
             sendUdpCloudPacket();
 #endif
+        if (battery::bootBatPercentage == -1)
+        {
+            if(controllers.front.feedbackValid && controllers.back.feedbackValid)
+            {
+                float avgVoltage = 0;
+                for (auto &controller : controllers)
+                {
+                    avgVoltage += controller.getCalibratedVoltage();
+                }
+                avgVoltage = avgVoltage / controllers.size();
+                if (avgVoltage > 30)
+                    battery::bootBatPercentage = getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType));
+            }
+        }
     }
 }

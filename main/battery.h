@@ -32,3 +32,7 @@ std::string getBatteryAdvancedPercentageString();
 
 float getPercentageByWh(float wh);
 float getTarget_mAh();
+
+namespace battery {
+extern float bootBatPercentage;
+}

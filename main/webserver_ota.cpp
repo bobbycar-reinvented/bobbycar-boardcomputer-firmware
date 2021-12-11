@@ -35,7 +35,7 @@ esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
     }
 
     char tmpBuf[256];
-    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
     if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
     {
@@ -97,7 +97,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
     if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
     {
-        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
         body += "{";
 
         if (const esp_app_desc_t *app_desc = esp_ota_get_app_description())
@@ -157,7 +157,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
     }
     else if (key_result != ESP_ERR_NOT_FOUND && tmpBuf != stringSettings.webserver_password)
     {
-        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }
     else
