@@ -121,7 +121,7 @@ void InputDispatcher::profileButton(uint8_t index, bool pressed)
     switchProfile(index);
 }
 
-void InputDispatcher::blinkLeftButton(bool pressed)
+void InputDispatcher::blinkRightButton(bool pressed)
 {
     if(!pressed)return;
 
@@ -138,7 +138,7 @@ void InputDispatcher::blinkLeftButton(bool pressed)
 #endif
 }
 
-void InputDispatcher::blinkRightButton(bool pressed)
+void InputDispatcher::blinkLeftButton(bool pressed)
 {
     if(!pressed)return;
 #ifdef FEATURE_LEDSTRIP
