@@ -114,6 +114,7 @@ showInputForSetting(std::string_view key, T value, JsonObject &body)
 esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
 {
     httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -121,6 +122,7 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+#endif
 
     DynamicJsonDocument doc(6144);
     const auto profile = settingsPersister.currentlyOpenProfileIndex();

@@ -9,6 +9,7 @@ constexpr const char * const TAG = "BOBBYWEB";
 
 esp_err_t webserver_root_handler(httpd_req_t *req)
 {
+#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -16,6 +17,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+#endif
 
     std::string body;
 
@@ -103,12 +105,12 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
             }
             else
             {
-                body += "\"err\":\"Screen not implemented yet.\",";
+                body += "\"err\":\"Screen not implemented yet.\"";
             }
         }
         else
         {
-            body += "\"err\":\"Currently no screen instantiated.\",";
+            body += "\"err\":\"Currently no screen instantiated.\"";
         }
         body += "}";
 
@@ -119,6 +121,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
         size_t lastEckig = body.rfind("],");
         if (std::string::npos != lastEckig)
             body = body.erase(lastEckig+1, 1);
+
     }
     else if (key_result != ESP_ERR_NOT_FOUND && tmpBuf != stringSettings.webserver_password)
     {
@@ -217,6 +220,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 {
     httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -224,6 +228,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+#endif
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
@@ -334,6 +339,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 {
     httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -341,6 +347,7 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+#endif
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
@@ -421,6 +428,7 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 esp_err_t webserver_setValue_handler(httpd_req_t *req)
 {
     httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -428,6 +436,7 @@ esp_err_t webserver_setValue_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+#endif
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))

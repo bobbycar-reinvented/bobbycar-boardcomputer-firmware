@@ -31,6 +31,14 @@ extern httpd_handle_t httpdHandle;
 
 void initWebserver();
 void handleWebserver();
+bool MenuDisplayChanged();
 esp_err_t webserver_reboot_handler(httpd_req_t *req);
 esp_err_t webserver_status_handler(httpd_req_t *req);
+
+namespace bobbywebserver {
+extern bool forceRefresh;
+extern bool lastScreenWasMenu;
+extern int8_t lastSelectIndex;
+extern std::vector<std::pair<std::string, const espgui::MenuItemIcon*>> menuBuf;
+}
 #endif

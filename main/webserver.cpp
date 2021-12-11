@@ -1,9 +1,17 @@
 #include "webserver.h"
+#include "sdkconfig.h"
 
 #ifdef FEATURE_WEBSERVER
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
 } // namespace
+
+namespace bobbywebserver {
+bool forceRefresh{false};
+bool lastScreenWasMenu{};
+int8_t lastSelectIndex{};
+std::vector<std::pair<std::string, const espgui::MenuItemIcon*>> menuBuf{};
+}
 
 httpd_handle_t httpdHandle;
 
@@ -18,6 +26,7 @@ void initWebserver()
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
         httpConfig.core_id = 1;
         httpConfig.max_uri_handlers = 14;
+        httpConfig.stack_size = 8192;
 
         const auto result = httpd_start(&httpdHandle, &httpConfig);
         ESP_LOG_LEVEL_LOCAL((result == ESP_OK ? ESP_LOG_INFO : ESP_LOG_ERROR), TAG, "httpd_start(): %s", esp_err_to_name(result));
@@ -68,9 +77,57 @@ esp_err_t webserver_reboot_handler(httpd_req_t *req)
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "REBOOT called...")
 }
 
+bool menuDisplayChanged()
+{
+    using namespace bobbywebserver;
+    if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
+    {
+        lastScreenWasMenu = true;
+        if (const auto *menuDisplay = currentDisplay->asMenuDisplay())
+        {
+            if (menuBuf.size() != menuDisplay->menuItemCount())
+            {
+                menuBuf.resize(menuDisplay->menuItemCount());
+                auto iterator = std::begin(menuBuf);
+                menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
+                    *(iterator++) = std::make_pair(menuItem.text(), menuItem.icon());
+                });
+                lastSelectIndex = menuDisplay->selectedIndex();
+                return true;
+            }
+            bool _return{false};
+            auto iterator = std::begin(menuBuf);
+            menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
+                if (menuItem.text() != iterator->first || menuItem.icon() != iterator->second)
+                {
+                    *iterator = std::make_pair(menuItem.text(), menuItem.icon());
+                    _return = true;
+                }
+                iterator++;
+            });
+
+            if (menuDisplay->selectedIndex() != lastSelectIndex)
+                _return = true;
+            lastSelectIndex = menuDisplay->selectedIndex();
+            return _return;
+        }
+        return false;
+    }
+    else
+    {
+        if (lastScreenWasMenu)
+        {
+            lastScreenWasMenu = false;
+            menuBuf.clear();
+            return true;
+        }
+        return false;
+    }
+}
+
 esp_err_t webserver_status_handler(httpd_req_t *req)
 {
-    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -78,6 +135,7 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+#endif
 
     std::string wants_json_query;
     if (auto result = esphttpdutils::webserver_get_query(req))
@@ -85,6 +143,7 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
     else
     {
         ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
+        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
     }
 
@@ -92,10 +151,19 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
     if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
     {
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "Ok.");
+        if (!menuDisplayChanged())
+        {
+            httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+            CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "Ok.");
+        }
+        else
+        {
+            return webserver_root_handler(req);
+        }
     }
     else
     {
+        httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }
 }
