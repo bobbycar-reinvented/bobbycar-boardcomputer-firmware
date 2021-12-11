@@ -10,3 +10,4 @@ desktop.ini
 /ignore
 /.idea
 /.ccache
+/main/certs/*
