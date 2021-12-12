@@ -1,9 +1,10 @@
 #include "qrcodedebug.h"
 
-#include <esp_log.h>
+#include <fmt/core.h>
 
-#include "screenmanager.h"
 #include "displays/menus/debugmenu.h"
+#include "globals.h"
+#include "screenmanager.h"
 
 using namespace espgui;
 
@@ -24,13 +25,12 @@ void QrCodeDebugDisplay::initScreen()
 
 void QrCodeDebugDisplay::confirm()
 {
-    m_qrcode.createScaleToFit("WIFI:T:WPA;S:realraum;P:r3alraum;");
+    m_qrcode.createScaleToFit(fmt::format("WIFI:T:WPA;S:{};P:{};", deviceName, stringSettings.ap_password));
 }
 
 void QrCodeDebugDisplay::rotate(int offset)
 {
     m_mult += offset;
     m_qrcode.setMultiply(m_mult);
-    ESP_LOGW("BOBBY", "Multiply: %i", m_mult);
     m_qrcode.create("Hello World!");
 }
