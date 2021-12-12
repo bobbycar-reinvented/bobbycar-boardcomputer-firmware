@@ -536,6 +536,9 @@ extern char TEXT_REENABLE_MENUITEMS[];
 //SelectBuildserverBranchMenu
 extern char TEXT_SELECT_BRANCH[];
 extern char TEXT_SELECT_BRANCH_CLEAR[];
+
+//QrCodeDebug
+extern char TEXT_QRCODE_DEBUG[];
 } // namespace
 
 using namespace bobbytexts;

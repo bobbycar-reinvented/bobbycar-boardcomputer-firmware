@@ -117,6 +117,7 @@ set(headers
     displays/popups/alertdisplay.h
     displays/poweroffdisplay.h
     displays/powersupplydisplay.h
+    displays/qrcodedebug.h
     displays/spirodisplay.h
     displays/starfielddisplay.h
     displays/statusdisplay.h
@@ -316,6 +317,7 @@ set(sources
     displays/popups/alertdisplay.cpp
     displays/poweroffdisplay.cpp
     displays/powersupplydisplay.cpp
+    displays/qrcodedebug.cpp
     displays/spirodisplay.cpp
     displays/starfielddisplay.cpp
     displays/statusdisplay.cpp
@@ -399,7 +401,7 @@ set(sources
 
 set(dependencies
     libsodium freertos nvs_flash esp_http_server esp_https_ota mdns app_update esp_system esp_websocket_client driver
-    arduino-esp32 ArduinoJson esp-nimble-cpp FastLED-idf TFT_eSPI
+    arduino-esp32 ArduinoJson esp-nimble-cpp FastLED-idf TFT_eSPI TFT_eSPI_QRcode
     bobbycar-protocol cpputils cxx-ring-buffer date
     espasynchttpreq espasyncota espchrono espcpputils espconfiglib esp-gui-lib esphttpdutils espwifistack expected fmt
 )

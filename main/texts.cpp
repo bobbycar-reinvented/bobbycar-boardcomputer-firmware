@@ -537,4 +537,6 @@ char TEXT_REENABLE_MENUITEMS[] = "Show advanced";
 //SelectBuildserverBranchMenu
 char TEXT_SELECT_BRANCH[] = "Select Branch";
 char TEXT_SELECT_BRANCH_CLEAR[] = "Clear Branch";
+
+char TEXT_QRCODE_DEBUG[] = "QR Debug";
 } // namespace
