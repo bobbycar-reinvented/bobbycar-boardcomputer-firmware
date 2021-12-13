@@ -294,7 +294,7 @@ extern "C" void app_main()
         espgui::switchScreen<StatusDisplay>();
 #endif
 #ifdef FEATURE_ESPNOW
-        espnow::initESPNow();
+    espnow::initESPNow();
 #endif
 
     while (true)
@@ -410,6 +410,10 @@ extern "C" void app_main()
 
             lastBleUpdate = now;
         }
+#endif
+
+#ifdef FEATURE_ESPNOW
+        espnow::handle();
 #endif
 
 #ifdef FEATURE_CLOUD
