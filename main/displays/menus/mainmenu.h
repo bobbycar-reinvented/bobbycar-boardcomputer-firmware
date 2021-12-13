@@ -25,8 +25,12 @@ class MainMenu :
     public espgui::MenuDisplay,
     public espgui::StaticText<TEXT_MAINMENU>
 {
+    using Base = espgui::MenuDisplay;
 public:
     MainMenu();
 
     void back() override;
+    void start() override;
+    void redraw() override;
+    espgui::Label m_label_currentTime{145, 6};
 };

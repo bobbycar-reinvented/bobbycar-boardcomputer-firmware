@@ -47,11 +47,27 @@
 #include "icons/reboot.h"
 #include "icons/statistics.h"
 #include "icons/greenpass.h"
+#include "icons/time.h"
+#include "tftinstance.h"
 
 using namespace espgui;
 
+namespace mainmenu {
+/*
+class CurrentTimeText : public virtual TextInterface
+{
+public:
+    std::string text() const override
+    {
+        return fmt::format("&7Time: {}", local_clock_string());
+    }
+};
+*/
+} // namespace
+
 MainMenu::MainMenu()
 {
+    // constructMenuItem<makeComponent<MenuItem, mainmenu::CurrentTimeText,     DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       SwitchScreenAction<StatusDisplay>, StaticMenuItemIcon<&espgui::icons::back>>>();
 #ifdef FEATURE_LEDSTRIP
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     SwitchScreenAction<LedstripMenu>,   StaticMenuItemIcon<&bobbyicons::neopixel>>>();
@@ -93,4 +109,17 @@ MainMenu::MainMenu()
 void MainMenu::back()
 {
     switchScreen<StatusDisplay>();
+}
+
+void MainMenu::start()
+{
+    Base::start();
+    m_label_currentTime.start();
+}
+
+void MainMenu::redraw()
+{
+    Base::redraw();
+    tft.setTextFont(2);
+    m_label_currentTime.redraw(fmt::format("&7Time: {}", local_clock_string()));
 }
