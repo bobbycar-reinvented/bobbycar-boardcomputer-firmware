@@ -77,6 +77,7 @@ set(headers
     displays/menus/demosmenu.h
     displays/menus/dynamicdebugmenu.h
     displays/menus/enablemenu.h
+    displays/menus/espnowmenu.h
     displays/menus/feedbackdebugmenu.h
     displays/menus/gametrakmodesettingsmenu.h
     displays/menus/genericwifisettingsmenu.h
@@ -280,6 +281,7 @@ set(sources
     displays/menus/demosmenu.cpp
     displays/menus/dynamicdebugmenu.cpp
     displays/menus/enablemenu.cpp
+    displays/menus/espnowmenu.cpp
     displays/menus/feedbackdebugmenu.cpp
     displays/menus/gametrakmodesettingsmenu.cpp
     displays/menus/genericwifisettingsmenu.cpp

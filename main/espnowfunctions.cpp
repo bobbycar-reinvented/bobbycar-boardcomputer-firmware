@@ -16,17 +16,12 @@ namespace espnow {
 
 uint16_t lastYear; // Used for esp-now timesync
 
-esp_now_settings_t::Enable DefaultEnable {
-    .receiveTimeStamp = true,
-};
-
-esp_now_settings_t esp_now_settings{
-    .enable = DefaultEnable,
-};
-
 std::deque<esp_now_message_t> message_queue{};
 std::list<esp_now_peer_info_t> peers{};
 uint8_t initialized{0};
+
+bool receiveTimeStamp{true};
+bool receiveTsFromOtherBobbycars{true};
 
 void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
@@ -121,12 +116,12 @@ void handle()
         return;
     }
 
-    if (esp_now_settings.enable.receiveTimeStamp)
+    if (receiveTimeStamp)
     {
         const auto thisYear = int(espchrono::toDateTime(espchrono::utc_clock::now()).date.year());
         if (abs(thisYear - espnow::lastYear) > 1)
         {
-            esp_now_settings.enable.receiveTimeStamp = false;
+            receiveTimeStamp = false;
         }
     }
 
@@ -139,7 +134,7 @@ void handle()
 
             if (msg.type == "T")
             {
-                if (!esp_now_settings.enable.receiveTimeStamp)
+                if (!receiveTimeStamp)
                     return;
 
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
@@ -150,6 +145,11 @@ void handle()
                 {
                     ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
                 }
+            }
+            else if (msg.type == "BOBBYT")
+            {
+                if (!receiveTsFromOtherBobbycars)
+                    return;
             }
             else
             {
@@ -164,6 +164,7 @@ void onRecvTs(uint64_t millis)
     const auto milliseconds = std::chrono::milliseconds(millis);
     const auto timepoint = espchrono::utc_clock::time_point(milliseconds);
     time_set_now(timepoint);
+    receiveTsFromOtherBobbycars = false;
 }
 
 esp_err_t send_espnow_message(std::string message)

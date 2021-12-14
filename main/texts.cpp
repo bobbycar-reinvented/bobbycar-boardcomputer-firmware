@@ -544,4 +544,10 @@ char TEXT_QRCODE_DEBUG[] = "QR Debug";
 char TEXT_GREENPASS[] = "Green Pass";
 char TEXT_SHOWCERT[] = "Show cert";
 
+//EspNowMenu
+char TEXT_ESPNOW[] = "ESP-Now";
+char TEXT_ESPNOW_MENU[] = "ESP-Now Menu";
+char TEXT_ESPNOW_RECEIVETS[] = "Recv Ts State";
+char TEXT_ESPNOW_RECEIVETSFROMBOBBY[] = "Recv BobbyTs State";
+char TEXT_ESPNOW_SENDTSMSG[] = "Broadcast Time";
 } // namespace

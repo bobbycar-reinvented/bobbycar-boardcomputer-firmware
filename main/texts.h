@@ -543,6 +543,13 @@ extern char TEXT_QRCODE_DEBUG[];
 //GreenPassMenu
 extern char TEXT_GREENPASS[];
 extern char TEXT_SHOWCERT[];
+
+//EspNowMenu
+extern char TEXT_ESPNOW[];
+extern char TEXT_ESPNOW_MENU[];
+extern char TEXT_ESPNOW_RECEIVETS[];
+extern char TEXT_ESPNOW_RECEIVETSFROMBOBBY[];
+extern char TEXT_ESPNOW_SENDTSMSG[];
 } // namespace
 
 using namespace bobbytexts;
