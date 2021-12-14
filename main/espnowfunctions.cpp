@@ -7,6 +7,7 @@ constexpr const char * const TAG = "BOBBY_ESP_NOW";
 #include <espchrono.h>
 #include <esp_log.h>
 #include <numberparsing.h>
+#include <espwifistack.h>
 
 #include "globals.h"
 #include "utils.h"
@@ -53,7 +54,7 @@ void initESPNow()
 
     if (initialized < 1)
     {
-        if (!settings.wifiSettings.wifiApEnabled && !settings.wifiSettings.wifiStaEnabled)
+        if (!settings.wifiSettings.wifiApEnabled && (!settings.wifiSettings.wifiStaEnabled && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA))
         {
             ESP_LOGW(TAG, "cannot execute esp_now_init(): tcp stack is down.");
             return;
@@ -106,13 +107,70 @@ void initESPNow()
     }
 
     initialized = 255;
+    ESP_LOGI(TAG, "Init done.");
 }
 
 void handle()
 {
-    if (initialized < 255 && (settings.wifiSettings.wifiApEnabled || settings.wifiSettings.wifiStaEnabled))
+    if (initialized < 255 && !(!settings.wifiSettings.wifiApEnabled && (!settings.wifiSettings.wifiStaEnabled && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA)))
     {
         initESPNow();
+        return;
+    }
+    else if (!settings.wifiSettings.wifiApEnabled && (!settings.wifiSettings.wifiStaEnabled && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA))
+    {
+        if (initialized > 0)
+        {
+            if (initialized >= 4) // peer
+            {
+                for (const auto &peer : peers)
+                {
+                    if (const auto error = esp_now_del_peer(peer.peer_addr); error != ESP_OK)
+                    {
+                        ESP_LOGE(TAG, "esp_now_del_peer() failed with %s", esp_err_to_name(error));
+                        return;
+                    }
+                    else if (error == ESP_ERR_ESPNOW_NOT_FOUND)
+                    {
+                        initialized = 0;
+                    }
+                }
+                initialized--;
+            }
+
+            if (initialized >= 3) // callback
+            {
+                if (const auto error = esp_now_unregister_recv_cb(); error != ESP_OK)
+                {
+                    ESP_LOGE(TAG, "esp_now_unregister_recv_cb() failed with %s", esp_err_to_name(error));
+                    return;
+                }
+                else if (error == ESP_ERR_ESPNOW_NOT_FOUND)
+                {
+                    initialized = 0;
+                }
+                else
+                    initialized--;
+            }
+
+            if (initialized >= 2) // esp deinit
+            {
+                if (const auto error = esp_now_deinit(); error != ESP_OK)
+                {
+                    ESP_LOGE(TAG, "esp_now_deinit() failed with %s", esp_err_to_name(error));
+                    return;
+                }
+                else if (error == ESP_ERR_ESPNOW_NOT_FOUND)
+                {
+                    initialized = 0;
+                }
+                else
+                    initialized--;
+            }
+
+            initialized = 0;
+            ESP_LOGI(TAG, "Deinit done.");
+        }
         return;
     }
 
