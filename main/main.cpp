@@ -75,6 +75,7 @@ using namespace std::chrono_literals;
 #endif
 #include "modes/defaultmode.h"
 #include "displays/statusdisplay.h"
+#include "displays/lockscreen.h"
 #include "displays/calibratedisplay.h"
 #ifdef FEATURE_DNS_NS
 #include "dnsannounce.h"
@@ -291,7 +292,16 @@ extern "C" void app_main()
     if (!gas || !brems || *gas > 200.f || *brems > 200.f)
         espgui::switchScreen<CalibrateDisplay>(true);
     else
-        espgui::switchScreen<StatusDisplay>();
+    {
+        if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+        {
+            espgui::switchScreen<Lockscreen>();
+        }
+        else
+        {
+            espgui::switchScreen<StatusDisplay>();
+        }
+    }
 #endif
 #ifdef FEATURE_ESPNOW
     espnow::initESPNow();

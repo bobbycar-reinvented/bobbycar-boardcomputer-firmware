@@ -210,6 +210,8 @@ struct Settings
 
     struct LockscreenSettings {
         bool allowPresetSwitch;
+        bool keepLockedAfterReboot;
+        bool locked;
         std::array<int8_t, 4> pin;
     } lockscreen;
 
@@ -360,6 +362,8 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("hybridDeacL", hybrid.deactivationLimit);
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
+    callable("keepLocked", lockscreen.keepLockedAfterReboot);
+    callable("currentlyLocked", lockscreen.locked);
     callable("lockscreenPin", lockscreen.pin);
 
     callable("totalCentimeter", savedStatistics.totalCentimeters);

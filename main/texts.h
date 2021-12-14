@@ -332,6 +332,7 @@ extern char TEXT_ANIMATION_BLINKBOTH[];
 //LockscreenSettingsMenu
 extern char TEXT_LOCKSCREENSETTINGS[];
 extern char TEXT_ALLOWPRESETSWITCH[];
+extern char TEXT_KEEPLOCKED[];
 extern char TEXT_PINDIGIT0[];
 extern char TEXT_PINDIGIT1[];
 extern char TEXT_PINDIGIT2[];

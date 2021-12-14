@@ -332,6 +332,7 @@ char TEXT_ANIMATION_BLINKBOTH[] = "Blink Both";
 //LockscreenSettingsMenu
 char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
 char TEXT_ALLOWPRESETSWITCH[] = "Allow preset switch";
+char TEXT_KEEPLOCKED[] = "Keep locked";
 char TEXT_PINDIGIT0[] = "PIN digit0";
 char TEXT_PINDIGIT1[] = "PIN digit1";
 char TEXT_PINDIGIT2[] = "PIN digit2";

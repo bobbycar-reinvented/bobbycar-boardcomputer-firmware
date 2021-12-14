@@ -46,6 +46,7 @@ private:
     uint8_t m_currentIndex{};
 
     bool m_pressed;
+    bool m_back_pressed;
     int m_rotated;
 
     ModeInterface *m_oldMode;

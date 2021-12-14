@@ -274,6 +274,8 @@ constexpr Settings::Ledstrip defaultLedstrip {
 
 constexpr Settings::LockscreenSettings defaultLockscreen {
     .allowPresetSwitch = true,
+    .keepLockedAfterReboot = false,
+    .locked = false,
     .pin = { 1, 2, 3, 4 }
 };
 
