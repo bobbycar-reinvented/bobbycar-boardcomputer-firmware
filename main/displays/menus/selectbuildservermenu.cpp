@@ -10,7 +10,7 @@
 // local includes
 #include "actions/dummyaction.h"
 #include "buildserver.h"
-#include "displays/menus/settingsmenu.h"
+#include "displays/menus/otamenu.h"
 #include "utils.h"
 
 #ifdef FEATURE_OTA
@@ -67,11 +67,11 @@ SelectBuildServerMenu::SelectBuildServerMenu()
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NOBUILDSERVERCONFIGURED>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>();
     }
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 void SelectBuildServerMenu::back()
 {
-    espgui::switchScreen<SettingsMenu>();
+    espgui::switchScreen<OtaMenu>();
 }
 #endif
