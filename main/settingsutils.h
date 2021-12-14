@@ -2,6 +2,6 @@
 
 #include <cstdint>
 
-namespace {
+namespace settingsutils {
 void switchProfile(uint8_t index);
 }

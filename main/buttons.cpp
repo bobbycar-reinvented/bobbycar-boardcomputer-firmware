@@ -1,6 +1,8 @@
 #include "buttons.h"
 #include "modes/defaultmode.h"
 
+using namespace std::chrono_literals;
+
 int rotated{};
 bool requestFullRedraw{};
 
@@ -118,7 +120,7 @@ void InputDispatcher::profileButton(uint8_t index, bool pressed)
     if (profileButtonDisabled)
         return;
 
-    switchProfile(index);
+    settingsutils::switchProfile(index);
 }
 
 #ifdef SWITCH_BLINK

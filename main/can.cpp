@@ -19,6 +19,8 @@
 #include "globals.h"
 #include "buttons.h"
 
+using namespace std::chrono_literals;
+
 namespace can {
 namespace {
 constexpr const char * const TAG = "BOBBYCAN";

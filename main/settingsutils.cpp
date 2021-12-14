@@ -7,7 +7,7 @@
 #include "globals.h"
 #include "presets.h"
 
-namespace {
+namespace settingsutils {
 void switchProfile(uint8_t index)
 {
 #ifdef SIMPLIFIED_TRIGGER_TRIGGERONPRESET

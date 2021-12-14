@@ -12,7 +12,7 @@ class SwitchProfileAction : public virtual ActionInterface
 public:
     void triggered() override
     {
-        switchProfile(index);
+        settingsutils::switchProfile(index);
     }
 };
 }

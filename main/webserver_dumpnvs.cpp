@@ -148,7 +148,7 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
             continue;
         }
 #endif
-        switchProfile(profile_num);
+        settingsutils::switchProfile(profile_num);
 
         const auto cur_profile = settingsPersister.currentlyOpenProfileIndex();
         const auto profile_str = cur_profile ? std::to_string(*cur_profile) : "-";
@@ -166,7 +166,7 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
         });
     }
 
-    switchProfile(switchBackProfile);
+    settingsutils::switchProfile(switchBackProfile);
 
     std::string body;
     serializeJson(doc, body);
