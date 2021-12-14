@@ -550,6 +550,12 @@ extern char TEXT_ESPNOW_MENU[];
 extern char TEXT_ESPNOW_RECEIVETS[];
 extern char TEXT_ESPNOW_RECEIVETSFROMBOBBY[];
 extern char TEXT_ESPNOW_SENDTSMSG[];
+
+//EspNowSettingsMenu
+extern char TEXT_ESPNOW_SETTINGS[];
+extern char TEXT_ESPNOW_SYNCTIME[];
+extern char TEXT_ESPNOW_SYNCWITHOTHERS[];
+extern char TEXT_ESPNOW_SYNCBLINK[];
 } // namespace
 
 using namespace bobbytexts;

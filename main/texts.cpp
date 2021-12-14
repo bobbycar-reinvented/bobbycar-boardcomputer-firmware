@@ -550,4 +550,10 @@ char TEXT_ESPNOW_MENU[] = "ESP-Now Menu";
 char TEXT_ESPNOW_RECEIVETS[] = "Recv Ts State";
 char TEXT_ESPNOW_RECEIVETSFROMBOBBY[] = "Recv BobbyTs State";
 char TEXT_ESPNOW_SENDTSMSG[] = "Broadcast Time";
+
+//EspNowSettingsMenu
+char TEXT_ESPNOW_SETTINGS[] = "ESP-Now settings";
+char TEXT_ESPNOW_SYNCTIME[] = "Sync time (no NTP)";
+char TEXT_ESPNOW_SYNCWITHOTHERS[] = "Sync time with others";
+char TEXT_ESPNOW_SYNCBLINK[] = "Sync blink";
 } // namespace

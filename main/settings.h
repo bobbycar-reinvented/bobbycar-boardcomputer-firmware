@@ -224,6 +224,13 @@ struct Settings
         bool enable;
         bool visualize;
     } handbremse;
+#ifdef FEATURE_ESPNOW
+    struct ESPNOW {
+        bool syncTime;
+        bool syncTimeWithOthers;
+        bool syncBlink;
+    } espnow;
+#endif
 
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
@@ -362,6 +369,14 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("handBremsM", handbremse.mode);
     callable("handBremsT", handbremse.triggerTimeout);
     callable("handBremsV", handbremse.visualize);
+
+#ifdef FEATURE_ESPNOW
+    callable("espnowSyncT", espnow.syncTime);
+    callable("espnowSyncTWO", espnow.syncTimeWithOthers);
+#ifdef FEATURE_LEDSTRIP
+    callable("espnowSyncBl", espnow.syncBlink);
+#endif
+#endif
 }
 
 template<typename T>

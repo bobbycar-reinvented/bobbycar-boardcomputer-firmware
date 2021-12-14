@@ -23,7 +23,7 @@ extern std::list<esp_now_peer_info_t> peers;
 void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data_len);
 void initESPNow();
 void handle();
-void onRecvTs(uint64_t millis);
+void onRecvTs(uint64_t millis, bool isFromBobbycar = false);
 esp_err_t send_espnow_message(std::string message);
 } // namespace espnow
 #endif

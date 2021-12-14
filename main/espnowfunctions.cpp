@@ -43,7 +43,7 @@ void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data_len)
     }
     else
     {
-        ESP_LOGW(TAG, "Invalid message: Could not find ':'");
+        ESP_LOGW(TAG, "Invalid message: Could not find ':' (%s)", data_str.c_str());
     }
 }
 
@@ -116,15 +116,6 @@ void handle()
         return;
     }
 
-    if (receiveTimeStamp)
-    {
-        const auto thisYear = int(espchrono::toDateTime(espchrono::utc_clock::now()).date.year());
-        if (abs(thisYear - espnow::lastYear) > 1)
-        {
-            receiveTimeStamp = false;
-        }
-    }
-
     if(message_queue.size())
     {
         for (const esp_now_message_t &msg : message_queue)
@@ -134,7 +125,7 @@ void handle()
 
             if (msg.type == "T")
             {
-                if (!receiveTimeStamp)
+                if (!receiveTimeStamp || !settings.espnow.syncTime)
                     return;
 
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
@@ -148,8 +139,17 @@ void handle()
             }
             else if (msg.type == "BOBBYT")
             {
-                if (!receiveTsFromOtherBobbycars)
+                if (!receiveTsFromOtherBobbycars || !settings.espnow.syncTimeWithOthers)
                     return;
+
+                if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
+                {
+                    onRecvTs(*result, true);
+                }
+                else
+                {
+                    ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
+                }
             }
             else
             {
@@ -159,11 +159,22 @@ void handle()
     }
 }
 
-void onRecvTs(uint64_t millis)
+void onRecvTs(uint64_t millis, bool isFromBobbycar)
 {
     const auto milliseconds = std::chrono::milliseconds(millis);
     const auto timepoint = espchrono::utc_clock::time_point(milliseconds);
+    ESP_LOGW(TAG, "setting current time to %s", espchrono::toString(timepoint.time_since_epoch()).c_str());
     time_set_now(timepoint);
+
+    if (receiveTimeStamp)
+    {
+        if (const auto thisYear = int(espchrono::toDateTime(espchrono::utc_clock::now()).date.year()); abs(thisYear - espnow::lastYear) > 1)
+        {
+            espnow::lastYear = thisYear;
+            receiveTimeStamp = false;
+        }
+    }
+
     receiveTsFromOtherBobbycars = false;
 }
 
