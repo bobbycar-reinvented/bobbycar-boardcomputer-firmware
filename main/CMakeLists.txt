@@ -199,6 +199,7 @@ set(headers
     webserver_settings.h
     webserver_stringsettings.h
     widgets/doubleprogressbar.h
+    widgets/menudisplaywithtime.h
     wifi_bobbycar.h
     wifitexthelpers.h
 )
@@ -405,6 +406,7 @@ set(sources
     webserver_settings.cpp
     webserver_stringsettings.cpp
     widgets/doubleprogressbar.cpp
+    widgets/menudisplaywithtime.cpp
     wifi_bobbycar.cpp
     wifitexthelpers.cpp
 )

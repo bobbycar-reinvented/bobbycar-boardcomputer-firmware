@@ -110,16 +110,3 @@ void MainMenu::back()
 {
     switchScreen<StatusDisplay>();
 }
-
-void MainMenu::start()
-{
-    Base::start();
-    m_label_currentTime.start();
-}
-
-void MainMenu::redraw()
-{
-    Base::redraw();
-    tft.setTextFont(2);
-    m_label_currentTime.redraw(fmt::format("&7Time: {}", local_clock_string()));
-}
