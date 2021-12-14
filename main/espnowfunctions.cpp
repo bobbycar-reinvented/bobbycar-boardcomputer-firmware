@@ -10,8 +10,19 @@ constexpr const char * const TAG = "BOBBY_ESP_NOW";
 
 #include "globals.h"
 #include "utils.h"
+#include "time_bobbycar.h"
 
 namespace espnow {
+
+uint16_t lastYear; // Used for esp-now timesync
+
+esp_now_settings_t::Enable DefaultEnable {
+    .receiveTimeStamp = true,
+};
+
+esp_now_settings_t esp_now_settings{
+    .enable = DefaultEnable,
+};
 
 std::deque<esp_now_message_t> message_queue{};
 std::list<esp_now_peer_info_t> peers{};
@@ -110,6 +121,15 @@ void handle()
         return;
     }
 
+    if (esp_now_settings.enable.receiveTimeStamp)
+    {
+        const auto thisYear = int(espchrono::toDateTime(espchrono::utc_clock::now()).date.year());
+        if (abs(thisYear - espnow::lastYear) > 1)
+        {
+            esp_now_settings.enable.receiveTimeStamp = false;
+        }
+    }
+
     if(message_queue.size())
     {
         for (const esp_now_message_t &msg : message_queue)
@@ -119,6 +139,9 @@ void handle()
 
             if (msg.type == "T")
             {
+                if (!esp_now_settings.enable.receiveTimeStamp)
+                    return;
+
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
                 {
                     onRecvTs(*result);

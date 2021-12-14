@@ -7,11 +7,19 @@
 #include <esp_now.h>
 
 namespace espnow {
+extern uint16_t lastYear;
 constexpr const uint8_t broadcast_address[] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 struct esp_now_message_t {
     const std::string content;
     const std::string type;
 };
+
+struct esp_now_settings_t {
+    struct Enable {
+        bool receiveTimeStamp;
+    } enable;
+}
+extern esp_now_settings;
 
 extern std::deque<esp_now_message_t> message_queue;
 extern std::list<esp_now_peer_info_t> peers;
