@@ -14,7 +14,7 @@ void MenuDisplayWithTime::start()
 void MenuDisplayWithTime::redraw()
 {
     Base::redraw();
-    tft.setTextFont(2);
+    tft.setTextFont(m_use_big_font() ? 4 : 2);
     m_label_currentTime.redraw(fmt::format("&7Time: {}", local_clock_string()));
 }
 
