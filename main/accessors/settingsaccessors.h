@@ -226,6 +226,8 @@ struct HandbremsAutomaticAccessor : public RefAccessorSaveSettings<bool> { bool 
 struct HandbremsVisualizeAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.handbremse.visualize; } };
 
 // ESP Now
+#ifdef FEATURE_ESPNOW
 struct ESPNowSyncTimeEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncTime; } };
 struct ESPNowSyncTimeWithOthersEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncTimeWithOthers; } };
 struct ESPNowSyncBlinkEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncBlink; } };
+#endif
