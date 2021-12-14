@@ -10,6 +10,7 @@
 #include "texts.h"
 #include "debugtexthelpers.h"
 #include "debugcolorhelpers.h"
+#include "displays/menus/debugmenu.h"
 
 using namespace espgui;
 
