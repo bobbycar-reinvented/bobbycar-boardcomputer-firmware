@@ -127,12 +127,13 @@ void handle()
                 {
                     if (const auto error = esp_now_del_peer(peer.peer_addr); error != ESP_OK)
                     {
+                        if (error == ESP_ERR_ESPNOW_NOT_FOUND)
+                        {
+                            initialized = 0;
+                            return;
+                        }
                         ESP_LOGE(TAG, "esp_now_del_peer() failed with %s", esp_err_to_name(error));
                         return;
-                    }
-                    else if (error == ESP_ERR_ESPNOW_NOT_FOUND)
-                    {
-                        initialized = 0;
                     }
                 }
                 initialized--;
