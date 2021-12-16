@@ -81,6 +81,7 @@ set(headers
     displays/menus/gametrakmodesettingsmenu.h
     displays/menus/genericwifisettingsmenu.h
     displays/menus/graphsmenu.h
+    displays/menus/greenpassmenu.h
     displays/menus/handbremssettingsmenu.h
     displays/menus/invertmenu.h
     displays/menus/larsmmodesettingsmenu.h
@@ -130,6 +131,8 @@ set(headers
     dpad6wire.h
     drivingstatistics.h
     esptexthelpers.h
+    espnowfunctions.h
+    espnowwrapper.h
     feedbackparser.h
     globals.h
     handbremse.h
@@ -142,6 +145,7 @@ set(headers
     icons/close.h
     icons/demos.h
     icons/graph.h
+    icons/greenpass.h
     icons/hardware.h
     icons/info.h
     icons/lock.h
@@ -281,6 +285,7 @@ set(sources
     displays/menus/gametrakmodesettingsmenu.cpp
     displays/menus/genericwifisettingsmenu.cpp
     displays/menus/graphsmenu.cpp
+    displays/menus/greenpassmenu.cpp
     displays/menus/handbremssettingsmenu.cpp
     displays/menus/invertmenu.cpp
     displays/menus/larsmmodesettingsmenu.cpp
@@ -330,6 +335,8 @@ set(sources
     dpad6wire.cpp
     drivingstatistics.cpp
     esptexthelpers.cpp
+    espnowfunctions.cpp
+    espnowwrapper.cpp
     feedbackparser.cpp
     globals.cpp
     handbremse.cpp
@@ -342,6 +349,7 @@ set(sources
     icons/close.cpp
     icons/demos.cpp
     icons/graph.cpp
+    icons/greenpass.cpp
     icons/hardware.cpp
     icons/info.cpp
     icons/lock.cpp

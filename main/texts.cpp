@@ -539,4 +539,9 @@ char TEXT_SELECT_BRANCH[] = "Select Branch";
 char TEXT_SELECT_BRANCH_CLEAR[] = "Clear Branch";
 
 char TEXT_QRCODE_DEBUG[] = "QR Debug";
+
+//GreenPassMenu
+char TEXT_GREENPASS[] = "Green Pass";
+char TEXT_SHOWCERT[] = "Show cert";
+
 } // namespace

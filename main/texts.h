@@ -539,6 +539,10 @@ extern char TEXT_SELECT_BRANCH_CLEAR[];
 
 //QrCodeDebug
 extern char TEXT_QRCODE_DEBUG[];
+
+//GreenPassMenu
+extern char TEXT_GREENPASS[];
+extern char TEXT_SHOWCERT[];
 } // namespace
 
 using namespace bobbytexts;

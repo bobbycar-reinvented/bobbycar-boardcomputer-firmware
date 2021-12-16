@@ -81,7 +81,9 @@ using namespace std::chrono_literals;
 #endif
 #include "drivingstatistics.h"
 #include "newsettings.h"
-
+#ifdef FEATURE_ESPNOW
+#include "espnowfunctions.h"
+#endif
 namespace {
 std::optional<espchrono::millis_clock::time_point> lastWifiUpdate;
 std::optional<espchrono::millis_clock::time_point> lastPotiRead;
@@ -290,6 +292,9 @@ extern "C" void app_main()
         espgui::switchScreen<CalibrateDisplay>(true);
     else
         espgui::switchScreen<StatusDisplay>();
+#endif
+#ifdef FEATURE_ESPNOW
+        espnow::initESPNow();
 #endif
 
     while (true)

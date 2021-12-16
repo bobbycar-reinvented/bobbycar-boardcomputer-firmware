@@ -19,6 +19,7 @@
 #include "displays/menus/settingsmenu.h"
 #include "displays/menus/mosfetsmenu.h"
 #include "displays/menus/demosmenu.h"
+#include "displays/menus/greenpassmenu.h"
 #include "displays/lockscreen.h"
 #include "displays/garagedisplay.h"
 #include "displays/menus/otamenu.h"
@@ -45,6 +46,7 @@
 #include "icons/poweroff.h"
 #include "icons/reboot.h"
 #include "icons/statistics.h"
+#include "icons/greenpass.h"
 
 using namespace espgui;
 
@@ -72,6 +74,7 @@ MainMenu::MainMenu()
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFETS>,      SwitchScreenAction<MosfetsMenu>>>(); }
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GREENPASS>,    SwitchScreenAction<GreenPassMenu>, StaticMenuItemIcon<&bobbyicons::greenpass>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>,  SwitchScreenAction<Lockscreen>, StaticMenuItemIcon<&bobbyicons::lock>>>();
 #ifdef FEATURE_GARAGE
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GARAGE>,       SwitchScreenAction<GarageDisplay>>>(); }
