@@ -18,6 +18,11 @@ int upPressRepeat{};
 std::optional<espchrono::millis_clock::time_point> downPressedSince;
 int downPressRepeat{};
 
+void InputDispatcher::init()
+{
+
+}
+
 void InputDispatcher::update()
 {
     if (upPressedSince && espchrono::ago(*upPressedSince) > (upPressRepeat > 2 ? 50ms : 400ms))

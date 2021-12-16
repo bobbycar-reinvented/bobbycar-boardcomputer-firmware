@@ -84,5 +84,10 @@ void initRotary()
     attachInterrupt(decltype(rotary)::ClkPin, updateRotate, CHANGE);
     attachInterrupt(decltype(rotary)::SwPin, updateSwitch, CHANGE);
 }
+
+void updateRotary()
+{
+
+}
 #endif
 }

@@ -173,6 +173,7 @@ set(headers
     modes/motortestmode.h
     modes/remotecontrolmode.h
     modes/tempomatmode.h
+    mosfets.h
     newsettings.h
     ota.h
     presets.h
@@ -185,6 +186,7 @@ set(headers
     statistics.h
     statustexthelper.h
     stringsettings.h
+    taskmanager.h
     texts.h
     time_bobbycar.h
     types.h
@@ -380,6 +382,7 @@ set(sources
     modes/motortestmode.cpp
     modes/remotecontrolmode.cpp
     modes/tempomatmode.cpp
+    mosfets.cpp
     newsettings.cpp
     ota.cpp
     presets.cpp
@@ -392,6 +395,7 @@ set(sources
     statistics.cpp
     statustexthelper.cpp
     stringsettings.cpp
+    taskmanager.cpp
     texts.cpp
     time_bobbycar.cpp
     types.cpp
