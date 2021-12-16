@@ -11,6 +11,7 @@
 #include "dpad.h"
 #include "buttons.h"
 #include "types.h"
+#include "globals.h"
 
 namespace {
 namespace dpad3wire

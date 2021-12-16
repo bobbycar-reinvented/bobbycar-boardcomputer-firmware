@@ -13,6 +13,7 @@
 // local includes
 #include "buttons.h"
 #include "types.h"
+#include "globals.h"
 
 namespace {
 namespace dpad5wire_2out {
