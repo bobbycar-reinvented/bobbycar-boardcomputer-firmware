@@ -7,6 +7,7 @@ constexpr const char * const TAG = "bobbycloud";
 #include <espcppmacros.h>
 #include <espstrutils.h>
 #include <esp_ota_ops.h>
+#include <espwifistack.h>
 
 // local includes
 #include "udpcloud.h"
@@ -347,7 +348,7 @@ void sendUdpCloudPacket()
 
         if (const auto result = udpCloudSender.send(receipient, buf); !result)
         {
-            ESP_LOGE(TAG, "send to cloud failed: %.*s", result.error().size(), result.error().data());
+            ESP_LOGE(TAG, "send to cloud failed: %.*s (ip=%s)", result.error().size(), result.error().data(), wifi_stack::toString(udpCloudIp.u_addr.ip4).c_str());
         }
 
         ESP_LOGD(TAG, "now: %s", buf.c_str());
