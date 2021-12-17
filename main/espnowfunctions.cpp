@@ -1,4 +1,3 @@
-constexpr const char * const TAG = "BOBBY_ESP_NOW";
 #ifdef FEATURE_ESPNOW
 #include "espnowfunctions.h"
 
@@ -14,6 +13,9 @@ constexpr const char * const TAG = "BOBBY_ESP_NOW";
 #include "time_bobbycar.h"
 
 namespace espnow {
+namespace {
+constexpr const char * const TAG = "BOBBY_ESP_NOW";
+} // namespace
 
 uint16_t lastYear; // Used for esp-now timesync
 
