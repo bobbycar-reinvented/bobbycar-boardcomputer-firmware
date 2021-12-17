@@ -20,33 +20,32 @@ constexpr const char * const TAG = "BOBBY_ESP_NOW";
 uint16_t lastYear; // Used for esp-now timesync
 
 std::deque<esp_now_message_t> message_queue{};
-std::list<esp_now_peer_info_t> peers{};
+std::vector<esp_now_peer_info_t> peers{};
 uint8_t initialized{0};
 
 bool receiveTimeStamp{true};
 bool receiveTsFromOtherBobbycars{true};
 
-void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data_len)
+extern "C" void onReceive(const uint8_t *mac_addr, const char *data, int data_len)
 {
     ESP_LOGD(TAG, "Received data");
-    const std::string data_str(data, data+data_len);
+    const std::string_view data_str{data, size_t(data_len)};
 
     size_t sep_pos = data_str.find(":");
-    if (std::string::npos != sep_pos)
+    if (std::string_view::npos != sep_pos)
     {
-        std::string msg_type = data_str.substr(0, sep_pos);
-        std::string msg = data_str.substr(sep_pos+1, data_str.length()-3); // - 3 may needs to be converted to sep_pos+1
-        ESP_LOGD(TAG, "Type: %s - Message: %s", msg_type.c_str(), msg.c_str());
+        std::string_view msg_type = data_str.substr(0, sep_pos);
+        std::string_view msg = data_str.substr(sep_pos+1, data_str.length()-3); // - 3 may needs to be converted to sep_pos+1
+        ESP_LOGD(TAG, "Type: %.*s - Message: %.*s", msg_type.size(), msg_type.data(), msg.size(), msg.data());
 
-        const esp_now_message_t message{
-            .content = msg,
-            .type = msg_type
-        };
-        message_queue.push_back(message);
+        message_queue.push_back(esp_now_message_t {
+            .content = std::string{msg},
+            .type = std::string{msg_type}
+        });
     }
     else
     {
-        ESP_LOGW(TAG, "Invalid message: Could not find ':' (%s)", data_str.c_str());
+        ESP_LOGW(TAG, "Invalid message: Could not find ':' (%.*s)", data_str.size(), data_str.data());
     }
 }
 
@@ -245,7 +244,7 @@ void onRecvTs(uint64_t millis, bool isFromBobbycar)
     receiveTsFromOtherBobbycars = false;
 }
 
-esp_err_t send_espnow_message(std::string message)
+esp_err_t send_espnow_message(std::string_view message)
 {
     if (initialized < 255)
         return ESP_ERR_ESPNOW_NOT_INIT;
