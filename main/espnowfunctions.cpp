@@ -26,10 +26,11 @@ uint8_t initialized{0};
 bool receiveTimeStamp{true};
 bool receiveTsFromOtherBobbycars{true};
 
-extern "C" void onReceive(const uint8_t *mac_addr, const char *data, int data_len)
+namespace {
+extern "C" void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
     ESP_LOGD(TAG, "Received data");
-    const std::string_view data_str{data, size_t(data_len)};
+    const std::string_view data_str{(const char *)data, size_t(data_len)};
 
     size_t sep_pos = data_str.find(":");
     if (std::string_view::npos != sep_pos)
@@ -48,6 +49,7 @@ extern "C" void onReceive(const uint8_t *mac_addr, const char *data, int data_le
         ESP_LOGW(TAG, "Invalid message: Could not find ':' (%.*s)", data_str.size(), data_str.data());
     }
 }
+} // namespace
 
 void initESPNow()
 {
