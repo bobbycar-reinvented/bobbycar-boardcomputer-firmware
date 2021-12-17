@@ -5,6 +5,7 @@
 #include <screenmanager.h>
 
 // local includes
+#include "displays/menus/mainmenu.h"
 #include "displays/statusdisplay.h"
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 
@@ -241,6 +242,12 @@ void CalibrateDisplay::back()
     case Status::Begin:
         if (m_bootup)
             espgui::switchScreen<StatusDisplay>();
+        else if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+        {
+            espgui::switchScreen<MainMenu>();
+            settings.lockscreen.locked = false;
+            saveSettings();
+        }
         else
             espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
         break;

@@ -10,6 +10,7 @@
 #include "texts.h"
 #include "buttons.h"
 #include "displays/menus/mainmenu.h"
+#include "displays/calibratedisplay.h"
 
 void Lockscreen::start()
 {
@@ -78,7 +79,10 @@ void Lockscreen::redraw()
         {
             if (m_numbers == settings.lockscreen.pin)
             {
-                espgui::switchScreen<MainMenu>();
+                if (!gas || !brems || *gas > 200.f || *brems > 200.f)
+                    espgui::switchScreen<CalibrateDisplay>(true);
+                else
+                    espgui::switchScreen<MainMenu>();
 #ifdef LOCKSCREEN_PLUGIN
 #pragma message "Activating Lockscreen Plugin"
 #include LOCKSCREEN_PLUGIN
@@ -135,10 +139,13 @@ void Lockscreen::stop()
 
     profileButtonDisabled = false;
     isLocked = false;
-    if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+    if (!(!gas || !brems || *gas > 200.f || *brems > 200.f))
     {
-        settings.lockscreen.locked = false;
-        saveSettings();
+        if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+        {
+            settings.lockscreen.locked = false;
+            saveSettings();
+        }
     }
 }
 

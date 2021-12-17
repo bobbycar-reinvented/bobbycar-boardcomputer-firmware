@@ -234,14 +234,14 @@ extern "C" void app_main()
     switchScreen<DPad6WireDebugDisplay>();
 #else
 
-    if (!gas || !brems || *gas > 200.f || *brems > 200.f)
-        espgui::switchScreen<CalibrateDisplay>(true);
+    if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+    {
+        espgui::switchScreen<Lockscreen>();
+    }
     else
     {
-        if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
-        {
-            espgui::switchScreen<Lockscreen>();
-        }
+        if (!gas || !brems || *gas > 200.f || *brems > 200.f)
+            espgui::switchScreen<CalibrateDisplay>(true);
         else
         {
             espgui::switchScreen<StatusDisplay>();
