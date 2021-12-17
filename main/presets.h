@@ -274,6 +274,8 @@ constexpr Settings::Ledstrip defaultLedstrip {
 
 constexpr Settings::LockscreenSettings defaultLockscreen {
     .allowPresetSwitch = true,
+    .keepLockedAfterReboot = false,
+    .locked = false,
     .pin = { 1, 2, 3, 4 }
 };
 
@@ -299,6 +301,19 @@ constexpr Settings::Hybrid defaultHybrid {
 constexpr Settings::SavedStatistics defaultSavedStatistics {
     .totalCentimeters = 0,
 };
+
+#ifdef FEATURE_ESPNOW
+constexpr Settings::ESPNOW defaultEspNowSettings {
+#ifndef FEATURE_NTP
+    .syncTime = true,
+    .syncTimeWithOthers = true,
+#else
+    .syncTime = false,
+    .syncTimeWithOthers = false,
+#endif
+    .syncBlink = false
+};
+#endif
 
 constexpr Settings defaultSettings {
 #ifdef FEATURE_BMS
@@ -330,7 +345,10 @@ constexpr Settings defaultSettings {
     .hybrid = defaultHybrid,
     .lockscreen = defaultLockscreen,
     .savedStatistics = defaultSavedStatistics,
-    .handbremse = defaultHandbremse
+    .handbremse = defaultHandbremse,
+#ifdef FEATURE_ESPNOW
+    .espnow = defaultEspNowSettings,
+#endif
 };
 
 StringSettings makeDefaultStringSettings();

@@ -14,6 +14,7 @@
 #include "displays/menus/mainmenu.h"
 #include "globals.h"
 #include "texts.h"
+#include "espnowfunctions.h"
 
 #ifdef FEATURE_GARAGE
 void GarageDisplay::start()
@@ -41,6 +42,14 @@ void GarageDisplay::redraw()
 
 void GarageDisplay::confirm()
 {
+#ifdef FEATURE_ESPNOW
+    if (const auto error = espnow::send_espnow_message(fmt::format("BOBBYOPEN:garage:{}", "TOKEN")); error != ESP_OK)
+    {
+        ESP_LOGE("BOBBY", "send_espnow_message() failed with: %s", esp_err_to_name(error));
+        return;
+    }
+    espgui::switchScreen<MainMenu>();
+#endif
 }
 
 void GarageDisplay::back()

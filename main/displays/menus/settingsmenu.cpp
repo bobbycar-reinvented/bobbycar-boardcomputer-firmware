@@ -28,6 +28,7 @@
 #include "displays/menus/bluetoothsettingsmenu.h"
 #include "displays/menus/blesettingsmenu.h"
 #include "displays/menus/cloudsettingsmenu.h"
+#include "displays/menus/espnowmenu.h"
 #include "displays/menus/selectbuildservermenu.h"
 #include "displays/menus/timesettingsmenu.h"
 #include "displays/menus/modessettingsmenu.h"
@@ -61,6 +62,9 @@ SettingsMenu::SettingsMenu()
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,            SwitchScreenAction<LimitsSettingsMenu>>>();
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFISETTINGS>,                  SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
+#ifdef FEATURE_ESPNOW
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW>,                        SwitchScreenAction<EspNowMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
+#endif
 #ifdef FEATURE_BLUETOOTH
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHSETTINGS>,             SwitchScreenAction<BluetoothSettingsMenu>, StaticMenuItemIcon<&bobbyicons::bluetooth>>>();
 #endif

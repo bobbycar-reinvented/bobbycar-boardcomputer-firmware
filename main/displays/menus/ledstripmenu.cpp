@@ -1,28 +1,30 @@
 #include "ledstripmenu.h"
 
+#ifdef FEATURE_LEDSTRIP
 // 3rdparty lib includes
 #include <FastLED.h>
-#include "menuitem.h"
-#include "actions/toggleboolaction.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
-#include "checkboxicon.h"
-#include "changevaluedisplay.h"
-#include "actioninterface.h"
+#include <actioninterface.h>
+#include <actions/switchscreenaction.h>
+#include <actions/toggleboolaction.h>
+#include <changevaluedisplay.h>
+#include <checkboxicon.h>
+#include <icons/back.h>
+#include <menuitem.h>
 
 // local includes
+#include "accessors/settingsaccessors.h"
+#include "displays/ledstripcolorsdisplay.h"
+#include "displays/menus/ledstripselectotamode.h"
+#include "displays/menus/mainmenu.h"
+#include "globals.h"
+#include "ledstrip.h"
 #include "ledstripselectanimationmenu.h"
 #include "ledstripselectblinkmenu.h"
-#include "globals.h"
-#include "accessors/settingsaccessors.h"
-#ifdef FEATURE_LEDSTRIP
-#include "ledstrip.h"
-#include "displays/menus/ledstripselectotamode.h"
-#endif
-#include "displays/ledstripcolorsdisplay.h"
-#include "displays/menus/mainmenu.h"
 
-#ifdef FEATURE_LEDSTRIP
+// clang-format off
+
+using namespace espgui;
+
 namespace {
 using LedsCountChangeScreen = makeComponent<
     ChangeValueDisplay<int16_t>,
@@ -108,8 +110,6 @@ public:
     }
 };
 } // namespace
-
-using namespace espgui;
 
 LedstripMenu::LedstripMenu()
 {

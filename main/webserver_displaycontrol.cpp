@@ -2,6 +2,7 @@
 
 #ifdef FEATURE_WEBSERVER
 using esphttpdutils::HtmlTag;
+using namespace std::chrono_literals;
 
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";

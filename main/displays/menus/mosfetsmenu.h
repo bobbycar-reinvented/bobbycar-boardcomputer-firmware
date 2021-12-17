@@ -1,22 +1,13 @@
 #pragma once
 
-// local includes
+#ifdef FEATURE_MOSFETS
 #include "menudisplay.h"
-#include "utils.h"
-#include "menuitem.h"
-#include "actions/toggleboolaction.h"
-#include "actions/switchscreenaction.h"
-#include "checkboxicon.h"
-#include "icons/back.h"
+#include "accessorinterface.h"
 #include "texts.h"
 #include "types.h"
 
-using namespace espgui;
-
-namespace {
-#ifdef FEATURE_MOSFETS
 template<pin_t PIN>
-class GPIOAccessor : public virtual AccessorInterface<bool>
+class GPIOAccessor : public virtual espgui::AccessorInterface<bool>
 {
 public:
     bool getValue() const override { return digitalRead(PIN); }
@@ -28,18 +19,11 @@ using Mosfet1Accessor = GPIOAccessor<PINS_MOSFET1>;
 using Mosfet2Accessor = GPIOAccessor<PINS_MOSFET2>;
 
 class MosfetsMenu :
-    public MenuDisplay,
-    public StaticText<TEXT_MOSFETS>,
-    public BackActionInterface<SwitchScreenAction<MainMenu>>
+    public espgui::MenuDisplay,
+    public espgui::StaticText<TEXT_MOSFETS>
 {
 public:
-    MosfetsMenu()
-    {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET0>, ToggleBoolAction, CheckboxIcon, Mosfet0Accessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET1>, ToggleBoolAction, CheckboxIcon, Mosfet1Accessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET2>, ToggleBoolAction, CheckboxIcon, Mosfet2Accessor>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
-    }
+    MosfetsMenu();
+    void back() override;
 };
 #endif
-} // namespace

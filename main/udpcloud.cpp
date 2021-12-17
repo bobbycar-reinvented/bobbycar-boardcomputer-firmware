@@ -25,7 +25,6 @@ constexpr const char * const TAG = "bobbycloud";
 using namespace std::chrono_literals;
 // Little "flash" on statusdisplay when udp stuff is happening
 bool visualSendUdpPacket;
-
 espchrono::millis_clock::time_point timestampLastFailed;
 
 void spamUdpBroadcast()
@@ -294,7 +293,7 @@ std::string buildUdpCloudString()
 void sendUdpCloudPacket()
 {
     EVERY_N_MILLIS(settings.boardcomputerHardware.timersSettings.udpSendRateMs) {
-        if (espchrono::ago(timestampLastFailed) < 3s)
+        if (espchrono::ago(timestampLastFailed) < 2s)
         {
             visualSendUdpPacket = false;
             return;
@@ -332,6 +331,7 @@ void sendUdpCloudPacket()
         if (udpCloudIp.type != IPADDR_TYPE_V4)
         {
             ESP_LOGE(TAG, "unsupported ip type: %hhu", udpCloudIp.type);
+            timestampLastFailed = espchrono::millis_clock::now();
             visualSendUdpPacket = false;
             return;
         }
@@ -348,6 +348,7 @@ void sendUdpCloudPacket()
 
         if (const auto result = udpCloudSender.send(receipient, buf); !result)
         {
+            timestampLastFailed = espchrono::millis_clock::now();
             ESP_LOGE(TAG, "send to cloud failed: %.*s (ip=%s)", result.error().size(), result.error().data(), wifi_stack::toString(udpCloudIp.u_addr.ip4).c_str());
         }
 

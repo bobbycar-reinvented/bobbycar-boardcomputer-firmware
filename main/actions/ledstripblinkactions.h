@@ -1,53 +1,37 @@
 #pragma once
 
-#include "actioninterface.h"
-#include "utils.h"
-#include "globals.h"
-#include "ledstrip.h"
-#include "ledstripdefines.h"
-
-using namespace espgui;
-
 #ifdef FEATURE_LEDSTRIP
-namespace {
-class LedstripAnimationBlinkNoneAction : public virtual ActionInterface
+#include "actioninterface.h"
+
+class LedstripAnimationBlinkNoneAction : public virtual espgui::ActionInterface
 {
 public:
-    void triggered() override { blinkAnimation = LEDSTRIP_OVERWRITE_NONE; }
+    void triggered() override;
 };
 
-class LedstripAnimationBlinkLeftAction : public virtual ActionInterface
+class LedstripAnimationBlinkLeftAction : public virtual espgui::ActionInterface
 {
 public:
 #ifndef LEDSTRIP_WRONG_DIRECTION
-    void triggered() override {
-        blinkAnimation = LEDSTRIP_OVERWRITE_BLINKLEFT;
-    }
+    void triggered() override;
 #else
-    void triggered() override {
-        blinkAnimation = LEDSTRIP_OVERWRITE_BLINKRIGHT;
-    }
+    void triggered() override;
 #endif
 };
 
-class LedstripAnimationBlinkRightAction : public virtual ActionInterface
+class LedstripAnimationBlinkRightAction : public virtual espgui::ActionInterface
 {
 public:
 #ifndef LEDSTRIP_WRONG_DIRECTION
-    void triggered() override {
-        blinkAnimation = LEDSTRIP_OVERWRITE_BLINKRIGHT;
-    }
+    void triggered() override;
 #else
-    void triggered() override {
-        blinkAnimation = LEDSTRIP_OVERWRITE_BLINKLEFT;
-    }
+    void triggered() override;
 #endif
 };
 
-class LedstripAnimationBlinkBothAction : public virtual ActionInterface
+class LedstripAnimationBlinkBothAction : public virtual espgui::ActionInterface
 {
 public:
-    void triggered() override { blinkAnimation = LEDSTRIP_OVERWRITE_BLINKBOTH; }
+    void triggered() override;
 };
-}
 #endif

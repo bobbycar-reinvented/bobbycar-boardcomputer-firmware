@@ -210,6 +210,8 @@ struct Settings
 
     struct LockscreenSettings {
         bool allowPresetSwitch;
+        bool keepLockedAfterReboot;
+        bool locked;
         std::array<int8_t, 4> pin;
     } lockscreen;
 
@@ -224,6 +226,13 @@ struct Settings
         bool enable;
         bool visualize;
     } handbremse;
+#ifdef FEATURE_ESPNOW
+    struct ESPNOW {
+        bool syncTime;
+        bool syncTimeWithOthers;
+        bool syncBlink;
+    } espnow;
+#endif
 
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
@@ -353,6 +362,8 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("hybridDeacL", hybrid.deactivationLimit);
 
     callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
+    callable("keepLocked", lockscreen.keepLockedAfterReboot);
+    callable("currentlyLocked", lockscreen.locked);
     callable("lockscreenPin", lockscreen.pin);
 
     callable("totalCentimeter", savedStatistics.totalCentimeters);
@@ -362,6 +373,14 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("handBremsM", handbremse.mode);
     callable("handBremsT", handbremse.triggerTimeout);
     callable("handBremsV", handbremse.visualize);
+
+#ifdef FEATURE_ESPNOW
+    callable("espnowSyncT", espnow.syncTime);
+    callable("espnowSyncTWO", espnow.syncTimeWithOthers);
+#ifdef FEATURE_LEDSTRIP
+    callable("espnowSyncBl", espnow.syncBlink);
+#endif
+#endif
 }
 
 template<typename T>

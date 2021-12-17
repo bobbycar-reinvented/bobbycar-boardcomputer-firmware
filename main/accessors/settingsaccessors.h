@@ -14,15 +14,19 @@ struct RefAccessorSaveSettings : public virtual espgui::RefAccessor<T>
     void setValue(T value) override { espgui::RefAccessor<T>::setValue(value); saveSettings(); };
 };
 
+// Bms
 #ifdef FEATURE_BMS
 struct AutoConnectBmsAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.autoConnectBms; } };
 #endif
+
+// Buzzer
 struct ReverseBeepAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.buzzer.reverseBeep; } };
 struct ReverseBeepFreq0Accessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.buzzer.reverseBeepFreq0; } };
 struct ReverseBeepFreq1Accessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.buzzer.reverseBeepFreq1; } };
 struct ReverseBeepDuration0Accessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.buzzer.reverseBeepDuration0; } };
 struct ReverseBeepDuration1Accessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.buzzer.reverseBeepDuration1; } };
 
+// Limits
 struct IMotMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.iMotMax; } };
 struct IDcMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.iDcMax; } };
 struct NMotMaxKmhAccessor : public virtual espgui::AccessorInterface<int16_t>
@@ -34,22 +38,27 @@ struct NMotMaxRpmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &g
 struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.fieldWeakMax; } };
 struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.phaseAdvMax; } };
 
+// WiFi
 struct WifiStaEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.wifiSettings.wifiStaEnabled; } };
 struct WifiApEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.wifiSettings.wifiApEnabled; } };
 
+// Bluetooth
 #ifdef FEATURE_BLUETOOTH
 struct AutoBluetoothModeAccessor : public RefAccessorSaveSettings<BluetoothMode> { BluetoothMode &getRef() const override { return settings.bluetoothSettings.autoBluetoothMode; } };
 #endif
 
+// Bluetooth Low Energy
 #ifdef FEATURE_BLE
 struct BleEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.bleSettings.bleEnabled; } };
 #endif
 
+// Cloud
 #ifdef FEATURE_CLOUD
 struct CloudEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.cloudSettings.cloudEnabled; } };
 struct CloudTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.cloudSettings.cloudTransmitTimeout; } };
 #endif
 
+// Time
 struct TimezoneOffsetAccessor : public virtual espgui::AccessorInterface<int32_t>
 {
     int32_t getValue() const override { return settings.timeSettings.timezoneOffset.count(); }
@@ -66,6 +75,7 @@ struct TimeSyncIntervalAccessor : public virtual espgui::AccessorInterface<int32
 };
 #endif
 
+// Controller Hardware
 struct FrontLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontLeft; } };
 struct FrontRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontRight; } };
 struct BackLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableBackLeft; } };
@@ -89,6 +99,8 @@ struct SwapFrontBackAccessor : public RefAccessorSaveSettings<bool> {
     void setValue(bool value) override { RefAccessorSaveSettings<bool>::setValue(value); updateSwapFrontBack(); };
 #endif
 };
+
+// CAN
 #ifdef FEATURE_CAN
 struct SendFrontCanCmdAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.sendFrontCanCmd; } };
 struct SendBackCanCmdAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.sendBackCanCmd; } };
@@ -96,6 +108,7 @@ struct CanTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { in
 struct CanReceiveTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.canReceiveTimeout; } };
 #endif
 
+// Input devices
 struct SampleCountAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.sampleCount; } };
 struct GasMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gasMin; } };
 struct GasMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gasMax; } };
@@ -117,9 +130,13 @@ struct ModeUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_
 struct StatsUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.statsUpdateRate; } };
 struct DisplayUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.displayUpdateRate; } };
 struct DisplayRedrawRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.displayRedrawRate; } };
+
+// CAN
 #ifdef FEATURE_CAN
 struct CanReceiveRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.canReceiveRate; } };
 #endif
+
+// Cloud
 #ifdef FEATURE_CLOUD
 struct CloudCollectRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.cloudCollectRate; } };
 struct CloudSendRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.cloudSendRate; } };
@@ -129,6 +146,7 @@ struct CloudDebugEnableAccessor : public RefAccessorSaveSettings<bool> { bool &g
 struct UdpUseStdStringAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.cloudSettings.udpUseStdString; } };
 #endif
 
+// DefaultMode
 struct DefaultModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.defaultMode.modelMode; } };
 struct DefaultModeHybridModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.hybrid.hybridMode; } };
 struct DefaultModeSquareGasAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.defaultMode.squareGas; } };
@@ -153,15 +171,19 @@ struct DefaultModeEnableHybridAccessor : public RefAccessorSaveSettings<bool> { 
 struct DefaultModeHybridActivationLimitAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.hybrid.activationLimit; } };
 struct DefaultModeHybridDeactivationLimitAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.hybrid.deactivationLimit; } };
 
+// TempomatMode
 struct TempomatModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.tempomatMode.modelMode; } };
 
+// LarsmMode
 struct LarsmModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.larsmMode.modelMode; } };
 struct LarsmModeModeAccessor : public RefAccessorSaveSettings<LarsmModeMode> { LarsmModeMode &getRef() const override { return settings.larsmMode.mode; } };
 struct LarsmModeIterationsAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.larsmMode.iterations; } };
 
+// MotortestMode
 struct MotortestModeMultiplikatorAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.motortestMode.multiplikator; } };
 struct MotortestMaxPwmAccessor : public RefAccessorSaveSettings<uint16_t> { uint16_t &getRef() const override { return settings.motortestMode.maxPwm; } };
 
+// Ledstrip
 #ifdef FEATURE_LEDSTRIP
 struct EnableLedAnimationAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableLedAnimation; } };
 struct EnableBrakeLightsAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableBrakeLights; } };
@@ -190,13 +212,22 @@ struct BatteryParallelCellsAccessor : public RefAccessorSaveSettings<uint8_t> { 
 struct BatteryWHperKMAccessor : public RefAccessorSaveSettings<uint16_t> { uint16_t &getRef() const override { return settings.battery.watthoursPerKilometer; } };
 struct BatteryApplyCalibrationAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.battery.applyCalibration; } };
 
-
+// Lockscreen
 struct LockscreenAllowPresetSwitchAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.allowPresetSwitch; } };
 template<uint8_t index>
 struct LockscreenPinDigitAccessor : public RefAccessorSaveSettings<int8_t> { int8_t &getRef() const override { return settings.lockscreen.pin[index]; } };
+struct LockscreenKeepLockedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.keepLockedAfterReboot; } };
 
+// Handbremse
 struct HandbremsEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.handbremse.enable; } };
 struct HandbremsModeAccessor : public RefAccessorSaveSettings<HandbremseMode> { HandbremseMode &getRef() const override { return settings.handbremse.mode; } };
 struct HandbremsTimeoutAccessor : public RefAccessorSaveSettings<uint16_t> { uint16_t &getRef() const override { return settings.handbremse.triggerTimeout; } };
 struct HandbremsAutomaticAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.handbremse.automatic; } };
 struct HandbremsVisualizeAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.handbremse.visualize; } };
+
+// ESP Now
+#ifdef FEATURE_ESPNOW
+struct ESPNowSyncTimeEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncTime; } };
+struct ESPNowSyncTimeWithOthersEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncTimeWithOthers; } };
+struct ESPNowSyncBlinkEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncBlink; } };
+#endif

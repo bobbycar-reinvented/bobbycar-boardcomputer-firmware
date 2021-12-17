@@ -332,6 +332,7 @@ extern char TEXT_ANIMATION_BLINKBOTH[];
 //LockscreenSettingsMenu
 extern char TEXT_LOCKSCREENSETTINGS[];
 extern char TEXT_ALLOWPRESETSWITCH[];
+extern char TEXT_KEEPLOCKED[];
 extern char TEXT_PINDIGIT0[];
 extern char TEXT_PINDIGIT1[];
 extern char TEXT_PINDIGIT2[];
@@ -536,6 +537,26 @@ extern char TEXT_REENABLE_MENUITEMS[];
 //SelectBuildserverBranchMenu
 extern char TEXT_SELECT_BRANCH[];
 extern char TEXT_SELECT_BRANCH_CLEAR[];
+
+//QrCodeDebug
+extern char TEXT_QRCODE_DEBUG[];
+
+//GreenPassMenu
+extern char TEXT_GREENPASS[];
+extern char TEXT_SHOWCERT[];
+
+//EspNowMenu
+extern char TEXT_ESPNOW[];
+extern char TEXT_ESPNOW_MENU[];
+extern char TEXT_ESPNOW_RECEIVETS[];
+extern char TEXT_ESPNOW_RECEIVETSFROMBOBBY[];
+extern char TEXT_ESPNOW_SENDTSMSG[];
+
+//EspNowSettingsMenu
+extern char TEXT_ESPNOW_SETTINGS[];
+extern char TEXT_ESPNOW_SYNCTIME[];
+extern char TEXT_ESPNOW_SYNCWITHOTHERS[];
+extern char TEXT_ESPNOW_SYNCBLINK[];
 } // namespace
 
 using namespace bobbytexts;

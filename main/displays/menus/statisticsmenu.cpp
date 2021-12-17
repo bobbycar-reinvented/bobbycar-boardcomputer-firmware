@@ -3,9 +3,11 @@
 // local includes
 #include "mainmenu.h"
 #include "actions/dummyaction.h"
+#include "actions/switchscreenaction.h"
 #include "actioninterface.h"
 #include "fmt/core.h"
 #include "utils.h"
+#include "icons/back.h"
 #include "icons/time.h"
 #include "icons/reboot.h"
 #include "icons/update.h"

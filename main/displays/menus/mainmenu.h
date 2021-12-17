@@ -1,11 +1,11 @@
 #pragma once
 
 // 3rdparty lib includes
-#include "menudisplay.h"
 #include "menuitem.h"
 
 // local includes
 #include "texts.h"
+#include "widgets/menudisplaywithtime.h"
 #ifdef MAINMENU_PLUGIN
 #include MAINMENU_PLUGIN
 #endif
@@ -22,11 +22,11 @@ namespace {
 } // namespace
 
 class MainMenu :
-    public espgui::MenuDisplay,
+    public bobbygui::MenuDisplayWithTime,
     public espgui::StaticText<TEXT_MAINMENU>
 {
+    using Base = espgui::MenuDisplay;
 public:
     MainMenu();
-
     void back() override;
 };

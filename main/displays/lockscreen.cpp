@@ -10,6 +10,7 @@
 #include "texts.h"
 #include "buttons.h"
 #include "displays/menus/mainmenu.h"
+#include "displays/calibratedisplay.h"
 
 void Lockscreen::start()
 {
@@ -23,6 +24,11 @@ void Lockscreen::start()
 
     profileButtonDisabled = !settings.lockscreen.allowPresetSwitch;
     isLocked = true;
+    if (settings.lockscreen.keepLockedAfterReboot && !settings.lockscreen.locked)
+    {
+        settings.lockscreen.locked = true;
+        saveSettings();
+    }
 }
 
 void Lockscreen::initScreen()
@@ -64,16 +70,19 @@ void Lockscreen::update()
 
 void Lockscreen::redraw()
 {
-    if (m_pressed)
+    if (m_pressed || m_back_pressed)
     {
         drawRect(m_currentIndex, 1, TFT_BLACK);
         drawRect(m_currentIndex, 2, TFT_BLACK);
 
-        if (++m_currentIndex>=4)
+        if (!m_back_pressed && ++m_currentIndex>=4)
         {
             if (m_numbers == settings.lockscreen.pin)
             {
-                espgui::switchScreen<MainMenu>();
+                if (!gas || !brems || *gas > 200.f || *brems > 200.f)
+                    espgui::switchScreen<CalibrateDisplay>(true);
+                else
+                    espgui::switchScreen<MainMenu>();
 #ifdef LOCKSCREEN_PLUGIN
 #pragma message "Activating Lockscreen Plugin"
 #include LOCKSCREEN_PLUGIN
@@ -83,7 +92,12 @@ void Lockscreen::redraw()
 
             m_numbers = {0,0,0,0};
             m_currentIndex = 0;
-            std::for_each(std::begin(m_labels) + 1, std::end(m_labels), [](auto &label){ label.redraw({}); });
+            std::for_each(std::begin(m_labels) + 1, std::end(m_labels), [](auto &label){ label.redraw("0"); });
+        }
+        else if (m_back_pressed && m_currentIndex < 3)
+        {
+            drawRect(m_currentIndex+1, 1, TFT_BLACK);
+            drawRect(m_currentIndex+1, 2, TFT_BLACK);
         }
 
         m_labels[m_currentIndex].redraw(std::to_string(m_numbers[m_currentIndex]));
@@ -92,6 +106,7 @@ void Lockscreen::redraw()
         drawRect(m_currentIndex, 2, TFT_YELLOW);
 
         m_pressed = false;
+        m_back_pressed = false;
     }
 
     if (m_rotated)
@@ -124,6 +139,14 @@ void Lockscreen::stop()
 
     profileButtonDisabled = false;
     isLocked = false;
+    if (!(!gas || !brems || *gas > 200.f || *brems > 200.f))
+    {
+        if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+        {
+            settings.lockscreen.locked = false;
+            saveSettings();
+        }
+    }
 }
 
 void Lockscreen::confirm()
@@ -133,6 +156,9 @@ void Lockscreen::confirm()
 
 void Lockscreen::back()
 {
+    if (m_currentIndex > 0)
+        m_currentIndex--;
+    m_back_pressed = true;
 }
 
 void Lockscreen::rotate(int offset)

@@ -332,6 +332,7 @@ char TEXT_ANIMATION_BLINKBOTH[] = "Blink Both";
 //LockscreenSettingsMenu
 char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
 char TEXT_ALLOWPRESETSWITCH[] = "Allow preset switch";
+char TEXT_KEEPLOCKED[] = "Keep locked";
 char TEXT_PINDIGIT0[] = "PIN digit0";
 char TEXT_PINDIGIT1[] = "PIN digit1";
 char TEXT_PINDIGIT2[] = "PIN digit2";
@@ -537,4 +538,23 @@ char TEXT_REENABLE_MENUITEMS[] = "Show advanced";
 //SelectBuildserverBranchMenu
 char TEXT_SELECT_BRANCH[] = "Select Branch";
 char TEXT_SELECT_BRANCH_CLEAR[] = "Clear Branch";
+
+char TEXT_QRCODE_DEBUG[] = "QR Debug";
+
+//GreenPassMenu
+char TEXT_GREENPASS[] = "Green Pass";
+char TEXT_SHOWCERT[] = "Show cert";
+
+//EspNowMenu
+char TEXT_ESPNOW[] = "ESP-Now";
+char TEXT_ESPNOW_MENU[] = "ESP-Now Menu";
+char TEXT_ESPNOW_RECEIVETS[] = "Recv Ts State";
+char TEXT_ESPNOW_RECEIVETSFROMBOBBY[] = "Recv BobbyTs State";
+char TEXT_ESPNOW_SENDTSMSG[] = "Broadcast Time";
+
+//EspNowSettingsMenu
+char TEXT_ESPNOW_SETTINGS[] = "ESP-Now settings";
+char TEXT_ESPNOW_SYNCTIME[] = "Sync time (no NTP)";
+char TEXT_ESPNOW_SYNCWITHOTHERS[] = "Sync time with others";
+char TEXT_ESPNOW_SYNCBLINK[] = "Sync blink";
 } // namespace

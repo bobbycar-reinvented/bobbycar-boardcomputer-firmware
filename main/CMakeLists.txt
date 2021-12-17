@@ -77,10 +77,13 @@ set(headers
     displays/menus/demosmenu.h
     displays/menus/dynamicdebugmenu.h
     displays/menus/enablemenu.h
+    displays/menus/espnowmenu.h
+    displays/menus/espnowsettingsmenu.h
     displays/menus/feedbackdebugmenu.h
     displays/menus/gametrakmodesettingsmenu.h
     displays/menus/genericwifisettingsmenu.h
     displays/menus/graphsmenu.h
+    displays/menus/greenpassmenu.h
     displays/menus/handbremssettingsmenu.h
     displays/menus/invertmenu.h
     displays/menus/larsmmodesettingsmenu.h
@@ -117,6 +120,7 @@ set(headers
     displays/popups/alertdisplay.h
     displays/poweroffdisplay.h
     displays/powersupplydisplay.h
+    displays/qrcodedebug.h
     displays/spirodisplay.h
     displays/starfielddisplay.h
     displays/statusdisplay.h
@@ -129,6 +133,7 @@ set(headers
     dpad6wire.h
     drivingstatistics.h
     esptexthelpers.h
+    espnowfunctions.h
     feedbackparser.h
     globals.h
     handbremse.h
@@ -141,6 +146,7 @@ set(headers
     icons/close.h
     icons/demos.h
     icons/graph.h
+    icons/greenpass.h
     icons/hardware.h
     icons/info.h
     icons/lock.h
@@ -195,6 +201,7 @@ set(headers
     webserver_settings.h
     webserver_stringsettings.h
     widgets/doubleprogressbar.h
+    widgets/menudisplaywithtime.h
     wifi_bobbycar.h
     wifitexthelpers.h
 )
@@ -278,10 +285,13 @@ set(sources
     displays/menus/demosmenu.cpp
     displays/menus/dynamicdebugmenu.cpp
     displays/menus/enablemenu.cpp
+    displays/menus/espnowmenu.cpp
+    displays/menus/espnowsettingsmenu.cpp
     displays/menus/feedbackdebugmenu.cpp
     displays/menus/gametrakmodesettingsmenu.cpp
     displays/menus/genericwifisettingsmenu.cpp
     displays/menus/graphsmenu.cpp
+    displays/menus/greenpassmenu.cpp
     displays/menus/handbremssettingsmenu.cpp
     displays/menus/invertmenu.cpp
     displays/menus/larsmmodesettingsmenu.cpp
@@ -318,6 +328,7 @@ set(sources
     displays/popups/alertdisplay.cpp
     displays/poweroffdisplay.cpp
     displays/powersupplydisplay.cpp
+    displays/qrcodedebug.cpp
     displays/spirodisplay.cpp
     displays/starfielddisplay.cpp
     displays/statusdisplay.cpp
@@ -330,6 +341,7 @@ set(sources
     dpad6wire.cpp
     drivingstatistics.cpp
     esptexthelpers.cpp
+    espnowfunctions.cpp
     feedbackparser.cpp
     globals.cpp
     handbremse.cpp
@@ -342,6 +354,7 @@ set(sources
     icons/close.cpp
     icons/demos.cpp
     icons/graph.cpp
+    icons/greenpass.cpp
     icons/hardware.cpp
     icons/info.cpp
     icons/lock.cpp
@@ -397,13 +410,14 @@ set(sources
     webserver_settings.cpp
     webserver_stringsettings.cpp
     widgets/doubleprogressbar.cpp
+    widgets/menudisplaywithtime.cpp
     wifi_bobbycar.cpp
     wifitexthelpers.cpp
 )
 
 set(dependencies
     libsodium freertos nvs_flash esp_http_server esp_https_ota mdns app_update esp_system esp_websocket_client driver
-    arduino-esp32 ArduinoJson esp-nimble-cpp FastLED-idf TFT_eSPI
+    arduino-esp32 ArduinoJson esp-nimble-cpp FastLED-idf TFT_eSPI TFT_eSPI_QRcode
     bobbycar-protocol cpputils cxx-ring-buffer date
     espasynchttpreq espasyncota espchrono espcpputils espconfiglib esp-gui-lib esphttpdutils espwifistack expected fmt
 )

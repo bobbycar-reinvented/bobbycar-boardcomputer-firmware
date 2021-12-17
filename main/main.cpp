@@ -59,12 +59,16 @@ using namespace std::chrono_literals;
 #endif
 #include "modes/defaultmode.h"
 #include "displays/statusdisplay.h"
+#include "displays/lockscreen.h"
 #include "displays/calibratedisplay.h"
 #ifdef FEATURE_DNS_NS
 #include "dnsannounce.h"
 #endif
 #include "drivingstatistics.h"
 #include "newsettings.h"
+#ifdef FEATURE_ESPNOW
+#include "espnowfunctions.h"
+#endif
 #include "taskmanager.h"
 
 namespace {
@@ -230,10 +234,22 @@ extern "C" void app_main()
     switchScreen<DPad6WireDebugDisplay>();
 #else
 
-    if (!gas || !brems || *gas > 200.f || *brems > 200.f)
-        espgui::switchScreen<CalibrateDisplay>(true);
+    if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+    {
+        espgui::switchScreen<Lockscreen>();
+    }
     else
-        espgui::switchScreen<StatusDisplay>();
+    {
+        if (!gas || !brems || *gas > 200.f || *brems > 200.f)
+            espgui::switchScreen<CalibrateDisplay>(true);
+        else
+        {
+            espgui::switchScreen<StatusDisplay>();
+        }
+    }
+#endif
+#ifdef FEATURE_ESPNOW
+    espnow::initESPNow();
 #endif
 
     while (true)
@@ -328,6 +344,10 @@ extern "C" void app_main()
 
             lastBleUpdate = now;
         }
+#endif
+
+#ifdef FEATURE_ESPNOW
+        espnow::handle();
 #endif
 
 #ifdef FEATURE_CLOUD
