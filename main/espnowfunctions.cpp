@@ -91,11 +91,16 @@ void initESPNow()
         esp_now_peer_info_t &peer = peers.back();
         std::memcpy(peer.peer_addr, broadcast_address, sizeof(peer.peer_addr));
         peer.channel = 0;
-/*
+
         if (settings.wifiSettings.wifiApEnabled)
             peer.ifidx = WIFI_IF_AP;
-        else if (settings.wifiSettings.wifiStaEnabled)*/
+        else if (settings.wifiSettings.wifiStaEnabled)
             peer.ifidx = WIFI_IF_STA;
+        else
+        {
+            ESP_LOGE(TAG, "Interfaces not ready.");
+            return;
+        }
 
         if (const auto error = esp_now_add_peer(&peers.back()); error != ESP_OK)
         {
@@ -253,14 +258,27 @@ esp_err_t send_espnow_message(std::string message)
         return ESP_FAIL;
     }
 
-    for (const auto &peer : peers)
+    for (auto &peer : peers)
     {
-        if(const auto error = esp_now_send(peer.peer_addr, (const uint8_t*)message.data(), message.size()); error != ESP_OK)
+
+        if (settings.wifiSettings.wifiApEnabled)
+            peer.ifidx = WIFI_IF_AP;
+        else if (settings.wifiSettings.wifiStaEnabled)
+            peer.ifidx = WIFI_IF_STA;
+        else
+            return ESP_ERR_ESPNOW_IF;
+
+        const auto timeBefore = espchrono::millis_clock::now();
+
+        if(const auto error = esp_now_send(broadcast_address, (const uint8_t*)message.data(), message.size()); error != ESP_OK)
         {
             return error;
         }
         else
-            ESP_LOGI(TAG, "Successfully executed esp_now_send()");
+        {
+            const auto timeAfter = espchrono::millis_clock::now();
+            ESP_LOGI(TAG, "Successfully executed esp_now_send(): Took %lldms", std::chrono::milliseconds{timeAfter-timeBefore}.count());
+        }
     }
     return ESP_OK;
 }
