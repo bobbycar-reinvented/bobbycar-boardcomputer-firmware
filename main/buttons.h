@@ -32,6 +32,8 @@ extern int downPressRepeat;
 class InputDispatcher
 {
 public:
+    static void init();
+
     static void update();
 
     static void rotate(int offset);
