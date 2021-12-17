@@ -203,6 +203,7 @@ void handle()
 
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
                 {
+                    ESP_LOGI(TAG, "setting current time to %" PRIu64, *result);
                     onRecvTs(*result, true);
                 }
                 else
@@ -222,7 +223,7 @@ void onRecvTs(uint64_t millis, bool isFromBobbycar)
 {
     const auto milliseconds = std::chrono::milliseconds(millis);
     const auto timepoint = espchrono::utc_clock::time_point(milliseconds);
-    ESP_LOGW(TAG, "setting current time to %s", espchrono::toString(timepoint.time_since_epoch()).c_str());
+    // ESP_LOGW(TAG, "setting current time to %s", espchrono::toString(timepoint.time_since_epoch()).c_str());
     time_set_now(timepoint);
 
     if (receiveTimeStamp)
