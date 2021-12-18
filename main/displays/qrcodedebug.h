@@ -10,12 +10,9 @@ class QrCodeDebugDisplay :
     using Base = espgui::Display;
 public:
     QrCodeDebugDisplay();
-    // std::string text() const override;
     void initScreen() override;
     void confirm() override;
     void back() override;
-    void rotate(int offset) override;
 private:
-    qrcode::QRcode m_qrcode{};
-    uint8_t m_mult{2};
+    QRCode m_qrcode;
 };

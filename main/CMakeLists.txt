@@ -20,6 +20,7 @@ set(headers
     actions/loadsettingsaction.h
     actions/modesettingsaction.h
     actions/multiaction.h
+    actions/qraction.h
     actions/rebootaction.h
     actions/savesettingsaction.h
     actions/switchprofileaction.h
@@ -51,6 +52,7 @@ set(headers
     displays/bmsdisplay.h
     displays/calibratedisplay.h
     displays/calibratevoltagedisplay.h
+    displays/qrdisplay.h
     displays/dpad5wire2outdebugdisplay.h
     displays/dpad5wiredebugdisplay.h
     displays/dpad6wiredebugdisplay.h
@@ -228,6 +230,7 @@ set(sources
     actions/loadsettingsaction.cpp
     actions/modesettingsaction.cpp
     actions/multiaction.cpp
+    actions/qraction.cpp
     actions/rebootaction.cpp
     actions/savesettingsaction.cpp
     actions/switchprofileaction.cpp
@@ -259,6 +262,7 @@ set(sources
     displays/bmsdisplay.cpp
     displays/calibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
+    displays/qrdisplay.cpp
     displays/dpad5wire2outdebugdisplay.cpp
     displays/dpad5wiredebugdisplay.cpp
     displays/dpad6wiredebugdisplay.cpp
@@ -417,7 +421,7 @@ set(sources
 
 set(dependencies
     libsodium freertos nvs_flash esp_http_server esp_https_ota mdns app_update esp_system esp_websocket_client driver
-    arduino-esp32 ArduinoJson esp-nimble-cpp FastLED-idf TFT_eSPI TFT_eSPI_QRcode
+    arduino-esp32 ArduinoJson esp-nimble-cpp FastLED-idf TFT_eSPI QRCode-esp32
     bobbycar-protocol cpputils cxx-ring-buffer date
     espasynchttpreq espasyncota espchrono espcpputils espconfiglib esp-gui-lib esphttpdutils espwifistack expected fmt
 )
