@@ -544,6 +544,7 @@ extern char TEXT_QRCODE_DEBUG[];
 //GreenPassMenu
 extern char TEXT_GREENPASS[];
 extern char TEXT_SHOWCERT[];
+extern char TEXT_ADDCERT[];
 
 //EspNowMenu
 extern char TEXT_ESPNOW[];
