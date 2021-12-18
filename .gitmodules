@@ -60,4 +60,4 @@
 	url = ../../0xFEEDC0DE64/espconfiglib.git
 [submodule "components/QRCode-esp32"]
 	path = components/QRCode-esp32
-	url = git@github.com:bobbycar-graz/QRCode-esp32.git
+	url = ../QRCode-esp32.git
