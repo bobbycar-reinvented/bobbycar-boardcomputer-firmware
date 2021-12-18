@@ -1,13 +1,20 @@
+name: Build
 on:
   push:
-  page_build:
   release:
     types:
       - created
+#  pull_request:
+#    types: [opened, synchronize, reopened]
 
 jobs:
   build:
+    name: "config_name"
     runs-on: ubuntu-latest
+    env:
+      SONAR_SCANNER_VERSION: 4.4.0.2170
+      SONAR_SERVER_URL: "https://sonarcloud.io"
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
     environment: deploy
     strategy:
       fail-fast: false
@@ -17,6 +24,28 @@ jobs:
     
       - name: Checkout (without submodules)
         uses: actions/checkout@v2
+
+      - name: Set up JDK 11 (for Sonar)
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Download and set up sonar-scanner
+        env:
+          SONAR_SCANNER_DOWNLOAD_URL: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ env.SONAR_SCANNER_VERSION }}-linux.zip
+        run: |
+          mkdir -p $HOME/.sonar
+          curl -sSLo $HOME/.sonar/sonar-scanner.zip ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
+          unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+          echo "$HOME/.sonar/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
+
+      - name: Download and set up build-wrapper (for Sonar)
+        env:
+          BUILD_WRAPPER_DOWNLOAD_URL: ${{ env.SONAR_SERVER_URL }}/static/cpp/build-wrapper-linux-x86.zip
+        run: |
+          curl -sSLo $HOME/.sonar/build-wrapper-linux-x86.zip ${{ env.BUILD_WRAPPER_DOWNLOAD_URL }}
+          unzip -o $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
+          echo "$HOME/.sonar/build-wrapper-linux-x86" >> $GITHUB_PATH
 
       - name: Checkout and install esp-idf
         uses: 0xFEEDC0DE64/checkout_install_esp_idf@main
@@ -46,8 +75,15 @@ jobs:
           export CCACHE_MAXSIZE=400M CCACHE_BASEDIR="$(pwd)"
           . export.sh
           ./switchconf.sh ${{ matrix.node }}
-          idf.py --ccache build
+          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} idf.py --ccache build
           ccache -s
+
+      - name: Run sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
           
       - name: Set outputs
         id: vars
