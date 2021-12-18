@@ -1,11 +1,14 @@
 #pragma once
 
-#include <menudisplay.h>
+// system includes
 #include <cstdint>
+
+// 3rdparty lib includes
+#include <menudisplay.h>
 
 namespace bobbygui {
 class MenuDisplayWithTime :
-        public espgui::MenuDisplay
+    public espgui::MenuDisplay
 {
     using Base = espgui::MenuDisplay;
 public:
@@ -13,7 +16,7 @@ public:
     void redraw() override;
     espgui::Label m_label_currentTime{145, 6};
 private:
-    virtual bool m_use_big_font() const
+    virtual bool use_big_font() const
     {
 #ifdef MENU_DISPLAY_USE_BIG_TIME
         return true;
