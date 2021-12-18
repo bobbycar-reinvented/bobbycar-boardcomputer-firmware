@@ -22,6 +22,8 @@ public:
 
     std::optional<uint8_t> currentlyOpenProfileIndex() const;
 
+    nvs_handle getCommonHandle() { return m_handle; }
+
 private:
     // for common settings
     nvs_handle m_handle{};

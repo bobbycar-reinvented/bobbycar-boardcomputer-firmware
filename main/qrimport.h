@@ -6,6 +6,7 @@
  */
 
 // system includes
+//#include <string>
 #include <string>
 
 // 3rd party includes
@@ -16,9 +17,9 @@
 
 namespace qrimport {
     // nvs
-    tl::expected<std::string, esp_err_t> get_qr_code(std::string_view key);
-    tl::expected<void, esp_err_t> set_qr_code(std::string_view qrcode, std::string_view key);
     bool has_qr_code(std::string_view key);
+    tl::expected<std::string, esp_err_t> get_qr_code(std::string_view key);
+    tl::expected<void, esp_err_t> set_qr_code(std::string_view key, std::string_view qrcode);
 
     // web request
     void setup_request();

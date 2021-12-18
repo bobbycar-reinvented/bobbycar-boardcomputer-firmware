@@ -1,42 +1,74 @@
 #include "qrimport.h"
 
+// esp-idf includes
+#include <esp_log.h>
+#include <nvs.h>
 
 // 3rd party includes
-#include <nvs.h>
 #include <asynchttprequest.h>
 #include <cleanuphelper.h>
 #include <cpputils.h>
 #include <delayedconstruction.h>
 
 // local includes
+#include "globals.h"
 
 namespace qrimport {
 
 namespace {
+constexpr const char * const TAG = "QRIMPORT";
+
 cpputils::DelayedConstruction<AsyncHttpRequest> http_request;
 } // namespace
 
 // nvs
-tl::expected<std::string, esp_err_t> get_qr_code(std::string_view key)
-{
-    return "";
-}
-
-tl::expected<void, esp_err_t> set_qr_code(std::string_view qrcode, std::string_view key)
-{
-    return{};
-}
-
 bool has_qr_code(std::string_view key)
 {
-    if (const auto result = get_qr_code(key); !result)
+    const auto handle = settingsPersister.getCommonHandle();
+
+    size_t length;
+    if (const esp_err_t result = nvs_get_str(handle, key.data(), nullptr, &length); result != ESP_OK)
     {
-        return (result.error() == ESP_ERR_NVS_NOT_FOUND);
+        if (result != ESP_ERR_NVS_NOT_FOUND)
+            ESP_LOGW(TAG, "nvs_get_str() size-only for key %.*s failed with %s", key.size(), key.data(), esp_err_to_name(result));
+        return false;
     }
-    else
+
+    return length;
+}
+
+tl::expected<std::string, esp_err_t> get_qr_code(std::string_view key)
+{
+    const auto handle = settingsPersister.getCommonHandle();
+
+    size_t length;
+    if (const esp_err_t result = nvs_get_str(handle, key.data(), nullptr, &length); result != ESP_OK)
     {
-        return true;
+        ESP_LOGW(TAG, "nvs_get_str() size-only for key %.*s failed with %s", key.size(), key.data(), esp_err_to_name(result));
+        return tl::make_unexpected(result);
     }
+
+    // empty string optimization
+    if (!length)
+        return {};
+
+    std::string buf;
+    buf.resize(length);
+    if (const esp_err_t result = nvs_get_str(handle, key.data(), buf.data(), &length); result != ESP_OK)
+    {
+        ESP_LOGW(TAG, "nvs_get_str() for key %.*s failed with %s", key.size(), key.data(), esp_err_to_name(result));
+        return tl::make_unexpected(result);
+    }
+
+    if (buf.back() == '\n')
+        buf.resize(buf.size() - 1);
+
+    return buf; // no std::move needed as return is optimized
+}
+
+tl::expected<void, esp_err_t> set_qr_code(std::string_view key, std::string_view qrcode)
+{
+    return{};
 }
 
 // web request
