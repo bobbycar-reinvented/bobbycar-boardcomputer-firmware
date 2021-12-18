@@ -1,4 +1,5 @@
 BOBBY_ROOT="$(dirname "$BASH_SOURCE")"
+export PS1="\033[1;32m(bobby-sourced)\033[;0m$PS1"
 
 if [[ ! -f "${BOBBY_ROOT}/esp-idf/export.sh" ]]
 then
