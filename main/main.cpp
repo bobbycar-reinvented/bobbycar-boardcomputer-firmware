@@ -53,7 +53,6 @@ using namespace std::chrono_literals;
 #include "udpcloud.h"
 #endif
 #include "wifi_bobbycar.h"
-#include "time_bobbycar.h"
 #ifdef FEATURE_LEDSTRIP
 #include "ledstrip.h"
 #endif
@@ -86,9 +85,6 @@ std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
 #ifdef FEATURE_CLOUD
 std::optional<espchrono::millis_clock::time_point> lastCloudCollect;
 std::optional<espchrono::millis_clock::time_point> lastCloudSend;
-#endif
-#ifdef FEATURE_NTP
-std::optional<espchrono::millis_clock::time_point> lastNtpUpdate;
 #endif
 #ifdef FEATURE_LEDSTRIP
 std::optional<espchrono::millis_clock::time_point> lastLedstripUpdate;
@@ -217,11 +213,6 @@ extern "C" void app_main()
 #ifdef FEATURE_CLOUD
     bootLabel.redraw("cloud");
     initCloud();
-#endif
-
-#ifdef FEATURE_NTP
-    bootLabel.redraw("time");
-    initTime();
 #endif
 
     bootLabel.redraw("switchScreen");
@@ -363,15 +354,6 @@ extern "C" void app_main()
             cloudSend();
 
             lastCloudSend = now;
-        }
-#endif
-
-#ifdef FEATURE_NTP
-        if (!lastNtpUpdate || now - *lastNtpUpdate >= 100ms)
-        {
-            updateTime();
-
-            lastNtpUpdate = now;
         }
 #endif
 

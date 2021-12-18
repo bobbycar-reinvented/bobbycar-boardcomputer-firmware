@@ -34,6 +34,9 @@
 #ifdef FEATURE_MOSFETS
 #include "mosfets.h"
 #endif
+#ifdef FEATURE_NTP
+#include "time_bobbycar.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -64,7 +67,10 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_MOSFETS
     espcpputils::SchedulerTask { "mosfets",        init_mosfets,          update_mosfets,          {}    },
 #endif
-    espcpputils::SchedulerTask { "wifi",        wifi_begin,        wifi_update,        100ms },
+    espcpputils::SchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms },
+#ifdef FEATURE_NTP
+    espcpputils::SchedulerTask { "time",           initTime,              updateTime,              100ms },
+#endif
 };
 } // namespace
 
