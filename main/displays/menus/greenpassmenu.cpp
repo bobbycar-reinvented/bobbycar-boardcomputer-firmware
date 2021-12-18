@@ -1,49 +1,21 @@
 #include "greenpassmenu.h"
 
-#include <actioninterface.h>
-
 // local includes
 #include "actions/switchscreenaction.h"
+#include "actions/qraction.h"
 #include "displays/menus/mainmenu.h"
+#include "displays/qrdisplay.h"
 #include "icons/back.h"
 
 using namespace espgui;
 
-namespace greenpassmenu {
-bool showingQRCode{false};
-} // namespace
-
-void GreenPassMenu::ShowCertAction::triggered() {
-    greenpassmenu::showingQRCode = true;
-    m_qrcode.init();
-    m_qrcode.createScaleToFit("");
-}
-
 GreenPassMenu::GreenPassMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SHOWCERT>, ShowCertAction>>();
+    constructMenuItem<makeComponentArgs<MenuItem, SwitchQrDisplayAction, StaticText<TEXT_SHOWCERT>>>(qraction::QrMenu{.message="CORONA_PASS", .ver=15});
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
-}
-
-void GreenPassMenu::initScreen()
-{
-    Base::initScreen();
-    greenpassmenu::showingQRCode = false;
-}
-
-void GreenPassMenu::rotate(int offset)
-{
-    if (greenpassmenu::showingQRCode)
-        GreenPassMenu::initScreen();
-    Base::rotate(offset);
 }
 
 void GreenPassMenu::back()
 {
-    if (greenpassmenu::showingQRCode)
-    {
-        GreenPassMenu::initScreen();
-    }
-    else
-        switchScreen<MainMenu>();
+    switchScreen<MainMenu>();
 }

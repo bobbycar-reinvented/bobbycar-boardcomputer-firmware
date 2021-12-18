@@ -1,6 +1,7 @@
 #include "qrcodedebug.h"
 
 #include <fmt/core.h>
+#include <tftinstance.h>
 
 #include "displays/menus/debugmenu.h"
 #include "globals.h"
@@ -20,17 +21,21 @@ void QrCodeDebugDisplay::back()
 void QrCodeDebugDisplay::initScreen()
 {
     Base::initScreen();
-    m_qrcode.init();
 }
 
 void QrCodeDebugDisplay::confirm()
 {
-    m_qrcode.createScaleToFit(fmt::format("WIFI:T:WPA;S:{};P:{};", deviceName, stringSettings.ap_password));
-}
+    uint8_t qrcodeBytes[qrcode_getBufferSize(7)];
+    qrcode_initText(&m_qrcode, qrcodeBytes, 7, ECC_MEDIUM, fmt::format("WIFI:T:WPA;S:{};P:{};", deviceName, stringSettings.ap_password).c_str());
 
-void QrCodeDebugDisplay::rotate(int offset)
-{
-    m_mult += offset;
-    m_qrcode.setMultiply(m_mult);
-    m_qrcode.create("Hello World!");
+    for (uint8_t y = 0; y < m_qrcode.size; y++) {
+        for (uint8_t x = 0; x < m_qrcode.size; x++) {
+            if (qrcode_getModule(&m_qrcode, x, y))
+            {
+                tft.drawPixel(x+2,y+2, TFT_BLACK);
+            } else {
+                tft.drawPixel(x+2,y+2, TFT_WHITE);
+            }
+        }
+    }
 }
