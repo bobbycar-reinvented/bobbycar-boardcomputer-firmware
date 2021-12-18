@@ -145,52 +145,6 @@ extern "C" void app_main()
         task.setup();
     }
 
-#ifdef FEATURE_DPAD
-    bootLabel.redraw("dpad");
-    dpad::init();
-#endif
-
-#ifdef FEATURE_DPAD_3WIRESW
-    bootLabel.redraw("dpad3wire");
-    dpad3wire::init();
-#endif
-
-#ifdef FEATURE_DPAD_5WIRESW
-    bootLabel.redraw("dpad5wire");
-    dpad5wire::init();
-#endif
-
-#ifdef FEATURE_DPAD_5WIRESW_2OUT
-    bootLabel.redraw("dpad5wire_2out");
-    dpad5wire_2out::init();
-#endif
-
-#ifdef FEATURE_DPAD_6WIRESW
-    bootLabel.redraw("dpad6wire");
-    dpad6wire::init();
-#endif
-
-#ifdef FEATURE_ROTARY
-    bootLabel.redraw("rotary");
-    initRotary();
-#endif
-
-#ifdef FEATURE_MOSFETS
-    bootLabel.redraw("mosfets");
-    pinMode(PINS_MOSFET0, OUTPUT);
-    pinMode(PINS_MOSFET1, OUTPUT);
-    pinMode(PINS_MOSFET2, OUTPUT);
-
-    digitalWrite(PINS_MOSFET0, LOW);
-    digitalWrite(PINS_MOSFET1, LOW);
-    digitalWrite(PINS_MOSFET2, LOW);
-#endif
-
-#ifdef FEATURE_SERIAL
-    bootLabel.redraw("swap front back");
-    updateSwapFrontBack();
-#endif
-
 #ifdef FEATURE_BLUETOOTH
     if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Master)
     {
