@@ -1,8 +1,8 @@
 #include "qrimport.h"
 
-// system includes
 
 // 3rd party includes
+#include <nvs.h>
 #include <asynchttprequest.h>
 #include <cleanuphelper.h>
 #include <cpputils.h>
@@ -17,14 +17,26 @@ cpputils::DelayedConstruction<AsyncHttpRequest> http_request;
 } // namespace
 
 // nvs
-tl::expected<std::string, std::string> get_qr_code(std::string_view key)
+tl::expected<std::string, esp_err_t> get_qr_code(std::string_view key)
 {
     return "";
 }
 
-tl::expected<void, std::string> set_qr_code(std::string_view qrcode, std::string_view key)
+tl::expected<void, esp_err_t> set_qr_code(std::string_view qrcode, std::string_view key)
 {
     return{};
+}
+
+bool has_qr_code(std::string_view key)
+{
+    if (const auto result = get_qr_code(key); !result)
+    {
+        return (result.error() == ESP_ERR_NVS_NOT_FOUND);
+    }
+    else
+    {
+        return true;
+    }
 }
 
 // web request

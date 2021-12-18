@@ -9,14 +9,16 @@
 #include <string>
 
 // 3rd party includes
+#include <esp_err.h>
 #include <tl/expected.hpp>
 
 // local includes
 
 namespace qrimport {
     // nvs
-    tl::expected<std::string, std::string> get_qr_code(std::string_view key);
-    tl::expected<void, std::string> set_qr_code(std::string_view qrcode, std::string_view key);
+    tl::expected<std::string, esp_err_t> get_qr_code(std::string_view key);
+    tl::expected<void, esp_err_t> set_qr_code(std::string_view qrcode, std::string_view key);
+    bool has_qr_code(std::string_view key);
 
     // web request
     void setup_request();
