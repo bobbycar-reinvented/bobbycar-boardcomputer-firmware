@@ -172,10 +172,6 @@ extern "C" void app_main()
             performance.lastTime = now;
         }
 
-#ifdef FEATURE_BMS
-        bms::update();
-#endif
-
 #ifdef FEATURE_DNS_NS
         handle_dns_announce();
 #endif

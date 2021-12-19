@@ -40,6 +40,9 @@
 #include "potis.h"
 #ifdef FEATURE_BLUETOOTH
 #include "bluetooth_bobby.h"
+#ifdef FEATURE_BMS
+#include "bmsutils.h"
+#endif
 #endif
 #ifdef FEATURE_CAN
 #include "can.h"
@@ -106,6 +109,9 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "potis",          initPotis,             readPotis,               20ms  },
 #ifdef FEATURE_BLUETOOTH
     espcpputils::SchedulerTask { "bluetooth",      bluetooth_init,        bluetooth_update,        100ms },
+#ifdef FEATURE_BMS
+    espcpputils::SchedulerTask { "bms",            bms::init,             bms::update,             100ms },
+#endif
 #endif
 #ifdef FEATURE_CAN
     espcpputils::SchedulerTask { "can",            can::initCan,          can::parseCanInput,      10ms  },
