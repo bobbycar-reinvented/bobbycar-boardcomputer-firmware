@@ -10,9 +10,6 @@ constexpr const char * const TAG = "BOBBY";
 // esp-idf includes
 #include <esp_log.h>
 
-// Arduino includes
-#include <Arduino.h>
-
 // 3rdparty lib includes
 #include <espchrono.h>
 using namespace std::chrono_literals;
@@ -31,15 +28,11 @@ using namespace std::chrono_literals;
 #include "displays/statusdisplay.h"
 #include "displays/lockscreen.h"
 #include "displays/calibratedisplay.h"
-#ifdef FEATURE_DNS_NS
-#include "dnsannounce.h"
-#endif
-#include "drivingstatistics.h"
 #include "newsettings.h"
 #include "taskmanager.h"
 
 namespace {
-std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
+espchrono::millis_clock::time_point lastStatsPush;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
@@ -123,25 +116,6 @@ extern "C" void app_main()
             schedulerTask.loop();
         }
 
-        if (!lastModeUpdate || now - *lastModeUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.modeUpdateRate)
-        {
-            if (lastMode != currentMode)
-            {
-                if (lastMode)
-                    lastMode->stop();
-                lastMode = currentMode;
-                if (currentMode)
-                    currentMode->start();
-            }
-
-            if (currentMode)
-                currentMode->update();
-
-            lastModeUpdate = now;
-
-            performance.current++;
-        }
-
         if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.statsUpdateRate)
         {
             updateAccumulators();
@@ -163,23 +137,12 @@ extern "C" void app_main()
             lastDisplayRedraw = now;
         }
 
-        if (now - performance.lastTime >= 1000ms)
+        if (now - lastStatsPush >= 1s)
         {
             sched_pushStats(false);
 
-            performance.last = performance.current;
-            performance.current = 0;
-            performance.lastTime = now;
+            lastStatsPush = now;
         }
-
-#ifdef FEATURE_BMS
-        bms::update();
-#endif
-
-#ifdef FEATURE_DNS_NS
-        handle_dns_announce();
-#endif
-        calculateStatistics();
 
         if (battery::bootBatPercentage == -1)
         {

@@ -173,6 +173,7 @@ set(headers
     ledstripdefines.h
     macros_bobbycar.h
     modeinterface.h
+    modes.h
     modes/defaultmode.h
     modes/gametrakmode.h
     modes/ignoreinputmode.h
@@ -391,6 +392,7 @@ set(sources
     macros_bobbycar.cpp
     main.cpp
     modeinterface.cpp
+    modes.cpp
     modes/defaultmode.cpp
     modes/gametrakmode.cpp
     modes/ignoreinputmode.cpp

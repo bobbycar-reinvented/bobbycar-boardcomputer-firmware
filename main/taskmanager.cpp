@@ -40,6 +40,9 @@
 #include "potis.h"
 #ifdef FEATURE_BLUETOOTH
 #include "bluetooth_bobby.h"
+#ifdef FEATURE_BMS
+#include "bmsutils.h"
+#endif
 #endif
 #ifdef FEATURE_CAN
 #include "can.h"
@@ -68,6 +71,11 @@
 #endif
 #ifdef FEATURE_UDPCLOUD
 #include "udpcloud.h"
+#endif
+#include "modes.h"
+#include "drivingstatistics.h"
+#ifdef FEATURE_DNS_NS
+#include "dnsannounce.h"
 #endif
 
 using namespace std::chrono_literals;
@@ -106,6 +114,9 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "potis",          initPotis,             readPotis,               20ms  },
 #ifdef FEATURE_BLUETOOTH
     espcpputils::SchedulerTask { "bluetooth",      bluetooth_init,        bluetooth_update,        100ms },
+#ifdef FEATURE_BMS
+    espcpputils::SchedulerTask { "bms",            bms::init,             bms::update,             100ms },
+#endif
 #endif
 #ifdef FEATURE_CAN
     espcpputils::SchedulerTask { "can",            can::initCan,          can::parseCanInput,      10ms  },
@@ -135,10 +146,22 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_UDPCLOUD
     espcpputils::SchedulerTask { "udpcloud",       udpCloudInit,          udpCloudUpdate,          50ms },
 #endif
+    espcpputils::SchedulerTask { "drivingmode",    initDrivingMode,       updateDrivingMode,       20ms },
+    espcpputils::SchedulerTask { "drivingstatistics", initStatistics,     calculateStatistics,     100ms },
+#ifdef FEATURE_DNS_NS
+    espcpputils::SchedulerTask { "dnsannounce",    init_dns_announce,     handle_dns_announce,     100ms },
+#endif
 };
 } // namespace
 
 cpputils::ArrayView<espcpputils::SchedulerTask> schedulerTasks{std::begin(schedulerTasksArr), std::end(schedulerTasksArr)};
+
+const espcpputils::SchedulerTask &drivingModeTask = []() -> const espcpputils::SchedulerTask & {
+    auto iter = std::find_if(std::begin(schedulerTasksArr), std::end(schedulerTasksArr), [](const espcpputils::SchedulerTask &task){
+        return std::string_view{task.name()} == "drivingmode";
+    });
+    return *iter;
+}();
 
 void sched_pushStats(bool printTasks)
 {
