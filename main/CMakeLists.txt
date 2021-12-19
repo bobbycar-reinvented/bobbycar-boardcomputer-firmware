@@ -49,6 +49,7 @@ set(headers
     cloudtexthelpers.h
     controller.h
     debugcolorhelpers.h
+    debuginputhandler.h
     debugtexthelpers.h
     displays/bmsdisplay.h
     displays/calibratedisplay.h
@@ -185,8 +186,7 @@ set(headers
     qrimport.h
     rotary.h
     screens.h
-    serial.h
-    serialhandler.h
+    serial_bobby.h
     settings.h
     settingspersister.h
     settingsutils.h
@@ -264,6 +264,7 @@ set(sources
     cloudtexthelpers.cpp
     controller.cpp
     debugcolorhelpers.cpp
+    debuginputhandler.cpp
     debugtexthelpers.cpp
     displays/bmsdisplay.cpp
     displays/calibratedisplay.cpp
@@ -401,8 +402,7 @@ set(sources
     qrimport.cpp
     rotary.cpp
     screens.cpp
-    serial.cpp
-    serialhandler.cpp
+    serial_bobby.cpp
     settings.cpp
     settingspersister.cpp
     settingsutils.cpp

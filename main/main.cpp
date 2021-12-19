@@ -25,22 +25,8 @@ using namespace std::chrono_literals;
 #include "macros_bobbycar.h"
 #include "globals.h"
 #include "screens.h"
-#include "serialhandler.h"
-#ifdef FEATURE_OTA
-#include "ota.h"
-#include "displays/menus/selectbuildservermenu.h"
-#endif
 #include "presets.h"
 #include "statistics.h"
-#ifdef FEATURE_BLE
-#include "ble_bobby.h"
-#endif
-#ifdef FEATURE_WEBSERVER
-#include "webserver.h"
-#endif
-#ifdef FEATURE_CAN
-#include "can.h"
-#endif
 #ifdef FEATURE_CLOUD
 #include "cloud.h"
 #include "udpcloud.h"
@@ -68,12 +54,6 @@ std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
-#ifdef FEATURE_CAN
-std::optional<espchrono::millis_clock::time_point> lastCanParse;
-#endif
-#ifdef FEATURE_BLE
-std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
-#endif
 #ifdef FEATURE_CLOUD
 std::optional<espchrono::millis_clock::time_point> lastCloudCollect;
 std::optional<espchrono::millis_clock::time_point> lastCloudSend;
@@ -85,10 +65,6 @@ std::optional<espchrono::millis_clock::time_point> lastLedstripUpdate;
 
 extern "C" void app_main()
 {
-    Serial.begin(115200);
-    //Serial.setDebugOutput(true);
-    //Serial.println("setup()");
-
 #ifdef FEATURE_LEDBACKLIGHT
     pinMode(PINS_LEDBACKLIGHT, OUTPUT);
     digitalWrite(PINS_LEDBACKLIGHT, ledBacklightInverted ? LOW : HIGH);
@@ -133,22 +109,6 @@ extern "C" void app_main()
         task.setup();
     }
 
-#ifdef FEATURE_CAN
-    bootLabel.redraw("can");
-    can::initCan();
-#endif
-
-#ifdef FEATURE_SERIAL
-    bootLabel.redraw("front Serial begin");
-    controllers.front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
-
-    bootLabel.redraw("back Serial begin");
-    controllers.back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
-
-    bootLabel.redraw("swap front back");
-    updateSwapFrontBack();
-#endif
-
 #ifdef FEATURE_LEDSTRIP
     bootLabel.redraw("LED strip");
     initLedStrip();
@@ -158,24 +118,6 @@ extern "C" void app_main()
         controller.command.buzzer = {};
 
     currentMode = &modes::defaultMode;
-
-#ifdef FEATURE_OTA
-    bootLabel.redraw("ota");
-    initOta();
-#endif
-
-#ifdef FEATURE_BLE
-    bootLabel.redraw("ble");
-    initBle();
-#endif
-
-#ifdef FEATURE_WEBSERVER
-    bootLabel.redraw("webserver");
-    initWebserver();
-#endif
-
-    bootLabel.redraw("potis");
-    readPotis();
 
 #ifdef FEATURE_CLOUD
     bootLabel.redraw("cloud");
@@ -266,36 +208,6 @@ extern "C" void app_main()
             performance.lastTime = now;
         }
 
-#ifdef FEATURE_CAN
-        if (!lastCanParse || now - *lastCanParse >= 1000ms/settings.boardcomputerHardware.timersSettings.canReceiveRate)
-        {
-            //can::tryParseCanInput();
-            can::parseCanInput();
-
-            lastCanParse = now;
-        }
-#endif
-
-#ifdef FEATURE_SERIAL
-        for (Controller &controller : controllers)
-            controller.parser.update();
-#endif
-
-        handleSerial();
-
-#ifdef FEATURE_OTA
-        handleOta();
-#endif
-
-#ifdef FEATURE_BLE
-        if (!lastBleUpdate || now - *lastBleUpdate >= 250ms)
-        {
-            handleBle();
-
-            lastBleUpdate = now;
-        }
-#endif
-
 #ifdef FEATURE_ESPNOW
         espnow::handle();
 #endif
@@ -314,10 +226,6 @@ extern "C" void app_main()
 
             lastCloudSend = now;
         }
-#endif
-
-#ifdef FEATURE_WEBSERVER
-        handleWebserver();
 #endif
 
 #ifdef FEATURE_BMS

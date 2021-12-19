@@ -428,9 +428,6 @@ char TEXT_MODEUPDATERATE[] = "Mode update rate";
 char TEXT_STATSUPDATERATE[] = "Stats update rate";
 char TEXT_DISPLAYUPDATERATE[] = "Display update rate";
 char TEXT_DISPLAYREDRAWRATE[] = "Display redraw rate";
-#ifdef FEATURE_CAN
-char TEXT_CANRECEIVERATE[] = "CAN receive rate";
-#endif
 //char TEXT_BACK[] = "Back";
 
 //TimeSettingsMenu
