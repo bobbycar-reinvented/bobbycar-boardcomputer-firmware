@@ -11,14 +11,6 @@
 using namespace espgui;
 
 namespace {
-using ModeUpdateRateChangeDisplay = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_MODEUPDATERATE>,
-    ModeUpdateRateAccessor,
-    BackActionInterface<SwitchScreenAction<TimersMenu>>,
-    SwitchScreenAction<TimersMenu>
->;
-
 using StatsUpdateRateChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
     StaticText<TEXT_STATSUPDATERATE>,
@@ -46,7 +38,6 @@ using DisplayRedrawRateChangeDisplay = makeComponent<
 
 TimersMenu::TimersMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODEUPDATERATE>,    SwitchScreenAction<ModeUpdateRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSUPDATERATE>,   SwitchScreenAction<StatsUpdateRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISPLAYUPDATERATE>, SwitchScreenAction<DisplayUpdateRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISPLAYREDRAWRATE>, SwitchScreenAction<DisplayRedrawRateChangeDisplay>>>();
