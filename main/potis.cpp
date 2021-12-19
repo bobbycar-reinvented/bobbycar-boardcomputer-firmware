@@ -15,13 +15,16 @@ using namespace std::chrono_literals;
 
 void initPotis()
 {
-
+    raw_gas = std::nullopt;
+    raw_brems = std::nullopt;
+    gas = std::nullopt;
+    brems = std::nullopt;
 }
 
 void readPotis()
 {
     [[maybe_unused]]
-    constexpr auto sampleMultipleTimes = [](int pin){
+    constexpr auto sampleMultipleTimes = [](uint8_t pin){
               analogRead(pin);
               double sum{};
               const auto sampleCount = settings.boardcomputerHardware.sampleCount;

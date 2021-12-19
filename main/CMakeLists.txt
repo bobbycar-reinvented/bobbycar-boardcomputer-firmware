@@ -30,6 +30,7 @@ set(headers
     battery.h
     ble_bobby.h
     bletexthelpers.h
+    bluetooth_bobby.h
     bluetoothmode.h
     bluetoothtexthelpers.h
     bmsutils.h
@@ -244,6 +245,7 @@ set(sources
     battery.cpp
     ble_bobby.cpp
     bletexthelpers.cpp
+    bluetooth_bobby.cpp
     bluetoothmode.cpp
     bluetoothtexthelpers.cpp
     bmsutils.cpp
