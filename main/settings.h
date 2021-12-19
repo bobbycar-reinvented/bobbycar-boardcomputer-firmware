@@ -110,6 +110,8 @@ struct Settings
 #ifdef FEATURE_CLOUD
             int16_t cloudCollectRate;
             int16_t cloudSendRate;
+#endif
+#ifdef FEATURE_UDPCLOUD
             int16_t udpSendRateMs;
 #endif
         } timersSettings;
@@ -119,11 +121,16 @@ struct Settings
     struct CloudSettings {
         bool cloudEnabled;
         int16_t cloudTransmitTimeout; // in ms
+    } cloudSettings;
+#endif
+
+#ifdef FEATURE_UDPCLOUD
+    struct UdpCloudSettings {
         uint32_t udpUid;
         bool udpCloudEnabled;
         bool enableCloudDebug;
         bool udpUseStdString;
-    } cloudSettings;
+    } udpCloudSettings;
 #endif
 
     struct DefaultMode {
@@ -303,16 +310,21 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 #ifdef FEATURE_CLOUD
     callable("cloudCollectRat", boardcomputerHardware.timersSettings.cloudCollectRate);
     callable("cloudSendRate", boardcomputerHardware.timersSettings.cloudSendRate);
+#endif
+#ifdef FEATURE_UDPCLOUD
     callable("udpSendRate", boardcomputerHardware.timersSettings.udpSendRateMs);
 #endif
 
 #ifdef FEATURE_CLOUD
     callable("cloudEnabled", cloudSettings.cloudEnabled);
     callable("clodTransmTmout", cloudSettings.cloudTransmitTimeout);
-    callable("cloudUDPUid", cloudSettings.udpUid);
-    callable("enUdpCloud", cloudSettings.udpCloudEnabled);
-    callable("debugCloud", cloudSettings.enableCloudDebug);
-    callable("udpusestdstr", cloudSettings.udpUseStdString);
+#endif
+
+#ifdef FEATURE_UDPCLOUD
+    callable("cloudUDPUid", udpCloudSettings.udpUid);
+    callable("enUdpCloud", udpCloudSettings.udpCloudEnabled);
+    callable("debugCloud", udpCloudSettings.enableCloudDebug);
+    callable("udpusestdstr", udpCloudSettings.udpUseStdString);
 #endif
 
 #ifdef FEATURE_LEDSTRIP

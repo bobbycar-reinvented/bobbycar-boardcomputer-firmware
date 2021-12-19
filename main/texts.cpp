@@ -48,11 +48,17 @@ char TEXT_BLEENABLED[] = "BLE enabled";
 #ifdef FEATURE_CLOUD
 //CloudSettingsMenu
 char TEXT_CLOUDSETTINGS[] = "Cloud settings";
-char TEXT_CLOUDENABLED[] = "Tcp Cloud enabled";
-char TEXT_UDPCLOUDENABLED[] = "Udp Cloud enabled";
+char TEXT_CLOUDENABLED[] = "Cloud enabled";
 char TEXT_CLOUDTRANSMITTIMEOUT[] = "Transmit timeout";
 char TEXT_CLOUDCOLLECTRATE[] = "Cloud collect rate";
 char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
+//char TEXT_BACK[] = "Back";
+#endif
+
+#ifdef FEATURE_UDPCLOUD
+//UdpCloudSettingsMenu
+char TEXT_UDPCLOUDSETTINGS[] = "UDP Cloud settings";
+char TEXT_UDPCLOUDENABLED[] = "Udp Cloud enabled";
 char TEXT_UDPSENDRATE[] = "Udp send rate";
 char TEXT_UDPUSESTRING[] = "Udp use std::string";
 //char TEXT_BACK[] = "Back";

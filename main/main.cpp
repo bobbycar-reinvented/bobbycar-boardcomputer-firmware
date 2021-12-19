@@ -27,11 +27,6 @@ using namespace std::chrono_literals;
 #include "screens.h"
 #include "presets.h"
 #include "statistics.h"
-#ifdef FEATURE_CLOUD
-#include "cloud.h"
-#include "udpcloud.h"
-#endif
-#include "wifi_bobbycar.h"
 #include "modes/defaultmode.h"
 #include "displays/statusdisplay.h"
 #include "displays/lockscreen.h"
@@ -48,10 +43,6 @@ std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
-#ifdef FEATURE_CLOUD
-std::optional<espchrono::millis_clock::time_point> lastCloudCollect;
-std::optional<espchrono::millis_clock::time_point> lastCloudSend;
-#endif
 }
 
 extern "C" void app_main()
@@ -97,11 +88,6 @@ extern "C" void app_main()
     }
 
     currentMode = &modes::defaultMode;
-
-#ifdef FEATURE_CLOUD
-    bootLabel.redraw("cloud");
-    initCloud();
-#endif
 
     bootLabel.redraw("switchScreen");
 
@@ -184,22 +170,6 @@ extern "C" void app_main()
             performance.lastTime = now;
         }
 
-#ifdef FEATURE_CLOUD
-        if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{settings.boardcomputerHardware.timersSettings.cloudCollectRate})
-        {
-            cloudCollect();
-
-            lastCloudCollect = now;
-        }
-
-        if (!lastCloudSend || now - *lastCloudSend >= 1000ms/settings.boardcomputerHardware.timersSettings.cloudSendRate)
-        {
-            cloudSend();
-
-            lastCloudSend = now;
-        }
-#endif
-
 #ifdef FEATURE_BMS
         bms::update();
 #endif
@@ -208,10 +178,7 @@ extern "C" void app_main()
         handle_dns_announce();
 #endif
         calculateStatistics();
-#ifdef FEATURE_CLOUD
-        if (settings.cloudSettings.udpCloudEnabled)
-            sendUdpCloudPacket();
-#endif
+
         if (battery::bootBatPercentage == -1)
         {
             if(controllers.front.feedbackValid && controllers.back.feedbackValid)
