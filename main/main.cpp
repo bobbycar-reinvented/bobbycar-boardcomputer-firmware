@@ -71,7 +71,6 @@ using namespace std::chrono_literals;
 #include "taskmanager.h"
 
 namespace {
-std::optional<espchrono::millis_clock::time_point> lastPotiRead;
 std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
@@ -250,14 +249,6 @@ extern "C" void app_main()
         for (auto &schedulerTask : schedulerTasks)
         {
             schedulerTask.loop();
-
-        }
-
-        if (!lastPotiRead || now - *lastPotiRead >= 1000ms/settings.boardcomputerHardware.timersSettings.potiReadRate)
-        {
-            readPotis();
-
-            lastPotiRead = now;
         }
 
         if (!lastModeUpdate || now - *lastModeUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.modeUpdateRate)

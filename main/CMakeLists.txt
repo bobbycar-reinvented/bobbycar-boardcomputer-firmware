@@ -179,10 +179,12 @@ set(headers
     mosfets.h
     newsettings.h
     ota.h
+    potis.h
     presets.h
     qrimport.h
     rotary.h
     screens.h
+    serial.h
     serialhandler.h
     settings.h
     settingspersister.h
@@ -392,10 +394,12 @@ set(sources
     mosfets.cpp
     newsettings.cpp
     ota.cpp
+    potis.cpp
     presets.cpp
     qrimport.cpp
     rotary.cpp
     screens.cpp
+    serial.cpp
     serialhandler.cpp
     settings.cpp
     settingspersister.cpp

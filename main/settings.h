@@ -103,7 +103,6 @@ struct Settings
 #endif
 
         struct TimersSettings {
-            int16_t potiReadRate;
             int16_t modeUpdateRate;
             int16_t statsUpdateRate;
             int16_t displayUpdateRate;
@@ -300,7 +299,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("gametrakDistMax", boardcomputerHardware.gametrakDistMax);
 #endif
 
-    callable("potiReadRate", boardcomputerHardware.timersSettings.potiReadRate);
     callable("modeUpdateRate", boardcomputerHardware.timersSettings.modeUpdateRate);
     callable("statsUpdateRate", boardcomputerHardware.timersSettings.statsUpdateRate);
     callable("displayUpdateRa", boardcomputerHardware.timersSettings.displayUpdateRate);

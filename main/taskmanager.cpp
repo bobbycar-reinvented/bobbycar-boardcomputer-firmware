@@ -37,6 +37,7 @@
 #ifdef FEATURE_NTP
 #include "time_bobbycar.h"
 #endif
+#include "potis.h"
 
 using namespace std::chrono_literals;
 
@@ -71,6 +72,7 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_NTP
     espcpputils::SchedulerTask { "time",           initTime,              updateTime,              100ms },
 #endif
+    espcpputils::SchedulerTask { "potis",          initPotis,             readPotis,               20ms },
 };
 } // namespace
 

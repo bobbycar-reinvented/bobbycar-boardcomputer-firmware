@@ -11,14 +11,6 @@
 using namespace espgui;
 
 namespace {
-using PotiReadRateChangeDisplay = makeComponent<
-    ChangeValueDisplay<int16_t>,
-    StaticText<TEXT_POTIREADRATE>,
-    PotiReadRateAccessor,
-    BackActionInterface<SwitchScreenAction<TimersMenu>>,
-    SwitchScreenAction<TimersMenu>
->;
-
 using ModeUpdateRateChangeDisplay = makeComponent<
     ChangeValueDisplay<int16_t>,
     StaticText<TEXT_MODEUPDATERATE>,
@@ -64,7 +56,6 @@ using CanReceiveRateChangeDisplay = makeComponent<
 
 TimersMenu::TimersMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTIREADRATE>,      SwitchScreenAction<PotiReadRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODEUPDATERATE>,    SwitchScreenAction<ModeUpdateRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSUPDATERATE>,   SwitchScreenAction<StatsUpdateRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISPLAYUPDATERATE>, SwitchScreenAction<DisplayUpdateRateChangeDisplay>>>();
