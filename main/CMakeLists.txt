@@ -117,6 +117,7 @@ set(headers
     displays/menus/tempomatmodesettingsmenu.h
     displays/menus/timersmenu.h
     displays/menus/timesettingsmenu.h
+    displays/menus/udpcloudsettingsmenu.h
     displays/menus/wifiscanmenu.h
     displays/menus/wifisettingsmenu.h
     displays/metersdisplay.h
@@ -332,6 +333,7 @@ set(sources
     displays/menus/tempomatmodesettingsmenu.cpp
     displays/menus/timersmenu.cpp
     displays/menus/timesettingsmenu.cpp
+    displays/menus/udpcloudsettingsmenu.cpp
     displays/menus/wifiscanmenu.cpp
     displays/menus/wifisettingsmenu.cpp
     displays/metersdisplay.cpp

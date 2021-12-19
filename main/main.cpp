@@ -27,14 +27,6 @@ using namespace std::chrono_literals;
 #include "screens.h"
 #include "presets.h"
 #include "statistics.h"
-#ifdef FEATURE_CLOUD
-#include "cloud.h"
-#include "udpcloud.h"
-#endif
-#include "wifi_bobbycar.h"
-#ifdef FEATURE_LEDSTRIP
-#include "ledstrip.h"
-#endif
 #include "modes/defaultmode.h"
 #include "displays/statusdisplay.h"
 #include "displays/lockscreen.h"
@@ -44,9 +36,6 @@ using namespace std::chrono_literals;
 #endif
 #include "drivingstatistics.h"
 #include "newsettings.h"
-#ifdef FEATURE_ESPNOW
-#include "espnowfunctions.h"
-#endif
 #include "taskmanager.h"
 
 namespace {
@@ -54,13 +43,6 @@ std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
-#ifdef FEATURE_CLOUD
-std::optional<espchrono::millis_clock::time_point> lastCloudCollect;
-std::optional<espchrono::millis_clock::time_point> lastCloudSend;
-#endif
-#ifdef FEATURE_LEDSTRIP
-std::optional<espchrono::millis_clock::time_point> lastLedstripUpdate;
-#endif
 }
 
 extern "C" void app_main()
@@ -69,10 +51,6 @@ extern "C" void app_main()
     pinMode(PINS_LEDBACKLIGHT, OUTPUT);
     digitalWrite(PINS_LEDBACKLIGHT, ledBacklightInverted ? LOW : HIGH);
 #endif
-
-    pinMode(3, INPUT_PULLUP);
-
-    currentlyReverseBeeping = false;
 
     initScreen();
 
@@ -109,20 +87,7 @@ extern "C" void app_main()
         task.setup();
     }
 
-#ifdef FEATURE_LEDSTRIP
-    bootLabel.redraw("LED strip");
-    initLedStrip();
-#endif
-
-    for (Controller &controller : controllers)
-        controller.command.buzzer = {};
-
     currentMode = &modes::defaultMode;
-
-#ifdef FEATURE_CLOUD
-    bootLabel.redraw("cloud");
-    initCloud();
-#endif
 
     bootLabel.redraw("switchScreen");
 
@@ -147,9 +112,6 @@ extern "C" void app_main()
             espgui::switchScreen<StatusDisplay>();
         }
     }
-#endif
-#ifdef FEATURE_ESPNOW
-    espnow::initESPNow();
 #endif
 
     while (true)
@@ -208,46 +170,15 @@ extern "C" void app_main()
             performance.lastTime = now;
         }
 
-#ifdef FEATURE_ESPNOW
-        espnow::handle();
-#endif
-
-#ifdef FEATURE_CLOUD
-        if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{settings.boardcomputerHardware.timersSettings.cloudCollectRate})
-        {
-            cloudCollect();
-
-            lastCloudCollect = now;
-        }
-
-        if (!lastCloudSend || now - *lastCloudSend >= 1000ms/settings.boardcomputerHardware.timersSettings.cloudSendRate)
-        {
-            cloudSend();
-
-            lastCloudSend = now;
-        }
-#endif
-
 #ifdef FEATURE_BMS
         bms::update();
 #endif
 
-#ifdef FEATURE_LEDSTRIP
-        if (!lastLedstripUpdate || now - *lastLedstripUpdate >= 1000ms / 60)
-        {
-            updateLedStrip();
-
-            lastLedstripUpdate = now;
-        }
-#endif
 #ifdef FEATURE_DNS_NS
         handle_dns_announce();
 #endif
         calculateStatistics();
-#ifdef FEATURE_CLOUD
-        if (settings.cloudSettings.udpCloudEnabled)
-            sendUdpCloudPacket();
-#endif
+
         if (battery::bootBatPercentage == -1)
         {
             if(controllers.front.feedbackValid && controllers.back.feedbackValid)

@@ -74,7 +74,7 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          SwitchScreenAction<DynamicDebugMenu>>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         SwitchScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
-#ifdef FEATURE_CLOUD
+#ifdef FEATURE_UDPCLOUD
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TOGGLECLOUDDEBUG>,     ToggleBoolAction, CheckboxIcon, CloudDebugEnableAccessor>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();

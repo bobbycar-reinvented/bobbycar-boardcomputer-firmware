@@ -143,6 +143,8 @@ constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings 
 #ifdef FEATURE_CLOUD
     .cloudCollectRate = 100,
     .cloudSendRate = 1,
+#endif
+#ifdef FEATURE_UDPCLOUD
     .udpSendRateMs = 65,
 #endif
 };
@@ -170,7 +172,12 @@ constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
 #ifdef FEATURE_CLOUD
 constexpr Settings::CloudSettings defaultCloudSettings {
     .cloudEnabled = false,
-    .cloudTransmitTimeout = 10,
+    .cloudTransmitTimeout = 10
+};
+#endif
+
+#ifdef FEATURE_UDPCLOUD
+constexpr Settings::UdpCloudSettings defaultUdpCloudSettings {
     .udpUid = 0,
     .udpCloudEnabled = false,
     .enableCloudDebug = false,
@@ -329,6 +336,9 @@ constexpr Settings defaultSettings {
     .boardcomputerHardware = defaultBoardcomputerHardware,
 #ifdef FEATURE_CLOUD
     .cloudSettings = defaultCloudSettings,
+#endif
+#ifdef FEATURE_UDPCLOUD
+    .udpCloudSettings = defaultUdpCloudSettings,
 #endif
     .defaultMode = defaultDefaultMode,
     .tempomatMode = defaultTempomatMode,

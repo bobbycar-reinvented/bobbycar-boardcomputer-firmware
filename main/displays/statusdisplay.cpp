@@ -99,8 +99,8 @@ void StatusDisplay::redraw()
     m_backStatus.redraw(controllers.back);
 
     tft.setTextFont(2);
-#ifdef FEATURE_CLOUD
-    if(settings.cloudSettings.udpCloudEnabled && settings.cloudSettings.enableCloudDebug)
+#ifdef FEATURE_UDPCLOUD
+    if(settings.udpCloudSettings.udpCloudEnabled && settings.udpCloudSettings.enableCloudDebug)
     {
         tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? TFT_DARKGREY : TFT_BLACK);
     }
