@@ -27,9 +27,6 @@ using namespace std::chrono_literals;
 #include "screens.h"
 #include "presets.h"
 #include "statistics.h"
-#ifdef FEATURE_WEBSERVER
-#include "webserver.h"
-#endif
 #ifdef FEATURE_CLOUD
 #include "cloud.h"
 #include "udpcloud.h"
@@ -121,14 +118,6 @@ extern "C" void app_main()
         controller.command.buzzer = {};
 
     currentMode = &modes::defaultMode;
-
-#ifdef FEATURE_WEBSERVER
-    bootLabel.redraw("webserver");
-    initWebserver();
-#endif
-
-    bootLabel.redraw("potis");
-    readPotis();
 
 #ifdef FEATURE_CLOUD
     bootLabel.redraw("cloud");
@@ -237,10 +226,6 @@ extern "C" void app_main()
 
             lastCloudSend = now;
         }
-#endif
-
-#ifdef FEATURE_WEBSERVER
-        handleWebserver();
 #endif
 
 #ifdef FEATURE_BMS

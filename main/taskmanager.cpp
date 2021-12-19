@@ -54,6 +54,9 @@
 #ifdef FEATURE_BLE
 #include "ble_bobby.h"
 #endif
+#ifdef FEATURE_WEBSERVER
+#include "webserver.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -104,6 +107,9 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #endif
 #ifdef FEATURE_BLE
     espcpputils::SchedulerTask { "ble",            initBle,               handleBle,               100ms },
+#endif
+#ifdef FEATURE_WEBSERVER
+    espcpputils::SchedulerTask { "webserver",      initWebserver,         handleWebserver,         100ms },
 #endif
 };
 } // namespace

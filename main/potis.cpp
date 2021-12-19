@@ -18,6 +18,8 @@ void initPotis()
     raw_brems = std::nullopt;
     gas = std::nullopt;
     brems = std::nullopt;
+
+    readPotis();
 }
 
 void readPotis()
