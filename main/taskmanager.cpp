@@ -51,6 +51,9 @@
 #ifdef FEATURE_OTA
 #include "ota.h"
 #endif
+#ifdef FEATURE_BLE
+#include "ble_bobby.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -98,6 +101,9 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #endif
 #ifdef FEATURE_OTA
     espcpputils::SchedulerTask { "ota",            initOta,               handleOta,               50ms  },
+#endif
+#ifdef FEATURE_BLE
+    espcpputils::SchedulerTask { "ble",            initBle,               handleBle,               100ms },
 #endif
 };
 } // namespace

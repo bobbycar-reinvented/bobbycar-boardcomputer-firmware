@@ -27,9 +27,6 @@ using namespace std::chrono_literals;
 #include "screens.h"
 #include "presets.h"
 #include "statistics.h"
-#ifdef FEATURE_BLE
-#include "ble_bobby.h"
-#endif
 #ifdef FEATURE_WEBSERVER
 #include "webserver.h"
 #endif
@@ -60,9 +57,6 @@ std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
-#ifdef FEATURE_BLE
-std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
-#endif
 #ifdef FEATURE_CLOUD
 std::optional<espchrono::millis_clock::time_point> lastCloudCollect;
 std::optional<espchrono::millis_clock::time_point> lastCloudSend;
@@ -127,11 +121,6 @@ extern "C" void app_main()
         controller.command.buzzer = {};
 
     currentMode = &modes::defaultMode;
-
-#ifdef FEATURE_BLE
-    bootLabel.redraw("ble");
-    initBle();
-#endif
 
 #ifdef FEATURE_WEBSERVER
     bootLabel.redraw("webserver");
@@ -229,15 +218,6 @@ extern "C" void app_main()
             performance.current = 0;
             performance.lastTime = now;
         }
-
-#ifdef FEATURE_BLE
-        if (!lastBleUpdate || now - *lastBleUpdate >= 250ms)
-        {
-            handleBle();
-
-            lastBleUpdate = now;
-        }
-#endif
 
 #ifdef FEATURE_ESPNOW
         espnow::handle();
