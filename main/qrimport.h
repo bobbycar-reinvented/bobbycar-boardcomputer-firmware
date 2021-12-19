@@ -20,6 +20,7 @@ namespace qrimport {
     bool has_qr_code(std::string_view key);
     tl::expected<std::string, esp_err_t> get_qr_code(std::string_view key);
     tl::expected<void, esp_err_t> set_qr_code(std::string_view key, std::string_view qrcode);
+    tl::expected<void, esp_err_t> delete_qr_code(std::string_view key);
 
     // web request
     void setup_request();

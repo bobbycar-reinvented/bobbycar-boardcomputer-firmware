@@ -80,6 +80,19 @@ tl::expected<void, esp_err_t> set_qr_code(std::string_view key, std::string_view
     return {};
 }
 
+tl::expected<void, esp_err_t> delete_qr_code(std::string_view key)
+{
+    const auto handle = settingsPersister.getCommonHandle();
+
+    if (const esp_err_t result = nvs_erase_key(handle, key.data()); result != ESP_OK)
+    {
+        ESP_LOGW(TAG, "nvs_erase_key() for key %.*s failed with %s", key.size(), key.data(), esp_err_to_name(result));
+        return tl::make_unexpected(result);
+    }
+
+    return {};
+}
+
 // web request
 void setup_request()
 {
