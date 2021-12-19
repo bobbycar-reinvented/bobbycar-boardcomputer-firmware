@@ -49,6 +49,7 @@ set(headers
     cloudtexthelpers.h
     controller.h
     debugcolorhelpers.h
+    debuginputhandler.h
     debugtexthelpers.h
     displays/bmsdisplay.h
     displays/calibratedisplay.h
@@ -186,7 +187,6 @@ set(headers
     rotary.h
     screens.h
     serial.h
-    serialhandler.h
     settings.h
     settingspersister.h
     settingsutils.h
@@ -264,6 +264,7 @@ set(sources
     cloudtexthelpers.cpp
     controller.cpp
     debugcolorhelpers.cpp
+    debuginputhandler.cpp
     debugtexthelpers.cpp
     displays/bmsdisplay.cpp
     displays/calibratedisplay.cpp
@@ -402,7 +403,6 @@ set(sources
     rotary.cpp
     screens.cpp
     serial.cpp
-    serialhandler.cpp
     settings.cpp
     settingspersister.cpp
     settingsutils.cpp

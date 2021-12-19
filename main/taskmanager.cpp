@@ -44,6 +44,7 @@
 #ifdef FEATURE_CAN
 #include "can.h"
 #endif
+#include "debuginputhandler.h"
 
 using namespace std::chrono_literals;
 
@@ -85,6 +86,7 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_CAN
     espcpputils::SchedulerTask { "can",            can::initCan,          can::parseCanInput,      50ms  },
 #endif
+    espcpputils::SchedulerTask { "debuginput",     initDebugInput,        handleDebugInput,        50ms  },
 };
 } // namespace
 

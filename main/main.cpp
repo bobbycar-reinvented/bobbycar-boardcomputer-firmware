@@ -25,7 +25,6 @@ using namespace std::chrono_literals;
 #include "macros_bobbycar.h"
 #include "globals.h"
 #include "screens.h"
-#include "serialhandler.h"
 #ifdef FEATURE_OTA
 #include "ota.h"
 #include "displays/menus/selectbuildservermenu.h"
@@ -79,10 +78,6 @@ std::optional<espchrono::millis_clock::time_point> lastLedstripUpdate;
 
 extern "C" void app_main()
 {
-    Serial.begin(115200);
-    //Serial.setDebugOutput(true);
-    //Serial.println("setup()");
-
 #ifdef FEATURE_LEDBACKLIGHT
     pinMode(PINS_LEDBACKLIGHT, OUTPUT);
     digitalWrite(PINS_LEDBACKLIGHT, ledBacklightInverted ? LOW : HIGH);
@@ -259,8 +254,6 @@ extern "C" void app_main()
         for (Controller &controller : controllers)
             controller.parser.update();
 #endif
-
-        handleSerial();
 
 #ifdef FEATURE_OTA
         handleOta();
