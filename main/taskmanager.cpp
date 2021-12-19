@@ -72,6 +72,7 @@
 #ifdef FEATURE_UDPCLOUD
 #include "udpcloud.h"
 #endif
+#include "modes.h"
 
 using namespace std::chrono_literals;
 
@@ -141,10 +142,18 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_UDPCLOUD
     espcpputils::SchedulerTask { "udpcloud",       udpCloudInit,          udpCloudUpdate,          50ms },
 #endif
+    espcpputils::SchedulerTask { "drivingmode",    initDrivingMode,       updateDrivingMode,       20ms },
 };
 } // namespace
 
 cpputils::ArrayView<espcpputils::SchedulerTask> schedulerTasks{std::begin(schedulerTasksArr), std::end(schedulerTasksArr)};
+
+const espcpputils::SchedulerTask &drivingModeTask = []() -> const espcpputils::SchedulerTask & {
+    auto iter = std::find_if(std::begin(schedulerTasksArr), std::end(schedulerTasksArr), [](const espcpputils::SchedulerTask &task){
+        return std::string_view{task.name()} == "drivingmode";
+    });
+    return *iter;
+}();
 
 void sched_pushStats(bool printTasks)
 {

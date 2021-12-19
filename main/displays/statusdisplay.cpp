@@ -4,6 +4,7 @@
 #include <fmt/core.h>
 #include <espwifistack.h>
 #include <tftinstance.h>
+#include <schedulertask.h>
 
 // local includes
 #include "displays/menus/mainmenu.h"
@@ -15,6 +16,7 @@
 #include "drivingstatistics.h"
 #include "udpcloud.h"
 #include "modes/defaultmode.h"
+#include "taskmanager.h"
 
 using namespace std::chrono_literals;
 using namespace espgui;
@@ -162,8 +164,8 @@ clearIp:
 
     m_labelLimit1.redraw(fmt::format("{}A", controllers.front.command.left.iDcMax));
 
-    tft.setTextColor(performance.last < 35 ? TFT_ORANGE : TFT_WHITE, TFT_BLACK);
-    m_labelPerformance.redraw(std::to_string(performance.last));
+    tft.setTextColor(drivingModeTask.callCount() < 35 ? TFT_ORANGE : TFT_WHITE, TFT_BLACK);
+    m_labelPerformance.redraw(std::to_string(drivingModeTask.callCount()));
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
     {

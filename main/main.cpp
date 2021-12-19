@@ -39,7 +39,7 @@ using namespace std::chrono_literals;
 #include "taskmanager.h"
 
 namespace {
-std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
+espchrono::millis_clock::time_point lastStatsPush;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
@@ -123,25 +123,6 @@ extern "C" void app_main()
             schedulerTask.loop();
         }
 
-        if (!lastModeUpdate || now - *lastModeUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.modeUpdateRate)
-        {
-            if (lastMode != currentMode)
-            {
-                if (lastMode)
-                    lastMode->stop();
-                lastMode = currentMode;
-                if (currentMode)
-                    currentMode->start();
-            }
-
-            if (currentMode)
-                currentMode->update();
-
-            lastModeUpdate = now;
-
-            performance.current++;
-        }
-
         if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.statsUpdateRate)
         {
             updateAccumulators();
@@ -163,13 +144,11 @@ extern "C" void app_main()
             lastDisplayRedraw = now;
         }
 
-        if (now - performance.lastTime >= 1000ms)
+        if (now - lastStatsPush >= 1s)
         {
             sched_pushStats(false);
 
-            performance.last = performance.current;
-            performance.current = 0;
-            performance.lastTime = now;
+            lastStatsPush = now;
         }
 
 #ifdef FEATURE_DNS_NS
