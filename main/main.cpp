@@ -41,9 +41,6 @@ using namespace std::chrono_literals;
 #endif
 #include "drivingstatistics.h"
 #include "newsettings.h"
-#ifdef FEATURE_ESPNOW
-#include "espnowfunctions.h"
-#endif
 #include "taskmanager.h"
 
 namespace {
@@ -63,10 +60,6 @@ extern "C" void app_main()
     pinMode(PINS_LEDBACKLIGHT, OUTPUT);
     digitalWrite(PINS_LEDBACKLIGHT, ledBacklightInverted ? LOW : HIGH);
 #endif
-
-    pinMode(3, INPUT_PULLUP);
-
-    currentlyReverseBeeping = false;
 
     initScreen();
 
@@ -103,9 +96,6 @@ extern "C" void app_main()
         task.setup();
     }
 
-    for (Controller &controller : controllers)
-        controller.command.buzzer = {};
-
     currentMode = &modes::defaultMode;
 
 #ifdef FEATURE_CLOUD
@@ -136,9 +126,6 @@ extern "C" void app_main()
             espgui::switchScreen<StatusDisplay>();
         }
     }
-#endif
-#ifdef FEATURE_ESPNOW
-    espnow::initESPNow();
 #endif
 
     while (true)
@@ -196,10 +183,6 @@ extern "C" void app_main()
             performance.current = 0;
             performance.lastTime = now;
         }
-
-#ifdef FEATURE_ESPNOW
-        espnow::handle();
-#endif
 
 #ifdef FEATURE_CLOUD
         if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{settings.boardcomputerHardware.timersSettings.cloudCollectRate})

@@ -21,6 +21,7 @@ void initDebugInput()
 {
     Serial.begin(115200);
     //Serial.setDebugOutput(true);
+    pinMode(3, INPUT_PULLUP);
 }
 
 void handleDebugInput()

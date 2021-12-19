@@ -60,6 +60,9 @@
 #ifdef FEATURE_LEDSTRIP
 #include "ledstrip.h"
 #endif
+#ifdef FEATURE_ESPNOW
+#include "espnowfunctions.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -117,6 +120,8 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_LEDSTRIP
     espcpputils::SchedulerTask { "ledstrip",       initLedStrip,          updateLedStrip,          30ms },
 #endif
+#ifdef FEATURE_ESPNOW
+    espcpputils::SchedulerTask { "espnow",         espnow::initESPNow,    espnow::handle,          100ms },
 };
 } // namespace
 
