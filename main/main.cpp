@@ -38,9 +38,6 @@ using namespace std::chrono_literals;
 #ifdef FEATURE_WEBSERVER
 #include "webserver.h"
 #endif
-#ifdef FEATURE_CAN
-#include "can.h"
-#endif
 #ifdef FEATURE_CLOUD
 #include "cloud.h"
 #include "udpcloud.h"
@@ -68,9 +65,6 @@ std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
-#ifdef FEATURE_CAN
-std::optional<espchrono::millis_clock::time_point> lastCanParse;
-#endif
 #ifdef FEATURE_BLE
 std::optional<espchrono::millis_clock::time_point> lastBleUpdate;
 #endif
@@ -132,11 +126,6 @@ extern "C" void app_main()
         bootLabel.redraw(task.name());
         task.setup();
     }
-
-#ifdef FEATURE_CAN
-    bootLabel.redraw("can");
-    can::initCan();
-#endif
 
 #ifdef FEATURE_SERIAL
     bootLabel.redraw("front Serial begin");
@@ -265,16 +254,6 @@ extern "C" void app_main()
             performance.current = 0;
             performance.lastTime = now;
         }
-
-#ifdef FEATURE_CAN
-        if (!lastCanParse || now - *lastCanParse >= 1000ms/settings.boardcomputerHardware.timersSettings.canReceiveRate)
-        {
-            //can::tryParseCanInput();
-            can::parseCanInput();
-
-            lastCanParse = now;
-        }
-#endif
 
 #ifdef FEATURE_SERIAL
         for (Controller &controller : controllers)

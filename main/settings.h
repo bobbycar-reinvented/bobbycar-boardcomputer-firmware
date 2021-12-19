@@ -107,9 +107,6 @@ struct Settings
             int16_t statsUpdateRate;
             int16_t displayUpdateRate;
             int16_t displayRedrawRate;
-#ifdef FEATURE_CAN
-            int16_t canReceiveRate;
-#endif
 #ifdef FEATURE_CLOUD
             int16_t cloudCollectRate;
             int16_t cloudSendRate;
@@ -303,9 +300,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("statsUpdateRate", boardcomputerHardware.timersSettings.statsUpdateRate);
     callable("displayUpdateRa", boardcomputerHardware.timersSettings.displayUpdateRate);
     callable("displayRedrawRa", boardcomputerHardware.timersSettings.displayRedrawRate);
-#ifdef FEATURE_CAN
-    callable("canReceiveRate", boardcomputerHardware.timersSettings.canReceiveRate);
-#endif
 #ifdef FEATURE_CLOUD
     callable("cloudCollectRat", boardcomputerHardware.timersSettings.cloudCollectRate);
     callable("cloudSendRate", boardcomputerHardware.timersSettings.cloudSendRate);

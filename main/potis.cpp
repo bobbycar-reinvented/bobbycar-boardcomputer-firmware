@@ -6,7 +6,6 @@
 
 // local includes
 #include "globals.h"
-
 #ifdef FEATURE_CAN
 #include "can.h"
 #endif

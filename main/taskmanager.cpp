@@ -41,6 +41,9 @@
 #ifdef FEATURE_BLUETOOTH
 #include "bluetooth_bobby.h"
 #endif
+#ifdef FEATURE_CAN
+#include "can.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -49,35 +52,38 @@ constexpr const char * const TAG = "TASKS";
 
 espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms },
-    espcpputils::SchedulerTask { "input",          InputDispatcher::init, InputDispatcher::update, {}    },
+    espcpputils::SchedulerTask { "input",          InputDispatcher::init, InputDispatcher::update, 20ms  },
 #ifdef FEATURE_DPAD
-    espcpputils::SchedulerTask { "dpad",           dpad::init,            dpad::update,            {}    },
+    espcpputils::SchedulerTask { "dpad",           dpad::init,            dpad::update,            20ms  },
 #endif
 #ifdef FEATURE_DPAD_3WIRESW
-    espcpputils::SchedulerTask { "dpad3wire",      dpad3wire::init,       dpad3wire::update,       {}    },
+    espcpputils::SchedulerTask { "dpad3wire",      dpad3wire::init,       dpad3wire::update,       20ms  },
 #endif
 #ifdef FEATURE_DPAD_5WIRESW
-    espcpputils::SchedulerTask { "dpad5wire",      dpad5wire::init,       dpad5wire::update,       {}    },
+    espcpputils::SchedulerTask { "dpad5wire",      dpad5wire::init,       dpad5wire::update,       20ms  },
 #endif
 #ifdef FEATURE_DPAD_5WIRESW_2OUT
-    espcpputils::SchedulerTask { "dpad5wire_2out", dpad5wire_2out::init,  dpad5wire_2out::update,  {}    },
+    espcpputils::SchedulerTask { "dpad5wire_2out", dpad5wire_2out::init,  dpad5wire_2out::update,  20ms  },
 #endif
 #ifdef FEATURE_DPAD_6WIRESW
-    espcpputils::SchedulerTask { "dpad6wire",      dpad6wire::init,       dpad6wire::update,       {}    },
+    espcpputils::SchedulerTask { "dpad6wire",      dpad6wire::init,       dpad6wire::update,       20ms  },
 #endif
 #ifdef FEATURE_ROTARY
-    espcpputils::SchedulerTask { "rotary",         initRotary,            updateRotary,            {}    },
+    espcpputils::SchedulerTask { "rotary",         initRotary,            updateRotary,            20ms  },
 #endif
 #ifdef FEATURE_MOSFETS
-    espcpputils::SchedulerTask { "mosfets",        init_mosfets,          update_mosfets,          {}    },
+    espcpputils::SchedulerTask { "mosfets",        init_mosfets,          update_mosfets,          100ms },
 #endif
     espcpputils::SchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms },
 #ifdef FEATURE_NTP
     espcpputils::SchedulerTask { "time",           initTime,              updateTime,              100ms },
 #endif
-    espcpputils::SchedulerTask { "potis",          initPotis,             readPotis,               20ms },
+    espcpputils::SchedulerTask { "potis",          initPotis,             readPotis,               20ms  },
 #ifdef FEATURE_BLUETOOTH
     espcpputils::SchedulerTask { "bluetooth",      bluetooth_init,        bluetooth_update,        100ms },
+#endif
+#ifdef FEATURE_CAN
+    espcpputils::SchedulerTask { "can",            can::initCan,          can::parseCanInput,      50ms  },
 #endif
 };
 } // namespace

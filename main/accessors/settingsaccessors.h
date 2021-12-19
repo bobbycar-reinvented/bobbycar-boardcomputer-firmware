@@ -130,11 +130,6 @@ struct StatsUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16
 struct DisplayUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.displayUpdateRate; } };
 struct DisplayRedrawRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.displayRedrawRate; } };
 
-// CAN
-#ifdef FEATURE_CAN
-struct CanReceiveRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.canReceiveRate; } };
-#endif
-
 // Cloud
 #ifdef FEATURE_CLOUD
 struct CloudCollectRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.cloudCollectRate; } };

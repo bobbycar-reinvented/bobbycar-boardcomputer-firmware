@@ -428,9 +428,6 @@ extern char TEXT_MODEUPDATERATE[];
 extern char TEXT_STATSUPDATERATE[];
 extern char TEXT_DISPLAYUPDATERATE[];
 extern char TEXT_DISPLAYREDRAWRATE[];
-#ifdef FEATURE_CAN
-extern char TEXT_CANRECEIVERATE[];
-#endif
 //extern char TEXT_BACK[];
 
 //TimeSettingsMenu
