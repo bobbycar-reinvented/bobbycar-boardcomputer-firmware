@@ -25,10 +25,6 @@ using namespace std::chrono_literals;
 #include "macros_bobbycar.h"
 #include "globals.h"
 #include "screens.h"
-#ifdef FEATURE_OTA
-#include "ota.h"
-#include "displays/menus/selectbuildservermenu.h"
-#endif
 #include "presets.h"
 #include "statistics.h"
 #ifdef FEATURE_BLE
@@ -132,11 +128,6 @@ extern "C" void app_main()
 
     currentMode = &modes::defaultMode;
 
-#ifdef FEATURE_OTA
-    bootLabel.redraw("ota");
-    initOta();
-#endif
-
 #ifdef FEATURE_BLE
     bootLabel.redraw("ble");
     initBle();
@@ -238,10 +229,6 @@ extern "C" void app_main()
             performance.current = 0;
             performance.lastTime = now;
         }
-
-#ifdef FEATURE_OTA
-        handleOta();
-#endif
 
 #ifdef FEATURE_BLE
         if (!lastBleUpdate || now - *lastBleUpdate >= 250ms)

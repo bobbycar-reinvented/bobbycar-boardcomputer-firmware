@@ -48,6 +48,9 @@
 #ifdef FEATURE_SERIAL
 #include "serial_bobby.h"
 #endif
+#ifdef FEATURE_OTA
+#include "ota.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -92,6 +95,9 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "debuginput",     initDebugInput,        handleDebugInput,        50ms  },
 #ifdef FEATURE_SERIAL
     espcpputils::SchedulerTask { "serial",         initSerial,            updateSerial,            50ms  },
+#endif
+#ifdef FEATURE_OTA
+    espcpputils::SchedulerTask { "ota",            initOta,               handleOta,               50ms  },
 #endif
 };
 } // namespace
