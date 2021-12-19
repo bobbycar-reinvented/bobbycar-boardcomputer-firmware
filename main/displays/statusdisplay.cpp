@@ -16,6 +16,7 @@
 #include "udpcloud.h"
 #include "modes/defaultmode.h"
 
+using namespace std::chrono_literals;
 using namespace espgui;
 
 namespace {
@@ -70,6 +71,14 @@ void StatusDisplay::initScreen()
 void StatusDisplay::redraw()
 {
     Base::redraw();
+
+    {
+        const auto now = espchrono::millis_clock::now();
+        if (now - lastRedraw < 50ms)
+            return;
+        lastRedraw = now;
+    }
+
     if (settings.handbremse.enable && settings.handbremse.visualize && handbremse::angezogen)
         tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_RED);
     else if (settings.handbremse.enable && settings.handbremse.visualize && handbremse::stateWish == handbremse::StateWish::brake)
