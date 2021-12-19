@@ -165,6 +165,8 @@ extern "C" void app_main()
 
         if (now - performance.lastTime >= 1000ms)
         {
+            sched_pushStats(false);
+
             performance.last = performance.current;
             performance.current = 0;
             performance.lastTime = now;

@@ -543,6 +543,9 @@ extern char TEXT_SELECT_BRANCH_CLEAR[];
 //QrCodeDebug
 extern char TEXT_QRCODE_DEBUG[];
 
+// TaskmanagerMenu
+extern char TEXT_TASKMANAGER[];
+
 //GreenPassMenu
 extern char TEXT_GREENPASS[];
 extern char TEXT_ADDCERT[];

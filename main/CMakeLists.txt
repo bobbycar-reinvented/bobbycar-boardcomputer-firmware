@@ -114,6 +114,7 @@ set(headers
     displays/menus/settingsmenu.h
     displays/menus/stationwifisettingsmenu.h
     displays/menus/statisticsmenu.h
+    displays/menus/taskmanagermenu.h
     displays/menus/tempomatmodesettingsmenu.h
     displays/menus/timersmenu.h
     displays/menus/timesettingsmenu.h
@@ -330,6 +331,7 @@ set(sources
     displays/menus/settingsmenu.cpp
     displays/menus/stationwifisettingsmenu.cpp
     displays/menus/statisticsmenu.cpp
+    displays/menus/taskmanagermenu.cpp
     displays/menus/tempomatmodesettingsmenu.cpp
     displays/menus/timersmenu.cpp
     displays/menus/timesettingsmenu.cpp

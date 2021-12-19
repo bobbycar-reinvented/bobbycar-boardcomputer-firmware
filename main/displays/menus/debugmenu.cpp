@@ -20,6 +20,7 @@
 #include "debugcolorhelpers.h"
 #include "esptexthelpers.h"
 #include "displays/qrcodedebug.h"
+#include "displays/menus/taskmanagermenu.h"
 #include "displays/menus/commanddebugmenu.h"
 #include "displays/menus/motorstatedebugmenu.h"
 #include "displays/menus/feedbackdebugmenu.h"
@@ -48,6 +49,7 @@ using namespace espgui;
 DebugMenu::DebugMenu()
 {
     constructMenuItem<AlertAction>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TASKMANAGER>,         SwitchScreenAction<TaskmanagerMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QRCODE_DEBUG>,         SwitchScreenAction<QrCodeDebugDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOADSETTINGS>,         LoadSettingsAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SAVESETTINGS>,         SaveSettingsAction>>();
