@@ -10,9 +10,6 @@ constexpr const char * const TAG = "BOBBY";
 // esp-idf includes
 #include <esp_log.h>
 
-// Arduino includes
-#include <Arduino.h>
-
 // 3rdparty lib includes
 #include <espchrono.h>
 using namespace std::chrono_literals;
@@ -31,10 +28,6 @@ using namespace std::chrono_literals;
 #include "displays/statusdisplay.h"
 #include "displays/lockscreen.h"
 #include "displays/calibratedisplay.h"
-#ifdef FEATURE_DNS_NS
-#include "dnsannounce.h"
-#endif
-#include "drivingstatistics.h"
 #include "newsettings.h"
 #include "taskmanager.h"
 
@@ -150,11 +143,6 @@ extern "C" void app_main()
 
             lastStatsPush = now;
         }
-
-#ifdef FEATURE_DNS_NS
-        handle_dns_announce();
-#endif
-        calculateStatistics();
 
         if (battery::bootBatPercentage == -1)
         {

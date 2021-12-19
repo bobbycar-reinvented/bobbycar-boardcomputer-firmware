@@ -73,6 +73,10 @@
 #include "udpcloud.h"
 #endif
 #include "modes.h"
+#include "drivingstatistics.h"
+#ifdef FEATURE_DNS_NS
+#include "dnsannounce.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -143,6 +147,10 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "udpcloud",       udpCloudInit,          udpCloudUpdate,          50ms },
 #endif
     espcpputils::SchedulerTask { "drivingmode",    initDrivingMode,       updateDrivingMode,       20ms },
+    espcpputils::SchedulerTask { "drivingstatistics", initStatistics,     calculateStatistics,     100ms },
+#ifdef FEATURE_DNS_NS
+    espcpputils::SchedulerTask { "dnsannounce",    init_dns_announce,     handle_dns_announce,     100ms },
+#endif
 };
 } // namespace
 
