@@ -424,7 +424,6 @@ extern char TEXT_MOTORTEST[];
 
 //TimersMenu
 //extern char TEXT_TIMERS[];
-extern char TEXT_POTIREADRATE[];
 extern char TEXT_MODEUPDATERATE[];
 extern char TEXT_STATSUPDATERATE[];
 extern char TEXT_DISPLAYUPDATERATE[];

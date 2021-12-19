@@ -30,6 +30,7 @@ set(headers
     battery.h
     ble_bobby.h
     bletexthelpers.h
+    bluetooth_bobby.h
     bluetoothmode.h
     bluetoothtexthelpers.h
     bmsutils.h
@@ -179,10 +180,12 @@ set(headers
     mosfets.h
     newsettings.h
     ota.h
+    potis.h
     presets.h
     qrimport.h
     rotary.h
     screens.h
+    serial.h
     serialhandler.h
     settings.h
     settingspersister.h
@@ -242,6 +245,7 @@ set(sources
     battery.cpp
     ble_bobby.cpp
     bletexthelpers.cpp
+    bluetooth_bobby.cpp
     bluetoothmode.cpp
     bluetoothtexthelpers.cpp
     bmsutils.cpp
@@ -392,10 +396,12 @@ set(sources
     mosfets.cpp
     newsettings.cpp
     ota.cpp
+    potis.cpp
     presets.cpp
     qrimport.cpp
     rotary.cpp
     screens.cpp
+    serial.cpp
     serialhandler.cpp
     settings.cpp
     settingspersister.cpp

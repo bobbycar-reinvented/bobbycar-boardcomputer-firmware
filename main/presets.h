@@ -136,7 +136,6 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
 };
 
 constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings {
-    .potiReadRate = 50,
     .modeUpdateRate = 50,
     .statsUpdateRate = 50,
     .displayUpdateRate = 50,

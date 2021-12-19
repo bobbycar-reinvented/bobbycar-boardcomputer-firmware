@@ -424,7 +424,6 @@ char TEXT_MOTORTEST[] = "Motortest";
 
 //TimersMenu
 //char TEXT_TIMERS[] = "Timers";
-char TEXT_POTIREADRATE[] = "Poti read rate";
 char TEXT_MODEUPDATERATE[] = "Mode update rate";
 char TEXT_STATSUPDATERATE[] = "Stats update rate";
 char TEXT_DISPLAYUPDATERATE[] = "Display update rate";

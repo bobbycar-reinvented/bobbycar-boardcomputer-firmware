@@ -37,6 +37,10 @@
 #ifdef FEATURE_NTP
 #include "time_bobbycar.h"
 #endif
+#include "potis.h"
+#ifdef FEATURE_BLUETOOTH
+#include "bluetooth_bobby.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -70,6 +74,10 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms },
 #ifdef FEATURE_NTP
     espcpputils::SchedulerTask { "time",           initTime,              updateTime,              100ms },
+#endif
+    espcpputils::SchedulerTask { "potis",          initPotis,             readPotis,               20ms },
+#ifdef FEATURE_BLUETOOTH
+    espcpputils::SchedulerTask { "bluetooth",      bluetooth_init,        bluetooth_update,        100ms },
 #endif
 };
 } // namespace

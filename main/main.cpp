@@ -32,13 +32,6 @@ using namespace std::chrono_literals;
 #endif
 #include "presets.h"
 #include "statistics.h"
-#ifdef FEATURE_BLUETOOTH
-#include "actions/bluetoothbeginaction.h"
-#include "actions/bluetoothbeginmasteraction.h"
-#ifdef FEATURE_BMS
-#include "actions/bluetoothconnectbmsaction.h"
-#endif
-#endif
 #ifdef FEATURE_BLE
 #include "ble_bobby.h"
 #endif
@@ -71,7 +64,6 @@ using namespace std::chrono_literals;
 #include "taskmanager.h"
 
 namespace {
-std::optional<espchrono::millis_clock::time_point> lastPotiRead;
 std::optional<espchrono::millis_clock::time_point> lastModeUpdate;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
@@ -141,26 +133,6 @@ extern "C" void app_main()
         task.setup();
     }
 
-#ifdef FEATURE_BLUETOOTH
-    if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Master)
-    {
-        bootLabel.redraw("bluetooth begin master");
-        BluetoothBeginMasterAction{}.triggered();
-#ifdef FEATURE_BMS
-        if (settings.autoConnectBms)
-        {
-            bootLabel.redraw("connect BMS");
-            BluetoothConnectBmsAction{}.triggered();
-        }
-#endif
-    }
-    else if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Slave)
-    {
-        bootLabel.redraw("bluetooth begin");
-        BluetoothBeginAction{}.triggered();
-    }
-#endif
-
 #ifdef FEATURE_CAN
     bootLabel.redraw("can");
     can::initCan();
@@ -181,11 +153,6 @@ extern "C" void app_main()
     bootLabel.redraw("LED strip");
     initLedStrip();
 #endif
-
-    raw_gas = std::nullopt;
-    raw_brems = std::nullopt;
-    gas = std::nullopt;
-    brems = std::nullopt;
 
     for (Controller &controller : controllers)
         controller.command.buzzer = {};
@@ -250,14 +217,6 @@ extern "C" void app_main()
         for (auto &schedulerTask : schedulerTasks)
         {
             schedulerTask.loop();
-
-        }
-
-        if (!lastPotiRead || now - *lastPotiRead >= 1000ms/settings.boardcomputerHardware.timersSettings.potiReadRate)
-        {
-            readPotis();
-
-            lastPotiRead = now;
         }
 
         if (!lastModeUpdate || now - *lastModeUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.modeUpdateRate)
