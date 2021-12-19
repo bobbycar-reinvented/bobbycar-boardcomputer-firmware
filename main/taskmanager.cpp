@@ -57,6 +57,9 @@
 #ifdef FEATURE_WEBSERVER
 #include "webserver.h"
 #endif
+#ifdef FEATURE_LEDSTRIP
+#include "ledstrip.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -96,7 +99,7 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "bluetooth",      bluetooth_init,        bluetooth_update,        100ms },
 #endif
 #ifdef FEATURE_CAN
-    espcpputils::SchedulerTask { "can",            can::initCan,          can::parseCanInput,      50ms  },
+    espcpputils::SchedulerTask { "can",            can::initCan,          can::parseCanInput,      10ms  },
 #endif
     espcpputils::SchedulerTask { "debuginput",     initDebugInput,        handleDebugInput,        50ms  },
 #ifdef FEATURE_SERIAL
@@ -110,6 +113,9 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #endif
 #ifdef FEATURE_WEBSERVER
     espcpputils::SchedulerTask { "webserver",      initWebserver,         handleWebserver,         100ms },
+#endif
+#ifdef FEATURE_LEDSTRIP
+    espcpputils::SchedulerTask { "ledstrip",       initLedStrip,          updateLedStrip,          30ms },
 #endif
 };
 } // namespace

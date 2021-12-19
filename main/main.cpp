@@ -32,9 +32,6 @@ using namespace std::chrono_literals;
 #include "udpcloud.h"
 #endif
 #include "wifi_bobbycar.h"
-#ifdef FEATURE_LEDSTRIP
-#include "ledstrip.h"
-#endif
 #include "modes/defaultmode.h"
 #include "displays/statusdisplay.h"
 #include "displays/lockscreen.h"
@@ -57,9 +54,6 @@ std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
 #ifdef FEATURE_CLOUD
 std::optional<espchrono::millis_clock::time_point> lastCloudCollect;
 std::optional<espchrono::millis_clock::time_point> lastCloudSend;
-#endif
-#ifdef FEATURE_LEDSTRIP
-std::optional<espchrono::millis_clock::time_point> lastLedstripUpdate;
 #endif
 }
 
@@ -108,11 +102,6 @@ extern "C" void app_main()
         bootLabel.redraw(task.name());
         task.setup();
     }
-
-#ifdef FEATURE_LEDSTRIP
-    bootLabel.redraw("LED strip");
-    initLedStrip();
-#endif
 
     for (Controller &controller : controllers)
         controller.command.buzzer = {};
@@ -232,14 +221,6 @@ extern "C" void app_main()
         bms::update();
 #endif
 
-#ifdef FEATURE_LEDSTRIP
-        if (!lastLedstripUpdate || now - *lastLedstripUpdate >= 1000ms / 60)
-        {
-            updateLedStrip();
-
-            lastLedstripUpdate = now;
-        }
-#endif
 #ifdef FEATURE_DNS_NS
         handle_dns_announce();
 #endif
