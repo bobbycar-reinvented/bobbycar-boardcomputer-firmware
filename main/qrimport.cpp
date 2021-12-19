@@ -123,6 +123,7 @@ tl::expected<std::string, std::string> check_request()
     }
     else
     {
+        ESP_LOGI(TAG, "%.*s", http_request->buffer().size(), http_request->buffer().data());
         return http_request->takeBuffer();
     }
 }

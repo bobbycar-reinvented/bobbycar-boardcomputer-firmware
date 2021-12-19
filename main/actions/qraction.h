@@ -7,7 +7,8 @@
 
 namespace qraction {
 struct QrMenu {
-    std::string_view message;
+    std::string message;
+    std::string text;
     uint8_t ver;
 };
 } // namespace
@@ -19,6 +20,16 @@ public:
 
     void triggered() override;
 private:
-    std::string_view m_msg;
+    std::string m_msg;
     uint8_t m_ver;
+};
+
+class SwitchQrImportDisplayAction : public virtual espgui::ActionInterface
+{
+public:
+    SwitchQrImportDisplayAction(std::string nvskey);
+
+    void triggered() override;
+private:
+    std::string m_nvskey;
 };

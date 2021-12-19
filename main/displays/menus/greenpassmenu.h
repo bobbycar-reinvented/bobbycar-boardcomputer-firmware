@@ -14,4 +14,6 @@ class GreenPassMenu :
 public:
     GreenPassMenu();
     void back() override;
+private:
+    bool m_deleteMode;
 };

@@ -16,35 +16,35 @@ constexpr const char * const TAG = "qrimport";
 
 using namespace espgui;
 
-/*
- *  This display will be accessable via GreenPassMenu. If you click on it, it will ask if you want to download the qr code.
- *  If confirm is pressed, the display will lock the back action and send a request via qrimport.h. If an error occours, it will be displayed.
- *  If everything is okay, you will be redirected to GreenPassMenu.
- *  The update function will need to be overriden to check the web handler if it exists.
- */
-
-QrImportDisplay::QrImportDisplay()
-{
-    // constructor
-}
+QrImportDisplay::QrImportDisplay(std::string nvs_key) : m_nvs_key{nvs_key} {}
 
 void QrImportDisplay::start()
 {
     m_statuslabel.start();
     qrimport::setup_request();
+    m_statuslabel.redraw(fmt::format("Request not running."));
 }
 
 void QrImportDisplay::back()
 {
-    if (!m_backLocked)
+    if (!qrimport::get_request_running())
+    {
         switchScreen<GreenPassMenu>();
+    }
 }
 
 void QrImportDisplay::confirm()
 {
     // start request
-    m_backLocked = true;
-    qrimport::start_qr_request();
+    if (!m_confirmLocked)
+    {
+        if (const auto result = qrimport::start_qr_request(); !result)
+        {
+            switchScreen<GreenPassMenu>();
+        }
+        else
+            m_confirmLocked = true;
+    }
 }
 
 void QrImportDisplay::update()
@@ -52,9 +52,18 @@ void QrImportDisplay::update()
     m_expected = qrimport::check_request();
     if (m_expected)
     {
-        ESP_LOGI(TAG, "%s", m_expected->c_str());
-        m_backLocked = false;
-        switchScreen<GreenPassMenu>();
+        ESP_LOGI(TAG, "%s", fmt::format("{} => {}", m_nvs_key, *m_expected).c_str());
+        if (const auto result = qrimport::set_qr_code(m_nvs_key, *m_expected); !result)
+        {
+            tft.setTextColor(TFT_RED);
+            m_statuslabel.redraw(esp_err_to_name(result.error()));
+            tft.setTextColor(TFT_WHITE);
+            m_confirmLocked = true;
+        }
+        else
+        {
+            switchScreen<GreenPassMenu>();
+        }
     }
 }
 
@@ -71,6 +80,6 @@ void QrImportDisplay::redraw()
     }
     else
     {
-        m_statuslabel.redraw(fmt::format("Request not running."));
+        m_statuslabel.redraw("Request not running");
     }
 }
