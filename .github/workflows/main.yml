@@ -15,6 +15,7 @@ jobs:
       SONAR_SCANNER_VERSION: 4.4.0.2170
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
+      SONAR_CACHE_DIR: sonar_cache
     environment: deploy
     strategy:
       fail-fast: false
@@ -80,12 +81,18 @@ jobs:
           build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} idf.py --ccache build
           ccache -s
 
+      - name: Cache sonar
+        uses: 0xFEEDC0DE64/cache-with-update@update-cache-on-cachehit
+        with:
+          path: ${{ env.SONAR_SERVER_URL }}
+          key: ${{ runner.os }}-sonar-${{ matrix.node }}
+
       - name: Run sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
+          sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}" --define sonar.cfamily.cache.path="${{ env.SONAR_CACHE_DIR }}"
           
       - name: Set outputs
         id: vars
