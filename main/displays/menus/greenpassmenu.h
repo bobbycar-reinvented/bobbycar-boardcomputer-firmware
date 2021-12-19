@@ -3,6 +3,7 @@
 #include <qrcode.h>
 
 // local includes
+#include "accessorinterface.h"
 #include "menudisplay.h"
 #include "texts.h"
 

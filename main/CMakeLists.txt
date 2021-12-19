@@ -123,6 +123,7 @@ set(headers
     displays/poweroffdisplay.h
     displays/powersupplydisplay.h
     displays/qrcodedebug.h
+    displays/qrimportdisplay.h
     displays/spirodisplay.h
     displays/starfielddisplay.h
     displays/statusdisplay.h
@@ -179,6 +180,7 @@ set(headers
     newsettings.h
     ota.h
     presets.h
+    qrimport.h
     rotary.h
     screens.h
     serialhandler.h
@@ -333,6 +335,7 @@ set(sources
     displays/poweroffdisplay.cpp
     displays/powersupplydisplay.cpp
     displays/qrcodedebug.cpp
+    displays/qrimportdisplay.cpp
     displays/spirodisplay.cpp
     displays/starfielddisplay.cpp
     displays/statusdisplay.cpp
@@ -390,6 +393,7 @@ set(sources
     newsettings.cpp
     ota.cpp
     presets.cpp
+    qrimport.cpp
     rotary.cpp
     screens.cpp
     serialhandler.cpp

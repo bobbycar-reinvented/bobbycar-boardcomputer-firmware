@@ -543,7 +543,8 @@ char TEXT_QRCODE_DEBUG[] = "QR Debug";
 
 //GreenPassMenu
 char TEXT_GREENPASS[] = "Green Pass";
-char TEXT_SHOWCERT[] = "Show cert";
+char TEXT_ADDCERT[] = "Add cert";
+char TEXT_DELCERT[] = "Delete cert mode";
 
 //EspNowMenu
 char TEXT_ESPNOW[] = "ESP-Now";
