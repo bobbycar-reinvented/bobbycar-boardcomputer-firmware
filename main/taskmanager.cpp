@@ -45,6 +45,9 @@
 #include "can.h"
 #endif
 #include "debuginputhandler.h"
+#ifdef FEATURE_SERIAL
+#include "serial_bobby.h"
+#endif
 
 using namespace std::chrono_literals;
 
@@ -87,6 +90,9 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "can",            can::initCan,          can::parseCanInput,      50ms  },
 #endif
     espcpputils::SchedulerTask { "debuginput",     initDebugInput,        handleDebugInput,        50ms  },
+#ifdef FEATURE_SERIAL
+    espcpputils::SchedulerTask { "serial",         initSerial,            updateSerial,            50ms  },
+#endif
 };
 } // namespace
 

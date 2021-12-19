@@ -122,17 +122,6 @@ extern "C" void app_main()
         task.setup();
     }
 
-#ifdef FEATURE_SERIAL
-    bootLabel.redraw("front Serial begin");
-    controllers.front.serial.get().begin(38400, SERIAL_8N1, PINS_RX1, PINS_TX1);
-
-    bootLabel.redraw("back Serial begin");
-    controllers.back.serial.get().begin(38400, SERIAL_8N1, PINS_RX2, PINS_TX2);
-
-    bootLabel.redraw("swap front back");
-    updateSwapFrontBack();
-#endif
-
 #ifdef FEATURE_LEDSTRIP
     bootLabel.redraw("LED strip");
     initLedStrip();
@@ -249,11 +238,6 @@ extern "C" void app_main()
             performance.current = 0;
             performance.lastTime = now;
         }
-
-#ifdef FEATURE_SERIAL
-        for (Controller &controller : controllers)
-            controller.parser.update();
-#endif
 
 #ifdef FEATURE_OTA
         handleOta();

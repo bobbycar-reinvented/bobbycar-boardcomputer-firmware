@@ -186,7 +186,7 @@ set(headers
     qrimport.h
     rotary.h
     screens.h
-    serial.h
+    serial_bobby.h
     settings.h
     settingspersister.h
     settingsutils.h
@@ -402,7 +402,7 @@ set(sources
     qrimport.cpp
     rotary.cpp
     screens.cpp
-    serial.cpp
+    serial_bobby.cpp
     settings.cpp
     settingspersister.cpp
     settingsutils.cpp
