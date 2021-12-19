@@ -3,6 +3,7 @@
 #include <qrcode.h>
 
 // local includes
+#include "accessorinterface.h"
 #include "menudisplay.h"
 #include "texts.h"
 
@@ -14,6 +15,4 @@ class GreenPassMenu :
 public:
     GreenPassMenu();
     void back() override;
-private:
-    bool m_deleteMode;
 };
