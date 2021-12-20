@@ -126,8 +126,6 @@ struct GametrakDistMinAccessor : public RefAccessorSaveSettings<int16_t> { int16
 struct GametrakDistMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakDistMax; } };
 #endif
 struct StatsUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.statsUpdateRate; } };
-struct DisplayUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.displayUpdateRate; } };
-struct DisplayRedrawRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.displayRedrawRate; } };
 
 // Cloud
 #ifdef FEATURE_CLOUD

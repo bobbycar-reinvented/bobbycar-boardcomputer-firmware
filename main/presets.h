@@ -137,8 +137,6 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
 
 constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings {
     .statsUpdateRate = 50,
-    .displayUpdateRate = 50,
-    .displayRedrawRate = 50,
 #ifdef FEATURE_CLOUD
     .cloudCollectRate = 100,
     .cloudSendRate = 1,
