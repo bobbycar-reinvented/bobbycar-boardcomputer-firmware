@@ -34,8 +34,6 @@ using namespace std::chrono_literals;
 namespace {
 espchrono::millis_clock::time_point lastStatsPush;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
-std::optional<espchrono::millis_clock::time_point> lastDisplayUpdate;
-std::optional<espchrono::millis_clock::time_point> lastDisplayRedraw;
 }
 
 extern "C" void app_main()
@@ -121,20 +119,6 @@ extern "C" void app_main()
             updateAccumulators();
             pushStats();
             lastStatsUpdate = now;
-        }
-
-        if (!lastDisplayUpdate || now - *lastDisplayUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.displayUpdateRate)
-        {
-            updateDisplay();
-
-            lastDisplayUpdate = now;
-        }
-
-        if (!lastDisplayRedraw || now - *lastDisplayRedraw >= 1000ms/settings.boardcomputerHardware.timersSettings.displayRedrawRate)
-        {
-            redrawDisplay();
-
-            lastDisplayRedraw = now;
         }
 
         if (now - lastStatsPush >= 1s)

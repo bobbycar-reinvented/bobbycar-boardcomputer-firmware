@@ -77,11 +77,14 @@
 #ifdef FEATURE_DNS_NS
 #include "dnsannounce.h"
 #endif
+#include "screens.h"
 
 using namespace std::chrono_literals;
 
 namespace {
 constexpr const char * const TAG = "TASKS";
+
+void not_needed() {}
 
 espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms },
@@ -151,6 +154,8 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_DNS_NS
     espcpputils::SchedulerTask { "dnsannounce",    init_dns_announce,     handle_dns_announce,     100ms },
 #endif
+    espcpputils::SchedulerTask { "updateDisp",     not_needed,            updateDisplay,           20ms },
+    espcpputils::SchedulerTask { "redrawDisp",     not_needed,            redrawDisplay,           20ms },
 };
 } // namespace
 
