@@ -1,5 +1,4 @@
 BOBBY_ROOT="$(dirname "$BASH_SOURCE")"
-export PS1="\033[1;32m(bobby-sourced)\033[;0m$PS1"
 
 if [[ ! -f "${BOBBY_ROOT}/esp-idf/export.sh" ]]
 then
@@ -54,3 +53,4 @@ export PATH=$PATH:$(pwd)/tools
 alias open-ide=open_ide
 alias switchconf=./switchconf.sh
 alias bobby-build="idf.py build"
+export PS1="\033[1;32m(bobby-sourced)\033[;0m$PS1"
