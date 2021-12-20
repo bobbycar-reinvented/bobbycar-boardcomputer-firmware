@@ -110,7 +110,6 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_MOSFETS
     espcpputils::SchedulerTask { "mosfets",        init_mosfets,          update_mosfets,          100ms },
 #endif
-    espcpputils::SchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms },
 #ifdef FEATURE_NTP
     espcpputils::SchedulerTask { "time",           initTime,              updateTime,              100ms },
 #endif
