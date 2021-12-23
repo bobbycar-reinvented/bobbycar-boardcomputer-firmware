@@ -43,14 +43,7 @@ jobs:
           export CCACHE_MAXSIZE=400M CCACHE_BASEDIR="$(pwd)"
           . export.sh
           ./switchconf.sh ${{ matrix.node }}
-          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} idf.py --ccache build
           ccache -s
-
-      - name: Cache sonar
-        uses: 0xFEEDC0DE64/cache-with-update@update-cache-on-cachehit
-        with:
-          path: ${{ env.SONAR_SERVER_URL }}
-          key: ${{ runner.os }}-sonar-${{ matrix.node }}
           
       - name: Set outputs
         id: vars
