@@ -9,18 +9,18 @@ on:
 
 jobs:
   build:
-    name: "config_name"
+    name: "analysis"
     runs-on: ubuntu-latest
     env:
       SONAR_SCANNER_VERSION: 4.4.0.2170
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
       SONAR_CACHE_DIR: sonar_cache
-    environment: deploy
+    environment: Analysis
     strategy:
       fail-fast: false
       matrix:
-        node: [feedc0de, comred, peter, mick]
+        node: [allfeatures]
     steps:
     
       - name: Checkout (without submodules)
@@ -87,20 +87,3 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}" --define sonar.cfamily.cache.path="${{ env.SONAR_CACHE_DIR }}"
-          
-      - name: Set outputs
-        id: vars
-        run: |
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: bobbyquad_${{ matrix.node }}
-          path: |
-            build_${{ matrix.node }}/bobbyquad_${{ matrix.node }}.bin
-            build_${{ matrix.node }}/bobbyquad_${{ matrix.node }}.elf
-            build_${{ matrix.node }}/bootloader/bootloader.bin
-            build_${{ matrix.node }}/bootloader/bootloader.elf
-            build_${{ matrix.node }}/partition_table/partition-table.bin

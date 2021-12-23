@@ -6,6 +6,8 @@ VALID_CONFIGS=(
     "feedc0de"
     "mick"
     "greyhash"
+    "nofeatures"
+    "allfeatures"
 )
 
 print_usage() {
