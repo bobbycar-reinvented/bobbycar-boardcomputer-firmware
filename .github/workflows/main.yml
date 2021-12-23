@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [feedc0de, comred, peter, mick]
+        node: [feedc0de, comred, peter, mick, allfeatures, nofeatures]
     steps:
     
       - name: Checkout (without submodules)
