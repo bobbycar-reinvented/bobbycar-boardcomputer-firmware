@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: "config_name"
+    name: "analysis"
     runs-on: ubuntu-latest
     env:
       SONAR_SCANNER_VERSION: 4.4.0.2170

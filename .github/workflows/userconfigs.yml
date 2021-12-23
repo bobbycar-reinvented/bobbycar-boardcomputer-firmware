@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [feedc0de, comred, peter, mick, allfeatures, nofeatures]
+        node: [feedc0de, comred, peter, mick, nofeatures] # allfeatures not used here
     steps:
     
       - name: Checkout (without submodules)
