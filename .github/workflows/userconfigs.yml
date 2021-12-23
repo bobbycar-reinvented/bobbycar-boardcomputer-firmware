@@ -43,6 +43,7 @@ jobs:
           export CCACHE_MAXSIZE=400M CCACHE_BASEDIR="$(pwd)"
           . export.sh
           ./switchconf.sh ${{ matrix.node }}
+          idf.py --ccache build
           ccache -s
           
       - name: Set outputs
