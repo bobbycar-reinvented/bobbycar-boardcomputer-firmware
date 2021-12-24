@@ -1,6 +1,13 @@
 name: Build
 on:
   push:
+    paths:
+      - 'main/**'
+      - 'sdkconfig_**'
+      - 'config_**'
+      - 'components/**'
+      - 'CMakeLists.txt'
+      - '.github/workflows/**'
   release:
     types:
       - created
