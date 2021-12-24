@@ -18,8 +18,6 @@ jobs:
     
       - name: Checkout (without submodules)
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Checkout and install esp-idf
         uses: 0xFEEDC0DE64/checkout_install_esp_idf@main
