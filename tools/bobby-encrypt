@@ -1,0 +1,3 @@
+#!/bin/bash
+tar czf ignore.tar.gz ignore
+gpg -c ignore.tar.gz

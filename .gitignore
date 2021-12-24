@@ -12,3 +12,4 @@ desktop.ini
 /.ccache
 /main/certs/*
 /.vscode/*
+/ignore.tar.gz
