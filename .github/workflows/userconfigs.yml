@@ -34,7 +34,10 @@ jobs:
         uses: 0xFEEDC0DE64/setup_ccache@main
         with:
           key: ${{ runner.os }}-ccache-${{ matrix.node }}
-          
+
+      - name: Unpack ignore folder
+        run: |
+          tools/bobby-decrypt
           
       - name: Build firmware
         run: |
