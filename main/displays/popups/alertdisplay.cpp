@@ -45,11 +45,11 @@ void AlertDisplay::initOverlay()
     //espgui::tft.fillRect(leftMargin + 1, topMargin + 1, espgui::tft.width() - leftMargin - rightMargin - 2, espgui::tft.height() - topMargin - bottomMargin - 2, TFT_BLACK);
 
     espgui::tft.drawSunkenRect(leftMargin, topMargin, width, height,
-                               espgui::tft.color565(240, 240, 240),
-                               espgui::tft.color565(100, 100, 100),
-                               espgui::tft.color565(30, 30, 30));
+                               color565(240, 240, 240),
+                               color565(100, 100, 100),
+                               color565(30, 30, 30));
 
-    espgui::tft.setTextColor(TFT_WHITE, espgui::tft.color565(30, 30, 30));
+    espgui::tft.setTextColor(TFT_WHITE, color565(30, 30, 30));
 
     int x = leftMargin + 5;
     int y = topMargin + 5;
@@ -71,23 +71,23 @@ void AlertDisplay::initOverlay()
             break;
     }
 
-    espgui::tft.setTextColor(TFT_BLACK, espgui::tft.color565(170, 170, 170));
+    espgui::tft.setTextColor(TFT_BLACK, color565(170, 170, 170));
 
     espgui::tft.drawSunkenRect(leftMargin + 15, bottom - 40,
                                (width - 15 - 10 - 15) / 2,
                                30,
-                               espgui::tft.color565(240, 240, 240),
-                               espgui::tft.color565(100, 100, 100),
-                               espgui::tft.color565(170, 170, 170));
+                               color565(240, 240, 240),
+                               color565(100, 100, 100),
+                               color565(170, 170, 170));
 
     espgui::tft.drawString("Yes", leftMargin + 18, bottom - 37);
 
     espgui::tft.drawSunkenRect(leftMargin + 15 + ((width - 15 - 30 - 15) / 2) + 15, bottom - 40,
                                (width - 15 - 10 - 15) / 2,
                                30,
-                               espgui::tft.color565(240, 240, 240),
-                               espgui::tft.color565(100, 100, 100),
-                               espgui::tft.color565(170, 170, 170));
+                               color565(240, 240, 240),
+                               color565(100, 100, 100),
+                               color565(170, 170, 170));
 
     espgui::tft.drawString("No", leftMargin + 18 + ((width - 15 - 30 - 15) / 2) + 15 + 1, bottom - 37);
 }

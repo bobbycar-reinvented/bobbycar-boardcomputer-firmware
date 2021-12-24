@@ -69,7 +69,7 @@ void StarfieldDisplay::redraw()
           {
             uint8_t r, g, b;
             r = g = b = 255 - sz[i];
-            espgui::tft.drawPixel(screen_x, screen_y, espgui::tft.color565(r,g,b));
+            espgui::tft.drawPixel(screen_x, screen_y, color565(r,g,b));
           }
           else
             sz[i] = 0; // Out of screen, die.
