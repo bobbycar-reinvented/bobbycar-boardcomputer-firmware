@@ -35,8 +35,6 @@ void initDebugInput()
         ESP_LOGE(TAG, "uart_driver_install() failed with %s", esp_err_to_name(result));
     else
         uart0Initialized = true;
-
-    pinMode(3, INPUT_PULLUP);
 }
 
 void handleDebugInput()
