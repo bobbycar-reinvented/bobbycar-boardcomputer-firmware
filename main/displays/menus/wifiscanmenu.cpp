@@ -75,12 +75,12 @@ void WifiScanMenu::update()
                 {
                     if (m_reusableItems.empty())
                     {
-                        auto &item = constructMenuItem<makeComponent<MenuItem, ChangeableText, DummyAction>>();
+                        auto &item = constructMenuItem<menu_item_t>();
                         item.setTitle(std::move(ssid));
                     }
                     else
                     {
-                        std::unique_ptr<makeComponent<MenuItem, ChangeableText, DummyAction>> ptr = std::move(m_reusableItems.back());
+                        std::unique_ptr<menu_item_t> ptr = std::move(m_reusableItems.back());
                         m_reusableItems.pop_back();
                         ptr->setTitle(std::move(ssid));
                         emplaceMenuItem(std::move(ptr));
@@ -88,13 +88,13 @@ void WifiScanMenu::update()
                 }
                 else
                 {
-                    auto &item = *(makeComponent<MenuItem, ChangeableText, DummyAction>*)(&getMenuItem(i));
+                    auto &item = *(menu_item_t*)(&getMenuItem(i));
                     item.setTitle(std::move(ssid));
                 }
             }
 
             while (menuItemCount() > (result ? result->entries.size() : 0))
-                m_reusableItems.emplace_back((makeComponent<MenuItem, ChangeableText, DummyAction>*)takeLastMenuItem().release());
+                m_reusableItems.emplace_back((menu_item_t*)takeLastMenuItem().release());
 
             emplaceMenuItem(std::move(backButton));
 
@@ -114,6 +114,8 @@ void WifiScanMenu::update()
 
 void WifiScanMenu::stop()
 {
+    Base::stop();
+
     wifi_stack::delete_scan_result();
 }
 

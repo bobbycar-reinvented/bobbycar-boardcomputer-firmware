@@ -19,10 +19,13 @@
 #ifdef FEATURE_GARAGE
 void GarageDisplay::start()
 {
+    Base::start();
 }
 
 void GarageDisplay::initScreen()
 {
+    Base::initScreen();
+
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setTextFont(4);
     espgui::tft.setTextColor(TFT_YELLOW);
@@ -38,22 +41,30 @@ void GarageDisplay::initScreen()
 
 void GarageDisplay::redraw()
 {
+    Base::redraw();
 }
 
-void GarageDisplay::confirm()
+void GarageDisplay::buttonPressed(espgui::Button button)
 {
-#ifdef FEATURE_ESPNOW
-    if (const auto error = espnow::send_espnow_message(fmt::format("BOBBYOPEN:garage:{}", "TOKEN")); error != ESP_OK)
+    Base::buttonPressed(button);
+
+    switch (button)
     {
-        ESP_LOGE("BOBBY", "send_espnow_message() failed with: %s", esp_err_to_name(error));
-        return;
-    }
-    espgui::switchScreen<MainMenu>();
+    using espgui::Button;
+    case Button::Left:
+        espgui::switchScreen<MainMenu>();
+        break;
+    case Button::Right:
+#ifdef FEATURE_ESPNOW
+        if (const auto error = espnow::send_espnow_message(fmt::format("BOBBYOPEN:garage:{}", "TOKEN")); error != ESP_OK)
+        {
+            ESP_LOGE("BOBBY", "send_espnow_message() failed with: %s", esp_err_to_name(error));
+            return;
+        }
 #endif
-}
-
-void GarageDisplay::back()
-{
-    espgui::switchScreen<MainMenu>();
+        espgui::switchScreen<MainMenu>();
+        break;
+    default:;
+    }
 }
 #endif

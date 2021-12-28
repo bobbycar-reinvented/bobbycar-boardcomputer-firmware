@@ -1,10 +1,11 @@
 #pragma once
 
-#include "menudisplay.h"
+// local includes
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 class HandbremsSettingsMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_DEBUG>
 {
 public:

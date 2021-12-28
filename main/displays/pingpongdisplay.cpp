@@ -20,6 +20,8 @@ PingPongDisplay::PingPongDisplay() :
 
 void PingPongDisplay::initScreen()
 {
+    Base::initScreen();
+
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setRotation(1);
 
@@ -28,6 +30,8 @@ void PingPongDisplay::initScreen()
 
 void PingPongDisplay::redraw()
 {
+    Base::redraw();
+
     lpaddle();
     rpaddle();
 
@@ -38,17 +42,24 @@ void PingPongDisplay::redraw()
 
 void PingPongDisplay::stop()
 {
+    Base::stop();
+
     espgui::tft.setRotation(0);
 }
 
-void PingPongDisplay::confirm()
+void PingPongDisplay::buttonPressed(espgui::Button button)
 {
-    espgui::switchScreen<DemosMenu>();
-}
+    Base::buttonPressed(button);
 
-void PingPongDisplay::back()
-{
-    espgui::switchScreen<DemosMenu>();
+    switch (button)
+    {
+        using espgui::Button;
+    case Button::Left:
+    case Button::Right:
+        espgui::switchScreen<DemosMenu>();
+        break;
+    default:;
+    }
 }
 
 void PingPongDisplay::midline()

@@ -1,9 +1,7 @@
 #pragma once
 
-// 3rdparty lib includes
-#include "widgets/menudisplaywithtime.h"
-
 // local includes
+#include "displays/menudisplaywithtime.h"
 #include "texts.h"
 
 class TimeSettingsMenu :

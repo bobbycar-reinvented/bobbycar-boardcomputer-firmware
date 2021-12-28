@@ -9,6 +9,7 @@
 #include "icons/back.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "utils.h"
 #include "globals.h"
 #include "accessors/settingsaccessors.h"
@@ -17,7 +18,7 @@
 namespace {
 struct FrontFreqAccessor : public espgui::RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.front.command.buzzer.freq; } };
 using FrontFreqChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint8_t>,
+    BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_FRONTFREQ>,
     FrontFreqAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
@@ -26,7 +27,7 @@ using FrontFreqChangeScreen = espgui::makeComponent<
 
 struct FrontPatternAccessor : public espgui::RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.front.command.buzzer.pattern; } };
 using FrontPatternChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint8_t>,
+    BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_FRONTPATTERN>,
     FrontPatternAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
@@ -35,7 +36,7 @@ using FrontPatternChangeScreen = espgui::makeComponent<
 
 struct BackFreqAccessor : public espgui::RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.back.command.buzzer.freq; } };
 using BackFreqChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint8_t>,
+    BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_BACKFREQ>,
     BackFreqAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
@@ -44,7 +45,7 @@ using BackFreqChangeScreen = espgui::makeComponent<
 
 struct BackPatternAccessor : public espgui::RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.back.command.buzzer.pattern; } };
 using BackPatternChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint8_t>,
+    BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_BACKPATTERN>,
     BackPatternAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
@@ -52,28 +53,28 @@ using BackPatternChangeScreen = espgui::makeComponent<
 >;
 
 using ReverseBeepFreq0ChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint8_t>,
+    BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_REVERSEBEEPFREQ0>,
     ReverseBeepFreq0Accessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
     espgui::SwitchScreenAction<BuzzerMenu>
 >;
 using ReverseBeepFreq1ChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint8_t>,
+    BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_REVERSEBEEPFREQ1>,
     ReverseBeepFreq1Accessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
     espgui::SwitchScreenAction<BuzzerMenu>
 >;
 using ReverseBeepDuration0ChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_REVERSEBEEPDURATION0>,
     ReverseBeepDuration0Accessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
     espgui::SwitchScreenAction<BuzzerMenu>
 >;
 using ReverseBeepDuration1ChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_REVERSEBEEPDURATION1>,
     ReverseBeepDuration1Accessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,

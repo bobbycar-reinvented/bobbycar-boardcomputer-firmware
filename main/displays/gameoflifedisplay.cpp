@@ -11,18 +11,24 @@
 
 void GameOfLifeDisplay::start()
 {
+    Base::start();
+
     m_grid = std::make_unique<std::bitset<GRIDX*GRIDY>>();
     m_newgrid = std::make_unique<std::bitset<GRIDX*GRIDY>>();
 }
 
 void GameOfLifeDisplay::initScreen()
 {
+    Base::initScreen();
+
     espgui::tft.setRotation(3);
     espgui::tft.fillScreen(TFT_BLACK);
 }
 
 void GameOfLifeDisplay::redraw()
 {
+    Base::redraw();
+
     if (gen == 0)
     {
         espgui::tft.fillScreen(TFT_BLACK);
@@ -40,19 +46,26 @@ void GameOfLifeDisplay::redraw()
 
 void GameOfLifeDisplay::stop()
 {
+    Base::stop();
+
     espgui::tft.setRotation(0);
     m_grid = nullptr;
     m_newgrid = nullptr;
 }
 
-void GameOfLifeDisplay::confirm()
+void GameOfLifeDisplay::buttonPressed(espgui::Button button)
 {
-    espgui::switchScreen<DemosMenu>();
-}
+    Base::buttonPressed(button);
 
-void GameOfLifeDisplay::back()
-{
-    espgui::switchScreen<DemosMenu>();
+    switch (button)
+    {
+    using espgui::Button;
+    case Button::Left:
+    case Button::Right:
+        espgui::switchScreen<DemosMenu>();
+        break;
+    default:;
+    }
 }
 
 void GameOfLifeDisplay::drawGrid()

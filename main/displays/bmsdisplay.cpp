@@ -11,6 +11,8 @@ using namespace espgui;
 
 void BmsDisplay::initScreen()
 {
+    Base::initScreen();
+
     tft.fillScreen(TFT_BLACK);
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
@@ -43,6 +45,8 @@ void BmsDisplay::initScreen()
 
 void BmsDisplay::redraw()
 {
+    Base::redraw();
+
     if (bluetoothSerial.hasClient())
         tft.setTextColor(TFT_GREEN, TFT_BLACK);
     else
@@ -90,16 +94,15 @@ void BmsDisplay::redraw()
         m_cycleLabel.clear();
 }
 
-void BmsDisplay::rotate(int offset)
+void BmsDisplay::buttonPressed(espgui::Button button)
 {
-    if (offset < 0)
-        switchScreen<MetersDisplay>();
-    else if (offset > 0)
-        switchScreen<StatusDisplay>();
-}
+    Base::buttonPressed(button);
 
-void BmsDisplay::confirm()
-{
-    switchScreen<MainMenu>();
+    switch (button)
+    {
+    case Button::Right: switchScreen<MainMenu>(); break;
+    case Button::Up: switchScreen<MetersDisplay>(); break;
+    case Button::Down: switchScreen<StatusDisplay>();
+    }
 }
 #endif

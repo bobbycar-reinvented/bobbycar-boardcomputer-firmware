@@ -4,31 +4,28 @@
 #include <esp_heap_caps.h>
 
 // 3rdparty lib includes
-#include <display.h>
 #include <actions/switchscreenaction.h>
 #include <widgets/label.h>
 #include <widgets/progressbar.h>
 #include <espchrono.h>
 
 // local includes
+#include "bobbydisplay.h"
 #include "modeinterface.h"
 #include "globals.h"
 #include "utils.h"
 #include "icons/alert.h"
 #include "battery.h"
 
-class StatusDisplay :
-    public espgui::Display
+class StatusDisplay : public BobbyDisplay
 {
-    using Base = espgui::Display;
+    using Base = BobbyDisplay;
 
 public:
     void initScreen() override;
     void redraw() override;
 
-    void confirm() override;
-    void back() override;
-    void rotate(int offset) override;
+    void buttonPressed(espgui::Button button) override;
 
 private:
     class BoardStatus

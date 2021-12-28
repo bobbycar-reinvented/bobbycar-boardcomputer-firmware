@@ -10,6 +10,7 @@
 
 InvertMenu::InvertMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTLEFT>,  ToggleBoolAction, CheckboxIcon, FrontLeftInvertedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTRIGHT>, ToggleBoolAction, CheckboxIcon, FrontRightInvertedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKLEFT>,   ToggleBoolAction, CheckboxIcon, BackLeftInvertedAccessor>>();
@@ -20,5 +21,5 @@ InvertMenu::InvertMenu()
 
 void InvertMenu::back()
 {
-    switchScreen<ControllerHardwareSettingsMenu>();
+    espgui::switchScreen<ControllerHardwareSettingsMenu>();
 }

@@ -9,13 +9,14 @@
 #include "changevaluedisplay.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "globals.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 
 namespace {
 using LockscreenPinDigit0ChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int8_t>,
+    BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT0>,
     LockscreenPinDigitAccessor<0>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
@@ -23,7 +24,7 @@ using LockscreenPinDigit0ChangeScreen = espgui::makeComponent<
 >;
 
 using LockscreenPinDigit1ChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int8_t>,
+    BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT1>,
     LockscreenPinDigitAccessor<1>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
@@ -31,7 +32,7 @@ using LockscreenPinDigit1ChangeScreen = espgui::makeComponent<
 >;
 
 using LockscreenPinDigit2ChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int8_t>,
+    BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT2>,
     LockscreenPinDigitAccessor<2>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
@@ -39,7 +40,7 @@ using LockscreenPinDigit2ChangeScreen = espgui::makeComponent<
 >;
 
 using LockscreenPinDigit3ChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int8_t>,
+    BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT3>,
     LockscreenPinDigitAccessor<3>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,

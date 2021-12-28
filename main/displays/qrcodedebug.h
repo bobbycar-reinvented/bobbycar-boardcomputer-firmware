@@ -1,18 +1,23 @@
 #pragma once
 
 // 3rdparty lib includes
-#include <display.h>
 #include <qrcode.h>
 
+// local includes
+#include "bobbydisplay.h"
+
 class QrCodeDebugDisplay :
-    public espgui::Display
+    public BobbyDisplay
 {
-    using Base = espgui::Display;
+    using Base = BobbyDisplay;
+
 public:
     QrCodeDebugDisplay();
+
     void initScreen() override;
-    void confirm() override;
-    void back() override;
+
+    void buttonPressed(espgui::Button button) override;
+
 private:
     QRCode m_qrcode;
 };

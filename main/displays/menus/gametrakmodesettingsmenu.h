@@ -1,7 +1,7 @@
 #pragma once
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
@@ -13,7 +13,7 @@ using namespace espgui;
 namespace {
 #ifdef FEATURE_GAMETRAK
 class ContainerModeSettingsMenu :
-    public MenuDisplay,
+    public BobbyMenuDisplay,
     public StaticText<TEXT_GAMETRAKMODESETTINGS>,
     public BackActionInterface<SwitchScreenAction<ModesSettingsMenu>>
 {

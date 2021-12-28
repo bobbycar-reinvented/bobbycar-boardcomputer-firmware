@@ -3,24 +3,26 @@
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 // 3rdparty lib includes
 #include <fmt/core.h>
+#include <actions/switchscreenaction.h>
+#include <widgets/label.h>
+#include <screenmanager.h>
 
 // local includes
-#include "display.h"
-#include "actions/switchscreenaction.h"
 #include "globals.h"
 #include "bmsutils.h"
-#include "widgets/label.h"
-#include "screenmanager.h"
+#include "bobbydisplay.h"
 
 class BmsDisplay :
-        public espgui::Display,
-        public espgui::DummyBack
+    public BobbyDisplay,
+    public espgui::DummyBack
 {
+    using Base = BobbyDisplay;
+
 public:
     void initScreen() override;
     void redraw() override;
-    void confirm() override;
-    void rotate(int offset) override;
+
+    void buttonPressed(espgui::Button button) override;
 
     espgui::Label m_statusLabel{200, 0};
 

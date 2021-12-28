@@ -36,6 +36,7 @@ set(headers
     bmsutils.h
     buildserver.h
     buttons.h
+    bobbybuttons.h
     can.h
     changevaluedisplay_bluetoothmode.h
     changevaluedisplay_controlmode.h
@@ -52,6 +53,12 @@ set(headers
     debuginputhandler.h
     debugtexthelpers.h
     displays/bmsdisplay.h
+    displays/bobbychangevaluedisplay.h
+    displays/bobbydisplay.h
+    displays/bobbydisplaywithtitle.h
+    displays/bobbygraphdisplay.h
+    displays/bobbymenudisplay.h
+    displays/bobbysplitgraphdisplay.h
     displays/calibratedisplay.h
     displays/calibratevoltagedisplay.h
     displays/qrdisplay.h
@@ -63,6 +70,7 @@ set(headers
     displays/garagedisplay.h
     displays/ledstripcolorsdisplay.h
     displays/lockscreen.h
+    displays/menudisplaywithtime.cpp
     displays/menus/aboutmenu.h
     displays/menus/accesspointwifisettingsmenu.h
     displays/menus/batterydebugmenu.h
@@ -211,7 +219,7 @@ set(headers
     webserver_settings.h
     webserver_stringsettings.h
     widgets/doubleprogressbar.h
-    widgets/menudisplaywithtime.h
+    displays/menudisplaywithtime.h
     wifi_bobbycar.h
     wifitexthelpers.h
 )
@@ -254,6 +262,7 @@ set(sources
     bmsutils.cpp
     buildserver.cpp
     buttons.cpp
+    bobbybuttons.cpp
     can.cpp
     changevaluedisplay_bluetoothmode.cpp
     changevaluedisplay_controlmode.cpp
@@ -270,6 +279,12 @@ set(sources
     debuginputhandler.cpp
     debugtexthelpers.cpp
     displays/bmsdisplay.cpp
+    displays/bobbychangevaluedisplay.cpp
+    displays/bobbydisplay.cpp
+    displays/bobbydisplaywithtitle.cpp
+    displays/bobbygraphdisplay.cpp
+    displays/bobbymenudisplay.cpp
+    displays/bobbysplitgraphdisplay.cpp
     displays/calibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
     displays/qrdisplay.cpp
@@ -430,7 +445,6 @@ set(sources
     webserver_settings.cpp
     webserver_stringsettings.cpp
     widgets/doubleprogressbar.cpp
-    widgets/menudisplaywithtime.cpp
     wifi_bobbycar.cpp
     wifitexthelpers.cpp
 )

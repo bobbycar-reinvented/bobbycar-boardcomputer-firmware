@@ -3,18 +3,20 @@
 // system includes
 #include <array>
 
+// 3rdparty lib includes
+#include <widgets/label.h>
+
 // local includes
-#include "display.h"
-#include "widgets/label.h"
+#include "bobbydisplay.h"
 #include "modes/ignoreinputmode.h"
 
 #ifdef LOCKSCREEN_PLUGIN
 #include "ledstrip.h"
 #endif
 
-class Lockscreen : public espgui::Display
+class Lockscreen : public BobbyDisplay
 {
-    using Base = espgui::Display;
+    using Base = BobbyDisplay;
 
     static constexpr auto boxWidth = 35;
     static constexpr auto boxHeight = 50;
@@ -27,9 +29,7 @@ public:
     void redraw() override;
     void stop() override;
 
-    void confirm() override;
-    void back() override;
-    void rotate(int offset) override;
+    void buttonPressed(espgui::Button button) override;
 
 private:
     void drawRect(int index, int offset, uint32_t color) const;

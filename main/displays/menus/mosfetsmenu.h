@@ -1,8 +1,11 @@
 #pragma once
 
 #ifdef FEATURE_MOSFETS
-#include "menudisplay.h"
+// 3rdparty lib includes
 #include "accessorinterface.h"
+
+// local includes
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 #include "types.h"
 
@@ -19,7 +22,7 @@ using Mosfet1Accessor = GPIOAccessor<PINS_MOSFET1>;
 using Mosfet2Accessor = GPIOAccessor<PINS_MOSFET2>;
 
 class MosfetsMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_MOSFETS>
 {
 public:

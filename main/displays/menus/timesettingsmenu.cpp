@@ -16,10 +16,12 @@
 #include "espstrutils.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "utils.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/settingsmenu.h"
 
+namespace {
 class CurrentUtcDateTimeText : public virtual espgui::TextInterface
 {
 public:
@@ -44,7 +46,7 @@ public:
 };
 
 using TimezoneOffsetChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int32_t>,
+    BobbyChangeValueDisplay<int32_t>,
     espgui::StaticText<TEXT_OFFSET>,
     TimezoneOffsetAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
@@ -52,7 +54,7 @@ using TimezoneOffsetChangeDisplay = espgui::makeComponent<
 >;
 
 using DaylightSavingModeChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<espchrono::DayLightSavingMode>,
+    BobbyChangeValueDisplay<espchrono::DayLightSavingMode>,
     espgui::StaticText<TEXT_DAYLIGHTSAVINGMODE>,
     DaylightSavingModeAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
@@ -61,7 +63,7 @@ using DaylightSavingModeChangeDisplay = espgui::makeComponent<
 
 #ifdef FEATURE_NTP
 using TimeSyncModeChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<sntp_sync_mode_t>,
+    BobbyChangeValueDisplay<sntp_sync_mode_t>,
     espgui::StaticText<TEXT_NTPMODE>,
     TimeSyncModeAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
@@ -69,7 +71,7 @@ using TimeSyncModeChangeDisplay = espgui::makeComponent<
 >;
 
 using TimeSyncIntervalChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int32_t>,
+    BobbyChangeValueDisplay<int32_t>,
     espgui::StaticText<TEXT_NTPINTERVAL>,
     TimeSyncIntervalAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
@@ -85,6 +87,7 @@ public:
     }
 };
 #endif
+} // namespace
 
 using namespace espgui;
 

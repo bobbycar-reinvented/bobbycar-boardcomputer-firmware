@@ -1,11 +1,11 @@
 #pragma once
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 class TaskmanagerMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_TASKMANAGER>
 {
 public:

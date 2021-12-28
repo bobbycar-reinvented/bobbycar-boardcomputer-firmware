@@ -4,7 +4,6 @@
 #include <array>
 
 // 3rdparty lib includes
-#include <display.h>
 #include <actions/switchscreenaction.h>
 #include <widgets/label.h>
 #include <widgets/reverseprogressbar.h>
@@ -12,16 +11,18 @@
 #include <widgets/verticalmeter.h>
 #include <widgets/vumeter.h>
 
-class MetersDisplay :
-    public espgui::Display
+// local includes
+#include "bobbydisplay.h"
+
+class MetersDisplay : public BobbyDisplay
 {
+    using Base = BobbyDisplay;
+
 public:
     void initScreen() override;
     void redraw() override;
 
-    void confirm() override;
-    void back() override;
-    void rotate(int offset) override;
+    void buttonPressed(espgui::Button button) override;
 
 private:
     espgui::VuMeter m_vuMeter;

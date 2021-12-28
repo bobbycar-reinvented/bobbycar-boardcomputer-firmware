@@ -2,36 +2,35 @@
 
 // 3rd party libs
 #include <fmt/core.h>
-
-// local includes
-#include "accessors/settingsaccessors.h"
 #include "actions/switchscreenaction.h"
 #include "actions/toggleboolaction.h"
 #include "changevaluedisplay.h"
-#include "changevaluedisplay_handbremsmode.h"
 #include "checkboxicon.h"
-#include "displays/menus/defaultmodesettingsmenu.h"
 #include "icons/back.h"
+
+// local includes
+#include "displays/bobbychangevaluedisplay.h"
+#include "accessors/settingsaccessors.h"
+#include "changevaluedisplay_handbremsmode.h"
+#include "displays/menus/defaultmodesettingsmenu.h"
 #include "texts.h"
 
-using namespace espgui;
-
 namespace {
-using HandBremsTriggerTimeoutChangeValueDisplay = makeComponent<
-    ChangeValueDisplay<uint16_t>,
-    StaticText<TEXT_HANDBREMSE_TRIGGERTIMEOUT>,
+using HandBremsTriggerTimeoutChangeValueDisplay = espgui::makeComponent<
+    BobbyChangeValueDisplay<uint16_t>,
+    espgui::StaticText<TEXT_HANDBREMSE_TRIGGERTIMEOUT>,
     HandbremsTimeoutAccessor,
-    BackActionInterface<SwitchScreenAction<HandbremsSettingsMenu>>,
-    SwitchScreenAction<HandbremsSettingsMenu>
+    espgui::BackActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>,
+    espgui::SwitchScreenAction<HandbremsSettingsMenu>
 >;
-using HandBremsModeChangeValueDisplay = makeComponent<
-    ChangeValueDisplay<HandbremseMode>,
-    StaticText<TEXT_HANDBREMSE_MODE>,
+using HandBremsModeChangeValueDisplay = espgui::makeComponent<
+    BobbyChangeValueDisplay<HandbremseMode>,
+    espgui::StaticText<TEXT_HANDBREMSE_MODE>,
     HandbremsModeAccessor,
-    BackActionInterface<SwitchScreenAction<HandbremsSettingsMenu>>,
-    SwitchScreenAction<HandbremsSettingsMenu>
+    espgui::BackActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>,
+    espgui::SwitchScreenAction<HandbremsSettingsMenu>
 >;
-class HandBremsModeText : public virtual TextInterface
+class HandBremsModeText : public virtual espgui::TextInterface
 {
 public:
     std::string text() const override
@@ -43,6 +42,7 @@ public:
 
 HandbremsSettingsMenu::HandbremsSettingsMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_ENABLE>, ToggleBoolAction, CheckboxIcon, HandbremsEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_AUTOMATIC>, ToggleBoolAction, CheckboxIcon, HandbremsAutomaticAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_VISUALIZE>, ToggleBoolAction, CheckboxIcon, HandbremsVisualizeAccessor>>();
@@ -53,5 +53,5 @@ HandbremsSettingsMenu::HandbremsSettingsMenu()
 
 void HandbremsSettingsMenu::back()
 {
-    switchScreen<DefaultModeSettingsMenu>();
+    espgui::switchScreen<DefaultModeSettingsMenu>();
 }

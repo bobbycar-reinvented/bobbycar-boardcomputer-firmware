@@ -7,6 +7,7 @@
 #include "icons/back.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "utils.h"
 #include "changevaluedisplay_unifiedmodelmode.h"
 #include "accessors/settingsaccessors.h"
@@ -16,7 +17,7 @@
 
 namespace {
 using TempomatModeCruiseMotTgtChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NCRUISEMOTTGT>,
     TempomatModeCruiseMotTgtAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,
@@ -24,7 +25,7 @@ using TempomatModeCruiseMotTgtChangeDisplay = espgui::makeComponent<
 >;
 
 using TempomatModeModelModeChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<UnifiedModelMode>,
+    BobbyChangeValueDisplay<UnifiedModelMode>,
     espgui::StaticText<TEXT_MODELMODE>,
     TempomatModeModelModeAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,

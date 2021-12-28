@@ -15,6 +15,8 @@ using namespace espgui;
 
 void MetersDisplay::initScreen()
 {
+    Base::initScreen();
+
     tft.fillScreen(TFT_BLACK);
 
     m_vuMeter.start();
@@ -30,6 +32,8 @@ void MetersDisplay::initScreen()
 
 void MetersDisplay::redraw()
 {
+    Base::redraw();
+
     m_vuMeter.redraw(avgSpeedKmh);
 
     m_dischargingBar.redraw(sumCurrent<0.f?(-sumCurrent):0.f);
@@ -47,24 +51,26 @@ void MetersDisplay::redraw()
     meters[5].redraw(fixCurrent(controllers.back.feedback.right.dcLink), -10, 10);
 }
 
-void MetersDisplay::confirm()
+void MetersDisplay::buttonPressed(espgui::Button button)
 {
-    switchScreen<MainMenu>();
-}
+    Base::buttonPressed(button);
 
-void MetersDisplay::back()
-{
-    switchScreen<MainMenu>();
-}
-
-void MetersDisplay::rotate(int offset)
-{
-    if (offset < 0)
+    switch (button)
+    {
+        using espgui::Button;
+    case Button::Left:
+    case Button::Right:
+        switchScreen<MainMenu>();
+        break;
+    case Button::Up:
         switchScreen<StatusDisplay>();
-    else if (offset > 0)
+        break;
+    case Button::Down:
 #ifdef FEATURE_BMS
         switchScreen<BmsDisplay>();
 #else
         switchScreen<StatusDisplay>();
 #endif
+        break;
+    }
 }

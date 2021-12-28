@@ -1,7 +1,7 @@
 #pragma once
 
 // Local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 #include "ledstrip.h"
 #include "globals.h"
@@ -21,8 +21,8 @@ public:
 };
 
 class ledstripOtaAnimationChangeMenu :
-        public espgui::MenuDisplay,
-        public espgui::StaticText<TEXT_BLINKANIMATION>
+    public BobbyMenuDisplay,
+    public espgui::StaticText<TEXT_BLINKANIMATION>
 {
 public:
     ledstripOtaAnimationChangeMenu();

@@ -17,14 +17,19 @@ void AlertDisplay::initScreen()
     initOverlay();
 }
 
-void AlertDisplay::confirm()
+void AlertDisplay::buttonPressed(espgui::Button button)
 {
-    closeOverlay();
-}
+    Base::buttonPressed(button);
 
-void AlertDisplay::back()
-{
-    closeOverlay();
+    switch (button)
+    {
+    using espgui::Button;
+    case Button::Left:
+    case Button::Right:
+        closeOverlay();
+        break;
+    default:;
+    }
 }
 
 void AlertDisplay::initOverlay()

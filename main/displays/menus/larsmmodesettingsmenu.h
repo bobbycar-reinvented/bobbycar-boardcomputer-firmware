@@ -3,11 +3,11 @@
 // 3rdparty lib includes
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 class LarsmModeSettingsMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_LARSMMODESETTINGS>
 {
 public:

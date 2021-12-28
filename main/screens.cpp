@@ -34,7 +34,12 @@ void updateDisplay()
         rotated = 0;
 
         if (currentDisplay)
-            currentDisplay->rotate(rotatedCopy);
+        {
+            if (rotatedCopy < 0)
+                currentDisplay->buttonPressed(espgui::Button::Up);
+            else
+                currentDisplay->buttonPressed(espgui::Button::Down);
+        }
     }
 
     if (requestFullRedraw)
@@ -52,7 +57,7 @@ void updateDisplay()
         confirmButtonPressed = false;
 
         if (currentDisplay)
-            currentDisplay->confirm();
+            currentDisplay->buttonPressed(espgui::Button::Right);
     }
 
     if (confirmButtonLongPressed)
@@ -66,7 +71,7 @@ void updateDisplay()
         backButtonPressed = false;
 
         if (currentDisplay)
-            currentDisplay->back();
+            currentDisplay->buttonPressed(espgui::Button::Left);
     }
 
     if (backButtonLongPressed)

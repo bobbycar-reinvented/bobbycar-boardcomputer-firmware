@@ -4,19 +4,20 @@
 #include <cstdint>
 
 // local includes
-#include "display.h"
+#include "bobbydisplay.h"
 
-class StarfieldDisplay : public espgui::Display
+class StarfieldDisplay : public BobbyDisplay
 {
+    using Base = BobbyDisplay;
+
 public:
     StarfieldDisplay();
-
-    void confirm() override;
-    void back() override;
 
     void initScreen() override;
     void redraw() override;
     void stop() override;
+
+    void buttonPressed(espgui::Button button) override;
 
 private:
     static constexpr auto NSTARS = 1024;

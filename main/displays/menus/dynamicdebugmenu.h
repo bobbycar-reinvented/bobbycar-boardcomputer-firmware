@@ -11,7 +11,7 @@
 #include <esprandom.h>
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
@@ -125,7 +125,7 @@ constexpr char TEXT_STATICICON[] = "Static icon";
 constexpr char TEXT_DEBUGTOGGLE[] = "Toggle";
 
 class DynamicDebugMenu :
-    public MenuDisplay,
+    public BobbyMenuDisplay,
     public RandomText,
     public BackActionInterface<SwitchScreenAction<DebugMenu>>
 {

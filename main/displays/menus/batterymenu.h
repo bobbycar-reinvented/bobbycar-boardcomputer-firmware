@@ -1,13 +1,13 @@
 #pragma once
 
 // 3rdparty lib includes
-#include <menudisplay.h>
 #include <menuitem.h>
 #include <icons/back.h>
 #include <actions/dummyaction.h>
 #include <actions/switchscreenaction.h>
 
 // Local includes
+#include "displays/bobbymenudisplay.h"
 #include "utils.h"
 #include "icons/settings.h"
 #include "texts.h"
@@ -16,10 +16,11 @@
 #include "widgets/doubleprogressbar.h"
 
 class BatteryMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_BATTERY>
 {
-    using Base = espgui::MenuDisplay;
+    using Base = BobbyMenuDisplay;
+
 public:
     BatteryMenu();
 

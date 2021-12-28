@@ -3,11 +3,13 @@
 // system includes
 #include <memory>
 
-// 3rdparty lib includes
-#include <display.h>
+// local includes
+#include "displays/bobbydisplay.h"
 
-class AlertDisplay : public espgui::Display
+class AlertDisplay : public BobbyDisplay
 {
+    using Base = BobbyDisplay;
+
 public:
     AlertDisplay(std::string &&message, std::unique_ptr<Display> &&lastDisplay);
 
@@ -16,8 +18,8 @@ public:
     //void update() override;
     //void redraw() override;
     //void stop() override;
-    void confirm() override;
-    void back() override;
+
+    void buttonPressed(espgui::Button button) override;
 
     void initOverlay();
     void closeOverlay();

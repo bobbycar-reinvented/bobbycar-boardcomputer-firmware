@@ -1,7 +1,7 @@
 #pragma once
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "changevaluedisplay.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -17,7 +17,7 @@ using namespace espgui;
 
 namespace {
 class GenericWifiSettingsMenu :
-    public MenuDisplay,
+    public BobbyMenuDisplay,
     public StaticText<TEXT_GENERICWIFISETTINGS>,
     public BackActionInterface<SwitchScreenAction<WifiSettingsMenu>>
 {

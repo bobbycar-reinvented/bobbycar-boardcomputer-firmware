@@ -12,11 +12,14 @@
 void SpiroDisplay::initScreen()
 {
     Base::initScreen();
+
     espgui::tft.setRotation(3);
 }
 
 void SpiroDisplay::redraw()
 {
+    Base::redraw();
+
     for (int j = 0; j < std::max(1, n); j++)
     {
         if (i == 0)
@@ -72,7 +75,24 @@ void SpiroDisplay::redraw()
 
 void SpiroDisplay::stop()
 {
+    Base::stop();
+
     espgui::tft.setRotation(0);
+}
+
+void SpiroDisplay::buttonPressed(espgui::Button button)
+{
+    Base::buttonPressed(button);
+
+    switch (button)
+    {
+        using espgui::Button;
+    case Button::Left:
+    case Button::Right:
+        espgui::switchScreen<DemosMenu>();
+        break;
+    default:;
+    }
 }
 
 unsigned int SpiroDisplay::rainbow(int value)
@@ -107,14 +127,4 @@ unsigned int SpiroDisplay::rainbow(int value)
         red = 31;
     }
     return (red << 11) + (green << 5) + blue;
-}
-
-void SpiroDisplay::confirm()
-{
-    espgui::switchScreen<DemosMenu>();
-}
-
-void SpiroDisplay::back()
-{
-    espgui::switchScreen<DemosMenu>();
 }

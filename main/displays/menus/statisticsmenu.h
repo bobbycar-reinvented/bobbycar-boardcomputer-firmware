@@ -1,10 +1,10 @@
 #pragma once
 
 // 3rdparty lib includes
-#include "widgets/menudisplaywithtime.h"
 #include <menuitem.h>
 
 // Local includes
+#include "displays/menudisplaywithtime.h"
 #include "texts.h"
 
 class StatisticsMenu :

@@ -5,7 +5,7 @@
 
 // local includes
 #include "texts.h"
-#include "widgets/menudisplaywithtime.h"
+#include "displays/menudisplaywithtime.h"
 #ifdef MAINMENU_PLUGIN
 #include MAINMENU_PLUGIN
 #endif

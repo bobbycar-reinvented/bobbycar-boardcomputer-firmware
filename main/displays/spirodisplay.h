@@ -4,20 +4,18 @@
 #include <cstdint>
 
 // local includes
-#include "display.h"
-#include "actions/switchscreenaction.h"
+#include "bobbydisplay.h"
 
-class SpiroDisplay : public espgui::Display
+class SpiroDisplay : public BobbyDisplay
 {
-    using Base = espgui::Display;
+    using Base = BobbyDisplay;
 
 public:
     void initScreen() override;
     void redraw() override;
     void stop() override;
 
-    void confirm() override;
-    void back() override;
+    void buttonPressed(espgui::Button button) override;
 
 private:
     constexpr static auto DEG2RAD = 0.0174532925;

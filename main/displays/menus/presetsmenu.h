@@ -1,14 +1,12 @@
 #pragma once
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
-using namespace espgui;
-
 class PresetsMenu :
-    public MenuDisplay,
-    public StaticText<TEXT_PRESETS>
+    public BobbyMenuDisplay,
+    public espgui::StaticText<TEXT_PRESETS>
 {
 public:
     PresetsMenu();
