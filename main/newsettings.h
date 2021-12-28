@@ -80,122 +80,137 @@ public:
     ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                         "wifiApChannel"       };
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };
 
+#define NEW_SETTINGS(x) \
+    x(baseMacAddressOverride) \
+    x(hostname) \
+    \
+    x(wifiStaEnabled) \
+    x(wifi_configs[0].ssid) \
+    x(wifi_configs[0].key) \
+    x(wifi_configs[0].useStaticIp) \
+    x(wifi_configs[0].staticIp) \
+    x(wifi_configs[0].staticSubnet) \
+    x(wifi_configs[0].staticGateway) \
+    x(wifi_configs[0].useStaticDns) \
+    x(wifi_configs[0].staticDns0) \
+    x(wifi_configs[0].staticDns1) \
+    x(wifi_configs[0].staticDns2) \
+    x(wifi_configs[1].ssid) \
+    x(wifi_configs[1].key) \
+    x(wifi_configs[1].useStaticIp) \
+    x(wifi_configs[1].staticIp) \
+    x(wifi_configs[1].staticSubnet) \
+    x(wifi_configs[1].staticGateway) \
+    x(wifi_configs[1].useStaticDns) \
+    x(wifi_configs[1].staticDns0) \
+    x(wifi_configs[1].staticDns1) \
+    x(wifi_configs[1].staticDns2) \
+    x(wifi_configs[2].ssid) \
+    x(wifi_configs[2].key) \
+    x(wifi_configs[2].useStaticIp) \
+    x(wifi_configs[2].staticIp) \
+    x(wifi_configs[2].staticSubnet) \
+    x(wifi_configs[2].staticGateway) \
+    x(wifi_configs[2].useStaticDns) \
+    x(wifi_configs[2].staticDns0) \
+    x(wifi_configs[2].staticDns1) \
+    x(wifi_configs[2].staticDns2) \
+    x(wifi_configs[3].ssid) \
+    x(wifi_configs[3].key) \
+    x(wifi_configs[3].useStaticIp) \
+    x(wifi_configs[3].staticIp) \
+    x(wifi_configs[3].staticSubnet) \
+    x(wifi_configs[3].staticGateway) \
+    x(wifi_configs[3].useStaticDns) \
+    x(wifi_configs[3].staticDns0) \
+    x(wifi_configs[3].staticDns1) \
+    x(wifi_configs[3].staticDns2) \
+    x(wifi_configs[4].ssid) \
+    x(wifi_configs[4].key) \
+    x(wifi_configs[4].useStaticIp) \
+    x(wifi_configs[4].staticIp) \
+    x(wifi_configs[4].staticSubnet) \
+    x(wifi_configs[4].staticGateway) \
+    x(wifi_configs[4].useStaticDns) \
+    x(wifi_configs[4].staticDns0) \
+    x(wifi_configs[4].staticDns1) \
+    x(wifi_configs[4].staticDns2) \
+    x(wifi_configs[5].ssid) \
+    x(wifi_configs[5].key) \
+    x(wifi_configs[5].useStaticIp) \
+    x(wifi_configs[5].staticIp) \
+    x(wifi_configs[5].staticSubnet) \
+    x(wifi_configs[5].staticGateway) \
+    x(wifi_configs[5].useStaticDns) \
+    x(wifi_configs[5].staticDns0) \
+    x(wifi_configs[5].staticDns1) \
+    x(wifi_configs[5].staticDns2) \
+    x(wifi_configs[6].ssid) \
+    x(wifi_configs[6].key) \
+    x(wifi_configs[6].useStaticIp) \
+    x(wifi_configs[6].staticIp) \
+    x(wifi_configs[6].staticSubnet) \
+    x(wifi_configs[6].staticGateway) \
+    x(wifi_configs[6].useStaticDns) \
+    x(wifi_configs[6].staticDns0) \
+    x(wifi_configs[6].staticDns1) \
+    x(wifi_configs[6].staticDns2) \
+    x(wifi_configs[7].ssid) \
+    x(wifi_configs[7].key) \
+    x(wifi_configs[7].useStaticIp) \
+    x(wifi_configs[7].staticIp) \
+    x(wifi_configs[7].staticSubnet) \
+    x(wifi_configs[7].staticGateway) \
+    x(wifi_configs[7].useStaticDns) \
+    x(wifi_configs[7].staticDns0) \
+    x(wifi_configs[7].staticDns1) \
+    x(wifi_configs[7].staticDns2) \
+    x(wifi_configs[8].ssid) \
+    x(wifi_configs[8].key) \
+    x(wifi_configs[8].useStaticIp) \
+    x(wifi_configs[8].staticIp) \
+    x(wifi_configs[8].staticSubnet) \
+    x(wifi_configs[8].staticGateway) \
+    x(wifi_configs[8].useStaticDns) \
+    x(wifi_configs[8].staticDns0) \
+    x(wifi_configs[8].staticDns1) \
+    x(wifi_configs[8].staticDns2) \
+    x(wifi_configs[9].ssid) \
+    x(wifi_configs[9].key) \
+    x(wifi_configs[9].useStaticIp) \
+    x(wifi_configs[9].staticIp) \
+    x(wifi_configs[9].staticSubnet) \
+    x(wifi_configs[9].staticGateway) \
+    x(wifi_configs[9].useStaticDns) \
+    x(wifi_configs[9].staticDns0) \
+    x(wifi_configs[9].staticDns1) \
+    x(wifi_configs[9].staticDns2) \
+    \
+    x(wifiStaMinRssi) \
+    \
+    x(wifiApEnabled) \
+    x(factoryWifiApName) \
+    x(wifiApName) \
+    x(factoryWifiApKey) \
+    x(wifiApKey) \
+    x(wifiApChannel) \
+    //x(wifiApAuthmode)
+
+    template<typename T>
+    void callForEveryConfig(T &&callback)
+    {
+#define HELPER(x) callback(x);
+        NEW_SETTINGS(HELPER)
+#undef HELPER
+        callback(wifiApAuthmode);
+    }
+
     auto getAllConfigParams()
     {
         return cpputils::make_array(
-            std::ref<ConfigWrapperInterface>(baseMacAddressOverride),
-            std::ref<ConfigWrapperInterface>(hostname),
-
-            std::ref<ConfigWrapperInterface>(wifiStaEnabled),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[0].staticDns2),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[1].staticDns2),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[2].staticDns2),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[3].staticDns2),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[4].staticDns2),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[5].staticDns2),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[6].staticDns2),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[7].staticDns2),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[8].staticDns2),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].ssid),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].key),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].useStaticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].staticIp),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].staticSubnet),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].staticGateway),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].useStaticDns),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].staticDns0),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].staticDns1),
-            std::ref<ConfigWrapperInterface>(wifi_configs[9].staticDns2),
-
-            std::ref<ConfigWrapperInterface>(wifiStaMinRssi),
-
-            std::ref<ConfigWrapperInterface>(wifiApEnabled),
-            std::ref<ConfigWrapperInterface>(factoryWifiApName),
-            std::ref<ConfigWrapperInterface>(wifiApName),
-            std::ref<ConfigWrapperInterface>(factoryWifiApKey),
-            std::ref<ConfigWrapperInterface>(wifiApKey),
-            std::ref<ConfigWrapperInterface>(wifiApChannel),
+#define HELPER(x) std::ref<ConfigWrapperInterface>(x),
+            NEW_SETTINGS(HELPER)
+#undef HELPER
             std::ref<ConfigWrapperInterface>(wifiApAuthmode)
         );
     }
