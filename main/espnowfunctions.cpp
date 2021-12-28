@@ -11,6 +11,7 @@
 #include "globals.h"
 #include "utils.h"
 #include "time_bobbycar.h"
+#include "newsettings.h"
 
 namespace espnow {
 namespace {
@@ -57,7 +58,7 @@ void initESPNow()
 
     if (initialized < 1)
     {
-        if (!settings.wifiSettings.wifiApEnabled && (!settings.wifiSettings.wifiStaEnabled && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA))
+        if (!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA))
         {
             ESP_LOGW(TAG, "cannot execute esp_now_init(): tcp stack is down.");
             return;
@@ -95,9 +96,9 @@ void initESPNow()
         std::memcpy(peer.peer_addr, broadcast_address, sizeof(peer.peer_addr));
         peer.channel = 0;
 
-        if (settings.wifiSettings.wifiApEnabled)
+        if (configs.wifiApEnabled.value)
             peer.ifidx = WIFI_IF_AP;
-        else if (settings.wifiSettings.wifiStaEnabled)
+        else if (configs.wifiStaEnabled.value)
             peer.ifidx = WIFI_IF_STA;
         else
         {
@@ -120,12 +121,12 @@ void initESPNow()
 
 void handle()
 {
-    if (initialized < 255 && !(!settings.wifiSettings.wifiApEnabled && (!settings.wifiSettings.wifiStaEnabled && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA)))
+    if (initialized < 255 && !(!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA)))
     {
         initESPNow();
         return;
     }
-    else if (!settings.wifiSettings.wifiApEnabled && (!settings.wifiSettings.wifiStaEnabled && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA))
+    else if (!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA))
     {
         if (initialized > 0)
         {
@@ -251,7 +252,7 @@ esp_err_t send_espnow_message(std::string_view message)
     if (initialized < 255)
         return ESP_ERR_ESPNOW_NOT_INIT;
 
-    if (!settings.wifiSettings.wifiApEnabled && !settings.wifiSettings.wifiStaEnabled)
+    if (!configs.wifiApEnabled.value && !configs.wifiStaEnabled.value)
     {
         return ESP_ERR_ESPNOW_IF;
     }
@@ -264,9 +265,9 @@ esp_err_t send_espnow_message(std::string_view message)
     for (auto &peer : peers)
     {
 
-        if (settings.wifiSettings.wifiApEnabled)
+        if (configs.wifiApEnabled.value)
             peer.ifidx = WIFI_IF_AP;
-        else if (settings.wifiSettings.wifiStaEnabled)
+        else if (configs.wifiStaEnabled.value)
             peer.ifidx = WIFI_IF_STA;
         else
             return ESP_ERR_ESPNOW_IF;
