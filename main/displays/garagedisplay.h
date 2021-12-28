@@ -1,17 +1,19 @@
 #pragma once
 
 // local includes
-#include "display.h"
+#include "bobbydisplay.h"
 
 #ifdef FEATURE_GARAGE
-class GarageDisplay : public espgui::Display
+class GarageDisplay : public BobbyDisplay
 {
+    using Base = BobbyDisplay;
+
 public:
     void start() override;
     void initScreen() override;
     void redraw() override;
-    void confirm() override;
-    void back() override;
+
+    void buttonPressed(espgui::Button button) override;
 
 private:
 };

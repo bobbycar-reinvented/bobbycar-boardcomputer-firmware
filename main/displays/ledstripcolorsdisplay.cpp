@@ -23,6 +23,7 @@
 #include "displays/menus/ledstripmenu.h"
 
 #ifdef FEATURE_LEDSTRIP
+namespace {
 int8_t selected_side = 7;
 int8_t selected_color;
 bool state_select_color{false};
@@ -49,23 +50,11 @@ const std::array<uint16_t, 8> tft_colors = {
     TFT_BLUE,
     TFT_MAGENTA
 };
+} // namespace
 
 std::string LedstripColorsDisplay::text() const
 {
     return TEXT_LEDSTRIPCOLORMENU;
-}
-
-void LedstripColorsDisplay::back()
-{
-    if(!state_select_color)
-    {
-        espgui::switchScreen<LedstripMenu>();
-    }
-    else
-    {
-        state_select_color = false;
-        espgui::tft.fillRect(0, 228, espgui::tft.width(), ((espgui::tft.width() - 40) / 8) + 4, TFT_BLACK);
-    }
 }
 
 void LedstripColorsDisplay::initScreen()
@@ -102,10 +91,42 @@ void LedstripColorsDisplay::redraw()
     }
 }
 
-void LedstripColorsDisplay::rotate(int offset)
+void LedstripColorsDisplay::buttonPressed(espgui::Button button)
 {
-    if (offset < 0)
+    Base::buttonPressed(button);
+
+    switch (button)
     {
+    using espgui::Button;
+    case Button::Left:
+        if(!state_select_color)
+        {
+            espgui::switchScreen<LedstripMenu>();
+        }
+        else
+        {
+            state_select_color = false;
+            espgui::tft.fillRect(0, 228, espgui::tft.width(), ((espgui::tft.width() - 40) / 8) + 4, TFT_BLACK);
+        }
+
+        break;
+    case Button::Right:
+        if(!state_select_color)
+        {
+            state_select_color = true;
+            drawColors();
+        }
+        else
+        {
+            ledstrip_custom_colors[selected_side] = Colors[selected_color];
+            // Uncomment to close select color menu on color select
+            /*
+        state_select_color = false;
+        espgui::tft.fillRect(0, 228, espgui::tft.width(), ((espgui::tft.width() - 40) / 8) + 4, TFT_BLACK);
+        */
+        }
+        break;
+    case Button::Up:
         if (state_select_color)
         {
             selected_color++;
@@ -122,9 +143,21 @@ void LedstripColorsDisplay::rotate(int offset)
                 selected_side = 0;
             }
         }
-    }
-    else if (offset > 0)
-    {
+
+        /* TODO commander: move into redraw method */
+        if (state_select_color)
+        {
+            drawColors();
+        }
+        else
+        {
+            espgui::tft.fillRect(0, 228, espgui::tft.width(), ((espgui::tft.width() - 40) / 8) + 4, TFT_BLACK);
+            clearSides();
+            drawSide(static_cast<Bobbycar_Side>(selected_side), TFT_GOLD);
+        }
+
+        break;
+    case Button::Down:
         if (state_select_color)
         {
             selected_color--;
@@ -141,35 +174,20 @@ void LedstripColorsDisplay::rotate(int offset)
                 selected_side = 7;
             }
         }
-    }
 
-    if (state_select_color)
-    {
-        drawColors();
-    }
-    else
-    {
-        espgui::tft.fillRect(0, 228, espgui::tft.width(), ((espgui::tft.width() - 40) / 8) + 4, TFT_BLACK);
-        clearSides();
-        drawSide(static_cast<Bobbycar_Side>(selected_side), TFT_GOLD);
-    }
-}
+        /* TODO commander: move into redraw method */
+        if (state_select_color)
+        {
+            drawColors();
+        }
+        else
+        {
+            espgui::tft.fillRect(0, 228, espgui::tft.width(), ((espgui::tft.width() - 40) / 8) + 4, TFT_BLACK);
+            clearSides();
+            drawSide(static_cast<Bobbycar_Side>(selected_side), TFT_GOLD);
+        }
 
-void LedstripColorsDisplay::confirm()
-{
-    if(!state_select_color)
-    {
-        state_select_color = true;
-        drawColors();
-    }
-    else
-    {
-        ledstrip_custom_colors[selected_side] = Colors[selected_color];
-        // Uncomment to close select color menu on color select
-        /*
-        state_select_color = false;
-        espgui::tft.fillRect(0, 228, espgui::tft.width(), ((espgui::tft.width() - 40) / 8) + 4, TFT_BLACK);
-        */
+        break;
     }
 }
 

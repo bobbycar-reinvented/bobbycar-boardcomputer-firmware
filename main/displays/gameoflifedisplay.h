@@ -5,11 +5,11 @@
 #include <memory>
 
 // local includes
-#include "display.h"
+#include "bobbydisplay.h"
 
-class GameOfLifeDisplay : public espgui::Display
+class GameOfLifeDisplay : public BobbyDisplay
 {
-    using Base = espgui::Display;
+    using Base = BobbyDisplay;
 
 public:
     void start() override;
@@ -17,8 +17,7 @@ public:
     void redraw() override;
     void stop() override;
 
-    void confirm() override;
-    void back() override;
+    void buttonPressed(espgui::Button button);
 
 private:
 

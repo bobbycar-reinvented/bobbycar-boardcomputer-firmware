@@ -1,7 +1,7 @@
 #pragma once
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -17,7 +17,7 @@ using namespace espgui;
 namespace {
 template<const char *Ttext, typename Ttexts, template<int> class ColorInterface>
 class FeedbackDebugMenu :
-    public MenuDisplay,
+    public BobbyMenuDisplay,
     public StaticText<Ttext>,
     public BackActionInterface<SwitchScreenAction<DebugMenu>>
 {

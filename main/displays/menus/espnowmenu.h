@@ -2,6 +2,7 @@
 
 #ifdef FEATURE_ESPNOW
 
+// 3rdparty lib includes
 #include <accessorinterface.h>
 #include <actioninterface.h>
 #include <espchrono.h>
@@ -10,6 +11,8 @@
 #include <textinterface.h>
 #include <texts.h>
 
+// local includes
+#include "displays/bobbymenudisplay.h"
 #include "espnowfunctions.h"
 
 using namespace espgui;
@@ -31,8 +34,8 @@ public:
 } // namespace
 
 class EspNowMenu :
-        public espgui::MenuDisplay,
-        public espgui::StaticText<TEXT_ESPNOW_MENU>
+    public BobbyMenuDisplay,
+    public espgui::StaticText<TEXT_ESPNOW_MENU>
 {
 public:
     EspNowMenu();

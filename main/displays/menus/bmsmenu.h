@@ -2,11 +2,11 @@
 
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 class BmsMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_BMS>
 {
 public:

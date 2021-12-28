@@ -3,7 +3,7 @@
 // 3rdparty lib includes
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 class LarsmModeSettingsMenu :

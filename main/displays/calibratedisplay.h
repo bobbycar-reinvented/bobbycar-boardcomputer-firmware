@@ -7,24 +7,24 @@
 // 3rdparty lib includes
 #include <fmt/core.h>
 #include <cpputils.h>
-#include <displaywithtitle.h>
 #include <actions/switchscreenaction.h>
 #include <widgets/label.h>
 #include <widgets/progressbar.h>
 
 // local includes
+#include "bobbydisplaywithtitle.h"
 #include "globals.h"
 #include "utils.h"
 #include "texts.h"
 #include "modes/ignoreinputmode.h"
 
-class CalibrateDisplay : public espgui::DisplayWithTitle
+class CalibrateDisplay : public BobbyDisplayWithTitle
 {
-    using Base = espgui::DisplayWithTitle;
+    using Base = BobbyDisplayWithTitle;
 
 public:
     CalibrateDisplay() = default;
-    CalibrateDisplay(bool bootup);
+    explicit CalibrateDisplay(bool bootup);
 
     std::string text() const override;
     void start() override;
@@ -33,10 +33,7 @@ public:
     void redraw() override;
     void stop() override;
 
-    void rotate(int offset) override;
-
-    void confirm() override;
-    void back() override;
+    void buttonPressed(espgui::Button button) override;
 
 private:
     void copyFromSettings();

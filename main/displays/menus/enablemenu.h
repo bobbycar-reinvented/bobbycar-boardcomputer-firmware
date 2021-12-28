@@ -1,13 +1,13 @@
 #pragma once
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 using namespace espgui;
 
 class EnableMenu :
-    public MenuDisplay,
+    public BobbyMenuDisplay,
     public StaticText<TEXT_SETENABLED>
 {
 public:

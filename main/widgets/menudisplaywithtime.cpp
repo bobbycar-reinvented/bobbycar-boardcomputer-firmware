@@ -1,5 +1,10 @@
 #include "menudisplaywithtime.h"
-#include "tftinstance.h"
+
+// 3rdparty lib includes
+#include <tftinstance.h>
+#include <fmt/core.h>
+
+// local includes
 #include "utils.h"
 
 using namespace espgui;

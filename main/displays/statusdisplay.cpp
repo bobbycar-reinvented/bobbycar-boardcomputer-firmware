@@ -181,28 +181,28 @@ clearIp:
     m_labelProfile.redraw(profile ? std::to_string(*profile) : "-");
 }
 
-void StatusDisplay::confirm()
+void StatusDisplay::buttonPressed(espgui::Button button)
 {
-    switchScreen<MainMenu>();
-}
+    Base::buttonPressed(button);
 
-void StatusDisplay::back()
-{
-
-}
-
-void StatusDisplay::rotate(int offset)
-{
-    Base::rotate(offset);
-
-    if (offset < 0)
+    switch (button)
+    {
+    using espgui::Button;
+    case Button::Left:
+    case Button::Right:
+        switchScreen<MainMenu>();
+        break;
+    case Button::Up:
 #ifdef FEATURE_BMS
         switchScreen<BmsDisplay>();
 #else
         switchScreen<MetersDisplay>();
 #endif
-    else if (offset > 0)
+        break;
+    case Button::Down:
         switchScreen<MetersDisplay>();
+        break;
+    }
 }
 
 StatusDisplay::BoardStatus::BoardStatus(int y) :

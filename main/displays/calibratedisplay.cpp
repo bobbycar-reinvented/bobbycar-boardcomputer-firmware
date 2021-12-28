@@ -168,97 +168,107 @@ void CalibrateDisplay::stop()
     }
 }
 
-void CalibrateDisplay::rotate(int offset)
+void CalibrateDisplay::buttonPressed(espgui::Button button)
 {
-    Base::rotate(offset);
+    Base::buttonPressed(button);
 
-    m_selectedButton += offset;
-
-    if (m_selectedButton < 0)
-        m_selectedButton = 1;
-    if (m_selectedButton > 1)
-        m_selectedButton = 0;
-}
-
-void CalibrateDisplay::confirm()
-{
-    switch (m_selectedButton)
+    switch (button)
     {
-    case 0: // left button pressed
-        if (!raw_gas || !raw_brems || !m_gas || !m_brems)
-            return;
+    using espgui::Button;
+    case Button::Up:
+        m_selectedButton--;
 
+        if (m_selectedButton < 0)
+            m_selectedButton = 1;
+
+        break;
+    case Button::Down:
+        m_selectedButton++;
+
+        if (m_selectedButton > 1)
+            m_selectedButton = 0;
+
+        break;
+    case Button::Left:
+    back:
         switch (m_status)
         {
         case Status::Begin:
-            m_status = Status::GasMin;
-            break;
-        case Status::GasMin:
-            m_gasMin = *raw_gas;
-            m_status = Status::GasMax;
-            break;
-        case Status::GasMax:
-            m_gasMax = *raw_gas;
-            m_status = Status::BremsMin;
-            {
-                const auto dead = (m_gasMax - m_gasMin)/20;
-                m_gasMin += dead;
-                m_gasMax -= dead;
-            }
-            break;
-        case Status::BremsMin:
-            m_bremsMin = *raw_brems;
-            m_status = Status::BremsMax;
-            break;
-        case Status::BremsMax:
-            m_bremsMax = *raw_brems;
-            m_status = Status::Confirm;
-            {
-                const auto dead = (m_bremsMax - m_bremsMin)/20;
-                m_bremsMin += dead;
-                m_bremsMax -= dead;
-            }
-            break;
-        case Status::Confirm:
-            if (*m_gas > 100 || *m_brems > 100)
-                return;
-            copyToSettings();
-            saveSettings();
             if (m_bootup)
                 espgui::switchScreen<StatusDisplay>();
+            else if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+            {
+                espgui::switchScreen<MainMenu>();
+                settings.lockscreen.locked = false;
+                saveSettings();
+            }
             else
                 espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
+            break;
+        case Status::GasMin:
+        case Status::GasMax:
+        case Status::BremsMin:
+        case Status::BremsMax:
+        case Status::Confirm:
+            m_selectedButton = 0;
+            m_status = Status::Begin;
+            copyFromSettings();
         }
-        break;
-    case 1: // right button pressed
-        back();
-    }
-}
 
-void CalibrateDisplay::back()
-{
-    switch (m_status)
-    {
-    case Status::Begin:
-        if (m_bootup)
-            espgui::switchScreen<StatusDisplay>();
-        else if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
-        {
-            espgui::switchScreen<MainMenu>();
-            settings.lockscreen.locked = false;
-            saveSettings();
-        }
-        else
-            espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
         break;
-    case Status::GasMin:
-    case Status::GasMax:
-    case Status::BremsMin:
-    case Status::BremsMax:
-    case Status::Confirm:
-        m_selectedButton = 0;
-        m_status = Status::Begin;
-        copyFromSettings();
+    case Button::Right:
+        switch (m_selectedButton)
+        {
+        case 0: // left button pressed
+            if (!raw_gas || !raw_brems || !m_gas || !m_brems)
+                return;
+
+            switch (m_status)
+            {
+            case Status::Begin:
+                m_status = Status::GasMin;
+                break;
+            case Status::GasMin:
+                m_gasMin = *raw_gas;
+                m_status = Status::GasMax;
+                break;
+            case Status::GasMax:
+                m_gasMax = *raw_gas;
+                m_status = Status::BremsMin;
+                {
+                    const auto dead = (m_gasMax - m_gasMin)/20;
+                    m_gasMin += dead;
+                    m_gasMax -= dead;
+                }
+                break;
+            case Status::BremsMin:
+                m_bremsMin = *raw_brems;
+                m_status = Status::BremsMax;
+                break;
+            case Status::BremsMax:
+                m_bremsMax = *raw_brems;
+                m_status = Status::Confirm;
+                {
+                    const auto dead = (m_bremsMax - m_bremsMin)/20;
+                    m_bremsMin += dead;
+                    m_bremsMax -= dead;
+                }
+                break;
+            case Status::Confirm:
+                if (*m_gas > 100 || *m_brems > 100)
+                    return;
+                copyToSettings();
+                saveSettings();
+                if (m_bootup)
+                    espgui::switchScreen<StatusDisplay>();
+                else
+                    espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
+            }
+            break;
+        case 1: // right button pressed
+            goto back;
+        }
+        break;
     }
 }
 

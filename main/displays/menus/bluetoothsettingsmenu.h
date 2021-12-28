@@ -5,7 +5,7 @@
 #ifdef FEATURE_BLUETOOTH
 #include "changevaluedisplay_bluetoothmode.h"
 #endif
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
 #ifdef FEATURE_BLUETOOTH
@@ -37,7 +37,7 @@ using AutoBluetoothModeChangeDisplay = makeComponent<
 >;
 
 class BluetoothSettingsMenu :
-    public MenuDisplay,
+    public BobbyMenuDisplay,
     public StaticText<TEXT_BLUETOOTHSETTINGS>,
     public BackActionInterface<SwitchScreenAction<SettingsMenu>>
 {

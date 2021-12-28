@@ -1,20 +1,19 @@
 #pragma once
 
-// system includes
-#include <cstdint>
-
-// 3rdparty lib includes
-#include <menudisplay.h>
+// local includes
+#include "displays/bobbymenudisplay.h"
 
 namespace bobbygui {
 class MenuDisplayWithTime :
-    public espgui::MenuDisplay
+    public BobbyMenuDisplay
 {
-    using Base = espgui::MenuDisplay;
+    using Base = BobbyMenuDisplay;
+
 public:
     void start() override;
     void redraw() override;
     espgui::Label m_label_currentTime{145, 6};
+
 private:
     virtual bool use_big_font() const
     {

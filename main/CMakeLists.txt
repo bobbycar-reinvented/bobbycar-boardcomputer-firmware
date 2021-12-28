@@ -53,6 +53,7 @@ set(headers
     debugtexthelpers.h
     displays/bmsdisplay.h
     displays/bobbydisplay.h
+    displays/bobbydisplaywithtitle.h
     displays/bobbychangevaluedisplay.h
     displays/bobbymenudisplay.h
     displays/calibratedisplay.h
@@ -274,6 +275,7 @@ set(sources
     debugtexthelpers.cpp
     displays/bmsdisplay.cpp
     displays/bobbydisplay.cpp
+    displays/bobbydisplaywithtitle.cpp
     displays/bobbychangevaluedisplay.cpp
     displays/bobbymenudisplay.cpp
     displays/calibratedisplay.cpp
