@@ -9,7 +9,11 @@
 
 using namespace espgui;
 
-QrDisplay::QrDisplay(std::string_view msg, uint8_t ver) : m_msg{msg}, m_ver{ver} {}
+QrDisplay::QrDisplay(std::string_view msg, uint8_t ver) :
+    m_msg{msg},
+    m_ver{ver}
+{
+}
 
 void QrDisplay::initScreen()
 {
@@ -35,12 +39,15 @@ void QrDisplay::initScreen()
     }
 }
 
-void QrDisplay::back()
+void QrDisplay::buttonPressed(espgui::Button button)
 {
-    switchScreen<GreenPassMenu>();
-}
+    Base::buttonPressed(button);
 
-void QrDisplay::confirm()
-{
-    switchScreen<GreenPassMenu>();
+    switch (button)
+    {
+    using espgui::Button;
+    case Button::Left: switchScreen<GreenPassMenu>(); break;
+    case Button::Right: switchScreen<GreenPassMenu>(); break;
+    default:;
+    }
 }

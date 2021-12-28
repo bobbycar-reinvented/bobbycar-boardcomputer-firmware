@@ -1,17 +1,20 @@
 #pragma once
 
+
+// 3rdparty lib includes
+#include <accessorinterface.h>
 #include <qrcode.h>
 
 // local includes
-#include "accessorinterface.h"
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 class GreenPassMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_GREENPASS>
 {
-    using Base = espgui::MenuDisplay;
+    using Base = BobbyMenuDisplay;
+
 public:
     GreenPassMenu();
     void back() override;

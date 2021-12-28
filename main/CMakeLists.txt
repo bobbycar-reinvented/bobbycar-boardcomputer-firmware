@@ -52,6 +52,9 @@ set(headers
     debuginputhandler.h
     debugtexthelpers.h
     displays/bmsdisplay.h
+    displays/bobbydisplay.h
+    displays/bobbychangevaluedisplay.h
+    displays/bobbymenudisplay.h
     displays/calibratedisplay.h
     displays/calibratevoltagedisplay.h
     displays/qrdisplay.h
@@ -270,6 +273,9 @@ set(sources
     debuginputhandler.cpp
     debugtexthelpers.cpp
     displays/bmsdisplay.cpp
+    displays/bobbydisplay.cpp
+    displays/bobbychangevaluedisplay.cpp
+    displays/bobbymenudisplay.cpp
     displays/calibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
     displays/qrdisplay.cpp
