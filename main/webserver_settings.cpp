@@ -28,7 +28,6 @@ using esphttpdutils::HtmlTag;
 
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
-} // namespace
 
 template<typename T>
 typename std::enable_if<
@@ -86,9 +85,11 @@ showInputForSetting(std::string_view key, T value, std::string &body)
                         value[3]);
     return true;
 }
+} // namespace
 
 esp_err_t webserver_settings_handler(httpd_req_t *req)
 {
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -96,6 +97,7 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+#endif
 
     std::string body;
 
@@ -145,6 +147,7 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
 #endif
                         "<b>Settings</b> - "
                         "<a href=\"/stringSettings\">String Settings</a> - "
+                        "<a href=\"/newSettings\">New Settings</a> - "
                         "<a href=\"/dumpnvs\">Dump NVS</a>";
             }
 
@@ -175,6 +178,7 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/html", body)
 }
 
+namespace {
 template<typename T>
 typename std::enable_if<
     !std::is_same<T, bool>::value &&
@@ -250,9 +254,11 @@ saveSetting(T &value, std::string_view newValue, std::string &body)
         return false;
     }
 }
+} // namespace
 
 esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
 {
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -260,6 +266,7 @@ esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+#endif
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
