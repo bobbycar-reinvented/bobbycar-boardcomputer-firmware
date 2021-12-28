@@ -17,6 +17,7 @@
 #include "udpcloud.h"
 #include "modes/defaultmode.h"
 #include "taskmanager.h"
+#include "newsettings.h"
 
 using namespace std::chrono_literals;
 using namespace espgui;
@@ -176,7 +177,7 @@ clearIp:
     }
 
     m_labelMode.redraw(currentMode->displayName());
-    m_labelName.redraw(deviceName);
+    m_labelName.redraw(configs.wifiApName.value);
     const auto profile = settingsPersister.currentlyOpenProfileIndex();
     m_labelProfile.redraw(profile ? std::to_string(*profile) : "-");
 }

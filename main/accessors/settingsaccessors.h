@@ -6,6 +6,7 @@
 // local includes
 #include "globals.h"
 #include "utils.h"
+#include "newsettings.h"
 
 //! Special type of RefAccessor that also saves settings after setValue()
 template<typename T>
@@ -39,8 +40,16 @@ struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t 
 struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.phaseAdvMax; } };
 
 // WiFi
-struct WifiStaEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.wifiSettings.wifiStaEnabled; } };
-struct WifiApEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.wifiSettings.wifiApEnabled; } };
+struct WifiStaEnabledAccessor : public virtual espgui::AccessorInterface<bool>
+{
+    bool getValue() const override { return configs.wifiStaEnabled.value; }
+    void setValue(bool value) override { configs.write_config(configs.wifiStaEnabled, value); }
+};
+struct WifiApEnabledAccessor : public virtual espgui::AccessorInterface<bool>
+{
+    bool getValue() const override { return configs.wifiApEnabled.value; }
+    void setValue(bool value) override { configs.write_config(configs.wifiApEnabled, value); }
+};
 
 // Bluetooth
 #ifdef FEATURE_BLUETOOTH

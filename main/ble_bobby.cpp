@@ -3,11 +3,46 @@
 // esp-idf includes
 #include <esp_log.h>
 
-namespace {
-constexpr const char * const TAG = "BOBBYBLE";
-} // namespace
+// 3rdparty lib includes
+#include <ArduinoJson.h>
+#include <wifi_bobbycar.h>
+#include <futurecpp.h>
+
+// local includes
+#ifdef FEATURE_LEDSTRIP
+#include "ledstrip.h"
+#endif
+#include "globals.h"
+#include "modes/remotecontrolmode.h"
+#include "utils.h"
+#include "newsettings.h"
 
 #ifdef FEATURE_BLE
+namespace {
+constexpr const char * const TAG = "BOBBYBLE";
+
+class RemoteControlCallbacks : public NimBLECharacteristicCallbacks
+{
+public:
+    void onWrite(NimBLECharacteristic* pCharacteristic) override;
+};
+
+#ifdef FEATURE_WIRELESS_CONFIG
+class WirelessSettingsCallbacks : public NimBLECharacteristicCallbacks
+{
+public:
+    void onWrite(NimBLECharacteristic* pCharacteristic) override;
+};
+
+class WiFiListCallbacks : public NimBLECharacteristicCallbacks
+{
+public:
+    void onRead(NimBLECharacteristic* pCharacteristic) override;
+};
+#endif // FEATURE_WIRELESS_CONFIG
+
+} // namespace
+
 BLEServer *pServer{};
 BLEService *pService{};
 BLECharacteristic *livestatsCharacteristic{};
@@ -15,21 +50,21 @@ BLECharacteristic *remotecontrolCharacteristic{};
 #ifdef FEATURE_WIRELESS_CONFIG
 BLECharacteristic *wirelessConfig{};
 BLECharacteristic *getwifilist{};
-#endif
+#endif // FEATURE_WIRELESS_CONFIG
 
+namespace {
 RemoteControlCallbacks bleRemoteCallbacks;
 
 #ifdef FEATURE_WIRELESS_CONFIG
 WirelessSettingsCallbacks bleWirelessSettingsCallbacks;
 WiFiListCallbacks bleWiFiListCallbacks;
-#endif
+#endif // FEATURE_WIRELESS_CONFIG
 
-namespace {
 void createBle()
 {
     ESP_LOGI("BOBBY", "called");
 
-    BLEDevice::init(deviceName);
+    BLEDevice::init(configs.bluetoothName.value);
 
     const auto serviceUuid{"0335e46c-f355-4ce6-8076-017de08cee98"};
 
@@ -198,6 +233,8 @@ void handleBle()
     }
 }
 
+namespace {
+
 void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
 {
     const auto &val = pCharacteristic->getValue();
@@ -212,7 +249,7 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
 #ifdef FEATURE_LEDSTRIP
     auto newBlinkAnimation = doc["anim"].as<int16_t>();
     if (blinkAnimation != newBlinkAnimation) blinkAnimation = newBlinkAnimation;
-#endif
+#endif // FEATURE_LEDSTRIP
 
     const bool isInverted = (settings.controllerHardware.invertFrontLeft && !settings.controllerHardware.invertFrontRight);
 
@@ -244,8 +281,8 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
     if (write_type == "wifi") {
         const int index = doc["wifi_index"].as<int>();
         ESP_LOGI(TAG, "[ble_config]: Set wifi%i: WiFi-SSID: %s, WiFi-Password: ***", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>());
-        stringSettings.wifis[index].ssid = doc["wifi_ssid"].as<std::string>();
-        stringSettings.wifis[index].key = doc["wifi_pass"].as<std::string>();
+        configs.write_config(configs.wifi_configs[index].ssid, doc["wifi_ssid"].as<std::string>());
+        configs.write_config(configs.wifi_configs[index].key, doc["wifi_pass"].as<std::string>());
         saveSettings();
     } else {
         const auto deserialized = deserializeJson(doc, val);
@@ -253,19 +290,22 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
     }
 }
 
-void WiFiListCallbacks::onRead(NimBLECharacteristic *pCharacteristic) {
+void WiFiListCallbacks::onRead(NimBLECharacteristic *pCharacteristic)
+{
     StaticJsonDocument<768> responseDoc;
-    auto wifis = stringSettings.wifis;
     auto wifiArray = responseDoc.createNestedArray("wifis");
     ESP_LOGI(TAG, "[ble_wifilist] Got request for listing wifi ssids.");
-    for (unsigned int index = 0; index < wifis.size(); index++) {
-        wifiArray.add(wifis[index].ssid);
+    for (const auto &wifi : configs.wifi_configs)
+    {
+        wifiArray.add(wifi.ssid.value);
     }
-    responseDoc["wifi_count"] = wifis.size();
+    responseDoc["wifi_count"] = configs.wifi_configs.size();
     std::string json;
     serializeJson(responseDoc, json);
     pCharacteristic->setValue(json);
 }
-#endif
+#endif // FEATURE_WIRELESS_CONFIG
+
+} // namespace
 
 #endif

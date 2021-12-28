@@ -6,6 +6,7 @@
 #include "displays/menus/debugmenu.h"
 #include "globals.h"
 #include "screenmanager.h"
+#include "newsettings.h"
 
 using namespace espgui;
 
@@ -31,7 +32,7 @@ void QrCodeDebugDisplay::buttonPressed(espgui::Button button)
     case Button::Right:
     {
         uint8_t qrcodeBytes[qrcode_getBufferSize(7)];
-        qrcode_initText(&m_qrcode, qrcodeBytes, 7, ECC_MEDIUM, fmt::format("WIFI:T:WPA;S:{};P:{};", deviceName, stringSettings.ap_password).c_str());
+        qrcode_initText(&m_qrcode, qrcodeBytes, 7, ECC_MEDIUM, fmt::format("WIFI:T:WPA;S:{};P:{};", configs.wifiApName.value, configs.wifiApKey.value).c_str());
 
         for (uint8_t y = 0; y < m_qrcode.size; y++) {
             for (uint8_t x = 0; x < m_qrcode.size; x++) {

@@ -73,12 +73,12 @@ public:
     ConfigWrapper<int8_t>      wifiStaMinRssi     {-90,                                    DoReset,   {},                         "wifiStaMinRssi"      };
 
     ConfigWrapper<bool>        wifiApEnabled      {true,                                   DoReset,   {},                         "wifiApEnabled"       };
-    ConfigWrapper<std::string> factoryWifiApName  {defaultHostname,                        NoReset,   StringMinMaxSize<4, 32>,    "facWifiApName"       };
-    ConfigWrapper<std::string> wifiApName         {               factoryWifiApName,                  StringMinMaxSize<4, 32>,    "wifiApName"          };
-    ConfigWrapper<std::string> factoryWifiApKey   {"Passwort_123",                         NoReset, StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "factWifiApKey" };
-    ConfigWrapper<std::string> wifiApKey          {               factoryWifiApKey,                 StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey"     };
+    ConfigWrapper<std::string> wifiApName         {defaultHostname,                        DoReset, StringMinMaxSize<4, 32>,      "wifiApName"          };
+    ConfigWrapper<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey"     };
     ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                         "wifiApChannel"       };
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };
+
+    ConfigWrapper<std::string> bluetoothName      {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "bluetoothName"       };
 
 #define NEW_SETTINGS(x) \
     x(baseMacAddressOverride) \
@@ -189,12 +189,12 @@ public:
     x(wifiStaMinRssi) \
     \
     x(wifiApEnabled) \
-    x(factoryWifiApName) \
     x(wifiApName) \
-    x(factoryWifiApKey) \
     x(wifiApKey) \
     x(wifiApChannel) \
-    //x(wifiApAuthmode)
+    x(wifiApAuthmode) \
+    \
+    //x(bluetoothName)
 
     template<typename T>
     void callForEveryConfig(T &&callback)
@@ -202,7 +202,7 @@ public:
 #define HELPER(x) callback(x);
         NEW_SETTINGS(HELPER)
 #undef HELPER
-        callback(wifiApAuthmode);
+        callback(bluetoothName);
     }
 
     auto getAllConfigParams()
@@ -211,7 +211,7 @@ public:
 #define HELPER(x) std::ref<ConfigWrapperInterface>(x),
             NEW_SETTINGS(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(wifiApAuthmode)
+            std::ref<ConfigWrapperInterface>(bluetoothName)
         );
     }
 };

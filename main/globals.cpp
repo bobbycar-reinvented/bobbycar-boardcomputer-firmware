@@ -16,8 +16,6 @@ float avgSpeedKmh{};
 float sumCurrent{};
 bool isLocked{};
 
-char deviceName[32] = STRING(DEVICE_PREFIX) "_ERR";
-
 bool simplified =
 #if defined(HAS_SIMPLIFIED)
     true

@@ -66,12 +66,6 @@ extern "C" void app_main()
     else
         ESP_LOGE("BOBBY", "init() failed");
 
-    bootLabel.redraw("deviceName");
-    if (const auto result = wifi_stack::get_default_mac_addr())
-        std::sprintf(deviceName, STRING(DEVICE_PREFIX) "_%02hhx%02hhx%02hhx", result->at(3), result->at(4), result->at(5));
-    else
-        ESP_LOGE("MAIN", "get_default_mac_addr() failed: %.*s", result.error().size(), result.error().data());
-
     for (const auto &task : schedulerTasks)
     {
         bootLabel.redraw(task.name());
