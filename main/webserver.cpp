@@ -19,8 +19,8 @@ httpd_handle_t httpdHandle;
 
 void initWebserver()
 {
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     webserver_lock.construct();
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     webserver_lock->take(portMAX_DELAY);
 #endif
 
@@ -66,7 +66,7 @@ void initWebserver()
 
 void handleWebserver()
 {
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     webserver_lock->give();
     webserver_lock->take(portMAX_DELAY);
 #endif
@@ -129,7 +129,7 @@ bool menuDisplayChanged()
 
 esp_err_t webserver_status_handler(httpd_req_t *req)
 {
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
