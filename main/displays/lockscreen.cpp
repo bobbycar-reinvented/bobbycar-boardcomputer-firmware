@@ -14,6 +14,8 @@
 
 void Lockscreen::start()
 {
+    Base::start();
+
     m_numbers = {0,0,0,0};
     m_currentIndex = 0;
     m_pressed = false;
@@ -33,6 +35,8 @@ void Lockscreen::start()
 
 void Lockscreen::initScreen()
 {
+    Base::initScreen();
+
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setTextFont(4);
     espgui::tft.setTextColor(TFT_YELLOW);
@@ -66,12 +70,16 @@ void Lockscreen::initScreen()
 
 void Lockscreen::update()
 {
+    Base::update();
+
     // just in case someone changes that settings somehow
     profileButtonDisabled = !settings.lockscreen.allowPresetSwitch;
 }
 
 void Lockscreen::redraw()
 {
+    Base::redraw();
+
     if (m_pressed || m_back_pressed)
     {
         drawRect(m_currentIndex, 1, TFT_BLACK);
@@ -151,21 +159,28 @@ void Lockscreen::stop()
     }
 }
 
-void Lockscreen::confirm()
+void Lockscreen::buttonPressed(espgui::Button button)
 {
-    m_pressed = true;
-}
+    Base::buttonPressed(button);
 
-void Lockscreen::back()
-{
-    if (m_currentIndex > 0)
-        m_currentIndex--;
-    m_back_pressed = true;
-}
-
-void Lockscreen::rotate(int offset)
-{
-    m_rotated += offset;
+    switch (button)
+    {
+    using espgui::Button;
+    case Button::Left:
+        if (m_currentIndex > 0)
+            m_currentIndex--;
+        m_back_pressed = true;
+        break;
+    case Button::Right:
+        m_pressed = true;
+        break;
+    case Button::Up:
+        m_rotated--;
+        break;
+    case Button::Down:
+        m_rotated++;
+        break;
+    }
 }
 
 void Lockscreen::drawRect(int index, int offset, uint32_t color) const

@@ -14,6 +14,8 @@ using namespace std::chrono_literals;
 
 void PoweroffDisplay::start()
 {
+    Base::start();
+
     m_startTime = espchrono::millis_clock::now();
 
     for (Controller &controller : controllers)
@@ -22,6 +24,8 @@ void PoweroffDisplay::start()
 
 void PoweroffDisplay::initScreen()
 {
+    Base::initScreen();
+
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setTextColor(TFT_YELLOW);
 
@@ -37,20 +41,16 @@ void PoweroffDisplay::initScreen()
 
 void PoweroffDisplay::update()
 {
+    Base::update();
+
     if (espchrono::millis_clock::now() - m_startTime >= 1000ms)
         espgui::switchScreen<MainMenu>();
 }
 
 void PoweroffDisplay::stop()
 {
+    Base::stop();
+
     for (Controller &controller : controllers)
         controller.command.poweroff = false;
-}
-
-void PoweroffDisplay::confirm()
-{
-}
-
-void PoweroffDisplay::back()
-{
 }

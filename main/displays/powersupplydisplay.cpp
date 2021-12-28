@@ -12,6 +12,8 @@
 #if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
 void PowerSupplyDisplay::initScreen()
 {
+    Base::initScreen();
+
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
@@ -25,22 +27,24 @@ void PowerSupplyDisplay::initScreen()
 
 void PowerSupplyDisplay::redraw()
 {
+    Base::redraw();
+
     m_voltageLabel.redraw(std::to_string(50.4) + 'V');
     m_currentLabel.redraw(std::to_string(15.1) + 'A');
 }
 
-void PowerSupplyDisplay::confirm()
+void PowerSupplyDisplay::buttonPressed(espgui::Button button)
 {
-    // TODO
-}
+    Base::buttonPressed(button);
 
-void PowerSupplyDisplay::back()
-{
-    espgui::switchScreen<MainMenu>();
-}
-
-void PowerSupplyDisplay::rotate(int offset)
-{
-    // TODO
+    switch (button)
+    {
+    using espgui::Button;
+    case Button::Left:
+    case Button::Right:
+        espgui::switchScreen<MainMenu>();
+        break;
+    default:;
+    }
 }
 #endif

@@ -3,11 +3,13 @@
 // system includes
 #include <cstdint>
 
-// 3rdparty lib includes
-#include "display.h"
+// local includes
+#include "bobbydisplay.h"
 
-class PingPongDisplay : public espgui::Display
+class PingPongDisplay : public BobbyDisplay
 {
+    using Base = BobbyDisplay;
+
 public:
     PingPongDisplay();
 
@@ -15,8 +17,7 @@ public:
     void redraw() override;
     void stop() override;
 
-    void confirm() override;
-    void back() override;
+    void buttonPressed(espgui::Button button) override;
 
 private:
     void midline();
