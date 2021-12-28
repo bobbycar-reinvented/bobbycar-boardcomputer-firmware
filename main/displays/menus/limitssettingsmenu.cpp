@@ -7,48 +7,49 @@
 #include "icons/back.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "utils.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/settingsmenu.h"
 
 namespace {
 using IMotMaxChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_IMOTMAX>,
     IMotMaxAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
     espgui::SwitchScreenAction<LimitsSettingsMenu>
 >;
 using IDcMaxChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_IDCMAX>,
     IDcMaxAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
     espgui::SwitchScreenAction<LimitsSettingsMenu>
 >;
 using NMotMaxKmhChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NMOTMAXKMH>,
     NMotMaxKmhAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
     espgui::SwitchScreenAction<LimitsSettingsMenu>
 >;
 using NMotMaxRpmChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NMOTMAX>,
     NMotMaxRpmAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
     espgui::SwitchScreenAction<LimitsSettingsMenu>
 >;
 using FieldWeakMaxChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_FIELDWEAKMAX>,
     FieldWeakMaxAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
     espgui::SwitchScreenAction<LimitsSettingsMenu>
 >;
 using PhaseAdvMaxChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_PHASEADVMAX>,
     PhaseAdvMaxAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,

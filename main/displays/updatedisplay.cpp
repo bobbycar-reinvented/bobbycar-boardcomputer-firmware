@@ -115,6 +115,7 @@ void UpdateDisplay::buttonPressed(espgui::Button button)
         if (const auto result = triggerOta(stringSettings.otaUrl); !result)
             ESP_LOGE("BOBBY", "triggerOta() failed with %.*s", result.error().size(), result.error().data());
         break;
+    default:;
     }
 }
 #endif

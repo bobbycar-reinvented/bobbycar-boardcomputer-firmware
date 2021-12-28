@@ -2,7 +2,7 @@
 
 void BobbyDisplayWithTitle::rawButtonPressed(uint8_t button)
 {
-    Base::rawButtonPressed(button);
+    //Base::rawButtonPressed(button);
     switch (button)
     {
         using espgui::Button;
@@ -23,7 +23,7 @@ void BobbyDisplayWithTitle::rawButtonPressed(uint8_t button)
 
 void BobbyDisplayWithTitle::rawButtonReleased(uint8_t button)
 {
-    Base::rawButtonReleased(button);
+    //Base::rawButtonReleased(button);
     switch (button)
     {
         using espgui::Button;

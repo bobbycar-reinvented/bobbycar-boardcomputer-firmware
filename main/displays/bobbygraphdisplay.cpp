@@ -1,11 +1,12 @@
-#include "bobbydisplay.h"
+#include "bobbygraphdisplay.h"
 
-void BobbyDisplay::rawButtonPressed(uint8_t button)
+template<size_t COUNT>
+void BobbyGraphDisplay<COUNT>::rawButtonPressed(uint8_t button)
 {
     //Base::rawButtonPressed(button);
     switch (button)
     {
-    using espgui::Button;
+        using espgui::Button;
     case 0: buttonPressed(Button::Left); break;
     case 1: buttonPressed(Button::Right); break;
     case 2: buttonPressed(Button::Up); break;
@@ -21,7 +22,8 @@ void BobbyDisplay::rawButtonPressed(uint8_t button)
     }
 }
 
-void BobbyDisplay::rawButtonReleased(uint8_t button)
+template<size_t COUNT>
+void BobbyGraphDisplay<COUNT>::rawButtonReleased(uint8_t button)
 {
     //Base::rawButtonReleased(button);
     switch (button)
@@ -42,7 +44,8 @@ void BobbyDisplay::rawButtonReleased(uint8_t button)
     }
 }
 
-void BobbyDisplay::buttonPressed(espgui::Button button)
+template<size_t COUNT>
+void BobbyGraphDisplay<COUNT>::buttonPressed(espgui::Button button)
 {
     Base::buttonPressed(button);
 
@@ -60,7 +63,8 @@ void BobbyDisplay::buttonPressed(espgui::Button button)
     }
 }
 
-void BobbyDisplay::buttonReleased(espgui::Button button)
+template<size_t COUNT>
+void BobbyGraphDisplay<COUNT>::buttonReleased(espgui::Button button)
 {
     Base::buttonReleased(button);
 }

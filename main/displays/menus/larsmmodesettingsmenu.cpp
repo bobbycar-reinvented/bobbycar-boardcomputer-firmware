@@ -7,6 +7,7 @@
 #include "icons/back.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "utils.h"
 #include "changevaluedisplay_larsmmode_mode.h"
 #include "changevaluedisplay_unifiedmodelmode.h"
@@ -15,21 +16,21 @@
 
 namespace {
 using LarsmModeModelModeChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<UnifiedModelMode>,
+    BobbyChangeValueDisplay<UnifiedModelMode>,
     espgui::StaticText<TEXT_MODELMODE>,
     LarsmModeModelModeAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>,
     espgui::SwitchScreenAction<LarsmModeSettingsMenu>
 >;
 using LarsmModeModeChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<LarsmModeMode>,
+    BobbyChangeValueDisplay<LarsmModeMode>,
     espgui::StaticText<TEXT_SETMODE>,
     LarsmModeModeAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>,
     espgui::SwitchScreenAction<LarsmModeSettingsMenu>
 >;
 using LarsmModeIterationsChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint8_t>,
+    BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_SETITERATIONS>,
     LarsmModeIterationsAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>,

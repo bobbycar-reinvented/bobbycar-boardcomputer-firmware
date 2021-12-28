@@ -7,13 +7,14 @@
 #include "icons/back.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "utils.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/modessettingsmenu.h"
 
 namespace {
 using MotortestMultiplikatorChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint8_t>,
+    BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_MOTORTESTMULTIPLIKATOR>,
     MotortestModeMultiplikatorAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<MotortestModeSettingsMenu>>,
@@ -21,7 +22,7 @@ using MotortestMultiplikatorChangeDisplay = espgui::makeComponent<
 >;
 
 using MotortestMaxPwmChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint16_t>,
+    BobbyChangeValueDisplay<uint16_t>,
     espgui::StaticText<TEXT_MOTORTESTMAXPWM>,
     MotortestMaxPwmAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<MotortestModeSettingsMenu>>,

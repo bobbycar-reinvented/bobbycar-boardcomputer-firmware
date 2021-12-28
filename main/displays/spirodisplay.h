@@ -15,6 +15,8 @@ public:
     void redraw() override;
     void stop() override;
 
+    void buttonPressed(espgui::Button button) override;
+
 private:
     constexpr static auto DEG2RAD = 0.0174532925;
 

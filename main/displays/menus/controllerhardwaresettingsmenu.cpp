@@ -11,6 +11,7 @@
 #include "icons/back.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "utils.h"
 #include "globals.h"
 #include "accessors/settingsaccessors.h"
@@ -20,14 +21,14 @@
 
 namespace {
 using WheelDiameterMmChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_WHEELDIAMETERMM>,
     WheelDiameterMmAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>
 >;
 using WheelDiameterInchChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<float>,
+    BobbyChangeValueDisplay<float>,
     espgui::StaticText<TEXT_WHEELDIAMETERINCH>,
     WheelDiameterInchAccessor,
     espgui::RatioNumberStep<float, std::ratio<1,10>>,
@@ -35,7 +36,7 @@ using WheelDiameterInchChangeScreen = espgui::makeComponent<
     espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>
 >;
 using NumMagnetPolesChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NUMMAGNETPOLES>,
     NumMagnetPolesAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
@@ -43,14 +44,14 @@ using NumMagnetPolesChangeScreen = espgui::makeComponent<
 >;
 #ifdef FEATURE_CAN
 using CanTransmitTimeoutChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CANTRANSMITTIMEOUT>,
     CanTransmitTimeoutAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>
 >;
 using CanReceiveTimeoutChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CANRECEIVETIMEOUT>,
     CanReceiveTimeoutAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,

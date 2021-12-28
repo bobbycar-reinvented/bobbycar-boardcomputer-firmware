@@ -11,6 +11,7 @@
 #include "icons/back.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "cloudtexthelpers.h"
 #include "accessors/settingsaccessors.h"
 #include "cloud.h"
@@ -20,7 +21,7 @@
 namespace {
 
 using CloudTransmitTimeoutChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CLOUDTRANSMITTIMEOUT>,
     CloudTransmitTimeoutAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
@@ -37,7 +38,7 @@ public:
 };
 
 using CloudCollectRateChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CLOUDCOLLECTRATE>,
     CloudCollectRateAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
@@ -45,7 +46,7 @@ using CloudCollectRateChangeDisplay = espgui::makeComponent<
 >;
 
 using CloudSendRateChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CLOUDSENDRATE>,
     CloudSendRateAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,

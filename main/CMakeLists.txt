@@ -52,10 +52,12 @@ set(headers
     debuginputhandler.h
     debugtexthelpers.h
     displays/bmsdisplay.h
+    displays/bobbychangevaluedisplay.h
     displays/bobbydisplay.h
     displays/bobbydisplaywithtitle.h
-    displays/bobbychangevaluedisplay.h
+    displays/bobbygraphdisplay.h
     displays/bobbymenudisplay.h
+    displays/bobbysplitgraphdisplay.h
     displays/calibratedisplay.h
     displays/calibratevoltagedisplay.h
     displays/qrdisplay.h
@@ -67,6 +69,7 @@ set(headers
     displays/garagedisplay.h
     displays/ledstripcolorsdisplay.h
     displays/lockscreen.h
+    displays/menudisplaywithtime.cpp
     displays/menus/aboutmenu.h
     displays/menus/accesspointwifisettingsmenu.h
     displays/menus/batterydebugmenu.h
@@ -274,10 +277,12 @@ set(sources
     debuginputhandler.cpp
     debugtexthelpers.cpp
     displays/bmsdisplay.cpp
+    displays/bobbychangevaluedisplay.cpp
     displays/bobbydisplay.cpp
     displays/bobbydisplaywithtitle.cpp
-    displays/bobbychangevaluedisplay.cpp
+    displays/bobbygraphdisplay.cpp
     displays/bobbymenudisplay.cpp
+    displays/bobbysplitgraphdisplay.cpp
     displays/calibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
     displays/qrdisplay.cpp
@@ -438,7 +443,6 @@ set(sources
     webserver_settings.cpp
     webserver_stringsettings.cpp
     widgets/doubleprogressbar.cpp
-    displays/menudisplaywithtime.cpp
     wifi_bobbycar.cpp
     wifitexthelpers.cpp
 )

@@ -10,6 +10,7 @@
 #include <checkboxicon.h>
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "utils.h"
 #include "icons/lock.h"
 #include "accessors/settingsaccessors.h"
@@ -43,35 +44,35 @@ public:
 };
 
 using SampleCountChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SAMPLECOUNT>,
     SampleCountAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 using GasMinChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_GASMIN>,
     GasMinAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 using GasMaxChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_GASMAX>,
     GasMaxAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 using BremsMinChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_BREMSMIN>,
     BremsMinAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 using BremsMaxChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_BREMSMAX>,
     BremsMaxAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
@@ -80,7 +81,7 @@ using BremsMaxChangeScreen = espgui::makeComponent<
 
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
 using DPadDebounceChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<uint8_t>,
+    BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_DPADDEBOUNCE>,
     DPadDebounceAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
@@ -103,42 +104,42 @@ public:
 };
 
 using GametrakXMinChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKXMIN>,
     GametrakXMinAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 using GametrakXMaxChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKXMAX>,
     GametrakXMaxAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 using GametrakYMinChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKYMIN>,
     GametrakYMinAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 using GametrakYMaxChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKYMAX>,
     GametrakYMaxAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 using GametrakDistMinChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKDISTMIN>,
     GametrakDistMinAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
 >;
 using GametrakDistMaxChangeScreen = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKDISTMAX>,
     GametrakDistMaxAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,

@@ -3,7 +3,7 @@
 template<typename Tvalue>
 void BobbyChangeValueDisplay<Tvalue>::rawButtonPressed(uint8_t button)
 {
-    Base::rawButtonPressed(button);
+    //Base::rawButtonPressed(button);
     switch (button)
     {
         using espgui::Button;
@@ -25,7 +25,7 @@ void BobbyChangeValueDisplay<Tvalue>::rawButtonPressed(uint8_t button)
 template<typename Tvalue>
 void BobbyChangeValueDisplay<Tvalue>::rawButtonReleased(uint8_t button)
 {
-    Base::rawButtonReleased(button);
+    //Base::rawButtonReleased(button);
     switch (button)
     {
         using espgui::Button;

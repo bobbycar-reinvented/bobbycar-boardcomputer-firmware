@@ -28,5 +28,7 @@ public:
 
 private:
     std::optional<espchrono::millis_clock::time_point> m_lastScanComplete;
-    std::vector<std::unique_ptr<makeComponent<MenuItem, ChangeableText, DummyAction>>> m_reusableItems;
+
+    using menu_item_t = espgui::makeComponent<espgui::MenuItem, espgui::ChangeableText, espgui::DummyAction>;
+    std::vector<std::unique_ptr<menu_item_t>> m_reusableItems;
 };

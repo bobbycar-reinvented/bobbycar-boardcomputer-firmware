@@ -7,34 +7,36 @@
 #include "splitgraphdisplay.h"
 
 // local includes
+#include "displays/bobbygraphdisplay.h"
+#include "displays/bobbysplitgraphdisplay.h"
 #include "utils.h"
 #include "statistics.h"
 #include "displays/menus/mainmenu.h"
 
 namespace {
 using GasGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_GAS>,
     espgui::SingleGraphAccessor<GasStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using BremsGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_BREMS>,
     espgui::SingleGraphAccessor<BremsStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using PotisGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<2>,
+    BobbyGraphDisplay<2>,
     espgui::StaticText<TEXT_POTIS>,
     espgui::DualGraphAccessor<GasStatistics, BremsStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using PotisSplitGraphDisplay = espgui::makeComponent<
-    espgui::SplitGraphDisplay<1, 1>,
+    BobbySplitGraphDisplay<1, 1>,
     espgui::StaticText<TEXT_POTIS>,
     espgui::SingleTopGraphAccessor<GasStatistics>,
     espgui::SingleBottomGraphAccessor<BremsStatistics>,
@@ -43,14 +45,14 @@ using PotisSplitGraphDisplay = espgui::makeComponent<
 >;
 
 using AvgSpeedGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_AVGSPEED>,
     espgui::SingleGraphAccessor<AvgSpeedStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using AvgSpeedKmhGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_AVGSPEEDKMH>,
     espgui::SingleGraphAccessor<AvgSpeedKmhStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
@@ -58,7 +60,7 @@ using AvgSpeedKmhGraphDisplay = espgui::makeComponent<
 >;
 
 using SumCurrentGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_SUMCURRENT>,
     espgui::SingleGraphAccessor<SumCurrentStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
@@ -66,28 +68,28 @@ using SumCurrentGraphDisplay = espgui::makeComponent<
 >;
 
 using FrontVoltageGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_FRONTVOLTAGE>,
     espgui::SingleGraphAccessor<FrontVoltageStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using BackVoltageGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_BACKVOLTAGE>,
     espgui::SingleGraphAccessor<BackVoltageStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using VoltagesGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<2>,
+    BobbyGraphDisplay<2>,
     espgui::StaticText<TEXT_VOLTAGES>,
     espgui::DualGraphAccessor<FrontVoltageStatistics, BackVoltageStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using VoltagesSplitGraphDisplay = espgui::makeComponent<
-    espgui::SplitGraphDisplay<1, 1>,
+    BobbySplitGraphDisplay<1, 1>,
     espgui::StaticText<TEXT_VOLTAGES>,
     espgui::SingleTopGraphAccessor<FrontVoltageStatistics>,
     espgui::SingleBottomGraphAccessor<BackVoltageStatistics>,
@@ -97,28 +99,28 @@ using VoltagesSplitGraphDisplay = espgui::makeComponent<
 
 #ifdef FEATURE_BMS
 using BmsVoltageGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_BMSVOLTAGE>,
     espgui::SingleGraphAccessor<BmsVoltageStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using BmsCurrentGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_BMSCURRENT>,
     espgui::SingleGraphAccessor<BmsCurrentStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using BmsPowerGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_BMSPOWER>,
     espgui::SingleGraphAccessor<BmsPowerStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<GraphsMenu>>
 >;
 using SumCurrentsComparisonGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<2>,
+    BobbyGraphDisplay<2>,
     espgui::StaticText<TEXT_SUMCURRENTSCOMPARISON>,
     DualGraphAccessor<SumCurrentStatistics, BmsCurrentStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
@@ -134,7 +136,7 @@ class MotorCurrentsStatistics : public virtual espgui::GraphAccessorInterface<4>
     }
 };
 using MotorCurrentsGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<4>,
+    BobbyGraphDisplay<4>,
     espgui::StaticText<TEXT_MOTORCURRENTS>,
     MotorCurrentsStatistics,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,
@@ -142,7 +144,7 @@ using MotorCurrentsGraphDisplay = espgui::makeComponent<
 >;
 
 using RssiGraphDisplay = espgui::makeComponent<
-    espgui::GraphDisplay<1>,
+    BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_RSSI>,
     espgui::SingleGraphAccessor<RssiStatistics>,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<GraphsMenu>>,

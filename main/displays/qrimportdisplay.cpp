@@ -96,5 +96,6 @@ void QrImportDisplay::buttonPressed(espgui::Button button)
                 m_confirmLocked = true;
         }
         break;
+    default:;
     }
 }
