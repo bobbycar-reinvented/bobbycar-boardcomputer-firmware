@@ -101,14 +101,20 @@ void UpdateDisplay::redraw()
     }
 }
 
-void UpdateDisplay::confirm()
+void UpdateDisplay::buttonPressed(espgui::Button button)
 {
-    if (const auto result = triggerOta(stringSettings.otaUrl); !result)
-        ESP_LOGE("BOBBY", "triggerOta() failed with %.*s", result.error().size(), result.error().data());
-}
+    Base::buttonPressed(button);
 
-void UpdateDisplay::back()
-{
-    espgui::switchScreen<OtaMenu>();
+    switch (button)
+    {
+    using espgui::Button;
+    case Button::Left:
+        espgui::switchScreen<OtaMenu>();
+        break;
+    case Button::Right:
+        if (const auto result = triggerOta(stringSettings.otaUrl); !result)
+            ESP_LOGE("BOBBY", "triggerOta() failed with %.*s", result.error().size(), result.error().data());
+        break;
+    }
 }
 #endif

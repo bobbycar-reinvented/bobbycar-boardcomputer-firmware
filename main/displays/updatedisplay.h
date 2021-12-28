@@ -1,21 +1,22 @@
 #pragma once
 
 // 3rdparty lib includes
+#include <widgets/label.h>
+#include <widgets/progressbar.h>
 
 // local includes
-#include "display.h"
-#include "widgets/label.h"
-#include "widgets/progressbar.h"
+#include "bobbydisplay.h"
 
 #ifdef FEATURE_OTA
-class UpdateDisplay : public espgui::Display
+class UpdateDisplay : public BobbyDisplay
 {
-    using Base = espgui::Display;
+    using Base = BobbyDisplay;
+
 public:
     void initScreen() override;
     void redraw() override;
-    void confirm() override;
-    void back() override;
+
+    void buttonPressed(espgui::Button button) override;
 
 private:
     espgui::Label m_statusLabel{120, 75};

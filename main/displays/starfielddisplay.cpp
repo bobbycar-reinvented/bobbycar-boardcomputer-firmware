@@ -18,18 +18,10 @@ StarfieldDisplay::StarfieldDisplay() :
 {
 }
 
-void StarfieldDisplay::confirm()
-{
-    espgui::switchScreen<DemosMenu>();
-}
-
-void StarfieldDisplay::back()
-{
-    espgui::switchScreen<DemosMenu>();
-}
-
 void StarfieldDisplay::initScreen()
 {
+    Base::initScreen();
+
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setRotation(1);
 
@@ -41,6 +33,8 @@ void StarfieldDisplay::initScreen()
 
 void StarfieldDisplay::redraw()
 {
+    Base::redraw();
+
     uint8_t spawnDepthVariation = 255;
 
     for(int i = 0; i < NSTARS; ++i)
@@ -80,5 +74,22 @@ void StarfieldDisplay::redraw()
 
 void StarfieldDisplay::stop()
 {
+    Base::stop();
+
     espgui::tft.setRotation(0);
+}
+
+void StarfieldDisplay::buttonPressed(espgui::Button button)
+{
+    Base::buttonPressed(button);
+
+    switch (button)
+    {
+    using espgui::Button;
+    case Button::Left:
+    case Button::Right:
+        espgui::switchScreen<DemosMenu>();
+        break;
+    default:;
+    }
 }
