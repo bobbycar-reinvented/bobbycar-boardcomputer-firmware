@@ -1,6 +1,26 @@
 #include "webserver_ota.h"
 
+// esp-idf includes
+#ifdef FEATURE_WEBSERVER
+#include <esp_http_server.h>
+#endif
+#include <esp_log.h>
+#include <esp_ota_ops.h>
+
+// 3rdparty lib includes
+#include <htmlbuilder.h>
+#include <fmt/core.h>
+#include <espcppmacros.h>
+#include <esphttpdutils.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
+#include <espstrutils.h>
+
 // local includes
+#ifdef FEATURE_OTA
+#include "ota.h"
+#endif
+#include "webserver_lock.h"
 #include "globals.h"
 
 #if defined(FEATURE_WEBSERVER) && defined(FEATURE_OTA)
@@ -13,7 +33,7 @@ constexpr const char * const TAG = "BOBBYWEB";
 
 esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
 {
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -72,7 +92,7 @@ esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
 
 esp_err_t webserver_ota_handler(httpd_req_t *req)
 {
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -189,6 +209,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                         "<b>Update</b> - "
                         "<a href=\"/settings\">Settings</a> - "
                         "<a href=\"/stringSettings\">String Settings</a> - "
+                        "<a href=\"/newSettings\">New Settings</a> - "
                         "<a href=\"/dumpnvs\">Dump NVS</a>";
             }
 
@@ -340,6 +361,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
 
 esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)
 {
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -347,6 +369,7 @@ esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+#endif
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))

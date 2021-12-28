@@ -1,5 +1,26 @@
 #include "webserver_dumpnvs.h"
 
+// esp-idf includes
+#ifdef FEATURE_WEBSERVER
+#include <esp_http_server.h>
+#endif
+#include <esp_log.h>
+
+// 3rdparty lib includes
+#include <htmlbuilder.h>
+#include <fmt/core.h>
+#include <espcppmacros.h>
+#include <esphttpdutils.h>
+#include <espchrono.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
+#include <ArduinoJson.h>
+
+// local includes
+#include "globals.h"
+#include "webserver_lock.h"
+#include "settingsutils.h"
+
 using esphttpdutils::HtmlTag;
 using namespace espchrono;
 using namespace std::chrono_literals;
@@ -114,8 +135,7 @@ showInputForSetting(std::string_view key, T value, JsonObject &body)
 
 esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
 {
-
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {

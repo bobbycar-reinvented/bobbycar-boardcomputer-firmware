@@ -1,5 +1,29 @@
 #include "webserver_displaycontrol.h"
 
+// esp-idf includes
+#ifdef FEATURE_WEBSERVER
+#include <esp_http_server.h>
+#endif
+#include <esp_log.h>
+
+// 3rdparty lib includes
+#include <htmlbuilder.h>
+#include <fmt/core.h>
+#include <espcppmacros.h>
+#include <numberparsing.h>
+#include <esphttpdutils.h>
+#include <textinterface.h>
+#include <menudisplay.h>
+#include <changevaluedisplay.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
+#include <screenmanager.h>
+
+// local includes
+#include "buttons.h"
+#include "globals.h"
+#include "webserver_lock.h"
+
 #ifdef FEATURE_WEBSERVER
 using esphttpdutils::HtmlTag;
 using namespace std::chrono_literals;
@@ -10,7 +34,8 @@ constexpr const char * const TAG = "BOBBYWEB";
 
 esp_err_t webserver_root_handler(httpd_req_t *req)
 {
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
+    ESP_LOGI(TAG, "locking...");
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -18,6 +43,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+    ESP_LOGI(TAG, "succeeded");
 #endif
 
     std::string body;
@@ -160,6 +186,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
                         "<a href=\"/settings\">Settings</a> - "
                         "<a href=\"/stringSettings\">String Settings</a> - "
+                        "<a href=\"/newSettings\">New Settings</a> - "
                         "<a href=\"/dumpnvs\">Dump NVS</a>";
             }
 
@@ -221,7 +248,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 {
 
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -339,8 +366,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 {
-
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -428,8 +454,7 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 
 esp_err_t webserver_setValue_handler(httpd_req_t *req)
 {
-
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {

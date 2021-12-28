@@ -1,33 +1,65 @@
 #include "webserver.h"
 #include "sdkconfig.h"
 
+// system includes
+#include <chrono>
+
+// esp-idf includes
+#include <esp_log.h>
+
+// 3rdparty lib includes
+#include <menuitem.h>
+#include <espcppmacros.h>
+#include <esphttpdutils.h>
+#include <display.h>
+#include <screenmanager.h>
+#include <menudisplay.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
+
+// local includes
+#include "webserver_lock.h"
+#include "webserver_displaycontrol.h"
+#ifdef FEATURE_OTA
+#include "webserver_ota.h"
+#endif
+#include "webserver_settings.h"
+#include "webserver_stringsettings.h"
+#include "webserver_newsettings.h"
+#ifdef OLD_NVS
+#include "webserver_dumpnvs.h"
+#endif
+#include "globals.h"
+
 using namespace std::chrono_literals;
 
 #ifdef FEATURE_WEBSERVER
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
-} // namespace
 
-namespace bobbywebserver {
-bool forceRefresh{false};
+//bool forceRefresh{false};
 bool lastScreenWasMenu{};
 int8_t lastSelectIndex{};
 std::vector<std::pair<std::string, const espgui::MenuItemIcon*>> menuBuf{};
-}
+
+esp_err_t webserver_reboot_handler(httpd_req_t *req);
+bool menuDisplayChanged();
+esp_err_t webserver_status_handler(httpd_req_t *req);
+} // namespace bobbywebserver
 
 httpd_handle_t httpdHandle;
 
 void initWebserver()
 {
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     webserver_lock.construct();
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
     webserver_lock->take(portMAX_DELAY);
 #endif
 
     {
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
         httpConfig.core_id = 1;
-        httpConfig.max_uri_handlers = 14;
+        httpConfig.max_uri_handlers = 16;
         httpConfig.stack_size = 8192;
 
         const auto result = httpd_start(&httpdHandle, &httpConfig);
@@ -51,6 +83,8 @@ void initWebserver()
              httpd_uri_t { .uri = "/saveSettings",       .method = HTTP_GET, .handler = webserver_saveSettings_handler,       .user_ctx = NULL },
              httpd_uri_t { .uri = "/stringSettings",     .method = HTTP_GET, .handler = webserver_stringSettings_handler,     .user_ctx = NULL },
              httpd_uri_t { .uri = "/saveStringSettings", .method = HTTP_GET, .handler = webserver_saveStringSettings_handler, .user_ctx = NULL },
+             httpd_uri_t { .uri = "/newSettings",        .method = HTTP_GET, .handler = webserver_newSettings_handler,     .user_ctx = NULL },
+             httpd_uri_t { .uri = "/saveNewSettings",    .method = HTTP_GET, .handler = webserver_saveNewSettings_handler, .user_ctx = NULL },
 #ifdef OLD_NVS
              httpd_uri_t { .uri = "/dumpnvs",            .method = HTTP_GET, .handler = webserver_dump_nvs_handler,           .user_ctx = NULL },
 #endif
@@ -66,11 +100,14 @@ void initWebserver()
 
 void handleWebserver()
 {
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     webserver_lock->give();
+    vTaskDelay(1);
     webserver_lock->take(portMAX_DELAY);
 #endif
 }
+
+namespace {
 
 esp_err_t webserver_reboot_handler(httpd_req_t *req)
 {
@@ -81,7 +118,6 @@ esp_err_t webserver_reboot_handler(httpd_req_t *req)
 
 bool menuDisplayChanged()
 {
-    using namespace bobbywebserver;
     if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
     {
         lastScreenWasMenu = true;
@@ -129,7 +165,7 @@ bool menuDisplayChanged()
 
 esp_err_t webserver_status_handler(httpd_req_t *req)
 {
-#ifdef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_FUNKTIONIERT
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -170,4 +206,5 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
     }
 }
 
+} // namespace
 #endif

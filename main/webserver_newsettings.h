@@ -7,6 +7,6 @@
 #include <esp_err.h>
 
 #ifdef FEATURE_WEBSERVER
-esp_err_t webserver_dump_nvs_handler(httpd_req_t *req);
+esp_err_t webserver_newSettings_handler(httpd_req_t *req);
+esp_err_t webserver_saveNewSettings_handler(httpd_req_t *req);
 #endif
-
