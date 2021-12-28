@@ -5,7 +5,7 @@ void BobbyMenuDisplay::rawButtonPressed(uint8_t button)
     //Base::rawButtonPressed(button);
     switch (button)
     {
-        using espgui::Button;
+    using espgui::Button;
     case 0: buttonPressed(Button::Left); break;
     case 1: buttonPressed(Button::Right); break;
     case 2: buttonPressed(Button::Up); break;
@@ -26,7 +26,7 @@ void BobbyMenuDisplay::rawButtonReleased(uint8_t button)
     //Base::rawButtonReleased(button);
     switch (button)
     {
-        using espgui::Button;
+    using espgui::Button;
     case 0: buttonReleased(Button::Left); break;
     case 1: buttonReleased(Button::Right); break;
     case 2: buttonReleased(Button::Up); break;
@@ -62,5 +62,5 @@ void BobbyMenuDisplay::buttonPressed(espgui::Button button)
 
 void BobbyMenuDisplay::buttonReleased(espgui::Button button)
 {
-    Base::buttonReleased(button);
+    //Base::buttonReleased(button);
 }

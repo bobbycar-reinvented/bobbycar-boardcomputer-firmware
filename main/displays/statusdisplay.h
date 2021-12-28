@@ -17,8 +17,7 @@
 #include "icons/alert.h"
 #include "battery.h"
 
-class StatusDisplay :
-    public BobbyDisplay
+class StatusDisplay : public BobbyDisplay
 {
     using Base = BobbyDisplay;
 

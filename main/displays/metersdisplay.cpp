@@ -51,7 +51,7 @@ void MetersDisplay::redraw()
     meters[5].redraw(fixCurrent(controllers.back.feedback.right.dcLink), -10, 10);
 }
 
-void StatusDisplay::buttonPressed(espgui::Button button)
+void MetersDisplay::buttonPressed(espgui::Button button)
 {
     Base::buttonPressed(button);
 

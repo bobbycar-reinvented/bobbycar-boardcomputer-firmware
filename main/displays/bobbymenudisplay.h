@@ -1,13 +1,10 @@
 #pragma once
 
-// system includes
-#include <type_traits>
-
 // 3rdparty lib includes
 #include <menudisplay.h>
 
 // local includes
-#include "bobbydisplay.h"
+#include "bobbybuttons.h"
 
 class BobbyMenuDisplay : public espgui::MenuDisplay
 {

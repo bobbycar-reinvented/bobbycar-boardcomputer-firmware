@@ -1,6 +1,6 @@
-#include "bobbydisplaywithtitle.h"
+#include "bobbybuttons.h"
 
-void BobbyDisplayWithTitle::rawButtonPressed(uint8_t button)
+void BobbyButtons::rawButtonPressed(uint8_t button)
 {
     //Base::rawButtonPressed(button);
     switch (button)
@@ -21,7 +21,7 @@ void BobbyDisplayWithTitle::rawButtonPressed(uint8_t button)
     }
 }
 
-void BobbyDisplayWithTitle::rawButtonReleased(uint8_t button)
+void BobbyButtons::rawButtonReleased(uint8_t button)
 {
     //Base::rawButtonReleased(button);
     switch (button)
@@ -42,10 +42,9 @@ void BobbyDisplayWithTitle::rawButtonReleased(uint8_t button)
     }
 }
 
-void BobbyDisplayWithTitle::buttonPressed(espgui::Button button)
+void BobbyButtons::buttonPressed(espgui::Button button)
 {
     //Base::buttonPressed(button);
-
     switch (BobbyButton(button))
     {
     case BobbyButton::Profile0: /* TODO */ break;
@@ -60,7 +59,7 @@ void BobbyDisplayWithTitle::buttonPressed(espgui::Button button)
     }
 }
 
-void BobbyDisplayWithTitle::buttonReleased(espgui::Button button)
+void BobbyButtons::buttonReleased(espgui::Button button)
 {
     //Base::buttonReleased(button);
 }

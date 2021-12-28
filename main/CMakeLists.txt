@@ -36,6 +36,7 @@ set(headers
     bmsutils.h
     buildserver.h
     buttons.h
+    bobbybuttons.h
     can.h
     changevaluedisplay_bluetoothmode.h
     changevaluedisplay_controlmode.h
@@ -261,6 +262,7 @@ set(sources
     bmsutils.cpp
     buildserver.cpp
     buttons.cpp
+    bobbybuttons.cpp
     can.cpp
     changevaluedisplay_bluetoothmode.cpp
     changevaluedisplay_controlmode.cpp

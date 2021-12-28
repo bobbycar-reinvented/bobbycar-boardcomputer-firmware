@@ -26,7 +26,7 @@ void BobbyDisplay::rawButtonReleased(uint8_t button)
     //Base::rawButtonReleased(button);
     switch (button)
     {
-        using espgui::Button;
+    using espgui::Button;
     case 0: buttonReleased(Button::Left); break;
     case 1: buttonReleased(Button::Right); break;
     case 2: buttonReleased(Button::Up); break;
@@ -44,7 +44,7 @@ void BobbyDisplay::rawButtonReleased(uint8_t button)
 
 void BobbyDisplay::buttonPressed(espgui::Button button)
 {
-    Base::buttonPressed(button);
+    //Base::buttonPressed(button);
 
     switch (BobbyButton(button))
     {
@@ -62,5 +62,5 @@ void BobbyDisplay::buttonPressed(espgui::Button button)
 
 void BobbyDisplay::buttonReleased(espgui::Button button)
 {
-    Base::buttonReleased(button);
+    //Base::buttonReleased(button);
 }
