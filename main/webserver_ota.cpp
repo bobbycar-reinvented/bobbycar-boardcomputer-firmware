@@ -1,6 +1,26 @@
 #include "webserver_ota.h"
 
+// esp-idf includes
+#ifdef FEATURE_WEBSERVER
+#include <esp_http_server.h>
+#endif
+#include <esp_log.h>
+#include <esp_ota_ops.h>
+
+// 3rdparty lib includes
+#include <htmlbuilder.h>
+#include <fmt/core.h>
+#include <espcppmacros.h>
+#include <esphttpdutils.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
+#include <espstrutils.h>
+
 // local includes
+#ifdef FEATURE_OTA
+#include "ota.h"
+#endif
+#include "webserver_lock.h"
 #include "globals.h"
 
 #if defined(FEATURE_WEBSERVER) && defined(FEATURE_OTA)

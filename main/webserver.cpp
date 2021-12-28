@@ -1,19 +1,50 @@
 #include "webserver.h"
 #include "sdkconfig.h"
 
+// system includes
+#include <chrono>
+
+// esp-idf includes
+#include <esp_log.h>
+
+// 3rdparty lib includes
+#include <menuitem.h>
+#include <espcppmacros.h>
+#include <esphttpdutils.h>
+#include <display.h>
+#include <screenmanager.h>
+#include <menudisplay.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
+
+// local includes
+#include "webserver_lock.h"
+#include "webserver_displaycontrol.h"
+#ifdef FEATURE_OTA
+#include "webserver_ota.h"
+#endif
+#include "webserver_settings.h"
+#include "webserver_stringsettings.h"
+#ifdef OLD_NVS
+#include "webserver_dumpnvs.h"
+#endif
+#include "globals.h"
+
 using namespace std::chrono_literals;
 
 #ifdef FEATURE_WEBSERVER
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
-} // namespace
 
-namespace bobbywebserver {
-bool forceRefresh{false};
+//bool forceRefresh{false};
 bool lastScreenWasMenu{};
 int8_t lastSelectIndex{};
 std::vector<std::pair<std::string, const espgui::MenuItemIcon*>> menuBuf{};
-}
+
+esp_err_t webserver_reboot_handler(httpd_req_t *req);
+bool menuDisplayChanged();
+esp_err_t webserver_status_handler(httpd_req_t *req);
+} // namespace bobbywebserver
 
 httpd_handle_t httpdHandle;
 
@@ -72,6 +103,8 @@ void handleWebserver()
 #endif
 }
 
+namespace {
+
 esp_err_t webserver_reboot_handler(httpd_req_t *req)
 {
     esp_restart();
@@ -81,7 +114,6 @@ esp_err_t webserver_reboot_handler(httpd_req_t *req)
 
 bool menuDisplayChanged()
 {
-    using namespace bobbywebserver;
     if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
     {
         lastScreenWasMenu = true;
@@ -170,4 +202,5 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
     }
 }
 
+} // namespace
 #endif

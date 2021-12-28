@@ -1,5 +1,29 @@
 #include "webserver_displaycontrol.h"
 
+// esp-idf includes
+#ifdef FEATURE_WEBSERVER
+#include <esp_http_server.h>
+#endif
+#include <esp_log.h>
+
+// 3rdparty lib includes
+#include <htmlbuilder.h>
+#include <fmt/core.h>
+#include <espcppmacros.h>
+#include <numberparsing.h>
+#include <esphttpdutils.h>
+#include <textinterface.h>
+#include <menudisplay.h>
+#include <changevaluedisplay.h>
+#include <lockhelper.h>
+#include <tickchrono.h>
+#include <screenmanager.h>
+
+// local includes
+#include "buttons.h"
+#include "globals.h"
+#include "webserver_lock.h"
+
 #ifdef FEATURE_WEBSERVER
 using esphttpdutils::HtmlTag;
 using namespace std::chrono_literals;
