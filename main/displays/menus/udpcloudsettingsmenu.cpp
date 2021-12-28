@@ -11,13 +11,14 @@
 #include "icons/back.h"
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/settingsmenu.h"
 
 #ifdef FEATURE_UDPCLOUD
 namespace {
 using UdpCloudSendRateChangeDisplay = espgui::makeComponent<
-    espgui::ChangeValueDisplay<int16_t>,
+    BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_UDPSENDRATE>,
     UdpCloudSendIntervalAccessor,
     espgui::BackActionInterface<espgui::SwitchScreenAction<UdpCloudSettingsMenu>>,
