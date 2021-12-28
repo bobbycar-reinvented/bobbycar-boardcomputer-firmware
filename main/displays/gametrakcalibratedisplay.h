@@ -1,20 +1,26 @@
 #pragma once
 
+// system includes
 #include <array>
 #include <string>
 
-#include "display.h"
-#include "actions/switchscreenaction.h"
+// 3rdparty lib includes
+#include <actions/switchscreenaction.h>
+#include <widgets/label.h>
+#include <widgets/progressbar.h>
+
+// local includes
+#include "bobbydisplay.h"
 #include "globals.h"
 #include "texts.h"
-#include "widgets/label.h"
-#include "widgets/progressbar.h"
 #include "modes/ignoreinputmode.h"
 
 namespace {
 #ifdef FEATURE_GAMETRAK
-class GametrakCalibrateDisplay : public Display, public ConfirmActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>, public BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+class GametrakCalibrateDisplay : public BobbyDisplay, public ConfirmActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>, public BackActionInterface<SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 {
+    using Base = BobbyDisplay;
+
 public:
     void initScreen() override;
     void redraw() override;
@@ -38,6 +44,8 @@ private:
 
 void GametrakCalibrateDisplay::initScreen()
 {
+    Base::initScreen();
+
     tft.fillScreen(TFT_BLACK);
     tft.setTextFont(4);
     tft.setTextColor(TFT_YELLOW);
@@ -57,6 +65,8 @@ void GametrakCalibrateDisplay::initScreen()
 
 void GametrakCalibrateDisplay::redraw()
 {
+    Base::redraw();
+
     m_labels[0].redraw(fmt::format("{:.02f}", gametrakX));
     m_labels[1].redraw(std::to_string(raw_gametrakX));
 

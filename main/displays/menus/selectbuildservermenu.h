@@ -1,16 +1,15 @@
 #pragma once
 
 // 3rdparty lib includes
-#include <menudisplay.h>
-#include <icons/back.h>
 
 // local includes
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 #ifdef FEATURE_OTA
 
 class SelectBuildServerMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_SELECTBUILDSERVERMENU>
 {
 public:

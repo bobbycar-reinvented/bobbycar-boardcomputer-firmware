@@ -10,9 +10,36 @@
 
 using namespace espgui;
 
-
 #ifdef FEATURE_LEDSTRIP
-std::string currentSelectedAnimationText::text() const
+namespace {
+
+class CurrentSelectedAnimationText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override;
+};
+
+} // namespace
+
+LedstripSelectAnimationMenu::LedstripSelectAnimationMenu()
+{
+    constructMenuItem<makeComponent<MenuItem, CurrentSelectedAnimationText,                  DisabledColor, DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, EmptyText,                                     DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_DEFAULTRAINBOW>,     LedStripSetAnimationAction<LedstripAnimation::DefaultRainbow>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BETTERRAINBOW>,      LedStripSetAnimationAction<LedstripAnimation::BetterRainbow>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_SPEEDSYNCANIMATION>, LedStripSetAnimationAction<LedstripAnimation::SpeedSync>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_CUSTOMCOLOR>,        LedStripSetAnimationAction<LedstripAnimation::CustomColor>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<LedstripMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+void LedstripSelectAnimationMenu::back()
+{
+    switchScreen<LedstripMenu>();
+}
+
+namespace {
+
+std::string CurrentSelectedAnimationText::text() const
 {
     switch (animation_type) {
     case LedstripAnimation::DefaultRainbow:
@@ -28,19 +55,5 @@ std::string currentSelectedAnimationText::text() const
     }
 }
 
-LedstripSelectAnimationMenu::LedstripSelectAnimationMenu()
-{
-    constructMenuItem<makeComponent<MenuItem, currentSelectedAnimationText,                  DisabledColor, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, EmptyText,                                     DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_DEFAULTRAINBOW>,     LedStripSetAnimationAction<LedstripAnimation::DefaultRainbow>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BETTERRAINBOW>,      LedStripSetAnimationAction<LedstripAnimation::BetterRainbow>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_SPEEDSYNCANIMATION>, LedStripSetAnimationAction<LedstripAnimation::SpeedSync>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_CUSTOMCOLOR>,        LedStripSetAnimationAction<LedstripAnimation::CustomColor>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<LedstripMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
-}
-
-void LedstripSelectAnimationMenu::back()
-{
-    switchScreen<LedstripMenu>();
-}
+} // namespace
 #endif

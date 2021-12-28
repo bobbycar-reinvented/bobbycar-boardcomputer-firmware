@@ -1,16 +1,14 @@
 #pragma once
 
-// 3rdparty lib includes
-#include "menudisplay.h"
-
 // local includes
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 class SelectModeMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_SELECTMODE>
 {
-    using Base = espgui::MenuDisplay;
+    using Base = BobbyMenuDisplay;
 
 public:
     SelectModeMenu();

@@ -1,20 +1,23 @@
 #pragma once
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "texts.h"
 
 #ifdef FEATURE_OTA
 
 class SelectBuildMenu :
-    public espgui::MenuDisplay,
+    public BobbyMenuDisplay,
     public espgui::StaticText<TEXT_SELECTBUILD>
 {
-    using Base = MenuDisplay;
+    using Base = BobbyMenuDisplay;
+
 public:
     SelectBuildMenu();
     void update() override;
     void back() override;
+
+private:
     void buildMenuFromJson();
     void buildMenuRequestError(std::string error);
 };

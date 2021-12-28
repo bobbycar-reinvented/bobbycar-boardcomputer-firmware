@@ -21,9 +21,34 @@
 
 using namespace espgui;
 using namespace buildserver;
-using namespace SelectBuildServerBranch;
 
-namespace SelectBuildServerBranch {
+namespace {
+class CurrentBranch : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override;
+};
+
+class BranchMenuItem : public espgui::MenuItem
+{
+public:
+    std::string text() const override;
+    void setName(std::string &&name);
+    void setName(const std::string &name);
+
+    void triggered() override;
+private:
+    std::string m_name;
+};
+
+class ClearBranchAction : public virtual espgui::ActionInterface
+{
+public:
+    void triggered() override;
+};
+}
+
+namespace {
 std::string CurrentBranch::text() const
 {
     return stringSettings.otaServerBranch.empty() ? "All builds" : stringSettings.otaServerBranch;
@@ -59,8 +84,6 @@ void ClearBranchAction::triggered()
 
 SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
 {
-    using namespace SelectBuildServerBranch;
-
     if (count_available_buildserver() < 1)
     {
         ERR_MESSAGE(TEXT_OTA_NOBUILDSERVERAVAILABLE); // E:No server saved.

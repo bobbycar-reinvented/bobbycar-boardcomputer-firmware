@@ -114,6 +114,8 @@ void WifiScanMenu::update()
 
 void WifiScanMenu::stop()
 {
+    Base::stop();
+
     wifi_stack::delete_scan_result();
 }
 

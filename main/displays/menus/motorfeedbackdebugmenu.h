@@ -1,7 +1,7 @@
 #pragma once
 
 // local includes
-#include "menudisplay.h"
+#include "displays/bobbymenudisplay.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -11,18 +11,17 @@
 #include "debugtexthelpers.h"
 #include "debugcolorhelpers.h"
 
-using namespace espgui;
-
-namespace {
 template<const char *Ttext, typename Ttexts, template<int> class ColorInterface>
 class MotorFeedbackDebugMenu :
-    public MenuDisplay,
-    public StaticText<Ttext>,
-    public BackActionInterface<SwitchScreenAction<DebugMenu>>
+    public BobbyMenuDisplay,
+    public espgui::StaticText<Ttext>,
+    public espgui::BackActionInterface<espgui::SwitchScreenAction<DebugMenu>>
 {
 public:
     MotorFeedbackDebugMenu()
     {
+        using namespace espgui;
+
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::AngleText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
         //constructMenuItem<makeComponent<MenuItem, typename Ttexts::SpeedText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::SpeedKmhText,     ColorInterface<TFT_DARKGREY>, DummyAction>>();
@@ -45,5 +44,3 @@ class FrontLeftMotorFeedbackDebugMenu : public MotorFeedbackDebugMenu<TEXT_FRONT
 class FrontRightMotorFeedbackDebugMenu : public MotorFeedbackDebugMenu<TEXT_FRONTRIGHTFEEDBACK, FrontTexts::RightFeedback, FrontFeedbackColor> {};
 class BackLeftMotorFeedbackDebugMenu : public MotorFeedbackDebugMenu<TEXT_BACKLEFTFEEDBACK, BackTexts::LeftFeedback, BackFeedbackColor> {};
 class BackRightMotorFeedbackDebugMenu : public MotorFeedbackDebugMenu<TEXT_BACKRIGHTFEEDBACK, BackTexts::RightFeedback, BackFeedbackColor> {};
-
-} // namespace

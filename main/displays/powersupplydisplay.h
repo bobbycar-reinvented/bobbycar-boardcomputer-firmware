@@ -15,7 +15,7 @@ public:
     void initScreen() override;
     void redraw() override;
 
-    void buttonPressed(espgui::Button button) override
+    void buttonPressed(espgui::Button button) override;
 
     espgui::Label m_voltageLabel{120, 50};
     espgui::Label m_currentLabel{120, 75};
