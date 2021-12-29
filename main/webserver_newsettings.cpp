@@ -213,8 +213,17 @@ esp_err_t webserver_newSettings_handler(httpd_req_t *req)
 
                     if (config.touched())
                     {
-                        HtmlTag buttonTag{"span", "style=\"color: red;\"", body};
-                        body += "Touched";
+                        {
+                            HtmlTag buttonTag{"span", "style=\"color: red;\"", body};
+                            body += "Touched";
+                        }
+
+                        body += ' ';
+
+                        {
+                            HtmlTag buttonTag{"a", fmt::format("href=\"/resetNewSettings?{}=1\"", esphttpdutils::htmlentities(nvsName)), body};
+                            body += "Reset";
+                        }
                     }
                 }
             });
@@ -426,6 +435,77 @@ esp_err_t webserver_saveNewSettings_handler(httpd_req_t *req)
         body += nvsName;
         if (!saveSetting(config, valueBuf, body))
             success = false;
+        body += '\n';
+    });
+
+    if (body.empty())
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "nothing changed?!")
+
+    if (success)
+    {
+        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/newSettings")
+        body += "\nOk, continue at /newSettings";
+    }
+
+    CALL_AND_EXIT(esphttpdutils::webserver_resp_send,
+                  req,
+                  success ? esphttpdutils::ResponseStatus::TemporaryRedirect : esphttpdutils::ResponseStatus::BadRequest,
+                  "text/plain",
+                  body)
+}
+
+esp_err_t webserver_resetNewSettings_handler(httpd_req_t *req)
+{
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+#endif
+
+    std::string query;
+    if (auto result = esphttpdutils::webserver_get_query(req))
+        query = *result;
+    else
+    {
+        ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
+    }
+
+    std::string body;
+    bool success{true};
+
+    configs.callForEveryConfig([&](auto &config){
+        const std::string_view nvsName{config.nvsName()};
+
+        char valueBufEncoded[256];
+        if (const auto result = httpd_query_key_value(query.data(), nvsName.data(), valueBufEncoded, 256); result != ESP_OK)
+        {
+            if (result != ESP_ERR_NOT_FOUND)
+            {
+                const auto msg = fmt::format("{}: httpd_query_key_value() failed with {}", nvsName, esp_err_to_name(result));
+                ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+                body += msg;
+                body += '\n';
+                success = false;
+            }
+            return;
+        }
+
+        body += nvsName;
+        body += ' ';
+
+        if (const auto result = configs.reset_config(config); result)
+            body += "reset successful";
+        else
+        {
+            body += result.error();
+            success = false;
+        }
+
         body += '\n';
     });
 
