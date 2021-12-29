@@ -9,4 +9,5 @@
 #ifdef FEATURE_WEBSERVER
 esp_err_t webserver_newSettings_handler(httpd_req_t *req);
 esp_err_t webserver_saveNewSettings_handler(httpd_req_t *req);
+esp_err_t webserver_resetNewSettings_handler(httpd_req_t *req);
 #endif
