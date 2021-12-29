@@ -6,14 +6,13 @@
 #include <actions/switchscreenaction.h>
 #include <icons/back.h>
 #include <screenmanager.h>
-#include <actions/toggleboolaction.h>
-#include <checkboxicon.h>
 
 // local includes
 #include "texthelpers/wifistaconfigtexthelpers.h"
 #include "accessors/wifistaconfigaccessors.h"
 #include "wifistaconfigsmenu.h"
 #include "newsettings.h"
+#include "bobbycheckbox.h"
 
 using namespace espgui;
 
@@ -40,11 +39,11 @@ WifiStaConfigEntryMenu::WifiStaConfigEntryMenu(int index) :
 {
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigSsidText,             DummyAction>>(index);
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigKeyText,              DummyAction>>(index);
-    constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigUseStaticIpAccessor,  StaticText<TEXT_USESTATICIP>, ToggleBoolAction, CheckboxIcon>>(index);
+    constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigUseStaticIpAccessor,  StaticText<TEXT_USESTATICIP>, BobbyCheckbox>>(index);
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigStaticIpText,         DummyAction>>(index);
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigStaticSubnetText,     DummyAction>>(index);
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigStaticGatewayText,    DummyAction>>(index);
-    constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigUseStaticDnsAccessor, StaticText<TEXT_USESTATICDNS>, ToggleBoolAction, CheckboxIcon>>(index);
+    constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigUseStaticDnsAccessor, StaticText<TEXT_USESTATICDNS>, BobbyCheckbox>>(index);
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigStaticDns0Text,       DummyAction>>(index);
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigStaticDns1Text,       DummyAction>>(index);
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigStaticDns2Text,       DummyAction>>(index);

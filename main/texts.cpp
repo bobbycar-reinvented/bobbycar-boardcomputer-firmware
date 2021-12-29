@@ -64,24 +64,6 @@ char TEXT_UDPUSESTRING[] = "Udp use std::string";
 //char TEXT_BACK[] = "Back";
 #endif
 
-//DebugMenu
-char TEXT_LOADSETTINGS[] = "Load settings";
-char TEXT_SAVESETTINGS[] = "Save settings";
-char TEXT_ERASENVS[] = "Erase NVS";
-char TEXT_FRONTCOMMAND[] = "Front command";
-char TEXT_BACKCOMMAND[] = "Back command";
-char TEXT_FRONTLEFTCOMMAND[] = "Front left command";
-char TEXT_FRONTRIGHTCOMMAND[] = "Front right command";
-char TEXT_BACKLEFTCOMMAND[] = "Back left command";
-char TEXT_BACKRIGHTCOMMAND[] = "Back right command";
-char TEXT_FRONTFEEDBACK[] = "Front feedback";
-char TEXT_BACKFEEDBACK[] = "Back feedback";
-char TEXT_FRONTLEFTFEEDBACK[] = "Front left feedback";
-char TEXT_FRONTRIGHTFEEDBACK[] = "Front right feedback";
-char TEXT_BACKLEFTFEEDBACK[] = "Back left feedback";
-char TEXT_BACKRIGHTFEEDBACK[] = "Back right feedback";
-//char TEXT_BACK[] = "Back";
-
 //MainMenu
 char TEXT_MAINMENU[] = "Main menu";
 char TEXT_STATUS[] = "Status";
@@ -200,11 +182,6 @@ char TEXT_FIELDWEAKMAX[] = "fldWkMax";
 char TEXT_PHASEADVMAX[] = "phsAdvMax";
 //char TEXT_BACK[] = "Back";
 
-//DebugMenu
-//char TEXT_DEBUG[] = "Debug";
-char TEXT_DYNAMICMENU[] = "Dynamic menu";
-//char TEXT_BACK[] = "Back";
-
 //DefaultModeSettingsMenu
 //char TEXT_DEFAULTMODESETTINGS[] = "Default mode settings";
 char TEXT_MODELMODE[] = "Model mode";
@@ -235,10 +212,6 @@ char TEXT_HANDBREMSE_VISUALIZE[] = "Visualize Handbremse";
 char TEXT_HANDBREMSE_MODE[] = "Handbrems Mode";
 char TEXT_HANDBREMSE_TRIGGERTIMEOUT[] = "Handbrems Timeout";
 char TEXT_HANDBREMSE[] = "Handbremse";
-//char TEXT_BACK[] = "Back";
-
-//DynamicDebugMenu
-//char TEXT_DYNAMICMENU[] = "Dynamic menu";
 //char TEXT_BACK[] = "Back";
 
 //EnableMenu

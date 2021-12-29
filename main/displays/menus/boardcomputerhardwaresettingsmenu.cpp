@@ -5,9 +5,7 @@
 #include <changevaluedisplay.h>
 #include <actions/dummyaction.h>
 #include <actions/switchscreenaction.h>
-#include <actions/toggleboolaction.h>
 #include <icons/back.h>
-#include <checkboxicon.h>
 #include <textwithvaluehelper.h>
 
 // local includes

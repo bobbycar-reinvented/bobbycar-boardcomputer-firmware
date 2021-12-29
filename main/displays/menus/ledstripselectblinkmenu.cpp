@@ -1,15 +1,17 @@
 #include "ledstripselectblinkmenu.h"
 
 #ifdef FEATURE_LEDSTRIP
-// Local includes
-#include "accessors/settingsaccessors.h"
+
+// 3rdparty lib includes
 #include "actions/dummyaction.h"
-#include "actions/ledstripblinkactions.h"
 #include "actions/switchscreenaction.h"
-#include "actions/toggleboolaction.h"
-#include "checkboxicon.h"
-#include "displays/menus/ledstripmenu.h"
 #include "icons/back.h"
+
+// local includes
+#include "accessors/settingsaccessors.h"
+#include "actions/ledstripblinkactions.h"
+#include "displays/menus/ledstripmenu.h"
+#include "bobbycheckbox.h"
 
 using namespace espgui;
 
@@ -42,7 +44,7 @@ LedstripSelectBlinkMenu::LedstripSelectBlinkMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BLINKLEFT>,          LedstripAnimationBlinkLeftAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BLINKRIGHT>,         LedstripAnimationBlinkRightAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BLINKBOTH>,          LedstripAnimationBlinkBothAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_EN_BLINK_ANIM>,       ToggleBoolAction, CheckboxIcon, LedstripEnableBlinkAnimationAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_EN_BLINK_ANIM>,       BobbyCheckbox, LedstripEnableBlinkAnimationAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<LedstripMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

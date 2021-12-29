@@ -6,18 +6,17 @@
 
 // 3rdparty lib includes
 #include <fmt/core.h>
+#include "actions/switchscreenaction.h"
+#include "actions/dummyaction.h"
+#include "icons/back.h"
 
 // local includes
-#include "actions/switchscreenaction.h"
 #include "actions/qraction.h"
-#include "actions/dummyaction.h"
-#include "actions/toggleboolaction.h"
 #include "displays/menus/mainmenu.h"
 #include "displays/qrdisplay.h"
 #include "displays/qrimportdisplay.h"
-#include "icons/back.h"
-#include "checkboxicon.h"
 #include "qrimport.h"
+#include "bobbycheckbox.h"
 
 using namespace espgui;
 
@@ -84,7 +83,7 @@ GreenPassMenu::GreenPassMenu()
             constructMenuItem<makeComponentArgs<MenuItem, SwitchQrImportDisplayAction, StaticText<TEXT_ADDCERT>>>(nvs_key);
         }
     }
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DELCERT>, ToggleBoolAction, CheckboxIcon, DeleteModeAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DELCERT>, BobbyCheckbox, DeleteModeAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

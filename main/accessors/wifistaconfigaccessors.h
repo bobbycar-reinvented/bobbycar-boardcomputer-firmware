@@ -14,6 +14,7 @@
 #include "accessorhelpers.h"
 
 struct WifiStaEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.wifiStaEnabled; } };
+struct WifiStaMinRssiAccessor : public NewSettingsAccessor<int8_t> { ConfigWrapper<int8_t> &getConfig() const override { return configs.wifiStaMinRssi; } };
 
 class WifiStaConfigSsidAccessor : public virtual NewSettingsAccessor<std::string>
 {

@@ -8,10 +8,8 @@
 #include "changevaluedisplay.h"
 #include "changevaluedisplay_daylightsavingmode.h"
 #include "changevaluedisplay_sntp_sync_mode_t.h"
-#include "actions/toggleboolaction.h"
 #include "actions/switchscreenaction.h"
 #include "actions/dummyaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 #include "espstrutils.h"
 
@@ -20,6 +18,7 @@
 #include "utils.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/settingsmenu.h"
+#include "bobbycheckbox.h"
 
 namespace {
 class CurrentUtcDateTimeText : public virtual espgui::TextInterface
@@ -97,7 +96,7 @@ TimeSettingsMenu::TimeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OFFSET>,             SwitchScreenAction<TimezoneOffsetChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DAYLIGHTSAVINGMODE>, SwitchScreenAction<DaylightSavingModeChangeDisplay>>>();
 #ifdef FEATURE_NTP
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPENABLED>,         ToggleBoolAction, CheckboxIcon, TimeServerEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPENABLED>,         BobbyCheckbox, TimeServerEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPSERVER>,          DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPMODE>,            SwitchScreenAction<TimeSyncModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPINTERVAL>,        SwitchScreenAction<TimeSyncIntervalChangeDisplay>>>();

@@ -8,23 +8,20 @@
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
-#include "texts.h"
 #include "debugtexthelpers.h"
 #include "debugcolorhelpers.h"
 #include "displays/menus/debugmenu.h"
 
-using namespace espgui;
-
-namespace {
 template<const char *Ttext, typename Ttexts, template<int> class ColorInterface>
 class FeedbackDebugMenu :
     public BobbyMenuDisplay,
-    public StaticText<Ttext>,
-    public BackActionInterface<SwitchScreenAction<DebugMenu>>
+    public espgui::StaticText<Ttext>,
+    public espgui::BackActionInterface<espgui::SwitchScreenAction<DebugMenu>>
 {
 public:
     FeedbackDebugMenu()
     {
+        using namespace espgui;
         //constructMenuItem<makeComponent<MenuItem, typename Ttexts::BatVoltageText,       ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::BatVoltageFixedText,  ColorInterface<TFT_DARKGREY>, DummyAction>>();
         //constructMenuItem<makeComponent<MenuItem, typename Ttexts::BoardTempText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
@@ -34,7 +31,8 @@ public:
     }
 };
 
+constexpr char TEXT_FRONTFEEDBACK[] = "Front feedback";
 using FrontFeedbackDebugMenu = FeedbackDebugMenu<TEXT_FRONTFEEDBACK, FrontTexts, FrontFeedbackColor>;
-using BackFeedbackDebugMenu = FeedbackDebugMenu<TEXT_BACKFEEDBACK, BackTexts, FrontFeedbackColor>;
 
-} // namespace
+constexpr char TEXT_BACKFEEDBACK[] = "Back feedback";
+using BackFeedbackDebugMenu = FeedbackDebugMenu<TEXT_BACKFEEDBACK, BackTexts, FrontFeedbackColor>;

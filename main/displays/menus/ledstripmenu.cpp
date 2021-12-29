@@ -5,9 +5,7 @@
 #include <FastLED.h>
 #include <actioninterface.h>
 #include <actions/switchscreenaction.h>
-#include <actions/toggleboolaction.h>
 #include <changevaluedisplay.h>
-#include <checkboxicon.h>
 #include <icons/back.h>
 #include <menuitem.h>
 #include <textwithvaluehelper.h>
@@ -22,6 +20,7 @@
 #include "ledstrip.h"
 #include "ledstripselectanimationmenu.h"
 #include "ledstripselectblinkmenu.h"
+#include "bobbycheckbox.h"
 
 // clang-format off
 
@@ -115,13 +114,13 @@ LedstripMenu::LedstripMenu()
 {
     using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIPCOLORMENU>,                               espgui::SwitchScreenAction<LedstripColorsDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDANIMATION>, ToggleBoolAction, CheckboxIcon,    EnableLedAnimationAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BRAKELIGHTS>,  ToggleBoolAction, CheckboxIcon,    EnableBrakeLightsAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BLINKBEEP>, ToggleBoolAction, CheckboxIcon,       EnableBeepWhenBlinkAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_FULLBLINK>, ToggleBoolAction, CheckboxIcon,       EnableFullBlinkAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDANIMATION>, BobbyCheckbox,    EnableLedAnimationAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BRAKELIGHTS>,  BobbyCheckbox,    EnableBrakeLightsAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BLINKBEEP>, BobbyCheckbox,       EnableBeepWhenBlinkAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_FULLBLINK>, BobbyCheckbox,       EnableFullBlinkAccessor>>();
 
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_STVO>, ToggleBoolAction, CheckboxIcon,   EnableLedstripStVOAccessor>>(); }
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_STVO_ENABLEFRONTLIGHT>, ToggleBoolAction, CheckboxIcon,   EnableLedstripStVOFrontlight>>();
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_STVO>, BobbyCheckbox,   EnableLedstripStVOAccessor>>(); }
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_STVO_ENABLEFRONTLIGHT>, BobbyCheckbox,   EnableLedstripStVOFrontlight>>();
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_ALLCUSTOMOFF>, AllCustomLedsOffAction>>();
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTOFFSET, LedsStVOFrontOffsetAccessor>,    espgui::SwitchScreenAction<StVOOffsetChangeScreen>>>(); }
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTLENGTH, LedsStVOFrontLengthAccessor>,    espgui::SwitchScreenAction<StVOLengthChangeScreen>>>(); }

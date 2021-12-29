@@ -2,12 +2,11 @@
 
 // 3rdparty lib includes
 #include <fmt/core.h>
-#include <actions/toggleboolaction.h>
-#include <checkboxicon.h>
 
 // local includes
 #include "displays/menus/batterymenu.h"
 #include "accessors/settingsaccessors.h"
+#include "bobbycheckbox.h"
 
 namespace {
 class Save30VCalibrationAction : public virtual espgui::ActionInterface
@@ -63,7 +62,7 @@ CalibrateVoltageDisplay::CalibrateVoltageDisplay()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_30V>,          Save30VCalibrationAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_50V>,          Save50VCalibrationAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_APPLYCALIB>,              ToggleBoolAction, CheckboxIcon, BatteryApplyCalibrationAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_APPLYCALIB>,              BobbyCheckbox, BatteryApplyCalibrationAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                            SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                        DummyAction>>();

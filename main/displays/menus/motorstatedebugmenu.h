@@ -10,7 +10,6 @@
 #include "displays/bobbymenudisplay.h"
 #include "debugmenu.h"
 #include "utils.h"
-#include "texts.h"
 #include "debugtexthelpers.h"
 
 template<const char *Ttext, typename Ttexts>
@@ -38,7 +37,14 @@ public:
     }
 };
 
+constexpr char TEXT_FRONTLEFTCOMMAND[] = "Front left command";
 using FrontLeftMotorStateDebugMenu = MotorStateDebugMenu<TEXT_FRONTLEFTCOMMAND, FrontTexts::LeftCommand>;
+
+constexpr char TEXT_FRONTRIGHTCOMMAND[] = "Front right command";
 using FrontRightMotorStateDebugMenu = MotorStateDebugMenu<TEXT_FRONTRIGHTCOMMAND, FrontTexts::RightCommand>;
+
+constexpr char TEXT_BACKLEFTCOMMAND[] = "Back left command";
 using BackLeftMotorStateDebugMenu = MotorStateDebugMenu<TEXT_BACKLEFTCOMMAND, BackTexts::LeftCommand>;
+
+constexpr char TEXT_BACKRIGHTCOMMAND[] = "Back right command";
 using BackRightMotorStateDebugMenu = MotorStateDebugMenu<TEXT_BACKRIGHTCOMMAND, BackTexts::RightCommand>;

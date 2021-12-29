@@ -2,10 +2,8 @@
 
 // 3rdparty lib includes
 #include <menuitem.h>
-#include <actions/toggleboolaction.h>
 #include <actions/switchscreenaction.h>
 #include <icons/back.h>
-#include <checkboxicon.h>
 #include <changevaluedisplay.h>
 #include <textwithvaluehelper.h>
 
@@ -14,6 +12,7 @@
 #include "globals.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
+#include "bobbycheckbox.h"
 
 namespace {
 using LockscreenPinDigit0ChangeScreen = espgui::makeComponent<
@@ -53,8 +52,8 @@ using namespace espgui;
 
 LockscreenSettingsMenu::LockscreenSettingsMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ALLOWPRESETSWITCH>, ToggleBoolAction, CheckboxIcon, LockscreenAllowPresetSwitchAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_KEEPLOCKED>, ToggleBoolAction, CheckboxIcon, LockscreenKeepLockedAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ALLOWPRESETSWITCH>, BobbyCheckbox, LockscreenAllowPresetSwitchAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_KEEPLOCKED>, BobbyCheckbox, LockscreenKeepLockedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT0, LockscreenPinDigitAccessor<0>>, SwitchScreenAction<LockscreenPinDigit0ChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT1, LockscreenPinDigitAccessor<1>>, SwitchScreenAction<LockscreenPinDigit1ChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT2, LockscreenPinDigitAccessor<2>>, SwitchScreenAction<LockscreenPinDigit2ChangeScreen>>>();

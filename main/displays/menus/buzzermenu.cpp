@@ -4,8 +4,6 @@
 #include "changevaluedisplay.h"
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
-#include "actions/toggleboolaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 
 // local includes
@@ -14,6 +12,7 @@
 #include "globals.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/settingsmenu.h"
+#include "bobbycheckbox.h"
 
 namespace {
 struct FrontFreqAccessor : public espgui::RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.front.command.buzzer.freq; } };
@@ -90,7 +89,7 @@ BuzzerMenu::BuzzerMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTPATTERN>,         SwitchScreenAction<FrontPatternChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKFREQ>,             SwitchScreenAction<BackFreqChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKPATTERN>,          SwitchScreenAction<BackPatternChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEP>,          ToggleBoolAction, CheckboxIcon, ReverseBeepAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEP>,          BobbyCheckbox, ReverseBeepAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPFREQ0>,     SwitchScreenAction<ReverseBeepFreq0ChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPFREQ1>,     SwitchScreenAction<ReverseBeepFreq1ChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPDURATION0>, SwitchScreenAction<ReverseBeepDuration0ChangeScreen>>>();

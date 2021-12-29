@@ -8,6 +8,7 @@ set(headers
     bluetoothtexthelpers.h
     bmsutils.h
     bobbybuttons.h
+    bobbycheckbox.h
     bobbyerrorhandler.h
     buildserver.h
     buttons.h

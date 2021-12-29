@@ -1,3 +1,5 @@
+#pragma once
+
 namespace bobbytexts {
 //AboutMenu
 extern char TEXT_ABOUT[];
@@ -62,24 +64,6 @@ extern char TEXT_UDPSENDRATE[];
 extern char TEXT_UDPUSESTRING[];
 //extern char TEXT_BACK[];
 #endif
-
-//DebugMenu
-extern char TEXT_LOADSETTINGS[];
-extern char TEXT_SAVESETTINGS[];
-extern char TEXT_ERASENVS[];
-extern char TEXT_FRONTCOMMAND[];
-extern char TEXT_BACKCOMMAND[];
-extern char TEXT_FRONTLEFTCOMMAND[];
-extern char TEXT_FRONTRIGHTCOMMAND[];
-extern char TEXT_BACKLEFTCOMMAND[];
-extern char TEXT_BACKRIGHTCOMMAND[];
-extern char TEXT_FRONTFEEDBACK[];
-extern char TEXT_BACKFEEDBACK[];
-extern char TEXT_FRONTLEFTFEEDBACK[];
-extern char TEXT_FRONTRIGHTFEEDBACK[];
-extern char TEXT_BACKLEFTFEEDBACK[];
-extern char TEXT_BACKRIGHTFEEDBACK[];
-//extern char TEXT_BACK[];
 
 //MainMenu
 extern char TEXT_MAINMENU[];
@@ -199,11 +183,6 @@ extern char TEXT_FIELDWEAKMAX[];
 extern char TEXT_PHASEADVMAX[];
 //extern char TEXT_BACK[];
 
-//DebugMenu
-//extern char TEXT_DEBUG[];
-extern char TEXT_DYNAMICMENU[];
-//extern char TEXT_BACK[];
-
 //DefaultModeSettingsMenu
 //extern char TEXT_DEFAULTMODESETTINGS[];
 extern char TEXT_MODELMODE[];
@@ -234,10 +213,6 @@ extern char TEXT_HANDBREMSE_VISUALIZE[];
 extern char TEXT_HANDBREMSE_MODE[];
 extern char TEXT_HANDBREMSE_TRIGGERTIMEOUT[];
 extern char TEXT_HANDBREMSE[];
-//extern char TEXT_BACK[];
-
-//DynamicDebugMenu
-//extern char TEXT_DYNAMICMENU[];
 //extern char TEXT_BACK[];
 
 //EnableMenu
@@ -505,6 +480,6 @@ extern char TEXT_ESPNOW_SETTINGS[];
 extern char TEXT_ESPNOW_SYNCTIME[];
 extern char TEXT_ESPNOW_SYNCWITHOTHERS[];
 extern char TEXT_ESPNOW_SYNCBLINK[];
-} // namespace
+} // namespace bobbytexts
 
 using namespace bobbytexts;

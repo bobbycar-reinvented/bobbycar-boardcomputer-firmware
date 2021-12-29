@@ -5,9 +5,7 @@
 #include "menuitem.h"
 #include "changevaluedisplay.h"
 #include "actions/switchscreenaction.h"
-#include "actions/toggleboolaction.h"
 #include "actions/dummyaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 
 // local includes
@@ -16,6 +14,7 @@
 #include "accessors/settingsaccessors.h"
 #include "cloud.h"
 #include "displays/menus/settingsmenu.h"
+#include "bobbycheckbox.h"
 
 #ifdef FEATURE_CLOUD
 namespace {
@@ -58,7 +57,7 @@ using namespace espgui;
 
 CloudSettingsMenu::CloudSettingsMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDENABLED>,         ToggleBoolAction, CheckboxIcon, CloudEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDENABLED>,         BobbyCheckbox, CloudEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDTRANSMITTIMEOUT>, SwitchScreenAction<CloudTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, CloudCreatedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudStartedText,                      DisabledColor, DummyAction>>();

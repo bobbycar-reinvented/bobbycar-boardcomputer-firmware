@@ -5,9 +5,7 @@
 
 // 3rdparty lib includes
 #include "changevaluedisplay.h"
-#include "actions/toggleboolaction.h"
 #include "actions/switchscreenaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 
 // local includes
@@ -18,6 +16,7 @@
 #include "displays/menus/enablemenu.h"
 #include "displays/menus/invertmenu.h"
 #include "displays/menus/settingsmenu.h"
+#include "bobbycheckbox.h"
 
 namespace {
 using WheelDiameterMmChangeScreen = espgui::makeComponent<
@@ -69,10 +68,10 @@ ControllerHardwareSettingsMenu::ControllerHardwareSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERMM>,   SwitchScreenAction<WheelDiameterMmChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERINCH>, SwitchScreenAction<WheelDiameterInchChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NUMMAGNETPOLES>,    SwitchScreenAction<NumMagnetPolesChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPFRONTBACK>,     ToggleBoolAction, CheckboxIcon, SwapFrontBackAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPFRONTBACK>,     BobbyCheckbox, SwapFrontBackAccessor>>();
 #ifdef FEATURE_CAN
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTSENDCAN>,       ToggleBoolAction, CheckboxIcon, SendFrontCanCmdAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKSENDCAN>,        ToggleBoolAction, CheckboxIcon, SendBackCanCmdAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTSENDCAN>,       BobbyCheckbox, SendFrontCanCmdAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKSENDCAN>,        BobbyCheckbox, SendBackCanCmdAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANTRANSMITTIMEOUT>, SwitchScreenAction<CanTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVETIMEOUT>,  SwitchScreenAction<CanReceiveTimeoutChangeScreen>>>();
 #endif

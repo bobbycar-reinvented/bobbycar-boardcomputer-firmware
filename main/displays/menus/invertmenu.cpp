@@ -1,20 +1,21 @@
 #include "invertmenu.h"
 
+// 3rdparty lib includes
+#include "actions/switchscreenaction.h"
+#include "icons/back.h"
+
 // local includes
 #include "accessors/settingsaccessors.h"
-#include "actions/switchscreenaction.h"
-#include "actions/toggleboolaction.h"
-#include "checkboxicon.h"
 #include "displays/menus/controllerhardwaresettingsmenu.h"
-#include "icons/back.h"
+#include "bobbycheckbox.h"
 
 InvertMenu::InvertMenu()
 {
     using namespace espgui;
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTLEFT>,  ToggleBoolAction, CheckboxIcon, FrontLeftInvertedAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTRIGHT>, ToggleBoolAction, CheckboxIcon, FrontRightInvertedAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKLEFT>,   ToggleBoolAction, CheckboxIcon, BackLeftInvertedAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKRIGHT>,  ToggleBoolAction, CheckboxIcon, BackRightInvertedAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTLEFT>,  BobbyCheckbox, FrontLeftInvertedAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTRIGHT>, BobbyCheckbox, FrontRightInvertedAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKLEFT>,   BobbyCheckbox, BackLeftInvertedAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKRIGHT>,  BobbyCheckbox, BackRightInvertedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

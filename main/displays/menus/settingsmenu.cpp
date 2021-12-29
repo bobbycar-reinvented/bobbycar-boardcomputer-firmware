@@ -4,9 +4,7 @@
 #include <Arduino.h>
 
 // 3rdparty lib includes
-#include "actions/toggleboolaction.h"
 #include "actions/switchscreenaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 
 // local includes
@@ -43,6 +41,7 @@
 #include "displays/menus/crashmenu.h"
 #include "displays/menus/aboutmenu.h"
 #include "displays/menus/mainmenu.h"
+#include "bobbycheckbox.h"
 
 namespace {
 #ifdef FEATURE_LEDBACKLIGHT
@@ -61,7 +60,7 @@ using namespace espgui;
 SettingsMenu::SettingsMenu()
 {
 #ifdef FEATURE_LEDBACKLIGHT
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLIGHT>,                     ToggleBoolAction, CheckboxIcon, BacklightAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLIGHT>,                     BobbyCheckbox, BacklightAccessor>>();
 #endif
     if (!simplified)
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,            SwitchScreenAction<LimitsSettingsMenu>>>();
@@ -90,11 +89,11 @@ SettingsMenu::SettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>,    SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware>>>();
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                ToggleBoolAction, CheckboxIcon, AutoConnectBmsAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                BobbyCheckbox, AutoConnectBmsAccessor>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUZZER>,                        SwitchScreenAction<BuzzerMenu>, StaticMenuItemIcon<&bobbyicons::buzzer>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTLED>,                      ToggleBoolAction, CheckboxIcon, FrontLedAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLED>,                       ToggleBoolAction, CheckboxIcon, BackLedAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTLED>,                      BobbyCheckbox, FrontLedAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLED>,                       BobbyCheckbox, BackLedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRASHMENU>,                     SwitchScreenAction<CrashMenu>,  StaticMenuItemIcon<&bobbyicons::demos>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ABOUT>,                         SwitchScreenAction<AboutMenu>, StaticMenuItemIcon<&bobbyicons::info>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                          SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();

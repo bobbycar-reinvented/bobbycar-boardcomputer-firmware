@@ -3,10 +3,8 @@
 // 3rdparty lib includes
 #include <changevaluedisplay.h>
 #include <menuitem.h>
-#include <actions/toggleboolaction.h>
 #include <actions/switchscreenaction.h>
 #include <actions/dummyaction.h>
-#include <checkboxicon.h>
 #include <icons/back.h>
 #include <textwithvaluehelper.h>
 
@@ -17,6 +15,7 @@
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/handbremssettingsmenu.h"
 #include "displays/menus/modessettingsmenu.h"
+#include "bobbycheckbox.h"
 
 namespace {
 using DefaultModeModelModeChangeDisplay = espgui::makeComponent<
@@ -120,13 +119,13 @@ DefaultModeSettingsMenu::DefaultModeSettingsMenu()
     if (diff < 20) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITS_TO_NEAR>, StaticFont<2>, StaticColor<TFT_RED>, DummyAction>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          SwitchScreenAction<DefaultModeModelModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HYBRIDMODE>,         SwitchScreenAction<DefaultModeHybridModelModeChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREGAS>,          ToggleBoolAction, CheckboxIcon,  DefaultModeSquareGasAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREBREMS>,        ToggleBoolAction, CheckboxIcon,  DefaultModeSquareBremsAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHINGUP>,    ToggleBoolAction, CheckboxIcon,  DefaultModeEnableSmoothingUpAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHINGDOWN>,    ToggleBoolAction, CheckboxIcon,  DefaultModeEnableSmoothingDownAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEFWSMOOTHINGUP>,  ToggleBoolAction, CheckboxIcon,  DefaultModeEnableFieldWeakSmoothingUpAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEFWSMOOTHINGDOWN>,  ToggleBoolAction, CheckboxIcon,  DefaultModeEnableFieldWeakSmoothingDownAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HYBRIDENABLE>,          ToggleBoolAction, CheckboxIcon,  DefaultModeEnableHybridAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREGAS>,          BobbyCheckbox,  DefaultModeSquareGasAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREBREMS>,        BobbyCheckbox,  DefaultModeSquareBremsAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHINGUP>,    BobbyCheckbox,  DefaultModeEnableSmoothingUpAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHINGDOWN>,    BobbyCheckbox,  DefaultModeEnableSmoothingDownAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEFWSMOOTHINGUP>,  BobbyCheckbox,  DefaultModeEnableFieldWeakSmoothingUpAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEFWSMOOTHINGDOWN>,  BobbyCheckbox,  DefaultModeEnableFieldWeakSmoothingDownAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HYBRIDENABLE>,          BobbyCheckbox,  DefaultModeEnableHybridAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE>,            SwitchScreenAction<HandbremsSettingsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_FWSMOOTHING_LIMIT, DefaultModeEnableFieldWeakSmoothingLowerLimitAccessor>, SwitchScreenAction<DefaultModeFwSmoothingLowerLimitChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMOOTHINGVAL, DefaultModeSmoothingAccessor>,                     SwitchScreenAction<DefaultModeSmoothingChangeDisplay>>>();

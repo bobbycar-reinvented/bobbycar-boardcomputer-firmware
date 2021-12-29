@@ -7,8 +7,6 @@
 #include <menuitem.h>
 #include <actions/dummyaction.h>
 #include <actions/switchscreenaction.h>
-#include <checkboxicon.h>
-#include <actions/toggleboolaction.h>
 #include <icons/back.h>
 #include <screenmanager.h>
 #include <espwifistack.h>
@@ -23,6 +21,7 @@
 #include "networksettingsmenu.h"
 #include "accessors/wifiapconfigaccessors.h"
 #include "texthelpers/wifiaptexthelpers.h"
+#include "bobbycheckbox.h"
 
 using namespace espgui;
 
@@ -87,8 +86,8 @@ using ApAuthmodeChangeScreen = espgui::makeComponent<
 
 WifiApSettingsMenu::WifiApSettingsMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLED>,            ToggleBoolAction, CheckboxIcon, WifiApEnabledAccessor>>();
-    //constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISABLEWHENONLINE>,  ToggleBoolAction, CheckboxIcon, WifiApDisableWhenOnlineAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLED>,            BobbyCheckbox, WifiApEnabledAccessor>>();
+    //constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISABLEWHENONLINE>,  BobbyCheckbox, WifiApDisableWhenOnlineAccessor>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SSID_FORMATTED, WifiApSsidAccessor>, SwitchScreenAction<ApSsidChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_KEY_FORMATTED, WifiApKeyAccessor>, SwitchScreenAction<ApKeyChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, WifiApMacText,                       DummyAction>>();

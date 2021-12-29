@@ -3,9 +3,7 @@
 // 3rd party libs
 #include <fmt/core.h>
 #include <actions/switchscreenaction.h>
-#include <actions/toggleboolaction.h>
 #include <changevaluedisplay.h>
-#include <checkboxicon.h>
 #include <icons/back.h>
 #include <textwithvaluehelper.h>
 
@@ -15,6 +13,7 @@
 #include "changevaluedisplay_handbremsmode.h"
 #include "displays/menus/defaultmodesettingsmenu.h"
 #include "texts.h"
+#include "bobbycheckbox.h"
 
 namespace {
 using HandBremsTriggerTimeoutChangeValueDisplay = espgui::makeComponent<
@@ -44,9 +43,9 @@ public:
 HandbremsSettingsMenu::HandbremsSettingsMenu()
 {
     using namespace espgui;
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_ENABLE>, ToggleBoolAction, CheckboxIcon, HandbremsEnabledAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_AUTOMATIC>, ToggleBoolAction, CheckboxIcon, HandbremsAutomaticAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_VISUALIZE>, ToggleBoolAction, CheckboxIcon, HandbremsVisualizeAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_ENABLE>, BobbyCheckbox, HandbremsEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_AUTOMATIC>, BobbyCheckbox, HandbremsAutomaticAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_VISUALIZE>, BobbyCheckbox, HandbremsVisualizeAccessor>>();
     constructMenuItem<makeComponent<MenuItem, HandBremsModeText,    SwitchScreenAction<HandBremsModeChangeValueDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HANDBREMSE_TRIGGERTIMEOUT, HandbremsTimeoutAccessor>, SwitchScreenAction<HandBremsTriggerTimeoutChangeValueDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<DefaultModeSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();

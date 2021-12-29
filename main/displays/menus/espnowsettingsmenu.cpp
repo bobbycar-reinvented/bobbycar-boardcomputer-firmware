@@ -1,14 +1,16 @@
 #include "espnowsettingsmenu.h"
 
 #ifdef FEATURE_ESPNOW
-#include "accessors/settingsaccessors.h"
+// 3rdparty lib includes
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
-#include "actions/toggleboolaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
+
+// local includes
+#include "accessors/settingsaccessors.h"
 #include "icons/time.h"
 #include "espnowmenu.h"
+#include "bobbycheckbox.h"
 
 using namespace espgui;
 
@@ -16,9 +18,9 @@ namespace espnowsettingsmenu {
 } // namespace
 
 EspNowSettingsMenu::EspNowSettingsMenu() {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SYNCTIME>, ToggleBoolAction, CheckboxIcon, ESPNowSyncTimeEnabledAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SYNCWITHOTHERS>, ToggleBoolAction, CheckboxIcon, ESPNowSyncTimeWithOthersEnabledAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SYNCBLINK>, ToggleBoolAction, CheckboxIcon, ESPNowSyncBlinkEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SYNCTIME>, BobbyCheckbox, ESPNowSyncTimeEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SYNCWITHOTHERS>, BobbyCheckbox, ESPNowSyncTimeWithOthersEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SYNCBLINK>, BobbyCheckbox, ESPNowSyncBlinkEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<EspNowMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
