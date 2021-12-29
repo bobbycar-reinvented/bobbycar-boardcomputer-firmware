@@ -6,10 +6,6 @@
 
 struct StringSettings
 {
-#ifdef FEATURE_UDPCLOUD
-    std::string udpCloudUrl;
-#endif
-
 #ifdef FEATURE_OTA
     std::string otaUrl;
 #endif
@@ -49,10 +45,6 @@ struct StringSettings
 template<typename T>
 void StringSettings::executeForEveryCommonSetting(T &&callable)
 {
-#ifdef FEATURE_UDPCLOUD
-    callable("udpUrl", udpCloudUrl);
-#endif
-
 #ifdef FEATURE_OTA
     callable("otaUrl", otaUrl);
 #endif

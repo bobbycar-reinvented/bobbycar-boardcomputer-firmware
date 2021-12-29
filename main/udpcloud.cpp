@@ -19,6 +19,7 @@
 #include "espchrono.h"
 #include "battery.h"
 #include "drivingstatistics.h"
+#include "newsettings.h"
 
 #ifdef FEATURE_UDPCLOUD
 using namespace std::chrono_literals;
@@ -315,7 +316,7 @@ void sendUdpCloudPacket()
             return;
         }
 
-        if (stringSettings.udpCloudUrl.empty())
+        if (configs.udpCloudHost.value.empty())
         {
             visualSendUdpPacket = false;
             return;
@@ -329,7 +330,7 @@ void sendUdpCloudPacket()
 
         ip_addr_t udpCloudIp;
 
-        if (const auto res = dns_gethostbyname(stringSettings.udpCloudUrl.c_str(), &udpCloudIp, nullptr, nullptr); res != ERR_OK)
+        if (const auto res = dns_gethostbyname(configs.udpCloudHost.value.c_str(), &udpCloudIp, nullptr, nullptr); res != ERR_OK)
         {
             if (res == ERR_INPROGRESS)
             {

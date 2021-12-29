@@ -9,9 +9,6 @@ StringSettings makeDefaultStringSettings()
 #endif
 
     return {
-#ifdef FEATURE_UDPCLOUD
-        .udpCloudUrl = {},
-#endif
 #ifdef FEATURE_OTA
         .otaUrl = {},
 #endif
