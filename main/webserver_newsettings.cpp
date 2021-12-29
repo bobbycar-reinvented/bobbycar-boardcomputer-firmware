@@ -17,6 +17,7 @@
 #include <numberparsing.h>
 #include <lockhelper.h>
 #include <tickchrono.h>
+#include <futurecpp.h>
 
 // local includes
 #include "newsettings.h"
@@ -29,13 +30,26 @@ using esphttpdutils::HtmlTag;
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
 
+template<class T>
+struct is_duration : std::false_type {};
+
+template<class Rep, class Period>
+struct is_duration<std::chrono::duration<Rep, Period>> : std::true_type {};
+
+template <typename _Tp>
+inline constexpr bool is_duration_v = is_duration<_Tp>::value;
+
 template<typename T>
 typename std::enable_if<
-    !std::is_same<T, bool>::value &&
-    !std::is_integral<T>::value &&
-    !std::is_same<T, std::string>::value &&
-    !std::is_same<T, wifi_stack::ip_address_t>::value &&
-    !std::is_same<T, wifi_stack::mac_t>::value
+    !std::is_same_v<T, bool> &&
+    !std::is_integral_v<T> &&
+    !is_duration_v<T> &&
+    !std::is_same_v<T, std::string> &&
+    !std::is_same_v<T, wifi_stack::ip_address_t> &&
+    !std::is_same_v<T, wifi_stack::mac_t> &&
+    !std::is_same_v<T, std::optional<wifi_stack::mac_t>> &&
+    !std::is_same_v<T, wifi_auth_mode_t> &&
+    !std::is_same_v<T, sntp_sync_mode_t>
 , bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
@@ -46,7 +60,7 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 
 template<typename T>
 typename std::enable_if<
-    std::is_same<T, bool>::value
+    std::is_same_v<T, bool>
 , bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
@@ -60,8 +74,8 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 
 template<typename T>
 typename std::enable_if<
-    !std::is_same<T, bool>::value &&
-    std::is_integral<T>::value
+    !std::is_same_v<T, bool> &&
+    std::is_integral_v<T>
 , bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
@@ -75,7 +89,19 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 
 template<typename T>
 typename std::enable_if<
-    std::is_same<T, std::string>::value
+    is_duration_v<T>
+, bool>::type
+showInputForSetting(std::string_view key, T value, std::string &body)
+{
+    body += fmt::format("<input type=\"number\" name=\"{}\" value=\"{}\" step=\"1\" />",
+                        esphttpdutils::htmlentities(key),
+                        value.count());
+    return true;
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same_v<T, std::string>
 , bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
@@ -87,7 +113,7 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 
 template<typename T>
 typename std::enable_if<
-    std::is_same<T, wifi_stack::ip_address_t>::value
+    std::is_same_v<T, wifi_stack::ip_address_t>
 , bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
@@ -99,13 +125,71 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 
 template<typename T>
 typename std::enable_if<
-    std::is_same<T, wifi_stack::mac_t>::value
+    std::is_same_v<T, wifi_stack::mac_t>
 , bool>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
-    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}\" pattern=\"[0-9a-fA-F]{2}(?:\\:[0-9a-fA-F]{2}){5}\" />",
+    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}\" pattern=\"[0-9a-fA-F]{{2}}(?:\\:[0-9a-fA-F]{{2}}){{5}}\" />",
                         esphttpdutils::htmlentities(key),
                         esphttpdutils::htmlentities(wifi_stack::toString(value)));
+    return true;
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same_v<T, std::optional<wifi_stack::mac_t>>
+, bool>::type
+showInputForSetting(std::string_view key, T value, std::string &body)
+{
+    body += fmt::format("<input type=\"text\" name=\"{}\" value=\"{}\" pattern=\"(?:[0-9a-fA-F]{{2}}(?:\\:[0-9a-fA-F]{{2}}){{5}})?\" /> ?",
+                        esphttpdutils::htmlentities(key),
+                        value ? esphttpdutils::htmlentities(wifi_stack::toString(*value)) : std::string{});
+    return true;
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same_v<T, wifi_auth_mode_t>
+, bool>::type
+showInputForSetting(std::string_view key, T value, std::string &body)
+{
+    HtmlTag select{"select", fmt::format("name=\"{}\"", esphttpdutils::htmlentities(key)), body};
+
+#define HANDLE_ENUM_KEY(x) \
+    { \
+        HtmlTag option{"option", fmt::format("value=\"{}\"{}", std::to_underlying(x), value == x ? " selected" : ""), body}; \
+        body += esphttpdutils::htmlentities(#x); \
+    }
+    HANDLE_ENUM_KEY(WIFI_AUTH_OPEN)
+    HANDLE_ENUM_KEY(WIFI_AUTH_WEP)
+    HANDLE_ENUM_KEY(WIFI_AUTH_WPA_PSK)
+    HANDLE_ENUM_KEY(WIFI_AUTH_WPA2_PSK)
+    HANDLE_ENUM_KEY(WIFI_AUTH_WPA_WPA2_PSK)
+    HANDLE_ENUM_KEY(WIFI_AUTH_WPA2_ENTERPRISE)
+    HANDLE_ENUM_KEY(WIFI_AUTH_WPA3_PSK)
+    HANDLE_ENUM_KEY(WIFI_AUTH_WPA2_WPA3_PSK)
+    HANDLE_ENUM_KEY(WIFI_AUTH_WAPI_PSK)
+    HANDLE_ENUM_KEY(WIFI_AUTH_MAX)
+#undef HANDLE_ENUM_KEY
+    return true;
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same_v<T, sntp_sync_mode_t>
+    , bool>::type
+showInputForSetting(std::string_view key, T value, std::string &body)
+{
+    HtmlTag select{"select", fmt::format("name=\"{}\"", esphttpdutils::htmlentities(key)), body};
+
+#define HANDLE_ENUM_KEY(x) \
+    { \
+            HtmlTag option{"option", fmt::format("value=\"{}\"{}", std::to_underlying(x), value == x ? " selected" : ""), body}; \
+            body += esphttpdutils::htmlentities(#x); \
+    }
+    HANDLE_ENUM_KEY(SNTP_SYNC_MODE_IMMED)
+    HANDLE_ENUM_KEY(SNTP_SYNC_MODE_SMOOTH)
+#undef HANDLE_ENUM_KEY
     return true;
 }
 } // namespace
@@ -113,6 +197,7 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 esp_err_t webserver_newSettings_handler(httpd_req_t *req)
 {
 #ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
+    ESP_LOGI(TAG, "trying to lock...");
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -238,11 +323,14 @@ esp_err_t webserver_newSettings_handler(httpd_req_t *req)
 namespace {
 template<typename T>
 typename std::enable_if<
-    !std::is_same<T, bool>::value &&
-    !std::is_integral<T>::value &&
-    !std::is_same<T, std::string>::value &&
-    !std::is_same<T, wifi_stack::ip_address_t>::value &&
-    !std::is_same<T, wifi_stack::mac_t>::value
+    !std::is_same_v<T, bool> &&
+    !std::is_integral_v<T> &&
+    !std::is_same_v<T, std::string> &&
+    !std::is_same_v<T, wifi_stack::ip_address_t> &&
+    !std::is_same_v<T, wifi_stack::mac_t> &&
+    !std::is_same_v<T, std::optional<wifi_stack::mac_t>> &&
+    !std::is_same_v<T, wifi_auth_mode_t> &&
+    !std::is_same_v<T, sntp_sync_mode_t>
 , bool>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &body)
 {
@@ -252,7 +340,7 @@ saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &bo
 
 template<typename T>
 typename std::enable_if<
-    std::is_same<T, bool>::value
+    std::is_same_v<T, bool>
 , bool>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &body)
 {
@@ -291,8 +379,8 @@ saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &bo
 
 template<typename T>
 typename std::enable_if<
-    !std::is_same<T, bool>::value &&
-    std::is_integral<T>::value
+    !std::is_same_v<T, bool> &&
+    std::is_integral_v<T>
 , bool>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &body)
 {
@@ -318,7 +406,7 @@ saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &bo
 
 template<typename T>
 typename std::enable_if<
-    std::is_same<T, std::string>::value
+    std::is_same_v<T, std::string>
 , bool>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &body)
 {
@@ -336,7 +424,7 @@ saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &bo
 
 template<typename T>
 typename std::enable_if<
-    std::is_same<T, wifi_stack::ip_address_t>::value
+    std::is_same_v<T, wifi_stack::ip_address_t>
 , bool>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &body)
 {
@@ -362,7 +450,7 @@ saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &bo
 
 template<typename T>
 typename std::enable_if<
-    std::is_same<T, wifi_stack::mac_t>::value
+    std::is_same_v<T, wifi_stack::mac_t>
 , bool>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &body)
 {
@@ -382,6 +470,72 @@ saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &bo
     else
     {
         body += parsed.error();
+        return false;
+    }
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same_v<T, std::optional<wifi_stack::mac_t>>
+, bool>::type
+saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &body)
+{
+    if (newValue.empty())
+    {
+        if (const auto result = configs.write_config(config, std::nullopt); result)
+        {
+            body += "applied";
+            return true;
+        }
+        else
+        {
+            body += result.error();
+            return false;
+        }
+    }
+    else if (const auto parsed = wifi_stack::fromString<wifi_stack::mac_t>(newValue); parsed)
+    {
+        if (const auto result = configs.write_config(config, *parsed); result)
+        {
+            body += "applied";
+            return true;
+        }
+        else
+        {
+            body += result.error();
+            return false;
+        }
+    }
+    else
+    {
+        body += parsed.error();
+        return false;
+    }
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same_v<T, wifi_auth_mode_t> ||
+    std::is_same_v<T, sntp_sync_mode_t>
+, bool>::type
+saveSetting(ConfigWrapper<T> &config, std::string_view newValue, std::string &body)
+{
+    if (auto parsed = cpputils::fromString<std::underlying_type_t<T>>(newValue))
+    {
+        if (const auto result = configs.write_config(config, T(*parsed)); result)
+        {
+            body += "applied";
+            return true;
+        }
+        else
+        {
+            body += result.error();
+            return false;
+        }
+    }
+    else
+    {
+        body += fmt::format("could not parse {}", newValue);
         return false;
     }
 }
@@ -432,6 +586,7 @@ esp_err_t webserver_saveNewSettings_handler(httpd_req_t *req)
         esphttpdutils::urldecode(valueBuf, valueBufEncoded);
 
         body += nvsName;
+        body += ": ";
         if (!saveSetting(config, valueBuf, body))
             success = false;
         body += '\n';

@@ -84,7 +84,7 @@ class ConfigContainer
 
 public:
     //                                            default                                 allowReset constraints                    nvsName
-    ConfigWrapper<std::optional<mac_t>> baseMacAddressOverride{std::nullopt,              NoReset,   {},                            "baseMacAddrOver"     };
+    ConfigWrapper<std::optional<mac_t>> baseMacAddressOverride{std::nullopt,              DoReset,   {},                            "baseMacAddrOver"     };
     ConfigWrapper<std::string> hostname           {defaultHostname,                       DoReset,   StringMinMaxSize<4, 32>,       "hostname"            };
     ConfigWrapper<bool>        wifiStaEnabled     {true,                                  DoReset,   {},                            "wifiStaEnabled"      };
     std::array<WiFiConfig, 10> wifi_configs {
@@ -108,9 +108,9 @@ public:
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                           "wifiApAuthmode"      };
 
     ConfigWrapper<bool>     timeServerEnabled     {false,                                  DoReset,   {},                           "timeServerEnabl"     };
-    ConfigWrapper<std::string>   timeServer       {"europe.pool.ntp.org",                  NoReset,   StringMaxSize<64>,            "timeServer"          };
-    ConfigWrapper<sntp_sync_mode_t> timeSyncMode  {SNTP_SYNC_MODE_IMMED,                   NoReset,   {},                           "timeSyncMode"        };
-    ConfigWrapper<espchrono::milliseconds32> timeSyncInterval{espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY}, NoReset, MinTimeSyncInterval, "timeSyncInterva" };
+    ConfigWrapper<std::string>   timeServer       {"europe.pool.ntp.org",                  DoReset,   StringMaxSize<64>,            "timeServer"          };
+    ConfigWrapper<sntp_sync_mode_t> timeSyncMode  {SNTP_SYNC_MODE_IMMED,                   DoReset,   {},                           "timeSyncMode"        };
+    ConfigWrapper<espchrono::milliseconds32> timeSyncInterval{espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY}, DoReset, MinTimeSyncInterval, "timeSyncInterva" };
     ConfigWrapper<espchrono::minutes32> timezoneOffset{espchrono::minutes32{60},           DoReset,   {},                           "timezoneOffset"      }; // MinMaxValue<minutes32, -1440m, 1440m>
     ConfigWrapper<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},             "time_dst"            };
 

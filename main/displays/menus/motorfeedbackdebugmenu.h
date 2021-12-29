@@ -2,6 +2,7 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
+#include "debugmenu.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -40,7 +41,7 @@ public:
     }
 };
 
-class FrontLeftMotorFeedbackDebugMenu : public MotorFeedbackDebugMenu<TEXT_FRONTLEFTFEEDBACK, FrontTexts::LeftFeedback, FrontFeedbackColor> {};
-class FrontRightMotorFeedbackDebugMenu : public MotorFeedbackDebugMenu<TEXT_FRONTRIGHTFEEDBACK, FrontTexts::RightFeedback, FrontFeedbackColor> {};
-class BackLeftMotorFeedbackDebugMenu : public MotorFeedbackDebugMenu<TEXT_BACKLEFTFEEDBACK, BackTexts::LeftFeedback, BackFeedbackColor> {};
-class BackRightMotorFeedbackDebugMenu : public MotorFeedbackDebugMenu<TEXT_BACKRIGHTFEEDBACK, BackTexts::RightFeedback, BackFeedbackColor> {};
+using FrontLeftMotorFeedbackDebugMenu = MotorFeedbackDebugMenu<TEXT_FRONTLEFTFEEDBACK, FrontTexts::LeftFeedback, FrontFeedbackColor>;
+using FrontRightMotorFeedbackDebugMenu = MotorFeedbackDebugMenu<TEXT_FRONTRIGHTFEEDBACK, FrontTexts::RightFeedback, FrontFeedbackColor>;
+using BackLeftMotorFeedbackDebugMenu = MotorFeedbackDebugMenu<TEXT_BACKLEFTFEEDBACK, BackTexts::LeftFeedback, BackFeedbackColor>;
+using BackRightMotorFeedbackDebugMenu = MotorFeedbackDebugMenu<TEXT_BACKRIGHTFEEDBACK, BackTexts::RightFeedback, BackFeedbackColor>;
