@@ -17,6 +17,7 @@
 // local includes
 #include "displays/bobbychangevaluedisplay.h"
 #include "changevaluedisplay.h"
+#include "changevaluedisplay_string.h"
 #include "changevaluedisplay_wifi_auth_mode_t.h"
 #include "wifiapclientsmenu.h"
 #include "networksettingsmenu.h"
@@ -51,6 +52,22 @@ public:
     void triggered() override;
 };
 
+using ApSsidChangeScreen = espgui::makeComponent<
+    BobbyChangeValueDisplay<std::string>,
+    espgui::StaticText<TEXT_SSID>,
+    WifiApSsidAccessor,
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>
+>;
+
+using ApKeyChangeScreen = espgui::makeComponent<
+    BobbyChangeValueDisplay<std::string>,
+    espgui::StaticText<TEXT_KEY>,
+    WifiApKeyAccessor,
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>
+>;
+
 using ApChannelChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_CHANNEL>,
@@ -72,8 +89,8 @@ WifiApSettingsMenu::WifiApSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLED>,            ToggleBoolAction, CheckboxIcon, WifiApEnabledAccessor>>();
     //constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISABLEWHENONLINE>,  ToggleBoolAction, CheckboxIcon, WifiApDisableWhenOnlineAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SSID_FORMATTED, WifiApNameAccessor>, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_KEY_FORMATTED, WifiApKeyAccessor>, DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SSID_FORMATTED, WifiApSsidAccessor>, SwitchScreenAction<ApSsidChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_KEY_FORMATTED, WifiApKeyAccessor>, SwitchScreenAction<ApKeyChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, WifiApMacText,                       DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_IP_FORMATTED, WifiApIpAccessor>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_MASK_FORMATTED, WifiApMaskAccessor>, DummyAction>>();
