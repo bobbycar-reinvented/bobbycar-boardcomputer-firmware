@@ -282,6 +282,10 @@ void parseCanInput()
 
 void sendCanCommands()
 {
+
+    static uint32_t can_total_error_cnt = 0;
+    static uint32_t can_sequential_error_cnt = 0;
+
     constexpr auto send = [](uint32_t addr, auto value){
         twai_message_t message;
         message.identifier = addr;
@@ -300,12 +304,11 @@ void sendCanCommands()
         }
 
 
-        static uint32_t can_total_error_cnt = 0;
-        static uint32_t can_sequential_error_cnt = 0;
 
         if (result == ESP_ERR_TIMEOUT) {
             ++can_sequential_error_cnt;
             ++can_total_error_cnt;
+
             ESP_LOGW(TAG, "twai_transmit() took %lld ms, seq err: %d, total err: %d",
                      espchrono::ago(timestamp_before).count(),
                      can_sequential_error_cnt,
