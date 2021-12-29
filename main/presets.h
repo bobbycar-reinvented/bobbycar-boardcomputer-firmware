@@ -96,11 +96,6 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
 #endif
 };
 
-constexpr Settings::WifiSettings defaultWifiSettings {
-    .wifiStaEnabled = true,
-    .wifiApEnabled = true
-};
-
 #ifdef FEATURE_BLUETOOTH
 constexpr Settings::BluetoothSettings defaultBluetoothSettings {
     .autoBluetoothMode = BluetoothMode::Master
@@ -321,7 +316,6 @@ constexpr Settings defaultSettings {
 #endif
     .buzzer = defaultBuzzer,
     .limits = defaultLimits,
-    .wifiSettings = defaultWifiSettings,
 #ifdef FEATURE_BLUETOOTH
     .bluetoothSettings = defaultBluetoothSettings,
 #endif

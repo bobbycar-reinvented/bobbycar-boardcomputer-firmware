@@ -10,27 +10,28 @@
 #include <espwifistack.h>
 
 // local includes
-#include "globals.h"
+#include "newsettings.h"
 
 namespace {
-wifi_stack::config wifi_create_config();
-std::optional<wifi_stack::sta_config> wifi_create_sta_config();
-std::optional<wifi_stack::ap_config> wifi_create_ap_config();
-}
+wifi_stack::config createConfig();
+std::optional<wifi_stack::sta_config> createStaConfig();
+wifi_stack::wifi_entry createWifiEntry(const WiFiConfig &wifi_config);
+std::optional<wifi_stack::ap_config> createApConfig();
+} // namespace
 
 void wifi_begin()
 {
-    wifi_stack::init(wifi_create_config());
+    wifi_stack::init(createConfig());
 }
 
 void wifi_update()
 {
-    wifi_stack::update(wifi_create_config());
+    wifi_stack::update(createConfig());
 }
 
 esp_err_t wifi_scan()
 {
-    const auto &sta_config = wifi_create_sta_config();
+    const auto &sta_config = createStaConfig();
     if (!sta_config)
     {
         ESP_LOGE("BOBBY", "no sta enabled");
@@ -47,63 +48,99 @@ esp_err_t wifi_scan()
 }
 
 namespace {
-wifi_stack::config wifi_create_config()
+wifi_stack::config createConfig()
 {
     return wifi_stack::config {
-        .sta = wifi_create_sta_config(),
-        .ap = wifi_create_ap_config(),
-        .country = wifi_country_t {
-             .cc = { 'A', 'T', '\0' },
-             .schan = 1,
-             .nchan = 13,
-             .max_tx_power = 30,
-             .policy = WIFI_COUNTRY_POLICY_MANUAL
-         }
+        .base_mac_override = configs.baseMacAddressOverride.value,
+        //.dual_ant = dual_ant_config{},
+        .sta = createStaConfig(),
+        .ap = createApConfig(),
+#ifdef CONFIG_ETH_ENABLED
+        .eth = createEthConfig()
+#endif
     };
 }
 
-std::optional<wifi_stack::sta_config> wifi_create_sta_config()
+std::optional<wifi_stack::sta_config> createStaConfig()
 {
-    if (!settings.wifiSettings.wifiStaEnabled)
+    if (!configs.wifiStaEnabled.value)
         return std::nullopt;
 
-    return wifi_stack::sta_config {
-        .hostname = deviceName,
+    return wifi_stack::sta_config{
+        .hostname = configs.hostname.value,
         .wifis = std::array<wifi_stack::wifi_entry, 10> {
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[0].ssid, .key = stringSettings.wifis[0].key },
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[1].ssid, .key = stringSettings.wifis[1].key },
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[2].ssid, .key = stringSettings.wifis[2].key },
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[3].ssid, .key = stringSettings.wifis[3].key },
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[4].ssid, .key = stringSettings.wifis[4].key },
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[5].ssid, .key = stringSettings.wifis[5].key },
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[6].ssid, .key = stringSettings.wifis[6].key },
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[7].ssid, .key = stringSettings.wifis[7].key },
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[8].ssid, .key = stringSettings.wifis[8].key },
-            wifi_stack::wifi_entry { .ssid = stringSettings.wifis[9].ssid, .key = stringSettings.wifis[9].key }
+            createWifiEntry(configs.wifi_configs[0]),
+            createWifiEntry(configs.wifi_configs[1]),
+            createWifiEntry(configs.wifi_configs[2]),
+            createWifiEntry(configs.wifi_configs[3]),
+            createWifiEntry(configs.wifi_configs[4]),
+            createWifiEntry(configs.wifi_configs[5]),
+            createWifiEntry(configs.wifi_configs[6]),
+            createWifiEntry(configs.wifi_configs[7]),
+            createWifiEntry(configs.wifi_configs[8]),
+            createWifiEntry(configs.wifi_configs[9])
         },
-        .min_rssi = -90
+        .min_rssi = configs.wifiStaMinRssi.value,
+        .long_range = false
     };
 }
 
-std::optional<wifi_stack::ap_config> wifi_create_ap_config()
+wifi_stack::wifi_entry createWifiEntry(const WiFiConfig &wifi_config)
 {
-    if (!settings.wifiSettings.wifiApEnabled)
+    std::optional<wifi_stack::static_ip_config> static_ip;
+    if (wifi_config.useStaticIp.value)
+        static_ip = wifi_stack::static_ip_config {
+            .ip = wifi_config.staticIp.value,
+            .subnet = wifi_config.staticSubnet.value,
+            .gateway = wifi_config.staticGateway.value
+        };
+
+    wifi_stack::static_dns_config static_dns;
+    if (wifi_config.useStaticDns.value)
+    {
+        if (wifi_config.staticDns0.value.value())
+            static_dns.main = wifi_config.staticDns0.value;
+        if (wifi_config.staticDns1.value.value())
+            static_dns.backup = wifi_config.staticDns1.value;
+        if (wifi_config.staticDns2.value.value())
+            static_dns.fallback = wifi_config.staticDns2.value;
+    }
+
+    return wifi_stack::wifi_entry {
+        .ssid = wifi_config.ssid.value,
+        .key = wifi_config.key.value,
+        .static_ip = static_ip,
+        .static_dns = static_dns
+    };
+}
+
+std::optional<wifi_stack::ap_config> createApConfig()
+{
+    if (!configs.wifiApEnabled.value)
         return std::nullopt;
+
+//    if (configs.wifiDisableApWhenOnline.value &&
+//        cloudStarted &&
+//        cloudConnected &&
+//        lastCloudConnectedToggled &&
+//        espchrono::ago(*lastCloudConnectedToggled) >= 30s)
+//        return std::nullopt;
 
     return wifi_stack::ap_config {
-        .hostname = deviceName,
-        .ssid = deviceName,
-        .key = stringSettings.ap_password,
+        .hostname = configs.hostname.value,
+        .ssid = configs.wifiApName.value,
+        .key = configs.wifiApKey.value,
         .static_ip = {
-            .ip = {10, 0, 0, 1},
-            .subnet = {255, 255, 255, 0},
-            .gateway = {10, 0, 0, 1},
+            .ip = apIP,
+            .subnet = netMsk,
+            .gateway = apIP
         },
-        .channel = 1,
-        .authmode = WIFI_AUTH_WPA2_PSK,
+        .channel = configs.wifiApChannel.value,
+        .authmode = configs.wifiApAuthmode.value,
         .ssid_hidden = false,
         .max_connection = 4,
-        .beacon_interval = 100
+        .beacon_interval = 100,
+        .long_range = false
     };
 }
 } // namespace

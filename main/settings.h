@@ -47,11 +47,6 @@ struct Settings
         int16_t phaseAdvMax;  // [deg] Maximum Phase Advance angle (only for SIN). Higher angle results in higher maximum speed.
     } limits;
 
-    struct WifiSettings {
-        bool wifiStaEnabled;
-        bool wifiApEnabled;
-    } wifiSettings;
-
 #ifdef FEATURE_BLUETOOTH
     struct BluetoothSettings {
         BluetoothMode autoBluetoothMode;
@@ -253,9 +248,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("revBeepFreq1", buzzer.reverseBeepFreq1);
     callable("revBeepDur0", buzzer.reverseBeepDuration0);
     callable("revBeepDur1", buzzer.reverseBeepDuration1);
-
-    callable("wifiStaEnabled", wifiSettings.wifiStaEnabled);
-    callable("wifiApEnabled", wifiSettings.wifiApEnabled);
 
 #ifdef FEATURE_BLUETOOTH
     callable("autoBluetoothMo", bluetoothSettings.autoBluetoothMode);

@@ -42,7 +42,6 @@ extern float avgSpeed;
 extern float avgSpeedKmh;
 extern float sumCurrent;
 
-extern char deviceName[32];
 extern bool isLocked;
 
 #ifdef GLOBALS_PLUGIN

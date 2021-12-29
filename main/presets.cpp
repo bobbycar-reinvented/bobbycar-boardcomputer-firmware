@@ -4,24 +4,11 @@
 namespace presets {
 StringSettings makeDefaultStringSettings()
 {
-    using ConfiguredWifi = StringSettings::ConfiguredWifi;
 #ifdef FEATURE_OTA
     using ConfiguredOtaServer = StringSettings::ConfiguredOtaServer;
 #endif
 
     return {
-        .wifis = std::array<ConfiguredWifi, 10> {
-            ConfiguredWifi { .ssid = {}, .key = {} },
-            ConfiguredWifi { .ssid = {}, .key = {} },
-            ConfiguredWifi { .ssid = {}, .key = {} },
-            ConfiguredWifi { .ssid = {}, .key = {} },
-            ConfiguredWifi { .ssid = {}, .key = {} },
-            ConfiguredWifi { .ssid = {}, .key = {} },
-            ConfiguredWifi { .ssid = {}, .key = {} },
-            ConfiguredWifi { .ssid = {}, .key = {} },
-            ConfiguredWifi { .ssid = {}, .key = {} },
-            ConfiguredWifi { .ssid = {}, .key = {} }
-        },
 #ifdef FEATURE_CLOUD
         .cloudUrl = {},
 #endif
@@ -51,11 +38,6 @@ StringSettings makeDefaultStringSettings()
 //            ConfiguredOtaServer { .name = {}, .url = {} },
         },
         .otaServerUrl = {},
-#endif
-#ifdef AP_PASSWORD
-        .ap_password = STRING(AP_PASSWORD),
-#else
-        .ap_password = "Bobbycar_123",
 #endif
 #ifdef FEATURE_OTA
         .otaServerBranch = {},
