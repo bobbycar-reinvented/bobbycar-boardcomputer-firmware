@@ -57,7 +57,7 @@ public:
     //                                            default                                 allowReset constraints                 nvsName
     ConfigWrapper<std::optional<mac_t>> baseMacAddressOverride{std::nullopt,              NoReset,   {},                         "baseMacAddrOver"     };
     ConfigWrapper<std::string> hostname           {defaultHostname,                       DoReset,   StringMinMaxSize<4, 32>,    "hostname"            };
-    ConfigWrapper<bool>        wifiStaEnabled     {true,                                  DoReset,   {},                         "wifi_enabled"        };
+    ConfigWrapper<bool>        wifiStaEnabled     {true,                                  DoReset,   {},                         "wifiStaEnabled"      };
     std::array<WiFiConfig, 10> wifi_configs {
         WiFiConfig {"wifi_ssid0", "wifi_key0", "wifi_usestatic0", "wifi_static_ip0", "wifi_stati_sub0", "wifi_stat_gate0", "wifi_usestadns0", "wifi_stat_dnsA0", "wifi_stat_dnsB0", "wifi_stat_dnsC0"},
         WiFiConfig {"wifi_ssid1", "wifi_key1", "wifi_usestatic1", "wifi_static_ip1", "wifi_stati_sub1", "wifi_stat_gate1", "wifi_usestadns1", "wifi_stat_dnsA1", "wifi_stat_dnsB1", "wifi_stat_dnsC1"},
@@ -73,7 +73,7 @@ public:
     ConfigWrapper<int8_t>      wifiStaMinRssi     {-90,                                    DoReset,   {},                         "wifiStaMinRssi"      };
 
     ConfigWrapper<bool>        wifiApEnabled      {true,                                   DoReset,   {},                         "wifiApEnabled"       };
-    ConfigWrapper<std::string> wifiApName         {defaultHostname,                        DoReset, StringMinMaxSize<4, 32>,      "wifiApName"          };
+    ConfigWrapper<std::string> wifiApName         {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "wifiApName"          };
     ConfigWrapper<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey"     };
     ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                         "wifiApChannel"       };
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };

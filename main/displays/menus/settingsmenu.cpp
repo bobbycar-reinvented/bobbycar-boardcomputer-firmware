@@ -24,7 +24,7 @@
 #include "globals.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/limitssettingsmenu.h"
-#include "displays/menus/wifisettingsmenu.h"
+#include "displays/menus/networksettingsmenu.h"
 #include "displays/menus/bluetoothsettingsmenu.h"
 #include "displays/menus/blesettingsmenu.h"
 #ifdef FEATURE_CLOUD
@@ -66,7 +66,7 @@ SettingsMenu::SettingsMenu()
     if (!simplified)
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,            SwitchScreenAction<LimitsSettingsMenu>>>();
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WIFISETTINGS>,                  SwitchScreenAction<WifiSettingsMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NETWORKSETTINGS>,               SwitchScreenAction<NetworkSettingsMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
 #ifdef FEATURE_ESPNOW
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW>,                        SwitchScreenAction<EspNowMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
 #endif

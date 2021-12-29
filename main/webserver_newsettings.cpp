@@ -207,6 +207,16 @@ esp_err_t webserver_newSettings_handler(httpd_req_t *req)
                     HtmlTag buttonTag{"button", "type=\"submit\"", body};
                     body += "Save";
                 }
+
+                {
+                    HtmlTag divTag{"div", "class=\"form-table-cell\"", body};
+
+                    if (config.touched())
+                    {
+                        HtmlTag buttonTag{"span", "style=\"color: red;\"", body};
+                        body += "Touched";
+                    }
+                }
             });
         }
     }
