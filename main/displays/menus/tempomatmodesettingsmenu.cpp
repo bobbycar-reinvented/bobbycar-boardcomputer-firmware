@@ -29,8 +29,8 @@ using TempomatModeModelModeChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<UnifiedModelMode>,
     espgui::StaticText<TEXT_MODELMODE>,
     TempomatModeModelModeAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,
-    espgui::SwitchScreenAction<TempomatModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>
 >;
 } // namespace
 

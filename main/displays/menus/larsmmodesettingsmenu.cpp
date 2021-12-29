@@ -19,15 +19,15 @@ using LarsmModeModelModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<UnifiedModelMode>,
     espgui::StaticText<TEXT_MODELMODE>,
     LarsmModeModelModeAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>,
-    espgui::SwitchScreenAction<LarsmModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>
 >;
 using LarsmModeModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<LarsmModeMode>,
     espgui::StaticText<TEXT_SETMODE>,
     LarsmModeModeAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>,
-    espgui::SwitchScreenAction<LarsmModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>
 >;
 using LarsmModeIterationsChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,

@@ -234,6 +234,7 @@ char TEXT_HANDBREMSE_AUTOMATIC[] = "Automatic Handbremse";
 char TEXT_HANDBREMSE_VISUALIZE[] = "Visualize Handbremse";
 char TEXT_HANDBREMSE_MODE[] = "Handbrems Mode";
 char TEXT_HANDBREMSE_TRIGGERTIMEOUT[] = "Handbrems Timeout";
+char TEXT_HANDBREMSE[] = "Handbremse";
 //char TEXT_BACK[] = "Back";
 
 //DynamicDebugMenu
@@ -447,62 +448,6 @@ char TEXT_NTPINTERVAL[] = "NTP Interval";
 char TEXT_OFF[] = "Off";
 char TEXT_MASTER[] = "Master";
 char TEXT_SLAVE[] = "Slave";
-
-//ChangeValueDisplay<ControlMode>
-char TEXT_OPENMODE[] = "Open mode";
-char TEXT_VOLTAGE[] = "Voltage";
-char TEXT_SPEED[] = "Speed";
-char TEXT_TORQUE[] = "Torque";
-//char TEXT_BACK[] = "Back";
-
-//ChangeValueDisplay<ControlType>
-char TEXT_COMMUTATION[] = "Commutation";
-char TEXT_SINUSOIDAL[] = "Sinusoidal";
-char TEXT_FIELDORIENTEDCONTROL[] = "Field oriented control";
-//char TEXT_BACK[] = "Back";
-
-//ChangeValueDisplay<HandbremseMode>
-char TEXT_HANDBREMS_MOSFETS_OFF[] = "Mosfets off";
-char TEXT_HANDBREMS_OPENMODE[] = "Open Mode";
-char TEXT_HANDBREMS_SPEED0[] = "Speed 0";
-char TEXT_HANDBREMSE[] = "Handbremse";
-
-//ChangeValueDisplay<LarsmMode::Mode>
-char TEXT_LARSMMODE1[] = "Mode1";
-char TEXT_LARSMMODE2[] = "Mode2";
-char TEXT_LARSMMODE3[] = "Mode3";
-char TEXT_LARSMMODE4[] = "Mode4";
-//char TEXT_BACK[] = "Back";
-
-//ChangeValueDisplay<UnifiedModelMode>
-//char TEXT_COMMUTATION[] = "Commutation";
-//char TEXT_SINUSOIDAL[] = "Sinusoidal";
-char TEXT_FOCVOLTAGE[] = "FOC/Voltage";
-char TEXT_FOCSPEED[] = "FOC/Speed";
-char TEXT_FOCTORQUE[] = "FOC/Torque";
-//char TEXT_BACK[] = "Back";
-
-//ChangeValueDisplay<wifi_mode_t>
-char TEXT_WIFI_MODE_NULL[] = "WIFI_MODE_NULL";
-char TEXT_WIFI_MODE_STA[] = "WIFI_MODE_STA";
-char TEXT_WIFI_MODE_AP[] = "WIFI_MODE_AP";
-char TEXT_WIFI_MODE_APSTA[] = "WIFI_MODE_APSTA";
-//char TEXT_BACK[] = "Back";
-
-//ChangeValueDisplay<wifi_power_t>
-char TEXT_WIFI_POWER_19_5dBm[] = "19.5dBm";
-char TEXT_WIFI_POWER_19dBm[] = "19dBm";
-char TEXT_WIFI_POWER_18_5dBm[] = "18.5dBm";
-char TEXT_WIFI_POWER_17dBm[] = "17dBm";
-char TEXT_WIFI_POWER_15dBm[] = "15dBm";
-char TEXT_WIFI_POWER_13dBm[] = "13dBm";
-char TEXT_WIFI_POWER_11dBm[] = "11dBm";
-char TEXT_WIFI_POWER_8_5dBm[] = "8.5dBm";
-char TEXT_WIFI_POWER_7dBm[] = "7dBm";
-char TEXT_WIFI_POWER_5dBm[] = "5dBm";
-char TEXT_WIFI_POWER_2dBm[] = "2dBm";
-char TEXT_WIFI_POWER_MINUS_1dBm[] = "-1dBm";
-//char TEXT_BACK[] = "Back";
 
 //Crashmenu
 char TEXT_CRASHMENU[] = "Crash Menu";

@@ -56,8 +56,8 @@ using DaylightSavingModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<espchrono::DayLightSavingMode>,
     espgui::StaticText<TEXT_DAYLIGHTSAVINGMODE>,
     DaylightSavingModeAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
-    espgui::SwitchScreenAction<TimeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>
 >;
 
 #ifdef FEATURE_NTP
@@ -65,8 +65,8 @@ using TimeSyncModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<sntp_sync_mode_t>,
     espgui::StaticText<TEXT_NTPMODE>,
     TimeSyncModeAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
-    espgui::SwitchScreenAction<TimeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>
 >;
 
 using TimeSyncIntervalChangeDisplay = espgui::makeComponent<

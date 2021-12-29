@@ -19,7 +19,7 @@ void BobbyPopupDisplay::rawButtonReleased(uint8_t button)
 
 void BobbyPopupDisplay::buttonPressed(espgui::Button button)
 {
-    //Base::buttonPressed(button);
+    Base::buttonPressed(button);
     buttonPressedCommon(button);
 }
 

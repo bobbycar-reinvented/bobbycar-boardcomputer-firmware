@@ -23,8 +23,7 @@
 #include "unifiedmodelmode.h"
 #include "handbremse.h"
 #include "ledstrip.h"
-
-enum class LarsmModeMode : uint8_t { Mode1, Mode2, Mode3, Mode4 };
+#include "modes/larsmmode.h"
 
 struct Settings
 {

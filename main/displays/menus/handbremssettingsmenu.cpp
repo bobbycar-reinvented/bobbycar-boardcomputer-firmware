@@ -28,8 +28,8 @@ using HandBremsModeChangeValueDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<HandbremseMode>,
     espgui::StaticText<TEXT_HANDBREMSE_MODE>,
     HandbremsModeAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>,
-    espgui::SwitchScreenAction<HandbremsSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>
 >;
 class HandBremsModeText : public virtual espgui::TextInterface
 {

@@ -63,8 +63,8 @@ using ApAuthmodeChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<wifi_auth_mode_t>,
     espgui::StaticText<TEXT_AUTHMODE>,
     WifiApAuthmodeAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
-    espgui::SwitchScreenAction<WifiApSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>
 >;
 } // namespace
 
