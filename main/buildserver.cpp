@@ -23,8 +23,8 @@ namespace buildserver {
     uint16_t count_available_buildserver()
     {
         uint16_t count = 0;
-        for (const auto &otaServer : stringSettings.otaServers) {
-            if (!otaServer.url.empty()) count++;
+        for (const auto &otaServer : configs.otaServers) {
+            if (!otaServer.url.value.empty()) count++;
         }
         return count;
     }
@@ -135,12 +135,12 @@ namespace buildserver {
 
     std::string get_ota_url_from_index(uint16_t index)
     {
-        if (index < stringSettings.otaServers.size())
+        if (index < configs.otaServers.size())
         {
-            auto otaServer = stringSettings.otaServers[index];
-            if (!otaServer.url.empty())
+            const auto &otaServer = configs.otaServers[index];
+            if (!otaServer.url.value.empty())
             {
-                return otaServer.url;
+                return otaServer.url.value;
             }
             else
             {
@@ -198,8 +198,8 @@ namespace buildserver {
 
         index = 0;
 
-        url_for_latest = fmt::format("{}{}", stringSettings.otaServerUrl, doc["latest"].as<std::string>());
-        url_for_hashes = fmt::format("{}{}", stringSettings.otaServerUrl, doc["url"].as<std::string>());
+        url_for_latest = fmt::format("{}{}", configs.otaServerUrl.value, doc["latest"].as<std::string>());
+        url_for_hashes = fmt::format("{}{}", configs.otaServerUrl.value, doc["url"].as<std::string>());
         parsing_finished = true;
     }
 

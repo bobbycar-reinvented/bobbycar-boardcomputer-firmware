@@ -25,7 +25,6 @@ bool simplified =
 ;
 
 Settings settings;
-StringSettings stringSettings;
 SettingsPersister settingsPersister;
 
 std::array<CRGB, 8> ledstrip_custom_colors;

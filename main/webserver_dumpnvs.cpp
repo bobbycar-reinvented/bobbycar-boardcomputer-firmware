@@ -154,11 +154,6 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
         showInputForSetting(key, value, json_settings);
     });
 
-    JsonObject json_stringSettings = doc.createNestedObject("stringSettings");
-    stringSettings.executeForEveryCommonSetting([&](std::string_view key, const auto &value){
-        showInputForSetting(key, value, json_stringSettings);
-    });
-
     JsonObject profiles = doc.createNestedObject("profiles");
 
     // Profile settings
@@ -175,12 +170,7 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
         const auto profile_str = cur_profile ? std::to_string(*cur_profile) : "-";
 
         JsonObject profile = profiles.createNestedObject(profile_str);
-        JsonObject profile_stringSettings = profile.createNestedObject("stringSettings");
         JsonObject profile_settings = profile.createNestedObject("settings");
-
-        stringSettings.executeForEveryProfileSetting([&](const char *key, auto &value){
-            showInputForSetting(key, value, profile_stringSettings);
-        });
 
         settings.executeForEveryProfileSetting([&](const char *key, auto &value){
             showInputForSetting(key, value, profile_settings);

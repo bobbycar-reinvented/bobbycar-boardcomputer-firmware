@@ -47,7 +47,6 @@ extern "C" void app_main()
         ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
 
     settings = presets::defaultSettings;
-    stringSettings = presets::makeDefaultStringSettings();
 
     if (settingsPersister.init())
     {

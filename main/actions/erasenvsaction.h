@@ -25,7 +25,6 @@ public:
         }
 
         settings = presets::defaultSettings;
-        stringSettings = presets::makeDefaultStringSettings();
 
         if (!settingsPersister.openCommon())
         {
@@ -45,12 +44,6 @@ public:
         if (!settingsPersister.load(settings))
         {
             ESP_LOGE("BOBBY", "load() for settings failed");
-            //return;
-        }
-
-        if (!settingsPersister.load(stringSettings))
-        {
-            ESP_LOGE("BOBBY", "load() for stringSettings failed");
             //return;
         }
     }

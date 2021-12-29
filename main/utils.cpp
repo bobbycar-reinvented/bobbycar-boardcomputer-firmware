@@ -202,8 +202,6 @@ bool loadSettings()
     bool result{true};
     if (!settingsPersister.load(settings))
         result = false;
-    if (!settingsPersister.load(stringSettings))
-        result = false;
     return result;
 }
 
@@ -212,8 +210,6 @@ bool saveSettings()
     if (simplified) return true;
     bool result{true};
     if (!settingsPersister.save(settings))
-        result = false;
-    if (!settingsPersister.save(stringSettings))
         result = false;
     return result;
 }

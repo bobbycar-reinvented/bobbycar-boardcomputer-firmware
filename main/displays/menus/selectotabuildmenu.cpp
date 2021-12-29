@@ -54,7 +54,7 @@ SelectBuildMenu::SelectBuildMenu()
         MESSAGE(TEXT_OTA_NOBUILDSERVERAVAILABLE);
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
-    else if (stringSettings.otaServerUrl.empty())
+    else if (configs.otaServerUrl.value.empty())
     {
         MESSAGE(TEXT_OTA_NOBUILDSERVERSELECTED);
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
@@ -69,7 +69,7 @@ SelectBuildMenu::SelectBuildMenu()
         }
         else
         {
-            std::string serverUrl = stringSettings.otaServerUrl;
+            std::string serverUrl = configs.otaServerUrl.value;
             if (serverUrl.substr(serverUrl.length() - 4) == ".bin")
             {
                 auto &menuitem = constructMenuItem<VersionMenuItem<TFT_WHITE>>();

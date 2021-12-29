@@ -11,7 +11,6 @@
 
 // local includes
 #include "settings.h"
-#include "stringsettings.h"
 #include "ledstripdefines.h"
 #include "ledstrip.h"
 
@@ -327,6 +326,4 @@ constexpr Settings defaultSettings {
     .espnow = defaultEspNowSettings,
 #endif
 };
-
-StringSettings makeDefaultStringSettings();
 } // namespace presets

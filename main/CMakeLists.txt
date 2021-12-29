@@ -201,7 +201,6 @@ set(headers
     settingsutils.h
     statistics.h
     statustexthelper.h
-    stringsettings.h
     taskmanager.h
     texts.h
     time_bobbycar.h
@@ -215,7 +214,6 @@ set(headers
     webserver_lock.h
     webserver_ota.h
     webserver_settings.h
-    webserver_stringsettings.h
     webserver_newsettings.h
     widgets/doubleprogressbar.h
     displays/menudisplaywithtime.h
@@ -439,7 +437,6 @@ set(sources
     settingsutils.cpp
     statistics.cpp
     statustexthelper.cpp
-    stringsettings.cpp
     taskmanager.cpp
     texts.cpp
     time_bobbycar.cpp
@@ -453,7 +450,6 @@ set(sources
     webserver_lock.cpp
     webserver_ota.cpp
     webserver_settings.cpp
-    webserver_stringsettings.cpp
     webserver_newsettings.cpp
     widgets/doubleprogressbar.cpp
     wifi_bobbycar.cpp

@@ -66,6 +66,18 @@ public:
     ConfigWrapper<std::string> doorToken;
 };
 
+class ConfiguredOtaServer
+{
+public:
+    ConfiguredOtaServer(const char *nameKey, const char *urlKey) :
+        name{std::string{}, DoReset, {},                                    nameKey },
+        url {std::string{}, DoReset, StringOr<StringEmpty, StringValidUrl>, urlKey  }
+    {}
+
+    ConfigWrapper<std::string> name;
+    ConfigWrapper<std::string> url;
+};
+
 class ConfigContainer
 {
     using mac_t = wifi_stack::mac_t;
@@ -122,10 +134,19 @@ public:
 
     ConfigWrapper<std::string> cloudUrl           {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "cloudUrl" };
     ConfigWrapper<std::string> udpCloudHost       {std::string{},                          DoReset,   {},                         "udpCloudHost"        };
+
     ConfigWrapper<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
     ConfigWrapper<std::string> otaUsername        {std::string{},                          DoReset,   {},                         "otaUsername"         };
     ConfigWrapper<std::string> otaServerUrl       {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaServerUrl" };
     ConfigWrapper<std::string> otaServerBranch    {std::string{},                          DoReset,   {},                         "otaServerBranch"     };
+    std::array<ConfiguredOtaServer, 5> otaServers {
+        ConfiguredOtaServer { "otaName0", "otaUrl0" },
+        ConfiguredOtaServer { "otaName1", "otaUrl1" },
+        ConfiguredOtaServer { "otaName2", "otaUrl2" },
+        ConfiguredOtaServer { "otaName3", "otaUrl3" },
+        ConfiguredOtaServer { "otaName4", "otaUrl4" }
+    };
+
     ConfigWrapper<bool>        dns_announce_enabled{true,                                  DoReset,   {},                         "dnsAnnounceEnab"     };
     ConfigWrapper<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
     ConfigWrapper<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
@@ -274,10 +295,22 @@ public:
     \
     x(cloudUrl) \
     x(udpCloudHost) \
+    \
     x(otaUrl) \
     x(otaUsername) \
     x(otaServerUrl) \
     x(otaServerBranch) \
+    x(otaServers[0].name) \
+    x(otaServers[0].url) \
+    x(otaServers[1].name) \
+    x(otaServers[1].url) \
+    x(otaServers[2].name) \
+    x(otaServers[2].url) \
+    x(otaServers[3].name) \
+    x(otaServers[3].url) \
+    x(otaServers[4].name) \
+    x(otaServers[4].url) \
+    \
     x(dns_announce_enabled) \
     x(dns_announce_key) \
     // x(webserverPassword)

@@ -88,7 +88,7 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
         ERR_MESSAGE(TEXT_OTA_NOBUILDSERVERAVAILABLE); // E:No server saved.
     }
 
-    if (stringSettings.otaServerUrl.empty())
+    if (configs.otaServerUrl.value.empty())
     {
         ERR_MESSAGE(TEXT_OTA_NOBUILDSERVERSELECTED); // E:No server selected.
     }
@@ -99,7 +99,7 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
     }
 
     SelectBranch::setup_request();
-    SelectBranch::start_descriptor_request(stringSettings.otaServerUrl);
+    SelectBranch::start_descriptor_request(configs.otaServerUrl.value);
 }
 
 void SelectBuildserverBranchMenu::update()
