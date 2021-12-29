@@ -30,6 +30,7 @@
 #include "webserver_dumpnvs.h"
 #endif
 #include "globals.h"
+#include "newsettings.h"
 
 using namespace std::chrono_literals;
 
@@ -188,7 +189,7 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
 
     char tmpBuf[256];
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
-    if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
+    if (key_result == ESP_OK && (configs.webserverPassword.value.empty() || configs.webserverPassword.value == tmpBuf))
     {
         if (!menuDisplayChanged())
         {

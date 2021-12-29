@@ -6,10 +6,6 @@
 
 struct StringSettings
 {
-#ifdef FEATURE_GARAGE
-    std::string garageUrl;
-#endif
-
 #ifdef FEATURE_NTP
     std::string timeServer;
 #endif
@@ -35,15 +31,11 @@ struct StringSettings
 #ifdef FEATURE_OTA
     std::string otaServerBranch;
 #endif
-    std::string webserver_password;
 };
 
 template<typename T>
 void StringSettings::executeForEveryCommonSetting(T &&callable)
 {
-#ifdef FEATURE_GARAGE
-    callable("garageUrl", garageUrl);
-#endif
 #ifdef FEATURE_NTP
     callable("timeServer", timeServer);
 #endif
@@ -75,7 +67,6 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
 #ifdef FEATURE_DNS_NS
     callable("dnskey", dns_key);
 #endif
-    callable("webpw", webserver_password);
 }
 
 template<typename T>
