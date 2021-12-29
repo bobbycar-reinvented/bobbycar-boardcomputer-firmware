@@ -321,11 +321,8 @@ void sendCanCommands()
         if (can_sequential_error_cnt > 3) {
             can_sequential_error_cnt = 0;
             if (configs.canBusResetOnError.value) {
-                if (const auto err = twai_stop(); err != ESP_OK)
-                    ESP_LOGE(TAG, "ERROR: twai_stop() failed with %s", esp_err_to_name(err));
-
-                if (const auto err = twai_start(); err != ESP_OK)
-                    ESP_LOGE(TAG, "ERROR: twai_start() failed with %s", esp_err_to_name(err));
+                ESP_LOGE(TAG, "CAN BUS RESET: twai_stop(): %s", esp_err_to_name(twai_stop()));
+                ESP_LOGE(TAG, "CAN BUS RESET: twai_start(): %s", esp_err_to_name(twai_start()));
 
             }
         }
