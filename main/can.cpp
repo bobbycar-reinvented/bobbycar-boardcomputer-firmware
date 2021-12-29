@@ -282,6 +282,10 @@ void parseCanInput()
 
 void sendCanCommands()
 {
+
+    static uint32_t can_total_error_cnt = 0;
+    static uint32_t can_sequential_error_cnt = 0;
+
     constexpr auto send = [](uint32_t addr, auto value){
         twai_message_t message;
         message.identifier = addr;
@@ -300,12 +304,11 @@ void sendCanCommands()
         }
 
 
-        static uint32_t can_total_error_cnt = 0;
-        static uint32_t can_sequential_error_cnt = 0;
 
         if (result == ESP_ERR_TIMEOUT) {
             ++can_sequential_error_cnt;
             ++can_total_error_cnt;
+
             ESP_LOGW(TAG, "twai_transmit() took %lld ms, seq err: %d, total err: %d",
                      espchrono::ago(timestamp_before).count(),
                      can_sequential_error_cnt,
@@ -318,11 +321,8 @@ void sendCanCommands()
         if (can_sequential_error_cnt > 3) {
             can_sequential_error_cnt = 0;
             if (configs.canBusResetOnError.value) {
-                if (const auto err = twai_stop(); err != ESP_OK)
-                    ESP_LOGE(TAG, "ERROR: twai_stop() failed with %s", esp_err_to_name(err));
-
-                if (const auto err = twai_start(); err != ESP_OK)
-                    ESP_LOGE(TAG, "ERROR: twai_start() failed with %s", esp_err_to_name(err));
+                ESP_LOGE(TAG, "CAN BUS RESET: twai_stop(): %s", esp_err_to_name(twai_stop()));
+                ESP_LOGE(TAG, "CAN BUS RESET: twai_start(): %s", esp_err_to_name(twai_start()));
 
             }
         }
