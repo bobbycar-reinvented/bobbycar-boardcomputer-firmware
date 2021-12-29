@@ -48,12 +48,6 @@ extern bool isLocked;
 #include GLOBALS_PLUGIN
 #endif
 
-#ifdef FEATURE_DNS_NS
-extern std::string dns_lastIpAddress_v4;
-extern std::string dns_lastIpAddress_v6;
-extern std::string dns_lastIpAddress_v6_global;
-#endif
-
 extern bool simplified;
 
 extern Settings settings;
