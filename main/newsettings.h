@@ -112,6 +112,8 @@ public:
     ConfigWrapper<std::string> udpCloudHost       {std::string{},                          DoReset,   {},                         "udpCloudHost"        };
     ConfigWrapper<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
 
+    ConfigWrapper<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
+
 #define NEW_SETTINGS(x) \
     x(baseMacAddressOverride) \
     x(hostname) \
@@ -249,7 +251,9 @@ public:
     \
     x(cloudUrl) \
     x(udpCloudHost) \
-    // x(otaUrl)
+    x(otaUrl) \
+    \
+    // x(webserverPassword)
 
     template<typename T>
     void callForEveryConfig(T &&callback)
@@ -257,7 +261,7 @@ public:
 #define HELPER(x) callback(x);
         NEW_SETTINGS(HELPER)
 #undef HELPER
-        callback(otaUrl);
+        callback(webserverPassword);
     }
 
     auto getAllConfigParams()
@@ -266,7 +270,7 @@ public:
 #define HELPER(x) std::ref<ConfigWrapperInterface>(x),
             NEW_SETTINGS(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(otaUrl)
+            std::ref<ConfigWrapperInterface>(webserverPassword)
         );
     }
 };

@@ -23,6 +23,7 @@
 #include "buttons.h"
 #include "globals.h"
 #include "webserver_lock.h"
+#include "newsettings.h"
 
 #ifdef FEATURE_WEBSERVER
 using esphttpdutils::HtmlTag;
@@ -57,7 +58,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
     char tmpBuf[256];
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
-    if (key_result == ESP_OK && (tmpBuf == stringSettings.webserver_password || stringSettings.webserver_password.empty()))
+    if (key_result == ESP_OK && (configs.webserverPassword.value.empty() || configs.webserverPassword.value == tmpBuf))
     {
 
         body += "{";
@@ -148,7 +149,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
             body = body.erase(lastEckig+1, 1);
 
     }
-    else if (key_result != ESP_ERR_NOT_FOUND && tmpBuf != stringSettings.webserver_password)
+    else if (key_result != ESP_ERR_NOT_FOUND && tmpBuf != configs.webserverPassword.value)
     {
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }

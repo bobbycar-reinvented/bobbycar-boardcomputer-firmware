@@ -9,9 +9,6 @@ StringSettings makeDefaultStringSettings()
 #endif
 
     return {
-#ifdef FEATURE_GARAGE
-        .garageUrl = {},
-#endif
 #ifdef FEATURE_NTP
         .timeServer = "europe.pool.ntp.org",
 #endif
@@ -33,7 +30,6 @@ StringSettings makeDefaultStringSettings()
 #ifdef FEATURE_OTA
         .otaServerBranch = {},
 #endif
-        .webserver_password = {},
     };
 }
 } // namespace presets
