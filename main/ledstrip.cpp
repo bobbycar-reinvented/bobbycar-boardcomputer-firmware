@@ -37,12 +37,12 @@ void updateLedStrip()
     if (cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH))
     {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
-        if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms || enAnim)
+        if (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms || enAnim)
         {
             const auto anim_to_fill = time_to_percent(750ms, 500ms, 100ms, settings.ledstrip.enableFullBlink ? (leds.size() / 2) : settings.ledstrip.bigOffset - settings.ledstrip.smallOffset, settings.ledstrip.enableFullBlink);
             if (settings.ledstrip.enableBeepWhenBlink)
             {
-                if (espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms)
+                if (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms)
                     for (Controller &controller : controllers)
                         controller.command.buzzer.freq = 3;
                 else
@@ -188,12 +188,12 @@ void updateLedStrip()
     {
        const auto center = (std::begin(leds) + (leds.size() / 2) + settings.ledstrip.centerOffset);
 
-       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKLEFT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms) || settings.ledstrip.enableFullBlink) // Condition for right
+       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKLEFT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) || settings.ledstrip.enableFullBlink) // Condition for right
        {
            std::fill(center - settings.ledstrip.bigOffset, center - settings.ledstrip.smallOffset, CRGB{0, 0, 0});
            std::fill(center - settings.ledstrip.bigOffset - 1U, center - settings.ledstrip.smallOffset - 1U, CRGB{255, 0, 0}); // Right
        }
-       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKRIGHT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::millis_clock::now().time_since_epoch() % 750ms < 375ms) || settings.ledstrip.enableFullBlink) // Condition for left
+       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKRIGHT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) || settings.ledstrip.enableFullBlink) // Condition for left
        {
            std::fill(center + settings.ledstrip.smallOffset, center + settings.ledstrip.bigOffset, CRGB{0, 0, 0});
            std::fill(center + settings.ledstrip.smallOffset + 1U, center + settings.ledstrip.bigOffset + 1U, CRGB{255, 0, 0}); // Left
