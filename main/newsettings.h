@@ -78,6 +78,8 @@ public:
     ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                         "wifiApChannel"       };
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };
 
+    ConfigWrapper<bool>        canBusResetOnError {false,                                     DoReset,   {},                         "canBusRstErr"       };
+
     ConfigWrapper<std::string> bluetoothName      {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "bluetoothName"       };
 
 #define NEW_SETTINGS(x) \
@@ -193,6 +195,8 @@ public:
     x(wifiApKey) \
     x(wifiApChannel) \
     x(wifiApAuthmode) \
+    \
+    x(canBusResetOnError) \
     \
     //x(bluetoothName)
 
