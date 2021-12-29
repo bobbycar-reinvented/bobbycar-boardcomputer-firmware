@@ -13,6 +13,7 @@
 #include "buildserver.h"
 #include "displays/menus/otamenu.h"
 #include "utils.h"
+#include "newsettings.h"
 
 #ifdef FEATURE_OTA
 
@@ -34,7 +35,7 @@ public:
         stringSettings.otaServerUrl = m_buildserver_url;
         if (m_buildserver_url.substr(m_buildserver_url.length() - 4) == ".bin")
         {
-            stringSettings.otaUrl = m_buildserver_url;
+            configs.write_config(configs.otaUrl, m_buildserver_url); // mir egal ob es succeeded
         }
         saveSettings();
         url_for_latest.clear();

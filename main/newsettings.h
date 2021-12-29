@@ -86,7 +86,7 @@ public:
 
     ConfigWrapper<bool>        wifiApEnabled      {true,                                   DoReset,   {},                         "wifiApEnabled"       };
     ConfigWrapper<std::string> wifiApName         {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "wifiApName"          };
-    ConfigWrapper<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey"     };
+    ConfigWrapper<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey" };
     ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                         "wifiApChannel"       };
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };
 
@@ -103,10 +103,14 @@ public:
     ConfigWrapper<std::string> bluetoothName      {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "bluetoothName"       };
 
     ConfigWrapper<bool>        reverseBeep        {false,                                  DoReset,   {},                         "reverseBeep"         };
-    ConfigWrapper<uint8_t>     reverseBeepFreq0   {3,                                      DoReset,   {},                         "revBeepFreq0"         };
-    ConfigWrapper<uint8_t>     reverseBeepFreq1   {0,                                      DoReset,   {},                         "revBeepFreq1"         };
+    ConfigWrapper<uint8_t>     reverseBeepFreq0   {3,                                      DoReset,   {},                         "revBeepFreq0"        };
+    ConfigWrapper<uint8_t>     reverseBeepFreq1   {0,                                      DoReset,   {},                         "revBeepFreq1"        };
     ConfigWrapper<int16_t>     reverseBeepDuration0{500,                                   DoReset,   {},                         "revBeepDur0"         };
     ConfigWrapper<int16_t>     reverseBeepDuration1{500,                                   DoReset,   {},                         "revBeepDur1"         };
+
+    ConfigWrapper<std::string> cloudUrl           {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "cloudUrl" };
+    ConfigWrapper<std::string> udpCloudHost       {std::string{},                          DoReset,   {},                         "udpCloudHost"        };
+    ConfigWrapper<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
 
 #define NEW_SETTINGS(x) \
     x(baseMacAddressOverride) \
@@ -241,7 +245,11 @@ public:
     x(reverseBeepFreq0) \
     x(reverseBeepFreq1) \
     x(reverseBeepDuration0) \
-    //x(reverseBeepDuration1)
+    x(reverseBeepDuration1) \
+    \
+    x(cloudUrl) \
+    x(udpCloudHost) \
+    // x(otaUrl)
 
     template<typename T>
     void callForEveryConfig(T &&callback)
@@ -249,7 +257,7 @@ public:
 #define HELPER(x) callback(x);
         NEW_SETTINGS(HELPER)
 #undef HELPER
-        callback(reverseBeepDuration1);
+        callback(otaUrl);
     }
 
     auto getAllConfigParams()
@@ -258,7 +266,7 @@ public:
 #define HELPER(x) std::ref<ConfigWrapperInterface>(x),
             NEW_SETTINGS(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(reverseBeepDuration1)
+            std::ref<ConfigWrapperInterface>(otaUrl)
         );
     }
 };

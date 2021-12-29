@@ -12,8 +12,8 @@
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
 #include "displays/menus/otamenu.h"
-
 #include "globals.h"
+#include "newsettings.h"
 
 #ifdef FEATURE_OTA
 #define MESSAGE(text) constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>()
@@ -34,8 +34,7 @@ public:
 
     void triggered() override
     {
-        stringSettings.otaUrl = m_url;
-        saveSettings();
+        configs.write_config(configs.otaUrl, m_url); // mir egal ob succeeded
     }
 
     int color() const override

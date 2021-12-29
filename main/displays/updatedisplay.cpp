@@ -20,6 +20,7 @@
 #include "texts.h"
 #include "ota.h"
 #include "displays/menus/otamenu.h"
+#include "newsettings.h"
 
 #ifdef FEATURE_OTA
 void UpdateDisplay::initScreen()
@@ -112,7 +113,7 @@ void UpdateDisplay::buttonPressed(espgui::Button button)
         espgui::switchScreen<OtaMenu>();
         break;
     case Button::Right:
-        if (const auto result = triggerOta(stringSettings.otaUrl); !result)
+        if (const auto result = triggerOta(configs.otaUrl.value); !result)
             ESP_LOGE("BOBBY", "triggerOta() failed with %.*s", result.error().size(), result.error().data());
         break;
     default:;
