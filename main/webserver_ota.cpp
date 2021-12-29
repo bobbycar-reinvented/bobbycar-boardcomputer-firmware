@@ -22,6 +22,7 @@
 #endif
 #include "webserver_lock.h"
 #include "globals.h"
+#include "newsettings.h"
 
 #if defined(FEATURE_WEBSERVER) && defined(FEATURE_OTA)
 using namespace std::chrono_literals;
@@ -344,7 +345,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                     body += "Trigger Update";
                 }
 
-                body += fmt::format("<input type=\"text\" name=\"url\" value=\"{}\" />", esphttpdutils::htmlentities(stringSettings.otaUrl));
+                body += fmt::format("<input type=\"text\" name=\"url\" value=\"{}\" />", esphttpdutils::htmlentities(configs.otaUrl.value));
 
                 {
                     HtmlTag buttonTag{"button", "type=\"submit\"", body};

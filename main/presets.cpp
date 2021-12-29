@@ -9,9 +9,6 @@ StringSettings makeDefaultStringSettings()
 #endif
 
     return {
-#ifdef FEATURE_OTA
-        .otaUrl = {},
-#endif
 #ifdef FEATURE_GARAGE
         .garageUrl = {},
 #endif

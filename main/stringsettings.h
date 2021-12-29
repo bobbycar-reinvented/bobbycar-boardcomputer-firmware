@@ -6,10 +6,6 @@
 
 struct StringSettings
 {
-#ifdef FEATURE_OTA
-    std::string otaUrl;
-#endif
-
 #ifdef FEATURE_GARAGE
     std::string garageUrl;
 #endif
@@ -45,10 +41,6 @@ struct StringSettings
 template<typename T>
 void StringSettings::executeForEveryCommonSetting(T &&callable)
 {
-#ifdef FEATURE_OTA
-    callable("otaUrl", otaUrl);
-#endif
-
 #ifdef FEATURE_GARAGE
     callable("garageUrl", garageUrl);
 #endif
