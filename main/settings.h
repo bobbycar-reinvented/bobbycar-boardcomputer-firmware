@@ -31,13 +31,6 @@ struct Settings
 #ifdef FEATURE_BMS
     bool autoConnectBms;
 #endif
-    struct Buzzer {
-        bool reverseBeep;
-        uint8_t reverseBeepFreq0;
-        uint8_t reverseBeepFreq1;
-        int16_t reverseBeepDuration0;
-        int16_t reverseBeepDuration1;
-    } buzzer;
 
     struct Limits {
         int16_t iMotMax;      // [A] Maximum motor current limit
@@ -242,12 +235,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 #ifdef FEATURE_BMS
     callable("autoConnectBms", autoConnectBms);
 #endif
-
-    callable("reverseBeep", buzzer.reverseBeep);
-    callable("revBeepFreq0", buzzer.reverseBeepFreq0);
-    callable("revBeepFreq1", buzzer.reverseBeepFreq1);
-    callable("revBeepDur0", buzzer.reverseBeepDuration0);
-    callable("revBeepDur1", buzzer.reverseBeepDuration1);
 
 #ifdef FEATURE_BLUETOOTH
     callable("autoBluetoothMo", bluetoothSettings.autoBluetoothMode);

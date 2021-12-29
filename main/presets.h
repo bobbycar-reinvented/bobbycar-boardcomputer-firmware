@@ -26,14 +26,6 @@ constexpr Settings::Limits defaultLimits {
     .phaseAdvMax = DEFAULT_FIELDADVMAX
 };
 
-constexpr Settings::Buzzer defaultBuzzer {
-    .reverseBeep = false,
-    .reverseBeepFreq0 = 3,
-    .reverseBeepFreq1 = 0,
-    .reverseBeepDuration0 = 500,
-    .reverseBeepDuration1 = 500,
-};
-
 constexpr Settings::Limits kidsLimits {
     .iMotMax = 5,
     .iDcMax = 7,
@@ -314,7 +306,6 @@ constexpr Settings defaultSettings {
 #ifdef FEATURE_BMS
     .autoConnectBms = false,
 #endif
-    .buzzer = defaultBuzzer,
     .limits = defaultLimits,
 #ifdef FEATURE_BLUETOOTH
     .bluetoothSettings = defaultBluetoothSettings,
