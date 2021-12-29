@@ -24,6 +24,8 @@ using namespace espconfig;
 
 std::string defaultHostname();
 
+constexpr const auto INPUT_MAPPING_NONE = std::numeric_limits<uint8_t>::max();
+
 class WiFiConfig
 {
 public:
@@ -125,6 +127,19 @@ public:
     ConfigWrapper<int16_t>     bremsMax           {4096,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMax"            };
 
     ConfigWrapper<uint8_t>     dpadDebounce       {25,                                     DoReset,   {},                           "dpadDebounce"        };
+
+    ConfigWrapper<uint8_t>     dpadMappingLeft    {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapLeft"         };
+    ConfigWrapper<uint8_t>     dpadMappingRight   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight"        };
+    ConfigWrapper<uint8_t>     dpadMappingUp      {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapUp"           };
+    ConfigWrapper<uint8_t>     dpadMappingDown    {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapDown"         };
+    ConfigWrapper<uint8_t>     dpadMappingProfile0{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile0"     };
+    ConfigWrapper<uint8_t>     dpadMappingProfile1{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile1"     };
+    ConfigWrapper<uint8_t>     dpadMappingProfile2{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile2"     };
+    ConfigWrapper<uint8_t>     dpadMappingProfile3{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile3"     };
+    ConfigWrapper<uint8_t>     dpadMappingLeft2   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapLeft2"        };
+    ConfigWrapper<uint8_t>     dpadMappingRight2  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight2"       };
+    ConfigWrapper<uint8_t>     dpadMappingUp2     {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapUp2"          };
+    ConfigWrapper<uint8_t>     dpadMappingDown2   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapDown2"        };
 
     std::array<WirelessDoorsConfig, 5> wireless_door_configs {
         WirelessDoorsConfig { "door_id0", "door_token0" },
@@ -293,6 +308,19 @@ public:
     x(bremsMax) \
     \
     x(dpadDebounce) \
+    \
+    x(dpadMappingLeft) \
+    x(dpadMappingRight) \
+    x(dpadMappingUp) \
+    x(dpadMappingDown) \
+    x(dpadMappingProfile0) \
+    x(dpadMappingProfile1) \
+    x(dpadMappingProfile2) \
+    x(dpadMappingProfile3) \
+    x(dpadMappingLeft2) \
+    x(dpadMappingRight2) \
+    x(dpadMappingUp2) \
+    x(dpadMappingDown2) \
     \
     x(wireless_door_configs[0].doorId) \
     x(wireless_door_configs[0].doorToken) \

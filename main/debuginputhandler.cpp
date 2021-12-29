@@ -10,12 +10,12 @@
 // 3rdparty lib includes
 #include <tftinstance.h>
 #include <esp32-hal-gpio.h>
+#include <screenmanager.h>
 
 // local includes
 #include "globals.h"
 #include "utils.h"
-#include "screens.h"
-#include "buttons.h"
+#include "bobbybuttons.h"
 
 namespace {
 constexpr const char * const TAG = "DEBUG";
@@ -54,83 +54,127 @@ void handleDebugInput()
 
         for (char c : std::string_view{data, length})
         {
-            switch (c)
+            if (consoleControlCharsReceived < 2)
             {
-            case 'i':
-            case 'I':
-                espgui::tft.init();
-                break;
-            case 'p':
-            case 'P':
-            {
-                const auto firstPower = controllers.front.command.poweroff;
-                for (Controller &controller : controllers)
-                    controller.command.poweroff = !firstPower;
-                break;
+                switch (c)
+                {
+                case '\x1b':
+                    if (consoleControlCharsReceived == 0)
+                        consoleControlCharsReceived = 1;
+                    else
+                        consoleControlCharsReceived = 0;
+                    break;
+                case '\x5b':
+                    if (consoleControlCharsReceived == 1)
+                        consoleControlCharsReceived = 2;
+                    else
+                        consoleControlCharsReceived = 0;
+                    break;
+                case 'i':
+                case 'I':
+                    consoleControlCharsReceived = 0;
+                    espgui::tft.init();
+                    break;
+                case 'p':
+                case 'P':
+                {
+                    consoleControlCharsReceived = 0;
+                    const auto firstPower = controllers.front.command.poweroff;
+                    for (Controller &controller : controllers)
+                        controller.command.poweroff = !firstPower;
+                    break;
+                }
+                case 'l':
+                case 'L':
+                {
+                    consoleControlCharsReceived = 0;
+                    const auto firstLed = controllers.front.command.led;
+                    for (Controller &controller : controllers)
+                        controller.command.led = !firstLed;
+                    break;
+                }
+                case 'r':
+                case 'R':
+                    consoleControlCharsReceived = 0;
+                    loadSettings();
+                    break;
+                case 's':
+                case 'S':
+                    consoleControlCharsReceived = 0;
+                    saveSettings();
+                    break;
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    consoleControlCharsReceived = 0;
+                    for (Controller &controller : controllers)
+                        controller.command.buzzer.freq = c-'0';
+                    break;
+                case 'z':
+                case 'Z':
+                    consoleControlCharsReceived = 0;
+                    if (espgui::currentDisplay)
+                    {
+                        espgui::currentDisplay->buttonPressed(espgui::Button(BobbyButton::Left2));
+                        espgui::currentDisplay->buttonReleased(espgui::Button(BobbyButton::Left2));
+                    }
+                    break;
+                case 'u':
+                case 'U':
+                    consoleControlCharsReceived = 0;
+                    if (espgui::currentDisplay)
+                    {
+                        espgui::currentDisplay->buttonPressed(espgui::Button(BobbyButton::Right2));
+                        espgui::currentDisplay->buttonReleased(espgui::Button(BobbyButton::Right2));
+                    }
+                    break;
+                default:
+                    consoleControlCharsReceived = 0;
+                }
             }
-            case 'l':
-            case 'L':
+            else
             {
-                const auto firstLed = controllers.front.command.led;
-                for (Controller &controller : controllers)
-                    controller.command.led = !firstLed;
-                break;
-            }
-            case 'r':
-            case 'R':
-                loadSettings();
-                break;
-            case 's':
-            case 'S':
-                saveSettings();
-                break;
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                for (Controller &controller : controllers)
-                    controller.command.buzzer.freq = c-'0';
-                break;
-            case 'A':
-                InputDispatcher::rotate(-1);
-                break;
-            case 'B':
-                InputDispatcher::rotate(1);
-                break;
-            case 'C':
-                InputDispatcher::confirmButton(true);
-                InputDispatcher::confirmButton(false);
-                break;
-            case 'D':
-                InputDispatcher::backButton(true);
-                InputDispatcher::backButton(false);
-                break;
-            case 'z':
-            case 'Z':
-#ifndef LEDSTRIP_WRONG_DIRECTION
-                InputDispatcher::blinkLeftButton(true);
-                InputDispatcher::blinkLeftButton(false);
-#else
-                InputDispatcher::blinkRightButton(true);
-                InputDispatcher::blinkRightButton(false);
-#endif
-                break;
-            case 'u':
-            case 'U':
-#ifndef LEDSTRIP_WRONG_DIRECTION
-                InputDispatcher::blinkRightButton(true);
-                InputDispatcher::blinkRightButton(false);
-#else
-                InputDispatcher::blinkLeftButton(true);
-                InputDispatcher::blinkLeftButton(false);
-#endif
-                break;
+                consoleControlCharsReceived = 0;
+                switch (c)
+                {
+                case 'A': // Up arrow pressed
+                    if (espgui::currentDisplay)
+                    {
+                        espgui::currentDisplay->buttonPressed(espgui::Button::Up);
+                        espgui::currentDisplay->buttonReleased(espgui::Button::Up);
+                    }
+                    break;
+                case 'B': // Down arrow pressed
+                    if (espgui::currentDisplay)
+                    {
+                        espgui::currentDisplay->buttonPressed(espgui::Button::Down);
+                        espgui::currentDisplay->buttonReleased(espgui::Button::Down);
+                    }
+                    break;
+                case 'C': // Right arrow pressed
+                    if (espgui::currentDisplay)
+                    {
+                        espgui::currentDisplay->buttonPressed(espgui::Button::Right);
+                        espgui::currentDisplay->buttonReleased(espgui::Button::Right);
+                    }
+                    break;
+                case 'D': // Left arrow pressed
+                    if (espgui::currentDisplay)
+                    {
+                        espgui::currentDisplay->buttonPressed(espgui::Button::Left);
+                        espgui::currentDisplay->buttonReleased(espgui::Button::Left);
+                    }
+                    break;
+                default:
+                    ESP_LOGI(TAG, "unknown control char received: %hhx", c);
+                }
             }
         }
     }
