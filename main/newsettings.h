@@ -49,6 +49,18 @@ public:
     ConfigWrapper<wifi_stack::ip_address_t> staticDns2;
 };
 
+class WirelessDoorsConfig
+{
+public:
+    WirelessDoorsConfig(const char *doorIdKey, const char *doorTokenKey) :
+        doorId    {std::string{}, DoReset, StringMaxSize<24>, doorIdKey    },
+        doorToken {std::string{}, DoReset, StringMaxSize<24>, doorTokenKey }
+    {}
+
+    ConfigWrapper<std::string> doorId;
+    ConfigWrapper<std::string> doorToken;
+};
+
 class ConfigContainer
 {
     using mac_t = wifi_stack::mac_t;
@@ -79,6 +91,14 @@ public:
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };
 
     ConfigWrapper<bool>        canBusResetOnError {false,                                  DoReset,   {},                         "canBusRstErr"        };
+
+    std::array<WirelessDoorsConfig, 5> wireless_door_configs {
+        WirelessDoorsConfig { "door_id0", "door_token0" },
+        WirelessDoorsConfig { "door_id1", "door_token1" },
+        WirelessDoorsConfig { "door_id2", "door_token2" },
+        WirelessDoorsConfig { "door_id3", "door_token3" },
+        WirelessDoorsConfig { "door_id4", "door_token4" }
+    };
 
     ConfigWrapper<std::string> bluetoothName      {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "bluetoothName"       };
 
@@ -203,6 +223,17 @@ public:
     x(wifiApAuthmode) \
     \
     x(canBusResetOnError) \
+    \
+    x(wireless_door_configs[0].doorId) \
+    x(wireless_door_configs[0].doorToken) \
+    x(wireless_door_configs[1].doorId) \
+    x(wireless_door_configs[1].doorToken) \
+    x(wireless_door_configs[2].doorId) \
+    x(wireless_door_configs[2].doorToken) \
+    x(wireless_door_configs[3].doorId) \
+    x(wireless_door_configs[3].doorToken) \
+    x(wireless_door_configs[4].doorId) \
+    x(wireless_door_configs[4].doorToken) \
     \
     x(bluetoothName) \
     \
