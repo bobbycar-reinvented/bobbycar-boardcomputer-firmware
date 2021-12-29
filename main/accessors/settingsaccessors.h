@@ -21,11 +21,31 @@ struct AutoConnectBmsAccessor : public RefAccessorSaveSettings<bool> { bool &get
 #endif
 
 // Buzzer
-struct ReverseBeepAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.buzzer.reverseBeep; } };
-struct ReverseBeepFreq0Accessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.buzzer.reverseBeepFreq0; } };
-struct ReverseBeepFreq1Accessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.buzzer.reverseBeepFreq1; } };
-struct ReverseBeepDuration0Accessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.buzzer.reverseBeepDuration0; } };
-struct ReverseBeepDuration1Accessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.buzzer.reverseBeepDuration1; } };
+struct ReverseBeepAccessor : public virtual espgui::AccessorInterface<bool>
+{
+    bool getValue() const override { return configs.reverseBeep.value; }
+    void setValue(bool value) override { configs.write_config(configs.reverseBeep, value); }
+};
+struct ReverseBeepFreq0Accessor : public virtual espgui::AccessorInterface<uint8_t>
+{
+    uint8_t getValue() const override { return configs.reverseBeepFreq0.value; }
+    void setValue(uint8_t value) override { configs.write_config(configs.reverseBeepFreq0, value); }
+};
+struct ReverseBeepFreq1Accessor : public virtual espgui::AccessorInterface<uint8_t>
+{
+    uint8_t getValue() const override { return configs.reverseBeepFreq1.value; }
+    void setValue(uint8_t value) override { configs.write_config(configs.reverseBeepFreq1, value); }
+};
+struct ReverseBeepDuration0Accessor : public virtual espgui::AccessorInterface<int16_t>
+{
+    int16_t getValue() const override { return configs.reverseBeepDuration0.value; }
+    void setValue(int16_t value) override { configs.write_config(configs.reverseBeepDuration0, value); }
+};
+struct ReverseBeepDuration1Accessor : public virtual espgui::AccessorInterface<int16_t>
+{
+    int16_t getValue() const override { return configs.reverseBeepDuration1.value; }
+    void setValue(int16_t value) override { configs.write_config(configs.reverseBeepDuration1, value); }
+};
 
 // Limits
 struct IMotMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.iMotMax; } };

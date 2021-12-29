@@ -78,9 +78,15 @@ public:
     ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                         "wifiApChannel"       };
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };
 
-    ConfigWrapper<bool>        canBusResetOnError {false,                                     DoReset,   {},                         "canBusRstErr"       };
+    ConfigWrapper<bool>        canBusResetOnError {false,                                  DoReset,   {},                         "canBusRstErr"        };
 
     ConfigWrapper<std::string> bluetoothName      {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "bluetoothName"       };
+
+    ConfigWrapper<bool>        reverseBeep        {false,                                  DoReset,   {},                         "reverseBeep"         };
+    ConfigWrapper<uint8_t>     reverseBeepFreq0   {3,                                      DoReset,   {},                         "revBeepFreq0"         };
+    ConfigWrapper<uint8_t>     reverseBeepFreq1   {0,                                      DoReset,   {},                         "revBeepFreq1"         };
+    ConfigWrapper<int16_t>     reverseBeepDuration0{500,                                   DoReset,   {},                         "revBeepDur0"         };
+    ConfigWrapper<int16_t>     reverseBeepDuration1{500,                                   DoReset,   {},                         "revBeepDur1"         };
 
 #define NEW_SETTINGS(x) \
     x(baseMacAddressOverride) \
@@ -198,7 +204,13 @@ public:
     \
     x(canBusResetOnError) \
     \
-    //x(bluetoothName)
+    x(bluetoothName) \
+    \
+    x(reverseBeep) \
+    x(reverseBeepFreq0) \
+    x(reverseBeepFreq1) \
+    x(reverseBeepDuration0) \
+    //x(reverseBeepDuration1)
 
     template<typename T>
     void callForEveryConfig(T &&callback)
@@ -206,7 +218,7 @@ public:
 #define HELPER(x) callback(x);
         NEW_SETTINGS(HELPER)
 #undef HELPER
-        callback(bluetoothName);
+        callback(reverseBeepDuration1);
     }
 
     auto getAllConfigParams()
@@ -215,7 +227,7 @@ public:
 #define HELPER(x) std::ref<ConfigWrapperInterface>(x),
             NEW_SETTINGS(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(bluetoothName)
+            std::ref<ConfigWrapperInterface>(reverseBeepDuration1)
         );
     }
 };
