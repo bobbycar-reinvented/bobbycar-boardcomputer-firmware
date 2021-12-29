@@ -6,6 +6,17 @@
 // esp-idf includes
 #include <esp_log.h>
 
+// 3rdparty lib includes
+#include <espwifistack.h>
+#include <esphttpdutils.h>
+#include <fmt/core.h>
+#include <tickchrono.h>
+
+// local includes
+#include "globals.h"
+#include "utils.h"
+#include "newsettings.h"
+
 using namespace std::chrono_literals;
 
 namespace {
@@ -26,8 +37,7 @@ std::optional<espchrono::millis_clock::time_point> lastCloudSend;
 void initCloud()
 {
     if (settings.cloudSettings.cloudEnabled &&
-        !stringSettings.cloudUrl.empty() &&
-        esphttpdutils::urlverify(stringSettings.cloudUrl))
+        !configs.cloudUrl.value.empty())
     {
         createCloud();
         if (!cloudClient)
@@ -156,8 +166,7 @@ void cloudCollect()
 void cloudSend()
 {
     if (settings.cloudSettings.cloudEnabled &&
-        !stringSettings.cloudUrl.empty() &&
-        esphttpdutils::urlverify(stringSettings.cloudUrl))
+        !configs.cloudUrl.value.empty())
     {
         if (!cloudClient)
         {
@@ -222,7 +231,7 @@ void createCloud()
     lastCreateTry = espchrono::millis_clock::now();
 
     const esp_websocket_client_config_t config = {
-        .uri = stringSettings.cloudUrl.c_str(),
+        .uri = configs.cloudUrl.value.c_str(),
     };
 
     cloudClient = espcpputils::websocket_client{&config};

@@ -1,15 +1,11 @@
 #pragma once
 
+// system includes
+#include <string>
+
 // 3rdparty lib includes
 #include <wrappers/websocket_client.h>
-#include <espwifistack.h>
-#include <esphttpdutils.h>
-#include <fmt/core.h>
-#include <tickchrono.h>
-
-// local includes
-#include "globals.h"
-#include "utils.h"
+#include <espchrono.h>
 
 #ifdef FEATURE_CLOUD
 extern espcpputils::websocket_client cloudClient;
