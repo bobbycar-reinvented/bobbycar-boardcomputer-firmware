@@ -1,13 +1,15 @@
 #pragma once
 
 // 3rdparty lib includes
-#include <displaywithtitle.h>
+#include <popupdisplay.h>
 
-class BobbyDisplayWithTitle : public espgui::DisplayWithTitle
+class BobbyPopupDisplay : public espgui::PopupDisplay
 {
-    using Base = espgui::DisplayWithTitle;
+    using Base = espgui::PopupDisplay;
 
 public:
+    using Base::Base;
+
     void rawButtonPressed(uint8_t button) override;
     void rawButtonReleased(uint8_t button) override;
 

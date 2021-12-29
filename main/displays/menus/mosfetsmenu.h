@@ -14,7 +14,7 @@ class GPIOAccessor : public virtual espgui::AccessorInterface<bool>
 {
 public:
     bool getValue() const override { return digitalRead(PIN); }
-    void setValue(bool value) override { digitalWrite(PIN, value ? HIGH : LOW); }
+    espgui::AccessorInterface<bool>::setter_result_t setValue(bool value) override { digitalWrite(PIN, value ? HIGH : LOW); return {}; }
 };
 
 using Mosfet0Accessor = GPIOAccessor<PINS_MOSFET0>;

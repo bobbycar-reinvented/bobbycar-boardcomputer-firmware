@@ -30,72 +30,72 @@ using LedsCountChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_LEDSCOUNT>,
     LedsCountAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::SwitchScreenAction<LedstripMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
 >;
 
 using CenterOffsetChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CENTEROFFSET>,
     CenterOffsetAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::SwitchScreenAction<LedstripMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
 >;
 
 using SmallOffsetChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SMALLOFFSET>,
     SmallOffsetAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::SwitchScreenAction<LedstripMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
 >;
 
 using BigOffsetChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_BIGOFFSET>,
     BigOffsetAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::SwitchScreenAction<LedstripMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
 >;
 
 using DeziampereChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_LEDSTRIP_MILLIAMP>,
     DeziampereAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::SwitchScreenAction<LedstripMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
 >;
 
 using StVOOffsetChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_STVO_FRONTOFFSET>,
     LedsStVOFrontOffsetAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::SwitchScreenAction<LedstripMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
 >;
 
 using StVOLengthChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_STVO_FRONTLENGTH>,
     LedsStVOFrontLengthAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::SwitchScreenAction<LedstripMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
 >;
 
 using animationMultiplierChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_ANIMATION_MULTIPLIER>,
     AnimationMultiplierAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::SwitchScreenAction<LedstripMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
 >;
 
 using ledstripBrightnessChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_LEDSTRIP_BRIGHTNESS>,
     LedstripBrightnessAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::SwitchScreenAction<LedstripMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
 >;
 
 class AllCustomLedsOffAction : public virtual espgui::ActionInterface

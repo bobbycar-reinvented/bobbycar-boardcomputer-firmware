@@ -33,8 +33,8 @@ using LarsmModeIterationsChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_SETITERATIONS>,
     LarsmModeIterationsAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>,
-    espgui::SwitchScreenAction<LarsmModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LarsmModeSettingsMenu>>
 >;
 } // namespace
 

@@ -48,36 +48,36 @@ using SampleCountChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SAMPLECOUNT>,
     SampleCountAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 using GasMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_GASMIN>,
     GasMinAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 using GasMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_GASMAX>,
     GasMaxAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 using BremsMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_BREMSMIN>,
     BremsMinAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 using BremsMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_BREMSMAX>,
     BremsMaxAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
@@ -85,8 +85,8 @@ using DPadDebounceChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_DPADDEBOUNCE>,
     DPadDebounceAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 #endif
 
@@ -108,43 +108,43 @@ using GametrakXMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKXMIN>,
     GametrakXMinAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 using GametrakXMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKXMAX>,
     GametrakXMaxAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 using GametrakYMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKYMIN>,
     GametrakYMinAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 using GametrakYMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKYMAX>,
     GametrakYMaxAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 using GametrakDistMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKDISTMIN>,
     GametrakDistMinAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 using GametrakDistMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKDISTMAX>,
     GametrakDistMaxAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
 #endif
 } // namespace

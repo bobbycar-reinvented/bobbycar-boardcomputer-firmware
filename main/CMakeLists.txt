@@ -8,6 +8,7 @@ set(headers
     bluetoothtexthelpers.h
     bmsutils.h
     bobbybuttons.h
+    bobbyerrorhandler.h
     buildserver.h
     buttons.h
     can.h
@@ -107,6 +108,7 @@ set(headers
     displays/bobbydisplaywithtitle.h
     displays/bobbygraphdisplay.h
     displays/bobbymenudisplay.h
+    displays/bobbypopupdisplay.h
     displays/bobbysplitgraphdisplay.h
     displays/calibratedisplay.h
     displays/calibratevoltagedisplay.h
@@ -183,7 +185,6 @@ set(headers
     displays/menus/wifistasettingsmenu.h
     displays/metersdisplay.h
     displays/pingpongdisplay.h
-    displays/popups/alertdisplay.h
     displays/poweroffdisplay.h
     displays/powersupplydisplay.h
     displays/qrcodedebug.h
@@ -241,6 +242,7 @@ set(sources
     bluetoothtexthelpers.cpp
     bmsutils.cpp
     bobbybuttons.cpp
+    bobbyerrorhandler.cpp
     buildserver.cpp
     buttons.cpp
     can.cpp
@@ -337,6 +339,7 @@ set(sources
     displays/bobbydisplaywithtitle.cpp
     displays/bobbygraphdisplay.cpp
     displays/bobbymenudisplay.cpp
+    displays/bobbypopupdisplay.cpp
     displays/bobbysplitgraphdisplay.cpp
     displays/calibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
@@ -411,7 +414,6 @@ set(sources
     displays/menus/wifistasettingsmenu.cpp
     displays/metersdisplay.cpp
     displays/pingpongdisplay.cpp
-    displays/popups/alertdisplay.cpp
     displays/poweroffdisplay.cpp
     displays/powersupplydisplay.cpp
     displays/qrcodedebug.cpp

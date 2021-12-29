@@ -1,5 +1,8 @@
 #include "bobbydisplay.h"
 
+// local includes
+#include "bobbybuttons.h"
+
 void BobbyDisplay::rawButtonPressed(uint8_t button)
 {
     //Base::rawButtonPressed(button);

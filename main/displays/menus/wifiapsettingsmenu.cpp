@@ -55,8 +55,8 @@ using ApChannelChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_CHANNEL>,
     WifiApChannelAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
-    espgui::SwitchScreenAction<WifiApSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>
 >;
 
 using ApAuthmodeChangeScreen = espgui::makeComponent<

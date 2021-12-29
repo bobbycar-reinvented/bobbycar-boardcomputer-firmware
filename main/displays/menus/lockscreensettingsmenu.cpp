@@ -20,32 +20,32 @@ using LockscreenPinDigit0ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT0>,
     LockscreenPinDigitAccessor<0>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
-    espgui::SwitchScreenAction<LockscreenSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>
 >;
 
 using LockscreenPinDigit1ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT1>,
     LockscreenPinDigitAccessor<1>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
-    espgui::SwitchScreenAction<LockscreenSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>
 >;
 
 using LockscreenPinDigit2ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT2>,
     LockscreenPinDigitAccessor<2>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
-    espgui::SwitchScreenAction<LockscreenSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>
 >;
 
 using LockscreenPinDigit3ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT3>,
     LockscreenPinDigitAccessor<3>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
-    espgui::SwitchScreenAction<LockscreenSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>
 >;
 } // namespace
 

@@ -5,9 +5,12 @@
 
 // local includes
 #include "bobbybuttons.h"
+#include "bobbyerrorhandler.h"
 
 template<typename Tvalue>
-class BobbyChangeValueDisplay : public espgui::ChangeValueDisplay<Tvalue>
+class BobbyChangeValueDisplay :
+    public espgui::ChangeValueDisplay<Tvalue>,
+    public virtual BobbyErrorHandler
 {
     using Base = espgui::ChangeValueDisplay<Tvalue>;
 

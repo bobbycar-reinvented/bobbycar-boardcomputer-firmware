@@ -48,8 +48,8 @@ using TimezoneOffsetChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int32_t>,
     espgui::StaticText<TEXT_OFFSET>,
     TimezoneOffsetAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
-    espgui::SwitchScreenAction<TimeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>
 >;
 
 using DaylightSavingModeChangeDisplay = espgui::makeComponent<
@@ -73,8 +73,8 @@ using TimeSyncIntervalChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int32_t>,
     espgui::StaticText<TEXT_NTPINTERVAL>,
     TimeSyncIntervalAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
-    espgui::SwitchScreenAction<TimeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>
 >;
 
 class NtpSyncStatusText : public virtual espgui::TextInterface

@@ -37,78 +37,78 @@ using DefaultModeSmoothingChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SMOOTHINGVAL>,
     DefaultModeSmoothingAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeFwSmoothingLowerLimitChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_FWSMOOTHING_LIMIT>,
     DefaultModeEnableFieldWeakSmoothingLowerLimitAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeFrontPercentageChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_FRONTPERCENTAGE>,
     DefaultModeFrontPercentageAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeBackPercentageChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_BACKPERCENTAGE>,
     DefaultModeBackPercentageAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeAddSchwelleChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_ADDSCHWELLE>,
     DefaultModeAddSchwelleAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeGas1WertChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_ADDGASVAL>,
     DefaultModeGas1WertAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeGas2WertChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SUBGASVAL>,
     DefaultModeGas2WertAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeBrems1WertChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_ADDBRAKEVAL>,
     DefaultModeBrems1WertAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeBrems2WertChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SUBBRAKEVAL>,
     DefaultModeBrems2WertAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeHybridActivationLimitChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_HYBRIDACTIVATIONLIMIT>,
     DefaultModeHybridActivationLimitAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 using DefaultModeHybridDeactivationLimitChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_HYBRIDDEACTIVATIONLIMIT>,
     DefaultModeHybridDeactivationLimitAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::SwitchScreenAction<DefaultModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
 } // namespace
 

@@ -27,7 +27,13 @@ struct IDcMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRe
 struct NMotMaxKmhAccessor : public virtual espgui::AccessorInterface<int16_t>
 {
     int16_t getValue() const override { return convertToKmh(settings.limits.nMotMax); }
-    void setValue(int16_t value) override { settings.limits.nMotMax = convertFromKmh(value); saveSettings(); }
+    espgui::AccessorInterface<int16_t>::setter_result_t setValue(int16_t value) override
+    {
+        settings.limits.nMotMax = convertFromKmh(value);
+        if (!saveSettings())
+            return tl::make_unexpected("saveSettings() failed!");
+        return {};
+    }
 };
 struct NMotMaxRpmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.nMotMax; } };
 struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.fieldWeakMax; } };
@@ -50,32 +56,14 @@ struct CloudTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { 
 #endif
 
 // Time
-struct TimezoneOffsetAccessor : public virtual espgui::AccessorInterface<int32_t>
-{
-    int32_t getValue() const override { return configs.timezoneOffset.value.count(); }
-    void setValue(int32_t value) override { configs.write_config(configs.timezoneOffset, espchrono::minutes32{value}); }
-};
-struct DaylightSavingModeAccessor : public virtual espgui::AccessorInterface<espchrono::DayLightSavingMode>
-{
-    espchrono::DayLightSavingMode getValue() const override { return configs.timeDst.value; }
-    void setValue(espchrono::DayLightSavingMode value) override { configs.write_config(configs.timeDst, value); }
-};
+//struct TimezoneOffsetAccessor : public NewSettingsAccessor<int32_t> { ConfigWrapper<int32_t> &getConfig() const override { return configs.timezoneOffset; } };
+struct TimezoneOffsetAccessor : public NewSettingsChronoAdaptorAccessor<espchrono::minutes32> { ConfigWrapper<espchrono::minutes32> &getConfig() const override { return configs.timezoneOffset; } };
+struct DaylightSavingModeAccessor : public NewSettingsAccessor<espchrono::DayLightSavingMode> { ConfigWrapper<espchrono::DayLightSavingMode> &getConfig() const override { return configs.timeDst; } };
 #ifdef FEATURE_NTP
-struct TimeServerEnabledAccessor : public virtual espgui::AccessorInterface<bool>
-{
-    bool getValue() const override { return configs.timeServerEnabled.value; }
-    void setValue(bool value) override { configs.write_config(configs.timeServerEnabled, value); }
-};
-struct TimeSyncModeAccessor : public virtual espgui::AccessorInterface<sntp_sync_mode_t>
-{
-    sntp_sync_mode_t getValue() const override { return configs.timeSyncMode.value; }
-    void setValue(sntp_sync_mode_t value) override { configs.write_config(configs.timeSyncMode, value); }
-};
-struct TimeSyncIntervalAccessor : public virtual espgui::AccessorInterface<int32_t>
-{
-    int32_t getValue() const override { return configs.timeSyncInterval.value.count(); }
-    void setValue(int32_t value) override { configs.write_config(configs.timeSyncInterval, espchrono::milliseconds32{value}); }
-};
+struct TimeServerEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.timeServerEnabled; } };
+struct TimeSyncModeAccessor : public NewSettingsAccessor<sntp_sync_mode_t> { ConfigWrapper<sntp_sync_mode_t> &getConfig() const override { return configs.timeSyncMode; } };
+//struct TimeSyncIntervalAccessor : public NewSettingsAccessor<int32_t> { ConfigWrapper<int32_t> &getConfig() const override { return configs.timeSyncInterval; } };
+struct TimeSyncIntervalAccessor : public NewSettingsChronoAdaptorAccessor<espchrono::milliseconds32> { ConfigWrapper<espchrono::milliseconds32> &getConfig() const override { return configs.timeSyncInterval; } };
 #endif
 
 // Controller Hardware
@@ -93,7 +81,13 @@ struct WheelDiameterMmAccessor : public RefAccessorSaveSettings<int16_t> { int16
 struct WheelDiameterInchAccessor : public virtual espgui::AccessorInterface<float>
 {
     float getValue() const override { return convertToInch(settings.controllerHardware.wheelDiameter); }
-    void setValue(float value) override { settings.controllerHardware.wheelDiameter = convertFromInch(value); saveSettings(); }
+    espgui::AccessorInterface<int16_t>::setter_result_t setValue(float value) override
+    {
+        settings.controllerHardware.wheelDiameter = convertFromInch(value);
+        if (!saveSettings())
+            return tl::make_unexpected("saveSettings() failed!");
+        return {};
+    }
 };
 struct NumMagnetPolesAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.numMagnetPoles; } };
 struct SwapFrontBackAccessor : public RefAccessorSaveSettings<bool> {

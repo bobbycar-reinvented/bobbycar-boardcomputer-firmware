@@ -21,8 +21,8 @@ using TempomatModeCruiseMotTgtChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NCRUISEMOTTGT>,
     TempomatModeCruiseMotTgtAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,
-    espgui::SwitchScreenAction<TempomatModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>
 >;
 
 using TempomatModeModelModeChangeScreen = espgui::makeComponent<
