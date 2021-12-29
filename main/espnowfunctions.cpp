@@ -37,7 +37,7 @@ extern "C" void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data
     if (std::string_view::npos != sep_pos)
     {
         std::string_view msg_type = data_str.substr(0, sep_pos);
-        std::string_view msg = data_str.substr(sep_pos+1, data_str.length()-3); // - 3 may needs to be converted to sep_pos+1
+        std::string_view msg = data_str.substr(sep_pos+1, data_str.length()-sep_pos-1);
         ESP_LOGD(TAG, "Type: %.*s - Message: %.*s", msg_type.size(), msg_type.data(), msg.size(), msg.data());
 
         message_queue.push_back(esp_now_message_t {
