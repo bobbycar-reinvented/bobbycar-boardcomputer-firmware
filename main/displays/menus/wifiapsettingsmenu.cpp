@@ -22,7 +22,7 @@
 using namespace espgui;
 
 namespace {
-constexpr const char * const TAG = "GOE";
+constexpr const char * const TAG = "BOBBY";
 
 constexpr char TEXT_ENABLED[] = "Enabled";
 constexpr char TEXT_DISABLEWHENONLINE[] = "Disable when online";

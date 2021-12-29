@@ -13,13 +13,26 @@
 #include "texthelpers/wifistaconfigtexthelpers.h"
 #include "accessors/wifistaconfigaccessors.h"
 #include "wifistaconfigsmenu.h"
+#include "newsettings.h"
 
 using namespace espgui;
 
 namespace {
 constexpr char TEXT_USESTATICIP[] = "Use Static Ip";
 constexpr char TEXT_USESTATICDNS[] = "Use Static Dns";
+constexpr char TEXT_DELETECONFIG[] = "Delete config";
 constexpr char TEXT_BACK[] = "Back";
+
+class ClearConfigAction : public virtual espgui::ActionInterface
+{
+public:
+    explicit ClearConfigAction(int index) : m_index{index} {}
+
+    void triggered() override;
+
+private:
+    const int m_index;
+};
 } // namespace
 
 WifiStaConfigEntryMenu::WifiStaConfigEntryMenu(int index) :
@@ -35,6 +48,7 @@ WifiStaConfigEntryMenu::WifiStaConfigEntryMenu(int index) :
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigStaticDns0Text,       DummyAction>>(index);
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigStaticDns1Text,       DummyAction>>(index);
     constructMenuItem<makeComponentArgs<MenuItem, WifiStaConfigStaticDns2Text,       DummyAction>>(index);
+    constructMenuItem<makeComponentArgs<MenuItem, ClearConfigAction,                 StaticText<TEXT_DELETECONFIG>>>(index);
     constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,             SwitchScreenAction<WifiStaConfigsMenu>, StaticMenuItemIcon<&icons::back>>>();
 }
 
@@ -47,3 +61,20 @@ void WifiStaConfigEntryMenu::back()
 {
     switchScreen<WifiStaConfigsMenu>();
 }
+
+namespace {
+void ClearConfigAction::triggered()
+{
+    auto &config = configs.wifi_configs[m_index];
+    configs.reset_config(config.ssid);
+    configs.reset_config(config.key);
+    configs.reset_config(config.useStaticIp);
+    configs.reset_config(config.staticIp);
+    configs.reset_config(config.staticSubnet);
+    configs.reset_config(config.staticGateway);
+    configs.reset_config(config.useStaticDns);
+    configs.reset_config(config.staticDns0);
+    configs.reset_config(config.staticDns1);
+    configs.reset_config(config.staticDns2);
+}
+} // namespace
