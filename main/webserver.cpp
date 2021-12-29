@@ -59,7 +59,7 @@ void initWebserver()
     {
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
         httpConfig.core_id = 1;
-        httpConfig.max_uri_handlers = 16;
+        httpConfig.max_uri_handlers = 17;
         httpConfig.stack_size = 8192;
 
         const auto result = httpd_start(&httpdHandle, &httpConfig);
@@ -83,8 +83,9 @@ void initWebserver()
              httpd_uri_t { .uri = "/saveSettings",       .method = HTTP_GET, .handler = webserver_saveSettings_handler,       .user_ctx = NULL },
              httpd_uri_t { .uri = "/stringSettings",     .method = HTTP_GET, .handler = webserver_stringSettings_handler,     .user_ctx = NULL },
              httpd_uri_t { .uri = "/saveStringSettings", .method = HTTP_GET, .handler = webserver_saveStringSettings_handler, .user_ctx = NULL },
-             httpd_uri_t { .uri = "/newSettings",        .method = HTTP_GET, .handler = webserver_newSettings_handler,     .user_ctx = NULL },
-             httpd_uri_t { .uri = "/saveNewSettings",    .method = HTTP_GET, .handler = webserver_saveNewSettings_handler, .user_ctx = NULL },
+             httpd_uri_t { .uri = "/newSettings",        .method = HTTP_GET, .handler = webserver_newSettings_handler,        .user_ctx = NULL },
+             httpd_uri_t { .uri = "/saveNewSettings",    .method = HTTP_GET, .handler = webserver_saveNewSettings_handler,    .user_ctx = NULL },
+             httpd_uri_t { .uri = "/resetNewSettings",   .method = HTTP_GET, .handler = webserver_resetNewSettings_handler,   .user_ctx = NULL },
 #ifdef OLD_NVS
              httpd_uri_t { .uri = "/dumpnvs",            .method = HTTP_GET, .handler = webserver_dump_nvs_handler,           .user_ctx = NULL },
 #endif
