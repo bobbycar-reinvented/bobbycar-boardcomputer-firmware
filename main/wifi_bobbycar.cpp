@@ -131,9 +131,9 @@ std::optional<wifi_stack::ap_config> createApConfig()
         .ssid = configs.wifiApName.value,
         .key = configs.wifiApKey.value,
         .static_ip = {
-            .ip = apIP,
-            .subnet = netMsk,
-            .gateway = apIP
+            .ip = configs.wifiApIp.value,
+            .subnet = configs.wifiApMask.value,
+            .gateway = configs.wifiApIp.value,
         },
         .channel = configs.wifiApChannel.value,
         .authmode = configs.wifiApAuthmode.value,

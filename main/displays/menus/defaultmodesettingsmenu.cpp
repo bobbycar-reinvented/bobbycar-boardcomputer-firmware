@@ -1,13 +1,14 @@
 #include "defaultmodesettingsmenu.h"
 
 // 3rdparty lib includes
-#include "changevaluedisplay.h"
-#include "menuitem.h"
-#include "actions/toggleboolaction.h"
-#include "actions/switchscreenaction.h"
-#include "actions/dummyaction.h"
-#include "checkboxicon.h"
-#include "icons/back.h"
+#include <changevaluedisplay.h>
+#include <menuitem.h>
+#include <actions/toggleboolaction.h>
+#include <actions/switchscreenaction.h>
+#include <actions/dummyaction.h>
+#include <checkboxicon.h>
+#include <icons/back.h>
+#include <textwithvaluehelper.h>
 
 // local includes
 #include "displays/bobbychangevaluedisplay.h"

@@ -10,6 +10,7 @@
 #include <checkboxicon.h>
 #include <icons/back.h>
 #include <menuitem.h>
+#include <textwithvaluehelper.h>
 
 // local includes
 #include "displays/bobbychangevaluedisplay.h"

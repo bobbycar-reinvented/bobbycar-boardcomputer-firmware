@@ -2,13 +2,14 @@
 
 // 3rdparty lib includes
 #include <changevaluedisplay.h>
+#include <textwithvaluehelper.h>
+#include <fmt/core.h>
 
 // local includes
 #include "displays/bobbychangevaluedisplay.h"
 #include "mainmenu.h"
 #include "displays/calibratevoltagedisplay.h"
 #include "accessors/settingsaccessors.h"
-#include "fmt/core.h"
 #include "battery.h"
 
 class CurrentBatteryStatusText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryPercentageString(); } };

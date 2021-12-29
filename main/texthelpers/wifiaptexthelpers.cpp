@@ -8,21 +8,7 @@
 #include <espwifistack.h>
 #include <richtextrenderer.h>
 
-// local includes
-#include "newsettings.h"
-#include "wifi_bobbycar.h"
-
 using namespace espgui;
-
-std::string WifiApNameText::text() const
-{
-    return fmt::format("&sssid: &f{}", richTextEscape(configs.wifiApName.value));
-}
-
-std::string WifiApKeyText::text() const
-{
-    return fmt::format("&skey: &f{}", richTextEscape(configs.wifiApKey.value));
-}
 
 std::string WifiApMacText::text() const
 {
@@ -33,16 +19,6 @@ std::string WifiApMacText::text() const
     else
         text += fmt::format("&1{}", esp_err_to_name(result));
     return text;
-}
-
-std::string WifiApIpText::text() const
-{
-    return fmt::format("&sip: &f{}", wifi_stack::toString(apIP));
-}
-
-std::string WifiApMaskText::text() const
-{
-    return fmt::format("&smask: &f{}", wifi_stack::toString(netMsk));
 }
 
 std::string WifiApHostnameText::text() const

@@ -2,11 +2,12 @@
 
 // 3rd party libs
 #include <fmt/core.h>
-#include "actions/switchscreenaction.h"
-#include "actions/toggleboolaction.h"
-#include "changevaluedisplay.h"
-#include "checkboxicon.h"
-#include "icons/back.h"
+#include <actions/switchscreenaction.h>
+#include <actions/toggleboolaction.h>
+#include <changevaluedisplay.h>
+#include <checkboxicon.h>
+#include <icons/back.h>
+#include <textwithvaluehelper.h>
 
 // local includes
 #include "displays/bobbychangevaluedisplay.h"

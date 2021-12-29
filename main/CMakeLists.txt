@@ -92,7 +92,6 @@ set(headers
     actions/ledstripblinkactions.h
     actions/loadsettingsaction.h
     actions/modesettingsaction.h
-    actions/multiaction.h
     actions/qraction.h
     actions/rebootaction.h
     actions/savesettingsaction.h
@@ -323,7 +322,6 @@ set(sources
     actions/ledstripblinkactions.cpp
     actions/loadsettingsaction.cpp
     actions/modesettingsaction.cpp
-    actions/multiaction.cpp
     actions/qraction.cpp
     actions/rebootaction.cpp
     actions/savesettingsaction.cpp
