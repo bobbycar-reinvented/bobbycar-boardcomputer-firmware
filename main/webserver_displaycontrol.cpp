@@ -35,7 +35,6 @@ constexpr const char * const TAG = "BOBBYWEB";
 esp_err_t webserver_root_handler(httpd_req_t *req)
 {
 #ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
-    ESP_LOGI(TAG, "locking...");
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
@@ -43,7 +42,6 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
-    ESP_LOGI(TAG, "succeeded");
 #endif
 
     std::string body;

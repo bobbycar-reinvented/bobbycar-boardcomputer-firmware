@@ -130,7 +130,7 @@ extern char TEXT_VOLTAGECALIBRATION_VALUE_50_BACK[];
 //extern char TEXT_SETTINGS[];
 extern char TEXT_BACKLIGHT[];
 extern char TEXT_LIMITSSETTINGS[];
-extern char TEXT_WIFISETTINGS[];
+extern char TEXT_NETWORKSETTINGS[];
 //extern char TEXT_BLUETOOTHSETTINGS[];
 //extern char TEXT_BLESETTINGS[];
 //extern char TEXT_CLOUDSETTINGS[];

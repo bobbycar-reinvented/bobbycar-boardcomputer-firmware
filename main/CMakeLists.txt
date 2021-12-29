@@ -71,7 +71,6 @@ set(headers
     displays/lockscreen.h
     displays/menudisplaywithtime.cpp
     displays/menus/aboutmenu.h
-    displays/menus/accesspointwifisettingsmenu.h
     displays/menus/batterydebugmenu.h
     displays/menus/batterymenu.h
     displays/menus/blesettingsmenu.h
@@ -93,7 +92,6 @@ set(headers
     displays/menus/feedbackdebugmenu.h
     displays/menus/garagenmenu.h
     displays/menus/gametrakmodesettingsmenu.h
-    displays/menus/genericwifisettingsmenu.h
     displays/menus/graphsmenu.h
     displays/menus/greenpassmenu.h
     displays/menus/handbremssettingsmenu.h
@@ -111,6 +109,7 @@ set(headers
     displays/menus/motorfeedbackdebugmenu.h
     displays/menus/motorstatedebugmenu.h
     displays/menus/motortestmodesettingsmenu.h
+    displays/menus/networksettingsmenu.h
     displays/menus/otamenu.h
     displays/menus/presetsmenu.h
     displays/menus/profilesmenu.h
@@ -120,15 +119,14 @@ set(headers
     displays/menus/selectmodemenu.h
     displays/menus/selectotabuildmenu.h
     displays/menus/settingsmenu.h
-    displays/menus/stationwifisettingsmenu.h
     displays/menus/statisticsmenu.h
     displays/menus/taskmanagermenu.h
     displays/menus/tempomatmodesettingsmenu.h
     displays/menus/timersmenu.h
     displays/menus/timesettingsmenu.h
     displays/menus/udpcloudsettingsmenu.h
-    displays/menus/wifiscanmenu.h
-    displays/menus/wifisettingsmenu.h
+    displays/menus/wifistasettingsmenu.h
+    displays/menus/wifiapsettingsmenu.h
     displays/metersdisplay.h
     displays/pingpongdisplay.h
     displays/popups/alertdisplay.h
@@ -222,7 +220,20 @@ set(headers
     widgets/doubleprogressbar.h
     displays/menudisplaywithtime.h
     wifi_bobbycar.h
-    wifitexthelpers.h
+    texthelpers/networktexthelpers.h
+    texthelpers/wifistatexthelpers.h
+    wifiguiutils.h
+    accessors/wifistaconfigaccessors.h
+    displays/menus/wifistascanmenu.h
+    displays/menus/wifistaconfigsmenu.h
+    displays/menus/wifistascanentrymenu.h
+    displays/menus/wifiapclientsmenu.h
+    displays/menus/wifistaconfigentrymenu.h
+    texthelpers/wifistaconfigtexthelpers.h
+    accessors/wifiapconfigaccessors.h
+    texthelpers/wifiaptexthelpers.h
+    actions/wifistascanaction.h
+    actions/wifistascanclearaction.h
 )
 
 set(sources
@@ -297,7 +308,6 @@ set(sources
     displays/ledstripcolorsdisplay.cpp
     displays/lockscreen.cpp
     displays/menus/aboutmenu.cpp
-    displays/menus/accesspointwifisettingsmenu.cpp
     displays/menus/batterydebugmenu.cpp
     displays/menus/batterymenu.cpp
     displays/menus/blesettingsmenu.cpp
@@ -319,7 +329,6 @@ set(sources
     displays/menus/feedbackdebugmenu.cpp
     displays/menus/garagenmenu.cpp
     displays/menus/gametrakmodesettingsmenu.cpp
-    displays/menus/genericwifisettingsmenu.cpp
     displays/menus/graphsmenu.cpp
     displays/menus/greenpassmenu.cpp
     displays/menus/handbremssettingsmenu.cpp
@@ -337,6 +346,7 @@ set(sources
     displays/menus/motorfeedbackdebugmenu.cpp
     displays/menus/motorstatedebugmenu.cpp
     displays/menus/motortestmodesettingsmenu.cpp
+    displays/menus/networksettingsmenu.cpp
     displays/menus/otamenu.cpp
     displays/menus/presetsmenu.cpp
     displays/menus/profilesmenu.cpp
@@ -346,15 +356,14 @@ set(sources
     displays/menus/selectmodemenu.cpp
     displays/menus/selectotabuildmenu.cpp
     displays/menus/settingsmenu.cpp
-    displays/menus/stationwifisettingsmenu.cpp
     displays/menus/statisticsmenu.cpp
     displays/menus/taskmanagermenu.cpp
     displays/menus/tempomatmodesettingsmenu.cpp
     displays/menus/timersmenu.cpp
     displays/menus/timesettingsmenu.cpp
     displays/menus/udpcloudsettingsmenu.cpp
-    displays/menus/wifiscanmenu.cpp
-    displays/menus/wifisettingsmenu.cpp
+    displays/menus/wifistasettingsmenu.cpp
+    displays/menus/wifiapsettingsmenu.cpp
     displays/metersdisplay.cpp
     displays/pingpongdisplay.cpp
     displays/popups/alertdisplay.cpp
@@ -448,7 +457,20 @@ set(sources
     webserver_newsettings.cpp
     widgets/doubleprogressbar.cpp
     wifi_bobbycar.cpp
-    wifitexthelpers.cpp
+    texthelpers/networktexthelpers.cpp
+    texthelpers/wifistatexthelpers.cpp
+    wifiguiutils.cpp
+    accessors/wifistaconfigaccessors.cpp
+    displays/menus/wifistascanmenu.cpp
+    displays/menus/wifistaconfigsmenu.cpp
+    displays/menus/wifistascanentrymenu.cpp
+    displays/menus/wifiapclientsmenu.cpp
+    displays/menus/wifistaconfigentrymenu.cpp
+    texthelpers/wifistaconfigtexthelpers.cpp
+    accessors/wifiapconfigaccessors.cpp
+    texthelpers/wifiaptexthelpers.cpp
+    actions/wifistascanaction.cpp
+    actions/wifistascanclearaction.cpp
 )
 
 set(dependencies
