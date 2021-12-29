@@ -59,5 +59,4 @@ void readPotis();
 float wattToAmpere(float watt);
 float wattToMotorCurrent(float watt);
 uint8_t time_to_percent(espchrono::milliseconds32 repeat, espchrono::milliseconds32 riseTime, espchrono::milliseconds32 fullTime, size_t numLeds, bool invert);
-void time_set_now(espchrono::utc_clock::time_point now);
 std::string local_clock_string();

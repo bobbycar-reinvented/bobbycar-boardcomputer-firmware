@@ -11,7 +11,6 @@
 
 // local includes
 #include "settings.h"
-#include "stringsettings.h"
 #include "ledstripdefines.h"
 #include "ledstrip.h"
 
@@ -32,16 +31,6 @@ constexpr Settings::Limits kidsLimits {
     .nMotMax = 500,
     .fieldWeakMax = 2,
     .phaseAdvMax = 20
-};
-
-constexpr Settings::TimeSettings defaultTimeSettings {
-    .timezoneOffset = 60min,
-    .daylightSavingMode = espchrono::DayLightSavingMode::EuropeanSummerTime,
-#ifdef FEATURE_NTP
-    .timeServerEnabled = true,
-    .timeSyncMode = SNTP_SYNC_MODE_IMMED,
-    .timeSyncInterval = espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY},
-#endif
 };
 
 constexpr Settings::ControllerHardware defaultControllerHardware {
@@ -313,7 +302,6 @@ constexpr Settings defaultSettings {
 #ifdef FEATURE_BLE
     .bleSettings = defaultBleSettings,
 #endif
-    .timeSettings = defaultTimeSettings,
     .controllerHardware = defaultControllerHardware,
     .boardcomputerHardware = defaultBoardcomputerHardware,
 #ifdef FEATURE_CLOUD
@@ -338,6 +326,4 @@ constexpr Settings defaultSettings {
     .espnow = defaultEspNowSettings,
 #endif
 };
-
-StringSettings makeDefaultStringSettings();
 } // namespace presets

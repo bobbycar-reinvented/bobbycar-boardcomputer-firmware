@@ -11,12 +11,12 @@
 #include <espstrutils.h>
 
 // local includes
-#include "globals.h"
+#include "newsettings.h"
 
 espchrono::time_zone get_default_timezone() noexcept
 {
     using namespace espchrono;
-    return time_zone{minutes32{settings.timeSettings.timezoneOffset}, settings.timeSettings.daylightSavingMode};
+    return time_zone{configs.timezoneOffset.value, configs.timeDst.value};
 }
 
 #ifdef CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE
@@ -37,11 +37,11 @@ void initTime()
 {
     sntp_setoperatingmode(SNTP_OPMODE_POLL);
     static_assert(SNTP_MAX_SERVERS >= 1);
-    sntp_setservername(0, stringSettings.timeServer.c_str());
+    sntp_setservername(0, configs.timeServer.value.c_str());
     sntp_set_time_sync_notification_cb(time_sync_notification_cb);
-    sntp_set_sync_mode(settings.timeSettings.timeSyncMode);
-    sntp_set_sync_interval(espchrono::milliseconds32{settings.timeSettings.timeSyncInterval}.count());
-    if (settings.timeSettings.timeServerEnabled)
+    sntp_set_sync_mode(configs.timeSyncMode.value);
+    sntp_set_sync_interval(espchrono::milliseconds32{configs.timeSyncInterval.value}.count());
+    if (configs.timeServerEnabled.value)
     {
         ESP_LOGI("BOBBY", "sntp_init() ...");
         sntp_init();
@@ -54,9 +54,9 @@ void initTime()
 
 void updateTime()
 {
-    if (bool(sntp_enabled()) != settings.timeSettings.timeServerEnabled)
+    if (bool(sntp_enabled()) != configs.timeServerEnabled.value)
     {
-        if (settings.timeSettings.timeServerEnabled)
+        if (configs.timeServerEnabled.value)
         {
             ESP_LOGD("BOBBY", "calling sntp_init()...");
             sntp_init();
@@ -70,24 +70,24 @@ void updateTime()
         }
     }
 
-    if (stringSettings.timeServer != sntp_getservername(0))
+    if (configs.timeServer.value != sntp_getservername(0))
     {
-        ESP_LOGD("BOBBY", "calling sntp_getservername() with %s...", stringSettings.timeServer.c_str());
-        sntp_setservername(0, stringSettings.timeServer.c_str());
+        ESP_LOGD("BOBBY", "calling sntp_getservername() with %s...", configs.timeServer.value.c_str());
+        sntp_setservername(0, configs.timeServer.value.c_str());
         ESP_LOGI("BOBBY", "sntp_getservername() finished");
     }
 
-    if (settings.timeSettings.timeSyncMode != sntp_get_sync_mode())
+    if (configs.timeSyncMode.value != sntp_get_sync_mode())
     {
-        ESP_LOGD("BOBBY", "calling sntp_set_sync_mode() with %s...", espcpputils::toString(settings.timeSettings.timeSyncMode).c_str());
-        sntp_set_sync_mode(settings.timeSettings.timeSyncMode);
+        ESP_LOGD("BOBBY", "calling sntp_set_sync_mode() with %s...", espcpputils::toString(configs.timeSyncMode.value).c_str());
+        sntp_set_sync_mode(configs.timeSyncMode.value);
         ESP_LOGI("BOBBY", "sntp_set_sync_mode() finished");
     }
 
-    if (settings.timeSettings.timeSyncInterval != espchrono::milliseconds32{sntp_get_sync_interval()})
+    if (configs.timeSyncInterval.value != espchrono::milliseconds32{sntp_get_sync_interval()})
     {
-        ESP_LOGD("BOBBY", "calling sntp_set_sync_interval() with %s...", espchrono::toString(settings.timeSettings.timeSyncInterval).c_str());
-        sntp_set_sync_interval(espchrono::milliseconds32{settings.timeSettings.timeSyncInterval}.count());
+        ESP_LOGD("BOBBY", "calling sntp_set_sync_interval() with %s...", espchrono::toString(configs.timeSyncInterval.value).c_str());
+        sntp_set_sync_interval(espchrono::milliseconds32{configs.timeSyncInterval.value}.count());
         ESP_LOGI("BOBBY", "sntp_set_sync_interval() finished");
     }
 }
@@ -108,3 +108,20 @@ void time_sync_notification_cb(struct timeval *tv)
         ESP_LOGI("BOBBY", "nullptr");
 }
 #endif
+
+void time_set_now(espchrono::utc_clock::time_point now)
+{
+    using namespace espchrono;
+    // ESP_LOGI("BOBBY", "%s (%lld)%s", toString(toDateTime(now)).c_str(), std::chrono::floor<std::chrono::seconds>(now.time_since_epoch()).count(), time_valid(now) ? "":" (probably invalid)");
+    const auto seconds = std::chrono::floor<std::chrono::seconds>(now.time_since_epoch());
+
+    timeval ts {
+        .tv_sec = (long int)seconds.count(),
+        .tv_usec = (long int)std::chrono::floor<std::chrono::microseconds>(now.time_since_epoch() - seconds).count()
+    };
+    timezone tz {
+        .tz_minuteswest = 0,
+        .tz_dsttime = 0
+    };
+    settimeofday(&ts, &tz);
+}

@@ -38,9 +38,8 @@ public:
     {
 #ifdef CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE
         return fmt::format("local: {}", espchrono::toString(espchrono::toDateTime(espchrono::local_clock::now())));
-#else
-        // Crude local time implementation
-        return fmt::format("local: {}", espchrono::toString(espchrono::toDateTime(espchrono::utc_clock::now() + settings.timeSettings.timezoneOffset)));
+#else // Mir egal ob die lokalzeit richtig is
+        return fmt::format("local: {}", espchrono::toString(espchrono::toDateTime(espchrono::utc_clock::now() + configs.timezoneOffset.value)));
 #endif
     }
 };

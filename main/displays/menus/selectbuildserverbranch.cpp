@@ -13,6 +13,7 @@
 #include "icons/back.h"
 #include "icons/reboot.h"
 #include "utils.h"
+#include "newsettings.h"
 
 #define ERR_MESSAGE(text)                                                                                                                       \
     constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>();                             \
@@ -51,7 +52,7 @@ public:
 namespace {
 std::string CurrentBranch::text() const
 {
-    return stringSettings.otaServerBranch.empty() ? "All builds" : stringSettings.otaServerBranch;
+    return configs.otaServerBranch.value.empty() ? "All builds" : configs.otaServerBranch.value;
 }
 
 std::string BranchMenuItem::text() const
@@ -71,16 +72,14 @@ void BranchMenuItem::setName(const std::string &name)
 
 void BranchMenuItem::triggered()
 {
-    stringSettings.otaServerBranch = m_name;
-    saveSettings();
+    configs.write_config(configs.otaServerBranch, m_name); // mir egal ob succeeded
 }
 
 void ClearBranchAction::triggered()
 {
-    stringSettings.otaServerBranch = {};
-    saveSettings();
+    configs.write_config(configs.otaServerBranch, {}); // mir egal ob succeeded
 }
-}
+} // namespace
 
 SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
 {
@@ -89,7 +88,7 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
         ERR_MESSAGE(TEXT_OTA_NOBUILDSERVERAVAILABLE); // E:No server saved.
     }
 
-    if (stringSettings.otaServerUrl.empty())
+    if (configs.otaServerUrl.value.empty())
     {
         ERR_MESSAGE(TEXT_OTA_NOBUILDSERVERSELECTED); // E:No server selected.
     }
@@ -100,7 +99,7 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
     }
 
     SelectBranch::setup_request();
-    SelectBranch::start_descriptor_request(stringSettings.otaServerUrl);
+    SelectBranch::start_descriptor_request(configs.otaServerUrl.value);
 }
 
 void SelectBuildserverBranchMenu::update()

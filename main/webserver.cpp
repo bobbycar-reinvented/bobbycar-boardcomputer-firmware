@@ -24,7 +24,6 @@
 #include "webserver_ota.h"
 #endif
 #include "webserver_settings.h"
-#include "webserver_stringsettings.h"
 #include "webserver_newsettings.h"
 #ifdef OLD_NVS
 #include "webserver_dumpnvs.h"
@@ -60,7 +59,7 @@ void initWebserver()
     {
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
         httpConfig.core_id = 1;
-        httpConfig.max_uri_handlers = 17;
+        httpConfig.max_uri_handlers = 15;
         httpConfig.stack_size = 8192;
 
         const auto result = httpd_start(&httpdHandle, &httpConfig);
@@ -82,8 +81,6 @@ void initWebserver()
 #endif
              httpd_uri_t { .uri = "/settings",           .method = HTTP_GET, .handler = webserver_settings_handler,           .user_ctx = NULL },
              httpd_uri_t { .uri = "/saveSettings",       .method = HTTP_GET, .handler = webserver_saveSettings_handler,       .user_ctx = NULL },
-             httpd_uri_t { .uri = "/stringSettings",     .method = HTTP_GET, .handler = webserver_stringSettings_handler,     .user_ctx = NULL },
-             httpd_uri_t { .uri = "/saveStringSettings", .method = HTTP_GET, .handler = webserver_saveStringSettings_handler, .user_ctx = NULL },
              httpd_uri_t { .uri = "/newSettings",        .method = HTTP_GET, .handler = webserver_newSettings_handler,        .user_ctx = NULL },
              httpd_uri_t { .uri = "/saveNewSettings",    .method = HTTP_GET, .handler = webserver_saveNewSettings_handler,    .user_ctx = NULL },
              httpd_uri_t { .uri = "/resetNewSettings",   .method = HTTP_GET, .handler = webserver_resetNewSettings_handler,   .user_ctx = NULL },

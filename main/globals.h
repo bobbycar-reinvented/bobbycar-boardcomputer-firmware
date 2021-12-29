@@ -23,7 +23,6 @@
 #include "display.h"
 #include "modeinterface.h"
 #include "settings.h"
-#include "stringsettings.h"
 #include "settingspersister.h"
 #include "macros_bobbycar.h"
 
@@ -48,16 +47,9 @@ extern bool isLocked;
 #include GLOBALS_PLUGIN
 #endif
 
-#ifdef FEATURE_DNS_NS
-extern std::string dns_lastIpAddress_v4;
-extern std::string dns_lastIpAddress_v6;
-extern std::string dns_lastIpAddress_v6_global;
-#endif
-
 extern bool simplified;
 
 extern Settings settings;
-extern StringSettings stringSettings;
 extern SettingsPersister settingsPersister;
 
 extern std::array<CRGB, 8> ledstrip_custom_colors;

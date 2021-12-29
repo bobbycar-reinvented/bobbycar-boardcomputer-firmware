@@ -32,12 +32,10 @@ public:
 
     void triggered() override
     {
-        stringSettings.otaServerUrl = m_buildserver_url;
+        configs.write_config(configs.otaServerUrl, m_buildserver_url); // mir egal ob succeeded
         if (m_buildserver_url.substr(m_buildserver_url.length() - 4) == ".bin")
-        {
             configs.write_config(configs.otaUrl, m_buildserver_url); // mir egal ob es succeeded
-        }
-        saveSettings();
+
         url_for_latest.clear();
         url_for_hashes.clear();
         availableVersions = {};
@@ -51,10 +49,10 @@ private:
 
 SelectBuildServerMenu::SelectBuildServerMenu()
 {
-    for (const auto &otaServer : stringSettings.otaServers)
+    for (const auto &otaServer : configs.otaServers)
     {
-        std::string url = otaServer.url;
-        std::string name = (otaServer.name.empty()) ? url : otaServer.name;
+        std::string url = otaServer.url.value;
+        std::string name = (otaServer.name.value.empty()) ? url : otaServer.name.value;
 
         if (!name.empty())
         {

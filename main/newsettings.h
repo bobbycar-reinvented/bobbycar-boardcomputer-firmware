@@ -7,12 +7,17 @@
 #include <array>
 #include <optional>
 
+// esp-idf includes
+#include <esp_sntp.h>
+
 // 3rdparty lib includes
 #include <fmt/core.h>
 #include <configmanager.h>
 #include <configconstraints_base.h>
+#include <configconstraints_espchrono.h>
 #include <configwrapper.h>
 #include <espwifiutils.h>
+#include <espchrono.h>
 #include <makearray.h>
 
 using namespace espconfig;
@@ -61,6 +66,18 @@ public:
     ConfigWrapper<std::string> doorToken;
 };
 
+class ConfiguredOtaServer
+{
+public:
+    ConfiguredOtaServer(const char *nameKey, const char *urlKey) :
+        name{std::string{}, DoReset, {},                                    nameKey },
+        url {std::string{}, DoReset, StringOr<StringEmpty, StringValidUrl>, urlKey  }
+    {}
+
+    ConfigWrapper<std::string> name;
+    ConfigWrapper<std::string> url;
+};
+
 class ConfigContainer
 {
     using mac_t = wifi_stack::mac_t;
@@ -90,6 +107,13 @@ public:
     ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                         "wifiApChannel"       };
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };
 
+    ConfigWrapper<bool>     timeServerEnabled     {false,                                  DoReset,   {},                         "timeServerEnabl"     };
+    ConfigWrapper<std::string>   timeServer       {"europe.pool.ntp.org",                  NoReset,   StringMaxSize<64>,          "timeServer"          };
+    ConfigWrapper<sntp_sync_mode_t> timeSyncMode  {SNTP_SYNC_MODE_IMMED,                   NoReset,   {},                         "timeSyncMode"        };
+    ConfigWrapper<espchrono::milliseconds32> timeSyncInterval{espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY}, NoReset, MinTimeSyncInterval, "timeSyncInterva" };
+    ConfigWrapper<espchrono::minutes32> timezoneOffset{espchrono::minutes32{60},           DoReset,   {},                         "timezoneOffset"      }; // MinMaxValue<minutes32, -1440m, 1440m>
+    ConfigWrapper<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},           "time_dst"            };
+
     ConfigWrapper<bool>        canBusResetOnError {false,                                  DoReset,   {},                         "canBusRstErr"        };
 
     std::array<WirelessDoorsConfig, 5> wireless_door_configs {
@@ -110,8 +134,21 @@ public:
 
     ConfigWrapper<std::string> cloudUrl           {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "cloudUrl" };
     ConfigWrapper<std::string> udpCloudHost       {std::string{},                          DoReset,   {},                         "udpCloudHost"        };
-    ConfigWrapper<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
 
+    ConfigWrapper<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
+    ConfigWrapper<std::string> otaUsername        {std::string{},                          DoReset,   {},                         "otaUsername"         };
+    ConfigWrapper<std::string> otaServerUrl       {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaServerUrl" };
+    ConfigWrapper<std::string> otaServerBranch    {std::string{},                          DoReset,   {},                         "otaServerBranch"     };
+    std::array<ConfiguredOtaServer, 5> otaServers {
+        ConfiguredOtaServer { "otaName0", "otaUrl0" },
+        ConfiguredOtaServer { "otaName1", "otaUrl1" },
+        ConfiguredOtaServer { "otaName2", "otaUrl2" },
+        ConfiguredOtaServer { "otaName3", "otaUrl3" },
+        ConfiguredOtaServer { "otaName4", "otaUrl4" }
+    };
+
+    ConfigWrapper<bool>        dns_announce_enabled{true,                                  DoReset,   {},                         "dnsAnnounceEnab"     };
+    ConfigWrapper<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
     ConfigWrapper<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
 
 #define NEW_SETTINGS(x) \
@@ -228,6 +265,13 @@ public:
     x(wifiApChannel) \
     x(wifiApAuthmode) \
     \
+    x(timeServerEnabled) \
+    x(timeServer) \
+    x(timeSyncMode) \
+    x(timeSyncInterval) \
+    x(timezoneOffset) \
+    x(timeDst) \
+    \
     x(canBusResetOnError) \
     \
     x(wireless_door_configs[0].doorId) \
@@ -251,8 +295,24 @@ public:
     \
     x(cloudUrl) \
     x(udpCloudHost) \
-    x(otaUrl) \
     \
+    x(otaUrl) \
+    x(otaUsername) \
+    x(otaServerUrl) \
+    x(otaServerBranch) \
+    x(otaServers[0].name) \
+    x(otaServers[0].url) \
+    x(otaServers[1].name) \
+    x(otaServers[1].url) \
+    x(otaServers[2].name) \
+    x(otaServers[2].url) \
+    x(otaServers[3].name) \
+    x(otaServers[3].url) \
+    x(otaServers[4].name) \
+    x(otaServers[4].url) \
+    \
+    x(dns_announce_enabled) \
+    x(dns_announce_key) \
     // x(webserverPassword)
 
     template<typename T>

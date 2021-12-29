@@ -169,7 +169,6 @@ esp_err_t webserver_newSettings_handler(httpd_req_t *req)
                         "<a href=\"/ota\">Update</a> - "
 #endif
                         "<a href=\"/settings\">Settings</a> - "
-                        "<a href=\"/stringSettings\">String Settings</a> - "
                         "<b>New Settings</b> - "
                         "<a href=\"/dumpnvs\">Dump NVS</a>";
             }

@@ -209,7 +209,6 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                 body += "<a href=\"/\">Display control</a> - "
                         "<b>Update</b> - "
                         "<a href=\"/settings\">Settings</a> - "
-                        "<a href=\"/stringSettings\">String Settings</a> - "
                         "<a href=\"/newSettings\">New Settings</a> - "
                         "<a href=\"/dumpnvs\">Dump NVS</a>";
             }

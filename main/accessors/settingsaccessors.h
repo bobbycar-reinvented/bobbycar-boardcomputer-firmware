@@ -90,17 +90,29 @@ struct CloudTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { 
 // Time
 struct TimezoneOffsetAccessor : public virtual espgui::AccessorInterface<int32_t>
 {
-    int32_t getValue() const override { return settings.timeSettings.timezoneOffset.count(); }
-    void setValue(int32_t value) override { settings.timeSettings.timezoneOffset = espchrono::minutes32{value}; saveSettings(); }
+    int32_t getValue() const override { return configs.timezoneOffset.value.count(); }
+    void setValue(int32_t value) override { configs.write_config(configs.timezoneOffset, espchrono::minutes32{value}); }
 };
-struct DaylightSavingModeAccessor : public RefAccessorSaveSettings<espchrono::DayLightSavingMode> { espchrono::DayLightSavingMode &getRef() const override { return settings.timeSettings.daylightSavingMode; } };
+struct DaylightSavingModeAccessor : public virtual espgui::AccessorInterface<espchrono::DayLightSavingMode>
+{
+    espchrono::DayLightSavingMode getValue() const override { return configs.timeDst.value; }
+    void setValue(espchrono::DayLightSavingMode value) override { configs.write_config(configs.timeDst, value); }
+};
 #ifdef FEATURE_NTP
-struct TimeServerEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.timeSettings.timeServerEnabled; } };
-struct TimeSyncModeAccessor : public RefAccessorSaveSettings<sntp_sync_mode_t> { sntp_sync_mode_t &getRef() const override { return settings.timeSettings.timeSyncMode; } };
+struct TimeServerEnabledAccessor : public virtual espgui::AccessorInterface<bool>
+{
+    bool getValue() const override { return configs.timeServerEnabled.value; }
+    void setValue(bool value) override { configs.write_config(configs.timeServerEnabled, value); }
+};
+struct TimeSyncModeAccessor : public virtual espgui::AccessorInterface<sntp_sync_mode_t>
+{
+    sntp_sync_mode_t getValue() const override { return configs.timeSyncMode.value; }
+    void setValue(sntp_sync_mode_t value) override { configs.write_config(configs.timeSyncMode, value); }
+};
 struct TimeSyncIntervalAccessor : public virtual espgui::AccessorInterface<int32_t>
 {
-    int32_t getValue() const override { return settings.timeSettings.timeSyncInterval.count(); }
-    void setValue(int32_t value) override { settings.timeSettings.timeSyncInterval = espchrono::milliseconds32{value}; saveSettings(); }
+    int32_t getValue() const override { return configs.timeSyncInterval.value.count(); }
+    void setValue(int32_t value) override { configs.write_config(configs.timeSyncInterval, espchrono::milliseconds32{value}); }
 };
 #endif
 

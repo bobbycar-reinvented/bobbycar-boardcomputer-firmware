@@ -24,7 +24,6 @@
 #endif
 #include "unifiedmodelmode.h"
 #include "settings.h"
-#include "stringsettings.h"
 
 bool SettingsPersister::init()
 {
@@ -327,7 +326,6 @@ bool SettingsPersister::load(T &settings)
 }
 
 template bool SettingsPersister::load<Settings>(Settings &settings);
-template bool SettingsPersister::load<StringSettings>(StringSettings &settings);
 
 template<typename T> struct nvsSetterHelper;
 template<> struct nvsSetterHelper<int8_t> { static constexpr auto nvs_set = &nvs_set_i8; };
@@ -455,7 +453,6 @@ bool SettingsPersister::save(T &settings)
 }
 
 template bool SettingsPersister::save<Settings>(Settings &settings);
-template bool SettingsPersister::save<StringSettings>(StringSettings &settings);
 
 std::optional<uint8_t> SettingsPersister::currentlyOpenProfileIndex() const
 {

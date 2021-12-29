@@ -1,20 +1,20 @@
 #include "buildserver.h"
 
-#include <ArduinoJson.h>
-#include <cpputils.h>
-#include <cleanuphelper.h>
+// esp-idf
+#include "esp_http_client.h"
+#include "esp_log.h"
 
 // 3rdparty lib includes
 #include <asynchttprequest.h>
 #include <delayedconstruction.h>
+#include <ArduinoJson.h>
+#include <cpputils.h>
+#include <cleanuphelper.h>
+#include "fmt/core.h"
 
 // local includes
 #include "globals.h"
-#include "esp_log.h"
-#include "fmt/core.h"
-
-// esp-idf
-#include "esp_http_client.h"
+#include "newsettings.h"
 
 #ifdef FEATURE_OTA
 
@@ -23,8 +23,8 @@ namespace buildserver {
     uint16_t count_available_buildserver()
     {
         uint16_t count = 0;
-        for (const auto &otaServer : stringSettings.otaServers) {
-            if (!otaServer.url.empty()) count++;
+        for (const auto &otaServer : configs.otaServers) {
+            if (!otaServer.url.value.empty()) count++;
         }
         return count;
     }
@@ -52,7 +52,7 @@ namespace buildserver {
             return;
         }
 
-        const auto url = fmt::format("{}/otaDescriptor?username={}&branches", server_base_url, OTA_USERNAME);
+        const auto url = fmt::format("{}/otaDescriptor?username={}&branches", server_base_url, configs.otaUsername.value);
         ESP_LOGD("BOBBY", "requesting data...");
         if (const auto result = request->start(url); !result)
         {
@@ -135,12 +135,12 @@ namespace buildserver {
 
     std::string get_ota_url_from_index(uint16_t index)
     {
-        if (index < stringSettings.otaServers.size())
+        if (index < configs.otaServers.size())
         {
-            auto otaServer = stringSettings.otaServers[index];
-            if (!otaServer.url.empty())
+            const auto &otaServer = configs.otaServers[index];
+            if (!otaServer.url.value.empty())
             {
-                return otaServer.url;
+                return otaServer.url.value;
             }
             else
             {
@@ -167,10 +167,10 @@ namespace buildserver {
 
     std::string get_descriptor_url(std::string base_url)
     {
-        if (stringSettings.otaServerBranch.empty())
-            return fmt::format("{}/otaDescriptor?username={}", base_url, OTA_USERNAME);
+        if (configs.otaServerBranch.value.empty())
+            return fmt::format("{}/otaDescriptor?username={}", base_url, configs.otaUsername.value);
         else
-            return fmt::format("{}/otaDescriptor?username={}&branch={}", base_url, OTA_USERNAME, stringSettings.otaServerBranch);
+            return fmt::format("{}/otaDescriptor?username={}&branch={}", base_url, configs.otaUsername.value, configs.otaServerBranch.value);
     }
 
     void parse_response_into_variables(std::string response)
@@ -198,8 +198,8 @@ namespace buildserver {
 
         index = 0;
 
-        url_for_latest = fmt::format("{}{}", stringSettings.otaServerUrl, doc["latest"].as<std::string>());
-        url_for_hashes = fmt::format("{}{}", stringSettings.otaServerUrl, doc["url"].as<std::string>());
+        url_for_latest = fmt::format("{}{}", configs.otaServerUrl.value, doc["latest"].as<std::string>());
+        url_for_hashes = fmt::format("{}{}", configs.otaServerUrl.value, doc["url"].as<std::string>());
         parsing_finished = true;
     }
 
