@@ -1,50 +1,29 @@
 #include "bobbybuttons.h"
 
-void BobbyButtons::rawButtonPressed(uint8_t button)
+std::optional<espgui::Button> translateRawButton(uint8_t button)
 {
-    //Base::rawButtonPressed(button);
     switch (button)
     {
     using espgui::Button;
-    case 0: buttonPressed(Button::Left); break;
-    case 1: buttonPressed(Button::Right); break;
-    case 2: buttonPressed(Button::Up); break;
-    case 3: buttonPressed(Button::Down); break;
-    case 4: buttonPressed(Button(BobbyButton::Profile0)); break;
-    case 5: buttonPressed(Button(BobbyButton::Profile1)); break;
-    case 6: buttonPressed(Button(BobbyButton::Profile2)); break;
-    case 7: buttonPressed(Button(BobbyButton::Profile3)); break;
-    case 8: buttonPressed(Button(BobbyButton::Left2)); break;
-    case 9: buttonPressed(Button(BobbyButton::Right2)); break;
-    case 10: buttonPressed(Button(BobbyButton::Up2)); break;
-    case 11: buttonPressed(Button(BobbyButton::Down2)); break;
+    case 0: return Button::Left;
+    case 1: return Button::Right;
+    case 2: return Button::Up;
+    case 3: return Button::Down;
+    case 4: return Button(BobbyButton::Profile0);
+    case 5: return Button(BobbyButton::Profile1);
+    case 6: return Button(BobbyButton::Profile2);
+    case 7: return Button(BobbyButton::Profile3);
+    case 8: return Button(BobbyButton::Left2);
+    case 9: return Button(BobbyButton::Right2);
+    case 10: return Button(BobbyButton::Up2);
+    case 11: return Button(BobbyButton::Down2);
     }
+
+    return std::nullopt;
 }
 
-void BobbyButtons::rawButtonReleased(uint8_t button)
+void buttonPressedCommon(espgui::Button button)
 {
-    //Base::rawButtonReleased(button);
-    switch (button)
-    {
-    using espgui::Button;
-    case 0: buttonReleased(Button::Left); break;
-    case 1: buttonReleased(Button::Right); break;
-    case 2: buttonReleased(Button::Up); break;
-    case 3: buttonReleased(Button::Down); break;
-    case 4: buttonReleased(Button(BobbyButton::Profile0)); break;
-    case 5: buttonReleased(Button(BobbyButton::Profile1)); break;
-    case 6: buttonReleased(Button(BobbyButton::Profile2)); break;
-    case 7: buttonReleased(Button(BobbyButton::Profile3)); break;
-    case 8: buttonReleased(Button(BobbyButton::Left2)); break;
-    case 9: buttonReleased(Button(BobbyButton::Right2)); break;
-    case 10: buttonReleased(Button(BobbyButton::Up2)); break;
-    case 11: buttonReleased(Button(BobbyButton::Down2)); break;
-    }
-}
-
-void BobbyButtons::buttonPressed(espgui::Button button)
-{
-    //Base::buttonPressed(button);
     switch (BobbyButton(button))
     {
     case BobbyButton::Profile0: /* TODO */ break;
@@ -57,6 +36,26 @@ void BobbyButtons::buttonPressed(espgui::Button button)
     case BobbyButton::Down2: /* TODO */ break;
     default:;
     }
+}
+
+void BobbyButtons::rawButtonPressed(uint8_t button)
+{
+    //Base::rawButtonPressed(button);
+    if (const auto translated = translateRawButton(button))
+        buttonPressed(*translated);
+}
+
+void BobbyButtons::rawButtonReleased(uint8_t button)
+{
+    //Base::rawButtonReleased(button);
+    if (const auto translated = translateRawButton(button))
+        buttonReleased(*translated);
+}
+
+void BobbyButtons::buttonPressed(espgui::Button button)
+{
+    //Base::buttonPressed(button);
+    buttonPressedCommon(button);
 }
 
 void BobbyButtons::buttonReleased(espgui::Button button)

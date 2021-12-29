@@ -9,6 +9,7 @@
 #ifdef FEATURE_CAN
 #include "can.h"
 #endif
+#include "newsettings.h"
 
 using namespace std::chrono_literals;
 
@@ -26,13 +27,13 @@ void readPotis()
 {
     [[maybe_unused]]
     constexpr auto sampleMultipleTimes = [](uint8_t pin){
-              analogRead(pin);
-              double sum{};
-              const auto sampleCount = settings.boardcomputerHardware.sampleCount;
-              for (int i = 0; i < sampleCount; i++)
-                  sum += analogRead(pin);
-              return sum / sampleCount;
-          };
+          analogRead(pin);
+          double sum{};
+          const auto sampleCount = configs.sampleCount.value;
+          for (int i = 0; i < sampleCount; i++)
+              sum += analogRead(pin);
+          return sum / sampleCount;
+      };
 
     raw_gas = std::nullopt;
     raw_brems = std::nullopt;
@@ -65,11 +66,11 @@ void readPotis()
 #endif
 
     if (raw_gas)
-        gas = cpputils::mapValueClamped<float>(*raw_gas, settings.boardcomputerHardware.gasMin, settings.boardcomputerHardware.gasMax, 0., 1000.);
+        gas = cpputils::mapValueClamped<float>(*raw_gas, configs.gasMin.value, configs.gasMax.value, 0., 1000.);
     else
         gas = std::nullopt;
     if (raw_brems)
-        brems = cpputils::mapValueClamped<float>(*raw_brems, settings.boardcomputerHardware.bremsMin, settings.boardcomputerHardware.bremsMax, 0., 1000.);
+        brems = cpputils::mapValueClamped<float>(*raw_brems, configs.bremsMin.value, configs.bremsMax.value, 0., 1000.);
     else
         brems = std::nullopt;
 

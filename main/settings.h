@@ -70,11 +70,6 @@ struct Settings
     } controllerHardware;
 
     struct BoardcomputerHardware {
-        int16_t sampleCount;
-        int16_t gasMin, gasMax, bremsMin, bremsMax;
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
-        uint8_t dpadDebounce;
-#endif
 #ifdef FEATURE_GAMETRAK
         int16_t gametrakXMin, gametrakXMax, gametrakYMin, gametrakYMax, gametrakDistMin, gametrakDistMax;
 #endif
@@ -243,14 +238,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("canReceiveTimeo", controllerHardware.canReceiveTimeout);
 #endif
 
-    callable("sampleCount", boardcomputerHardware.sampleCount);
-    callable("gasMin", boardcomputerHardware.gasMin);
-    callable("gasMax", boardcomputerHardware.gasMax);
-    callable("bremsMin", boardcomputerHardware.bremsMin);
-    callable("bremsMax", boardcomputerHardware.bremsMax);
-#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT)
-    callable("dpadDebounce", boardcomputerHardware.dpadDebounce);
-#endif
 #ifdef FEATURE_GAMETRAK
     callable("gametrakXMin", boardcomputerHardware.gametrakXMin);
     callable("gametrakXMax", boardcomputerHardware.gametrakXMax);

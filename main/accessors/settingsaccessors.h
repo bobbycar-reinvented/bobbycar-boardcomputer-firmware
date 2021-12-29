@@ -14,6 +14,14 @@ struct RefAccessorSaveSettings : public virtual espgui::RefAccessor<T>
 {
     void setValue(T value) override { espgui::RefAccessor<T>::setValue(value); saveSettings(); };
 };
+template<typename T>
+struct NewSettingsAccessor : public virtual espgui::AccessorInterface<T>
+{
+    virtual ConfigWrapper<T>& getConfig() const = 0;
+
+    T getValue() const override { return getConfig().value; }
+    void setValue(T value) override { configs.write_config(getConfig(), value); }
+};
 
 // Bms
 #ifdef FEATURE_BMS
@@ -150,13 +158,13 @@ struct CanReceiveTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int
 #endif
 
 // Input devices
-struct SampleCountAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.sampleCount; } };
-struct GasMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gasMin; } };
-struct GasMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gasMax; } };
-struct BremsMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.bremsMin; } };
-struct BremsMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.bremsMax; } };
+struct SampleCountAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.sampleCount; } };
+struct GasMinAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.gasMin; } };
+struct GasMaxAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.gasMax; } };
+struct BremsMinAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.bremsMin; } };
+struct BremsMaxAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.bremsMax; } };
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
-struct DPadDebounceAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.boardcomputerHardware.dpadDebounce; } };
+struct DPadDebounceAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadDebounce; } };
 #endif
 #ifdef FEATURE_GAMETRAK
 struct GametrakXMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakXMin; } };

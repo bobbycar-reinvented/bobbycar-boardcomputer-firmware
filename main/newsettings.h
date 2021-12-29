@@ -83,10 +83,10 @@ class ConfigContainer
     using mac_t = wifi_stack::mac_t;
 
 public:
-    //                                            default                                 allowReset constraints                 nvsName
-    ConfigWrapper<std::optional<mac_t>> baseMacAddressOverride{std::nullopt,              NoReset,   {},                         "baseMacAddrOver"     };
-    ConfigWrapper<std::string> hostname           {defaultHostname,                       DoReset,   StringMinMaxSize<4, 32>,    "hostname"            };
-    ConfigWrapper<bool>        wifiStaEnabled     {true,                                  DoReset,   {},                         "wifiStaEnabled"      };
+    //                                            default                                 allowReset constraints                    nvsName
+    ConfigWrapper<std::optional<mac_t>> baseMacAddressOverride{std::nullopt,              NoReset,   {},                            "baseMacAddrOver"     };
+    ConfigWrapper<std::string> hostname           {defaultHostname,                       DoReset,   StringMinMaxSize<4, 32>,       "hostname"            };
+    ConfigWrapper<bool>        wifiStaEnabled     {true,                                  DoReset,   {},                            "wifiStaEnabled"      };
     std::array<WiFiConfig, 10> wifi_configs {
         WiFiConfig {"wifi_ssid0", "wifi_key0", "wifi_usestatic0", "wifi_static_ip0", "wifi_stati_sub0", "wifi_stat_gate0", "wifi_usestadns0", "wifi_stat_dnsA0", "wifi_stat_dnsB0", "wifi_stat_dnsC0"},
         WiFiConfig {"wifi_ssid1", "wifi_key1", "wifi_usestatic1", "wifi_static_ip1", "wifi_stati_sub1", "wifi_stat_gate1", "wifi_usestadns1", "wifi_stat_dnsA1", "wifi_stat_dnsB1", "wifi_stat_dnsC1"},
@@ -99,22 +99,30 @@ public:
         WiFiConfig {"wifi_ssid8", "wifi_key8", "wifi_usestatic8", "wifi_static_ip8", "wifi_stati_sub8", "wifi_stat_gate8", "wifi_usestadns8", "wifi_stat_dnsA8", "wifi_stat_dnsB8", "wifi_stat_dnsC8"},
         WiFiConfig {"wifi_ssid9", "wifi_key9", "wifi_usestatic9", "wifi_static_ip9", "wifi_stati_sub9", "wifi_stat_gate9", "wifi_usestadns9", "wifi_stat_dnsA9", "wifi_stat_dnsB9", "wifi_stat_dnsC9"}
     };
-    ConfigWrapper<int8_t>      wifiStaMinRssi     {-90,                                    DoReset,   {},                         "wifiStaMinRssi"      };
+    ConfigWrapper<int8_t>      wifiStaMinRssi     {-90,                                    DoReset,   {},                           "wifiStaMinRssi"      };
 
-    ConfigWrapper<bool>        wifiApEnabled      {true,                                   DoReset,   {},                         "wifiApEnabled"       };
-    ConfigWrapper<std::string> wifiApName         {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "wifiApName"          };
+    ConfigWrapper<bool>        wifiApEnabled      {true,                                   DoReset,   {},                           "wifiApEnabled"       };
+    ConfigWrapper<std::string> wifiApName         {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,      "wifiApName"          };
     ConfigWrapper<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey" };
-    ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                         "wifiApChannel"       };
-    ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };
+    ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                           "wifiApChannel"       };
+    ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                           "wifiApAuthmode"      };
 
-    ConfigWrapper<bool>     timeServerEnabled     {false,                                  DoReset,   {},                         "timeServerEnabl"     };
-    ConfigWrapper<std::string>   timeServer       {"europe.pool.ntp.org",                  NoReset,   StringMaxSize<64>,          "timeServer"          };
-    ConfigWrapper<sntp_sync_mode_t> timeSyncMode  {SNTP_SYNC_MODE_IMMED,                   NoReset,   {},                         "timeSyncMode"        };
+    ConfigWrapper<bool>     timeServerEnabled     {false,                                  DoReset,   {},                           "timeServerEnabl"     };
+    ConfigWrapper<std::string>   timeServer       {"europe.pool.ntp.org",                  NoReset,   StringMaxSize<64>,            "timeServer"          };
+    ConfigWrapper<sntp_sync_mode_t> timeSyncMode  {SNTP_SYNC_MODE_IMMED,                   NoReset,   {},                           "timeSyncMode"        };
     ConfigWrapper<espchrono::milliseconds32> timeSyncInterval{espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY}, NoReset, MinTimeSyncInterval, "timeSyncInterva" };
-    ConfigWrapper<espchrono::minutes32> timezoneOffset{espchrono::minutes32{60},           DoReset,   {},                         "timezoneOffset"      }; // MinMaxValue<minutes32, -1440m, 1440m>
-    ConfigWrapper<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},           "time_dst"            };
+    ConfigWrapper<espchrono::minutes32> timezoneOffset{espchrono::minutes32{60},           DoReset,   {},                           "timezoneOffset"      }; // MinMaxValue<minutes32, -1440m, 1440m>
+    ConfigWrapper<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},             "time_dst"            };
 
-    ConfigWrapper<bool>        canBusResetOnError {false,                                  DoReset,   {},                         "canBusRstErr"        };
+    ConfigWrapper<bool>        canBusResetOnError {false,                                  DoReset,   {},                           "canBusRstErr"        };
+
+    ConfigWrapper<int16_t>     sampleCount        {50,                                     DoReset,   {},                           "sampleCount"         };
+    ConfigWrapper<int16_t>     gasMin             {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMin"              };
+    ConfigWrapper<int16_t>     gasMax             {4095,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMax"              };
+    ConfigWrapper<int16_t>     bremsMin           {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMin"            };
+    ConfigWrapper<int16_t>     bremsMax           {4096,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMax"            };
+
+    ConfigWrapper<uint8_t>     dpadDebounce       {25,                                     DoReset,   {},                           "dpadDebounce"        };
 
     std::array<WirelessDoorsConfig, 5> wireless_door_configs {
         WirelessDoorsConfig { "door_id0", "door_token0" },
@@ -273,6 +281,14 @@ public:
     x(timeDst) \
     \
     x(canBusResetOnError) \
+    \
+    x(sampleCount) \
+    x(gasMin) \
+    x(gasMax) \
+    x(bremsMin) \
+    x(bremsMax) \
+    \
+    x(dpadDebounce) \
     \
     x(wireless_door_configs[0].doorId) \
     x(wireless_door_configs[0].doorToken) \
