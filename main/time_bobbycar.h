@@ -11,3 +11,5 @@ espchrono::time_zone get_default_timezone() noexcept;
 void initTime();
 void updateTime();
 #endif
+
+void time_set_now(espchrono::utc_clock::time_point now);

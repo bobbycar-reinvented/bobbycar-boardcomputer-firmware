@@ -9,9 +9,6 @@ StringSettings makeDefaultStringSettings()
 #endif
 
     return {
-#ifdef FEATURE_NTP
-        .timeServer = "europe.pool.ntp.org",
-#endif
 #ifdef FEATURE_OTA
         .otaServers = std::array<ConfiguredOtaServer, 5> {
             ConfiguredOtaServer { .name = {}, .url = {} },

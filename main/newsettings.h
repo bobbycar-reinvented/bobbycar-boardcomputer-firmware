@@ -7,12 +7,17 @@
 #include <array>
 #include <optional>
 
+// esp-idf includes
+#include <esp_sntp.h>
+
 // 3rdparty lib includes
 #include <fmt/core.h>
 #include <configmanager.h>
 #include <configconstraints_base.h>
+#include <configconstraints_espchrono.h>
 #include <configwrapper.h>
 #include <espwifiutils.h>
+#include <espchrono.h>
 #include <makearray.h>
 
 using namespace espconfig;
@@ -89,6 +94,13 @@ public:
     ConfigWrapper<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey" };
     ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                         "wifiApChannel"       };
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                         "wifiApAuthmode"      };
+
+    ConfigWrapper<bool>     timeServerEnabled     {false,                                  DoReset,   {},                         "timeServerEnabl"     };
+    ConfigWrapper<std::string>   timeServer       {"europe.pool.ntp.org",                  NoReset,   StringMaxSize<64>,          "timeServer"          };
+    ConfigWrapper<sntp_sync_mode_t> timeSyncMode  {SNTP_SYNC_MODE_IMMED,                   NoReset,   {},                         "timeSyncMode"        };
+    ConfigWrapper<espchrono::milliseconds32> timeSyncInterval{espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY}, NoReset, MinTimeSyncInterval, "timeSyncInterva" };
+    ConfigWrapper<espchrono::minutes32> timezoneOffset{espchrono::minutes32{60},           DoReset,   {},                         "timezoneOffset"      }; // MinMaxValue<minutes32, -1440m, 1440m>
+    ConfigWrapper<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},           "time_dst"            };
 
     ConfigWrapper<bool>        canBusResetOnError {false,                                  DoReset,   {},                         "canBusRstErr"        };
 
@@ -231,6 +243,13 @@ public:
     x(wifiApKey) \
     x(wifiApChannel) \
     x(wifiApAuthmode) \
+    \
+    x(timeServerEnabled) \
+    x(timeServer) \
+    x(timeSyncMode) \
+    x(timeSyncInterval) \
+    x(timezoneOffset) \
+    x(timeDst) \
     \
     x(canBusResetOnError) \
     \

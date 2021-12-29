@@ -276,25 +276,13 @@ uint8_t time_to_percent(espchrono::milliseconds32 repeat, espchrono::millisecond
         return invert ? numLeds : 0;
 }
 
-void time_set_now(espchrono::utc_clock::time_point now)
-{
-    using namespace espchrono;
-    // ESP_LOGI("BOBBY", "%s (%lld)%s", toString(toDateTime(now)).c_str(), std::chrono::floor<std::chrono::seconds>(now.time_since_epoch()).count(), time_valid(now) ? "":" (probably invalid)");
-    const auto seconds = std::chrono::floor<std::chrono::seconds>(now.time_since_epoch());
-
-    timeval ts {
-        .tv_sec = (long int)seconds.count(),
-        .tv_usec = (long int)std::chrono::floor<std::chrono::microseconds>(now.time_since_epoch() - seconds).count()
-    };
-    timezone tz {
-        .tz_minuteswest = 0,
-        .tz_dsttime = 0
-    };
-    settimeofday(&ts, &tz);
-}
-
 std::string local_clock_string()
 {
-    const auto dt = espchrono::toDateTime(espchrono::utc_clock::now() + settings.timeSettings.timezoneOffset);
+#ifdef CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE
+    const auto now = espchrono::local_clock::now();
+#else // mir egal ob die lokalzeit richtig is
+    const auto now = espchrono::utc_clock::now() + configs.timezoneOffset.value;
+#endif
+    const auto dt = espchrono::toDateTime(now);
     return fmt::format("{:02d}:{:02d}:{:02d}", dt.hour, dt.minute, dt.second);
 }

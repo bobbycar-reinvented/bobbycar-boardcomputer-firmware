@@ -52,17 +52,6 @@ struct Settings
     } bleSettings;
 #endif
 
-    struct TimeSettings {
-        espchrono::minutes32 timezoneOffset;
-        espchrono::DayLightSavingMode daylightSavingMode;
-
-#ifdef FEATURE_NTP
-        bool timeServerEnabled;
-        sntp_sync_mode_t timeSyncMode;
-        espchrono::milliseconds32 timeSyncInterval;
-#endif
-    } timeSettings;
-
     struct ControllerHardware {
         bool enableFrontLeft, enableFrontRight, enableBackLeft, enableBackRight;
         bool invertFrontLeft, invertFrontRight, invertBackLeft, invertBackRight;
@@ -242,14 +231,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
 
 #ifdef FEATURE_BLE
     callable("bleEnabled", bleSettings.bleEnabled);
-#endif
-
-    callable("timezoneOffset", timeSettings.timezoneOffset);
-    callable("daylightSaving", timeSettings.daylightSavingMode);
-#ifdef FEATURE_NTP
-    callable("timeServerEnab", timeSettings.timeServerEnabled);
-    callable("timeSyncMode", timeSettings.timeSyncMode);
-    callable("timeSyncInterv", timeSettings.timeSyncInterval);
 #endif
 
     callable("wheelDiameter", controllerHardware.wheelDiameter);

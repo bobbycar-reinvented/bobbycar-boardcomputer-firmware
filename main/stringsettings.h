@@ -6,10 +6,6 @@
 
 struct StringSettings
 {
-#ifdef FEATURE_NTP
-    std::string timeServer;
-#endif
-
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
 
@@ -29,9 +25,6 @@ struct StringSettings
 template<typename T>
 void StringSettings::executeForEveryCommonSetting(T &&callable)
 {
-#ifdef FEATURE_NTP
-    callable("timeServer", timeServer);
-#endif
 #ifdef FEATURE_OTA
     callable("otaName0",    otaServers[0].name);
     callable("otaUrl0",     otaServers[0].url);

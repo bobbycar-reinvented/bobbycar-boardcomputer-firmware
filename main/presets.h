@@ -34,16 +34,6 @@ constexpr Settings::Limits kidsLimits {
     .phaseAdvMax = 20
 };
 
-constexpr Settings::TimeSettings defaultTimeSettings {
-    .timezoneOffset = 60min,
-    .daylightSavingMode = espchrono::DayLightSavingMode::EuropeanSummerTime,
-#ifdef FEATURE_NTP
-    .timeServerEnabled = true,
-    .timeSyncMode = SNTP_SYNC_MODE_IMMED,
-    .timeSyncInterval = espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY},
-#endif
-};
-
 constexpr Settings::ControllerHardware defaultControllerHardware {
     .enableFrontLeft = true,
     .enableFrontRight = true,
@@ -313,7 +303,6 @@ constexpr Settings defaultSettings {
 #ifdef FEATURE_BLE
     .bleSettings = defaultBleSettings,
 #endif
-    .timeSettings = defaultTimeSettings,
     .controllerHardware = defaultControllerHardware,
     .boardcomputerHardware = defaultBoardcomputerHardware,
 #ifdef FEATURE_CLOUD
