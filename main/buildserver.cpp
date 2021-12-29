@@ -167,10 +167,10 @@ namespace buildserver {
 
     std::string get_descriptor_url(std::string base_url)
     {
-        if (stringSettings.otaServerBranch.empty())
+        if (configs.otaServerBranch.value.empty())
             return fmt::format("{}/otaDescriptor?username={}", base_url, configs.otaUsername.value);
         else
-            return fmt::format("{}/otaDescriptor?username={}&branch={}", base_url, configs.otaUsername.value, stringSettings.otaServerBranch);
+            return fmt::format("{}/otaDescriptor?username={}&branch={}", base_url, configs.otaUsername.value, configs.otaServerBranch.value);
     }
 
     void parse_response_into_variables(std::string response)

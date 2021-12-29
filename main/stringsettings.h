@@ -22,11 +22,7 @@ struct StringSettings
         std::string url;
     };
 
-    std::array<ConfiguredOtaServer, 5> otaServers;
-    std::string otaServerUrl;
-#endif
-#ifdef FEATURE_OTA
-    std::string otaServerBranch;
+    std::array<ConfiguredOtaServer, 5> otaServers;    std::string otaServerUrl;
 #endif
 };
 
@@ -57,9 +53,6 @@ void StringSettings::executeForEveryCommonSetting(T &&callable)
 //    callable("otaUrl8",     otaServers[8].url);
 //    callable("otaName9",    otaServers[9].name);
 //    callable("otaUrl9",     otaServers[9].url);
-
-    callable("otaserver", otaServerUrl);
-    callable("otaBranch", otaServerBranch);
 #endif
 }
 

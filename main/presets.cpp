@@ -25,10 +25,6 @@ StringSettings makeDefaultStringSettings()
 //            ConfiguredOtaServer { .name = {}, .url = {} },
 //            ConfiguredOtaServer { .name = {}, .url = {} },
         },
-        .otaServerUrl = {},
-#endif
-#ifdef FEATURE_OTA
-        .otaServerBranch = {},
 #endif
     };
 }

@@ -112,6 +112,8 @@ public:
     ConfigWrapper<std::string> udpCloudHost       {std::string{},                          DoReset,   {},                         "udpCloudHost"        };
     ConfigWrapper<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
     ConfigWrapper<std::string> otaUsername        {std::string{},                          DoReset,   {},                         "otaUsername"         };
+    ConfigWrapper<std::string> otaServerUrl       {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaServerUrl" };
+    ConfigWrapper<std::string> otaServerBranch    {std::string{},                          DoReset,   {},                         "otaServerBranch"     };
     ConfigWrapper<bool>        dns_announce_enabled{true,                                  DoReset,   {},                         "dnsAnnounceEnab"     };
     ConfigWrapper<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
     ConfigWrapper<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
@@ -255,6 +257,8 @@ public:
     x(udpCloudHost) \
     x(otaUrl) \
     x(otaUsername) \
+    x(otaServerUrl) \
+    x(otaServerBranch) \
     x(dns_announce_enabled) \
     x(dns_announce_key) \
     // x(webserverPassword)
