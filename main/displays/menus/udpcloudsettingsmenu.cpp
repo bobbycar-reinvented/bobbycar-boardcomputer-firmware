@@ -21,8 +21,8 @@ using UdpCloudSendRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_UDPSENDRATE>,
     UdpCloudSendIntervalAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<UdpCloudSettingsMenu>>,
-    espgui::SwitchScreenAction<UdpCloudSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<UdpCloudSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<UdpCloudSettingsMenu>>
 >;
 } // namespace
 

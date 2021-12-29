@@ -24,8 +24,8 @@ using CloudTransmitTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CLOUDTRANSMITTIMEOUT>,
     CloudTransmitTimeoutAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
-    espgui::SwitchScreenAction<CloudSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>
 >;
 
 struct CloudBufferLengthText : public virtual espgui::TextInterface
@@ -41,16 +41,16 @@ using CloudCollectRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CLOUDCOLLECTRATE>,
     CloudCollectRateAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
-    espgui::SwitchScreenAction<CloudSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>
 >;
 
 using CloudSendRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CLOUDSENDRATE>,
     CloudSendRateAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
-    espgui::SwitchScreenAction<CloudSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>
 >;
 } // namespace
 

@@ -21,8 +21,8 @@ using FrontFreqChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_FRONTFREQ>,
     FrontFreqAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
-    espgui::SwitchScreenAction<BuzzerMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>
 >;
 
 struct FrontPatternAccessor : public espgui::RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.front.command.buzzer.pattern; } };
@@ -30,8 +30,8 @@ using FrontPatternChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_FRONTPATTERN>,
     FrontPatternAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
-    espgui::SwitchScreenAction<BuzzerMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>
 >;
 
 struct BackFreqAccessor : public espgui::RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.back.command.buzzer.freq; } };
@@ -39,8 +39,8 @@ using BackFreqChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_BACKFREQ>,
     BackFreqAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
-    espgui::SwitchScreenAction<BuzzerMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>
 >;
 
 struct BackPatternAccessor : public espgui::RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.back.command.buzzer.pattern; } };
@@ -48,37 +48,37 @@ using BackPatternChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_BACKPATTERN>,
     BackPatternAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
-    espgui::SwitchScreenAction<BuzzerMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>
 >;
 
 using ReverseBeepFreq0ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_REVERSEBEEPFREQ0>,
     ReverseBeepFreq0Accessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
-    espgui::SwitchScreenAction<BuzzerMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>
 >;
 using ReverseBeepFreq1ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_REVERSEBEEPFREQ1>,
     ReverseBeepFreq1Accessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
-    espgui::SwitchScreenAction<BuzzerMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>
 >;
 using ReverseBeepDuration0ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_REVERSEBEEPDURATION0>,
     ReverseBeepDuration0Accessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
-    espgui::SwitchScreenAction<BuzzerMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>
 >;
 using ReverseBeepDuration1ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_REVERSEBEEPDURATION1>,
     ReverseBeepDuration1Accessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
-    espgui::SwitchScreenAction<BuzzerMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BuzzerMenu>>
 >;
 } // namespace
 

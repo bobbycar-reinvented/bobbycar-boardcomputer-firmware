@@ -17,16 +17,16 @@ using MotortestMultiplikatorChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_MOTORTESTMULTIPLIKATOR>,
     MotortestModeMultiplikatorAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<MotortestModeSettingsMenu>>,
-    espgui::SwitchScreenAction<MotortestModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<MotortestModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<MotortestModeSettingsMenu>>
 >;
 
 using MotortestMaxPwmChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
     espgui::StaticText<TEXT_MOTORTESTMAXPWM>,
     MotortestMaxPwmAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<MotortestModeSettingsMenu>>,
-    espgui::SwitchScreenAction<MotortestModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<MotortestModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<MotortestModeSettingsMenu>>
 >;
 } // namespace
 

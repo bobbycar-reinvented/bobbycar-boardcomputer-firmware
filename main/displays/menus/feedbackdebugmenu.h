@@ -2,6 +2,7 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
+#include "debugmenu.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -33,7 +34,7 @@ public:
     }
 };
 
-class FrontFeedbackDebugMenu : public FeedbackDebugMenu<TEXT_FRONTFEEDBACK, FrontTexts, FrontFeedbackColor> {};
-class BackFeedbackDebugMenu : public FeedbackDebugMenu<TEXT_BACKFEEDBACK, BackTexts, FrontFeedbackColor> {};
+using FrontFeedbackDebugMenu = FeedbackDebugMenu<TEXT_FRONTFEEDBACK, FrontTexts, FrontFeedbackColor>;
+using BackFeedbackDebugMenu = FeedbackDebugMenu<TEXT_BACKFEEDBACK, BackTexts, FrontFeedbackColor>;
 
 } // namespace

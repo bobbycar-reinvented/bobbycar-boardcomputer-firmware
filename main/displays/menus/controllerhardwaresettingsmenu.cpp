@@ -24,38 +24,38 @@ using WheelDiameterMmChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_WHEELDIAMETERMM>,
     WheelDiameterMmAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
 >;
 using WheelDiameterInchChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<float>,
     espgui::StaticText<TEXT_WHEELDIAMETERINCH>,
     WheelDiameterInchAccessor,
     espgui::RatioNumberStep<float, std::ratio<1,10>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
 >;
 using NumMagnetPolesChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NUMMAGNETPOLES>,
     NumMagnetPolesAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
 >;
 #ifdef FEATURE_CAN
 using CanTransmitTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CANTRANSMITTIMEOUT>,
     CanTransmitTimeoutAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
 >;
 using CanReceiveTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CANRECEIVETIMEOUT>,
     CanReceiveTimeoutAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
 >;
 #endif
 } // namespace

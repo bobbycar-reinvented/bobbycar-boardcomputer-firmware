@@ -3,9 +3,6 @@
 // 3rdparty lib includes
 #include <menudisplay.h>
 
-// local includes
-#include "bobbybuttons.h"
-
 class BobbyMenuDisplay : public espgui::MenuDisplay
 {
     using Base = espgui::MenuDisplay;

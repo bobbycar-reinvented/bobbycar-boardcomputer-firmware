@@ -448,61 +448,6 @@ extern char TEXT_OFF[];
 extern char TEXT_MASTER[];
 extern char TEXT_SLAVE[];
 
-//ChangeValueDisplay<ControlMode>
-extern char TEXT_OPENMODE[];
-extern char TEXT_VOLTAGE[];
-extern char TEXT_SPEED[];
-extern char TEXT_TORQUE[];
-//extern char TEXT_BACK[];
-
-//ChangeValueDisplay<ControlType>
-extern char TEXT_COMMUTATION[];
-extern char TEXT_SINUSOIDAL[];
-extern char TEXT_FIELDORIENTEDCONTROL[];
-//extern char TEXT_BACK[];
-
-//ChangeValueDisplay<HandbremseMode>
-extern char TEXT_HANDBREMS_MOSFETS_OFF[];
-extern char TEXT_HANDBREMS_OPENMODE[];
-extern char TEXT_HANDBREMS_SPEED0[];
-
-//ChangeValueDisplay<LarsmMode::Mode>
-extern char TEXT_LARSMMODE1[];
-extern char TEXT_LARSMMODE2[];
-extern char TEXT_LARSMMODE3[];
-extern char TEXT_LARSMMODE4[];
-//extern char TEXT_BACK[];
-
-//ChangeValueDisplay<UnifiedModelMode>
-//extern char TEXT_COMMUTATION[];
-//extern char TEXT_SINUSOIDAL[];
-extern char TEXT_FOCVOLTAGE[];
-extern char TEXT_FOCSPEED[];
-extern char TEXT_FOCTORQUE[];
-//extern char TEXT_BACK[];
-
-//ChangeValueDisplay<wifi_mode_t>
-extern char TEXT_WIFI_MODE_NULL[];
-extern char TEXT_WIFI_MODE_STA[];
-extern char TEXT_WIFI_MODE_AP[];
-extern char TEXT_WIFI_MODE_APSTA[];
-//extern char TEXT_BACK[];
-
-//ChangeValueDisplay<wifi_power_t>
-extern char TEXT_WIFI_POWER_19_5dBm[];
-extern char TEXT_WIFI_POWER_19dBm[];
-extern char TEXT_WIFI_POWER_18_5dBm[];
-extern char TEXT_WIFI_POWER_17dBm[];
-extern char TEXT_WIFI_POWER_15dBm[];
-extern char TEXT_WIFI_POWER_13dBm[];
-extern char TEXT_WIFI_POWER_11dBm[];
-extern char TEXT_WIFI_POWER_8_5dBm[];
-extern char TEXT_WIFI_POWER_7dBm[];
-extern char TEXT_WIFI_POWER_5dBm[];
-extern char TEXT_WIFI_POWER_2dBm[];
-extern char TEXT_WIFI_POWER_MINUS_1dBm[];
-//extern char TEXT_BACK[];
-
 //Crashmenu
 extern char TEXT_CRASHMENU[];
 extern char TEXT_CRASH_ASSERT[];

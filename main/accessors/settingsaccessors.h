@@ -6,14 +6,8 @@
 // local includes
 #include "globals.h"
 #include "utils.h"
+#include "accessorhelpers.h"
 #include "newsettings.h"
-
-//! Special type of RefAccessor that also saves settings after setValue()
-template<typename T>
-struct RefAccessorSaveSettings : public virtual espgui::RefAccessor<T>
-{
-    void setValue(T value) override { espgui::RefAccessor<T>::setValue(value); saveSettings(); };
-};
 
 // Bms
 #ifdef FEATURE_BMS
@@ -21,31 +15,11 @@ struct AutoConnectBmsAccessor : public RefAccessorSaveSettings<bool> { bool &get
 #endif
 
 // Buzzer
-struct ReverseBeepAccessor : public virtual espgui::AccessorInterface<bool>
-{
-    bool getValue() const override { return configs.reverseBeep.value; }
-    void setValue(bool value) override { configs.write_config(configs.reverseBeep, value); }
-};
-struct ReverseBeepFreq0Accessor : public virtual espgui::AccessorInterface<uint8_t>
-{
-    uint8_t getValue() const override { return configs.reverseBeepFreq0.value; }
-    void setValue(uint8_t value) override { configs.write_config(configs.reverseBeepFreq0, value); }
-};
-struct ReverseBeepFreq1Accessor : public virtual espgui::AccessorInterface<uint8_t>
-{
-    uint8_t getValue() const override { return configs.reverseBeepFreq1.value; }
-    void setValue(uint8_t value) override { configs.write_config(configs.reverseBeepFreq1, value); }
-};
-struct ReverseBeepDuration0Accessor : public virtual espgui::AccessorInterface<int16_t>
-{
-    int16_t getValue() const override { return configs.reverseBeepDuration0.value; }
-    void setValue(int16_t value) override { configs.write_config(configs.reverseBeepDuration0, value); }
-};
-struct ReverseBeepDuration1Accessor : public virtual espgui::AccessorInterface<int16_t>
-{
-    int16_t getValue() const override { return configs.reverseBeepDuration1.value; }
-    void setValue(int16_t value) override { configs.write_config(configs.reverseBeepDuration1, value); }
-};
+struct ReverseBeepAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.reverseBeep; } };
+struct ReverseBeepFreq0Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.reverseBeepFreq0; } };
+struct ReverseBeepFreq1Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.reverseBeepFreq1; } };
+struct ReverseBeepDuration0Accessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.reverseBeepDuration0; } };
+struct ReverseBeepDuration1Accessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.reverseBeepDuration1; } };
 
 // Limits
 struct IMotMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.iMotMax; } };
@@ -53,23 +27,17 @@ struct IDcMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRe
 struct NMotMaxKmhAccessor : public virtual espgui::AccessorInterface<int16_t>
 {
     int16_t getValue() const override { return convertToKmh(settings.limits.nMotMax); }
-    void setValue(int16_t value) override { settings.limits.nMotMax = convertFromKmh(value); saveSettings(); }
+    espgui::AccessorInterface<int16_t>::setter_result_t setValue(int16_t value) override
+    {
+        settings.limits.nMotMax = convertFromKmh(value);
+        if (!saveSettings())
+            return tl::make_unexpected("saveSettings() failed!");
+        return {};
+    }
 };
 struct NMotMaxRpmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.nMotMax; } };
 struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.fieldWeakMax; } };
 struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.phaseAdvMax; } };
-
-// WiFi
-struct WifiStaEnabledAccessor : public virtual espgui::AccessorInterface<bool>
-{
-    bool getValue() const override { return configs.wifiStaEnabled.value; }
-    void setValue(bool value) override { configs.write_config(configs.wifiStaEnabled, value); }
-};
-struct WifiApEnabledAccessor : public virtual espgui::AccessorInterface<bool>
-{
-    bool getValue() const override { return configs.wifiApEnabled.value; }
-    void setValue(bool value) override { configs.write_config(configs.wifiApEnabled, value); }
-};
 
 // Bluetooth
 #ifdef FEATURE_BLUETOOTH
@@ -88,32 +56,14 @@ struct CloudTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { 
 #endif
 
 // Time
-struct TimezoneOffsetAccessor : public virtual espgui::AccessorInterface<int32_t>
-{
-    int32_t getValue() const override { return configs.timezoneOffset.value.count(); }
-    void setValue(int32_t value) override { configs.write_config(configs.timezoneOffset, espchrono::minutes32{value}); }
-};
-struct DaylightSavingModeAccessor : public virtual espgui::AccessorInterface<espchrono::DayLightSavingMode>
-{
-    espchrono::DayLightSavingMode getValue() const override { return configs.timeDst.value; }
-    void setValue(espchrono::DayLightSavingMode value) override { configs.write_config(configs.timeDst, value); }
-};
+//struct TimezoneOffsetAccessor : public NewSettingsAccessor<int32_t> { ConfigWrapper<int32_t> &getConfig() const override { return configs.timezoneOffset; } };
+struct TimezoneOffsetAccessor : public NewSettingsChronoAdaptorAccessor<espchrono::minutes32> { ConfigWrapper<espchrono::minutes32> &getConfig() const override { return configs.timezoneOffset; } };
+struct DaylightSavingModeAccessor : public NewSettingsAccessor<espchrono::DayLightSavingMode> { ConfigWrapper<espchrono::DayLightSavingMode> &getConfig() const override { return configs.timeDst; } };
 #ifdef FEATURE_NTP
-struct TimeServerEnabledAccessor : public virtual espgui::AccessorInterface<bool>
-{
-    bool getValue() const override { return configs.timeServerEnabled.value; }
-    void setValue(bool value) override { configs.write_config(configs.timeServerEnabled, value); }
-};
-struct TimeSyncModeAccessor : public virtual espgui::AccessorInterface<sntp_sync_mode_t>
-{
-    sntp_sync_mode_t getValue() const override { return configs.timeSyncMode.value; }
-    void setValue(sntp_sync_mode_t value) override { configs.write_config(configs.timeSyncMode, value); }
-};
-struct TimeSyncIntervalAccessor : public virtual espgui::AccessorInterface<int32_t>
-{
-    int32_t getValue() const override { return configs.timeSyncInterval.value.count(); }
-    void setValue(int32_t value) override { configs.write_config(configs.timeSyncInterval, espchrono::milliseconds32{value}); }
-};
+struct TimeServerEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.timeServerEnabled; } };
+struct TimeSyncModeAccessor : public NewSettingsAccessor<sntp_sync_mode_t> { ConfigWrapper<sntp_sync_mode_t> &getConfig() const override { return configs.timeSyncMode; } };
+//struct TimeSyncIntervalAccessor : public NewSettingsAccessor<int32_t> { ConfigWrapper<int32_t> &getConfig() const override { return configs.timeSyncInterval; } };
+struct TimeSyncIntervalAccessor : public NewSettingsChronoAdaptorAccessor<espchrono::milliseconds32> { ConfigWrapper<espchrono::milliseconds32> &getConfig() const override { return configs.timeSyncInterval; } };
 #endif
 
 // Controller Hardware
@@ -131,7 +81,13 @@ struct WheelDiameterMmAccessor : public RefAccessorSaveSettings<int16_t> { int16
 struct WheelDiameterInchAccessor : public virtual espgui::AccessorInterface<float>
 {
     float getValue() const override { return convertToInch(settings.controllerHardware.wheelDiameter); }
-    void setValue(float value) override { settings.controllerHardware.wheelDiameter = convertFromInch(value); saveSettings(); }
+    espgui::AccessorInterface<int16_t>::setter_result_t setValue(float value) override
+    {
+        settings.controllerHardware.wheelDiameter = convertFromInch(value);
+        if (!saveSettings())
+            return tl::make_unexpected("saveSettings() failed!");
+        return {};
+    }
 };
 struct NumMagnetPolesAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.numMagnetPoles; } };
 struct SwapFrontBackAccessor : public RefAccessorSaveSettings<bool> {
@@ -150,13 +106,13 @@ struct CanReceiveTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int
 #endif
 
 // Input devices
-struct SampleCountAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.sampleCount; } };
-struct GasMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gasMin; } };
-struct GasMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gasMax; } };
-struct BremsMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.bremsMin; } };
-struct BremsMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.bremsMax; } };
+struct SampleCountAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.sampleCount; } };
+struct GasMinAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.gasMin; } };
+struct GasMaxAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.gasMax; } };
+struct BremsMinAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.bremsMin; } };
+struct BremsMaxAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.bremsMax; } };
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
-struct DPadDebounceAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.boardcomputerHardware.dpadDebounce; } };
+struct DPadDebounceAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadDebounce; } };
 #endif
 #ifdef FEATURE_GAMETRAK
 struct GametrakXMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakXMin; } };

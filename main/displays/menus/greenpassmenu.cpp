@@ -4,6 +4,9 @@
 #include <esp_err.h>
 #include <esp_log.h>
 
+// 3rdparty lib includes
+#include <fmt/core.h>
+
 // local includes
 #include "actions/switchscreenaction.h"
 #include "actions/qraction.h"

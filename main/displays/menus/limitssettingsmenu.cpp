@@ -1,10 +1,11 @@
 #include "limitssettingsmenu.h"
 
 // 3rdparty lib includes
-#include "changevaluedisplay.h"
-#include "menuitem.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
+#include <changevaluedisplay.h>
+#include <menuitem.h>
+#include <actions/switchscreenaction.h>
+#include <icons/back.h>
+#include <textwithvaluehelper.h>
 
 // local includes
 #include "displays/bobbychangevaluedisplay.h"
@@ -17,43 +18,43 @@ using IMotMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_IMOTMAX>,
     IMotMaxAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
-    espgui::SwitchScreenAction<LimitsSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>
 >;
 using IDcMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_IDCMAX>,
     IDcMaxAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
-    espgui::SwitchScreenAction<LimitsSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>
 >;
 using NMotMaxKmhChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NMOTMAXKMH>,
     NMotMaxKmhAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
-    espgui::SwitchScreenAction<LimitsSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>
 >;
 using NMotMaxRpmChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NMOTMAX>,
     NMotMaxRpmAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
-    espgui::SwitchScreenAction<LimitsSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>
 >;
 using FieldWeakMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_FIELDWEAKMAX>,
     FieldWeakMaxAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
-    espgui::SwitchScreenAction<LimitsSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>
 >;
 using PhaseAdvMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_PHASEADVMAX>,
     PhaseAdvMaxAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
-    espgui::SwitchScreenAction<LimitsSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<LimitsSettingsMenu>>
 >;
 } // namespace
 

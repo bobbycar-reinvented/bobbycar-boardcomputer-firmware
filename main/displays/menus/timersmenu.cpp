@@ -16,8 +16,8 @@ using StatsUpdateRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_STATSUPDATERATE>,
     StatsUpdateRateAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TimersMenu>>,
-    espgui::SwitchScreenAction<TimersMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TimersMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TimersMenu>>
 >;
 }
 

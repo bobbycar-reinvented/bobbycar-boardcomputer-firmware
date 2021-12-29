@@ -8,6 +8,7 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
+#include "debugmenu.h"
 #include "utils.h"
 #include "texts.h"
 #include "debugtexthelpers.h"
@@ -37,7 +38,7 @@ public:
     }
 };
 
-class FrontLeftMotorStateDebugMenu : public MotorStateDebugMenu<TEXT_FRONTLEFTCOMMAND, FrontTexts::LeftCommand> {};
-class FrontRightMotorStateDebugMenu : public MotorStateDebugMenu<TEXT_FRONTRIGHTCOMMAND, FrontTexts::RightCommand> {};
-class BackLeftMotorStateDebugMenu : public MotorStateDebugMenu<TEXT_BACKLEFTCOMMAND, BackTexts::LeftCommand> {};
-class BackRightMotorStateDebugMenu : public MotorStateDebugMenu<TEXT_BACKRIGHTCOMMAND, BackTexts::RightCommand> {};
+using FrontLeftMotorStateDebugMenu = MotorStateDebugMenu<TEXT_FRONTLEFTCOMMAND, FrontTexts::LeftCommand>;
+using FrontRightMotorStateDebugMenu = MotorStateDebugMenu<TEXT_FRONTRIGHTCOMMAND, FrontTexts::RightCommand>;
+using BackLeftMotorStateDebugMenu = MotorStateDebugMenu<TEXT_BACKLEFTCOMMAND, BackTexts::LeftCommand>;
+using BackRightMotorStateDebugMenu = MotorStateDebugMenu<TEXT_BACKRIGHTCOMMAND, BackTexts::RightCommand>;

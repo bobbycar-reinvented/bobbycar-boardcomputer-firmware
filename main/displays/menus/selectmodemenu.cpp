@@ -1,10 +1,13 @@
 #include "selectmodemenu.h"
 
+// 3rdparty lib includes
+#include <actions/multiaction.h>
+#include <actions/switchscreenaction.h>
+#include <icons/back.h>
+#include <textwithvaluehelper.h>
+
 // local includes
 #include "utils.h"
-#include "actions/multiaction.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
 #include "globals.h"
 #include "modes/defaultmode.h"
 #include "modes/tempomatmode.h"

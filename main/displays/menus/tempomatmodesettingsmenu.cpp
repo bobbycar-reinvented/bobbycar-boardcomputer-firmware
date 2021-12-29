@@ -1,10 +1,11 @@
 #include "tempomatmodesettingsmenu.h"
 
 // 3rdparty lib includes
-#include "changevaluedisplay.h"
-#include "menuitem.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
+#include <changevaluedisplay.h>
+#include <menuitem.h>
+#include <actions/switchscreenaction.h>
+#include <icons/back.h>
+#include <textwithvaluehelper.h>
 
 // local includes
 #include "displays/bobbychangevaluedisplay.h"
@@ -20,16 +21,16 @@ using TempomatModeCruiseMotTgtChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NCRUISEMOTTGT>,
     TempomatModeCruiseMotTgtAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,
-    espgui::SwitchScreenAction<TempomatModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>
 >;
 
 using TempomatModeModelModeChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<UnifiedModelMode>,
     espgui::StaticText<TEXT_MODELMODE>,
     TempomatModeModelModeAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,
-    espgui::SwitchScreenAction<TempomatModeSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TempomatModeSettingsMenu>>
 >;
 } // namespace
 

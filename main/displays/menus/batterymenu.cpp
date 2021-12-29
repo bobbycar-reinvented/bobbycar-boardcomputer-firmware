@@ -2,13 +2,14 @@
 
 // 3rdparty lib includes
 #include <changevaluedisplay.h>
+#include <textwithvaluehelper.h>
+#include <fmt/core.h>
 
 // local includes
 #include "displays/bobbychangevaluedisplay.h"
 #include "mainmenu.h"
 #include "displays/calibratevoltagedisplay.h"
 #include "accessors/settingsaccessors.h"
-#include "fmt/core.h"
 #include "battery.h"
 
 class CurrentBatteryStatusText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryPercentageString(); } };
@@ -17,24 +18,24 @@ using BatteryCellSeriesChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_CELL_SERIES>,
     BatterySeriesCellsAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BatteryMenu>>,
-    espgui::SwitchScreenAction<BatteryMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BatteryMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BatteryMenu>>
 >;
 
 using BatteryCellParallelChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_CELL_PARALLEL>,
     BatteryParallelCellsAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BatteryMenu>>,
-    espgui::SwitchScreenAction<BatteryMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BatteryMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BatteryMenu>>
 >;
 
 using BatteryWHperKMChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
     espgui::StaticText<TEXT_BATTERY_WHKM>,
     BatteryWHperKMAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BatteryMenu>>,
-    espgui::SwitchScreenAction<BatteryMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BatteryMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<BatteryMenu>>
 >;
 
 using namespace espgui;

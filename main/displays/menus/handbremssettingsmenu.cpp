@@ -2,11 +2,12 @@
 
 // 3rd party libs
 #include <fmt/core.h>
-#include "actions/switchscreenaction.h"
-#include "actions/toggleboolaction.h"
-#include "changevaluedisplay.h"
-#include "checkboxicon.h"
-#include "icons/back.h"
+#include <actions/switchscreenaction.h>
+#include <actions/toggleboolaction.h>
+#include <changevaluedisplay.h>
+#include <checkboxicon.h>
+#include <icons/back.h>
+#include <textwithvaluehelper.h>
 
 // local includes
 #include "displays/bobbychangevaluedisplay.h"
@@ -20,15 +21,15 @@ using HandBremsTriggerTimeoutChangeValueDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
     espgui::StaticText<TEXT_HANDBREMSE_TRIGGERTIMEOUT>,
     HandbremsTimeoutAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>,
-    espgui::SwitchScreenAction<HandbremsSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>
 >;
 using HandBremsModeChangeValueDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<HandbremseMode>,
     espgui::StaticText<TEXT_HANDBREMSE_MODE>,
     HandbremsModeAccessor,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>,
-    espgui::SwitchScreenAction<HandbremsSettingsMenu>
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>
 >;
 class HandBremsModeText : public virtual espgui::TextInterface
 {

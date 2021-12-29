@@ -2,6 +2,7 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
+#include "debugmenu.h"
 #include "utils.h"
 #include "menuitem.h"
 #include "actions/dummyaction.h"
@@ -30,7 +31,7 @@ public:
     }
 };
 
-class FrontCommandDebugMenu : public CommandDebugMenu<TEXT_FRONTCOMMAND, FrontTexts> {};
-class BackCommandDebugMenu : public CommandDebugMenu<TEXT_BACKCOMMAND, BackTexts> {};
+using FrontCommandDebugMenu = CommandDebugMenu<TEXT_FRONTCOMMAND, FrontTexts>;
+using BackCommandDebugMenu = CommandDebugMenu<TEXT_BACKCOMMAND, BackTexts>;
 
 } // namespace

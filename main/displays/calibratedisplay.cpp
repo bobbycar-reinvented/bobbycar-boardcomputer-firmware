@@ -8,6 +8,7 @@
 #include "displays/menus/mainmenu.h"
 #include "displays/statusdisplay.h"
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
+#include "newsettings.h"
 
 CalibrateDisplay::CalibrateDisplay(bool bootup) :
     m_bootup{bootup}
@@ -274,16 +275,16 @@ void CalibrateDisplay::buttonPressed(espgui::Button button)
 
 void CalibrateDisplay::copyFromSettings()
 {
-    m_gasMin = settings.boardcomputerHardware.gasMin;
-    m_gasMax = settings.boardcomputerHardware.gasMax;
-    m_bremsMin = settings.boardcomputerHardware.bremsMin;
-    m_bremsMax = settings.boardcomputerHardware.bremsMax;
+    m_gasMin = configs.gasMin.value;
+    m_gasMax = configs.gasMax.value;
+    m_bremsMin = configs.bremsMin.value;
+    m_bremsMax = configs.bremsMax.value;
 }
 
 void CalibrateDisplay::copyToSettings()
 {
-    settings.boardcomputerHardware.gasMin = m_gasMin;
-    settings.boardcomputerHardware.gasMax = m_gasMax;
-    settings.boardcomputerHardware.bremsMin = m_bremsMin;
-    settings.boardcomputerHardware.bremsMax = m_bremsMax;
+    configs.write_config(configs.gasMin, m_gasMin);
+    configs.write_config(configs.gasMax, m_gasMax);
+    configs.write_config(configs.bremsMin, m_bremsMin);
+    configs.write_config(configs.bremsMax, m_bremsMax);
 }

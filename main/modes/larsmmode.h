@@ -4,6 +4,8 @@
 #include "bobbycar-common.h"
 #include "modeinterface.h"
 
+enum class LarsmModeMode : uint8_t { Mode1, Mode2, Mode3, Mode4 };
+
 class LarsmMode : public ModeInterface
 {
     using Base = ModeInterface;

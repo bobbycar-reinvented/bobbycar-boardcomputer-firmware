@@ -1,5 +1,8 @@
 #pragma once
 
+// system includes
+#include <optional>
+
 // 3rdparty lib includes
 #include "buttonsinterface.h"
 
@@ -16,6 +19,9 @@ enum BobbyButton
     Confirm = espgui::Button::Right,
     Back = espgui::Button::Left
 };
+
+[[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button);
+void buttonPressedCommon(espgui::Button button);
 
 class BobbyButtons : public virtual espgui::ButtonsInterface
 {

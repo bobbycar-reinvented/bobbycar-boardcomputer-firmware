@@ -13,6 +13,7 @@
 #include "buttons.h"
 #include "types.h"
 #include "globals.h"
+#include "newsettings.h"
 
 namespace {
 namespace dpad6wire {
@@ -135,7 +136,7 @@ void update()
 
     const auto now = espchrono::millis_clock::now();
 
-    const std::chrono::milliseconds dpadDebounce{settings.boardcomputerHardware.dpadDebounce};
+    const std::chrono::milliseconds dpadDebounce{configs.dpadDebounce.value};
 
     if (lastState.up != newState.up && now - debounceUp > dpadDebounce)
     {
