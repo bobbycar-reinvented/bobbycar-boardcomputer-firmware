@@ -1,22 +1,12 @@
 #pragma once
 
-// system includes
-#include <string>
+// local includes
+#include "accessorhelpers.h"
+#include "newsettings.h"
 
-// 3rdparty lib includes
-#include <accessorinterface.h>
-#include <espwifiutils.h>
-
-class WifiApEnabledAccessor : public virtual espgui::AccessorInterface<bool>
-{
-public:
-    bool getValue() const override;
-    void setValue(bool value) override;
-};
-
-//class WifiApDisableWhenOnlineAccessor : public virtual espgui::AccessorInterface<bool>
-//{
-//public:
-//    bool getValue() const override;
-//    void setValue(bool value) override;
-//};
+struct WifiApEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.wifiApEnabled; } };
+//struct WifiApDisableWhenOnlineAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.wifiDisableApWhenOnline; } };
+struct WifiApNameAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.wifiApName; } };
+struct WifiApKeyAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.wifiApKey; } };
+struct WifiApChannelAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.wifiApChannel; } };
+struct WifiApAuthmodeAccessor : public NewSettingsAccessor<wifi_auth_mode_t> { ConfigWrapper<wifi_auth_mode_t> &getConfig() const override { return configs.wifiApAuthmode; } };

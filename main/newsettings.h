@@ -104,10 +104,10 @@ public:
     ConfigWrapper<bool>        wifiApEnabled      {true,                                   DoReset,   {},                           "wifiApEnabled"       };
     ConfigWrapper<std::string> wifiApName         {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,      "wifiApName"          };
     ConfigWrapper<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey" };
-    ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   {},                           "wifiApChannel"       };
+    ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   MinMaxValue<uint8_t, 1, 14>,  "wifiApChannel"       };
     ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                           "wifiApAuthmode"      };
 
-    ConfigWrapper<bool>     timeServerEnabled     {false,                                  DoReset,   {},                           "timeServerEnabl"     };
+    ConfigWrapper<bool>     timeServerEnabled     {true,                                   DoReset,   {},                           "timeServerEnabl"     };
     ConfigWrapper<std::string>   timeServer       {"europe.pool.ntp.org",                  DoReset,   StringMaxSize<64>,            "timeServer"          };
     ConfigWrapper<sntp_sync_mode_t> timeSyncMode  {SNTP_SYNC_MODE_IMMED,                   DoReset,   {},                           "timeSyncMode"        };
     ConfigWrapper<espchrono::milliseconds32> timeSyncInterval{espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY}, DoReset, MinTimeSyncInterval, "timeSyncInterva" };

@@ -14,6 +14,7 @@
 #include <espwifistack.h>
 
 // local includes
+#include "displays/bobbychangevaluedisplay.h"
 #include "wifiapclientsmenu.h"
 #include "networksettingsmenu.h"
 #include "accessors/wifiapconfigaccessors.h"
@@ -28,11 +29,22 @@ constexpr char TEXT_ENABLED[] = "Enabled";
 constexpr char TEXT_DISABLEWHENONLINE[] = "Disable when online";
 constexpr char TEXT_BACK[] = "Back";
 
+constexpr char TEXT_CHANNEL[] = "Channel";
+constexpr char TEXT_CHANNEL_FORMATTED[] = "Channel: &2";
+
 class WifiApClientsAction : public virtual ActionInterface
 {
 public:
     void triggered() override;
 };
+
+using ApChannelChangeScreen = espgui::makeComponent<
+    BobbyChangeValueDisplay<uint8_t>,
+    espgui::StaticText<TEXT_CHANNEL>,
+    WifiApChannelAccessor,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
+    espgui::SwitchScreenAction<WifiApSettingsMenu>
+>;
 } // namespace
 
 WifiApSettingsMenu::WifiApSettingsMenu()
@@ -43,8 +55,11 @@ WifiApSettingsMenu::WifiApSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, WifiApIpText,                        DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, WifiApMaskText,                      DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, WifiApHostnameText,                  DummyAction>>();
+
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLED>,            ToggleBoolAction, CheckboxIcon, WifiApEnabledAccessor>>();
     //constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISABLEWHENONLINE>,  ToggleBoolAction, CheckboxIcon, WifiApDisableWhenOnlineAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CHANNEL_FORMATTED, WifiApChannelAccessor>, SwitchScreenAction<ApChannelChangeScreen>>>();
+
     constructMenuItem<makeComponent<MenuItem, WifiApClientsText,                   WifiApClientsAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<NetworkSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
 }

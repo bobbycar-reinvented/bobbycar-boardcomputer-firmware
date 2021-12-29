@@ -6,22 +6,8 @@
 // local includes
 #include "globals.h"
 #include "utils.h"
+#include "accessorhelpers.h"
 #include "newsettings.h"
-
-//! Special type of RefAccessor that also saves settings after setValue()
-template<typename T>
-struct RefAccessorSaveSettings : public virtual espgui::RefAccessor<T>
-{
-    void setValue(T value) override { espgui::RefAccessor<T>::setValue(value); saveSettings(); };
-};
-template<typename T>
-struct NewSettingsAccessor : public virtual espgui::AccessorInterface<T>
-{
-    virtual ConfigWrapper<T>& getConfig() const = 0;
-
-    T getValue() const override { return getConfig().value; }
-    void setValue(T value) override { configs.write_config(getConfig(), value); }
-};
 
 // Bms
 #ifdef FEATURE_BMS
@@ -29,31 +15,11 @@ struct AutoConnectBmsAccessor : public RefAccessorSaveSettings<bool> { bool &get
 #endif
 
 // Buzzer
-struct ReverseBeepAccessor : public virtual espgui::AccessorInterface<bool>
-{
-    bool getValue() const override { return configs.reverseBeep.value; }
-    void setValue(bool value) override { configs.write_config(configs.reverseBeep, value); }
-};
-struct ReverseBeepFreq0Accessor : public virtual espgui::AccessorInterface<uint8_t>
-{
-    uint8_t getValue() const override { return configs.reverseBeepFreq0.value; }
-    void setValue(uint8_t value) override { configs.write_config(configs.reverseBeepFreq0, value); }
-};
-struct ReverseBeepFreq1Accessor : public virtual espgui::AccessorInterface<uint8_t>
-{
-    uint8_t getValue() const override { return configs.reverseBeepFreq1.value; }
-    void setValue(uint8_t value) override { configs.write_config(configs.reverseBeepFreq1, value); }
-};
-struct ReverseBeepDuration0Accessor : public virtual espgui::AccessorInterface<int16_t>
-{
-    int16_t getValue() const override { return configs.reverseBeepDuration0.value; }
-    void setValue(int16_t value) override { configs.write_config(configs.reverseBeepDuration0, value); }
-};
-struct ReverseBeepDuration1Accessor : public virtual espgui::AccessorInterface<int16_t>
-{
-    int16_t getValue() const override { return configs.reverseBeepDuration1.value; }
-    void setValue(int16_t value) override { configs.write_config(configs.reverseBeepDuration1, value); }
-};
+struct ReverseBeepAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.reverseBeep; } };
+struct ReverseBeepFreq0Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.reverseBeepFreq0; } };
+struct ReverseBeepFreq1Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.reverseBeepFreq1; } };
+struct ReverseBeepDuration0Accessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.reverseBeepDuration0; } };
+struct ReverseBeepDuration1Accessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.reverseBeepDuration1; } };
 
 // Limits
 struct IMotMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.iMotMax; } };
@@ -66,18 +32,6 @@ struct NMotMaxKmhAccessor : public virtual espgui::AccessorInterface<int16_t>
 struct NMotMaxRpmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.nMotMax; } };
 struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.fieldWeakMax; } };
 struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.phaseAdvMax; } };
-
-// WiFi
-struct WifiStaEnabledAccessor : public virtual espgui::AccessorInterface<bool>
-{
-    bool getValue() const override { return configs.wifiStaEnabled.value; }
-    void setValue(bool value) override { configs.write_config(configs.wifiStaEnabled, value); }
-};
-struct WifiApEnabledAccessor : public virtual espgui::AccessorInterface<bool>
-{
-    bool getValue() const override { return configs.wifiApEnabled.value; }
-    void setValue(bool value) override { configs.write_config(configs.wifiApEnabled, value); }
-};
 
 // Bluetooth
 #ifdef FEATURE_BLUETOOTH

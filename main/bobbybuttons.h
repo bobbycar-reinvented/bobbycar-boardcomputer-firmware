@@ -20,7 +20,7 @@ enum BobbyButton
     Back = espgui::Button::Left
 };
 
-std::optional<espgui::Button> translateRawButton(uint8_t button);
+[[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button);
 void buttonPressedCommon(espgui::Button button);
 
 class BobbyButtons : public virtual espgui::ButtonsInterface

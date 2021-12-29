@@ -1,6 +1,6 @@
 #include "bobbybuttons.h"
 
-std::optional<espgui::Button> translateRawButton(uint8_t button)
+[[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button)
 {
     switch (button)
     {
