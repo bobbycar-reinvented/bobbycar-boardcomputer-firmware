@@ -10,6 +10,9 @@
 #include "displays/menus/mainmenu.h"
 #include "displays/calibratedisplay.h"
 #include "bobbybuttons.h"
+#ifdef LOCKSCREEN_PLUGIN
+#include "ledstripdefines.h"
+#endif
 
 void Lockscreen::start()
 {
