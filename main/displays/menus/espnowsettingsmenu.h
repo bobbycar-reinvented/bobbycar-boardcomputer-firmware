@@ -2,30 +2,16 @@
 
 #ifdef FEATURE_ESPNOW
 
-// 3rdparty lib includes
-#include <accessorinterface.h>
-#include <actioninterface.h>
-#include <espchrono.h>
-#include <fmt/core.h>
-#include <menudisplay.h>
-#include <textinterface.h>
-#include <texts.h>
-
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "espnowfunctions.h"
 
-using namespace espgui;
-
-namespace espnowsettingsmenu {
-} // namespace
-
-class EspNowSettingsMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_ESPNOW_SETTINGS>
+class EspNowSettingsMenu : public BobbyMenuDisplay
 {
 public:
     EspNowSettingsMenu();
+
+    std::string text() const override;
+
     void back() override;
 };
 

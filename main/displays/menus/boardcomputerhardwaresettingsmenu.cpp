@@ -19,6 +19,25 @@
 #include "displays/menus/settingsmenu.h"
 
 namespace {
+constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
+constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
+constexpr char TEXT_CALIBRATE[] = "Calibrate";
+constexpr char TEXT_SAMPLECOUNT[] = "sampleCount";
+constexpr char TEXT_GASMIN[] = "gasMin";
+constexpr char TEXT_GASMAX[] = "gasMax";
+constexpr char TEXT_BREMSMIN[] = "bremsMin";
+constexpr char TEXT_BREMSMAX[] = "bremsMax";
+constexpr char TEXT_DPADDEBOUNCE[] = "dpadDebounce";
+constexpr char TEXT_GAMETRAKCALIBRATE[] = "Gametrak calibrate";
+constexpr char TEXT_SETGAMETRAKXMIN[] = "Set gametrakXMin";
+constexpr char TEXT_SETGAMETRAKXMAX[] = "Set gametrakXMax";
+constexpr char TEXT_SETGAMETRAKYMIN[] = "Set gametrakYMin";
+constexpr char TEXT_SETGAMETRAKYMAX[] = "Set gametrakYMax";
+constexpr char TEXT_SETGAMETRAKDISTMIN[] = "Set gametrakDistMin";
+constexpr char TEXT_SETGAMETRAKDISTMAX[] = "Set gametrakDistMax";
+constexpr char TEXT_TIMERS[] = "Timers";
+constexpr char TEXT_BACK[] = "Back";
+
 struct GasText : public virtual espgui::TextInterface
 {
 public:
@@ -179,6 +198,11 @@ BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                    DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIMERS>,                                      SwitchScreenAction<TimersMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+}
+
+std::string BoardcomputerHardwareSettingsMenu::text() const
+{
+    return TEXT_BOARDCOMPUTERHARDWARESETTINGS;
 }
 
 void BoardcomputerHardwareSettingsMenu::back()

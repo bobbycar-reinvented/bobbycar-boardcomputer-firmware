@@ -26,10 +26,12 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::LedText,           DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
+
+private:
+    static constexpr char TEXT_BACK[] = "Back";
 };
 
 constexpr char TEXT_FRONTCOMMAND[] = "Front command";
-using FrontCommandDebugMenu = CommandDebugMenu<TEXT_FRONTCOMMAND, FrontTexts>;
-
 constexpr char TEXT_BACKCOMMAND[] = "Back command";
+using FrontCommandDebugMenu = CommandDebugMenu<TEXT_FRONTCOMMAND, FrontTexts>;
 using BackCommandDebugMenu = CommandDebugMenu<TEXT_BACKCOMMAND, BackTexts>;

@@ -8,7 +8,6 @@
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
-#include "texts.h"
 #include "debugtexthelpers.h"
 #include "debugcolorhelpers.h"
 
@@ -39,6 +38,9 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::HallText,         ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
+
+private:
+    static constexpr char TEXT_BACK[] = "Back";
 };
 
 constexpr char TEXT_FRONTLEFTFEEDBACK[] = "Front left feedback";

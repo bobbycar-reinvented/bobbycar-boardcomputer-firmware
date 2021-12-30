@@ -18,9 +18,11 @@
 #include "qrimport.h"
 #include "bobbycheckbox.h"
 
-using namespace espgui;
-
 namespace {
+constexpr char TEXT_GREENPASS[] = "Green Pass";
+constexpr char TEXT_ADDCERT[] = "Add cert";
+constexpr char TEXT_DELCERT[] = "Delete cert mode";
+constexpr char TEXT_BACK[] = "Back";
 
 bool deleteMode;
 struct DeleteModeAccessor : espgui::RefAccessor<bool> { bool &getRef() const override { return deleteMode; } };
@@ -47,11 +49,11 @@ public:
         if (deleteMode)
         {
             qrimport::delete_qr_code(m_qrmenu.text);
-            switchScreen<GreenPassMenu>();
+            espgui::switchScreen<GreenPassMenu>();
         }
         else
         {
-            switchScreen<QrDisplay>(m_qrmenu.message, m_qrmenu.ver);
+            espgui::switchScreen<QrDisplay>(m_qrmenu.message, m_qrmenu.ver);
         }
     }
 private:
@@ -62,6 +64,8 @@ private:
 
 GreenPassMenu::GreenPassMenu()
 {
+    using namespace espgui;
+
     for (uint8_t index = 0; index < 4; index++)
     {
         const std::string nvs_key = fmt::format("covidcert-{}", index);
@@ -87,7 +91,12 @@ GreenPassMenu::GreenPassMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
+std::string GreenPassMenu::text() const
+{
+    return TEXT_GREENPASS;
+}
+
 void GreenPassMenu::back()
 {
-    switchScreen<MainMenu>();
+    espgui::switchScreen<MainMenu>();
 }

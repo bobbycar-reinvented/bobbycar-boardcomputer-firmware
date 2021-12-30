@@ -18,6 +18,12 @@
 
 #ifdef FEATURE_CLOUD
 namespace {
+constexpr char TEXT_CLOUDSETTINGS[] = "Cloud settings";
+constexpr char TEXT_CLOUDENABLED[] = "Cloud enabled";
+constexpr char TEXT_CLOUDTRANSMITTIMEOUT[] = "Transmit timeout";
+constexpr char TEXT_CLOUDCOLLECTRATE[] = "Cloud collect rate";
+constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
+constexpr char TEXT_BACK[] = "Back";
 
 using CloudTransmitTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
@@ -66,6 +72,11 @@ CloudSettingsMenu::CloudSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDCOLLECTRATE>,     SwitchScreenAction<CloudCollectRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,        SwitchScreenAction<CloudSendRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string CloudSettingsMenu::text() const
+{
+    return TEXT_CLOUDSETTINGS;
 }
 
 void CloudSettingsMenu::back()

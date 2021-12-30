@@ -2,14 +2,13 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-class LockscreenSettingsMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_LOCKSCREENSETTINGS>
+class LockscreenSettingsMenu : public BobbyMenuDisplay
 {
 public:
     LockscreenSettingsMenu();
+
+    std::string text() const override;
 
     void back() override;
 };

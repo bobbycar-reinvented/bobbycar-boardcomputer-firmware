@@ -2,14 +2,13 @@
 
 // local includes
 #include "displays/menudisplaywithtime.h"
-#include "texts.h"
 
-class SettingsMenu :
-    public bobbygui::MenuDisplayWithTime,
-    public espgui::StaticText<TEXT_SETTINGS>
+class SettingsMenu : public bobbygui::MenuDisplayWithTime
 {
 public:
     SettingsMenu();
+
+    std::string text() const override;
 
     void back() override;
 };

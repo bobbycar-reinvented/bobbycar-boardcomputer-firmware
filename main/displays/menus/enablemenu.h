@@ -2,15 +2,13 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-using namespace espgui;
-
-class EnableMenu :
-    public BobbyMenuDisplay,
-    public StaticText<TEXT_SETENABLED>
+class EnableMenu : public BobbyMenuDisplay
 {
 public:
     EnableMenu();
+
+    std::string text() const override;
+
     void back() override;
 };

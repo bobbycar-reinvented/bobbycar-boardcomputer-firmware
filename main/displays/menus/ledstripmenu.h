@@ -2,15 +2,14 @@
 
 // local includes
 #include "displays/menudisplaywithtime.h"
-#include "texts.h"
 
 #ifdef FEATURE_LEDSTRIP
-class LedstripMenu :
-    public bobbygui::MenuDisplayWithTime,
-    public espgui::StaticText<TEXT_LEDSTRIP>
+class LedstripMenu : public bobbygui::MenuDisplayWithTime
 {
 public:
     LedstripMenu();
+
+    std::string text() const override;
 
     void back() override;
 };

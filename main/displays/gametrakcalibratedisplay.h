@@ -12,7 +12,6 @@
 // local includes
 #include "bobbydisplay.h"
 #include "globals.h"
-#include "texts.h"
 #include "modes/ignoreinputmode.h"
 
 namespace {

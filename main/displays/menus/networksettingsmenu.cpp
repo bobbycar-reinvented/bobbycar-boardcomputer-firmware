@@ -19,7 +19,7 @@ using namespace espgui;
 namespace {
 constexpr char TEXT_STASETTINGS[] = "STA Settings";
 constexpr char TEXT_APSETTINGS[] = "AP Settings";
-//constexpr char TEXT_BACK[] = "Back";
+constexpr char TEXT_BACK[] = "Back";
 } // namespace
 
 NetworkSettingsMenu::NetworkSettingsMenu()

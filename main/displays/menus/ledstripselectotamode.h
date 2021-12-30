@@ -1,31 +1,15 @@
 #pragma once
 
-// Local includes
+// local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
-#include "ledstrip.h"
-#include "globals.h"
-#include "utils.h"
 
 #if defined(FEATURE_LEDSTRIP) && defined(FEATURE_OTA)
-
-template <OtaAnimationModes mode>
-class LedstripChangeOtaAnimModeAction : public virtual espgui::ActionInterface
+class LedstripOtaAnimationChangeMenu : public BobbyMenuDisplay
 {
 public:
-    void triggered() override
-    {
-        settings.ledstrip.otaMode = mode;
-        saveSettings();
-    }
-};
+    LedstripOtaAnimationChangeMenu();
 
-class ledstripOtaAnimationChangeMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_BLINKANIMATION>
-{
-public:
-    ledstripOtaAnimationChangeMenu();
+    std::string text() const override;
     void back() override;
 };
 #endif

@@ -15,6 +15,18 @@
 #include "bobbycheckbox.h"
 
 namespace {
+constexpr char TEXT_BUZZER[] = "Buzzer";
+constexpr char TEXT_FRONTFREQ[] = "Front freq";
+constexpr char TEXT_FRONTPATTERN[] = "Front pattern";
+constexpr char TEXT_BACKFREQ[] = "Back freq";
+constexpr char TEXT_BACKPATTERN[] = "Back pattern";
+constexpr char TEXT_REVERSEBEEP[] = "Reverse beep";
+constexpr char TEXT_REVERSEBEEPFREQ0[] = "Reverse beep freq0";
+constexpr char TEXT_REVERSEBEEPFREQ1[] = "Reverse beep freq1";
+constexpr char TEXT_REVERSEBEEPDURATION0[] = "Reverse beep duration0";
+constexpr char TEXT_REVERSEBEEPDURATION1[] = "Reverse beep duration1";
+constexpr char TEXT_BACK[] = "Back";
+
 struct FrontFreqAccessor : public espgui::RefAccessor<uint8_t> { uint8_t &getRef() const override { return controllers.front.command.buzzer.freq; } };
 using FrontFreqChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
@@ -95,6 +107,11 @@ BuzzerMenu::BuzzerMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPDURATION0>, SwitchScreenAction<ReverseBeepDuration0ChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPDURATION1>, SwitchScreenAction<ReverseBeepDuration1ChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string BuzzerMenu::text() const
+{
+    return TEXT_BUZZER;
 }
 
 void BuzzerMenu::back()

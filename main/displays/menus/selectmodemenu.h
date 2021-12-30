@@ -2,16 +2,15 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-class SelectModeMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_SELECTMODE>
+class SelectModeMenu : public BobbyMenuDisplay
 {
     using Base = BobbyMenuDisplay;
 
 public:
     SelectModeMenu();
+
+    std::string text() const override;
 
     void start() override;
     void back() override;

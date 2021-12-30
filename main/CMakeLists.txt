@@ -57,7 +57,6 @@ set(headers
     statistics.h
     statustexthelper.h
     taskmanager.h
-    texts.h
     time_bobbycar.h
     types.h
     udpcloud.h
@@ -292,7 +291,6 @@ set(sources
     statistics.cpp
     statustexthelper.cpp
     taskmanager.cpp
-    texts.cpp
     time_bobbycar.cpp
     types.cpp
     udpcloud.cpp

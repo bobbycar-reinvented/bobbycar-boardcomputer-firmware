@@ -17,13 +17,14 @@
 #include "utils.h"
 #include "icons/back.h"
 #include "icons/bobbycar.h"
-#include "texts.h"
 #include "actions/dummyaction.h"
 #include "globals.h"
 #include "displays/menus/ledstripmenu.h"
 
 #ifdef FEATURE_LEDSTRIP
 namespace {
+constexpr char TEXT_LEDSTRIPCOLORMENU[] = "Customize Ledstrip";
+
 int8_t selected_side = 7;
 int8_t selected_color;
 bool state_select_color{false};

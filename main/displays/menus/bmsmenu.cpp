@@ -13,7 +13,6 @@
 #include "actions/switchscreenaction.h"
 #include "bluetoothtexthelpers.h"
 #include "icons/back.h"
-#include "texts.h"
 #include "displays/menus/mainmenu.h"
 
 using namespace espgui;

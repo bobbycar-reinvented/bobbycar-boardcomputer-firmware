@@ -176,6 +176,8 @@ public:
     ConfigWrapper<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
     ConfigWrapper<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
 
+    ConfigWrapper<uint32_t> ledStripMaxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
+
 #define NEW_SETTINGS(x) \
     x(baseMacAddressOverride) \
     x(hostname) \
@@ -361,7 +363,9 @@ public:
     \
     x(dns_announce_enabled) \
     x(dns_announce_key) \
-    // x(webserverPassword)
+    x(webserverPassword) \
+    \
+    //x(ledStripMaxMilliamps)
 
     template<typename T>
     void callForEveryConfig(T &&callback)
@@ -369,7 +373,7 @@ public:
 #define HELPER(x) callback(x);
         NEW_SETTINGS(HELPER)
 #undef HELPER
-        callback(webserverPassword);
+        callback(ledStripMaxMilliamps);
     }
 
     auto getAllConfigParams()
@@ -378,7 +382,7 @@ public:
 #define HELPER(x) std::ref<ConfigWrapperInterface>(x),
             NEW_SETTINGS(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(webserverPassword)
+            std::ref<ConfigWrapperInterface>(ledStripMaxMilliamps)
         );
     }
 };

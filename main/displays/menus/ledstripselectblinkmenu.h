@@ -2,22 +2,14 @@
 
 // Local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
-#include "ledstrip.h"
-#include "ledstripdefines.h"
 
 #ifdef FEATURE_LEDSTRIP
-class currentSelectedBlinkAnimationText : public virtual espgui::TextInterface
-{
-public: std::string text() const override;
-};
-
-class LedstripSelectBlinkMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_BLINKANIMATION>
+class LedstripSelectBlinkMenu : public BobbyMenuDisplay
 {
 public:
     LedstripSelectBlinkMenu();
+
+    std::string text() const override;
     void back() override;
 };
 #endif

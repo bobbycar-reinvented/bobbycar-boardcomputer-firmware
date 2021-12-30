@@ -17,7 +17,6 @@
 
 // local includes
 #include "globals.h"
-#include "texts.h"
 #include "ota.h"
 #include "displays/menus/otamenu.h"
 #include "newsettings.h"
@@ -30,7 +29,7 @@ void UpdateDisplay::initScreen()
     espgui::tft.setTextFont(4);
     espgui::tft.setTextColor(TFT_YELLOW);
 
-    espgui::tft.drawString(TEXT_UPDATE, 5, 5, 4);
+    espgui::tft.drawString("Update", 5, 5, 4);
 
     espgui::tft.fillRect(0, 34, espgui::tft.width(), 3, TFT_WHITE);
 

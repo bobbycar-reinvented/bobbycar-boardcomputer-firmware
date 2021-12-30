@@ -18,9 +18,12 @@
 #ifdef FEATURE_OTA
 
 using namespace buildserver::SelectBuild;
-using namespace espgui;
 
 namespace {
+constexpr char TEXT_SELECTBUILDSERVERMENU[] = "Select Buildserver";
+constexpr char TEXT_NOBUILDSERVERCONFIGURED[] = "Not configured";
+constexpr char TEXT_BACK[] = "Back";
+
 class BuildserverMenuItem : public espgui::MenuItem
 {
 public:
@@ -49,6 +52,8 @@ private:
 
 SelectBuildServerMenu::SelectBuildServerMenu()
 {
+    using namespace espgui;
+
     for (const auto &otaServer : configs.otaServers)
     {
         std::string url = otaServer.url.value;
@@ -68,6 +73,11 @@ SelectBuildServerMenu::SelectBuildServerMenu()
     }
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string SelectBuildServerMenu::text() const
+{
+    return TEXT_SELECTBUILDSERVERMENU;
 }
 
 void SelectBuildServerMenu::back()

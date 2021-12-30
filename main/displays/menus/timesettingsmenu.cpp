@@ -21,6 +21,15 @@
 #include "bobbycheckbox.h"
 
 namespace {
+constexpr char TEXT_TIME[] = "Time";
+constexpr char TEXT_OFFSET[] = "Offset";
+constexpr char TEXT_DAYLIGHTSAVINGMODE[] = "Daylight Saving";
+constexpr char TEXT_NTPENABLED[] = "NTP Enabled";
+constexpr char TEXT_NTPSERVER[] = "NTP Server";
+constexpr char TEXT_NTPMODE[] = "NTP Mode";
+constexpr char TEXT_NTPINTERVAL[] = "NTP Interval";
+constexpr char TEXT_BACK[] = "Back";
+
 class CurrentUtcDateTimeText : public virtual espgui::TextInterface
 {
 public:
@@ -103,6 +112,11 @@ TimeSettingsMenu::TimeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, NtpSyncStatusText,                   DummyAction>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string TimeSettingsMenu::text() const
+{
+    return TEXT_TIME;
 }
 
 void TimeSettingsMenu::back()

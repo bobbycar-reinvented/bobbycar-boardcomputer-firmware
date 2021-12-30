@@ -2,15 +2,13 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-using namespace espgui;
-
-class CrashMenu :
-    public BobbyMenuDisplay,
-    public StaticText<TEXT_CRASHMENU>
+class CrashMenu : public BobbyMenuDisplay
 {
 public:
     CrashMenu();
+
+    std::string text() const override;
+
     void back() override;
 };

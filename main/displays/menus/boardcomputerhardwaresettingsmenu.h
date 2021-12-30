@@ -2,14 +2,13 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-class BoardcomputerHardwareSettingsMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>
+class BoardcomputerHardwareSettingsMenu : public BobbyMenuDisplay
 {
 public:
     BoardcomputerHardwareSettingsMenu();
+
+    std::string text() const override;
 
     void back() override;
 };

@@ -14,6 +14,15 @@
 #include "displays/menus/settingsmenu.h"
 
 namespace {
+constexpr char TEXT_LIMITSSETTINGS[] = "Limit settings";
+constexpr char TEXT_IMOTMAX[] = "iMotMax";
+constexpr char TEXT_IDCMAX[] = "iDcMax";
+constexpr char TEXT_NMOTMAXKMH[] = "nMotMaxKmh";
+constexpr char TEXT_NMOTMAX[] = "nMotMax";
+constexpr char TEXT_FIELDWEAKMAX[] = "fldWkMax";
+constexpr char TEXT_PHASEADVMAX[] = "phsAdvMax";
+constexpr char TEXT_BACK[] = "Back";
+
 using IMotMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_IMOTMAX>,
@@ -69,6 +78,11 @@ LimitsSettingsMenu::LimitsSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_FIELDWEAKMAX, FieldWeakMaxAccessor>, SwitchScreenAction<FieldWeakMaxChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PHASEADVMAX, PhaseAdvMaxAccessor>,   SwitchScreenAction<PhaseAdvMaxChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string LimitsSettingsMenu::text() const
+{
+    return TEXT_LIMITSSETTINGS;
 }
 
 void LimitsSettingsMenu::back()

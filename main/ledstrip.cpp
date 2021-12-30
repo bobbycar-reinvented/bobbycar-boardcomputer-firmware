@@ -9,6 +9,7 @@
 #include "ledstripdefines.h"
 #include "utils.h"
 #include "ota.h"
+#include "newsettings.h"
 
 using namespace std::chrono_literals;
 
@@ -206,7 +207,7 @@ void updateLedStrip()
        }
     }
 
-    FastLED.setMaxPowerInVoltsAndMilliamps(5,settings.ledstrip.deziampere * 100);
+    FastLED.setMaxPowerInVoltsAndMilliamps(5, configs.ledStripMaxMilliamps.value);
     FastLED.setBrightness(settings.ledstrip.brightness);
     FastLED.show();
 }

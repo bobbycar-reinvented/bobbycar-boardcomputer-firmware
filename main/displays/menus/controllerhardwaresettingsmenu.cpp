@@ -19,6 +19,21 @@
 #include "bobbycheckbox.h"
 
 namespace {
+constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
+constexpr char TEXT_WHEELDIAMETERMM[] = "Wheel diameter (mm)";
+constexpr char TEXT_WHEELDIAMETERINCH[] = "Wheel diameter (inch)";
+constexpr char TEXT_NUMMAGNETPOLES[] = "Num magnet poles";
+constexpr char TEXT_SETENABLED[] = "Set enabled";
+constexpr char TEXT_SETINVERTED[] = "Set inverted";
+constexpr char TEXT_SWAPFRONTBACK[] = "Swap front/back";
+#ifdef FEATURE_CAN
+constexpr char TEXT_FRONTSENDCAN[] = "Front send CAN";
+constexpr char TEXT_BACKSENDCAN[] = "Back send CAN";
+constexpr char TEXT_CANTRANSMITTIMEOUT[] = "CanTransmitTimeout";
+constexpr char TEXT_CANRECEIVETIMEOUT[] = "CanReceiveTimeout";
+#endif
+constexpr char TEXT_BACK[] = "Back";
+
 using WheelDiameterMmChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_WHEELDIAMETERMM>,
@@ -59,10 +74,9 @@ using CanReceiveTimeoutChangeScreen = espgui::makeComponent<
 #endif
 } // namespace
 
-using namespace espgui;
-
 ControllerHardwareSettingsMenu::ControllerHardwareSettingsMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETENABLED>,        SwitchScreenAction<EnableMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETINVERTED>,       SwitchScreenAction<InvertMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERMM>,   SwitchScreenAction<WheelDiameterMmChangeScreen>>>();
@@ -78,7 +92,12 @@ ControllerHardwareSettingsMenu::ControllerHardwareSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
+std::string ControllerHardwareSettingsMenu::text() const
+{
+    return TEXT_CONTROLLERHARDWARESETTINGS;
+}
+
 void ControllerHardwareSettingsMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    espgui::switchScreen<SettingsMenu>();
 }

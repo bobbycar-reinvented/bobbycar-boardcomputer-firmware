@@ -1,9 +1,7 @@
 #pragma once
 
 // 3rdparty lib includes
-#include "actioninterface.h"
-
-using namespace espgui;
+#include <actioninterface.h>
 
 class RebootAction : public virtual espgui::ActionInterface
 {

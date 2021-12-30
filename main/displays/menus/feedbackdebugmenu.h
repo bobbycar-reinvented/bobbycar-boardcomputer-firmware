@@ -29,6 +29,9 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::TimeoutCntSerialText, StaticFont<2>, ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
+
+private:
+    static constexpr char TEXT_BACK[] = "Back";
 };
 
 constexpr char TEXT_FRONTFEEDBACK[] = "Front feedback";

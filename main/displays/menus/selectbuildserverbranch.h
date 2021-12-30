@@ -2,17 +2,16 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
 #ifdef FEATURE_OTA
 
-class SelectBuildserverBranchMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_SELECT_BRANCH>
+class SelectBuildserverBranchMenu : public BobbyMenuDisplay
 {
     using Base = espgui::MenuDisplay;
 public:
     SelectBuildserverBranchMenu();
+
+    std::string text() const override;
 
     void buildMenuRequestError(std::string error);
     void update() override;

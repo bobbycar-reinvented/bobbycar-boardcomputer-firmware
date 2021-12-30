@@ -15,7 +15,6 @@
 #include "bobbydisplaywithtitle.h"
 #include "globals.h"
 #include "utils.h"
-#include "texts.h"
 #include "modes/ignoreinputmode.h"
 
 class CalibrateDisplay : public BobbyDisplayWithTitle

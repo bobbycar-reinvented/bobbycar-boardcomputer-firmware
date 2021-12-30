@@ -1,5 +1,7 @@
 #include "mainmenu.h"
 
+// esp-idf includes
+
 // 3rdparty lib includes
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
@@ -52,23 +54,42 @@
 #include "icons/time.h"
 #include "tftinstance.h"
 
-using namespace espgui;
+namespace {
+constexpr char TAG[] = "BOBBY";
 
-namespace mainmenu {
-/*
-class CurrentTimeText : public virtual TextInterface
-{
-public:
-    std::string text() const override
-    {
-        return fmt::format("&7Time: {}", local_clock_string());
-    }
-};
-*/
+constexpr char TEXT_MAINMENU[] = "Main menu";
+constexpr char TEXT_STATUS[] = "Status";
+constexpr char TEXT_LEDSTRIP[] = "Ledstrip";
+constexpr char TEXT_STATISTICSMENU[] = "Statistics";
+constexpr char TEXT_SELECTMODE[] = "Select mode";
+constexpr char TEXT_MODESETTINGS[] = "Mode settings";
+constexpr char TEXT_PRESETS[] = "Presets";
+constexpr char TEXT_PROFILES[] = "Profiles";
+constexpr char TEXT_GRAPHS[] = "Graphs";
+constexpr char TEXT_POWERSUPPLY[] = "Powersupply";
+constexpr char TEXT_BMS[] = "BMS";
+constexpr char TEXT_SETTINGS[] = "Settings";
+constexpr char TEXT_GREENPASS[] = "Green Pass";
+constexpr char TEXT_LOCKVEHICLE[] = "Lock vehicle";
+constexpr char TEXT_MOSFETS[] = "Mosfets";
+constexpr char TEXT_DEMOS[] = "Demos";
+constexpr char TEXT_GARAGE[] = "Garage";
+constexpr char TEXT_UPDATE[] = "Update";
+constexpr char TEXT_POWEROFF[] = "Poweroff";
+constexpr char TEXT_REBOOT[] = "Reboot";
+constexpr char TEXT_DEBUG[] = "Debug";
+constexpr char TEXT_BATTERY[] = "Battery";
+constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
+constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
+
 } // namespace
 
 MainMenu::MainMenu()
 {
+    using namespace espgui;
+
+    ESP_LOGI(TAG, "called");
+
     // constructMenuItem<makeComponent<MenuItem, mainmenu::CurrentTimeText,     DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       SwitchScreenAction<StatusDisplay>, StaticMenuItemIcon<&espgui::icons::back>>>();
 #ifdef FEATURE_LEDSTRIP
@@ -77,21 +98,8 @@ MainMenu::MainMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATISTICSMENU>, SwitchScreenAction<StatisticsMenu>, StaticMenuItemIcon<&bobbyicons::statistics>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,   SwitchScreenAction<SelectModeMenu>, StaticMenuItemIcon<&bobbyicons::modes>>>();
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESETTINGS>, ModeSettingsAction>>(); }
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>(); }
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&bobbyicons::graph>>>(); }
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY>,      SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>(); }
-#if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWERSUPPLY>,  SwitchScreenAction<PowerSupplyDisplay>>>(); }
-#endif
-#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMS>,          SwitchScreenAction<BmsMenu>, StaticMenuItemIcon<&bobbyicons::bms>>>(); }
-#endif
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,     SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>(); }
-#ifdef FEATURE_MOSFETS
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFETS>,      SwitchScreenAction<MosfetsMenu>>>(); }
-#endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GREENPASS>,    SwitchScreenAction<GreenPassMenu>, StaticMenuItemIcon<&bobbyicons::greenpass>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>,  SwitchScreenAction<Lockscreen>, StaticMenuItemIcon<&bobbyicons::lock>>>();
 #if defined(FEATURE_GARAGE) && defined (FEATURE_ESPNOW)
@@ -100,15 +108,33 @@ MainMenu::MainMenu()
 #ifdef FEATURE_OTA
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATE>,       SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&bobbyicons::update>>>(); }
 #endif
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&bobbyicons::graph>>>(); }
+#if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWERSUPPLY>,  SwitchScreenAction<PowerSupplyDisplay>>>(); }
+#endif
+#ifdef FEATURE_MOSFETS
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFETS>,      SwitchScreenAction<MosfetsMenu>>>(); }
+#endif
+#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMS>,          SwitchScreenAction<BmsMenu>, StaticMenuItemIcon<&bobbyicons::bms>>>(); }
+#endif
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        SwitchScreenAction<DebugMenu>>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,     SwitchScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&bobbyicons::poweroff>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>,       RebootAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        SwitchScreenAction<DebugMenu>>>(); }
 #ifdef MAINMENU_PLUGIN
     GMEN1
 #endif
 }
 
+std::string MainMenu::text() const
+{
+    return TEXT_MAINMENU;
+}
+
 void MainMenu::back()
 {
-    switchScreen<StatusDisplay>();
+    espgui::switchScreen<StatusDisplay>();
 }

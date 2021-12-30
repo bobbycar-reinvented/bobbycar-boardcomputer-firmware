@@ -18,6 +18,37 @@
 #include "bobbycheckbox.h"
 
 namespace {
+constexpr char TEXT_DEFAULTMODESETTIGNS[] = "Default mode settings";
+constexpr char TEXT_DEFAULTMODESETTINGS[] = "Default mode settings";
+constexpr char TEXT_MODELMODE[] = "Model mode";
+constexpr char TEXT_HYBRIDMODE[] = "Hybrid mode";
+constexpr char TEXT_SQUAREGAS[] = "Square gas";
+constexpr char TEXT_SQUAREBREMS[] = "Square brems";
+constexpr char TEXT_ENABLESMOOTHINGUP[] = "Enable up smoothing";
+constexpr char TEXT_ENABLESMOOTHINGDOWN[] = "Enable down smoothing";
+constexpr char TEXT_ENABLEFWSMOOTHINGUP[] = "Enable fw up smoothing";
+constexpr char TEXT_ENABLEFWSMOOTHINGDOWN[] = "Enable fw down smoothing";
+constexpr char TEXT_FWSMOOTHING_LIMIT[] = "Fw smooth lower limit";
+constexpr char TEXT_SMOOTHINGVAL[] = "Smoothing";
+constexpr char TEXT_FRONTPERCENTAGE[] = "Front %";
+constexpr char TEXT_BACKPERCENTAGE[] = "Back %";
+constexpr char TEXT_ADDSCHWELLE[] = "Add/Sub Lim";
+constexpr char TEXT_SUBGASVAL[] = "Add Gas";
+constexpr char TEXT_SUBBRAKEVAL[] = "Add Brake";
+constexpr char TEXT_ADDGASVAL[] = "Sub Gas";
+constexpr char TEXT_ADDBRAKEVAL[] = "Sub Brake";
+constexpr char TEXT_HYBRIDENABLE[] = "Enable Hybrid mode";
+constexpr char TEXT_HYBRIDACTIVATIONLIMIT[] = "Hybrid activation-limit";
+constexpr char TEXT_HYBRIDDEACTIVATIONLIMIT[] = "Hybrid deactivation-limit";
+constexpr char TEXT_LIMITS_TO_NEAR[] = "Hybrid limits too near (>20)";
+constexpr char TEXT_HANDBREMSE_ENABLE[] = "Enable Handbremse";
+constexpr char TEXT_HANDBREMSE_AUTOMATIC[] = "Automatic Handbremse";
+constexpr char TEXT_HANDBREMSE_VISUALIZE[] = "Visualize Handbremse";
+constexpr char TEXT_HANDBREMSE_MODE[] = "Handbrems Mode";
+constexpr char TEXT_HANDBREMSE_TRIGGERTIMEOUT[] = "Handbrems Timeout";
+constexpr char TEXT_HANDBREMSE[] = "Handbremse";
+constexpr char TEXT_BACK[] = "Back";
+
 using DefaultModeModelModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<UnifiedModelMode>,
     espgui::StaticText<TEXT_MODELMODE>,
@@ -139,6 +170,11 @@ DefaultModeSettingsMenu::DefaultModeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HYBRIDACTIVATIONLIMIT, DefaultModeHybridActivationLimitAccessor>,        SwitchScreenAction<DefaultModeHybridActivationLimitChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HYBRIDDEACTIVATIONLIMIT, DefaultModeHybridDeactivationLimitAccessor>,    SwitchScreenAction<DefaultModeHybridDeactivationLimitChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                    SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string DefaultModeSettingsMenu::text() const
+{
+    return TEXT_DEFAULTMODESETTIGNS;
 }
 
 void DefaultModeSettingsMenu::back()

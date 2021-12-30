@@ -7,7 +7,6 @@
 // local includes
 #include "utils.h"
 #include "globals.h"
-#include "texts.h"
 #include "displays/menus/mainmenu.h"
 
 using namespace std::chrono_literals;
@@ -29,7 +28,7 @@ void PoweroffDisplay::initScreen()
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setTextColor(TFT_YELLOW);
 
-    espgui::tft.drawString(TEXT_POWEROFF, 5, 5, 4);
+    espgui::tft.drawString("Poweroff", 5, 5, 4);
 
     espgui::tft.fillRect(0, 34, espgui::tft.width(), 3, TFT_WHITE);
 

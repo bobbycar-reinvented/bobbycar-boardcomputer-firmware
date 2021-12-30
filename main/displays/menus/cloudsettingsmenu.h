@@ -2,15 +2,14 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
 #ifdef FEATURE_CLOUD
-class CloudSettingsMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_CLOUDSETTINGS>
+class CloudSettingsMenu : public BobbyMenuDisplay
 {
 public:
     CloudSettingsMenu();
+
+    std::string text() const override;
 
     void back() override;
 };

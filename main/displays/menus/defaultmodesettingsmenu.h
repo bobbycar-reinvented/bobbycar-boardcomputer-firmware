@@ -2,14 +2,13 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-class DefaultModeSettingsMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_DEFAULTMODESETTIGNS>
+class DefaultModeSettingsMenu : public BobbyMenuDisplay
 {
 public:
     DefaultModeSettingsMenu();
+
+    std::string text() const override;
 
     void back() override;
 };

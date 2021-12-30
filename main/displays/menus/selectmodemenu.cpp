@@ -19,6 +19,15 @@
 #include "displays/menus/mainmenu.h"
 
 namespace {
+constexpr char TEXT_SELECTMODE[] = "Select mode";
+constexpr char TEXT_DEFAULT[] = "Default";
+constexpr char TEXT_TEMPOMAT[] = "Tempomat";
+constexpr char TEXT_LARSM[] = "Larsm";
+constexpr char TEXT_REMOTECONTROL[] = "Remote control";
+constexpr char TEXT_GAMETRAK[] = "Gametrak";
+constexpr char TEXT_MOTORTEST[] = "Motortest";
+constexpr char TEXT_BACK[] = "Back";
+
 template<typename T1, T1 &target, typename T2, T2 value>
 class SetterAction : public espgui::ActionInterface
 {
@@ -48,6 +57,11 @@ SelectModeMenu::SelectModeMenu()
 #endif
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTEST>, MultiAction<SetMotorTestModeAction, SwitchScreenAction<MainMenu>>>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string SelectModeMenu::text() const
+{
+    return TEXT_SELECTMODE;
 }
 
 void SelectModeMenu::start()

@@ -19,7 +19,6 @@
 #include "displays/bobbychangevaluedisplay.h"
 #include "utils.h"
 #include "icons/lock.h"
-#include "texts.h"
 #include "bobbycheckbox.h"
 #include "bobbyerrorhandler.h"
 
@@ -39,6 +38,7 @@ constexpr char TEXT_LOCKTOGGLE[] = "Lock toggle";
 constexpr char TEXT_DEBUGTOGGLE[] = "Toggle";
 constexpr char TEXT_DEBUGTOGGLEMENU[] = "Toggle (with menu)";
 constexpr char TEXT_OPENPOPUP[] = "Open popup";
+constexpr char TEXT_BACK[] = "Back";
 
 bool toggleLocked{};
 bool toggle{};

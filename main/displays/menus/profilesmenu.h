@@ -2,13 +2,13 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-class ProfilesMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_PROFILES>
+class ProfilesMenu : public BobbyMenuDisplay
 {
 public:
     ProfilesMenu();
+
+    std::string text() const override;
+
     void back() override;
 };

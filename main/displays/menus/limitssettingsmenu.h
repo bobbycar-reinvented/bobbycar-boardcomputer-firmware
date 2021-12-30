@@ -2,14 +2,13 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-class LimitsSettingsMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_LIMITSSETTINGS>
+class LimitsSettingsMenu : public BobbyMenuDisplay
 {
 public:
     LimitsSettingsMenu();
+
+    std::string text() const override;
 
     void back() override;
 };

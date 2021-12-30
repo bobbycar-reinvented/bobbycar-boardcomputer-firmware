@@ -15,6 +15,9 @@
 #endif
 
 namespace {
+constexpr char TEXT_ABOUT[] = "About";
+constexpr char TEXT_BACK[] = "Back";
+
 class CurrentVersionText : public virtual espgui::TextInterface
 {
 public:
@@ -33,10 +36,9 @@ public:
 constexpr char TEXT_VERSION[] = "Version: 1.0";
 } // namespace
 
-using namespace espgui;
-
 AboutMenu::AboutMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, CurrentVersionText,                                         DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, HeapTotal8Text,               StaticFont<2>, DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, HeapFree8Text,                StaticFont<2>, DisabledColor, DummyAction>>();
@@ -63,7 +65,12 @@ AboutMenu::AboutMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,        SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
+std::string AboutMenu::text() const
+{
+    return TEXT_ABOUT;
+}
+
 void AboutMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    espgui::switchScreen<SettingsMenu>();
 }

@@ -10,10 +10,28 @@
 #include "menudisplay.h"
 #include "presets.h"
 #include "settings.h"
-#include "texts.h"
 #include "utils.h"
 
 namespace {
+constexpr char TEXT_PRESETS[] = "Presets";
+constexpr char TEXT_DEFAULTEVERYTHING[] = "Default everything";
+constexpr char TEXT_DEFAULTLIMITS[] = "Default limits";
+constexpr char TEXT_KIDSLIMITS[] = "Kids limits";
+constexpr char TEXT_DEFAULTPOTI[] = "Default poti";
+constexpr char TEXT_DEFAULTCONTROLLERHARDWARE[] = "Default controller H/W";
+constexpr char TEXT_MOSFETSOFFCONTROLLERHARDWARE[] = "MOSFETs off controller H/W";
+constexpr char TEXT_SPINNERCONTROLLERHARDWARE[] = "Spinner controller H/W";
+constexpr char TEXT_DEFAULTBOARDCOMPUTERHARDWARE[] = "Default boardcomputer H/W";
+constexpr char TEXT_DEFAULTDEFAULTMODE[] = "Default defaultMode";
+constexpr char TEXT_SINUSOIDALDEFAULTMODE[] = "Sinusoidal defaultMode";
+constexpr char TEXT_DEFAULTTEMPOMATMODE[] = "Default tempomatMode";
+constexpr char TEXT_DEFAULTLARSMMODE[] = "Default larsmMode";
+constexpr char TEXT_STREET[] = "Street";
+constexpr char TEXT_SIDEWALK[] = "Sidewalk";
+constexpr char TEXT_POLICE[] = "Police";
+constexpr char TEXT_RACE[] = "Race";
+constexpr char TEXT_BACK[] = "Back";
+
 class ApplyPresetAction : public virtual ActionInterface
 {
 public:
@@ -84,6 +102,11 @@ PresetsMenu::PresetsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTTEMPOMATMODE>,          MultiAction<ApplyTempomatModePresetAction<&presets::defaultTempomatMode>, SwitchScreenAction<MainMenu>>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTLARSMMODE>,             MultiAction<ApplyLarsmModePresetAction<&presets::defaultLarsmMode>, SwitchScreenAction<MainMenu>>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string PresetsMenu::text() const
+{
+    return TEXT_PRESETS;
 }
 
 void PresetsMenu::back()

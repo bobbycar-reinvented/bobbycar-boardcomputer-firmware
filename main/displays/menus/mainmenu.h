@@ -4,7 +4,6 @@
 #include "menuitem.h"
 
 // local includes
-#include "texts.h"
 #include "displays/menudisplaywithtime.h"
 #ifdef MAINMENU_PLUGIN
 #include MAINMENU_PLUGIN
@@ -21,12 +20,14 @@ namespace {
 #endif
 } // namespace
 
-class MainMenu :
-    public bobbygui::MenuDisplayWithTime,
-    public espgui::StaticText<TEXT_MAINMENU>
+class MainMenu : public bobbygui::MenuDisplayWithTime
 {
     using Base = espgui::MenuDisplay;
+
 public:
     MainMenu();
+
+    std::string text() const override;
+
     void back() override;
 };

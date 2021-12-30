@@ -16,11 +16,18 @@
 #include "displays/updatedisplay.h"
 
 #ifdef FEATURE_OTA
-
-using namespace espgui;
+namespace {
+constexpr char TEXT_UPDATE[] = "Update";
+constexpr char TEXT_UPDATENOW[] = "Update now";
+constexpr char TEXT_SELECTBUILD[] = "Select build";
+constexpr char TEXT_SELECT_BRANCH[] = "Select Branch";
+constexpr char TEXT_SELECTBUILDSERVERMENU[] = "Select Buildserver";
+constexpr char TEXT_BACK[] = "Back";
+} // namespace
 
 OtaMenu::OtaMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILD>,             SwitchScreenAction<SelectBuildMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECT_BRANCH>,           SwitchScreenAction<SelectBuildserverBranchMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATENOW>,               SwitchScreenAction<UpdateDisplay>, StaticMenuItemIcon<&bobbyicons::update>>>();
@@ -28,8 +35,13 @@ OtaMenu::OtaMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
+std::string OtaMenu::text() const
+{
+    return TEXT_UPDATE;
+}
+
 void OtaMenu::back()
 {
-    switchScreen<MainMenu>();
+    espgui::switchScreen<MainMenu>();
 }
 #endif

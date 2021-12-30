@@ -16,6 +16,12 @@
 
 #ifdef FEATURE_UDPCLOUD
 namespace {
+constexpr char TEXT_UDPCLOUDSETTINGS[] = "UDP Cloud settings";
+constexpr char TEXT_UDPCLOUDENABLED[] = "Udp Cloud enabled";
+constexpr char TEXT_UDPSENDRATE[] = "Udp send rate";
+constexpr char TEXT_UDPUSESTRING[] = "Udp use std::string";
+constexpr char TEXT_BACK[] = "Back";
+
 using UdpCloudSendRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_UDPSENDRATE>,
@@ -33,6 +39,11 @@ UdpCloudSettingsMenu::UdpCloudSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPUSESTRING>,         BobbyCheckbox, UdpUseStdStringAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPSENDRATE>,          SwitchScreenAction<UdpCloudSendRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string UdpCloudSettingsMenu::text() const
+{
+    return TEXT_UDPCLOUDSETTINGS;
 }
 
 void UdpCloudSettingsMenu::back()

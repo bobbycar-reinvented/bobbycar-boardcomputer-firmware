@@ -1,16 +1,55 @@
 #include "batterydebugmenu.h"
 
+// 3rdparty lib includes
+#include <menuitem.h>
+#include <icons/back.h>
+#include <actions/dummyaction.h>
+#include <actions/switchscreenaction.h>
+#include <fmt/core.h>
+
 // local includes
 #include "debugmenu.h"
 #include "accessors/settingsaccessors.h"
-#include "fmt/core.h"
+#include "utils.h"
+#include "icons/settings.h"
+#include "battery.h"
 
-class CurrentBatteryStatusText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryPercentageString(); } };
-class CurrentAdvancedBatteryPercentageText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryAdvancedPercentageString(); } };
+namespace {
+constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
+constexpr char TEXT_BACK[] = "Back";
 
-class BatteryDebugText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryDebugString(); } };
-class BatteryDebug2Text : public virtual espgui::TextInterface {
-    public: std::string text() const override {
+class CurrentBatteryStatusText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        return getBatteryPercentageString();
+    }
+};
+
+class CurrentAdvancedBatteryPercentageText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        return getBatteryAdvancedPercentageString();
+    }
+};
+
+class BatteryDebugText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        return getBatteryDebugString();
+    }
+};
+
+class BatteryDebug2Text : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
         float avgVoltage = 0;
         for (auto &controller : controllers)
         {
@@ -23,12 +62,22 @@ class BatteryDebug2Text : public virtual espgui::TextInterface {
         return fmt::format("{:.0f} {:.0f}W/kmh", avgSpeedKmh, w_per_kmh);
     }
 };
-class BatteryDebug3Text : public virtual espgui::TextInterface { public: std::string text() const override { return fmt::format("{}fA {}bA", fixCurrent(controllers.front.feedback.left.dcLink + controllers.front.feedback.right.dcLink), fixCurrent(controllers.back.feedback.left.dcLink + controllers.back.feedback.right.dcLink)); } };
 
-using namespace espgui;
+class BatteryDebug3Text : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        return fmt::format("{}fA {}bA",
+                           fixCurrent(controllers.front.feedback.left.dcLink + controllers.front.feedback.right.dcLink),
+                           fixCurrent(controllers.back.feedback.left.dcLink + controllers.back.feedback.right.dcLink));
+    }
+};
+} // namespace
 
 BatteryDebugMenu::BatteryDebugMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, CurrentBatteryStatusText,                                                 DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                                DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BatteryDebugText,                                                         DisabledColor, DummyAction>>();
@@ -38,7 +87,12 @@ BatteryDebugMenu::BatteryDebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
+std::string BatteryDebugMenu::text() const
+{
+    return TEXT_BATTERYDEBUG;
+}
+
 void BatteryDebugMenu::back()
 {
-    switchScreen<DebugMenu>();
+    espgui::switchScreen<DebugMenu>();
 }

@@ -35,6 +35,9 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::NCruiseMotTgtText, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
+
+private:
+    static constexpr char TEXT_BACK[] = "Back";
 };
 
 constexpr char TEXT_FRONTLEFTCOMMAND[] = "Front left command";

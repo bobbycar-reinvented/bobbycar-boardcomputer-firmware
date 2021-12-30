@@ -29,7 +29,11 @@
 #include "bobbycheckbox.h"
 
 namespace {
-//constexpr char TEXT_DEBUG[] = "Debug";
+constexpr char TEXT_DEBUG[] = "Debug";
+constexpr char TEXT_TASKMANAGER[] = "Taskmanager";
+constexpr char TEXT_QRCODE_DEBUG[] = "QR Debug";
+constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
+constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
 //constexpr char TEXT_FRONTCOMMAND[] = "Front command";
 //constexpr char TEXT_BACKCOMMAND[] = "Back command";
 //constexpr char TEXT_FRONTLEFTCOMMAND[] = "Front left command";
@@ -46,7 +50,7 @@ constexpr char TEXT_LOADSETTINGS[] = "Load settings (old)";
 constexpr char TEXT_SAVESETTINGS[] = "Save settings (old)";
 constexpr char TEXT_ERASENVS[] = "Erase NVS (old)";
 constexpr char TEXT_DYNAMICMENU[] = "GUI experiments";
-//constexpr char TEXT_BACK[] = "Back";
+constexpr char TEXT_BACK[] = "Back";
 } // namespace
 
 DebugMenu::DebugMenu()
@@ -81,6 +85,11 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ERASENVS>,             EraseNvsAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          SwitchScreenAction<DynamicDebugMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string DebugMenu::text() const
+{
+    return TEXT_DEBUG;
 }
 
 void DebugMenu::back()
