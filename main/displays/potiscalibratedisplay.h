@@ -13,17 +13,16 @@
 
 // local includes
 #include "bobbydisplaywithtitle.h"
-#include "globals.h"
-#include "utils.h"
+#include "modeinterface.h"
 #include "modes/ignoreinputmode.h"
 
-class CalibrateDisplay : public BobbyDisplayWithTitle
+class PotisCalibrateDisplay : public BobbyDisplayWithTitle
 {
     using Base = BobbyDisplayWithTitle;
 
 public:
-    CalibrateDisplay() = default;
-    explicit CalibrateDisplay(bool bootup);
+    PotisCalibrateDisplay() = default;
+    explicit PotisCalibrateDisplay(bool bootup) : m_bootup{bootup} {}
 
     std::string text() const override;
     void start() override;

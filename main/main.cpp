@@ -23,7 +23,8 @@ using namespace std::chrono_literals;
 #include "modes/defaultmode.h"
 #include "displays/statusdisplay.h"
 #include "displays/lockscreen.h"
-#include "displays/calibratedisplay.h"
+#include "displays/potiscalibratedisplay.h"
+#include "displays/buttoncalibratedisplay.h"
 #include "newsettings.h"
 #include "taskmanager.h"
 
@@ -71,14 +72,21 @@ extern "C" void app_main()
 
     bootLabel.redraw("switchScreen");
 
-    if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+    if (configs.dpadMappingLeft.value == INPUT_MAPPING_NONE ||
+        configs.dpadMappingRight.value == INPUT_MAPPING_NONE ||
+        configs.dpadMappingUp.value == INPUT_MAPPING_NONE ||
+        configs.dpadMappingDown.value == INPUT_MAPPING_NONE)
+    {
+        espgui::switchScreen<ButtonCalibrateDisplay>(true);
+    }
+    else if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
     {
         espgui::switchScreen<Lockscreen>();
     }
     else
     {
         if (!gas || !brems || *gas > 200.f || *brems > 200.f)
-            espgui::switchScreen<CalibrateDisplay>(true);
+            espgui::switchScreen<PotisCalibrateDisplay>(true);
         else
         {
             espgui::switchScreen<StatusDisplay>();

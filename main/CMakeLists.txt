@@ -109,7 +109,7 @@ set(headers
     displays/bobbymenudisplay.h
     displays/bobbypopupdisplay.h
     displays/bobbysplitgraphdisplay.h
-    displays/calibratedisplay.h
+    displays/buttoncalibratedisplay.h
     displays/calibratevoltagedisplay.h
     displays/gameoflifedisplay.h
     displays/gametrakcalibratedisplay.h
@@ -181,6 +181,7 @@ set(headers
     displays/menus/wifistasettingsmenu.h
     displays/metersdisplay.h
     displays/pingpongdisplay.h
+    displays/potiscalibratedisplay.h
     displays/poweroffdisplay.h
     displays/powersupplydisplay.h
     displays/qrcodedebug.h
@@ -334,7 +335,7 @@ set(sources
     displays/bobbymenudisplay.cpp
     displays/bobbypopupdisplay.cpp
     displays/bobbysplitgraphdisplay.cpp
-    displays/calibratedisplay.cpp
+    displays/buttoncalibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
     displays/gameoflifedisplay.cpp
     displays/gametrakcalibratedisplay.cpp
@@ -404,6 +405,7 @@ set(sources
     displays/menus/wifistasettingsmenu.cpp
     displays/metersdisplay.cpp
     displays/pingpongdisplay.cpp
+    displays/potiscalibratedisplay.cpp
     displays/poweroffdisplay.cpp
     displays/powersupplydisplay.cpp
     displays/qrcodedebug.cpp
