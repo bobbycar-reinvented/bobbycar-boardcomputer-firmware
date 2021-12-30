@@ -10,6 +10,10 @@
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 #include "newsettings.h"
 
+namespace {
+constexpr char TEXT_CALIBRATE[] = "Calibrate";
+} // namespace
+
 CalibrateDisplay::CalibrateDisplay(bool bootup) :
     m_bootup{bootup}
 {

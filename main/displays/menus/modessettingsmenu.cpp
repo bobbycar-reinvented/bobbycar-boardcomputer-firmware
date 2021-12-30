@@ -12,10 +12,18 @@
 #include "displays/menus/gametrakmodesettingsmenu.h"
 #include "displays/menus/settingsmenu.h"
 
-using namespace espgui;
+namespace {
+constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
+constexpr char TEXT_DEFAULTMODESETTIGNS[] = "Default mode settings";
+constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
+constexpr char TEXT_LARSMMODESETTINGS[] = "Larsm mode settings";
+constexpr char TEXT_GAMETRAKMODESETTINGS[] = "Gametrak mode settings";
+constexpr char TEXT_BACK[] = "Back";
+} // namespace
 
 ModesSettingsMenu::ModesSettingsMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTMODESETTIGNS>,   SwitchScreenAction<DefaultModeSettingsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TEMPOMATMODESETTINGS>,  SwitchScreenAction<TempomatModeSettingsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSMMODESETTINGS>,     SwitchScreenAction<LarsmModeSettingsMenu>>>();
@@ -25,7 +33,12 @@ ModesSettingsMenu::ModesSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
+std::string ModesSettingsMenu::text() const
+{
+    return TEXT_MODESSETTINGS;
+}
+
 void ModesSettingsMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    espgui::switchScreen<SettingsMenu>();
 }

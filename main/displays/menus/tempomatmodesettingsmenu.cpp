@@ -17,6 +17,12 @@
 #include "displays/menus/modessettingsmenu.h"
 
 namespace {
+constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
+constexpr char TEXT_APPLY[] = "Apply";
+constexpr char TEXT_NCRUISEMOTTGT[] = "nCruiseMotTgt";
+constexpr char TEXT_MODELMODE[] = "Model mode";
+constexpr char TEXT_BACK[] = "Back";
+
 using TempomatModeCruiseMotTgtChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NCRUISEMOTTGT>,
@@ -42,6 +48,11 @@ TempomatModeSettingsMenu::TempomatModeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NCRUISEMOTTGT, TempomatModeCruiseMotTgtAccessor>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>, SwitchScreenAction<TempomatModeModelModeChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string TempomatModeSettingsMenu::text() const
+{
+    return TEXT_TEMPOMATMODESETTINGS;
 }
 
 void TempomatModeSettingsMenu::back()

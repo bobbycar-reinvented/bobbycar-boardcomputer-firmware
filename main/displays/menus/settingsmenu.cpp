@@ -4,9 +4,7 @@
 #include <Arduino.h>
 
 // 3rdparty lib includes
-#include "actions/toggleboolaction.h"
 #include "actions/switchscreenaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 
 // local includes
@@ -43,8 +41,31 @@
 #include "displays/menus/crashmenu.h"
 #include "displays/menus/aboutmenu.h"
 #include "displays/menus/mainmenu.h"
+#include "bobbycheckbox.h"
 
 namespace {
+constexpr char TEXT_SETTINGS[] = "Settings";
+constexpr char TEXT_BACKLIGHT[] = "Backlight";
+constexpr char TEXT_LIMITSSETTINGS[] = "Limits settings";
+constexpr char TEXT_NETWORKSETTINGS[] = "Network settings";
+constexpr char TEXT_ESPNOW[] = "ESPNOW settings";
+constexpr char TEXT_BLUETOOTHSETTINGS[] = "Bluetooth settings";
+constexpr char TEXT_BLESETTINGS[] = "BLE settings";
+constexpr char TEXT_CLOUDSETTINGS[] = "Cloud settings";
+constexpr char TEXT_UDPCLOUDSETTINGS[] = "UDP Cloud settings";
+constexpr char TEXT_SELECTBUILDSERVERMENU[] = "Select Buildserver";
+constexpr char TEXT_TIME[] = "Time";
+constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
+constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
+constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
+constexpr char TEXT_AUTOCONNECTBMS[] = "Auto connect BMS";
+constexpr char TEXT_BUZZER[] = "Buzzer";
+constexpr char TEXT_FRONTLED[] = "Front LED";
+constexpr char TEXT_BACKLED[] = "Back LED";
+constexpr char TEXT_CRASHMENU[] = "Crash Menu";
+constexpr char TEXT_ABOUT[] = "About";
+constexpr char TEXT_BACK[] = "Back";
+
 #ifdef FEATURE_LEDBACKLIGHT
 struct BacklightAccessor : public virtual espgui::AccessorInterface<bool>
 {
@@ -61,7 +82,7 @@ using namespace espgui;
 SettingsMenu::SettingsMenu()
 {
 #ifdef FEATURE_LEDBACKLIGHT
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLIGHT>,                     ToggleBoolAction, CheckboxIcon, BacklightAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLIGHT>,                     BobbyCheckbox, BacklightAccessor>>();
 #endif
     if (!simplified)
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,            SwitchScreenAction<LimitsSettingsMenu>>>();
@@ -90,14 +111,19 @@ SettingsMenu::SettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>,    SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware>>>();
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                ToggleBoolAction, CheckboxIcon, AutoConnectBmsAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                BobbyCheckbox, AutoConnectBmsAccessor>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUZZER>,                        SwitchScreenAction<BuzzerMenu>, StaticMenuItemIcon<&bobbyicons::buzzer>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTLED>,                      ToggleBoolAction, CheckboxIcon, FrontLedAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLED>,                       ToggleBoolAction, CheckboxIcon, BackLedAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTLED>,                      BobbyCheckbox, FrontLedAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLED>,                       BobbyCheckbox, BackLedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRASHMENU>,                     SwitchScreenAction<CrashMenu>,  StaticMenuItemIcon<&bobbyicons::demos>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ABOUT>,                         SwitchScreenAction<AboutMenu>, StaticMenuItemIcon<&bobbyicons::info>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                          SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string SettingsMenu::text() const
+{
+    return TEXT_SETTINGS;
 }
 
 void SettingsMenu::back()

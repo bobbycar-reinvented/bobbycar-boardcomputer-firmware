@@ -59,7 +59,7 @@ void initWebserver()
     {
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
         httpConfig.core_id = 1;
-        httpConfig.max_uri_handlers = 15;
+        httpConfig.max_uri_handlers = 16;
         httpConfig.stack_size = 8192;
 
         const auto result = httpd_start(&httpdHandle, &httpConfig);
@@ -70,6 +70,7 @@ void initWebserver()
 
     for (const httpd_uri_t &uri : {
              httpd_uri_t { .uri = "/",                   .method = HTTP_GET, .handler = webserver_root_handler,               .user_ctx = NULL },
+             httpd_uri_t { .uri = "/triggerRawButton",   .method = HTTP_GET, .handler = webserver_triggerRawButton_handler,   .user_ctx = NULL },
              httpd_uri_t { .uri = "/triggerButton",      .method = HTTP_GET, .handler = webserver_triggerButton_handler,      .user_ctx = NULL },
              httpd_uri_t { .uri = "/triggerItem",        .method = HTTP_GET, .handler = webserver_triggerItem_handler,        .user_ctx = NULL },
              httpd_uri_t { .uri = "/setValue",           .method = HTTP_GET, .handler = webserver_setValue_handler,           .user_ctx = NULL },

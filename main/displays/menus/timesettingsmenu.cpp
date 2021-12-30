@@ -8,10 +8,8 @@
 #include "changevaluedisplay.h"
 #include "changevaluedisplay_daylightsavingmode.h"
 #include "changevaluedisplay_sntp_sync_mode_t.h"
-#include "actions/toggleboolaction.h"
 #include "actions/switchscreenaction.h"
 #include "actions/dummyaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 #include "espstrutils.h"
 
@@ -20,8 +18,18 @@
 #include "utils.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/settingsmenu.h"
+#include "bobbycheckbox.h"
 
 namespace {
+constexpr char TEXT_TIME[] = "Time";
+constexpr char TEXT_OFFSET[] = "Offset";
+constexpr char TEXT_DAYLIGHTSAVINGMODE[] = "Daylight Saving";
+constexpr char TEXT_NTPENABLED[] = "NTP Enabled";
+constexpr char TEXT_NTPSERVER[] = "NTP Server";
+constexpr char TEXT_NTPMODE[] = "NTP Mode";
+constexpr char TEXT_NTPINTERVAL[] = "NTP Interval";
+constexpr char TEXT_BACK[] = "Back";
+
 class CurrentUtcDateTimeText : public virtual espgui::TextInterface
 {
 public:
@@ -97,13 +105,18 @@ TimeSettingsMenu::TimeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OFFSET>,             SwitchScreenAction<TimezoneOffsetChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DAYLIGHTSAVINGMODE>, SwitchScreenAction<DaylightSavingModeChangeDisplay>>>();
 #ifdef FEATURE_NTP
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPENABLED>,         ToggleBoolAction, CheckboxIcon, TimeServerEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPENABLED>,         BobbyCheckbox, TimeServerEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPSERVER>,          DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPMODE>,            SwitchScreenAction<TimeSyncModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPINTERVAL>,        SwitchScreenAction<TimeSyncIntervalChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, NtpSyncStatusText,                   DummyAction>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string TimeSettingsMenu::text() const
+{
+    return TEXT_TIME;
 }
 
 void TimeSettingsMenu::back()

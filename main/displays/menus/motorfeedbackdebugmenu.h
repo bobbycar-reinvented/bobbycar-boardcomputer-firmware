@@ -8,7 +8,6 @@
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
-#include "texts.h"
 #include "debugtexthelpers.h"
 #include "debugcolorhelpers.h"
 
@@ -37,11 +36,21 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcPhaCFixedText,  ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::ChopsText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::HallText,         ColorInterface<TFT_DARKGREY>, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                             SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
+
+private:
+    static constexpr char TEXT_BACK[] = "Back";
 };
 
+constexpr char TEXT_FRONTLEFTFEEDBACK[] = "Front left feedback";
 using FrontLeftMotorFeedbackDebugMenu = MotorFeedbackDebugMenu<TEXT_FRONTLEFTFEEDBACK, FrontTexts::LeftFeedback, FrontFeedbackColor>;
+
+constexpr char TEXT_FRONTRIGHTFEEDBACK[] = "Front right feedback";
 using FrontRightMotorFeedbackDebugMenu = MotorFeedbackDebugMenu<TEXT_FRONTRIGHTFEEDBACK, FrontTexts::RightFeedback, FrontFeedbackColor>;
+
+constexpr char TEXT_BACKLEFTFEEDBACK[] = "Back left feedback";
 using BackLeftMotorFeedbackDebugMenu = MotorFeedbackDebugMenu<TEXT_BACKLEFTFEEDBACK, BackTexts::LeftFeedback, BackFeedbackColor>;
+
+constexpr char TEXT_BACKRIGHTFEEDBACK[] = "Back right feedback";
 using BackRightMotorFeedbackDebugMenu = MotorFeedbackDebugMenu<TEXT_BACKRIGHTFEEDBACK, BackTexts::RightFeedback, BackFeedbackColor>;

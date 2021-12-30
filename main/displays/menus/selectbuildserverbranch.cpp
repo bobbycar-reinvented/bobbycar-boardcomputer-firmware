@@ -15,15 +15,14 @@
 #include "utils.h"
 #include "newsettings.h"
 
-#define ERR_MESSAGE(text)                                                                                                                       \
-    constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>();                             \
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>(); \
-    return;
-
-using namespace espgui;
-using namespace buildserver;
-
 namespace {
+constexpr char TEXT_OTA_NOBUILDSERVERAVAILABLE[] = "E:No server saved.";
+constexpr char TEXT_OTA_NOBUILDSERVERSELECTED[] = "E:No server selected.";
+constexpr char TEXT_OTA_NOCONNECTION[] = "E:No internet.";
+constexpr char TEXT_SELECT_BRANCH[] = "Select Branch";
+constexpr char TEXT_SELECT_BRANCH_CLEAR[] = "Clear Branch";
+constexpr char TEXT_BACK[] = "Back";
+
 class CurrentBranch : public virtual espgui::TextInterface
 {
 public:
@@ -83,6 +82,14 @@ void ClearBranchAction::triggered()
 
 SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
 {
+    using namespace espgui;
+    using namespace buildserver;
+
+#define ERR_MESSAGE(text)                                                                                                                       \
+    constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>();                             \
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>(); \
+    return;
+
     if (count_available_buildserver() < 1)
     {
         ERR_MESSAGE(TEXT_OTA_NOBUILDSERVERAVAILABLE); // E:No server saved.
@@ -97,14 +104,22 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
     {
         ERR_MESSAGE(TEXT_OTA_NOCONNECTION); // E:No internet.
     }
+#undef ERR_MESSAGE
 
     SelectBranch::setup_request();
     SelectBranch::start_descriptor_request(configs.otaServerUrl.value);
 }
 
+std::string SelectBuildserverBranchMenu::text() const
+{
+    return TEXT_SELECT_BRANCH;
+}
+
 void SelectBuildserverBranchMenu::update()
 {
-    using namespace SelectBranch;
+    using namespace espgui;
+    using namespace buildserver::SelectBranch;
+
     if(get_request_running())
     {
         check_descriptor_request();
@@ -138,11 +153,13 @@ void SelectBuildserverBranchMenu::update()
 
 void SelectBuildserverBranchMenu::back()
 {
-    switchScreen<OtaMenu>();
+    espgui::switchScreen<OtaMenu>();
 }
 
 void SelectBuildserverBranchMenu::buildMenuRequestError(std::string error)
 {
+    using namespace espgui;
+
     auto &item = constructMenuItem<makeComponent<MenuItem, ChangeableText, DefaultFont, StaticColor<TFT_RED>, DummyAction>>();
     item.setTitle(error);
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();

@@ -143,7 +143,6 @@ struct Settings
         int16_t centerOffset;
         int16_t smallOffset;
         int16_t bigOffset;
-        int16_t deziampere;
         bool enableBeepWhenBlink;
         int16_t animationType;
         bool enableFullBlink;
@@ -274,7 +273,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("centerOffset", ledstrip.centerOffset);
     callable("smallOffset", ledstrip.smallOffset);
     callable("bigOffset", ledstrip.bigOffset);
-    callable("deziampere", ledstrip.deziampere);
     callable("beeppwhenblink", ledstrip.enableBeepWhenBlink);
 //    callable("animationType", ledstrip.animationType);
     callable("fullblink", ledstrip.enableFullBlink);

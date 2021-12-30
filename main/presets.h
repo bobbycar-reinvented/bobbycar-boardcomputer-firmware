@@ -219,7 +219,6 @@ constexpr Settings::Ledstrip defaultLedstrip {
     .centerOffset = 1,
     .smallOffset = 4,
     .bigOffset = 10,
-    .deziampere = 30,
     .enableBeepWhenBlink = false,
 #ifdef LEDSTRIP_ANIMATION_DEFAULT
     .animationType = LEDSTRIP_ANIMATION_DEFAULT,

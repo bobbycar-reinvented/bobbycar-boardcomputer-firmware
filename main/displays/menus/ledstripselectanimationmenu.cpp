@@ -8,10 +8,14 @@
 #include "ledstripdefines.h"
 #include "ledstripmenu.h"
 
-using namespace espgui;
-
 #ifdef FEATURE_LEDSTRIP
 namespace {
+constexpr char TEXT_SELECTANIMATION[] = "Select Animation";
+constexpr char TEXT_ANIMATION_DEFAULTRAINBOW[] = "Default Rainbow";
+constexpr char TEXT_ANIMATION_BETTERRAINBOW[] = "Better Rainbow";
+constexpr char TEXT_ANIMATION_SPEEDSYNCANIMATION[] = "Speed Sync";
+constexpr char TEXT_ANIMATION_CUSTOMCOLOR[] = "Custom Color";
+constexpr char TEXT_BACK[] = "Back";
 
 class CurrentSelectedAnimationText : public virtual espgui::TextInterface
 {
@@ -23,6 +27,8 @@ public:
 
 LedstripSelectAnimationMenu::LedstripSelectAnimationMenu()
 {
+    using namespace espgui;
+
     constructMenuItem<makeComponent<MenuItem, CurrentSelectedAnimationText,                  DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                     DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_DEFAULTRAINBOW>,     LedStripSetAnimationAction<LedstripAnimation::DefaultRainbow>>>();
@@ -32,9 +38,14 @@ LedstripSelectAnimationMenu::LedstripSelectAnimationMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<LedstripMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
+std::string LedstripSelectAnimationMenu::text() const
+{
+    return TEXT_SELECTANIMATION;
+}
+
 void LedstripSelectAnimationMenu::back()
 {
-    switchScreen<LedstripMenu>();
+    espgui::switchScreen<LedstripMenu>();
 }
 
 namespace {

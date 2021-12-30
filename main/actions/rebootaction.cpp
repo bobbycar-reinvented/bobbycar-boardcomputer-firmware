@@ -6,16 +6,12 @@
 // 3rdparty lib includes
 #include <tftinstance.h>
 
-// local includes
-#include "globals.h"
-#include "texts.h"
-
 void RebootAction::triggered()
 {
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setTextColor(TFT_YELLOW);
 
-    espgui::tft.drawString(TEXT_REBOOT, 5, 5, 4);
+    espgui::tft.drawString("Reboot", 5, 5, 4);
 
     espgui::tft.fillRect(0, 34, espgui::tft.width(), 3, TFT_WHITE);
 

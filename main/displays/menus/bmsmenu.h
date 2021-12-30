@@ -3,14 +3,13 @@
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-class BmsMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_BMS>
+class BmsMenu : public BobbyMenuDisplay
 {
 public:
     BmsMenu();
+
+    std::string text() const override { return TEXT_BMS; }
     void back() override;
 };
 #endif

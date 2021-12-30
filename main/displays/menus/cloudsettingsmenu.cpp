@@ -5,9 +5,7 @@
 #include "menuitem.h"
 #include "changevaluedisplay.h"
 #include "actions/switchscreenaction.h"
-#include "actions/toggleboolaction.h"
 #include "actions/dummyaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 
 // local includes
@@ -16,9 +14,16 @@
 #include "accessors/settingsaccessors.h"
 #include "cloud.h"
 #include "displays/menus/settingsmenu.h"
+#include "bobbycheckbox.h"
 
 #ifdef FEATURE_CLOUD
 namespace {
+constexpr char TEXT_CLOUDSETTINGS[] = "Cloud settings";
+constexpr char TEXT_CLOUDENABLED[] = "Cloud enabled";
+constexpr char TEXT_CLOUDTRANSMITTIMEOUT[] = "Transmit timeout";
+constexpr char TEXT_CLOUDCOLLECTRATE[] = "Cloud collect rate";
+constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
+constexpr char TEXT_BACK[] = "Back";
 
 using CloudTransmitTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
@@ -58,7 +63,7 @@ using namespace espgui;
 
 CloudSettingsMenu::CloudSettingsMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDENABLED>,         ToggleBoolAction, CheckboxIcon, CloudEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDENABLED>,         BobbyCheckbox, CloudEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDTRANSMITTIMEOUT>, SwitchScreenAction<CloudTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, CloudCreatedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudStartedText,                      DisabledColor, DummyAction>>();
@@ -67,6 +72,11 @@ CloudSettingsMenu::CloudSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDCOLLECTRATE>,     SwitchScreenAction<CloudCollectRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,        SwitchScreenAction<CloudSendRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string CloudSettingsMenu::text() const
+{
+    return TEXT_CLOUDSETTINGS;
 }
 
 void CloudSettingsMenu::back()

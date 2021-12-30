@@ -7,10 +7,12 @@
 // local includes
 #include "globals.h"
 #include "utils.h"
-#include "texts.h"
-#include "buttons.h"
 #include "displays/menus/mainmenu.h"
 #include "displays/calibratedisplay.h"
+#include "bobbybuttons.h"
+#ifdef LOCKSCREEN_PLUGIN
+#include "ledstripdefines.h"
+#endif
 
 void Lockscreen::start()
 {
@@ -24,7 +26,6 @@ void Lockscreen::start()
     m_oldMode = currentMode;
     currentMode = &m_mode;
 
-    profileButtonDisabled = !settings.lockscreen.allowPresetSwitch;
     isLocked = true;
     if (settings.lockscreen.keepLockedAfterReboot && !settings.lockscreen.locked)
     {
@@ -41,7 +42,7 @@ void Lockscreen::initScreen()
     espgui::tft.setTextFont(4);
     espgui::tft.setTextColor(TFT_YELLOW);
 
-    espgui::tft.drawString(TEXT_LOCKVEHICLE, 5, 5);
+    espgui::tft.drawString("Lock vehicle", 5, 5);
 
     espgui::tft.fillRect(0, 34, espgui::tft.width(), 3, TFT_WHITE);
 
@@ -71,9 +72,6 @@ void Lockscreen::initScreen()
 void Lockscreen::update()
 {
     Base::update();
-
-    // just in case someone changes that settings somehow
-    profileButtonDisabled = !settings.lockscreen.allowPresetSwitch;
 }
 
 void Lockscreen::redraw()
@@ -147,7 +145,6 @@ void Lockscreen::stop()
         currentMode = m_oldMode;
     }
 
-    profileButtonDisabled = false;
     isLocked = false;
     if (!(!gas || !brems || *gas > 200.f || *brems > 200.f))
     {
@@ -161,6 +158,8 @@ void Lockscreen::stop()
 
 void Lockscreen::buttonPressed(espgui::Button button)
 {
+    if (settings.lockscreen.allowPresetSwitch ||
+        !cpputils::is_in(button, BobbyButton::Profile0, BobbyButton::Profile1, BobbyButton::Profile2, BobbyButton::Profile3))
     Base::buttonPressed(button);
 
     switch (button)

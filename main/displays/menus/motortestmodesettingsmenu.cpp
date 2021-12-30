@@ -13,6 +13,11 @@
 #include "displays/menus/modessettingsmenu.h"
 
 namespace {
+constexpr char TEXT_MOTORTESTMODESETTINGS[] = "Motortest mode seetings";
+constexpr char TEXT_MOTORTESTMAXPWM[] = "Max Pwm";
+constexpr char TEXT_MOTORTESTMULTIPLIKATOR[] = "Acceleration";
+constexpr char TEXT_BACK[] = "Back";
+
 using MotortestMultiplikatorChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_MOTORTESTMULTIPLIKATOR>,
@@ -37,6 +42,11 @@ MotortestModeSettingsMenu::MotortestModeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTESTMULTIPLIKATOR>,  SwitchScreenAction<MotortestMultiplikatorChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTESTMAXPWM>,         SwitchScreenAction<MotortestMaxPwmChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string MotortestModeSettingsMenu::text() const
+{
+    return TEXT_MOTORTESTMODESETTINGS;
 }
 
 void MotortestModeSettingsMenu::back()

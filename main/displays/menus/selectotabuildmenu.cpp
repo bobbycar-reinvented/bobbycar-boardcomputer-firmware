@@ -22,6 +22,14 @@ using namespace espgui;
 using namespace buildserver::SelectBuild;
 
 namespace {
+constexpr char TEXT_UPDATENOW[] = "Update now";
+constexpr char TEXT_SELECTBUILD[] = "Select build";
+constexpr char TEXT_OTA_NOBUILDSERVERAVAILABLE[] = "E:No server saved.";
+constexpr char TEXT_OTA_NOBUILDSERVERSELECTED[] = "E:No server selected.";
+constexpr char TEXT_OTA_NOCONNECTION[] = "E:No internet.";
+constexpr char TEXT_OTA_WAITFORRESPONSE[] = "Wait for response...";
+constexpr char TEXT_BACK[] = "Back";
+
 template<int item_color>
 class VersionMenuItem : public MenuItem
 {
@@ -87,6 +95,11 @@ SelectBuildMenu::SelectBuildMenu()
             }
         }
     }
+}
+
+std::string SelectBuildMenu::text() const
+{
+    return TEXT_SELECTBUILD;
 }
 
 void SelectBuildMenu::update()

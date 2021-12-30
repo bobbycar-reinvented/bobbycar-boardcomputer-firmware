@@ -6,7 +6,7 @@
 
 struct WifiApEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.wifiApEnabled; } };
 //struct WifiApDisableWhenOnlineAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.wifiDisableApWhenOnline; } };
-struct WifiApNameAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.wifiApName; } };
+struct WifiApSsidAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.wifiApName; } };
 struct WifiApKeyAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.wifiApKey; } };
 struct WifiApIpAccessor : public NewSettingsAccessor<wifi_stack::ip_address_t> { ConfigWrapper<wifi_stack::ip_address_t> &getConfig() const override { return configs.wifiApIp; } };
 struct WifiApMaskAccessor : public NewSettingsAccessor<wifi_stack::ip_address_t> { ConfigWrapper<wifi_stack::ip_address_t> &getConfig() const override { return configs.wifiApMask; } };

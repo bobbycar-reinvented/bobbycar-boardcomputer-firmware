@@ -4,8 +4,6 @@
 #include "menuitem.h"
 #include "actions/switchscreenaction.h"
 #include "actions/dummyaction.h"
-#include "actions/toggleboolaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 #include "accessors/settingsaccessors.h"
 #include <screenmanager.h>
@@ -28,30 +26,43 @@
 #include "displays/menus/dynamicdebugmenu.h"
 #include "displays/menus/mainmenu.h"
 #include "displays/menus/batterydebugmenu.h"
-#include "bobbyerrorhandler.h"
+#include "bobbycheckbox.h"
 
 namespace {
-class AlertAction : public espgui::MenuItem
-{
-public:
-    std::string text() const override { return "Open popup"; }
-    void triggered() override
-    {
-        BobbyErrorHandler{}.errorOccured("Das\nist\nein sehr langer text, der nicht in eine zeile passt");
-    }
-};
+constexpr char TEXT_DEBUG[] = "Debug";
+constexpr char TEXT_TASKMANAGER[] = "Taskmanager";
+constexpr char TEXT_QRCODE_DEBUG[] = "QR Debug";
+constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
+constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
+//constexpr char TEXT_FRONTCOMMAND[] = "Front command";
+//constexpr char TEXT_BACKCOMMAND[] = "Back command";
+//constexpr char TEXT_FRONTLEFTCOMMAND[] = "Front left command";
+//constexpr char TEXT_FRONTRIGHTCOMMAND[] = "Front right command";
+//constexpr char TEXT_BACKLEFTCOMMAND[] = "Back left command";
+//constexpr char TEXT_BACKRIGHTCOMMAND[] = "Back right command";
+//constexpr char TEXT_FRONTFEEDBACK[] = "Front feedback";
+//constexpr char TEXT_BACKFEEDBACK[] = "Back feedback";
+//constexpr char TEXT_FRONTLEFTFEEDBACK[] = "Front left feedback";
+//constexpr char TEXT_FRONTRIGHTFEEDBACK[] = "Front right feedback";
+//constexpr char TEXT_BACKLEFTFEEDBACK[] = "Back left feedback";
+//constexpr char TEXT_BACKRIGHTFEEDBACK[] = "Back right feedback";
+constexpr char TEXT_LOADSETTINGS[] = "Load settings (old)";
+constexpr char TEXT_SAVESETTINGS[] = "Save settings (old)";
+constexpr char TEXT_ERASENVS[] = "Erase NVS (old)";
+constexpr char TEXT_DYNAMICMENU[] = "GUI experiments";
+constexpr char TEXT_BACK[] = "Back";
 } // namespace
-
-using namespace espgui;
 
 DebugMenu::DebugMenu()
 {
-    constructMenuItem<AlertAction>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TASKMANAGER>,         SwitchScreenAction<TaskmanagerMenu>>>();
+    using namespace espgui;
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TASKMANAGER>,          SwitchScreenAction<TaskmanagerMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QRCODE_DEBUG>,         SwitchScreenAction<QrCodeDebugDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOADSETTINGS>,         LoadSettingsAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SAVESETTINGS>,         SaveSettingsAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ERASENVS>,             EraseNvsAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         SwitchScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
+#ifdef FEATURE_UDPCLOUD
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TOGGLECLOUDDEBUG>,     BobbyCheckbox, CloudDebugEnableAccessor>>();
+#endif
+    constructMenuItem<makeComponent<MenuItem, LastRebootReasonText,                  StaticFont<2>, DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTCOMMAND>,         SwitchScreenAction<FrontCommandDebugMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKCOMMAND>,          SwitchScreenAction<BackCommandDebugMenu>>>();
@@ -64,20 +75,21 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTFEEDBACK>,        SwitchScreenAction<FrontFeedbackDebugMenu>, FrontFeedbackColor<TFT_WHITE>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKFEEDBACK>,         SwitchScreenAction<BackFeedbackDebugMenu>, BackFeedbackColor<TFT_WHITE>>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, LastRebootReasonText,                  StaticFont<2>, DisabledColor, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTLEFTFEEDBACK>,    SwitchScreenAction<FrontLeftMotorFeedbackDebugMenu>, FrontFeedbackColor<TFT_WHITE>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTRIGHTFEEDBACK>,   SwitchScreenAction<FrontRightMotorFeedbackDebugMenu>, FrontFeedbackColor<TFT_WHITE>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLEFTFEEDBACK>,     SwitchScreenAction<BackLeftMotorFeedbackDebugMenu>, BackFeedbackColor<TFT_WHITE>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKRIGHTFEEDBACK>,    SwitchScreenAction<BackRightMotorFeedbackDebugMenu>, BackFeedbackColor<TFT_WHITE>>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOADSETTINGS>,         LoadSettingsAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SAVESETTINGS>,         SaveSettingsAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ERASENVS>,             EraseNvsAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          SwitchScreenAction<DynamicDebugMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         SwitchScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
-#ifdef FEATURE_UDPCLOUD
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TOGGLECLOUDDEBUG>,     ToggleBoolAction, CheckboxIcon, CloudDebugEnableAccessor>>();
-#endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string DebugMenu::text() const
+{
+    return TEXT_DEBUG;
 }
 
 void DebugMenu::back()

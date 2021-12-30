@@ -19,7 +19,6 @@
 #include "bluetoothtexthelpers.h"
 #include "accessors/settingsaccessors.h"
 #include "icons/back.h"
-#include "texts.h"
 
 using namespace espgui;
 using namespace bluetoothtexthelpers;

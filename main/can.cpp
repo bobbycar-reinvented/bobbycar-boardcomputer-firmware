@@ -13,12 +13,13 @@
 // 3rdparty lib includes
 #include <espchrono.h>
 #include <tickchrono.h>
+#include <screenmanager.h>
 
 // local includes
 #include "bobbycar-can.h"
 #include "globals.h"
-#include "buttons.h"
 #include "newsettings.h"
+#include "bobbybuttons.h"
 
 using namespace std::chrono_literals;
 
@@ -29,7 +30,6 @@ constexpr const char * const TAG = "BOBBYCAN";
 
 std::optional<int16_t> can_gas, can_brems;
 espchrono::millis_clock::time_point last_can_gas{}, last_can_brems{};
-CanButtonsState lastButtonsState;
 
 void initCan()
 {
@@ -160,47 +160,22 @@ bool parseBoardcomputerCanMessage(const twai_message_t &message)
     switch (message.identifier)
     {
     using namespace bobbycar::protocol::can;
-    case Boardcomputer::Command::ButtonPress:
-    {
-        const auto canButtonBits = *((uint16_t*)message.data);
-        CanButtonsState newState {
-            .up =       bool(canButtonBits & Boardcomputer::ButtonUp),
-            .down =     bool(canButtonBits & Boardcomputer::ButtonDown),
-            .confirm =  bool(canButtonBits & Boardcomputer::ButtonConfirm),
-            .back =     bool(canButtonBits & Boardcomputer::ButtonBack),
-            .profile0 = bool(canButtonBits & Boardcomputer::ButtonProfile0),
-            .profile1 = bool(canButtonBits & Boardcomputer::ButtonProfile1),
-            .profile2 = bool(canButtonBits & Boardcomputer::ButtonProfile2),
-            .profile3 = bool(canButtonBits & Boardcomputer::ButtonProfile3),
-        };
-
-        if (lastButtonsState.up != newState.up)
-            InputDispatcher::upButton(newState.up);
-
-        if (lastButtonsState.down != newState.down)
-            InputDispatcher::downButton(newState.down);
-
-        if (lastButtonsState.confirm != newState.confirm)
-            InputDispatcher::confirmButton(newState.confirm);
-
-        if (lastButtonsState.back != newState.back)
-            InputDispatcher::backButton(newState.back);
-
-        if (lastButtonsState.profile0 != newState.profile0)
-            InputDispatcher::profileButton(0, newState.profile0);
-
-        if (lastButtonsState.profile1 != newState.profile1)
-            InputDispatcher::profileButton(1, newState.profile1);
-
-        if (lastButtonsState.profile2 != newState.profile2)
-            InputDispatcher::profileButton(2, newState.profile2);
-
-        if (lastButtonsState.profile3 != newState.profile3)
-            InputDispatcher::profileButton(3, newState.profile3);
-
-        lastButtonsState = newState;
+    case Boardcomputer::Command::RawButtonPressed:
+        if (espgui::currentDisplay)
+            espgui::currentDisplay->rawButtonPressed(*((const uint8_t*)message.data));
         break;
-    }
+    case Boardcomputer::Command::RawButtonReleased:
+        if (espgui::currentDisplay)
+            espgui::currentDisplay->rawButtonReleased(*((const uint8_t*)message.data));
+        break;
+    case Boardcomputer::Command::ButtonPressed:
+        if (espgui::currentDisplay)
+            espgui::currentDisplay->rawButtonPressed(espgui::Button(*((const uint8_t*)message.data)));
+        break;
+    case Boardcomputer::Command::ButtonReleased:
+        if (espgui::currentDisplay)
+            espgui::currentDisplay->rawButtonPressed(espgui::Button(*((const uint8_t*)message.data)));
+        break;
     case Boardcomputer::Command::RawGas:
         can_gas = *((int16_t*)message.data);
         last_can_gas = espchrono::millis_clock::now();

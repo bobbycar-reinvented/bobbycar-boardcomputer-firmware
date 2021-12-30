@@ -15,13 +15,14 @@
 #include <textinterface.h>
 #include <menudisplay.h>
 #include <changevaluedisplay.h>
+#include <changevaluedisplay_string.h>
 #include <lockhelper.h>
 #include <tickchrono.h>
 #include <screenmanager.h>
+#include <futurecpp.h>
 
 // local includes
-#include "buttons.h"
-#include "globals.h"
+#include "bobbybuttons.h"
 #include "webserver_lock.h"
 #include "newsettings.h"
 
@@ -190,14 +191,48 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
             {
                 HtmlTag pTag{"p", body};
-                body += "<a href=\"/triggerButton?button=up\">Up</a> "
-                        "<a href=\"/triggerButton?button=down\">Down</a> "
-                        "<a href=\"/triggerButton?button=confirm\">Confirm</a> "
-                        "<a href=\"/triggerButton?button=back\">Back</a> "
-                        "<a href=\"/triggerButton?button=profile0\">Profile0</a> "
-                        "<a href=\"/triggerButton?button=profile1\">Profile1</a> "
-                        "<a href=\"/triggerButton?button=profile2\">Profile2</a> "
-                        "<a href=\"/triggerButton?button=profile3\">Profile3</a> ";
+                body += "Trigger raw button: "
+                        "<a href=\"/triggerRawButton?button=0\">Button0</a> "
+                        "<a href=\"/triggerRawButton?button=1\">Button1</a> "
+                        "<a href=\"/triggerRawButton?button=2\">Button2</a> "
+                        "<a href=\"/triggerRawButton?button=3\">Button3</a> "
+                        "<a href=\"/triggerRawButton?button=4\">Button4</a> "
+                        "<a href=\"/triggerRawButton?button=5\">Button5</a> "
+                        "<a href=\"/triggerRawButton?button=6\">Button6</a> "
+                        "<a href=\"/triggerRawButton?button=7\">Button7</a> "
+                        "<a href=\"/triggerRawButton?button=8\">Button8</a> "
+                        "<a href=\"/triggerRawButton?button=9\">Button9</a> "
+                        "<a href=\"/triggerRawButton?button=10\">Button10</a> "
+                        "<a href=\"/triggerRawButton?button=11\">Button11</a>";
+            }
+
+            {
+                HtmlTag pTag{"p", body};
+                body += fmt::format("Trigger button: "
+                                    "<a href=\"/triggerButton?button={}\">Left</a> "
+                                    "<a href=\"/triggerButton?button={}\">Right</a> "
+                                    "<a href=\"/triggerButton?button={}\">Up</a> "
+                                    "<a href=\"/triggerButton?button={}\">Down</a> "
+                                    "<a href=\"/triggerButton?button={}\">Profile0</a> "
+                                    "<a href=\"/triggerButton?button={}\">Profile1</a> "
+                                    "<a href=\"/triggerButton?button={}\">Profile2</a> "
+                                    "<a href=\"/triggerButton?button={}\">Profile3</a> "
+                                    "<a href=\"/triggerButton?button={}\">Left2</a> "
+                                    "<a href=\"/triggerButton?button={}\">Right2</a> "
+                                    "<a href=\"/triggerButton?button={}\">Up2</a> "
+                                    "<a href=\"/triggerButton?button={}\">Down2</a>",
+                                    std::to_underlying(espgui::Button::Left),
+                                    std::to_underlying(espgui::Button::Right),
+                                    std::to_underlying(espgui::Button::Up),
+                                    std::to_underlying(espgui::Button::Down),
+                                    std::to_underlying(BobbyButton::Profile0),
+                                    std::to_underlying(BobbyButton::Profile1),
+                                    std::to_underlying(BobbyButton::Profile2),
+                                    std::to_underlying(BobbyButton::Profile3),
+                                    std::to_underlying(BobbyButton::Left2),
+                                    std::to_underlying(BobbyButton::Right2),
+                                    std::to_underlying(BobbyButton::Up2),
+                                    std::to_underlying(BobbyButton::Down2));
             }
 
             if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
@@ -228,6 +263,12 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                     body += fmt::format("<input type=\"number\" name=\"value\" value=\"{}\" />", changeValueDisplay->shownValue());
                     body += "<button type=\"submit\">Update</button>";
                 }
+                else if (const auto *changeValueDisplay = currentDisplay->asChangeValueDisplayString())
+                {
+                    HtmlTag formTag{"form", "action=\"/setValue\" method=\"GET\"", body};
+                    body += fmt::format("<input type=\"text\" name=\"value\" value=\"{}\" />", changeValueDisplay->shownValue());
+                    body += "<button type=\"submit\">Update</button>";
+                }
                 else
                 {
                     body += "No web control implemented for current display.";
@@ -243,9 +284,8 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, (key_result == ESP_OK) ? "application/json":"text/html", body)
 }
 
-esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
+esp_err_t webserver_triggerRawButton_handler(httpd_req_t *req)
 {
-
 #ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
     espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
@@ -265,7 +305,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
     }
 
-    std::string button;
+    uint8_t button;
     constexpr const std::string_view buttonParamName{"button"};
 
     {
@@ -289,77 +329,105 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
         char valueBuf[257];
         esphttpdutils::urldecode(valueBuf, valueBufEncoded);
 
-        button = valueBuf;
+        std::string_view value{valueBuf};
+
+        if (auto parsed = cpputils::fromString<decltype(button)>(value))
+        {
+            button = *parsed;
+        }
+        else
+        {
+            const auto msg = fmt::format("could not parse {} {}", buttonParamName, value);
+            ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
+            CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+        }
     }
 
-    if (button == "up")
+    if (!espgui::currentDisplay)
     {
-        InputDispatcher::rotate(-1);
-
-        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
-    }
-    else if (button == "down")
-    {
-        InputDispatcher::rotate(1);
-
-        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
-    }
-    else if (button == "confirm")
-    {
-        InputDispatcher::confirmButton(true);
-        InputDispatcher::confirmButton(false);
-
-        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
-    }
-    else if (button == "back")
-    {
-        InputDispatcher::backButton(true);
-        InputDispatcher::backButton(false);
-
-        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
-    }
-    else if (button == "profile0")
-    {
-        InputDispatcher::profileButton(0, true);
-        InputDispatcher::profileButton(0, false);
-
-        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
-    }
-    else if (button == "profile1")
-    {
-        InputDispatcher::profileButton(1, true);
-        InputDispatcher::profileButton(1, false);
-
-        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
-    }
-    else if (button == "profile2")
-    {
-        InputDispatcher::profileButton(2, true);
-        InputDispatcher::profileButton(2, false);
-
-        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
-    }
-    else if (button == "profile3")
-    {
-        InputDispatcher::profileButton(3, true);
-        InputDispatcher::profileButton(3, false);
-
-        CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
-    }
-    else
-    {
-        const auto msg = fmt::format("invalid {} {}", buttonParamName, button);
+        constexpr const std::string_view msg = "espgui::currentDisplay is null";
         ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
+
+    espgui::currentDisplay->rawButtonPressed(button);
+    espgui::currentDisplay->rawButtonReleased(button);
+
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
+}
+
+esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
+{
+#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+#endif
+
+    std::string query;
+    if (auto result = esphttpdutils::webserver_get_query(req))
+        query = *result;
+    else
+    {
+        ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
+    }
+
+    espgui::Button button;
+    constexpr const std::string_view buttonParamName{"button"};
+
+    {
+        char valueBufEncoded[256];
+        if (const auto result = httpd_query_key_value(query.data(), buttonParamName.data(), valueBufEncoded, 256); result != ESP_OK)
+        {
+            if (result == ESP_ERR_NOT_FOUND)
+            {
+                const auto msg = fmt::format("{} not set", buttonParamName);
+                ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
+                CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+            }
+            else
+            {
+                const auto msg = fmt::format("httpd_query_key_value() {} failed with {}", buttonParamName, esp_err_to_name(result));
+                ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+                CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+            }
+        }
+
+        char valueBuf[257];
+        esphttpdutils::urldecode(valueBuf, valueBufEncoded);
+
+        std::string_view value{valueBuf};
+
+        if (auto parsed = cpputils::fromString<std::underlying_type_t<espgui::Button>>(value))
+        {
+            button = espgui::Button(*parsed);
+        }
+        else
+        {
+            const auto msg = fmt::format("could not parse {} {}", buttonParamName, value);
+            ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
+            CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+        }
+    }
+
+    if (!espgui::currentDisplay)
+    {
+        constexpr const std::string_view msg = "espgui::currentDisplay is null";
+        ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
+    espgui::currentDisplay->buttonPressed(button);
+    espgui::currentDisplay->buttonReleased(button);
+
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
 }
 
 esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
@@ -471,8 +539,7 @@ esp_err_t webserver_setValue_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
     }
 
-    int newValue;
-
+    char valueBuf[257];
     constexpr const std::string_view valueParamName{"value"};
 
     {
@@ -493,11 +560,21 @@ esp_err_t webserver_setValue_handler(httpd_req_t *req)
             }
         }
 
-        char valueBuf[257];
         esphttpdutils::urldecode(valueBuf, valueBufEncoded);
+    }
 
-        std::string_view value{valueBuf};
+    std::string_view value{valueBuf};
 
+    if (!espgui::currentDisplay)
+    {
+        constexpr const std::string_view msg = "espgui::currentDisplay is null";
+        ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
+    if (auto *changeValueDisplay = espgui::currentDisplay->asChangeValueDisplayInterface())
+    {
+        int newValue;
         if (auto parsed = cpputils::fromString<typeof(newValue)>(value))
         {
             newValue = *parsed;
@@ -508,24 +585,20 @@ esp_err_t webserver_setValue_handler(httpd_req_t *req)
             ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
             CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
         }
-    }
 
-    if (!espgui::currentDisplay)
+        changeValueDisplay->setShownValue(newValue);
+    }
+    else if (auto *changeValueDisplay = espgui::currentDisplay->asChangeValueDisplayString())
     {
-        constexpr const std::string_view msg = "espgui::currentDisplay is null";
-        ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+        changeValueDisplay->setShownValue(std::string{value});
     }
-
-    auto *changeValueDisplay = espgui::currentDisplay->asChangeValueDisplayInterface();
-    if (!changeValueDisplay)
+    else
     {
         constexpr const std::string_view msg = "espgui::currentDisplay is not a change value display";
         ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 
-    changeValueDisplay->setShownValue(newValue);
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")

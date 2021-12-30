@@ -1,24 +1,51 @@
 #include "ledstripselectotamode.h"
 
+// 3rdparty lib includes
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
+
+// local includes
+#include "ledstrip.h"
+#include "globals.h"
+#include "utils.h"
 #include "ledstripmenu.h"
 
-// Local includes
-
 #if defined(FEATURE_LEDSTRIP) && defined(FEATURE_OTA)
-using namespace espgui;
+namespace {
+constexpr char TEXT_BLINKANIMATION[] = "Blink animation";
+constexpr char TEXT_OTAANIM_NONE[] = "None";
+constexpr char TEXT_OTAANIM_PROGRESS[] = "Progress Bar";
+constexpr char TEXT_OTAANIM_COLOR[] = "Color change";
+constexpr char TEXT_BACK[] = "Back";
 
-ledstripOtaAnimationChangeMenu::ledstripOtaAnimationChangeMenu()
+template <OtaAnimationModes mode>
+class LedstripChangeOtaAnimModeAction : public virtual espgui::ActionInterface
 {
+public:
+    void triggered() override
+    {
+        settings.ledstrip.otaMode = mode;
+        saveSettings();
+    }
+};
+} // namespace
+
+LedstripOtaAnimationChangeMenu::LedstripOtaAnimationChangeMenu()
+{
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_NONE>,          LedstripChangeOtaAnimModeAction<OtaAnimationModes::None>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_PROGRESS>,      LedstripChangeOtaAnimModeAction<OtaAnimationModes::GreenProgressBar>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_COLOR>,         LedstripChangeOtaAnimModeAction<OtaAnimationModes::ColorChangeAll>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<LedstripMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
-void ledstripOtaAnimationChangeMenu::back()
+std::string LedstripOtaAnimationChangeMenu::text() const
 {
-    switchScreen<LedstripMenu>();
+    return TEXT_BLINKANIMATION;
+}
+
+void LedstripOtaAnimationChangeMenu::back()
+{
+    espgui::switchScreen<LedstripMenu>();
 }
 #endif

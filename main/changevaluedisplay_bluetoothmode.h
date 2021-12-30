@@ -7,7 +7,6 @@
 #include "actions/setvalueaction.h"
 #include "actions/backproxyaction.h"
 #include "icons/back.h"
-#include "texts.h"
 #ifdef FEATURE_BLUETOOTH
 #include "bluetoothmode.h"
 #endif

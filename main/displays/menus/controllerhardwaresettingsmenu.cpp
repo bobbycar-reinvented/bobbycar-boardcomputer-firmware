@@ -5,9 +5,7 @@
 
 // 3rdparty lib includes
 #include "changevaluedisplay.h"
-#include "actions/toggleboolaction.h"
 #include "actions/switchscreenaction.h"
-#include "checkboxicon.h"
 #include "icons/back.h"
 
 // local includes
@@ -18,8 +16,24 @@
 #include "displays/menus/enablemenu.h"
 #include "displays/menus/invertmenu.h"
 #include "displays/menus/settingsmenu.h"
+#include "bobbycheckbox.h"
 
 namespace {
+constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
+constexpr char TEXT_WHEELDIAMETERMM[] = "Wheel diameter (mm)";
+constexpr char TEXT_WHEELDIAMETERINCH[] = "Wheel diameter (inch)";
+constexpr char TEXT_NUMMAGNETPOLES[] = "Num magnet poles";
+constexpr char TEXT_SETENABLED[] = "Set enabled";
+constexpr char TEXT_SETINVERTED[] = "Set inverted";
+constexpr char TEXT_SWAPFRONTBACK[] = "Swap front/back";
+#ifdef FEATURE_CAN
+constexpr char TEXT_FRONTSENDCAN[] = "Front send CAN";
+constexpr char TEXT_BACKSENDCAN[] = "Back send CAN";
+constexpr char TEXT_CANTRANSMITTIMEOUT[] = "CanTransmitTimeout";
+constexpr char TEXT_CANRECEIVETIMEOUT[] = "CanReceiveTimeout";
+#endif
+constexpr char TEXT_BACK[] = "Back";
+
 using WheelDiameterMmChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_WHEELDIAMETERMM>,
@@ -60,26 +74,30 @@ using CanReceiveTimeoutChangeScreen = espgui::makeComponent<
 #endif
 } // namespace
 
-using namespace espgui;
-
 ControllerHardwareSettingsMenu::ControllerHardwareSettingsMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETENABLED>,        SwitchScreenAction<EnableMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETINVERTED>,       SwitchScreenAction<InvertMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERMM>,   SwitchScreenAction<WheelDiameterMmChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERINCH>, SwitchScreenAction<WheelDiameterInchChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NUMMAGNETPOLES>,    SwitchScreenAction<NumMagnetPolesChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPFRONTBACK>,     ToggleBoolAction, CheckboxIcon, SwapFrontBackAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPFRONTBACK>,     BobbyCheckbox, SwapFrontBackAccessor>>();
 #ifdef FEATURE_CAN
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTSENDCAN>,       ToggleBoolAction, CheckboxIcon, SendFrontCanCmdAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKSENDCAN>,        ToggleBoolAction, CheckboxIcon, SendBackCanCmdAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTSENDCAN>,       BobbyCheckbox, SendFrontCanCmdAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKSENDCAN>,        BobbyCheckbox, SendBackCanCmdAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANTRANSMITTIMEOUT>, SwitchScreenAction<CanTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVETIMEOUT>,  SwitchScreenAction<CanReceiveTimeoutChangeScreen>>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
+std::string ControllerHardwareSettingsMenu::text() const
+{
+    return TEXT_CONTROLLERHARDWARESETTINGS;
+}
+
 void ControllerHardwareSettingsMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    espgui::switchScreen<SettingsMenu>();
 }

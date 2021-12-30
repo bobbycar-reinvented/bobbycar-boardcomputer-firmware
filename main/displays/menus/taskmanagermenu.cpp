@@ -14,6 +14,8 @@
 using namespace espgui;
 
 namespace {
+constexpr char TEXT_TASKMANAGER[] = "Taskmanager";
+constexpr char TEXT_BACK[] = "Back";
 
 class TaskText : public virtual espgui::TextInterface
 {
@@ -36,6 +38,11 @@ TaskmanagerMenu::TaskmanagerMenu()
     for (const auto &task : schedulerTasks)
         constructMenuItem<makeComponentArgs<MenuItem, TaskText, DummyAction>>(task);
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string TaskmanagerMenu::text() const
+{
+    return TEXT_TASKMANAGER;
 }
 
 void TaskmanagerMenu::back()

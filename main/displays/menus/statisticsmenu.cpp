@@ -1,17 +1,26 @@
 #include "statisticsmenu.h"
 
-// local includes
-#include "mainmenu.h"
+// 3rdparty lib includes
+#include <menuitem.h>
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
 #include "actioninterface.h"
 #include "fmt/core.h"
-#include "utils.h"
 #include "icons/back.h"
+
+// local includes
+#include "mainmenu.h"
+#include "utils.h"
 #include "icons/time.h"
 #include "icons/reboot.h"
 #include "icons/update.h"
 #include "drivingstatistics.h"
+
+namespace {
+constexpr char TEXT_STATISTICSMENU[] = "Statistics";
+constexpr char TEXT_STATSSAVE[] = "Save kilometers";
+constexpr char TEXT_STATSCLEAR[] = "Clear current km";
+constexpr char TEXT_BACK[] = "Back";
 
 class WhPerKmText : public virtual espgui::TextInterface
 {
@@ -147,28 +156,33 @@ public:
         drivingStatistics.batteryWhEstimate = 0;
     }
 };
-
-using namespace espgui;
+} // namespace
 
 StatisticsMenu::StatisticsMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, WhPerKmText,                                      DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, UptimeText,                                       DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
-    constructMenuItem<makeComponent<MenuItem, CurrentKilometersText,                            DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, CurrentDrivingTimeText,                           DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, TotalKilometersText,                              DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, TotalMetersText,                                  DummyAction>>();
-//  constructMenuItem<makeComponent<MenuItem, SavedTotalCentimetersText,                        DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, CurrentWhUsedText,                                DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, AverageWhUsedText,                                DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, EfficiencyText, EfficiencyTextColor,              DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, EmptyText,                                        DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSSAVE>,                       SaveKilometersAction, StaticMenuItemIcon<&bobbyicons::update>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSCLEAR>,                      ClearCurrentStatsAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                            SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    using namespace espgui;
+    constructMenuItem<makeComponent<MenuItem, WhPerKmText,                         DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, UptimeText,                          DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
+    constructMenuItem<makeComponent<MenuItem, CurrentKilometersText,               DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, CurrentDrivingTimeText,              DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, TotalKilometersText,                 DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, TotalMetersText,                     DummyAction>>();
+//  constructMenuItem<makeComponent<MenuItem, SavedTotalCentimetersText,           DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, CurrentWhUsedText,                   DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, AverageWhUsedText,                   DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, EfficiencyText, EfficiencyTextColor, DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, EmptyText,                           DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSSAVE>,          SaveKilometersAction, StaticMenuItemIcon<&bobbyicons::update>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSCLEAR>,         ClearCurrentStatsAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+}
+
+std::string StatisticsMenu::text() const
+{
+    return TEXT_STATISTICSMENU;
 }
 
 void StatisticsMenu::back()
 {
-    switchScreen<MainMenu>();
+    espgui::switchScreen<MainMenu>();
 }

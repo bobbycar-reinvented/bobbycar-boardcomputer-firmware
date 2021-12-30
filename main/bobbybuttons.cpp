@@ -1,23 +1,39 @@
 #include "bobbybuttons.h"
 
+// local includes
+#include "newsettings.h"
+
 [[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button)
 {
-    switch (button)
-    {
+    // Invalid
+    if (button == INPUT_MAPPING_NONE)
+        return std::nullopt;
+
     using espgui::Button;
-    case 0: return Button::Left;
-    case 1: return Button::Right;
-    case 2: return Button::Up;
-    case 3: return Button::Down;
-    case 4: return Button(BobbyButton::Profile0);
-    case 5: return Button(BobbyButton::Profile1);
-    case 6: return Button(BobbyButton::Profile2);
-    case 7: return Button(BobbyButton::Profile3);
-    case 8: return Button(BobbyButton::Left2);
-    case 9: return Button(BobbyButton::Right2);
-    case 10: return Button(BobbyButton::Up2);
-    case 11: return Button(BobbyButton::Down2);
-    }
+    if (configs.dpadMappingLeft.value == button)
+        return Button::Left;
+    if (configs.dpadMappingRight.value == button)
+        return Button::Right;
+    if (configs.dpadMappingUp.value == button)
+        return Button::Up;
+    if (configs.dpadMappingDown.value == button)
+        return Button::Down;
+    if (configs.dpadMappingProfile0.value == button)
+        return Button(BobbyButton::Profile0);
+    if (configs.dpadMappingProfile1.value == button)
+        return Button(BobbyButton::Profile1);
+    if (configs.dpadMappingProfile2.value == button)
+        return Button(BobbyButton::Profile2);
+    if (configs.dpadMappingProfile3.value == button)
+        return Button(BobbyButton::Profile3);
+    if (configs.dpadMappingLeft2.value == button)
+        return Button(BobbyButton::Left2);
+    if (configs.dpadMappingRight2.value == button)
+        return Button(BobbyButton::Right2);
+    if (configs.dpadMappingUp2.value == button)
+        return Button(BobbyButton::Up2);
+    if (configs.dpadMappingDown2.value == button)
+        return Button(BobbyButton::Down2);
 
     return std::nullopt;
 }

@@ -2,14 +2,13 @@
 
 // local includes
 #include "displays/bobbymenudisplay.h"
-#include "texts.h"
 
-class GraphsMenu :
-    public BobbyMenuDisplay,
-    public espgui::StaticText<TEXT_GRAPHS>
+class GraphsMenu : public BobbyMenuDisplay
 {
 public:
     GraphsMenu();
+
+    std::string text() const override;
 
     void back() override;
 };

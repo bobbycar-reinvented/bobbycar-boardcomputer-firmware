@@ -14,6 +14,24 @@
 #include "displays/menus/mainmenu.h"
 
 namespace {
+constexpr char TEXT_GRAPHS[] = "Graphs";
+constexpr char TEXT_GAS[] = "Gas";
+constexpr char TEXT_BREMS[] = "Brems";
+constexpr char TEXT_POTIS[] = "Potis";
+constexpr char TEXT_AVGSPEED[] = "Avg. speed";
+constexpr char TEXT_AVGSPEEDKMH[] = "Avg. speed KMH";
+constexpr char TEXT_SUMCURRENT[] = "Sum current";
+constexpr char TEXT_FRONTVOLTAGE[] = "Front voltage";
+constexpr char TEXT_BACKVOLTAGE[] = "Back voltage";
+constexpr char TEXT_VOLTAGES[] = "Voltages";
+constexpr char TEXT_BMSVOLTAGE[] = "BMS voltage";
+constexpr char TEXT_BMSCURRENT[] = "BMS current";
+constexpr char TEXT_BMSPOWER[] = "BMS power";
+constexpr char TEXT_SUMCURRENTSCOMPARISON[] = "Sum currents comparison";
+constexpr char TEXT_MOTORCURRENTS[] = "Motor currents";
+constexpr char TEXT_RSSI[] = "RSSI";
+constexpr char TEXT_BACK[] = "Back";
+
 using GasGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_GAS>,
@@ -152,11 +170,9 @@ using RssiGraphDisplay = espgui::makeComponent<
 >;
 } // namespace
 
-using namespace espgui;
-
-
 GraphsMenu::GraphsMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAS>,                   SwitchScreenAction<GasGraphDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BREMS>,                 SwitchScreenAction<BremsGraphDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTIS>,                 SwitchScreenAction<PotisGraphDisplay>>>();
@@ -179,7 +195,12 @@ GraphsMenu::GraphsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
+std::string GraphsMenu::text() const
+{
+    return TEXT_GRAPHS;
+}
+
 void GraphsMenu::back()
 {
-    switchScreen<MainMenu>();
+    espgui::switchScreen<MainMenu>();
 }
