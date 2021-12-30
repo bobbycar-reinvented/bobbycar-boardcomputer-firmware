@@ -142,9 +142,17 @@ void ButtonCalibrateDisplay::rawButtonPressed(uint8_t button)
 {
     //Base::rawButtonPressed(button);
 
-    ESP_LOGI(TAG, "button=%hhu", button);
-
-    if (!m_lastButton || *m_lastButton != button)
+    if (m_status == Finished)
+    {
+        if (button == m_rightButton)
+        {
+            ESP_LOGI(TAG, "correct button");
+            m_finished = true;
+        }
+        else
+            ESP_LOGI(TAG, "wrong button");
+    }
+    else if (!m_lastButton || *m_lastButton != button)
         m_lastButton = button;
     else
     {
@@ -170,10 +178,7 @@ void ButtonCalibrateDisplay::rawButtonPressed(uint8_t button)
             m_lastButton = std::nullopt;
             m_status = Finished;
             break;
-        case Finished:
-            if (button == m_rightButton)
-                m_finished = true;
-            break;
+        case Finished:;
         }
     }
 }
@@ -181,8 +186,6 @@ void ButtonCalibrateDisplay::rawButtonPressed(uint8_t button)
 void ButtonCalibrateDisplay::rawButtonReleased(uint8_t button)
 {
     //Base::rawButtonReleased(button);
-
-    ESP_LOGI(TAG, "button=%hhu", button);
 }
 
 void ButtonCalibrateDisplay::buttonPressed(espgui::Button button)

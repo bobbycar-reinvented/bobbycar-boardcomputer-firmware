@@ -17,9 +17,11 @@
 #include "displays/potiscalibratedisplay.h"
 #include "displays/menus/timersmenu.h"
 #include "displays/menus/settingsmenu.h"
+#include "displays/buttoncalibratedisplay.h"
 
 namespace {
 constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
+constexpr char TEXT_BUTTONCALIBRATE[] = "Button Calibrate";
 constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
 constexpr char TEXT_POTISCALIBRATE[] = "Potis Calibrate";
 constexpr char TEXT_SAMPLECOUNT[] = "sampleCount";
@@ -171,6 +173,7 @@ using namespace espgui;
 BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          SwitchScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUTTONCALIBRATE>,                             SwitchScreenAction<ButtonCalibrateDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, GasText,                                                      DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BremsText,                                                    DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTISCALIBRATE>,                              SwitchScreenAction<PotisCalibrateDisplay>>>();
