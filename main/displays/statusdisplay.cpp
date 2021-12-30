@@ -1,5 +1,8 @@
 #include "statusdisplay.h"
 
+// esp-idf includes
+#include <esp_log.h>
+
 // 3rdparty lib includes
 #include <fmt/core.h>
 #include <espwifistack.h>
@@ -25,11 +28,6 @@ using namespace espgui;
 namespace {
 constexpr const char * const TAG = "STATUS";
 } // namespace
-
-StatusDisplay::~StatusDisplay()
-{
-    ESP_LOGI(TAG, "called");
-}
 
 void StatusDisplay::initScreen()
 {
@@ -139,7 +137,7 @@ void StatusDisplay::redraw()
         }
         else
         {
-            ESP_LOGW("BOBBY", "get_sta_ap_info() failed with %.*s", result.error().size(), result.error().data());
+            ESP_LOGW(TAG, "get_sta_ap_info() failed with %.*s", result.error().size(), result.error().data());
             goto showStaStatus;
         }
     }
@@ -158,7 +156,7 @@ showStaStatus:
             m_labelIpAddress.redraw(wifi_stack::toString(result->ip));
         else
         {
-            ESP_LOGW("BOBBY", "get_ip_info() failed with %.*s", result.error().size(), result.error().data());
+            ESP_LOGW(TAG, "get_ip_info() failed with %.*s", result.error().size(), result.error().data());
             goto clearIp;
         }
     }
@@ -185,13 +183,6 @@ clearIp:
     m_labelName.redraw(configs.wifiApName.value);
     const auto profile = settingsPersister.currentlyOpenProfileIndex();
     m_labelProfile.redraw(profile ? std::to_string(*profile) : "-");
-}
-
-void StatusDisplay::stop()
-{
-    Base::stop();
-
-    ESP_LOGI(TAG, "called");
 }
 
 void StatusDisplay::buttonPressed(espgui::Button button)

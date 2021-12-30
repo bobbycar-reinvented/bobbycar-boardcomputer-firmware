@@ -1,7 +1,5 @@
 #include "mainmenu.h"
 
-// esp-idf includes
-
 // 3rdparty lib includes
 #include "actions/switchscreenaction.h"
 #include "icons/back.h"
@@ -87,8 +85,6 @@ constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
 MainMenu::MainMenu()
 {
     using namespace espgui;
-
-    ESP_LOGI(TAG, "called");
 
     // constructMenuItem<makeComponent<MenuItem, mainmenu::CurrentTimeText,     DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       SwitchScreenAction<StatusDisplay>, StaticMenuItemIcon<&espgui::icons::back>>>();

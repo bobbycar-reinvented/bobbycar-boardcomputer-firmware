@@ -22,11 +22,8 @@ class StatusDisplay : public BobbyDisplay
     using Base = BobbyDisplay;
 
 public:
-    ~StatusDisplay() override;
-
     void initScreen() override;
     void redraw() override;
-    void stop() override;
 
     void buttonPressed(espgui::Button button) override;
 
