@@ -2,6 +2,7 @@
 
 // 3rdparty lib includes
 #include <displaywithtitle.h>
+#include <widgets/label.h>
 
 // local includes
 #include "globals.h"
@@ -32,4 +33,12 @@ private:
     const bool m_bootup{false};
     ModeInterface *m_oldMode;
     IgnoreInputMode m_mode{0, bobbycar::protocol::ControlType::FieldOrientedControl, bobbycar::protocol::ControlMode::Torque};
+
+    std::optional<uint8_t> m_lastButton;
+
+    enum { WaitingLeft, WaitingRight, WaitingUp, WaitingDown, Finished } m_status;
+
+    espgui::Label m_label{25, 72};
+
+    uint8_t m_leftButton, m_rightButton, m_upButton, m_downButton;
 };
