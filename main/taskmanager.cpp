@@ -14,7 +14,6 @@
 
 // local includes
 #include "wifi_bobbycar.h"
-#include "buttons.h"
 #include "dpad.h"
 #ifdef FEATURE_DPAD_3WIRESW
 #include "dpad3wire.h"
@@ -88,7 +87,6 @@ void not_needed() {}
 
 espcpputils::SchedulerTask schedulerTasksArr[] {
     espcpputils::SchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms },
-    espcpputils::SchedulerTask { "input",          InputDispatcher::init, InputDispatcher::update, 20ms  },
 #ifdef FEATURE_DPAD
     espcpputils::SchedulerTask { "dpad",           dpad::init,            dpad::update,            20ms  },
 #endif

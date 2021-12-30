@@ -1,11 +1,14 @@
 #pragma once
 
+// 3rdparty lib includes
 #include "actioninterface.h"
+
+// local includes
 #include "ledstrip.h"
-// #include "ledstripdefines.h"
+#include "ledstripdefines.h"
 
 #ifdef FEATURE_LEDSTRIP
-template<uint16_t type>
+template<LedstripAnimation type>
 class LedStripSetAnimationAction : public virtual espgui::ActionInterface
 {
 public:

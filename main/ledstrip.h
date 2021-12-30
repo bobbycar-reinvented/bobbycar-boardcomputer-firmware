@@ -6,6 +6,9 @@
 // 3rdparty lib includes
 #include <FastLED.h>
 
+// local includes
+#include "ledstripdefines.h"
+
 #ifdef FEATURE_LEDSTRIP
 enum Bobbycar_Side
 {
@@ -32,7 +35,7 @@ extern std::vector<CRGB> leds;
 extern uint8_t gHue;
 
 extern uint16_t blinkAnimation;
-extern uint16_t animation_type;
+extern LedstripAnimation animation_type;
 
 void showDefaultLedstrip();
 void showAnimation();

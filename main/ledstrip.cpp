@@ -18,12 +18,12 @@ std::vector<CRGB> leds;
 uint8_t gHue = 0;
 
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
-uint16_t animation_type = LedstripAnimation::DefaultRainbow;
+LedstripAnimation animation_type = LedstripAnimation::DefaultRainbow;
 
 
 void initLedStrip()
 {
-    animation_type = settings.ledstrip.animationType;
+    animation_type = LedstripAnimation(settings.ledstrip.animationType);
     leds.resize(settings.ledstrip.ledsCount);
     FastLED.addLeds<NEOPIXEL, PINS_LEDSTRIP>(&*std::begin(leds), leds.size())
         .setCorrection(TypicalSMD5050);

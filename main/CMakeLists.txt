@@ -11,7 +11,6 @@ set(headers
     bobbycheckbox.h
     bobbyerrorhandler.h
     buildserver.h
-    buttons.h
     can.h
     changevaluedisplay_bluetoothmode.h
     changevaluedisplay_controlmode.h
@@ -228,7 +227,6 @@ set(headers
     modes/tempomatmode.h
     texthelpers/networktexthelpers.h
     texthelpers/wifiaptexthelpers.h
-    texthelpers/wifistaconfigtexthelpers.h
     texthelpers/wifistatexthelpers.h
     widgets/doubleprogressbar.h
 )
@@ -244,7 +242,6 @@ set(sources
     bobbybuttons.cpp
     bobbyerrorhandler.cpp
     buildserver.cpp
-    buttons.cpp
     can.cpp
     changevaluedisplay_bluetoothmode.cpp
     changevaluedisplay_controlmode.cpp
@@ -456,7 +453,6 @@ set(sources
     modes/tempomatmode.cpp
     texthelpers/networktexthelpers.cpp
     texthelpers/wifiaptexthelpers.cpp
-    texthelpers/wifistaconfigtexthelpers.cpp
     texthelpers/wifistatexthelpers.cpp
     widgets/doubleprogressbar.cpp
 )
