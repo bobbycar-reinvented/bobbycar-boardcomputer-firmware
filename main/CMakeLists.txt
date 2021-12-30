@@ -111,9 +111,6 @@ set(headers
     displays/bobbysplitgraphdisplay.h
     displays/calibratedisplay.h
     displays/calibratevoltagedisplay.h
-    displays/dpad5wire2outdebugdisplay.h
-    displays/dpad5wiredebugdisplay.h
-    displays/dpad6wiredebugdisplay.h
     displays/gameoflifedisplay.h
     displays/gametrakcalibratedisplay.h
     displays/ledstripcolorsdisplay.h
@@ -339,9 +336,6 @@ set(sources
     displays/bobbysplitgraphdisplay.cpp
     displays/calibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
-    displays/dpad5wire2outdebugdisplay.cpp
-    displays/dpad5wiredebugdisplay.cpp
-    displays/dpad6wiredebugdisplay.cpp
     displays/gameoflifedisplay.cpp
     displays/gametrakcalibratedisplay.cpp
     displays/ledstripcolorsdisplay.cpp

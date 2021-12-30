@@ -8,6 +8,7 @@
 #include "changevaluedisplay.h"
 #include "changevaluedisplay_daylightsavingmode.h"
 #include "changevaluedisplay_sntp_sync_mode_t.h"
+#include "changevaluedisplay_string.h"
 #include "actions/switchscreenaction.h"
 #include "actions/dummyaction.h"
 #include "icons/back.h"
@@ -69,6 +70,14 @@ using DaylightSavingModeChangeDisplay = espgui::makeComponent<
 >;
 
 #ifdef FEATURE_NTP
+using TimeServerChangeDisplay = espgui::makeComponent<
+    BobbyChangeValueDisplay<std::string>,
+    espgui::StaticText<TEXT_NTPSERVER>,
+    TimeServerAccessor,
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<TimeSettingsMenu>>
+>;
+
 using TimeSyncModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<sntp_sync_mode_t>,
     espgui::StaticText<TEXT_NTPMODE>,
@@ -96,17 +105,16 @@ public:
 #endif
 } // namespace
 
-using namespace espgui;
-
 TimeSettingsMenu::TimeSettingsMenu()
 {
+    using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, CurrentUtcDateTimeText,              StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CurrentLocalDateTimeText,            StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OFFSET>,             SwitchScreenAction<TimezoneOffsetChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DAYLIGHTSAVINGMODE>, SwitchScreenAction<DaylightSavingModeChangeDisplay>>>();
 #ifdef FEATURE_NTP
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPENABLED>,         BobbyCheckbox, TimeServerEnabledAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPSERVER>,          DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPSERVER>,          SwitchScreenAction<TimeServerChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPMODE>,            SwitchScreenAction<TimeSyncModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPINTERVAL>,        SwitchScreenAction<TimeSyncIntervalChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, NtpSyncStatusText,                   DummyAction>>();
@@ -121,5 +129,5 @@ std::string TimeSettingsMenu::text() const
 
 void TimeSettingsMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    espgui::switchScreen<SettingsMenu>();
 }

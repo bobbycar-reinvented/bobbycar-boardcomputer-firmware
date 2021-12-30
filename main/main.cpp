@@ -71,14 +71,6 @@ extern "C" void app_main()
 
     bootLabel.redraw("switchScreen");
 
-#if defined(FEATURE_DPAD_5WIRESW) && defined(DPAD_5WIRESW_DEBUG)
-    switchScreen<DPad5WireDebugDisplay>();
-#elif defined(FEATURE_DPAD_5WIRESW_2OUT) && defined(DPAD_5WIRESW_DEBUG)
-    switchScreen<DPad5Wire2OutDebugDisplay>();
-#elif defined(FEATURE_DPAD_6WIRESW) && defined(DPAD_6WIRESW_DEBUG)
-    switchScreen<DPad6WireDebugDisplay>();
-#else
-
     if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
     {
         espgui::switchScreen<Lockscreen>();
@@ -92,7 +84,6 @@ extern "C" void app_main()
             espgui::switchScreen<StatusDisplay>();
         }
     }
-#endif
 
     while (true)
     {
