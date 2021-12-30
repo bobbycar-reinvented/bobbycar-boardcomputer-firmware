@@ -38,7 +38,16 @@ private:
 
     enum { WaitingLeft, WaitingRight, WaitingUp, WaitingDown, Finished } m_status;
 
-    espgui::Label m_label{25, 72};
+    espgui::Label m_labelInstruction{25, 72};
+
+    espgui::Label m_labelLeft{25, 100};
+    espgui::Label m_labelRight{25, 125};
+    espgui::Label m_labelUp{25, 150};
+    espgui::Label m_labelDown{25, 175};
+
+    espgui::Label m_labelEnd{25, 225};
 
     uint8_t m_leftButton, m_rightButton, m_upButton, m_downButton;
+
+    bool m_finished;
 };
