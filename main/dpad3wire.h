@@ -6,12 +6,14 @@
 // 3rdparty lib includes
 #include <espchrono.h>
 #include <tickchrono.h>
+#include <screenmanager.h>
 
 // local includes
 #include "dpad.h"
-#include "buttons.h"
 #include "types.h"
 #include "globals.h"
+#include "newsettings.h"
+#include "bobbybuttons.h"
 
 namespace {
 namespace dpad3wire

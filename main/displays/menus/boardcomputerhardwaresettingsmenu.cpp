@@ -14,14 +14,16 @@
 #include "icons/lock.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/menus/lockscreensettingsmenu.h"
-#include "displays/calibratedisplay.h"
+#include "displays/potiscalibratedisplay.h"
 #include "displays/menus/timersmenu.h"
 #include "displays/menus/settingsmenu.h"
+#include "displays/buttoncalibratedisplay.h"
 
 namespace {
 constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
+constexpr char TEXT_BUTTONCALIBRATE[] = "Button Calibrate";
 constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
-constexpr char TEXT_CALIBRATE[] = "Calibrate";
+constexpr char TEXT_POTISCALIBRATE[] = "Potis Calibrate";
 constexpr char TEXT_SAMPLECOUNT[] = "sampleCount";
 constexpr char TEXT_GASMIN[] = "gasMin";
 constexpr char TEXT_GASMAX[] = "gasMax";
@@ -171,9 +173,10 @@ using namespace espgui;
 BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          SwitchScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUTTONCALIBRATE>,                             SwitchScreenAction<ButtonCalibrateDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, GasText,                                                      DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BremsText,                                                    DisabledColor, StaticFont<2>, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CALIBRATE>,                                   SwitchScreenAction<CalibrateDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTISCALIBRATE>,                              SwitchScreenAction<PotisCalibrateDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SAMPLECOUNT, SampleCountAccessor>,   SwitchScreenAction<SampleCountChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMIN, GasMinAccessor>,             SwitchScreenAction<GasMinChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMAX, GasMaxAccessor>,             SwitchScreenAction<GasMaxChangeScreen>>>();

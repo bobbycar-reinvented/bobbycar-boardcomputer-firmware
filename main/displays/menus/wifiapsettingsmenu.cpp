@@ -16,6 +16,7 @@
 #include "displays/bobbychangevaluedisplay.h"
 #include "changevaluedisplay.h"
 #include "changevaluedisplay_string.h"
+#include "changevaluedisplay_ip_address_t.h"
 #include "changevaluedisplay_wifi_auth_mode_t.h"
 #include "wifiapclientsmenu.h"
 #include "networksettingsmenu.h"
@@ -33,17 +34,17 @@ constexpr char TEXT_DISABLEWHENONLINE[] = "Disable when online";
 constexpr char TEXT_BACK[] = "Back";
 
 constexpr char TEXT_SSID[] = "AP SSID";
-constexpr char TEXT_SSID_FORMATTED[] = "&sssid: &2";
+constexpr char TEXT_SSID_FORMATTED[] = "&sssid: ";
 constexpr char TEXT_KEY[] = "AP Key";
-constexpr char TEXT_KEY_FORMATTED[] = "&skey: &2";
+constexpr char TEXT_KEY_FORMATTED[] = "&skey: ";
 constexpr char TEXT_IP[] = "AP IP";
-constexpr char TEXT_IP_FORMATTED[] = "&sIP: &f&2";
+constexpr char TEXT_IP_FORMATTED[] = "&sIP: &f";
 constexpr char TEXT_MASK[] = "AP Mask";
-constexpr char TEXT_MASK_FORMATTED[] = "&sMask: &f&2";
+constexpr char TEXT_MASK_FORMATTED[] = "&sMask: &f";
 constexpr char TEXT_CHANNEL[] = "AP Channel";
-constexpr char TEXT_CHANNEL_FORMATTED[] = "&sChannel: &f&2";
+constexpr char TEXT_CHANNEL_FORMATTED[] = "&sChannel: &f";
 constexpr char TEXT_AUTHMODE[] = "AP Authmode";
-constexpr char TEXT_AUTHMODE_FORMATTED[] = "&sAuthmode: &2";
+constexpr char TEXT_AUTHMODE_FORMATTED[] = "&sAuthmode: ";
 
 class WifiApClientsAction : public virtual ActionInterface
 {
@@ -63,6 +64,22 @@ using ApKeyChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<std::string>,
     espgui::StaticText<TEXT_KEY>,
     WifiApKeyAccessor,
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>
+>;
+
+using ApIpChangeScreen = espgui::makeComponent<
+    BobbyChangeValueDisplay<wifi_stack::ip_address_t>,
+    espgui::StaticText<TEXT_IP>,
+    WifiApIpAccessor,
+    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
+    espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>
+>;
+
+using ApMaskChangeScreen = espgui::makeComponent<
+    BobbyChangeValueDisplay<wifi_stack::ip_address_t>,
+    espgui::StaticText<TEXT_MASK>,
+    WifiApMaskAccessor,
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<WifiApSettingsMenu>>
 >;
@@ -87,17 +104,17 @@ using ApAuthmodeChangeScreen = espgui::makeComponent<
 WifiApSettingsMenu::WifiApSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLED>,            BobbyCheckbox, WifiApEnabledAccessor>>();
-    //constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISABLEWHENONLINE>,  BobbyCheckbox, WifiApDisableWhenOnlineAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SSID_FORMATTED, WifiApSsidAccessor>, SwitchScreenAction<ApSsidChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_KEY_FORMATTED, WifiApKeyAccessor>, SwitchScreenAction<ApKeyChangeScreen>>>();
+  //constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISABLEWHENONLINE>,  BobbyCheckbox, WifiApDisableWhenOnlineAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SSID_FORMATTED, WifiApSsidAccessor>,         SwitchScreenAction<ApSsidChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_KEY_FORMATTED, WifiApKeyAccessor>,           SwitchScreenAction<ApKeyChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, WifiApMacText,                       DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_IP_FORMATTED, WifiApIpAccessor>, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_MASK_FORMATTED, WifiApMaskAccessor>, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CHANNEL_FORMATTED, WifiApChannelAccessor>, SwitchScreenAction<ApChannelChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_IP_FORMATTED, WifiApIpAccessor>,             SwitchScreenAction<ApIpChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_MASK_FORMATTED, WifiApMaskAccessor>,         SwitchScreenAction<ApMaskChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CHANNEL_FORMATTED, WifiApChannelAccessor>,   SwitchScreenAction<ApChannelChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_AUTHMODE_FORMATTED, WifiApAuthmodeAccessor>, SwitchScreenAction<ApAuthmodeChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, WifiApHostnameText,                  DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, WifiApClientsText,                   WifiApClientsAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<NetworkSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, WifiApHostnameText,                                                   DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, WifiApClientsText,                                                    WifiApClientsAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<NetworkSettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
 }
 
 std::string WifiApSettingsMenu::text() const

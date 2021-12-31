@@ -35,4 +35,4 @@ void switchProfile(uint8_t index)
         return;
     }
 }
-} // namespace
+} // namespace settingsutils

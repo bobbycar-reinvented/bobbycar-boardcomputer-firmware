@@ -11,7 +11,6 @@ set(headers
     bobbycheckbox.h
     bobbyerrorhandler.h
     buildserver.h
-    buttons.h
     can.h
     changevaluedisplay_bluetoothmode.h
     changevaluedisplay_controlmode.h
@@ -110,11 +109,8 @@ set(headers
     displays/bobbymenudisplay.h
     displays/bobbypopupdisplay.h
     displays/bobbysplitgraphdisplay.h
-    displays/calibratedisplay.h
+    displays/buttoncalibratedisplay.h
     displays/calibratevoltagedisplay.h
-    displays/dpad5wire2outdebugdisplay.h
-    displays/dpad5wiredebugdisplay.h
-    displays/dpad6wiredebugdisplay.h
     displays/gameoflifedisplay.h
     displays/gametrakcalibratedisplay.h
     displays/ledstripcolorsdisplay.h
@@ -185,6 +181,7 @@ set(headers
     displays/menus/wifistasettingsmenu.h
     displays/metersdisplay.h
     displays/pingpongdisplay.h
+    displays/potiscalibratedisplay.h
     displays/poweroffdisplay.h
     displays/powersupplydisplay.h
     displays/qrcodedebug.h
@@ -228,7 +225,6 @@ set(headers
     modes/tempomatmode.h
     texthelpers/networktexthelpers.h
     texthelpers/wifiaptexthelpers.h
-    texthelpers/wifistaconfigtexthelpers.h
     texthelpers/wifistatexthelpers.h
     widgets/doubleprogressbar.h
 )
@@ -244,7 +240,6 @@ set(sources
     bobbybuttons.cpp
     bobbyerrorhandler.cpp
     buildserver.cpp
-    buttons.cpp
     can.cpp
     changevaluedisplay_bluetoothmode.cpp
     changevaluedisplay_controlmode.cpp
@@ -340,11 +335,8 @@ set(sources
     displays/bobbymenudisplay.cpp
     displays/bobbypopupdisplay.cpp
     displays/bobbysplitgraphdisplay.cpp
-    displays/calibratedisplay.cpp
+    displays/buttoncalibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
-    displays/dpad5wire2outdebugdisplay.cpp
-    displays/dpad5wiredebugdisplay.cpp
-    displays/dpad6wiredebugdisplay.cpp
     displays/gameoflifedisplay.cpp
     displays/gametrakcalibratedisplay.cpp
     displays/ledstripcolorsdisplay.cpp
@@ -413,6 +405,7 @@ set(sources
     displays/menus/wifistasettingsmenu.cpp
     displays/metersdisplay.cpp
     displays/pingpongdisplay.cpp
+    displays/potiscalibratedisplay.cpp
     displays/poweroffdisplay.cpp
     displays/powersupplydisplay.cpp
     displays/qrcodedebug.cpp
@@ -456,7 +449,6 @@ set(sources
     modes/tempomatmode.cpp
     texthelpers/networktexthelpers.cpp
     texthelpers/wifiaptexthelpers.cpp
-    texthelpers/wifistaconfigtexthelpers.cpp
     texthelpers/wifistatexthelpers.cpp
     widgets/doubleprogressbar.cpp
 )

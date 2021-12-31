@@ -1,4 +1,4 @@
-#include "calibratedisplay.h"
+#include "potiscalibratedisplay.h"
 
 // 3rdparty lib includes
 #include <tftinstance.h>
@@ -9,22 +9,19 @@
 #include "displays/statusdisplay.h"
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 #include "newsettings.h"
+#include "utils.h"
+#include "globals.h"
 
 namespace {
-constexpr char TEXT_CALIBRATE[] = "Calibrate";
+constexpr char TEXT_CALIBRATE[] = "Potis Calibrate";
 } // namespace
 
-CalibrateDisplay::CalibrateDisplay(bool bootup) :
-    m_bootup{bootup}
-{
-}
-
-std::string CalibrateDisplay::text() const
+std::string PotisCalibrateDisplay::text() const
 {
     return TEXT_CALIBRATE;
 }
 
-void CalibrateDisplay::start()
+void PotisCalibrateDisplay::start()
 {
     Base::start();
 
@@ -37,7 +34,7 @@ void CalibrateDisplay::start()
     m_brems = std::nullopt;
 }
 
-void CalibrateDisplay::initScreen()
+void PotisCalibrateDisplay::initScreen()
 {
     Base::initScreen();
 
@@ -56,7 +53,7 @@ void CalibrateDisplay::initScreen()
     m_renderedButton = -1;
 }
 
-void CalibrateDisplay::update()
+void PotisCalibrateDisplay::update()
 {
     Base::update();
 
@@ -71,7 +68,7 @@ void CalibrateDisplay::update()
         m_brems = std::nullopt;
 }
 
-void CalibrateDisplay::redraw()
+void PotisCalibrateDisplay::redraw()
 {
     Base::redraw();
 
@@ -159,7 +156,7 @@ void CalibrateDisplay::redraw()
     m_renderedButton = m_selectedButton;
 }
 
-void CalibrateDisplay::stop()
+void PotisCalibrateDisplay::stop()
 {
     Base::stop();
 
@@ -173,7 +170,7 @@ void CalibrateDisplay::stop()
     }
 }
 
-void CalibrateDisplay::buttonPressed(espgui::Button button)
+void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
 {
     Base::buttonPressed(button);
 
@@ -277,7 +274,7 @@ void CalibrateDisplay::buttonPressed(espgui::Button button)
     }
 }
 
-void CalibrateDisplay::copyFromSettings()
+void PotisCalibrateDisplay::copyFromSettings()
 {
     m_gasMin = configs.gasMin.value;
     m_gasMax = configs.gasMax.value;
@@ -285,7 +282,7 @@ void CalibrateDisplay::copyFromSettings()
     m_bremsMax = configs.bremsMax.value;
 }
 
-void CalibrateDisplay::copyToSettings()
+void PotisCalibrateDisplay::copyToSettings()
 {
     configs.write_config(configs.gasMin, m_gasMin);
     configs.write_config(configs.gasMax, m_gasMax);

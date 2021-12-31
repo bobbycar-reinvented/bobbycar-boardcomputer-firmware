@@ -4,4 +4,4 @@
 
 namespace settingsutils {
 void switchProfile(uint8_t index);
-}
+} // namespace settingsutils

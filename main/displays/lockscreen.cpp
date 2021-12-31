@@ -8,7 +8,7 @@
 #include "globals.h"
 #include "utils.h"
 #include "displays/menus/mainmenu.h"
-#include "displays/calibratedisplay.h"
+#include "displays/potiscalibratedisplay.h"
 #include "bobbybuttons.h"
 #ifdef LOCKSCREEN_PLUGIN
 #include "ledstripdefines.h"
@@ -88,7 +88,7 @@ void Lockscreen::redraw()
             if (m_numbers == settings.lockscreen.pin)
             {
                 if (!gas || !brems || *gas > 200.f || *brems > 200.f)
-                    espgui::switchScreen<CalibrateDisplay>(true);
+                    espgui::switchScreen<PotisCalibrateDisplay>(true);
                 else
                     espgui::switchScreen<MainMenu>();
 #ifdef LOCKSCREEN_PLUGIN

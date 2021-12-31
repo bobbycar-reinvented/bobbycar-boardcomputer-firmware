@@ -14,7 +14,8 @@
 #endif
 #define LEDSTRIP_OVERWRITE_BLINKBOTH  3
 
-enum LedstripAnimation : uint16_t {
+enum LedstripAnimation : uint8_t
+{
     DefaultRainbow,
     BetterRainbow,
     SpeedSync,
