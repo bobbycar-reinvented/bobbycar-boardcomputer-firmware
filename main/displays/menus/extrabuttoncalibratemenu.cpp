@@ -49,7 +49,10 @@ public:
 
     int color() const override
     {
-        return (status == currentStatus || currentStatus == Idle) ? TFT_WHITE : color565(50,50,50);
+        if ((status == currentStatus) || (currentStatus == Idle))
+            return TFT_WHITE;
+        else
+            return color565(50,50,50);
     }
 
     std::string text() const override
@@ -90,11 +93,6 @@ void ExtraButtonCalibrateMenu::start()
     currentStatus = Idle;
 }
 
-void ExtraButtonCalibrateMenu::update()
-{
-    Base::update();
-}
-
 void ExtraButtonCalibrateMenu::stop()
 {
     Base::stop();
@@ -113,88 +111,77 @@ void ExtraButtonCalibrateMenu::rawButtonPressed(uint8_t button)
     {
         Base::rawButtonPressed(button);
     }
-    else
+    else if (validateNewButton(button))
     {
-        if (validateNewButton(button))
+        ESP_LOGI(TAG, "Valid new button: %i", button);
+        switch(currentStatus)
         {
-            ESP_LOGI(TAG, "Valid new button: %i", button);
-            switch(currentStatus)
+        case WaitingUp2:
+            if (auto result = configs.write_config(configs.dpadMappingUp2, button); !result)
             {
-            case WaitingUp2:
-                if (auto result = configs.write_config(configs.dpadMappingUp2, button); !result)
-                {
-                    BobbyErrorHandler{}.errorOccured(std::move(result).error());
-                    break;
-                }
-                break;
-            case WaitingDown2:
-                if (auto result = configs.write_config(configs.dpadMappingDown2, button); !result)
-                {
-                    BobbyErrorHandler{}.errorOccured(std::move(result).error());
-                    break;
-                }
-                break;
-            case WaitingLeft2:
-                if (auto result = configs.write_config(configs.dpadMappingLeft2, button); !result)
-                {
-                    BobbyErrorHandler{}.errorOccured(std::move(result).error());
-                    break;
-                }
-                break;
-            case WaitingRight2:
-                if (auto result = configs.write_config(configs.dpadMappingRight2, button); !result)
-                {
-                    BobbyErrorHandler{}.errorOccured(std::move(result).error());
-                    break;
-                }
-                break;
-            case WaitingProfile0:
-                if (auto result = configs.write_config(configs.dpadMappingProfile0, button); !result)
-                {
-                    BobbyErrorHandler{}.errorOccured(std::move(result).error());
-                    break;
-                }
-                break;
-            case WaitingProfile1:
-                if (auto result = configs.write_config(configs.dpadMappingProfile1, button); !result)
-                {
-                    BobbyErrorHandler{}.errorOccured(std::move(result).error());
-                    break;
-                }
-                break;
-            case WaitingProfile2:
-                if (auto result = configs.write_config(configs.dpadMappingProfile2, button); !result)
-                {
-                    BobbyErrorHandler{}.errorOccured(std::move(result).error());
-                    break;
-                }
-                break;
-            case WaitingProfile3:
-                if (auto result = configs.write_config(configs.dpadMappingProfile3, button); !result)
-                {
-                    BobbyErrorHandler{}.errorOccured(std::move(result).error());
-                    break;
-                }
-                break;
-            default:
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
                 break;
             }
-            currentStatus = Idle;
+            break;
+        case WaitingDown2:
+            if (auto result = configs.write_config(configs.dpadMappingDown2, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingLeft2:
+            if (auto result = configs.write_config(configs.dpadMappingLeft2, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingRight2:
+            if (auto result = configs.write_config(configs.dpadMappingRight2, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingProfile0:
+            if (auto result = configs.write_config(configs.dpadMappingProfile0, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingProfile1:
+            if (auto result = configs.write_config(configs.dpadMappingProfile1, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingProfile2:
+            if (auto result = configs.write_config(configs.dpadMappingProfile2, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingProfile3:
+            if (auto result = configs.write_config(configs.dpadMappingProfile3, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        default:
+            break;
         }
-        else
-        {
-            ESP_LOGE(TAG, "Invalid new button: %i", button);
-            currentStatus = Idle;
-        }
+        currentStatus = Idle;
     }
-}
-
-void ExtraButtonCalibrateMenu::rawButtonReleased(uint8_t button)
-{
-//    if (currentStatus == Idle)
-//    {
-//        Base::rawButtonReleased(button);
-//    }
+    else
+    {
+        ESP_LOGE(TAG, "Invalid new button: %i", button);
+        currentStatus = Idle;
+    }
 }
 
 void ExtraButtonCalibrateMenu::buttonPressed(espgui::Button button)
@@ -217,14 +204,6 @@ void ExtraButtonCalibrateMenu::buttonPressed(espgui::Button button)
     }
 }
 
-void ExtraButtonCalibrateMenu::buttonReleased(espgui::Button button)
-{
-//    if (currentStatus == Idle)
-//    {
-//        Base::buttonReleased(button);
-//    }
-}
-
 std::string ExtraButtonCalibrateMenu::text() const
 {
     return TEXT_EXTRABUTTONCALIBRATEMENU;
@@ -238,9 +217,9 @@ void ExtraButtonCalibrateMenu::back()
 bool ExtraButtonCalibrateMenu::validateNewButton(uint8_t button)
 {
     return (
-            button != configs.dpadMappingDown.value &&
-            button != configs.dpadMappingUp.value &&
-            button != configs.dpadMappingLeft.value &&
-            button != configs.dpadMappingRight.value
+            (button != configs.dpadMappingDown.value) &&
+            (button != configs.dpadMappingUp.value) &&
+            (button != configs.dpadMappingLeft.value) &&
+            (button != configs.dpadMappingRight.value)
     );
 }
