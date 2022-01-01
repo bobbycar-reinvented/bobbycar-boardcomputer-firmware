@@ -136,6 +136,7 @@ set(headers
     displays/menus/enablemenu.h
     displays/menus/espnowmenu.h
     displays/menus/espnowsettingsmenu.h
+    displays/menus/extrabuttoncalibratemenu.h
     displays/menus/feedbackdebugmenu.h
     displays/menus/gametrakmodesettingsmenu.h
     displays/menus/garagenmenu.h
@@ -360,6 +361,7 @@ set(sources
     displays/menus/enablemenu.cpp
     displays/menus/espnowmenu.cpp
     displays/menus/espnowsettingsmenu.cpp
+    displays/menus/extrabuttoncalibratemenu.cpp
     displays/menus/feedbackdebugmenu.cpp
     displays/menus/gametrakmodesettingsmenu.cpp
     displays/menus/garagenmenu.cpp

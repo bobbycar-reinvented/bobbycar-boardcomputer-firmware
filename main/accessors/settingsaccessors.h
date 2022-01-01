@@ -238,3 +238,19 @@ struct ESPNowSyncTimeEnabledAccessor : public RefAccessorSaveSettings<bool> { bo
 struct ESPNowSyncTimeWithOthersEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncTimeWithOthers; } };
 struct ESPNowSyncBlinkEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncBlink; } };
 #endif
+
+// Button Mapping accessors
+struct ButtonLeftAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingLeft; } };
+struct ButtonRightAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingRight; } };
+struct ButtonUpAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingUp; } };
+struct ButtonDownAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingDown; } };
+
+struct ButtonLeft2Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingLeft2; } };
+struct ButtonRight2Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingRight2; } };
+struct ButtonUp2Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingUp2; } };
+struct ButtonDown2Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingDown2; } };
+
+struct ButtonProfile0Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingProfile0; } };
+struct ButtonProfile1Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingProfile1; } };
+struct ButtonProfile2Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingProfile2; } };
+struct ButtonProfile3Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingProfile3; } };
