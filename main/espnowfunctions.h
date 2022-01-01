@@ -1,7 +1,6 @@
 #pragma once
 #ifdef FEATURE_ESPNOW
 #include <cstdint>
-#include <deque>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -19,7 +18,6 @@ struct esp_now_message_t
 extern bool receiveTimeStamp;
 extern bool receiveTsFromOtherBobbycars;
 
-extern std::deque<esp_now_message_t> message_queue;
 extern std::vector<esp_now_peer_info_t> peers;
 
 void initESPNow();
