@@ -273,14 +273,13 @@ void sendCanCommands()
 
         const auto timestamp_before = espchrono::millis_clock::now();
         const auto result = twai_transmit(&message, timeout);
+
         if (result != ESP_OK && result != ESP_ERR_TIMEOUT)
         {
             ESP_LOGE(TAG, "ERROR: twai_transmit() failed with %s", esp_err_to_name(result));
         }
-
-
-
-        if (result == ESP_ERR_TIMEOUT) {
+        else if (result == ESP_ERR_TIMEOUT)
+        {
             ++can_sequential_error_cnt;
             ++can_total_error_cnt;
 
@@ -288,20 +287,29 @@ void sendCanCommands()
                      espchrono::ago(timestamp_before).count(),
                      can_sequential_error_cnt,
                      can_total_error_cnt);
-        } else {
+        }
+        else
+        {
             can_sequential_error_cnt = 0;
         }
 
 
-        if (can_sequential_error_cnt > 3) {
+        if (can_sequential_error_cnt > 3)
+        {
             can_sequential_error_cnt = 0;
-            if (configs.canBusResetOnError.value) {
-                ESP_LOGE(TAG, "CAN BUS RESET: twai_stop(): %s", esp_err_to_name(twai_stop()));
-                ESP_LOGE(TAG, "CAN BUS RESET: twai_start(): %s", esp_err_to_name(twai_start()));
-
+            if (configs.canResetOnError.value)
+            {
+                ESP_LOGW(TAG, "WARNING: Something isn't right, trying to restart can ic...");
+                if (const auto err = twai_stop(); err != ESP_OK)
+                {
+                    ESP_LOGE(TAG, "ERROR: twai_stop() failed with %s", esp_err_to_name(err));
+                }
+                if (const auto err = twai_start(); err != ESP_OK)
+                {
+                    ESP_LOGE(TAG, "ERROR: twai_start() failed with %s", esp_err_to_name(err));
+                }
             }
         }
-
         return result;
     };
 

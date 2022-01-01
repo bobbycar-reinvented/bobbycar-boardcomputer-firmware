@@ -1,8 +1,6 @@
 #ifdef FEATURE_ESPNOW
 #include "espnowfunctions.h"
 
-#include <string>
-
 #include <espchrono.h>
 #include <esp_log.h>
 #include <numberparsing.h>
@@ -20,7 +18,6 @@ constexpr const char * const TAG = "BOBBY_ESP_NOW";
 
 uint16_t lastYear; // Used for esp-now timesync
 
-std::deque<esp_now_message_t> message_queue{};
 std::vector<esp_now_peer_info_t> peers{};
 uint8_t initialized{0};
 
@@ -36,14 +33,46 @@ extern "C" void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data
     size_t sep_pos = data_str.find(":");
     if (std::string_view::npos != sep_pos)
     {
-        std::string_view msg_type = data_str.substr(0, sep_pos);
-        std::string_view msg = data_str.substr(sep_pos+1, data_str.length()-sep_pos-1);
-        ESP_LOGD(TAG, "Type: %.*s - Message: %.*s", msg_type.size(), msg_type.data(), msg.size(), msg.data());
+        esp_now_message_t msg{
+            .content = std::string{data_str.substr(sep_pos+1, data_str.length()-sep_pos-1)},
+            .type = std::string{data_str.substr(0, sep_pos)}
+        };
 
-        message_queue.push_back(esp_now_message_t {
-            .content = std::string{msg},
-            .type = std::string{msg_type}
-        });
+        ESP_LOGD(TAG, "Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
+
+        if (msg.type == "T")
+        {
+            if (!receiveTimeStamp || !settings.espnow.syncTime)
+                return;
+
+            if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
+            {
+                onRecvTs(*result);
+            }
+            else
+            {
+                ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
+            }
+        }
+        else if (msg.type == "BOBBYT")
+        {
+            if (!receiveTsFromOtherBobbycars || !settings.espnow.syncTimeWithOthers)
+                return;
+
+            if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
+            {
+                ESP_LOGI(TAG, "setting current time to %" PRIu64, *result);
+                onRecvTs(*result, true);
+            }
+            else
+            {
+                ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
+            }
+        }
+        else
+        {
+            ESP_LOGI(TAG, "Unkown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
+        }
     }
     else
     {
@@ -182,49 +211,6 @@ void handle()
             ESP_LOGI(TAG, "Deinit done.");
         }
         return;
-    }
-
-    if(message_queue.size())
-    {
-        for (const esp_now_message_t &msg : message_queue)
-        {
-            ESP_LOGD(TAG, "queue has processed message of type '%s' with content '%s'", msg.type.c_str(), msg.content.c_str());
-            message_queue.pop_front();
-
-            if (msg.type == "T")
-            {
-                if (!receiveTimeStamp || !settings.espnow.syncTime)
-                    return;
-
-                if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
-                {
-                    onRecvTs(*result);
-                }
-                else
-                {
-                    ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
-                }
-            }
-            else if (msg.type == "BOBBYT")
-            {
-                if (!receiveTsFromOtherBobbycars || !settings.espnow.syncTimeWithOthers)
-                    return;
-
-                if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
-                {
-                    ESP_LOGI(TAG, "setting current time to %" PRIu64, *result);
-                    onRecvTs(*result, true);
-                }
-                else
-                {
-                    ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
-                }
-            }
-            else
-            {
-                ESP_LOGI(TAG, "Unkown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
-            }
-        }
     }
 }
 

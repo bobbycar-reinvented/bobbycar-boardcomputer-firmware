@@ -118,7 +118,7 @@ public:
     ConfigWrapper<espchrono::minutes32> timezoneOffset{espchrono::minutes32{60},           DoReset,   {},                           "timezoneOffset"      }; // MinMaxValue<minutes32, -1440m, 1440m>
     ConfigWrapper<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},             "time_dst"            };
 
-    ConfigWrapper<bool>        canBusResetOnError {false,                                  DoReset,   {},                           "canBusRstErr"        };
+    ConfigWrapper<bool>           canResetOnError {false,                                  DoReset,   {},                           "canBusRstErr"        };
 
     ConfigWrapper<int16_t>     sampleCount        {50,                                     DoReset,   {},                           "sampleCount"         };
     ConfigWrapper<int16_t>     gasMin             {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMin"              };
@@ -301,7 +301,7 @@ public:
     x(timezoneOffset) \
     x(timeDst) \
     \
-    x(canBusResetOnError) \
+    x(canResetOnError) \
     \
     x(sampleCount) \
     x(gasMin) \
