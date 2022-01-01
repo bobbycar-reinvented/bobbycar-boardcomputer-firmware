@@ -254,3 +254,6 @@ struct ButtonProfile0Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrap
 struct ButtonProfile1Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingProfile1; } };
 struct ButtonProfile2Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingProfile2; } };
 struct ButtonProfile3Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingProfile3; } };
+
+// Can
+struct CanResetOnErrorAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.canResetOnError; } };
