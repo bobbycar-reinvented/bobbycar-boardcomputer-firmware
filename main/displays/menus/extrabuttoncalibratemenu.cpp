@@ -49,7 +49,7 @@ public:
 
     int color() const override
     {
-        return (status == currentStatus || currentStatus == Idle) ? TFT_WHITE : TFT_DARKGREY;
+        return (status == currentStatus || currentStatus == Idle) ? TFT_WHITE : color565(50,50,50);
     }
 
     std::string text() const override
