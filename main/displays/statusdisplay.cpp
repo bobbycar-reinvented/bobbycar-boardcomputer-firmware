@@ -192,7 +192,6 @@ void StatusDisplay::buttonPressed(espgui::Button button)
     switch (button)
     {
     using espgui::Button;
-    case Button::Left:
     case Button::Right:
         switchScreen<MainMenu>();
         break;
@@ -205,6 +204,8 @@ void StatusDisplay::buttonPressed(espgui::Button button)
         break;
     case Button::Down:
         switchScreen<MetersDisplay>();
+        break;
+    default:
         break;
     }
 }
