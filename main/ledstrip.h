@@ -10,6 +10,12 @@
 // local includes
 #include "ledstripdefines.h"
 
+#define OtaAnimationModesValues(x) \
+    x(None) \
+    x(GreenProgressBar) \
+    x(ColorChangeAll)
+DECLARE_TYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues)
+
 #ifdef FEATURE_LEDSTRIP
 enum Bobbycar_Side
 {
@@ -22,12 +28,6 @@ enum Bobbycar_Side
     FRONT_LEFT,
     FRONT
 };
-
-#define OtaAnimationModesValues(x) \
-    x(None) \
-    x(GreenProgressBar) \
-    x(ColorChangeAll)
-DECLARE_TYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues)
 
 extern std::vector<CRGB> leds;
 extern uint8_t gHue;

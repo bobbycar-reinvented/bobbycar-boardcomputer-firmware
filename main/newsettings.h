@@ -219,7 +219,7 @@ public:
     struct {
         ConfigWrapper<bool> enableLedAnimation    {true,                                   DoReset,   {},                         "enableLedAnimat"     };
         ConfigWrapper<bool> enableBrakeLights     {true,                                   DoReset,   {},                         "enableBrakeLigh"     };
-        ConfigWrapper<int16_t> ledsCount          {LEDSTRIP_LENGTH,                        DoReset,   {},                         "ledsCount"           };
+        ConfigWrapper<int16_t> ledsCount          {288,                                    DoReset,   {},                         "ledsCount"           };
         ConfigWrapper<int16_t> centerOffset       {1,                                      DoReset,   {},                         "centerOffset"        };
         ConfigWrapper<int16_t> smallOffset        {4,                                      DoReset,   {},                         "smallOffset"         };
         ConfigWrapper<int16_t> bigOffset          {10,                                     DoReset,   {},                         "bigOffset"           };
