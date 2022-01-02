@@ -10,7 +10,6 @@
 #include "displays/menus/selectmodemenu.h"
 #include "displays/menus/ledstripmenu.h"
 #include "actions/modesettingsaction.h"
-// #include "displays/menus/presetsmenu.h" // temporarily disabled
 #include "displays/menus/profilesmenu.h"
 #include "displays/menus/graphsmenu.h"
 #include "displays/menus/batterymenu.h"
@@ -116,7 +115,6 @@ MainMenu::MainMenu()
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>(); }
-//    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PRESETS>,      SwitchScreenAction<PresetsMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); } // temporarily disabled
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        SwitchScreenAction<DebugMenu>>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,     SwitchScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&bobbyicons::poweroff>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>,       RebootAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();

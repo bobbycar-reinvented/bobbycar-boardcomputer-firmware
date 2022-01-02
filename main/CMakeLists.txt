@@ -159,7 +159,6 @@ set(headers
     displays/menus/motortestmodesettingsmenu.h
     displays/menus/networksettingsmenu.h
     displays/menus/otamenu.h
-    displays/menus/presetsmenu.h
     displays/menus/profilesmenu.h
     displays/menus/selectbatterytypemenu.h
     displays/menus/selectbuildserverbranch.h
@@ -385,7 +384,6 @@ set(sources
     displays/menus/networksettingsmenu.cpp
     displays/menus/otamenu.cpp
     displays/menus/presetsmenu.cpp
-    displays/menus/profilesmenu.cpp
     displays/menus/selectbatterytypemenu.cpp
     displays/menus/selectbuildserverbranch.cpp
     displays/menus/selectbuildservermenu.cpp
