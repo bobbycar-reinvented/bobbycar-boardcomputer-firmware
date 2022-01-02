@@ -6,7 +6,7 @@
 
 // local includes
 #include "ledstrip.h"
-#include "globals.h"
+#include "newsettings.h"
 #include "utils.h"
 #include "ledstripmenu.h"
 
@@ -24,8 +24,7 @@ class LedstripChangeOtaAnimModeAction : public virtual espgui::ActionInterface
 public:
     void triggered() override
     {
-        settings.ledstrip.otaMode = mode;
-        saveSettings();
+        configs.write_config(configs.ledstrip.otaMode, mode);
     }
 };
 } // namespace

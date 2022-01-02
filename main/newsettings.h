@@ -21,9 +21,15 @@
 #include <makearray.h>
 
 // local includes
-#include "bluetoothmode.h"
+#include "ledstrip.h"
+
+#define REMOVE_TRAILING_COMMA_N(_1,_2,_3,_4,_5,_6,_7,_8,_9,N,...)  \
+        REMOVE_TRAILING_COMMA_##N
+#define REMOVE_TRAILING_COMMA(...)  \
+        REMOVE_TRAILING_COMMA_N(__VA_ARGS__,9,8,7,6,5,4,3,2,1)(__VA_ARGS__)
 
 using namespace espconfig;
+#define __CONFIG__START nullptr
 
 std::string defaultHostname();
 
@@ -179,11 +185,6 @@ public:
     ConfigWrapper<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
     ConfigWrapper<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
 
-    // old settings
-    struct {
-        ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
-    } bleSettings;
-
     struct {
         ConfigWrapper<int16_t>  wheelDiameter     {DEFAULT_WHEELDIAMETER,                  DoReset,   {},                         "wheelDiameter"       };
         ConfigWrapper<int16_t> numMagnetPoles     {15,                                     DoReset,   {},                         "numMagnetPoles"      };
@@ -220,9 +221,32 @@ public:
         ConfigWrapper<bool> enableCloudDebug      {false,                                  DoReset,   {},                         "debugCloud"          };
         ConfigWrapper<bool> udpUseStdString       {false,                                  DoReset,   {},                         "udpusestdstr"        };
     } udpCloudSettings;
+
+    struct {
+        ConfigWrapper<bool> enableLedAnimation    {true,                                   DoReset,   {},                         "enableLedAnimat"     };
+        ConfigWrapper<bool> enableBrakeLights     {true,                                   DoReset,   {},                         "enableBrakeLigh"     };
+        ConfigWrapper<int16_t> ledsCount          {LEDSTRIP_LENGTH,                        DoReset,   {},                         "ledsCount"           };
+        ConfigWrapper<int16_t> centerOffset       {1,                                      DoReset,   {},                         "centerOffset"        };
+        ConfigWrapper<int16_t> smallOffset        {4,                                      DoReset,   {},                         "smallOffset"         };
+        ConfigWrapper<int16_t> bigOffset          {10,                                     DoReset,   {},                         "bigOffset"           };
+        ConfigWrapper<bool> enableBeepWhenBlink   {true,                                   DoReset,   {},                         "beepwhenblink"       };
+        ConfigWrapper<int16_t> animationType      {1,                                      DoReset,   {},                         "animationType"       };
+        ConfigWrapper<bool> enableFullBlink       {true,                                   DoReset,   {},                         "fullblink"           };
+        ConfigWrapper<bool> enableStVO            {true,                                   DoReset,   {},                         "ledstvo"             };
+        ConfigWrapper<int16_t> stvoFrontOffset    {0,                                      DoReset,   {},                         "ledstvofoff"         };
+        ConfigWrapper<int16_t> stvoFrontLength    {10,                                     DoReset,   {},                         "ledstvoflen"         };
+        ConfigWrapper<bool> stvoFrontEnable       {false,                                  DoReset,   {},                         "ledstvoen"           };
+        ConfigWrapper<int16_t> animationMultiplier{10,                                     DoReset,   {},                         "ledAnimMul"          };
+        ConfigWrapper<uint8_t> brightness         {255,                                    DoReset,   {},                         "ledbrightness"       };
+        ConfigWrapper<bool> enableAnimBlink       {false,                                  DoReset,   {},                         "enAnimBlink"         };
+        ConfigWrapper<OtaAnimationModes> otaMode  {OtaAnimationModes::GreenProgressBar,    DoReset,   {},                         "ledOtaAnim"          };
+        ConfigWrapper<uint32_t>     maxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
+    } ledstrip;
     // end old settings
 
-    ConfigWrapper<uint32_t> ledStripMaxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
+    struct {
+        ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
+    } bleSettings;
 
 #define NEW_SETTINGS(x) \
     x(baseMacAddressOverride) \
@@ -411,8 +435,6 @@ public:
     x(dns_announce_key) \
     x(webserverPassword) \
     \
-    x(bleSettings.bleEnabled) \
-    \
     x(controllerHardware.wheelDiameter) \
     x(controllerHardware.numMagnetPoles) \
     x(controllerHardware.swapFrontBack) \
@@ -441,7 +463,25 @@ public:
     x(udpCloudSettings.enableCloudDebug) \
     x(udpCloudSettings.udpUseStdString) \
     \
-    //x(ledStripMaxMilliamps)
+    x(ledstrip.enableLedAnimation) \
+    x(ledstrip.enableBrakeLights) \
+    x(ledstrip.ledsCount) \
+    x(ledstrip.centerOffset) \
+    x(ledstrip.smallOffset) \
+    x(ledstrip.bigOffset) \
+    x(ledstrip.enableBeepWhenBlink) \
+    x(ledstrip.animationType) \
+    x(ledstrip.enableFullBlink) \
+    x(ledstrip.enableStVO) \
+    x(ledstrip.stvoFrontOffset) \
+    x(ledstrip.stvoFrontLength) \
+    x(ledstrip.stvoFrontEnable) \
+    x(ledstrip.animationMultiplier) \
+    x(ledstrip.brightness) \
+    x(ledstrip.enableAnimBlink) \
+    x(ledstrip.otaMode) \
+    x(ledstrip.maxMilliamps)
+    //x(bleSettings.bleEnabled)
 
     template<typename T>
     void callForEveryConfig(T &&callback)
@@ -449,7 +489,6 @@ public:
 #define HELPER(x) callback(x);
         NEW_SETTINGS(HELPER)
 #undef HELPER
-        callback(ledStripMaxMilliamps);
     }
 
     auto getAllConfigParams()
@@ -458,7 +497,7 @@ public:
 #define HELPER(x) std::ref<ConfigWrapperInterface>(x),
             NEW_SETTINGS(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(ledStripMaxMilliamps)
+            std::ref<ConfigWrapperInterface>(bleSettings.bleEnabled)
         );
     }
 };

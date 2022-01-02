@@ -39,8 +39,8 @@ struct Settings
 
     struct DefaultMode {
         UnifiedModelMode modelMode;        // profileSetting
-        bool squareGas;
-        bool squareBrems;
+        bool squareGas;                    // profileSetting
+        bool squareBrems;                  // profileSetting
         bool enableSmoothingUp;            // profileSetting
         bool enableSmoothingDown;          // profileSetting
         bool enableFieldWeakSmoothingUp;   // profileSetting
@@ -67,33 +67,9 @@ struct Settings
     } larsmMode;
 
     struct MotortestMode {
-        uint8_t multiplikator;
-        uint16_t maxPwm;
+        uint8_t multiplikator;      // profileSetting
+        uint16_t maxPwm;            // profileSetting
     } motortestMode;
-
-#ifdef FEATURE_LEDSTRIP
-    struct Ledstrip {
-        bool enableLedAnimation;
-        bool enableBrakeLights;
-        int16_t ledsCount;
-        int16_t centerOffset;
-        int16_t smallOffset;
-        int16_t bigOffset;
-        bool enableBeepWhenBlink;
-        int16_t animationType;
-        bool enableFullBlink;
-        bool enableStVO;
-        int16_t stvoFrontOffset;
-        int16_t stvoFrontLength;
-        bool stvoFrontEnable;
-        int16_t animationMultiplier;
-        uint8_t brightness;
-        bool enableAnimBlink;
-#ifdef FEATURE_OTA
-        OtaAnimationModes otaMode;
-#endif
-    } ledstrip;
-#endif
 
     struct Battery {
         uint8_t cellsSeries;
@@ -150,28 +126,6 @@ struct Settings
 template<typename T>
 void Settings::executeForEveryCommonSetting(T &&callable)
 {
-#ifdef FEATURE_LEDSTRIP
-    callable("enableLedAnimat", ledstrip.enableLedAnimation);
-    callable("enableBrakeLigh", ledstrip.enableBrakeLights);
-    callable("ledsCount", ledstrip.ledsCount);
-    callable("centerOffset", ledstrip.centerOffset);
-    callable("smallOffset", ledstrip.smallOffset);
-    callable("bigOffset", ledstrip.bigOffset);
-    callable("beeppwhenblink", ledstrip.enableBeepWhenBlink);
-//    callable("animationType", ledstrip.animationType);
-    callable("fullblink", ledstrip.enableFullBlink);
-    callable("ledstvo", ledstrip.enableStVO);
-    callable("ledstvofoff", ledstrip.stvoFrontOffset);
-    callable("ledstvoflen", ledstrip.stvoFrontLength);
-    callable("ledstvoen", ledstrip.stvoFrontEnable);
-    callable("ledAnimMul", ledstrip.animationMultiplier);
-    callable("ledbrightness", ledstrip.brightness);
-    callable("enAnimBlink", ledstrip.enableAnimBlink);
-#ifdef FEATURE_OTA
-    callable("ledOtaAnim", ledstrip.otaMode);
-#endif
-#endif
-
     callable("batteryCS", battery.cellsSeries);
     callable("batteryCP", battery.cellsParallel);
     callable("batteryType", battery.cellType);
@@ -242,6 +196,8 @@ void Settings::executeForEveryProfileSetting(T &&callable)
     callable("default.gas2_we", defaultMode.gas2_wert);
     callable("default.brems1_", defaultMode.brems1_wert);
     callable("default.brems2_", defaultMode.brems2_wert);
+    callable("default.squareG", defaultMode.squareGas);
+    callable("default.squareB", defaultMode.squareBrems);
 
     callable("tempoma.modelMo", tempomatMode.modelMode);
 

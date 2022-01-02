@@ -130,34 +130,6 @@ constexpr Settings::Handbremse defaultHandbremse {
     .visualize = true,
 };
 
-#ifdef FEATURE_LEDSTRIP
-constexpr Settings::Ledstrip defaultLedstrip {
-    .enableLedAnimation = true,
-    .enableBrakeLights = true,
-    .ledsCount = LEDSTRIP_LENGTH,
-    .centerOffset = 1,
-    .smallOffset = 4,
-    .bigOffset = 10,
-    .enableBeepWhenBlink = false,
-#ifdef LEDSTRIP_ANIMATION_DEFAULT
-    .animationType = LEDSTRIP_ANIMATION_DEFAULT,
-#else
-    .animationType = LedstripAnimation::DefaultRainbow,
-#endif
-    .enableFullBlink = false,
-    .enableStVO = false,
-    .stvoFrontOffset = 0,
-    .stvoFrontLength = 10,
-    .stvoFrontEnable = false,
-    .animationMultiplier = 10,
-    .brightness = 255,
-    .enableAnimBlink = false,
-#ifdef FEATURE_OTA
-    .otaMode = OtaAnimationModes::GreenProgressBar
-#endif
-};
-#endif
-
 constexpr Settings::LockscreenSettings defaultLockscreen {
     .allowPresetSwitch = true,
     .keepLockedAfterReboot = false,
@@ -208,9 +180,6 @@ constexpr Settings defaultSettings {
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode,
     .motortestMode = defaultMotortestMode,
-#ifdef FEATURE_LEDSTRIP
-    .ledstrip = defaultLedstrip,
-#endif
     .battery = defaultBattery,
     .hybrid = defaultHybrid,
     .lockscreen = defaultLockscreen,

@@ -176,36 +176,36 @@ struct MotortestMaxPwmAccessor : public RefAccessorSaveSettings<uint16_t> { uint
 
 // Ledstrip
 #ifdef FEATURE_LEDSTRIP
-struct EnableLedAnimationAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableLedAnimation; } };
-struct EnableBrakeLightsAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableBrakeLights; } };
-struct LedsCountAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.ledsCount; } };
-struct CenterOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.centerOffset; } };
-struct SmallOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.smallOffset; } };
-struct BigOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.bigOffset; } };
-struct LedStripMaxMilliampsAccessor : public NewSettingsAccessor<uint32_t> { ConfigWrapper<uint32_t> &getConfig() const override { return configs.ledStripMaxMilliamps; } };
+struct EnableLedAnimationAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableLedAnimation; } };
+struct EnableBrakeLightsAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableBrakeLights; } };
+struct LedsCountAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.ledsCount; } };
+struct CenterOffsetAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.centerOffset; } };
+struct SmallOffsetAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.smallOffset; } };
+struct BigOffsetAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.bigOffset; } };
+struct LedStripMaxMilliampsAccessor : public NewSettingsAccessor<uint32_t> { ConfigWrapper<uint32_t> &getConfig() const override { return configs.ledstrip.maxMilliamps; } };
 struct LedStripMaxAmpereAccessor : public virtual espgui::AccessorInterface<float>
 {
     float getValue() const override
     {
-        return configs.ledStripMaxMilliamps.value / 1000.f;
+        return configs.ledstrip.maxMilliamps.value / 1000.f;
     }
 
     espgui::AccessorInterface<float>::setter_result_t setValue(float value) override
     {
-        return configs.write_config(configs.ledStripMaxMilliamps, value * 1000);
+        return configs.write_config(configs.ledstrip.maxMilliamps, value * 1000);
     }
 };
-struct EnableBeepWhenBlinkAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableBeepWhenBlink; } };
-struct EnableFullBlinkAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableFullBlink; } };
-struct EnableLedstripStVOAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableStVO; } };
-struct LedsStVOFrontOffsetAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.stvoFrontOffset; } };
-struct LedsStVOFrontLengthAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.stvoFrontLength; } };
-struct EnableLedstripStVOFrontlight : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.stvoFrontEnable; } };
-struct AnimationMultiplierAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.ledstrip.animationMultiplier; } };
-struct LedstripBrightnessAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.ledstrip.brightness; } };
-struct LedstripEnableBlinkAnimationAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.ledstrip.enableAnimBlink; } };
+struct EnableBeepWhenBlinkAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableBeepWhenBlink; } };
+struct EnableFullBlinkAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableFullBlink; } };
+struct EnableLedstripStVOAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableStVO; } };
+struct LedsStVOFrontOffsetAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.stvoFrontOffset; } };
+struct LedsStVOFrontLengthAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.stvoFrontLength; } };
+struct EnableLedstripStVOFrontlight : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.stvoFrontEnable; } };
+struct AnimationMultiplierAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.animationMultiplier; } };
+struct LedstripBrightnessAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.ledstrip.brightness; } };
+struct LedstripEnableBlinkAnimationAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableAnimBlink; } };
 #ifdef FEATURE_OTA
-struct LedstripOtaAnimationAccessor : public RefAccessorSaveSettings<OtaAnimationModes> { OtaAnimationModes &getRef() const override { return settings.ledstrip.otaMode; } };
+struct LedstripOtaAnimationAccessor : public NewSettingsAccessor<OtaAnimationModes> { ConfigWrapper<OtaAnimationModes> &getConfig() const override { return configs.ledstrip.otaMode; } };
 #endif
 #endif
 

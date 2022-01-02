@@ -136,7 +136,7 @@ class LedStripMaxCurrentText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        return fmt::format("&sLedstrip max current: &f&2{:.02f}A", configs.ledStripMaxMilliamps.value / 1000.f);
+        return fmt::format("&sLedstrip max current: &f&2{:.02f}A", configs.ledstrip.maxMilliamps.value / 1000.f);
     }
 };
 } // namespace
