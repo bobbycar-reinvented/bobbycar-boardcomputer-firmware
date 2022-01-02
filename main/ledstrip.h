@@ -23,19 +23,11 @@ enum Bobbycar_Side
     FRONT
 };
 
-#ifdef FEATURE_OTA
-//enum OtaAnimationModes
-//{
-//    None,
-//    GreenProgressBar,
-//    ColorChangeAll
-//};
 #define OtaAnimationModesValues(x) \
     x(None) \
     x(GreenProgressBar) \
     x(ColorChangeAll)
 DECLARE_TYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues)
-#endif
 
 extern std::vector<CRGB> leds;
 extern uint8_t gHue;
