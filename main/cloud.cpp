@@ -198,7 +198,7 @@ void cloudSend()
 
         cloudBuffer += ']';
 
-        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{settings.cloudSettings.cloudTransmitTimeout}).count();
+        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value}).count();
         const auto written = cloudClient.send_text(cloudBuffer, timeout);
 
         if (written < 0)
