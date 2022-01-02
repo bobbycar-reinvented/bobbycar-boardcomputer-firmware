@@ -20,6 +20,9 @@
 #include <espchrono.h>
 #include <makearray.h>
 
+// local includes
+#include "bluetoothmode.h"
+
 using namespace espconfig;
 
 std::string defaultHostname();
@@ -175,6 +178,21 @@ public:
     ConfigWrapper<bool>        dns_announce_enabled{true,                                  DoReset,   {},                         "dnsAnnounceEnab"     };
     ConfigWrapper<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
     ConfigWrapper<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
+
+    // old settings
+    struct {
+        ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
+    } bleSettings;
+    struct {
+        ConfigWrapper<int16_t>  wheelDiameter     {DEFAULT_WHEELDIAMETER,                  DoReset,   {},                         "wheelDiameter"       };
+        ConfigWrapper<int16_t> numMagnetPoles     {15,                                     DoReset,   {},                         "numMagnetPoles"      };
+        ConfigWrapper<bool>     swapFrontBack     {false,                                  DoReset,   {},                         "swapFrontBack"       };
+        ConfigWrapper<bool>   sendFrontCanCmd     {true,                                   DoReset,   {},                         "sendFrontCanCmd"     };
+        ConfigWrapper<bool>    sendBackCanCmd     {true,                                   DoReset,   {},                         "sendBackCanCmd"      };
+        ConfigWrapper<int16_t> canTransmitTimeout {200,                                    DoReset,   {},                         "canTransmitTime"     };
+        ConfigWrapper<int16_t> canReceiveTimeout  {0,                                      DoReset,   {},                         "canReceiveTimeo"     };
+    } controllerHardware;
+    // end old settings
 
     ConfigWrapper<uint32_t> ledStripMaxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
 
@@ -365,6 +383,15 @@ public:
     x(dns_announce_key) \
     x(webserverPassword) \
     \
+    x(bleSettings.bleEnabled) \
+    \
+    x(controllerHardware.wheelDiameter) \
+    x(controllerHardware.numMagnetPoles) \
+    x(controllerHardware.swapFrontBack) \
+    x(controllerHardware.sendFrontCanCmd) \
+    x(controllerHardware.sendBackCanCmd) \
+    x(controllerHardware.canTransmitTimeout) \
+    x(controllerHardware.canReceiveTimeout) \
     //x(ledStripMaxMilliamps)
 
     template<typename T>

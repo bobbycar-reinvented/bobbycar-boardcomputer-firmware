@@ -1,5 +1,7 @@
 #include "bluetooth_bobby.h"
 
+// compilation will be broken as there is no config parameter
+
 // local includes
 #ifdef FEATURE_BLUETOOTH
 #include "actions/bluetoothbeginaction.h"
@@ -7,24 +9,25 @@
 #ifdef FEATURE_BMS
 #include "actions/bluetoothconnectbmsaction.h"
 #endif
+#include "bluetoothmode.h"
 #endif
 
 #ifdef FEATURE_BLUETOOTH
 void bluetooth_init()
 {
-    if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Master)
+    if (configs.bluetooth.autoBluetoothMode.value == BluetoothMode::Master)
     {
         bootLabel.redraw("bluetooth begin master");
         BluetoothBeginMasterAction{}.triggered();
 #ifdef FEATURE_BMS
-        if (settings.autoConnectBms)
+        if (configs.autoConnectBms.value)
         {
             bootLabel.redraw("connect BMS");
             BluetoothConnectBmsAction{}.triggered();
         }
 #endif
     }
-    else if (settings.bluetoothSettings.autoBluetoothMode == BluetoothMode::Slave)
+    else if (configs.bluetooth.autoBluetoothMode.value == BluetoothMode::Slave)
     {
         bootLabel.redraw("bluetooth begin");
         BluetoothBeginAction{}.triggered();

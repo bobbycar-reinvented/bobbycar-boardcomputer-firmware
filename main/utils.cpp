@@ -12,12 +12,12 @@ espchrono::millis_clock::time_point lastReverseBeepToggle;
 
 float convertToKmh(float val)
 {
-    return val /* / settings.controllerHardware.numMagnetPoles */ / 60.f * settings.controllerHardware.wheelDiameter / 1000.f * 3.14159265359f * 3.6f;
+    return val /* / settings.controllerHardware.numMagnetPoles */ / 60.f * configs.controllerHardware.wheelDiameter.value / 1000.f * 3.14159265359f * 3.6f;
 }
 
 float convertFromKmh(float val)
 {
-    return val /* * settings.controllerHardware.numMagnetPoles */ * 60.f / settings.controllerHardware.wheelDiameter * 1000.f / 3.14159265359f / 3.6f;
+    return val /* * settings.controllerHardware.numMagnetPoles */ * 60.f / configs.controllerHardware.wheelDiameter.value * 1000.f / 3.14159265359f / 3.6f;
 }
 
 float convertToInch(float val)
@@ -192,8 +192,8 @@ void sendCommands()
 #ifdef FEATURE_SERIAL
 void updateSwapFrontBack()
 {
-    controllers.front.serial = settings.controllerHardware.swapFrontBack ? Serial2 : Serial1;
-    controllers.back.serial = settings.controllerHardware.swapFrontBack ? Serial1 : Serial2;
+    controllers.front.serial = configs.controllerHardware.swapFrontBack.value ? Serial2 : Serial1;
+    controllers.back.serial = configs.controllerHardware.swapFrontBack.value ? Serial1 : Serial2;
 }
 #endif
 

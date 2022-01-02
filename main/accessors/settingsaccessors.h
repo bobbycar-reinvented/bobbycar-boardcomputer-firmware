@@ -9,11 +9,6 @@
 #include "accessorhelpers.h"
 #include "newsettings.h"
 
-// Bms
-#ifdef FEATURE_BMS
-struct AutoConnectBmsAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.autoConnectBms; } };
-#endif
-
 // Bluetooth
 struct BluetoothNameAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.bluetoothName; } };
 
@@ -42,14 +37,9 @@ struct NMotMaxRpmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &g
 struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.fieldWeakMax; } };
 struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.phaseAdvMax; } };
 
-// Bluetooth
-#ifdef FEATURE_BLUETOOTH
-struct AutoBluetoothModeAccessor : public RefAccessorSaveSettings<BluetoothMode> { BluetoothMode &getRef() const override { return settings.bluetoothSettings.autoBluetoothMode; } };
-#endif
-
 // Bluetooth Low Energy
 #ifdef FEATURE_BLE
-struct BleEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.bleSettings.bleEnabled; } };
+struct BleEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.bleSettings.bleEnabled; } };
 #endif
 
 // Cloud
@@ -81,32 +71,38 @@ struct FrontRightInvertedAccessor : public RefAccessorSaveSettings<bool> { bool 
 struct BackLeftInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.invertBackLeft; } };
 struct BackRightInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.invertBackRight; } };
 
-struct WheelDiameterMmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.wheelDiameter; } };
+struct WheelDiameterMmAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.controllerHardware.wheelDiameter; } };
 struct WheelDiameterInchAccessor : public virtual espgui::AccessorInterface<float>
 {
-    float getValue() const override { return convertToInch(settings.controllerHardware.wheelDiameter); }
+    float getValue() const override { return convertToInch(configs.controllerHardware.wheelDiameter.value); }
     espgui::AccessorInterface<int16_t>::setter_result_t setValue(float value) override
     {
-        settings.controllerHardware.wheelDiameter = convertFromInch(value);
-        if (!saveSettings())
-            return tl::make_unexpected("saveSettings() failed!");
-        return {};
+//        settings.controllerHardware.wheelDiameter = convertFromInch(value);
+//        if (!saveSettings())
+//            return tl::make_unexpected("saveSettings() failed!");
+//        return {};
+        return configs.write_config(configs.controllerHardware.wheelDiameter, convertFromInch(value));
     }
 };
-struct NumMagnetPolesAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.numMagnetPoles; } };
-struct SwapFrontBackAccessor : public RefAccessorSaveSettings<bool> {
-    bool &getRef() const override { return settings.controllerHardware.swapFrontBack; }
+struct NumMagnetPolesAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.controllerHardware.numMagnetPoles; } };
+struct SwapFrontBackAccessor : public virtual espgui::AccessorInterface<bool> {
+    bool getValue() const override { return configs.controllerHardware.swapFrontBack.value; }
+    setter_result_t setValue(bool value) override
+    {
+        const auto err = configs.write_config(configs.controllerHardware.swapFrontBack, value);
 #ifdef FEATURE_SERIAL
-    void setValue(bool value) override { RefAccessorSaveSettings<bool>::setValue(value); updateSwapFrontBack(); };
+        updateSwapFrontBack();
 #endif
+        return err;
+    }
 };
 
 // CAN
 #ifdef FEATURE_CAN
-struct SendFrontCanCmdAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.sendFrontCanCmd; } };
-struct SendBackCanCmdAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.sendBackCanCmd; } };
-struct CanTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.canTransmitTimeout; } };
-struct CanReceiveTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.controllerHardware.canReceiveTimeout; } };
+struct SendFrontCanCmdAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.controllerHardware.sendFrontCanCmd; } };
+struct SendBackCanCmdAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.controllerHardware.sendBackCanCmd; } };
+struct CanTransmitTimeoutAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.controllerHardware.canTransmitTimeout; } };
+struct CanReceiveTimeoutAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.controllerHardware.canReceiveTimeout; } };
 #endif
 
 // Input devices

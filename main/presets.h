@@ -18,11 +18,11 @@ using namespace std::chrono_literals;
 
 namespace presets {
 constexpr Settings::Limits defaultLimits {
-    .iMotMax = DEFAULT_IMOTMAX,
-    .iDcMax = DEFAULT_IDCMAX,
-    .nMotMax = DEFAULT_NMOTMAX,
-    .fieldWeakMax = DEFAULT_FIELDWEAKMAX,
-    .phaseAdvMax = DEFAULT_FIELDADVMAX
+    .iMotMax = DEFAULT_IMOTMAX,           // profileSetting
+    .iDcMax = DEFAULT_IDCMAX,             // profileSetting
+    .nMotMax = DEFAULT_NMOTMAX,           // profileSetting
+    .fieldWeakMax = DEFAULT_FIELDWEAKMAX, // profileSetting
+    .phaseAdvMax = DEFAULT_FIELDADVMAX    // profileSetting
 };
 
 constexpr Settings::Limits kidsLimits {
@@ -34,25 +34,15 @@ constexpr Settings::Limits kidsLimits {
 };
 
 constexpr Settings::ControllerHardware defaultControllerHardware {
-    .enableFrontLeft = true,
-    .enableFrontRight = true,
-    .enableBackLeft = true,
-    .enableBackRight = true,
+    .enableFrontLeft = true,  // profileSetting
+    .enableFrontRight = true, // profileSetting
+    .enableBackLeft = true,   // profileSetting
+    .enableBackRight = true,  // profileSetting
 
-    .invertFrontLeft = DEFAULT_INVERTFRONTLEFT,
-    .invertFrontRight = DEFAULT_INVERTFRONTRIGHT,
-    .invertBackLeft = DEFAULT_INVERTBACKLEFT,
-    .invertBackRight = DEFAULT_INVERTBACKRIGHT,
-
-    .wheelDiameter = DEFAULT_WHEELDIAMETER,
-    .numMagnetPoles = 15,
-    .swapFrontBack = false,
-#ifdef FEATURE_CAN
-    .sendFrontCanCmd = true,
-    .sendBackCanCmd = true,
-    .canTransmitTimeout = 200,
-    .canReceiveTimeout = 0,
-#endif
+    .invertFrontLeft = DEFAULT_INVERTFRONTLEFT,   // profileSetting
+    .invertFrontRight = DEFAULT_INVERTFRONTRIGHT, // profileSetting
+    .invertBackLeft = DEFAULT_INVERTBACKLEFT,     // profileSetting
+    .invertBackRight = DEFAULT_INVERTBACKRIGHT,   // profileSetting
 };
 
 constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
@@ -65,29 +55,7 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
     .invertFrontRight = DEFAULT_INVERTFRONTRIGHT,
     .invertBackLeft = DEFAULT_INVERTBACKLEFT,
     .invertBackRight = DEFAULT_INVERTBACKRIGHT,
-
-    .wheelDiameter = 165,
-    .numMagnetPoles = 15,
-    .swapFrontBack = false,
-#ifdef FEATURE_CAN
-    .sendFrontCanCmd = true,
-    .sendBackCanCmd = true,
-    .canTransmitTimeout = 200,
-    .canReceiveTimeout = 0,
-#endif
 };
-
-#ifdef FEATURE_BLUETOOTH
-constexpr Settings::BluetoothSettings defaultBluetoothSettings {
-    .autoBluetoothMode = BluetoothMode::Master
-};
-#endif
-
-#ifdef FEATURE_BLE
-constexpr Settings::BleSettings defaultBleSettings {
-    .bleEnabled = true
-};
-#endif
 
 constexpr Settings::ControllerHardware spinnerControllerHardware {
     .enableFrontLeft = true,
@@ -99,16 +67,6 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
     .invertFrontRight = !DEFAULT_INVERTFRONTRIGHT,
     .invertBackLeft = DEFAULT_INVERTBACKLEFT,
     .invertBackRight = !DEFAULT_INVERTBACKRIGHT,
-
-    .wheelDiameter = 165,
-    .numMagnetPoles = 15,
-    .swapFrontBack = false,
-#ifdef FEATURE_CAN
-    .sendFrontCanCmd = true,
-    .sendBackCanCmd = true,
-    .canTransmitTimeout = 200,
-    .canReceiveTimeout = 0,
-#endif
 };
 
 constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings {
@@ -151,22 +109,22 @@ constexpr Settings::UdpCloudSettings defaultUdpCloudSettings {
 #endif
 
 constexpr Settings::DefaultMode defaultDefaultMode {
-    .modelMode = UnifiedModelMode::FocTorque,
+    .modelMode = UnifiedModelMode::FocTorque, // profileSetting
     .squareGas = true,
     .squareBrems = true,
-    .enableSmoothingUp = true,
-    .enableSmoothingDown = true,
-    .enableFieldWeakSmoothingUp = false,
-    .enableFieldWeakSmoothingDown = false,
-    .smoothing = 20,
-    .frontPercentage = 100,
-    .backPercentage = 100,
-    .add_schwelle = 750,
-    .gas1_wert = 1250,
-    .gas2_wert = 1250,
-    .brems1_wert = 250,
-    .brems2_wert = 750,
-    .fwSmoothLowerLimit = 800
+    .enableSmoothingUp = true,                // profileSetting
+    .enableSmoothingDown = true,              // profileSetting
+    .enableFieldWeakSmoothingUp = false,      // profileSetting
+    .enableFieldWeakSmoothingDown = false,    // profileSetting
+    .smoothing = 20,                          // profileSetting
+    .frontPercentage = 100,                   // profileSetting
+    .backPercentage = 100,                    // profileSetting
+    .add_schwelle = 750,                      // profileSetting
+    .gas1_wert = 1250,                        // profileSetting
+    .gas2_wert = 1250,                        // profileSetting
+    .brems1_wert = 250,                       // profileSetting
+    .brems2_wert = 750,                       // profileSetting
+    .fwSmoothLowerLimit = 800                 // profileSetting
 };
 
 constexpr Settings::DefaultMode sinusoidalDefaultMode {
@@ -189,13 +147,13 @@ constexpr Settings::DefaultMode sinusoidalDefaultMode {
 };
 
 constexpr Settings::TempomatMode defaultTempomatMode {
-    .modelMode = UnifiedModelMode::FocSpeed
+    .modelMode = UnifiedModelMode::FocSpeed // profileSetting
 };
 
 constexpr Settings::LarsmMode defaultLarsmMode {
-    .modelMode = UnifiedModelMode::Commutation,
-    .mode = LarsmModeMode::Mode4,
-    .iterations = 100
+    .modelMode = UnifiedModelMode::Commutation, // profileSetting
+    .mode = LarsmModeMode::Mode4,               // profileSetting
+    .iterations = 100                           // profileSetting
 };
 
 constexpr Settings::MotortestMode defaultMotortestMode {
@@ -283,16 +241,7 @@ constexpr Settings::ESPNOW defaultEspNowSettings {
 #endif
 
 constexpr Settings defaultSettings {
-#ifdef FEATURE_BMS
-    .autoConnectBms = false,
-#endif
     .limits = defaultLimits,
-#ifdef FEATURE_BLUETOOTH
-    .bluetoothSettings = defaultBluetoothSettings,
-#endif
-#ifdef FEATURE_BLE
-    .bleSettings = defaultBleSettings,
-#endif
     .controllerHardware = defaultControllerHardware,
     .boardcomputerHardware = defaultBoardcomputerHardware,
 #ifdef FEATURE_CLOUD

@@ -109,14 +109,14 @@ void destroyBle()
 
 void initBle()
 {
-    if (settings.bleSettings.bleEnabled)
+    if (configs.bleSettings.bleEnabled.value)
         createBle();
 }
 
 
 void handleBle()
 {
-    if (settings.bleSettings.bleEnabled)
+    if (configs.bleSettings.bleEnabled.value)
     {
         if (!pServer)
             createBle();
