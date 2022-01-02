@@ -47,8 +47,7 @@ struct GasText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        return fmt::format("{}: {}: {}",
-                           "gas",
+        return fmt::format("gas: {}: {}",
                            raw_gas ? std::to_string(*raw_gas) : "?",
                            gas ? fmt::format("{:.02f}", *gas) : "?");
     }
@@ -58,8 +57,7 @@ struct BremsText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        return fmt::format("{}: {}: {}",
-                           "brems",
+        return fmt::format("brems: {}: {}",
                            raw_brems ? std::to_string(*raw_brems) : "?",
                            brems ? fmt::format("{:.02f}", *brems) : "?");
     }
