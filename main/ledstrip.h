@@ -4,6 +4,7 @@
 #include <vector>
 
 // 3rdparty lib includes
+#include <cpptypesafeenum.h>
 #include <FastLED.h>
 
 // local includes
@@ -23,12 +24,17 @@ enum Bobbycar_Side
 };
 
 #ifdef FEATURE_OTA
-enum OtaAnimationModes
-{
-    None,
-    GreenProgressBar,
-    ColorChangeAll
-};
+//enum OtaAnimationModes
+//{
+//    None,
+//    GreenProgressBar,
+//    ColorChangeAll
+//};
+#define OtaAnimationModesValues(x) \
+    x(None) \
+    x(GreenProgressBar) \
+    x(ColorChangeAll)
+DECLARE_TYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues)
 #endif
 
 extern std::vector<CRGB> leds;

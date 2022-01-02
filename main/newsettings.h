@@ -23,13 +23,7 @@
 // local includes
 #include "ledstrip.h"
 
-#define REMOVE_TRAILING_COMMA_N(_1,_2,_3,_4,_5,_6,_7,_8,_9,N,...)  \
-        REMOVE_TRAILING_COMMA_##N
-#define REMOVE_TRAILING_COMMA(...)  \
-        REMOVE_TRAILING_COMMA_N(__VA_ARGS__,9,8,7,6,5,4,3,2,1)(__VA_ARGS__)
-
 using namespace espconfig;
-#define __CONFIG__START nullptr
 
 std::string defaultHostname();
 
