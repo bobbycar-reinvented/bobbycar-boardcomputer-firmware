@@ -383,7 +383,7 @@ set(sources
     displays/menus/motortestmodesettingsmenu.cpp
     displays/menus/networksettingsmenu.cpp
     displays/menus/otamenu.cpp
-    displays/menus/presetsmenu.cpp
+    displays/menus/profilesmenu.cpp
     displays/menus/selectbatterytypemenu.cpp
     displays/menus/selectbuildserverbranch.cpp
     displays/menus/selectbuildservermenu.cpp
