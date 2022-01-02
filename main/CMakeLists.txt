@@ -20,6 +20,7 @@ set(headers
     changevaluedisplay_unifiedmodelmode.h
     cloud.h
     cloudtexthelpers.h
+    configutils_bobby.h
     controller.h
     debugcolorhelpers.h
     debuginputhandler.h
@@ -249,6 +250,7 @@ set(sources
     changevaluedisplay_unifiedmodelmode.cpp
     cloud.cpp
     cloudtexthelpers.cpp
+    configwrapper_bobby.cpp
     controller.cpp
     debugcolorhelpers.cpp
     debuginputhandler.cpp
