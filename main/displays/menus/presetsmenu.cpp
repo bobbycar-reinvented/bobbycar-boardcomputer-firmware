@@ -1,3 +1,8 @@
+// This menu is disabled because of issues with the new config system. It may be reenabled in the near future.
+
+// ALso reenable in mainmenu!!
+
+/*
 #include "presetsmenu.h"
 
 // local includes
@@ -113,3 +118,4 @@ void PresetsMenu::back()
 {
     switchScreen<MainMenu>();
 }
+*/

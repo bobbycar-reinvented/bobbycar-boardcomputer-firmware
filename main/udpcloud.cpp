@@ -40,7 +40,7 @@ void udpCloudInit()
 
 void udpCloudUpdate()
 {
-    if (settings.udpCloudSettings.udpCloudEnabled)
+    if (configs.udpCloudSettings.udpCloudEnabled.value && configs.udpCloudSettings.udpUid.touched())
         sendUdpCloudPacket();
 }
 
@@ -94,7 +94,7 @@ std::string buildUdpCloudJson()
     // const auto w_per_kmh = watt / avgSpeedKmh;
 
     // User ID
-    doc["uid"] = settings.udpCloudSettings.udpUid;
+    doc["uid"] = configs.udpCloudSettings.udpUid.value;
     doc["upt"] = uptime;
 
     const auto addController = [&](const Controller &controller, const bool isBack) {
@@ -192,8 +192,8 @@ std::string buildUdpCloudString()
     buf += "{";
 
     // User ID
-    if(settings.udpCloudSettings.udpUid)
-        buf += fmt::format("\"uid\":{},", settings.udpCloudSettings.udpUid);
+    if(configs.udpCloudSettings.udpUid.value)
+        buf += fmt::format("\"uid\":{},", configs.udpCloudSettings.udpUid.value);
     else
         buf += "\"uid\":null,";
 
@@ -309,7 +309,7 @@ std::string buildUdpCloudString()
 
 void sendUdpCloudPacket()
 {
-    EVERY_N_MILLIS(settings.boardcomputerHardware.timersSettings.udpSendRateMs) {
+    EVERY_N_MILLIS(configs.boardcomputerHardware.timersSettings.udpSendRateMs.value) {
         if (espchrono::ago(timestampLastFailed) < 2s)
         {
             visualSendUdpPacket = false;
@@ -360,7 +360,7 @@ void sendUdpCloudPacket()
 
         wifi_stack::UdpSender udpCloudSender;
         std::string buf;
-            buf = settings.udpCloudSettings.udpUseStdString ? buildUdpCloudString() : buildUdpCloudJson();
+            buf = configs.udpCloudSettings.udpUseStdString.value ? buildUdpCloudString() : buildUdpCloudJson();
 
 
         if (const auto result = udpCloudSender.send(receipient, buf); !result)

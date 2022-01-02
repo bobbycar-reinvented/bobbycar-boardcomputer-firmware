@@ -183,6 +183,7 @@ public:
     struct {
         ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
     } bleSettings;
+
     struct {
         ConfigWrapper<int16_t>  wheelDiameter     {DEFAULT_WHEELDIAMETER,                  DoReset,   {},                         "wheelDiameter"       };
         ConfigWrapper<int16_t> numMagnetPoles     {15,                                     DoReset,   {},                         "numMagnetPoles"      };
@@ -192,6 +193,33 @@ public:
         ConfigWrapper<int16_t> canTransmitTimeout {200,                                    DoReset,   {},                         "canTransmitTime"     };
         ConfigWrapper<int16_t> canReceiveTimeout  {0,                                      DoReset,   {},                         "canReceiveTimeo"     };
     } controllerHardware;
+
+    struct {
+        ConfigWrapper<int16_t> gametrakXMin       {0,                                      DoReset,   {},                         "gametrakXMin"        };
+        ConfigWrapper<int16_t> gametrakXMax       {4095,                                   DoReset,   {},                         "gametrakXMax"        };
+        ConfigWrapper<int16_t> gametrakYMin       {0,                                      DoReset,   {},                         "gametrakYMin"        };
+        ConfigWrapper<int16_t> gametrakYMax       {4095,                                   DoReset,   {},                         "gametrakYMax"        };
+        ConfigWrapper<int16_t> gametrakDistMin    {0,                                      DoReset,   {},                         "gametrakDistMin"     };
+        ConfigWrapper<int16_t> gametrakDistMax    {4095,                                   DoReset,   {},                         "gametrakDistMax"     };
+        struct {
+            ConfigWrapper<int16_t> statsUpdateRate{50,                                     DoReset,   {},                         "statsUpdateRate"     };
+            ConfigWrapper<int16_t> cloudCollectRate{100,                                   DoReset,   {},                         "cloudCollectRat"     };
+            ConfigWrapper<int16_t> cloudSendRate  {1,                                      DoReset,   {},                         "cloudSendRate"       };
+            ConfigWrapper<int16_t> udpSendRateMs  {65,                                     DoReset,   {},                         "udpSendRate"         };
+        } timersSettings;
+    } boardcomputerHardware;
+
+    struct {
+        ConfigWrapper<bool> cloudEnabled          {false,                                  DoReset,   {},                         "cloudEnabled"        };
+        ConfigWrapper<int16_t> cloudTransmitTimeout{10,                                    DoReset,   {},                         "clodTransmTmout"     };
+    } cloudSettings;
+
+    struct {
+        ConfigWrapper<uint32_t> udpUid            {0,                                      DoReset,   {},                         "cloudUDPUid"         };
+        ConfigWrapper<bool> udpCloudEnabled       {false,                                  DoReset,   {},                         "enUdpCloud"          };
+        ConfigWrapper<bool> enableCloudDebug      {false,                                  DoReset,   {},                         "debugCloud"          };
+        ConfigWrapper<bool> udpUseStdString       {false,                                  DoReset,   {},                         "udpusestdstr"        };
+    } udpCloudSettings;
     // end old settings
 
     ConfigWrapper<uint32_t> ledStripMaxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
@@ -392,6 +420,27 @@ public:
     x(controllerHardware.sendBackCanCmd) \
     x(controllerHardware.canTransmitTimeout) \
     x(controllerHardware.canReceiveTimeout) \
+    \
+    x(boardcomputerHardware.gametrakXMin) \
+    x(boardcomputerHardware.gametrakYMin) \
+    x(boardcomputerHardware.gametrakXMax) \
+    x(boardcomputerHardware.gametrakYMax) \
+    x(boardcomputerHardware.gametrakDistMin) \
+    x(boardcomputerHardware.gametrakDistMax) \
+    \
+    x(boardcomputerHardware.timersSettings.statsUpdateRate) \
+    x(boardcomputerHardware.timersSettings.cloudCollectRate) \
+    x(boardcomputerHardware.timersSettings.cloudSendRate) \
+    x(boardcomputerHardware.timersSettings.udpSendRateMs) \
+    \
+    x(cloudSettings.cloudEnabled) \
+    x(cloudSettings.cloudTransmitTimeout) \
+    \
+    x(udpCloudSettings.udpUid) \
+    x(udpCloudSettings.udpCloudEnabled) \
+    x(udpCloudSettings.enableCloudDebug) \
+    x(udpCloudSettings.udpUseStdString) \
+    \
     //x(ledStripMaxMilliamps)
 
     template<typename T>

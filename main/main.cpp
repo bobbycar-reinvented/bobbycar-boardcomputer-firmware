@@ -102,7 +102,7 @@ extern "C" void app_main()
             schedulerTask.loop();
         }
 
-        if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.statsUpdateRate)
+        if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/configs.boardcomputerHardware.timersSettings.statsUpdateRate.value)
         {
             updateAccumulators();
             pushStats();

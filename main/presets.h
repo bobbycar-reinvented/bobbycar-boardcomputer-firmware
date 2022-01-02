@@ -69,45 +69,6 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
     .invertBackRight = !DEFAULT_INVERTBACKRIGHT,
 };
 
-constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings {
-    .statsUpdateRate = 50,
-#ifdef FEATURE_CLOUD
-    .cloudCollectRate = 100,
-    .cloudSendRate = 1,
-#endif
-#ifdef FEATURE_UDPCLOUD
-    .udpSendRateMs = 65,
-#endif
-};
-
-constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
-#ifdef FEATURE_GAMETRAK
-    .gametrakXMin = DEFAULT_GAMETRAKXMIN,
-    .gametrakXMax = DEFAULT_GAMETRAKXMAX,
-    .gametrakYMin = DEFAULT_GAMETRAKYMIN,
-    .gametrakYMax = DEFAULT_GAMETRAKYMAX,
-    .gametrakDistMin = DEFAULT_GAMETRAKDISTMIN,
-    .gametrakDistMax = DEFAULT_GAMETRAKDISTMAX,
-#endif
-    .timersSettings = defaultTimersSettings
-};
-
-#ifdef FEATURE_CLOUD
-constexpr Settings::CloudSettings defaultCloudSettings {
-    .cloudEnabled = false,
-    .cloudTransmitTimeout = 10
-};
-#endif
-
-#ifdef FEATURE_UDPCLOUD
-constexpr Settings::UdpCloudSettings defaultUdpCloudSettings {
-    .udpUid = 0,
-    .udpCloudEnabled = false,
-    .enableCloudDebug = false,
-    .udpUseStdString = false
-};
-#endif
-
 constexpr Settings::DefaultMode defaultDefaultMode {
     .modelMode = UnifiedModelMode::FocTorque, // profileSetting
     .squareGas = true,
@@ -243,13 +204,6 @@ constexpr Settings::ESPNOW defaultEspNowSettings {
 constexpr Settings defaultSettings {
     .limits = defaultLimits,
     .controllerHardware = defaultControllerHardware,
-    .boardcomputerHardware = defaultBoardcomputerHardware,
-#ifdef FEATURE_CLOUD
-    .cloudSettings = defaultCloudSettings,
-#endif
-#ifdef FEATURE_UDPCLOUD
-    .udpCloudSettings = defaultUdpCloudSettings,
-#endif
     .defaultMode = defaultDefaultMode,
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode,

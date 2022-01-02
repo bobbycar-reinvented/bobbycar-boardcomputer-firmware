@@ -36,7 +36,7 @@ std::optional<espchrono::millis_clock::time_point> lastCloudSend;
 
 void initCloud()
 {
-    if (settings.cloudSettings.cloudEnabled &&
+    if (configs.cloudSettings.cloudEnabled.value &&
         !configs.cloudUrl.value.empty())
     {
         createCloud();
@@ -54,14 +54,14 @@ void updateCloud()
 {
     const auto now = espchrono::millis_clock::now();
 
-    if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{settings.boardcomputerHardware.timersSettings.cloudCollectRate})
+    if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{configs.boardcomputerHardware.timersSettings.cloudCollectRate.value})
     {
         cloudCollect();
 
         lastCloudCollect = now;
     }
 
-    if (!lastCloudSend || now - *lastCloudSend >= 1000ms/settings.boardcomputerHardware.timersSettings.cloudSendRate)
+    if (!lastCloudSend || now - *lastCloudSend >= 1000ms/configs.boardcomputerHardware.timersSettings.cloudSendRate.value)
     {
         cloudSend();
 
@@ -165,7 +165,7 @@ void cloudCollect()
 
 void cloudSend()
 {
-    if (settings.cloudSettings.cloudEnabled &&
+    if (configs.cloudSettings.cloudEnabled.value &&
         !configs.cloudUrl.value.empty())
     {
         if (!cloudClient)

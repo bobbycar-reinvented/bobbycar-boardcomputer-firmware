@@ -44,8 +44,8 @@ struct BleEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<boo
 
 // Cloud
 #ifdef FEATURE_CLOUD
-struct CloudEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.cloudSettings.cloudEnabled; } };
-struct CloudTransmitTimeoutAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.cloudSettings.cloudTransmitTimeout; } };
+struct CloudEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.cloudSettings.cloudEnabled; } };
+struct CloudTransmitTimeoutAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.cloudSettings.cloudTransmitTimeout; } };
 #endif
 
 // Time
@@ -115,26 +115,26 @@ struct BremsMaxAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<in
 struct DPadDebounceAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadDebounce; } };
 #endif
 #ifdef FEATURE_GAMETRAK
-struct GametrakXMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakXMin; } };
-struct GametrakXMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakXMax; } };
-struct GametrakYMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakYMin; } };
-struct GametrakYMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakYMax; } };
-struct GametrakDistMinAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakDistMin; } };
-struct GametrakDistMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.gametrakDistMax; } };
+struct GametrakXMinAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.gametrakXMin; } };
+struct GametrakXMaxAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.gametrakXMax; } };
+struct GametrakYMinAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.gametrakYMin; } };
+struct GametrakYMaxAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.gametrakYMax; } };
+struct GametrakDistMinAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.gametrakDistMin; } };
+struct GametrakDistMaxAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.gametrakDistMax; } };
 #endif
-struct StatsUpdateRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.statsUpdateRate; } };
+struct StatsUpdateRateAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.timersSettings.statsUpdateRate; } };
 
 // Cloud
 #ifdef FEATURE_CLOUD
-struct CloudCollectRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.cloudCollectRate; } };
-struct CloudSendRateAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.cloudSendRate; } };
+struct CloudCollectRateAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.timersSettings.cloudCollectRate; } };
+struct CloudSendRateAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.timersSettings.cloudSendRate; } };
 #endif
 
 #ifdef FEATURE_UDPCLOUD
-struct UdpCloudSendIntervalAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.boardcomputerHardware.timersSettings.udpSendRateMs; } };
-struct UdpCloudEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.udpCloudSettings.udpCloudEnabled; } };
-struct CloudDebugEnableAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.udpCloudSettings.enableCloudDebug; } };
-struct UdpUseStdStringAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.udpCloudSettings.udpUseStdString; } };
+struct UdpCloudSendIntervalAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.timersSettings.udpSendRateMs; } };
+struct UdpCloudEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.udpCloudSettings.udpCloudEnabled; } };
+struct CloudDebugEnableAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.udpCloudSettings.enableCloudDebug; } };
+struct UdpUseStdStringAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.udpCloudSettings.udpUseStdString; } };
 #endif
 
 // DefaultMode

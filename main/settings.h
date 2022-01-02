@@ -37,39 +37,6 @@ struct Settings
         bool invertFrontLeft, invertFrontRight, invertBackLeft, invertBackRight; // profileSetting
     } controllerHardware;
 
-    struct BoardcomputerHardware {
-#ifdef FEATURE_GAMETRAK
-        int16_t gametrakXMin, gametrakXMax, gametrakYMin, gametrakYMax, gametrakDistMin, gametrakDistMax;
-#endif
-
-        struct TimersSettings {
-            int16_t statsUpdateRate;
-#ifdef FEATURE_CLOUD
-            int16_t cloudCollectRate;
-            int16_t cloudSendRate;
-#endif
-#ifdef FEATURE_UDPCLOUD
-            int16_t udpSendRateMs;
-#endif
-        } timersSettings;
-    } boardcomputerHardware;
-
-#ifdef FEATURE_CLOUD
-    struct CloudSettings {
-        bool cloudEnabled;
-        int16_t cloudTransmitTimeout; // in ms
-    } cloudSettings;
-#endif
-
-#ifdef FEATURE_UDPCLOUD
-    struct UdpCloudSettings {
-        uint32_t udpUid;
-        bool udpCloudEnabled;
-        bool enableCloudDebug;
-        bool udpUseStdString;
-    } udpCloudSettings;
-#endif
-
     struct DefaultMode {
         UnifiedModelMode modelMode;        // profileSetting
         bool squareGas;
@@ -183,36 +150,6 @@ struct Settings
 template<typename T>
 void Settings::executeForEveryCommonSetting(T &&callable)
 {
-#ifdef FEATURE_GAMETRAK
-    callable("gametrakXMin", boardcomputerHardware.gametrakXMin);
-    callable("gametrakXMax", boardcomputerHardware.gametrakXMax);
-    callable("gametrakYMin", boardcomputerHardware.gametrakYMin);
-    callable("gametrakYMax", boardcomputerHardware.gametrakYMax);
-    callable("gametrakDistMin", boardcomputerHardware.gametrakDistMin);
-    callable("gametrakDistMax", boardcomputerHardware.gametrakDistMax);
-#endif
-
-    callable("statsUpdateRate", boardcomputerHardware.timersSettings.statsUpdateRate);
-#ifdef FEATURE_CLOUD
-    callable("cloudCollectRat", boardcomputerHardware.timersSettings.cloudCollectRate);
-    callable("cloudSendRate", boardcomputerHardware.timersSettings.cloudSendRate);
-#endif
-#ifdef FEATURE_UDPCLOUD
-    callable("udpSendRate", boardcomputerHardware.timersSettings.udpSendRateMs);
-#endif
-
-#ifdef FEATURE_CLOUD
-    callable("cloudEnabled", cloudSettings.cloudEnabled);
-    callable("clodTransmTmout", cloudSettings.cloudTransmitTimeout);
-#endif
-
-#ifdef FEATURE_UDPCLOUD
-    callable("cloudUDPUid", udpCloudSettings.udpUid);
-    callable("enUdpCloud", udpCloudSettings.udpCloudEnabled);
-    callable("debugCloud", udpCloudSettings.enableCloudDebug);
-    callable("udpusestdstr", udpCloudSettings.udpUseStdString);
-#endif
-
 #ifdef FEATURE_LEDSTRIP
     callable("enableLedAnimat", ledstrip.enableLedAnimation);
     callable("enableBrakeLigh", ledstrip.enableBrakeLights);
