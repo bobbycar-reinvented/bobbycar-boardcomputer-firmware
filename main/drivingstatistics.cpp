@@ -59,10 +59,10 @@ void calculateStatistics()
     EVERY_N_MILLIS( 10 ) {
         static bool saveTotal = false;
 
-        if ((settings.savedStatistics.totalCentimeters / 100.f) > drivingStatistics.totalMeters)
+        if ((configs.savedStatistics.totalCentimeters.value / 100.f) > drivingStatistics.totalMeters)
         {
-            drivingStatistics.totalMeters = settings.savedStatistics.totalCentimeters / 100.f;
-            drivingStatistics.last_cm_written = settings.savedStatistics.totalCentimeters;
+            drivingStatistics.totalMeters = configs.savedStatistics.totalCentimeters.value / 100.f;
+            drivingStatistics.last_cm_written = configs.savedStatistics.totalCentimeters.value;
         }
 
         static auto last_km_calculation = espchrono::millis_clock::now();
@@ -106,8 +106,7 @@ void calculateStatistics()
                 saveTotal = false;
             }
             drivingStatistics.last_cm_written = drivingStatistics.totalMeters * 100; // Save total Meters
-            settings.savedStatistics.totalCentimeters = drivingStatistics.last_cm_written;
-            saveSettings();
+            configs.write_config(configs.savedStatistics.totalCentimeters, drivingStatistics.last_cm_written);
         }
     }
 }

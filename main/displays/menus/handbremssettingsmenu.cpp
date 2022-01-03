@@ -42,7 +42,7 @@ class HandBremsModeText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        return fmt::format("Mode: &2{}", toString(settings.handbremse.mode));
+        return fmt::format("Mode: &2{}", configs.handbremse.mode.valueAsString());
     }
 };
 }

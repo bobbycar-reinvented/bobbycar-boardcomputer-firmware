@@ -22,7 +22,8 @@
 #include "controller.h"
 #include "display.h"
 #include "modeinterface.h"
-#include "settings.h"
+#include "profilesettings.h"
+#include "newsettings.h"
 #include "settingspersister.h"
 #include "macros_bobbycar.h"
 
@@ -49,7 +50,7 @@ extern bool isLocked;
 
 extern bool simplified;
 
-extern Settings settings;
+extern ProfileSettings profileSettings;
 extern SettingsPersister settingsPersister;
 
 extern std::array<CRGB, 8> ledstrip_custom_colors;
@@ -63,15 +64,15 @@ public:
 #ifdef FEATURE_SERIAL
                 Serial1,
 #endif
-                settings.controllerHardware.enableFrontLeft, settings.controllerHardware.enableFrontRight, settings.controllerHardware.invertFrontLeft, settings.controllerHardware.invertFrontRight,
-                settings.battery.front30VoltCalibration, settings.battery.front50VoltCalibration
+                profileSettings.controllerHardware.enableFrontLeft, profileSettings.controllerHardware.enableFrontRight, profileSettings.controllerHardware.invertFrontLeft, profileSettings.controllerHardware.invertFrontRight,
+                configs.battery.front30VoltCalibration, configs.battery.front50VoltCalibration
             },
             Controller {
 #ifdef FEATURE_SERIAL
                 Serial2,
 #endif
-                settings.controllerHardware.enableBackLeft, settings.controllerHardware.enableBackRight, settings.controllerHardware.invertBackLeft, settings.controllerHardware.invertBackRight,
-                settings.battery.back30VoltCalibration, settings.battery.back50VoltCalibration
+                profileSettings.controllerHardware.enableBackLeft, profileSettings.controllerHardware.enableBackRight, profileSettings.controllerHardware.invertBackLeft, profileSettings.controllerHardware.invertBackRight,
+                configs.battery.back30VoltCalibration, configs.battery.back50VoltCalibration
             }
         }}
     {}

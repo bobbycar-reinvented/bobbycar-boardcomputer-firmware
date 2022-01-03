@@ -40,7 +40,7 @@ void udpCloudInit()
 
 void udpCloudUpdate()
 {
-    if (settings.udpCloudSettings.udpCloudEnabled)
+    if (configs.udpCloudSettings.udpCloudEnabled.value && configs.udpCloudSettings.udpUid.touched())
         sendUdpCloudPacket();
 }
 
@@ -94,7 +94,7 @@ std::string buildUdpCloudJson()
     // const auto w_per_kmh = watt / avgSpeedKmh;
 
     // User ID
-    doc["uid"] = settings.udpCloudSettings.udpUid;
+    doc["uid"] = configs.udpCloudSettings.udpUid.value;
     doc["upt"] = uptime;
 
     const auto addController = [&](const Controller &controller, const bool isBack) {
@@ -142,7 +142,7 @@ std::string buildUdpCloudJson()
     }
 
     // Statistics
-    doc["bP"] = getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType));
+    doc["bP"] = getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value));
     doc["bV"] = avgVoltage;
     doc["l"] = isLocked;
     doc["mN"] = drivingStatistics.meters_driven;
@@ -151,7 +151,7 @@ std::string buildUdpCloudJson()
     doc["cW"] = watt;
     doc["wN"] = drivingStatistics.wh_used;
     doc["wL"] = getRemainingWattHours();
-    doc["kmL"] = getRemainingWattHours() / settings.battery.watthoursPerKilometer;
+    doc["kmL"] = getRemainingWattHours() / configs.battery.watthoursPerKilometer.value;
     doc["ver"] = version_string.substr(0, 6);
 
     serializeJson(doc, buf);
@@ -192,8 +192,8 @@ std::string buildUdpCloudString()
     buf += "{";
 
     // User ID
-    if(settings.udpCloudSettings.udpUid)
-        buf += fmt::format("\"uid\":{},", settings.udpCloudSettings.udpUid);
+    if(configs.udpCloudSettings.udpUid.value)
+        buf += fmt::format("\"uid\":{},", configs.udpCloudSettings.udpUid.value);
     else
         buf += "\"uid\":null,";
 
@@ -290,7 +290,7 @@ std::string buildUdpCloudString()
     }
 
     // Statistics
-    buf += fmt::format("\"bP\":{},", getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType)));
+    buf += fmt::format("\"bP\":{},", getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value)));
     buf += fmt::format("\"bV\":{},", avgVoltage);
     buf += fmt::format("\"l\":{},", isLocked);
     buf += fmt::format("\"mN\":{},", drivingStatistics.meters_driven);
@@ -299,7 +299,7 @@ std::string buildUdpCloudString()
     buf += fmt::format("\"cW\":{},", watt);
     buf += fmt::format("\"wN\":{},", drivingStatistics.wh_used);
     buf += fmt::format("\"wL\":{},", getRemainingWattHours());
-    buf += fmt::format("\"kmL\":{},", getRemainingWattHours() / settings.battery.watthoursPerKilometer);
+    buf += fmt::format("\"kmL\":{},", getRemainingWattHours() / configs.battery.watthoursPerKilometer.value);
     buf += fmt::format("\"ver\":{}", version_string.substr(0, 6));
 
     buf += "}";
@@ -309,7 +309,7 @@ std::string buildUdpCloudString()
 
 void sendUdpCloudPacket()
 {
-    EVERY_N_MILLIS(settings.boardcomputerHardware.timersSettings.udpSendRateMs) {
+    EVERY_N_MILLIS(configs.boardcomputerHardware.timersSettings.udpSendRateMs.value) {
         if (espchrono::ago(timestampLastFailed) < 2s)
         {
             visualSendUdpPacket = false;
@@ -360,7 +360,7 @@ void sendUdpCloudPacket()
 
         wifi_stack::UdpSender udpCloudSender;
         std::string buf;
-            buf = settings.udpCloudSettings.udpUseStdString ? buildUdpCloudString() : buildUdpCloudJson();
+            buf = configs.udpCloudSettings.udpUseStdString.value ? buildUdpCloudString() : buildUdpCloudJson();
 
 
         if (const auto result = udpCloudSender.send(receipient, buf); !result)

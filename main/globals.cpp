@@ -24,7 +24,7 @@ bool simplified =
 #endif
 ;
 
-Settings settings;
+ProfileSettings profileSettings;
 SettingsPersister settingsPersister;
 
 std::array<CRGB, 8> ledstrip_custom_colors;

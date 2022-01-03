@@ -25,7 +25,7 @@ cpputils::DelayedConstruction<AsyncHttpRequest> http_request;
 // nvs
 bool has_qr_code(std::string_view key)
 {
-    const auto handle = settingsPersister.getCommonHandle();
+    const auto handle = configs.nvs_handle_user;
 
     size_t length;
     if (const esp_err_t result = nvs_get_str(handle, key.data(), nullptr, &length); result != ESP_OK)
@@ -40,7 +40,7 @@ bool has_qr_code(std::string_view key)
 
 tl::expected<std::string, esp_err_t> get_qr_code(std::string_view key)
 {
-    const auto handle = settingsPersister.getCommonHandle();
+    const auto handle = configs.nvs_handle_user;
 
     size_t length;
     if (const esp_err_t result = nvs_get_str(handle, key.data(), nullptr, &length); result != ESP_OK)
@@ -70,7 +70,7 @@ tl::expected<std::string, esp_err_t> get_qr_code(std::string_view key)
 
 tl::expected<void, esp_err_t> set_qr_code(std::string_view key, std::string_view qrcode)
 {
-    const auto handle = settingsPersister.getCommonHandle();
+    const auto handle = configs.nvs_handle_user;
 
     if (const esp_err_t result = nvs_set_str(handle, key.data(), qrcode.data()); result != ESP_OK)
     {
@@ -83,7 +83,7 @@ tl::expected<void, esp_err_t> set_qr_code(std::string_view key, std::string_view
 
 tl::expected<void, esp_err_t> delete_qr_code(std::string_view key)
 {
-    const auto handle = settingsPersister.getCommonHandle();
+    const auto handle = configs.nvs_handle_user;
 
     if (const esp_err_t result = nvs_erase_key(handle, key.data()); result != ESP_OK)
     {

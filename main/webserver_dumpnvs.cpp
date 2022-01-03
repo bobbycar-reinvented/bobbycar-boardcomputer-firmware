@@ -149,11 +149,6 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
     const auto profile = settingsPersister.currentlyOpenProfileIndex();
     const auto switchBackProfile = profile ? int(*profile) : 0;
 
-    JsonObject json_settings = doc.createNestedObject("settings");
-    settings.executeForEveryCommonSetting([&](std::string_view key, const auto &value){
-        showInputForSetting(key, value, json_settings);
-    });
-
     JsonObject profiles = doc.createNestedObject("profiles");
 
     // Profile settings
@@ -172,7 +167,7 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
         JsonObject profile = profiles.createNestedObject(profile_str);
         JsonObject profile_settings = profile.createNestedObject("settings");
 
-        settings.executeForEveryProfileSetting([&](const char *key, auto &value){
+        profileSettings.executeForEveryProfileSetting([&](const char *key, auto &value){
             showInputForSetting(key, value, profile_settings);
         });
     }

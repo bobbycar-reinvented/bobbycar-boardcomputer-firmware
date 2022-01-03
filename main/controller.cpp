@@ -8,7 +8,7 @@ Controller::Controller(
     HardwareSerial &serial,
 #endif
     bool &enableLeft, bool &enableRight, bool &invertLeft, bool &invertRight,
-    int16_t &voltageCalib30V, int16_t &voltageCalib50V
+    espconfig::ConfigWrapper<int16_t> &voltageCalib30V, espconfig::ConfigWrapper<int16_t> &voltageCalib50V
 ) :
     #ifdef FEATURE_SERIAL
     serial{serial},
@@ -21,9 +21,9 @@ Controller::Controller(
 float Controller::getCalibratedVoltage() const
 {
     float voltage = feedback.batVoltage;
-    if (settings.battery.applyCalibration)
+    if (configs.battery.applyCalibration.value)
     {
-        voltage = ((voltage - float(voltageCalib30V)) * (20.f / (float(voltageCalib50V) - float(voltageCalib30V))) + 30.f);
+        voltage = ((voltage - float(voltageCalib30V.value)) * (20.f / (float(voltageCalib50V.value) - float(voltageCalib30V.value))) + 30.f);
     }
     else
     {

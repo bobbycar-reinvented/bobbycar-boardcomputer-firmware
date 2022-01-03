@@ -18,6 +18,7 @@ constexpr const char * const TAG = "BOBBY_ESP_NOW";
 
 uint16_t lastYear; // Used for esp-now timesync
 
+std::deque<esp_now_message_t> message_queue{};
 std::vector<esp_now_peer_info_t> peers{};
 uint8_t initialized{0};
 
@@ -40,39 +41,7 @@ extern "C" void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data
 
         ESP_LOGD(TAG, "Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
 
-        if (msg.type == "T")
-        {
-            if (!receiveTimeStamp || !settings.espnow.syncTime)
-                return;
-
-            if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
-            {
-                onRecvTs(*result);
-            }
-            else
-            {
-                ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
-            }
-        }
-        else if (msg.type == "BOBBYT")
-        {
-            if (!receiveTsFromOtherBobbycars || !settings.espnow.syncTimeWithOthers)
-                return;
-
-            if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
-            {
-                ESP_LOGI(TAG, "setting current time to %" PRIu64, *result);
-                onRecvTs(*result, true);
-            }
-            else
-            {
-                ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
-            }
-        }
-        else
-        {
-            ESP_LOGI(TAG, "Unkown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
-        }
+        message_queue.push_back(msg);
     }
     else
     {
@@ -211,6 +180,47 @@ void handle()
             ESP_LOGI(TAG, "Deinit done.");
         }
         return;
+    }
+
+    if (message_queue.size())
+    {
+        for (const esp_now_message_t &msg : message_queue)
+        {
+            if (msg.type == "T")
+            {
+                if (!receiveTimeStamp || !configs.espnow.syncTime.value)
+                    return;
+
+                if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
+                {
+                    onRecvTs(*result);
+                }
+                else
+                {
+                    ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
+                }
+            }
+            else if (msg.type == "BOBBYT")
+            {
+                if (!receiveTsFromOtherBobbycars || !configs.espnow.syncTimeWithOthers.value)
+                    return;
+
+                if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
+                {
+                    ESP_LOGI(TAG, "setting current time to %" PRIu64, *result);
+                    onRecvTs(*result, true);
+                }
+                else
+                {
+                    ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
+                }
+            }
+            else
+            {
+                ESP_LOGI(TAG, "Unkown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
+            }
+        }
+        message_queue.clear();
     }
 }
 

@@ -24,13 +24,7 @@ public:
             //return;
         }
 
-        settings = presets::defaultSettings;
-
-        if (!settingsPersister.openCommon())
-        {
-            ESP_LOGE("BOBBY", "openCommon() failed");
-            //return;
-        }
+        profileSettings = presets::defaultProfileSettings;
 
         if (profile)
         {
@@ -41,7 +35,7 @@ public:
             }
         }
 
-        if (!settingsPersister.load(settings))
+        if (!settingsPersister.load(profileSettings))
         {
             ESP_LOGE("BOBBY", "load() for settings failed");
             //return;

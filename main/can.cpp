@@ -193,7 +193,7 @@ bool parseBoardcomputerCanMessage(const twai_message_t &message)
 bool tryParseCanInput()
 {
     twai_message_t message;
-    const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{settings.controllerHardware.canReceiveTimeout}).count();
+    const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.controllerHardware.canReceiveTimeout.value}).count();
     if (const auto result = twai_receive(&message, timeout); result != ESP_OK)
     {
         if (result != ESP_ERR_TIMEOUT)
@@ -210,8 +210,8 @@ bool tryParseCanInput()
         return false;
     }
 
-    Controller &front = settings.controllerHardware.swapFrontBack ? controllers.back : controllers.front;
-    Controller &back = settings.controllerHardware.swapFrontBack ? controllers.front : controllers.back;
+    Controller &front = configs.controllerHardware.swapFrontBack.value ? controllers.back : controllers.front;
+    Controller &back = configs.controllerHardware.swapFrontBack.value ? controllers.front : controllers.back;
 
     if (parseMotorControllerCanMessage<false>(message, front))
     {
@@ -269,7 +269,7 @@ void sendCanCommands()
         std::fill(std::begin(message.data), std::end(message.data), 0);
         std::memcpy(message.data, &value, sizeof(value));
 
-        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{settings.controllerHardware.canTransmitTimeout}).count();
+        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.controllerHardware.canTransmitTimeout.value}).count();
 
         const auto timestamp_before = espchrono::millis_clock::now();
         const auto result = twai_transmit(&message, timeout);
@@ -313,13 +313,13 @@ void sendCanCommands()
         return result;
     };
 
-    const bool swap = settings.controllerHardware.swapFrontBack;
+    const bool swap = configs.controllerHardware.swapFrontBack.value;
     const Controller *front =
-            (swap ? settings.controllerHardware.sendBackCanCmd : settings.controllerHardware.sendFrontCanCmd ) ?
+            (swap ? configs.controllerHardware.sendBackCanCmd.value : configs.controllerHardware.sendFrontCanCmd.value ) ?
             (swap ? &controllers.back : &controllers.front) :
             nullptr;
     const Controller *back =
-            (swap ? settings.controllerHardware.sendFrontCanCmd : settings.controllerHardware.sendBackCanCmd ) ?
+            (swap ? configs.controllerHardware.sendFrontCanCmd.value : configs.controllerHardware.sendBackCanCmd.value ) ?
             (swap ? &controllers.front : &controllers.back) :
             nullptr;
 

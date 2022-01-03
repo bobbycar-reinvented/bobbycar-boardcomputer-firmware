@@ -45,7 +45,7 @@ void TempomatMode::update()
 
         for (bobbycar::protocol::serial::MotorState &motor : motors())
         {
-            const auto pair = split(settings.tempomatMode.modelMode);
+            const auto pair = split(profileSettings.tempomatMode.modelMode);
             motor.ctrlTyp = pair.first;
             motor.ctrlMod = pair.second;
             motor.pwm = 0;

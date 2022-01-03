@@ -9,7 +9,7 @@
 
 // local includes
 #include "battery.h"
-#include "globals.h"
+#include "newsettings.h"
 #include "utils.h"
 #include "displays/menus/batterymenu.h"
 #include "batterymenu.h"
@@ -44,7 +44,7 @@ template<BatteryCellType T>
 class BatterySelectTypeAction : public virtual espgui::ActionInterface
 {
 public:
-    void triggered() override { settings.battery.cellType = uint8_t(T); saveSettings(); }
+    void triggered() override { configs.write_config(configs.battery.cellType, uint8_t(T)); }
 };
 } // namespace
 

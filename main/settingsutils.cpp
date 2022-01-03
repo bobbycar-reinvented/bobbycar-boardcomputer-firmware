@@ -21,7 +21,7 @@ void switchProfile(uint8_t index)
     }
 #endif
 
-    settings = presets::defaultSettings;
+    profileSettings = presets::defaultProfileSettings;
 
     if (!settingsPersister.openProfile(index))
     {
@@ -29,7 +29,7 @@ void switchProfile(uint8_t index)
         return;
     }
 
-    if (!settingsPersister.load(settings))
+    if (!settingsPersister.load(profileSettings))
     {
         ESP_LOGE("BOBBY", "load() for settings failed");
         return;

@@ -47,17 +47,14 @@ extern "C" void app_main()
     if (const auto result = configs.init("bobbycar"); result != ESP_OK)
         ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
 
-    settings = presets::defaultSettings;
+    profileSettings = presets::defaultProfileSettings;
 
     if (settingsPersister.init())
     {
-        if (!settingsPersister.openCommon())
-            ESP_LOGE("BOBBY", "openCommon() failed");
-
         if (!settingsPersister.openProfile(0))
             ESP_LOGE("BOBBY", "openProfile(0) failed");
 
-        loadSettings();
+        loadProfileSettings();
     }
     else
         ESP_LOGE("BOBBY", "init() failed");
@@ -79,7 +76,7 @@ extern "C" void app_main()
     {
         espgui::switchScreen<ButtonCalibrateDisplay>(true);
     }
-    else if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+    else if (configs.lockscreen.keepLockedAfterReboot.value && configs.lockscreen.locked.value)
     {
         espgui::switchScreen<Lockscreen>();
     }
@@ -102,7 +99,7 @@ extern "C" void app_main()
             schedulerTask.loop();
         }
 
-        if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/settings.boardcomputerHardware.timersSettings.statsUpdateRate)
+        if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/configs.boardcomputerHardware.timersSettings.statsUpdateRate.value)
         {
             updateAccumulators();
             pushStats();
@@ -127,7 +124,7 @@ extern "C" void app_main()
                 }
                 avgVoltage = avgVoltage / controllers.size();
                 if (avgVoltage > 30)
-                    battery::bootBatPercentage = getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType));
+                    battery::bootBatPercentage = getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value));
             }
         }
     }

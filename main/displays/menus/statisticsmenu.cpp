@@ -104,7 +104,7 @@ public:
 
 class SavedTotalCentimetersText : public virtual espgui::TextInterface {
     public: std::string text() const override {
-        return fmt::format("saved: {}cm", settings.savedStatistics.totalCentimeters );
+        return fmt::format("saved: {}cm", configs.savedStatistics.totalCentimeters.value );
     }
 };
 
@@ -140,8 +140,7 @@ public:
     void triggered() override
     {
         drivingStatistics.last_cm_written = drivingStatistics.totalMeters * 100;
-        settings.savedStatistics.totalCentimeters = drivingStatistics.last_cm_written;
-        saveSettings();
+        configs.write_config(configs.savedStatistics.totalCentimeters, drivingStatistics.last_cm_written);
     }
 };
 

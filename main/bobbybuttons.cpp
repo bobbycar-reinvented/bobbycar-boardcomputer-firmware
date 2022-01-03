@@ -102,7 +102,7 @@ void buttonPressedCommon(espgui::Button button)
 #endif
         break;
     case BobbyButton::Up2:
-        if (settings.handbremse.enable)
+        if (configs.handbremse.enable.value)
         {
             using namespace handbremse;
             if (stateWish == StateWish::brake || angezogen)

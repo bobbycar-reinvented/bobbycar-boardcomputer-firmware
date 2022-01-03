@@ -52,8 +52,8 @@ void sendCommands();
 #ifdef FEATURE_SERIAL
 void updateSwapFrontBack();
 #endif
-bool loadSettings();
-bool saveSettings();
+bool loadProfileSettings();
+bool saveProfileSettings();
 void updateAccumulators();
 void readPotis();
 float wattToAmpere(float watt);

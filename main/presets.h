@@ -10,22 +10,22 @@
 #include <espchrono.h>
 
 // local includes
-#include "settings.h"
+#include "profilesettings.h"
 #include "ledstripdefines.h"
 #include "ledstrip.h"
 
 using namespace std::chrono_literals;
 
 namespace presets {
-constexpr Settings::Limits defaultLimits {
-    .iMotMax = DEFAULT_IMOTMAX,
-    .iDcMax = DEFAULT_IDCMAX,
-    .nMotMax = DEFAULT_NMOTMAX,
-    .fieldWeakMax = DEFAULT_FIELDWEAKMAX,
-    .phaseAdvMax = DEFAULT_FIELDADVMAX
+constexpr ProfileSettings::Limits defaultLimits {
+    .iMotMax = DEFAULT_IMOTMAX,           // profileSetting
+    .iDcMax = DEFAULT_IDCMAX,             // profileSetting
+    .nMotMax = DEFAULT_NMOTMAX,           // profileSetting
+    .fieldWeakMax = DEFAULT_FIELDWEAKMAX, // profileSetting
+    .phaseAdvMax = DEFAULT_FIELDADVMAX    // profileSetting
 };
 
-constexpr Settings::Limits kidsLimits {
+constexpr ProfileSettings::Limits kidsLimits {
     .iMotMax = 5,
     .iDcMax = 7,
     .nMotMax = 500,
@@ -33,29 +33,19 @@ constexpr Settings::Limits kidsLimits {
     .phaseAdvMax = 20
 };
 
-constexpr Settings::ControllerHardware defaultControllerHardware {
-    .enableFrontLeft = true,
-    .enableFrontRight = true,
-    .enableBackLeft = true,
-    .enableBackRight = true,
+constexpr ProfileSettings::ControllerHardware defaultControllerHardware {
+    .enableFrontLeft = true,  // profileSetting
+    .enableFrontRight = true, // profileSetting
+    .enableBackLeft = true,   // profileSetting
+    .enableBackRight = true,  // profileSetting
 
-    .invertFrontLeft = DEFAULT_INVERTFRONTLEFT,
-    .invertFrontRight = DEFAULT_INVERTFRONTRIGHT,
-    .invertBackLeft = DEFAULT_INVERTBACKLEFT,
-    .invertBackRight = DEFAULT_INVERTBACKRIGHT,
-
-    .wheelDiameter = DEFAULT_WHEELDIAMETER,
-    .numMagnetPoles = 15,
-    .swapFrontBack = false,
-#ifdef FEATURE_CAN
-    .sendFrontCanCmd = true,
-    .sendBackCanCmd = true,
-    .canTransmitTimeout = 200,
-    .canReceiveTimeout = 0,
-#endif
+    .invertFrontLeft = DEFAULT_INVERTFRONTLEFT,   // profileSetting
+    .invertFrontRight = DEFAULT_INVERTFRONTRIGHT, // profileSetting
+    .invertBackLeft = DEFAULT_INVERTBACKLEFT,     // profileSetting
+    .invertBackRight = DEFAULT_INVERTBACKRIGHT,   // profileSetting
 };
 
-constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
+constexpr ProfileSettings::ControllerHardware mosfetsOffControllerHardware {
     .enableFrontLeft = false,
     .enableFrontRight = false,
     .enableBackLeft = false,
@@ -65,31 +55,9 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
     .invertFrontRight = DEFAULT_INVERTFRONTRIGHT,
     .invertBackLeft = DEFAULT_INVERTBACKLEFT,
     .invertBackRight = DEFAULT_INVERTBACKRIGHT,
-
-    .wheelDiameter = 165,
-    .numMagnetPoles = 15,
-    .swapFrontBack = false,
-#ifdef FEATURE_CAN
-    .sendFrontCanCmd = true,
-    .sendBackCanCmd = true,
-    .canTransmitTimeout = 200,
-    .canReceiveTimeout = 0,
-#endif
 };
 
-#ifdef FEATURE_BLUETOOTH
-constexpr Settings::BluetoothSettings defaultBluetoothSettings {
-    .autoBluetoothMode = BluetoothMode::Master
-};
-#endif
-
-#ifdef FEATURE_BLE
-constexpr Settings::BleSettings defaultBleSettings {
-    .bleEnabled = true
-};
-#endif
-
-constexpr Settings::ControllerHardware spinnerControllerHardware {
+constexpr ProfileSettings::ControllerHardware spinnerControllerHardware {
     .enableFrontLeft = true,
     .enableFrontRight = true,
     .enableBackLeft = true,
@@ -99,77 +67,28 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
     .invertFrontRight = !DEFAULT_INVERTFRONTRIGHT,
     .invertBackLeft = DEFAULT_INVERTBACKLEFT,
     .invertBackRight = !DEFAULT_INVERTBACKRIGHT,
-
-    .wheelDiameter = 165,
-    .numMagnetPoles = 15,
-    .swapFrontBack = false,
-#ifdef FEATURE_CAN
-    .sendFrontCanCmd = true,
-    .sendBackCanCmd = true,
-    .canTransmitTimeout = 200,
-    .canReceiveTimeout = 0,
-#endif
 };
 
-constexpr Settings::BoardcomputerHardware::TimersSettings defaultTimersSettings {
-    .statsUpdateRate = 50,
-#ifdef FEATURE_CLOUD
-    .cloudCollectRate = 100,
-    .cloudSendRate = 1,
-#endif
-#ifdef FEATURE_UDPCLOUD
-    .udpSendRateMs = 65,
-#endif
-};
-
-constexpr Settings::BoardcomputerHardware defaultBoardcomputerHardware {
-#ifdef FEATURE_GAMETRAK
-    .gametrakXMin = DEFAULT_GAMETRAKXMIN,
-    .gametrakXMax = DEFAULT_GAMETRAKXMAX,
-    .gametrakYMin = DEFAULT_GAMETRAKYMIN,
-    .gametrakYMax = DEFAULT_GAMETRAKYMAX,
-    .gametrakDistMin = DEFAULT_GAMETRAKDISTMIN,
-    .gametrakDistMax = DEFAULT_GAMETRAKDISTMAX,
-#endif
-    .timersSettings = defaultTimersSettings
-};
-
-#ifdef FEATURE_CLOUD
-constexpr Settings::CloudSettings defaultCloudSettings {
-    .cloudEnabled = false,
-    .cloudTransmitTimeout = 10
-};
-#endif
-
-#ifdef FEATURE_UDPCLOUD
-constexpr Settings::UdpCloudSettings defaultUdpCloudSettings {
-    .udpUid = 0,
-    .udpCloudEnabled = false,
-    .enableCloudDebug = false,
-    .udpUseStdString = false
-};
-#endif
-
-constexpr Settings::DefaultMode defaultDefaultMode {
-    .modelMode = UnifiedModelMode::FocTorque,
+constexpr ProfileSettings::DefaultMode defaultDefaultMode {
+    .modelMode = UnifiedModelMode::FocTorque, // profileSetting
     .squareGas = true,
     .squareBrems = true,
-    .enableSmoothingUp = true,
-    .enableSmoothingDown = true,
-    .enableFieldWeakSmoothingUp = false,
-    .enableFieldWeakSmoothingDown = false,
-    .smoothing = 20,
-    .frontPercentage = 100,
-    .backPercentage = 100,
-    .add_schwelle = 750,
-    .gas1_wert = 1250,
-    .gas2_wert = 1250,
-    .brems1_wert = 250,
-    .brems2_wert = 750,
-    .fwSmoothLowerLimit = 800
+    .enableSmoothingUp = true,                // profileSetting
+    .enableSmoothingDown = true,              // profileSetting
+    .enableFieldWeakSmoothingUp = false,      // profileSetting
+    .enableFieldWeakSmoothingDown = false,    // profileSetting
+    .smoothing = 20,                          // profileSetting
+    .frontPercentage = 100,                   // profileSetting
+    .backPercentage = 100,                    // profileSetting
+    .add_schwelle = 750,                      // profileSetting
+    .gas1_wert = 1250,                        // profileSetting
+    .gas2_wert = 1250,                        // profileSetting
+    .brems1_wert = 250,                       // profileSetting
+    .brems2_wert = 750,                       // profileSetting
+    .fwSmoothLowerLimit = 800                 // profileSetting
 };
 
-constexpr Settings::DefaultMode sinusoidalDefaultMode {
+constexpr ProfileSettings::DefaultMode sinusoidalDefaultMode {
     .modelMode = UnifiedModelMode::Sinusoidal,
     .squareGas = true,
     .squareBrems = true,
@@ -188,133 +107,27 @@ constexpr Settings::DefaultMode sinusoidalDefaultMode {
     .fwSmoothLowerLimit = 800
 };
 
-constexpr Settings::TempomatMode defaultTempomatMode {
+constexpr ProfileSettings::TempomatMode defaultTempomatMode {
     .modelMode = UnifiedModelMode::FocSpeed
 };
 
-constexpr Settings::LarsmMode defaultLarsmMode {
+constexpr ProfileSettings::LarsmMode defaultLarsmMode {
     .modelMode = UnifiedModelMode::Commutation,
     .mode = LarsmModeMode::Mode4,
     .iterations = 100
 };
 
-constexpr Settings::MotortestMode defaultMotortestMode {
+constexpr ProfileSettings::MotortestMode defaultMotortestMode {
     .multiplikator = 2,
     .maxPwm = 400
 };
 
-constexpr Settings::Handbremse defaultHandbremse {
-    .mode = HandbremseMode::MOSFETS_OFF,
-    .triggerTimeout = 10,
-    .automatic = false,
-    .enable = false,
-    .visualize = true,
-};
-
-#ifdef FEATURE_LEDSTRIP
-constexpr Settings::Ledstrip defaultLedstrip {
-    .enableLedAnimation = true,
-    .enableBrakeLights = true,
-    .ledsCount = LEDSTRIP_LENGTH,
-    .centerOffset = 1,
-    .smallOffset = 4,
-    .bigOffset = 10,
-    .enableBeepWhenBlink = false,
-#ifdef LEDSTRIP_ANIMATION_DEFAULT
-    .animationType = LEDSTRIP_ANIMATION_DEFAULT,
-#else
-    .animationType = LedstripAnimation::DefaultRainbow,
-#endif
-    .enableFullBlink = false,
-    .enableStVO = false,
-    .stvoFrontOffset = 0,
-    .stvoFrontLength = 10,
-    .stvoFrontEnable = false,
-    .animationMultiplier = 10,
-    .brightness = 255,
-    .enableAnimBlink = false,
-#ifdef FEATURE_OTA
-    .otaMode = OtaAnimationModes::GreenProgressBar
-#endif
-};
-#endif
-
-constexpr Settings::LockscreenSettings defaultLockscreen {
-    .allowPresetSwitch = true,
-    .keepLockedAfterReboot = false,
-    .locked = false,
-    .pin = { 1, 2, 3, 4 }
-};
-
-constexpr Settings::Battery defaultBattery {
-    .cellsSeries = 12,
-    .cellsParallel = 4,
-    .cellType = 0,
-    .watthoursPerKilometer = 20,
-    .front30VoltCalibration = 3000,
-    .back30VoltCalibration = 3000,
-    .front50VoltCalibration = 5000,
-    .back50VoltCalibration = 5000,
-    .applyCalibration = true
-};
-
-constexpr Settings::Hybrid defaultHybrid {
-    .hybridMode = UnifiedModelMode::FocTorque,
-    .enable = false,
-    .activationLimit = 1000,
-    .deactivationLimit = 950,
-};
-
-constexpr Settings::SavedStatistics defaultSavedStatistics {
-    .totalCentimeters = 0,
-};
-
-#ifdef FEATURE_ESPNOW
-constexpr Settings::ESPNOW defaultEspNowSettings {
-#ifndef FEATURE_NTP
-    .syncTime = true,
-    .syncTimeWithOthers = true,
-#else
-    .syncTime = false,
-    .syncTimeWithOthers = false,
-#endif
-    .syncBlink = false
-};
-#endif
-
-constexpr Settings defaultSettings {
-#ifdef FEATURE_BMS
-    .autoConnectBms = false,
-#endif
+constexpr ProfileSettings defaultProfileSettings {
     .limits = defaultLimits,
-#ifdef FEATURE_BLUETOOTH
-    .bluetoothSettings = defaultBluetoothSettings,
-#endif
-#ifdef FEATURE_BLE
-    .bleSettings = defaultBleSettings,
-#endif
     .controllerHardware = defaultControllerHardware,
-    .boardcomputerHardware = defaultBoardcomputerHardware,
-#ifdef FEATURE_CLOUD
-    .cloudSettings = defaultCloudSettings,
-#endif
-#ifdef FEATURE_UDPCLOUD
-    .udpCloudSettings = defaultUdpCloudSettings,
-#endif
     .defaultMode = defaultDefaultMode,
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode,
-    .motortestMode = defaultMotortestMode,
-#ifdef FEATURE_LEDSTRIP
-    .ledstrip = defaultLedstrip,
-#endif
-    .battery = defaultBattery,
-    .hybrid = defaultHybrid,
-    .lockscreen = defaultLockscreen,
-    .savedStatistics = defaultSavedStatistics,
-    .handbremse = defaultHandbremse,
-#ifdef FEATURE_ESPNOW
-    .espnow = defaultEspNowSettings,
-#endif
+    .motortestMode = defaultMotortestMode
 };
 } // namespace presets

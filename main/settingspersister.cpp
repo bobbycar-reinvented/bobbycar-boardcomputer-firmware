@@ -18,12 +18,12 @@
 #include <futurecpp.h>
 
 // local includes
-#include "settings.h"
+#include "profilesettings.h"
 #ifdef FEATURE_BLUETOOTH
 #include "bluetoothmode.h"
 #endif
 #include "unifiedmodelmode.h"
-#include "settings.h"
+#include "globals.h"
 
 bool SettingsPersister::init()
 {
@@ -45,7 +45,6 @@ bool SettingsPersister::init()
 bool SettingsPersister::erase()
 {
     closeProfile();
-    closeCommon();
 
     bool result{true};
 
@@ -62,32 +61,6 @@ bool SettingsPersister::erase()
     }
 
     return result;
-}
-
-bool SettingsPersister::openCommon()
-{
-    closeCommon();
-
-    nvs_handle handle;
-    if (esp_err_t result = nvs_open("bobbycar", NVS_READWRITE, &handle); result != ESP_OK)
-    {
-        ESP_LOGE("BOBBY", "nvs_open() COMMON %s failed with %s", "bobbycar", esp_err_to_name(result));
-        return false;
-    }
-
-    m_handle = handle;
-
-    return true;
-}
-
-void SettingsPersister::closeCommon()
-{
-    if (!m_handle)
-        return;
-
-    nvs_close(m_handle);
-
-    m_handle = {};
 }
 
 bool SettingsPersister::openProfile(uint8_t index)
@@ -188,24 +161,6 @@ template<> struct nvsGetterHelper<UnifiedModelMode> { static esp_err_t nvs_get(n
         *out_value = UnifiedModelMode(tempValue);
     return err;
 }};
-template<> struct nvsGetterHelper<HandbremseMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, HandbremseMode* out_value)
-{
-    uint8_t tempValue;
-    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
-    if (err == ESP_OK)
-        *out_value = HandbremseMode(tempValue);
-    return err;
-}};
-#if defined(FEATURE_LEDSTRIP) && defined(FEATURE_OTA)
-template<> struct nvsGetterHelper<OtaAnimationModes> { static esp_err_t nvs_get(nvs_handle handle, const char* key, OtaAnimationModes* out_value)
-{
-    uint8_t tempValue;
-    esp_err_t err = nvs_get_u8(handle, key, &tempValue);
-    if (err == ESP_OK)
-        *out_value = OtaAnimationModes(tempValue);
-    return err;
-}};
-#endif
 template<> struct nvsGetterHelper<wifi_mode_t> { static esp_err_t nvs_get(nvs_handle handle, const char* key, wifi_mode_t* out_value)
 {
     uint8_t tempValue;
@@ -286,27 +241,9 @@ bool SettingsPersister::load(T &settings)
 {
     bool result{true};
 
-    if (m_handle)
-    {
-        settings.executeForEveryCommonSetting([&](const char *key, auto &value)
-        {
-            if (esp_err_t result = nvsGetterHelper<std::decay_t<decltype(value)>>::nvs_get(m_handle, key, &value); result != ESP_OK)
-            {
-                if (result != ESP_ERR_NVS_NOT_FOUND)
-                    ESP_LOGE("BOBBY", "nvs_get() COMMON %s failed with %s", key, esp_err_to_name(result));
-                result = false;
-            }
-        });
-    }
-    else
-    {
-        ESP_LOGW("BOBBY", "common nvs handle not valid!");
-        result = false;
-    }
-
     if (m_profile)
     {
-        settings.executeForEveryProfileSetting([&](const char *key, auto &value)
+        profileSettings.executeForEveryProfileSetting([&](const char *key, auto &value)
         {
             if (esp_err_t result = nvsGetterHelper<std::decay_t<decltype(value)>>::nvs_get(m_profile->handle, key, &value); result != ESP_OK)
             {
@@ -325,7 +262,7 @@ bool SettingsPersister::load(T &settings)
     return result;
 }
 
-template bool SettingsPersister::load<Settings>(Settings &settings);
+template bool SettingsPersister::load<ProfileSettings>(ProfileSettings &profileSettings);
 
 template<typename T> struct nvsSetterHelper;
 template<> struct nvsSetterHelper<int8_t> { static constexpr auto nvs_set = &nvs_set_i8; };
@@ -361,16 +298,6 @@ template<> struct nvsSetterHelper<UnifiedModelMode> { static esp_err_t nvs_set(n
 {
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
-template<> struct nvsSetterHelper<HandbremseMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, HandbremseMode value)
-{
-    return nvs_set_u8(handle, key, uint8_t(value));
-}};
-#if defined(FEATURE_LEDSTRIP) && defined(FEATURE_OTA)
-template<> struct nvsSetterHelper<OtaAnimationModes> { static esp_err_t nvs_set(nvs_handle handle, const char* key, OtaAnimationModes value)
-{
-    return nvs_set_u8(handle, key, uint8_t(value));
-}};
-#endif
 template<> struct nvsSetterHelper<wifi_mode_t> { static esp_err_t nvs_set(nvs_handle handle, const char* key, wifi_mode_t value)
 {
     return nvs_set_u8(handle, key, uint8_t(value));
@@ -415,26 +342,9 @@ bool SettingsPersister::save(T &settings)
 {
     bool result{true};
 
-    if (m_handle)
-    {
-        settings.executeForEveryCommonSetting([&](const char *key, const auto &value)
-        {
-            if (esp_err_t result = nvsSetterHelper<std::decay_t<decltype(value)>>::nvs_set(m_handle, key, value); result != ESP_OK)
-            {
-                ESP_LOGE("BOBBY", "nvs_set() COMMON %s failed with %s", key, esp_err_to_name(result));
-                result = false;
-            }
-        });
-    }
-    else
-    {
-        ESP_LOGW("BOBBY", "common nvs handle not valid!");
-        result = false;
-    }
-
     if (m_profile)
     {
-        settings.executeForEveryProfileSetting([&](const char *key, const auto &value)
+        profileSettings.executeForEveryProfileSetting([&](const char *key, const auto &value)
         {
             if (esp_err_t result = nvsSetterHelper<std::decay_t<decltype(value)>>::nvs_set(m_profile->handle, key, value); result != ESP_OK)
             {
@@ -452,7 +362,7 @@ bool SettingsPersister::save(T &settings)
     return result;
 }
 
-template bool SettingsPersister::save<Settings>(Settings &settings);
+template bool SettingsPersister::save<ProfileSettings>(ProfileSettings &settings);
 
 std::optional<uint8_t> SettingsPersister::currentlyOpenProfileIndex() const
 {

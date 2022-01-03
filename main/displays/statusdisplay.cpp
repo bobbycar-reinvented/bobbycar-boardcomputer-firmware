@@ -85,9 +85,9 @@ void StatusDisplay::redraw()
         lastRedraw = now;
     }
 
-    if (settings.handbremse.enable && settings.handbremse.visualize && handbremse::angezogen)
+    if (configs.handbremse.enable.value && configs.handbremse.visualize.value && handbremse::angezogen)
         tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_RED);
-    else if (settings.handbremse.enable && settings.handbremse.visualize && handbremse::stateWish == handbremse::StateWish::brake)
+    else if (configs.handbremse.enable.value && configs.handbremse.visualize.value && handbremse::stateWish == handbremse::StateWish::brake)
         tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_YELLOW);
     else
         tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_BLACK);
@@ -115,7 +115,7 @@ void StatusDisplay::redraw()
 
     tft.setTextFont(2);
 #ifdef FEATURE_UDPCLOUD
-    if(settings.udpCloudSettings.udpCloudEnabled && settings.udpCloudSettings.enableCloudDebug)
+    if(configs.udpCloudSettings.udpCloudEnabled.value && configs.udpCloudSettings.enableCloudDebug.value)
     {
         tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? TFT_DARKGREY : TFT_BLACK);
     }

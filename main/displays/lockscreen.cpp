@@ -14,6 +14,18 @@
 #include "ledstripdefines.h"
 #endif
 
+bool isValidPin(std::array<int8_t,4> enteredPin)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (enteredPin[i] != configs.lockscreen.pin[i].digit.value)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 void Lockscreen::start()
 {
     Base::start();
@@ -27,10 +39,9 @@ void Lockscreen::start()
     currentMode = &m_mode;
 
     isLocked = true;
-    if (settings.lockscreen.keepLockedAfterReboot && !settings.lockscreen.locked)
+    if (configs.lockscreen.keepLockedAfterReboot.value && !configs.lockscreen.locked.value)
     {
-        settings.lockscreen.locked = true;
-        saveSettings();
+        configs.write_config(configs.lockscreen.locked, true);
     }
 }
 
@@ -85,7 +96,7 @@ void Lockscreen::redraw()
 
         if (!m_back_pressed && ++m_currentIndex>=4)
         {
-            if (m_numbers == settings.lockscreen.pin)
+            if (isValidPin(m_numbers))
             {
                 if (!gas || !brems || *gas > 200.f || *brems > 200.f)
                     espgui::switchScreen<PotisCalibrateDisplay>(true);
@@ -148,17 +159,16 @@ void Lockscreen::stop()
     isLocked = false;
     if (!(!gas || !brems || *gas > 200.f || *brems > 200.f))
     {
-        if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+        if (configs.lockscreen.keepLockedAfterReboot.value && configs.lockscreen.locked.value)
         {
-            settings.lockscreen.locked = false;
-            saveSettings();
+            configs.write_config(configs.lockscreen.locked, false);
         }
     }
 }
 
 void Lockscreen::buttonPressed(espgui::Button button)
 {
-    if (settings.lockscreen.allowPresetSwitch ||
+    if (configs.lockscreen.allowPresetSwitch.value ||
         !cpputils::is_in(button, BobbyButton::Profile0, BobbyButton::Profile1, BobbyButton::Profile2, BobbyButton::Profile3))
     Base::buttonPressed(button);
 

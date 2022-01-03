@@ -18,8 +18,8 @@ struct RefAccessorSaveSettings : public virtual espgui::RefAccessor<T>
     {
         espgui::RefAccessor<T>::setValue(value);
 
-        if (!saveSettings())
-            return tl::make_unexpected("saveSettings() failed!");
+        if (!saveProfileSettings())
+            return tl::make_unexpected("saveProfileSettings() failed!");
 
         return {};
     };

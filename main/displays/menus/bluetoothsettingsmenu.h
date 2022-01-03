@@ -1,5 +1,7 @@
 #pragma once
 
+// compilation will be broken as there is no config parameter
+
 // local includes
 #include "changevaluedisplay.h"
 #ifdef FEATURE_BLUETOOTH
@@ -27,13 +29,13 @@ namespace {
 #ifdef FEATURE_BLUETOOTH
 class BluetoothSettingsMenu;
 
-using AutoBluetoothModeChangeDisplay = makeComponent<
-    ChangeValueDisplay<BluetoothMode>,
-    StaticText<TEXT_AUTOBLUETOOTHMODE>,
-    AutoBluetoothModeAccessor,
-    BackActionInterface<SwitchScreenAction<BluetoothSettingsMenu>>,
-    SwitchScreenAction<BluetoothSettingsMenu>
->;
+//using AutoBluetoothModeChangeDisplay = makeComponent<
+//    ChangeValueDisplay<BluetoothMode>,
+//    StaticText<TEXT_AUTOBLUETOOTHMODE>,
+//    AutoBluetoothModeAccessor,
+//    BackActionInterface<SwitchScreenAction<BluetoothSettingsMenu>>,
+//    SwitchScreenAction<BluetoothSettingsMenu>
+//>;
 
 class BluetoothSettingsMenu :
     public BobbyMenuDisplay,
@@ -53,7 +55,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHFLUSH>,        BluetoothFlushAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHEND>,          BluetoothEndAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHDISCONNECT>,   BluetoothDisconnectAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOBLUETOOTHMODE>,     SwitchScreenAction<AutoBluetoothModeChangeDisplay>>>();
+//        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOBLUETOOTHMODE>,     SwitchScreenAction<AutoBluetoothModeChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 };

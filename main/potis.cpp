@@ -76,12 +76,12 @@ void readPotis()
 
 #ifdef FEATURE_GAMETRAK
     raw_gametrakX = sampleMultipleTimes(PINS_GAMETRAKX);
-    gametrakX = cpputils::mapValueClamped<float>(raw_gametrakX, settings.boardcomputerHardware.gametrakXMin, settings.boardcomputerHardware.gametrakXMax, 0., 1000.);
+    gametrakX = cpputils::mapValueClamped<float>(raw_gametrakX, configs.boardcomputerHardware.gametrakXMin.value, configs.boardcomputerHardware.gametrakXMax.value, 0., 1000.);
 
     raw_gametrakY = sampleMultipleTimes(PINS_GAMETRAKY);
-    gametrakY = cpputils::mapValueClamped<float>(raw_gametrakY, settings.boardcomputerHardware.gametrakYMin, settings.boardcomputerHardware.gametrakYMax, 0., 1000.);
+    gametrakY = cpputils::mapValueClamped<float>(raw_gametrakY, configs.boardcomputerHardware.gametrakYMin.value, configs.boardcomputerHardware.gametrakYMax.value, 0., 1000.);
 
     raw_gametrakDist = sampleMultipleTimes(PINS_GAMETRAKDIST);
-    gametrakDist = cpputils::mapValueClamped<float>(raw_gametrakDist, settings.boardcomputerHardware.gametrakDistMin, settings.boardcomputerHardware.gametrakDistMax, 0., 1000.);
+    gametrakDist = cpputils::mapValueClamped<float>(raw_gametrakDist, configs.boardcomputerHardware.gametrakDistMin.value, configs.boardcomputerHardware.gametrakDistMax.value, 0., 1000.);
 #endif
 }

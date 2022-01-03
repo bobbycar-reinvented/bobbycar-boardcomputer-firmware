@@ -20,6 +20,12 @@
 #include <espchrono.h>
 #include <makearray.h>
 
+// local includes
+#include "ledstrip.h"
+#include "unifiedmodelmode.h"
+#include "displays/lockscreen.h"
+#include "handbremse.h"
+
 using namespace espconfig;
 
 std::string defaultHostname();
@@ -78,6 +84,15 @@ public:
 
     ConfigWrapper<std::string> name;
     ConfigWrapper<std::string> url;
+};
+
+class ConfiguredLockscreenDigit
+{
+public:
+    ConfiguredLockscreenDigit(const char *digitKey) :
+        digit{0, DoReset, MinMaxOrZeroValue<int8_t, 1,9>, digitKey }
+    {}
+    ConfigWrapper<int8_t> digit;
 };
 
 class ConfigContainer
@@ -176,7 +191,109 @@ public:
     ConfigWrapper<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
     ConfigWrapper<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
 
-    ConfigWrapper<uint32_t> ledStripMaxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
+    struct {
+        ConfigWrapper<int16_t>  wheelDiameter     {DEFAULT_WHEELDIAMETER,                  DoReset,   {},                         "wheelDiameter"       };
+        ConfigWrapper<int16_t> numMagnetPoles     {15,                                     DoReset,   {},                         "numMagnetPoles"      };
+        ConfigWrapper<bool>     swapFrontBack     {false,                                  DoReset,   {},                         "swapFrontBack"       };
+        ConfigWrapper<bool>   sendFrontCanCmd     {true,                                   DoReset,   {},                         "sendFrontCanCmd"     };
+        ConfigWrapper<bool>    sendBackCanCmd     {true,                                   DoReset,   {},                         "sendBackCanCmd"      };
+        ConfigWrapper<int16_t> canTransmitTimeout {200,                                    DoReset,   {},                         "canTransmitTime"     };
+        ConfigWrapper<int16_t> canReceiveTimeout  {0,                                      DoReset,   {},                         "canReceiveTimeo"     };
+    } controllerHardware;
+
+    struct {
+        ConfigWrapper<int16_t> gametrakXMin       {0,                                      DoReset,   {},                         "gametrakXMin"        };
+        ConfigWrapper<int16_t> gametrakXMax       {4095,                                   DoReset,   {},                         "gametrakXMax"        };
+        ConfigWrapper<int16_t> gametrakYMin       {0,                                      DoReset,   {},                         "gametrakYMin"        };
+        ConfigWrapper<int16_t> gametrakYMax       {4095,                                   DoReset,   {},                         "gametrakYMax"        };
+        ConfigWrapper<int16_t> gametrakDistMin    {0,                                      DoReset,   {},                         "gametrakDistMin"     };
+        ConfigWrapper<int16_t> gametrakDistMax    {4095,                                   DoReset,   {},                         "gametrakDistMax"     };
+        struct {
+            ConfigWrapper<int16_t> statsUpdateRate{50,                                     DoReset,   {},                         "statsUpdateRate"     };
+            ConfigWrapper<int16_t> cloudCollectRate{100,                                   DoReset,   {},                         "cloudCollectRat"     };
+            ConfigWrapper<int16_t> cloudSendRate  {1,                                      DoReset,   {},                         "cloudSendRate"       };
+            ConfigWrapper<int16_t> udpSendRateMs  {65,                                     DoReset,   {},                         "udpSendRate"         };
+        } timersSettings;
+    } boardcomputerHardware;
+
+    struct {
+        ConfigWrapper<bool> cloudEnabled          {false,                                  DoReset,   {},                         "cloudEnabled"        };
+        ConfigWrapper<int16_t> cloudTransmitTimeout{10,                                    DoReset,   {},                         "clodTransmTmout"     };
+    } cloudSettings;
+
+    struct {
+        ConfigWrapper<uint32_t> udpUid            {0,                                      DoReset,   {},                         "cloudUDPUid"         };
+        ConfigWrapper<bool> udpCloudEnabled       {false,                                  DoReset,   {},                         "enUdpCloud"          };
+        ConfigWrapper<bool> enableCloudDebug      {false,                                  DoReset,   {},                         "debugCloud"          };
+        ConfigWrapper<bool> udpUseStdString       {false,                                  DoReset,   {},                         "udpusestdstr"        };
+    } udpCloudSettings;
+
+    struct {
+        ConfigWrapper<bool> enableLedAnimation    {true,                                   DoReset,   {},                         "enableLedAnimat"     };
+        ConfigWrapper<bool> enableBrakeLights     {true,                                   DoReset,   {},                         "enableBrakeLigh"     };
+        ConfigWrapper<int16_t> ledsCount          {288,                                    DoReset,   {},                         "ledsCount"           };
+        ConfigWrapper<int16_t> centerOffset       {1,                                      DoReset,   {},                         "centerOffset"        };
+        ConfigWrapper<int16_t> smallOffset        {4,                                      DoReset,   {},                         "smallOffset"         };
+        ConfigWrapper<int16_t> bigOffset          {10,                                     DoReset,   {},                         "bigOffset"           };
+        ConfigWrapper<bool> enableBeepWhenBlink   {true,                                   DoReset,   {},                         "beepwhenblink"       };
+        ConfigWrapper<int16_t> animationType      {1,                                      DoReset,   {},                         "animationType"       };
+        ConfigWrapper<bool> enableFullBlink       {true,                                   DoReset,   {},                         "fullblink"           };
+        ConfigWrapper<bool> enableStVO            {true,                                   DoReset,   {},                         "ledstvo"             };
+        ConfigWrapper<int16_t> stvoFrontOffset    {0,                                      DoReset,   {},                         "ledstvofoff"         };
+        ConfigWrapper<int16_t> stvoFrontLength    {10,                                     DoReset,   {},                         "ledstvoflen"         };
+        ConfigWrapper<bool> stvoFrontEnable       {false,                                  DoReset,   {},                         "ledstvoen"           };
+        ConfigWrapper<int16_t> animationMultiplier{10,                                     DoReset,   {},                         "ledAnimMul"          };
+        ConfigWrapper<uint8_t> brightness         {255,                                    DoReset,   {},                         "ledbrightness"       };
+        ConfigWrapper<bool> enableAnimBlink       {false,                                  DoReset,   {},                         "enAnimBlink"         };
+        ConfigWrapper<OtaAnimationModes> otaMode  {OtaAnimationModes::GreenProgressBar,    DoReset,   {},                         "ledOtaAnim"          };
+        ConfigWrapper<uint32_t>     maxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
+    } ledstrip;
+
+    struct {
+        ConfigWrapper<uint8_t> cellsSeries        {12,                                     DoReset,   {},                         "batteryCS"           };
+        ConfigWrapper<uint8_t> cellsParallel      {10,                                     DoReset,   {},                         "batteryCP"           };
+        ConfigWrapper<uint8_t> cellType           {0,                                      DoReset,   {},                         "batteryType"         };
+        ConfigWrapper<uint16_t> watthoursPerKilometer{25,                                  DoReset,   {},                         "whkm"                };
+        ConfigWrapper<int16_t> front30VoltCalibration{3000,                                DoReset,   {},                         "batF30VCal"          };
+        ConfigWrapper<int16_t> back30VoltCalibration {3000,                                DoReset,   {},                         "batB30VCal"          };
+        ConfigWrapper<int16_t> front50VoltCalibration{5000,                                DoReset,   {},                         "batF50VCal"          };
+        ConfigWrapper<int16_t> back50VoltCalibration {5000,                                DoReset,   {},                         "batB50VCal"          };
+        ConfigWrapper<bool> applyCalibration      {true,                                   DoReset,   {},                         "applyBatCal"         };
+    } battery;
+
+    struct {
+        ConfigWrapper<bool> allowPresetSwitch     {true,                                   DoReset,   {},                         "lockAlwPresetSw"     };
+        ConfigWrapper<bool> keepLockedAfterReboot {false,                                  DoReset,   {},                         "keepLocked"          };
+        ConfigWrapper<bool> locked                {false,                                  DoReset,   {},                         "currentlyLocked"     };
+        std::array<ConfiguredLockscreenDigit, 4> pin {
+            ConfiguredLockscreenDigit {"lockscreenPin0"},
+            ConfiguredLockscreenDigit {"lockscreenPin1"},
+            ConfiguredLockscreenDigit {"lockscreenPin2"},
+            ConfiguredLockscreenDigit {"lockscreenPin3"}
+        };
+    } lockscreen;
+
+    struct {
+        ConfigWrapper<uint32_t> totalCentimeters  {0,                                      DoReset,   {},                         "totalCentimeter"     };
+    } savedStatistics;
+
+    struct {
+        ConfigWrapper<HandbremseMode> mode        {HandbremseMode::MOSFETS_OFF,            DoReset,   {},                         "handBremsM"          };
+        ConfigWrapper<uint16_t> triggerTimeout    {10,                                     DoReset,   {},                         "handBremsT"          };
+        ConfigWrapper<bool> automatic             {false,                                  DoReset,   {},                         "handBremsA"          };
+        ConfigWrapper<bool> enable                {false,                                  DoReset,   {},                         "handBremsE"          };
+        ConfigWrapper<bool> visualize             {false,                                  DoReset,   {},                         "handBremsV"          };
+    } handbremse;
+
+    struct {
+        ConfigWrapper<bool> syncTime              {false,                                  DoReset,   {},                         "espnowSyncT"         };
+        ConfigWrapper<bool> syncTimeWithOthers    {false,                                  DoReset,   {},                         "espnowSyncTWO"       };
+        ConfigWrapper<bool> syncBlink             {false,                                  DoReset,   {},                         "espnowSyncBl"        };
+    } espnow;
+
+    struct {
+        ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
+    } bleSettings;
 
 #define NEW_SETTINGS(x) \
     x(baseMacAddressOverride) \
@@ -365,7 +482,83 @@ public:
     x(dns_announce_key) \
     x(webserverPassword) \
     \
-    //x(ledStripMaxMilliamps)
+    x(controllerHardware.wheelDiameter) \
+    x(controllerHardware.numMagnetPoles) \
+    x(controllerHardware.swapFrontBack) \
+    x(controllerHardware.sendFrontCanCmd) \
+    x(controllerHardware.sendBackCanCmd) \
+    x(controllerHardware.canTransmitTimeout) \
+    x(controllerHardware.canReceiveTimeout) \
+    \
+    x(boardcomputerHardware.gametrakXMin) \
+    x(boardcomputerHardware.gametrakYMin) \
+    x(boardcomputerHardware.gametrakXMax) \
+    x(boardcomputerHardware.gametrakYMax) \
+    x(boardcomputerHardware.gametrakDistMin) \
+    x(boardcomputerHardware.gametrakDistMax) \
+    \
+    x(boardcomputerHardware.timersSettings.statsUpdateRate) \
+    x(boardcomputerHardware.timersSettings.cloudCollectRate) \
+    x(boardcomputerHardware.timersSettings.cloudSendRate) \
+    x(boardcomputerHardware.timersSettings.udpSendRateMs) \
+    \
+    x(cloudSettings.cloudEnabled) \
+    x(cloudSettings.cloudTransmitTimeout) \
+    \
+    x(udpCloudSettings.udpUid) \
+    x(udpCloudSettings.udpCloudEnabled) \
+    x(udpCloudSettings.enableCloudDebug) \
+    x(udpCloudSettings.udpUseStdString) \
+    \
+    x(ledstrip.enableLedAnimation) \
+    x(ledstrip.enableBrakeLights) \
+    x(ledstrip.ledsCount) \
+    x(ledstrip.centerOffset) \
+    x(ledstrip.smallOffset) \
+    x(ledstrip.bigOffset) \
+    x(ledstrip.enableBeepWhenBlink) \
+    x(ledstrip.animationType) \
+    x(ledstrip.enableFullBlink) \
+    x(ledstrip.enableStVO) \
+    x(ledstrip.stvoFrontOffset) \
+    x(ledstrip.stvoFrontLength) \
+    x(ledstrip.stvoFrontEnable) \
+    x(ledstrip.animationMultiplier) \
+    x(ledstrip.brightness) \
+    x(ledstrip.enableAnimBlink) \
+    x(ledstrip.otaMode) \
+    x(ledstrip.maxMilliamps) \
+    \
+    x(battery.cellsSeries) \
+    x(battery.cellsParallel) \
+    x(battery.cellType) \
+    x(battery.watthoursPerKilometer) \
+    x(battery.front30VoltCalibration) \
+    x(battery.back30VoltCalibration) \
+    x(battery.front50VoltCalibration) \
+    x(battery.back50VoltCalibration) \
+    x(battery.applyCalibration) \
+    \
+    x(lockscreen.allowPresetSwitch) \
+    x(lockscreen.keepLockedAfterReboot) \
+    x(lockscreen.locked) \
+    x(lockscreen.pin[0].digit) \
+    x(lockscreen.pin[1].digit) \
+    x(lockscreen.pin[2].digit) \
+    x(lockscreen.pin[3].digit) \
+    \
+    x(savedStatistics.totalCentimeters) \
+    \
+    x(handbremse.mode) \
+    x(handbremse.triggerTimeout) \
+    x(handbremse.automatic) \
+    x(handbremse.enable) \
+    x(handbremse.visualize) \
+    \
+    x(espnow.syncTime) \
+    x(espnow.syncTimeWithOthers) \
+    x(espnow.syncBlink)
+    //x(bleSettings.bleEnabled)
 
     template<typename T>
     void callForEveryConfig(T &&callback)
@@ -373,7 +566,6 @@ public:
 #define HELPER(x) callback(x);
         NEW_SETTINGS(HELPER)
 #undef HELPER
-        callback(ledStripMaxMilliamps);
     }
 
     auto getAllConfigParams()
@@ -382,7 +574,7 @@ public:
 #define HELPER(x) std::ref<ConfigWrapperInterface>(x),
             NEW_SETTINGS(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(ledStripMaxMilliamps)
+            std::ref<ConfigWrapperInterface>(bleSettings.bleEnabled)
         );
     }
 };

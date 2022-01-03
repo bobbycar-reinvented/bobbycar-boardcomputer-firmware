@@ -13,7 +13,7 @@
 #include "icons/settings.h"
 #include "battery.h"
 #include "menus/batterymenu.h"
-#include "globals.h"
+#include "newsettings.h"
 #include "displays/menus/batterymenu.h"
 #include "accessors/settingsaccessors.h"
 #include "bobbycheckbox.h"
@@ -35,9 +35,8 @@ class Save30VCalibrationAction : public virtual espgui::ActionInterface
 public:
     void triggered() override
     {
-        settings.battery.front30VoltCalibration = controllers.front.feedback.batVoltage;
-        settings.battery.back30VoltCalibration = controllers.back.feedback.batVoltage;
-        saveSettings();
+        configs.write_config(configs.battery.front30VoltCalibration, controllers.front.feedback.batVoltage);
+        configs.write_config(configs.battery.back30VoltCalibration, controllers.back.feedback.batVoltage);
     }
 };
 
@@ -46,9 +45,8 @@ class Save50VCalibrationAction : public virtual espgui::ActionInterface
 public:
     void triggered() override
     {
-        settings.battery.front50VoltCalibration = controllers.front.feedback.batVoltage;
-        settings.battery.back50VoltCalibration = controllers.back.feedback.batVoltage;
-        saveSettings();
+        configs.write_config(configs.battery.front50VoltCalibration, controllers.front.feedback.batVoltage);
+        configs.write_config(configs.battery.back50VoltCalibration, controllers.back.feedback.batVoltage);
     }
 };
 
@@ -57,11 +55,10 @@ class ResetCalibrationAction : public virtual espgui::ActionInterface
 public:
     void triggered() override
     {
-        settings.battery.front30VoltCalibration = 3000;
-        settings.battery.back30VoltCalibration = 3000;
-        settings.battery.front50VoltCalibration = 5000;
-        settings.battery.back50VoltCalibration = 5000;
-        saveSettings();
+        configs.reset_config(configs.battery.front30VoltCalibration);
+        configs.reset_config(configs.battery.back30VoltCalibration);
+        configs.reset_config(configs.battery.front50VoltCalibration);
+        configs.reset_config(configs.battery.back50VoltCalibration);
     }
 };
 
@@ -75,7 +72,7 @@ class BatteryVoltageCalibrationFront30VText : public virtual espgui::TextInterfa
 public:
     std::string text() const override
     {
-        return fmt::format("30V Front: {}", convertToFloat(settings.battery.front30VoltCalibration));
+        return fmt::format("30V Front: {}", convertToFloat(configs.battery.front30VoltCalibration.value));
     }
 };
 
@@ -84,7 +81,7 @@ class BatteryVoltageCalibrationBack30VText : public virtual espgui::TextInterfac
 public:
     std::string text() const override
     {
-        return fmt::format("30V Back: {}", convertToFloat(settings.battery.back30VoltCalibration));
+        return fmt::format("30V Back: {}", convertToFloat(configs.battery.back30VoltCalibration.value));
     }
 };
 
@@ -93,7 +90,7 @@ class BatteryVoltageCalibrationFront50VText : public virtual espgui::TextInterfa
 public:
     std::string text() const override
     {
-        return fmt::format("50V Front: {}", convertToFloat(settings.battery.front50VoltCalibration));
+        return fmt::format("50V Front: {}", convertToFloat(configs.battery.front50VoltCalibration.value));
     }
 };
 
@@ -102,7 +99,7 @@ class BatteryVoltageCalibrationBack50VText : public virtual espgui::TextInterfac
 public:
     std::string text() const override
     {
-        return fmt::format("50V Back: {}", convertToFloat(settings.battery.back50VoltCalibration));
+        return fmt::format("50V Back: {}", convertToFloat(configs.battery.back50VoltCalibration.value));
     }
 };
 
@@ -111,7 +108,7 @@ class BatteryVoltageCalibratedText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        if (settings.battery.applyCalibration)
+        if (configs.battery.applyCalibration.value)
             return fmt::format("F{:.2f}V B{:.2f}", controllers.front.getCalibratedVoltage(), controllers.back.getCalibratedVoltage());
         else
             return "Not activated";

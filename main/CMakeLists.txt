@@ -20,6 +20,7 @@ set(headers
     changevaluedisplay_unifiedmodelmode.h
     cloud.h
     cloudtexthelpers.h
+    configutils_bobby.h
     controller.h
     debugcolorhelpers.h
     debuginputhandler.h
@@ -45,12 +46,12 @@ set(headers
     newsettings.h
     ota.h
     potis.h
+    profilesettings.h
     presets.h
     qrimport.h
     rotary.h
     screens.h
     serial_bobby.h
-    settings.h
     settingspersister.h
     settingsutils.h
     statistics.h
@@ -159,7 +160,6 @@ set(headers
     displays/menus/motortestmodesettingsmenu.h
     displays/menus/networksettingsmenu.h
     displays/menus/otamenu.h
-    displays/menus/presetsmenu.h
     displays/menus/profilesmenu.h
     displays/menus/selectbatterytypemenu.h
     displays/menus/selectbuildserverbranch.h
@@ -250,6 +250,7 @@ set(sources
     changevaluedisplay_unifiedmodelmode.cpp
     cloud.cpp
     cloudtexthelpers.cpp
+    configwrapper_bobby.cpp
     controller.cpp
     debugcolorhelpers.cpp
     debuginputhandler.cpp
@@ -276,12 +277,12 @@ set(sources
     newsettings.cpp
     ota.cpp
     potis.cpp
+    profilesettings.cpp
     presets.cpp
     qrimport.cpp
     rotary.cpp
     screens.cpp
     serial_bobby.cpp
-    settings.cpp
     settingspersister.cpp
     settingsutils.cpp
     statistics.cpp
@@ -384,7 +385,6 @@ set(sources
     displays/menus/motortestmodesettingsmenu.cpp
     displays/menus/networksettingsmenu.cpp
     displays/menus/otamenu.cpp
-    displays/menus/presetsmenu.cpp
     displays/menus/profilesmenu.cpp
     displays/menus/selectbatterytypemenu.cpp
     displays/menus/selectbuildserverbranch.cpp

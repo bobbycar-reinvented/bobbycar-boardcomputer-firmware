@@ -109,14 +109,14 @@ void destroyBle()
 
 void initBle()
 {
-    if (settings.bleSettings.bleEnabled)
+    if (configs.bleSettings.bleEnabled.value)
         createBle();
 }
 
 
 void handleBle()
 {
-    if (settings.bleSettings.bleEnabled)
+    if (configs.bleSettings.bleEnabled.value)
     {
         if (!pServer)
             createBle();
@@ -176,8 +176,8 @@ void handleBle()
                 auto arr = doc.createNestedArray("s");
                 if (controllers.front.feedbackValid)
                 {
-                    arr.add(convertToKmh(controllers.front.feedback.left.speed * (settings.controllerHardware.invertFrontLeft ? -1 : 1)));
-                    arr.add(convertToKmh(controllers.front.feedback.right.speed * (settings.controllerHardware.invertFrontRight ? -1 : 1)));
+                    arr.add(convertToKmh(controllers.front.feedback.left.speed * (profileSettings.controllerHardware.invertFrontLeft ? -1 : 1)));
+                    arr.add(convertToKmh(controllers.front.feedback.right.speed * (profileSettings.controllerHardware.invertFrontRight ? -1 : 1)));
                 }
                 else
                 {
@@ -186,8 +186,8 @@ void handleBle()
                 }
                 if (controllers.back.feedbackValid)
                 {
-                    arr.add(convertToKmh(controllers.back.feedback.left.speed * (settings.controllerHardware.invertBackLeft ? -1 : 1)));
-                    arr.add(convertToKmh(controllers.back.feedback.right.speed * (settings.controllerHardware.invertBackRight ? -1 : 1)));
+                    arr.add(convertToKmh(controllers.back.feedback.left.speed * (profileSettings.controllerHardware.invertBackLeft ? -1 : 1)));
+                    arr.add(convertToKmh(controllers.back.feedback.right.speed * (profileSettings.controllerHardware.invertBackRight ? -1 : 1)));
                 }
                 else
                 {
@@ -251,7 +251,7 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
     if (blinkAnimation != newBlinkAnimation) blinkAnimation = newBlinkAnimation;
 #endif // FEATURE_LEDSTRIP
 
-    const bool isInverted = (settings.controllerHardware.invertFrontLeft && !settings.controllerHardware.invertFrontRight);
+    const bool isInverted = (profileSettings.controllerHardware.invertFrontLeft && !profileSettings.controllerHardware.invertFrontRight);
 
     if (!simplified)
     {
