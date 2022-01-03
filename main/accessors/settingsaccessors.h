@@ -210,10 +210,10 @@ struct LedstripOtaAnimationAccessor : public NewSettingsAccessor<OtaAnimationMod
 #endif
 
 // Battery
-struct BatterySeriesCellsAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.battery.cellsSeries; } };
-struct BatteryParallelCellsAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.battery.cellsParallel; } };
-struct BatteryWHperKMAccessor : public RefAccessorSaveSettings<uint16_t> { uint16_t &getRef() const override { return settings.battery.watthoursPerKilometer; } };
-struct BatteryApplyCalibrationAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.battery.applyCalibration; } };
+struct BatterySeriesCellsAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.battery.cellsSeries; } };
+struct BatteryParallelCellsAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.battery.cellsParallel; } };
+struct BatteryWHperKMAccessor : public NewSettingsAccessor<uint16_t> { ConfigWrapper<uint16_t> &getConfig() const override { return configs.battery.watthoursPerKilometer; } };
+struct BatteryApplyCalibrationAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.battery.applyCalibration; } };
 
 // Lockscreen
 struct LockscreenAllowPresetSwitchAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.allowPresetSwitch; } };

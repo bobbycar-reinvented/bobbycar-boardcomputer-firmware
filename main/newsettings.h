@@ -236,6 +236,18 @@ public:
         ConfigWrapper<OtaAnimationModes> otaMode  {OtaAnimationModes::GreenProgressBar,    DoReset,   {},                         "ledOtaAnim"          };
         ConfigWrapper<uint32_t>     maxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
     } ledstrip;
+
+    struct {
+        ConfigWrapper<uint8_t> cellsSeries        {12,                                     DoReset,   {},                         "batteryCS"           };
+        ConfigWrapper<uint8_t> cellsParallel      {10,                                     DoReset,   {},                         "batteryCP"           };
+        ConfigWrapper<uint8_t> cellType           {0,                                      DoReset,   {},                         "batteryType"         };
+        ConfigWrapper<uint16_t> watthoursPerKilometer{25,                                  DoReset,   {},                         "whkm"                };
+        ConfigWrapper<int16_t> front30VoltCalibration{3000,                                DoReset,   {},                         "batF30VCal"          };
+        ConfigWrapper<int16_t> back30VoltCalibration {3000,                                DoReset,   {},                         "batB30VCal"          };
+        ConfigWrapper<int16_t> front50VoltCalibration{5000,                                DoReset,   {},                         "batF50VCal"          };
+        ConfigWrapper<int16_t> back50VoltCalibration {5000,                                DoReset,   {},                         "batB50VCal"          };
+        ConfigWrapper<bool> applyCalibration      {true,                                   DoReset,   {},                         "applyBatCal"         };
+    } battery;
     // end old settings
 
     struct {
@@ -474,7 +486,17 @@ public:
     x(ledstrip.brightness) \
     x(ledstrip.enableAnimBlink) \
     x(ledstrip.otaMode) \
-    x(ledstrip.maxMilliamps)
+    x(ledstrip.maxMilliamps) \
+    \
+    x(battery.cellsSeries) \
+    x(battery.cellsParallel) \
+    x(battery.cellType) \
+    x(battery.watthoursPerKilometer) \
+    x(battery.front30VoltCalibration) \
+    x(battery.back30VoltCalibration) \
+    x(battery.front50VoltCalibration) \
+    x(battery.back50VoltCalibration) \
+    x(battery.applyCalibration)
     //x(bleSettings.bleEnabled)
 
     template<typename T>

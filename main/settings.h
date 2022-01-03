@@ -71,18 +71,6 @@ struct Settings
         uint16_t maxPwm;            // profileSetting
     } motortestMode;
 
-    struct Battery {
-        uint8_t cellsSeries;
-        uint8_t cellsParallel;
-        uint8_t cellType;
-        uint16_t watthoursPerKilometer;
-        int16_t front30VoltCalibration;
-        int16_t back30VoltCalibration;
-        int16_t front50VoltCalibration;
-        int16_t back50VoltCalibration;
-        bool applyCalibration;
-    } battery;
-
     struct Hybrid {
         UnifiedModelMode hybridMode;
         bool enable;
@@ -126,16 +114,6 @@ struct Settings
 template<typename T>
 void Settings::executeForEveryCommonSetting(T &&callable)
 {
-    callable("batteryCS", battery.cellsSeries);
-    callable("batteryCP", battery.cellsParallel);
-    callable("batteryType", battery.cellType);
-    callable("whkm", battery.watthoursPerKilometer);
-    callable("batF30VCal", battery.front30VoltCalibration);
-    callable("batB30VCal", battery.back30VoltCalibration);
-    callable("batF50VCal", battery.front50VoltCalibration);
-    callable("batB50VCal", battery.back50VoltCalibration);
-    callable("applyBatCal", battery.applyCalibration);
-
     callable("hybridMode", hybrid.hybridMode);
     callable("hybridEn", hybrid.enable);
     callable("hybridAcL", hybrid.activationLimit);

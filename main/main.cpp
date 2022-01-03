@@ -127,7 +127,7 @@ extern "C" void app_main()
                 }
                 avgVoltage = avgVoltage / controllers.size();
                 if (avgVoltage > 30)
-                    battery::bootBatPercentage = getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType));
+                    battery::bootBatPercentage = getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value));
             }
         }
     }

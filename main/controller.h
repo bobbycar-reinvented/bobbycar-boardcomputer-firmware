@@ -10,6 +10,7 @@
 
 // 3rdparty lib includes
 #include <espchrono.h>
+#include <configwrapper.h>
 
 // local includes
 #include "bobbycar-common.h"
@@ -30,7 +31,7 @@ struct Controller
         HardwareSerial &serial,
 #endif
         bool &enableLeft, bool &enableRight, bool &invertLeft, bool &invertRight,
-        int16_t &voltageCalib30V, int16_t &voltageCalib50V);
+        espconfig::ConfigWrapper<int16_t> &voltageCalib30V, espconfig::ConfigWrapper<int16_t> &voltageCalib50V);
 //    Controller(const Controller &) = delete;
 //    Controller &operator=(const Controller &) = delete;
 
@@ -38,7 +39,7 @@ struct Controller
     std::reference_wrapper<HardwareSerial> serial;
 #endif
     bool &enableLeft, &enableRight, &invertLeft, &invertRight;
-    int16_t &voltageCalib30V, &voltageCalib50V;
+    espconfig::ConfigWrapper<int16_t> &voltageCalib30V, &voltageCalib50V;
 
     bobbycar::protocol::serial::Command command{};
 

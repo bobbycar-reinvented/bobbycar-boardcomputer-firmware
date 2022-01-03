@@ -142,7 +142,7 @@ std::string buildUdpCloudJson()
     }
 
     // Statistics
-    doc["bP"] = getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType));
+    doc["bP"] = getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value));
     doc["bV"] = avgVoltage;
     doc["l"] = isLocked;
     doc["mN"] = drivingStatistics.meters_driven;
@@ -151,7 +151,7 @@ std::string buildUdpCloudJson()
     doc["cW"] = watt;
     doc["wN"] = drivingStatistics.wh_used;
     doc["wL"] = getRemainingWattHours();
-    doc["kmL"] = getRemainingWattHours() / settings.battery.watthoursPerKilometer;
+    doc["kmL"] = getRemainingWattHours() / configs.battery.watthoursPerKilometer.value;
     doc["ver"] = version_string.substr(0, 6);
 
     serializeJson(doc, buf);
@@ -290,7 +290,7 @@ std::string buildUdpCloudString()
     }
 
     // Statistics
-    buf += fmt::format("\"bP\":{},", getBatteryPercentage(avgVoltage, BatteryCellType(settings.battery.cellType)));
+    buf += fmt::format("\"bP\":{},", getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value)));
     buf += fmt::format("\"bV\":{},", avgVoltage);
     buf += fmt::format("\"l\":{},", isLocked);
     buf += fmt::format("\"mN\":{},", drivingStatistics.meters_driven);
@@ -299,7 +299,7 @@ std::string buildUdpCloudString()
     buf += fmt::format("\"cW\":{},", watt);
     buf += fmt::format("\"wN\":{},", drivingStatistics.wh_used);
     buf += fmt::format("\"wL\":{},", getRemainingWattHours());
-    buf += fmt::format("\"kmL\":{},", getRemainingWattHours() / settings.battery.watthoursPerKilometer);
+    buf += fmt::format("\"kmL\":{},", getRemainingWattHours() / configs.battery.watthoursPerKilometer.value);
     buf += fmt::format("\"ver\":{}", version_string.substr(0, 6));
 
     buf += "}";

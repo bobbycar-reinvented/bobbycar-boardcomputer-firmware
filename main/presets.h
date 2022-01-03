@@ -137,18 +137,6 @@ constexpr Settings::LockscreenSettings defaultLockscreen {
     .pin = { 1, 2, 3, 4 }
 };
 
-constexpr Settings::Battery defaultBattery {
-    .cellsSeries = 12,
-    .cellsParallel = 4,
-    .cellType = 0,
-    .watthoursPerKilometer = 20,
-    .front30VoltCalibration = 3000,
-    .back30VoltCalibration = 3000,
-    .front50VoltCalibration = 5000,
-    .back50VoltCalibration = 5000,
-    .applyCalibration = true
-};
-
 constexpr Settings::Hybrid defaultHybrid {
     .hybridMode = UnifiedModelMode::FocTorque,
     .enable = false,
@@ -180,7 +168,6 @@ constexpr Settings defaultSettings {
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode,
     .motortestMode = defaultMotortestMode,
-    .battery = defaultBattery,
     .hybrid = defaultHybrid,
     .lockscreen = defaultLockscreen,
     .savedStatistics = defaultSavedStatistics,

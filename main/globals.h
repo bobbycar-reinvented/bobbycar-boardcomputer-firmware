@@ -23,6 +23,7 @@
 #include "display.h"
 #include "modeinterface.h"
 #include "settings.h"
+#include "newsettings.h"
 #include "settingspersister.h"
 #include "macros_bobbycar.h"
 
@@ -64,14 +65,14 @@ public:
                 Serial1,
 #endif
                 settings.controllerHardware.enableFrontLeft, settings.controllerHardware.enableFrontRight, settings.controllerHardware.invertFrontLeft, settings.controllerHardware.invertFrontRight,
-                settings.battery.front30VoltCalibration, settings.battery.front50VoltCalibration
+                configs.battery.front30VoltCalibration, configs.battery.front50VoltCalibration
             },
             Controller {
 #ifdef FEATURE_SERIAL
                 Serial2,
 #endif
                 settings.controllerHardware.enableBackLeft, settings.controllerHardware.enableBackRight, settings.controllerHardware.invertBackLeft, settings.controllerHardware.invertBackRight,
-                settings.battery.back30VoltCalibration, settings.battery.back50VoltCalibration
+                configs.battery.back30VoltCalibration, configs.battery.back50VoltCalibration
             }
         }}
     {}
