@@ -10,3 +10,4 @@
 
 IMPLEMENT_NVS_GET_SET_ENUM(OtaAnimationModes)
 IMPLEMENT_NVS_GET_SET_ENUM(HandbremseMode)
+IMPLEMENT_NVS_GET_SET_ENUM(LedstripAnimation)

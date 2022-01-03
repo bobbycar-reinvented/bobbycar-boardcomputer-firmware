@@ -14,13 +14,5 @@
 #endif
 #define LEDSTRIP_OVERWRITE_BLINKBOTH  3
 
-enum LedstripAnimation : uint8_t
-{
-    DefaultRainbow,
-    BetterRainbow,
-    SpeedSync,
-    CustomColor
-};
-
 #define BLINK_LEFT_EXPR blinkAnimation != LEDSTRIP_OVERWRITE_BLINKRIGHT
 #define BLINK_RIGHT_EXPR blinkAnimation != LEDSTRIP_OVERWRITE_BLINKLEFT

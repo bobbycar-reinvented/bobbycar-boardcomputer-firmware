@@ -236,7 +236,7 @@ public:
         ConfigWrapper<int16_t> smallOffset        {4,                                      DoReset,   {},                         "smallOffset"         };
         ConfigWrapper<int16_t> bigOffset          {10,                                     DoReset,   {},                         "bigOffset"           };
         ConfigWrapper<bool> enableBeepWhenBlink   {true,                                   DoReset,   {},                         "beepwhenblink"       };
-        ConfigWrapper<int16_t> animationType      {1,                                      DoReset,   {},                         "animationType"       };
+        ConfigWrapper<LedstripAnimation> animationType{LedstripAnimation::DefaultRainbow,  DoReset,   {},                         "animationType"       };
         ConfigWrapper<bool> enableFullBlink       {true,                                   DoReset,   {},                         "fullblink"           };
         ConfigWrapper<bool> enableStVO            {true,                                   DoReset,   {},                         "ledstvo"             };
         ConfigWrapper<int16_t> stvoFrontOffset    {0,                                      DoReset,   {},                         "ledstvofoff"         };

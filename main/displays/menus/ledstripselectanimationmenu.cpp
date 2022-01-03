@@ -7,6 +7,7 @@
 #include "icons/back.h"
 #include "ledstripdefines.h"
 #include "ledstripmenu.h"
+#include "newsettings.h"
 
 #ifdef FEATURE_LEDSTRIP
 namespace {
@@ -52,7 +53,8 @@ namespace {
 
 std::string CurrentSelectedAnimationText::text() const
 {
-    switch (animation_type) {
+    switch (configs.ledstrip.animationType.value)
+    {
     case LedstripAnimation::DefaultRainbow:
         return TEXT_ANIMATION_DEFAULTRAINBOW;
     case LedstripAnimation::BetterRainbow:

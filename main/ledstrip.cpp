@@ -18,12 +18,10 @@ std::vector<CRGB> leds;
 uint8_t gHue = 0;
 
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
-LedstripAnimation animation_type = LedstripAnimation::DefaultRainbow;
 
 
 void initLedStrip()
 {
-    animation_type = LedstripAnimation(configs.ledstrip.animationType.value);
     leds.resize(configs.ledstrip.ledsCount.value);
     FastLED.addLeds<NEOPIXEL, PINS_LEDSTRIP>(&*std::begin(leds), leds.size())
         .setCorrection(TypicalSMD5050);
@@ -202,11 +200,14 @@ void showAnimation()
 #endif
         )
     {
-        if (animation_type == LedstripAnimation::DefaultRainbow) showDefaultLedstrip();
-        else if (animation_type == LedstripAnimation::BetterRainbow) showBetterRainbow();
-        else if (animation_type == LedstripAnimation::SpeedSync) showSpeedSyncAnimation();
-        else if (animation_type == LedstripAnimation::CustomColor) showCustomColor();
-        else showDefaultLedstrip();
+        switch (configs.ledstrip.animationType.value)
+        {
+        case LedstripAnimation::DefaultRainbow: showDefaultLedstrip(); break;
+        case LedstripAnimation::BetterRainbow: showBetterRainbow(); break;
+        case LedstripAnimation::SpeedSync: showSpeedSyncAnimation(); break;
+        case LedstripAnimation::CustomColor: showCustomColor(); break;
+        default: showDefaultLedstrip();
+        }
     }
 #ifdef FEATURE_OTA
     else if (asyncOtaTaskStarted && configs.ledstrip.otaMode.value != OtaAnimationModes::None)
