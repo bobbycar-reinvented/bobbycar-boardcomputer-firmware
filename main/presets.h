@@ -122,20 +122,12 @@ constexpr Settings::MotortestMode defaultMotortestMode {
     .maxPwm = 400
 };
 
-constexpr Settings::Hybrid defaultHybrid {
-    .hybridMode = UnifiedModelMode::FocTorque,
-    .enable = false,
-    .activationLimit = 1000,
-    .deactivationLimit = 950,
-};
-
 constexpr Settings defaultSettings {
     .limits = defaultLimits,
     .controllerHardware = defaultControllerHardware,
     .defaultMode = defaultDefaultMode,
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode,
-    .motortestMode = defaultMotortestMode,
-    .hybrid = defaultHybrid
+    .motortestMode = defaultMotortestMode
 };
 } // namespace presets

@@ -69,13 +69,6 @@ struct Settings
         uint16_t maxPwm;            // profileSetting
     } motortestMode;
 
-    struct Hybrid { // wont convert
-        UnifiedModelMode hybridMode;
-        bool enable;
-        int16_t activationLimit;
-        int16_t deactivationLimit;
-    } hybrid;
-
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
 
@@ -86,10 +79,6 @@ struct Settings
 template<typename T>
 void Settings::executeForEveryCommonSetting(T &&callable)
 {
-    callable("hybridMode", hybrid.hybridMode);
-    callable("hybridEn", hybrid.enable);
-    callable("hybridAcL", hybrid.activationLimit);
-    callable("hybridDeacL", hybrid.deactivationLimit);
 }
 
 template<typename T>

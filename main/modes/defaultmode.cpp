@@ -217,34 +217,6 @@ void DefaultMode::update()
             m_lastPwm = pwm;
             m_lastTime = now;
 
-            if (settings.hybrid.enable)
-            {
-                auto activationLimit = settings.hybrid.activationLimit;
-                auto deactivationLimit = settings.hybrid.deactivationLimit;
-                auto diff = std::abs(activationLimit - deactivationLimit);
-
-                if (diff < 20)
-                {
-                    int half = (diff / 2) + 0.5;
-                    deactivationLimit -= half;
-                    activationLimit += half;
-                }
-
-                if (!hybridModeActivated && (pwm > activationLimit))
-                {
-                    hybridModeActivated = true;
-                }
-                else if (hybridModeActivated && (pwm < deactivationLimit))
-                {
-                    hybridModeActivated = false;
-                }
-
-                if (hybridModeActivated)
-                {
-                    pair = split(settings.hybrid.hybridMode);
-                }
-            }
-
             for (bobbycar::protocol::serial::MotorState &motor : motorsInController(controllers.front))
             {
                 motor.ctrlTyp = pair.first;

@@ -56,13 +56,6 @@ using DefaultModeModelModeChangeDisplay = espgui::makeComponent<
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
-using DefaultModeHybridModelModeChangeDisplay = espgui::makeComponent<
-    BobbyChangeValueDisplay<UnifiedModelMode>,
-    espgui::StaticText<TEXT_HYBRIDMODE>,
-    DefaultModeHybridModelModeAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
->;
 using DefaultModeSmoothingChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SMOOTHINGVAL>,
@@ -126,37 +119,19 @@ using DefaultModeBrems2WertChangeDisplay = espgui::makeComponent<
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
 >;
-using DefaultModeHybridActivationLimitChangeDisplay = espgui::makeComponent<
-    BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_HYBRIDACTIVATIONLIMIT>,
-    DefaultModeHybridActivationLimitAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
->;
-using DefaultModeHybridDeactivationLimitChangeDisplay = espgui::makeComponent<
-    BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_HYBRIDDEACTIVATIONLIMIT>,
-    DefaultModeHybridDeactivationLimitAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<DefaultModeSettingsMenu>>
->;
 } // namespace
 
 using namespace espgui;
 
 DefaultModeSettingsMenu::DefaultModeSettingsMenu()
 {
-    auto diff = std::abs(settings.hybrid.activationLimit - settings.hybrid.deactivationLimit);
-    if (diff < 20) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITS_TO_NEAR>, StaticFont<2>, StaticColor<TFT_RED>, DummyAction>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          SwitchScreenAction<DefaultModeModelModeChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HYBRIDMODE>,         SwitchScreenAction<DefaultModeHybridModelModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREGAS>,          BobbyCheckbox,  DefaultModeSquareGasAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREBREMS>,        BobbyCheckbox,  DefaultModeSquareBremsAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHINGUP>,    BobbyCheckbox,  DefaultModeEnableSmoothingUpAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHINGDOWN>,    BobbyCheckbox,  DefaultModeEnableSmoothingDownAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEFWSMOOTHINGUP>,  BobbyCheckbox,  DefaultModeEnableFieldWeakSmoothingUpAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEFWSMOOTHINGDOWN>,  BobbyCheckbox,  DefaultModeEnableFieldWeakSmoothingDownAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HYBRIDENABLE>,          BobbyCheckbox,  DefaultModeEnableHybridAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE>,            SwitchScreenAction<HandbremsSettingsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_FWSMOOTHING_LIMIT, DefaultModeEnableFieldWeakSmoothingLowerLimitAccessor>, SwitchScreenAction<DefaultModeFwSmoothingLowerLimitChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMOOTHINGVAL, DefaultModeSmoothingAccessor>,                     SwitchScreenAction<DefaultModeSmoothingChangeDisplay>>>();
@@ -167,8 +142,6 @@ DefaultModeSettingsMenu::DefaultModeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SUBBRAKEVAL, DefaultModeBrems2WertAccessor>,                     SwitchScreenAction<DefaultModeBrems2WertChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ADDGASVAL, DefaultModeGas1WertAccessor>,                         SwitchScreenAction<DefaultModeGas1WertChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ADDBRAKEVAL, DefaultModeBrems1WertAccessor>,                     SwitchScreenAction<DefaultModeBrems1WertChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HYBRIDACTIVATIONLIMIT, DefaultModeHybridActivationLimitAccessor>,        SwitchScreenAction<DefaultModeHybridActivationLimitChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HYBRIDDEACTIVATIONLIMIT, DefaultModeHybridDeactivationLimitAccessor>,    SwitchScreenAction<DefaultModeHybridDeactivationLimitChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                    SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
