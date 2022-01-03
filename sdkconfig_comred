@@ -323,7 +323,7 @@ CONFIG_LOG_LOCAL_LEVEL_ASYNC_HTTP=3
 #
 # espchrono Configuration
 #
-# CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE is not set
+CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE=y
 # end of espchrono Configuration
 
 #
