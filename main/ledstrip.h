@@ -16,6 +16,13 @@
     x(ColorChangeAll)
 DECLARE_TYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues)
 
+#define LedstripAnimationValues(x) \
+    x(DefaultRainbow) \
+    x(BetterRainbow) \
+    x(SpeedSync) \
+    x(CustomColor)
+DECLARE_TYPESAFE_ENUM(LedstripAnimation, : uint8_t, LedstripAnimationValues)
+
 #ifdef FEATURE_LEDSTRIP
 enum Bobbycar_Side
 {
@@ -33,7 +40,6 @@ extern std::vector<CRGB> leds;
 extern uint8_t gHue;
 
 extern uint16_t blinkAnimation;
-extern LedstripAnimation animation_type;
 
 void showDefaultLedstrip();
 void showAnimation();
