@@ -113,7 +113,7 @@ extern "C" void app_main()
             lastStatsPush = now;
         }
 
-        if (battery::bootBatPercentage == -1)
+        if (!battery::bootBatPercentage)
         {
             if(controllers.front.feedbackValid && controllers.back.feedbackValid)
             {
