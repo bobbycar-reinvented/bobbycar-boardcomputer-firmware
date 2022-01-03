@@ -18,8 +18,6 @@
 // local includes
 #include "bobbycar-common.h"
 #include "unifiedmodelmode.h"
-#include "handbremse.h"
-#include "ledstrip.h"
 #include "modes/larsmmode.h"
 
 struct Settings
@@ -78,25 +76,6 @@ struct Settings
         int16_t deactivationLimit;
     } hybrid;
 
-    struct SavedStatistics {
-        uint32_t totalCentimeters;
-    } savedStatistics;
-
-    struct Handbremse {
-        HandbremseMode mode;
-        uint16_t triggerTimeout;
-        bool automatic;
-        bool enable;
-        bool visualize;
-    } handbremse;
-#ifdef FEATURE_ESPNOW
-    struct ESPNOW {
-        bool syncTime;
-        bool syncTimeWithOthers;
-        bool syncBlink;
-    } espnow;
-#endif
-
     template<typename T>
     void executeForEveryCommonSetting(T &&callable);
 
@@ -111,22 +90,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("hybridEn", hybrid.enable);
     callable("hybridAcL", hybrid.activationLimit);
     callable("hybridDeacL", hybrid.deactivationLimit);
-
-    callable("totalCentimeter", savedStatistics.totalCentimeters);
-
-    callable("handBremsE", handbremse.enable);
-    callable("handBremsA", handbremse.automatic);
-    callable("handBremsM", handbremse.mode);
-    callable("handBremsT", handbremse.triggerTimeout);
-    callable("handBremsV", handbremse.visualize);
-
-#ifdef FEATURE_ESPNOW
-    callable("espnowSyncT", espnow.syncTime);
-    callable("espnowSyncTWO", espnow.syncTimeWithOthers);
-#ifdef FEATURE_LEDSTRIP
-    callable("espnowSyncBl", espnow.syncBlink);
-#endif
-#endif
 }
 
 template<typename T>

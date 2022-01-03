@@ -122,37 +122,12 @@ constexpr Settings::MotortestMode defaultMotortestMode {
     .maxPwm = 400
 };
 
-constexpr Settings::Handbremse defaultHandbremse {
-    .mode = HandbremseMode::MOSFETS_OFF,
-    .triggerTimeout = 10,
-    .automatic = false,
-    .enable = false,
-    .visualize = true,
-};
-
 constexpr Settings::Hybrid defaultHybrid {
     .hybridMode = UnifiedModelMode::FocTorque,
     .enable = false,
     .activationLimit = 1000,
     .deactivationLimit = 950,
 };
-
-constexpr Settings::SavedStatistics defaultSavedStatistics {
-    .totalCentimeters = 0,
-};
-
-#ifdef FEATURE_ESPNOW
-constexpr Settings::ESPNOW defaultEspNowSettings {
-#ifndef FEATURE_NTP
-    .syncTime = true,
-    .syncTimeWithOthers = true,
-#else
-    .syncTime = false,
-    .syncTimeWithOthers = false,
-#endif
-    .syncBlink = false
-};
-#endif
 
 constexpr Settings defaultSettings {
     .limits = defaultLimits,
@@ -161,11 +136,6 @@ constexpr Settings defaultSettings {
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode,
     .motortestMode = defaultMotortestMode,
-    .hybrid = defaultHybrid,
-    .savedStatistics = defaultSavedStatistics,
-    .handbremse = defaultHandbremse,
-#ifdef FEATURE_ESPNOW
-    .espnow = defaultEspNowSettings,
-#endif
+    .hybrid = defaultHybrid
 };
 } // namespace presets

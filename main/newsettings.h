@@ -24,6 +24,7 @@
 #include "ledstrip.h"
 #include "unifiedmodelmode.h"
 #include "displays/lockscreen.h"
+#include "handbremse.h"
 
 using namespace espconfig;
 
@@ -271,6 +272,24 @@ public:
             ConfiguredLockscreenDigit {"lockscreenPin3"}
         };
     } lockscreen;
+
+    struct {
+        ConfigWrapper<uint32_t> totalCentimeters  {0,                                      DoReset,   {},                         "totalCentimeter"     };
+    } savedStatistics;
+
+    struct {
+        ConfigWrapper<HandbremseMode> mode        {HandbremseMode::MOSFETS_OFF,            DoReset,   {},                         "handBremsM"          };
+        ConfigWrapper<uint16_t> triggerTimeout    {10,                                     DoReset,   {},                         "handBremsT"          };
+        ConfigWrapper<bool> automatic             {false,                                  DoReset,   {},                         "handBremsA"          };
+        ConfigWrapper<bool> enable                {false,                                  DoReset,   {},                         "handBremsE"          };
+        ConfigWrapper<bool> visualize             {false,                                  DoReset,   {},                         "handBremsV"          };
+    } handbremse;
+
+    struct {
+        ConfigWrapper<bool> syncTime              {false,                                  DoReset,   {},                         "espnowSyncT"         };
+        ConfigWrapper<bool> syncTimeWithOthers    {false,                                  DoReset,   {},                         "espnowSyncTWO"       };
+        ConfigWrapper<bool> syncBlink             {false,                                  DoReset,   {},                         "espnowSyncBl"        };
+    } espnow;
 
     struct {
         ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
@@ -526,7 +545,19 @@ public:
     x(lockscreen.pin[0].digit) \
     x(lockscreen.pin[1].digit) \
     x(lockscreen.pin[2].digit) \
-    x(lockscreen.pin[3].digit)
+    x(lockscreen.pin[3].digit) \
+    \
+    x(savedStatistics.totalCentimeters) \
+    \
+    x(handbremse.mode) \
+    x(handbremse.triggerTimeout) \
+    x(handbremse.automatic) \
+    x(handbremse.enable) \
+    x(handbremse.visualize) \
+    \
+    x(espnow.syncTime) \
+    x(espnow.syncTimeWithOthers) \
+    x(espnow.syncBlink)
     //x(bleSettings.bleEnabled)
 
     template<typename T>

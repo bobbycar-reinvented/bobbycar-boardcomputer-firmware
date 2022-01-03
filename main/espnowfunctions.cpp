@@ -188,7 +188,7 @@ void handle()
         {
             if (msg.type == "T")
             {
-                if (!receiveTimeStamp || !settings.espnow.syncTime)
+                if (!receiveTimeStamp || !configs.espnow.syncTime.value)
                     return;
 
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
@@ -202,7 +202,7 @@ void handle()
             }
             else if (msg.type == "BOBBYT")
             {
-                if (!receiveTsFromOtherBobbycars || !settings.espnow.syncTimeWithOthers)
+                if (!receiveTsFromOtherBobbycars || !configs.espnow.syncTimeWithOthers.value)
                     return;
 
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)

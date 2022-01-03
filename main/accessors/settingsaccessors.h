@@ -222,17 +222,17 @@ struct LockscreenPinDigitAccessor : public NewSettingsAccessor<int8_t> { ConfigW
 struct LockscreenKeepLockedAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.lockscreen.keepLockedAfterReboot; } };
 
 // Handbremse
-struct HandbremsEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.handbremse.enable; } };
-struct HandbremsModeAccessor : public RefAccessorSaveSettings<HandbremseMode> { HandbremseMode &getRef() const override { return settings.handbremse.mode; } };
-struct HandbremsTimeoutAccessor : public RefAccessorSaveSettings<uint16_t> { uint16_t &getRef() const override { return settings.handbremse.triggerTimeout; } };
-struct HandbremsAutomaticAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.handbremse.automatic; } };
-struct HandbremsVisualizeAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.handbremse.visualize; } };
+struct HandbremsEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.handbremse.enable; } };
+struct HandbremsModeAccessor : public NewSettingsAccessor<HandbremseMode> { ConfigWrapper<HandbremseMode> &getConfig() const override { return configs.handbremse.mode; } };
+struct HandbremsTimeoutAccessor : public NewSettingsAccessor<uint16_t> { ConfigWrapper<uint16_t> &getConfig() const override { return configs.handbremse.triggerTimeout; } };
+struct HandbremsAutomaticAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.handbremse.automatic; } };
+struct HandbremsVisualizeAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.handbremse.visualize; } };
 
 // ESP Now
 #ifdef FEATURE_ESPNOW
-struct ESPNowSyncTimeEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncTime; } };
-struct ESPNowSyncTimeWithOthersEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncTimeWithOthers; } };
-struct ESPNowSyncBlinkEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.espnow.syncBlink; } };
+struct ESPNowSyncTimeEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.syncTime; } };
+struct ESPNowSyncTimeWithOthersEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.syncTimeWithOthers; } };
+struct ESPNowSyncBlinkEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.syncBlink; } };
 #endif
 
 // Button Mapping accessors

@@ -5,3 +5,4 @@
 #include <configwrapper_priv.h>
 
 INSTANTIATE_CONFIGWRAPPER_TEMPLATES(OtaAnimationModes)
+INSTANTIATE_CONFIGWRAPPER_TEMPLATES(HandbremseMode)
