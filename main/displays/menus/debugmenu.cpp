@@ -63,6 +63,7 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TOGGLECLOUDDEBUG>,     BobbyCheckbox, CloudDebugEnableAccessor>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, LastRebootReasonText,                  StaticFont<2>, DisabledColor, DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, CanIcCrashText,                        StaticFont<2>, DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTCOMMAND>,         SwitchScreenAction<FrontCommandDebugMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKCOMMAND>,          SwitchScreenAction<BackCommandDebugMenu>>>();
