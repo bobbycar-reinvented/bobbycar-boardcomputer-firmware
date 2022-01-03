@@ -46,12 +46,12 @@ set(headers
     newsettings.h
     ota.h
     potis.h
+    profilesettings.h
     presets.h
     qrimport.h
     rotary.h
     screens.h
     serial_bobby.h
-    settings.h
     settingspersister.h
     settingsutils.h
     statistics.h
@@ -277,12 +277,12 @@ set(sources
     newsettings.cpp
     ota.cpp
     potis.cpp
+    profilesettings.cpp
     presets.cpp
     qrimport.cpp
     rotary.cpp
     screens.cpp
     serial_bobby.cpp
-    settings.cpp
     settingspersister.cpp
     settingsutils.cpp
     statistics.cpp

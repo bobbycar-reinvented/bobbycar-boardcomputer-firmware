@@ -18,12 +18,12 @@
 #include <futurecpp.h>
 
 // local includes
-#include "settings.h"
+#include "profilesettings.h"
 #ifdef FEATURE_BLUETOOTH
 #include "bluetoothmode.h"
 #endif
 #include "unifiedmodelmode.h"
-#include "settings.h"
+#include "globals.h"
 
 bool SettingsPersister::init()
 {
@@ -45,7 +45,6 @@ bool SettingsPersister::init()
 bool SettingsPersister::erase()
 {
     closeProfile();
-    closeCommon();
 
     bool result{true};
 
@@ -62,32 +61,6 @@ bool SettingsPersister::erase()
     }
 
     return result;
-}
-
-bool SettingsPersister::openCommon()
-{
-    closeCommon();
-
-    nvs_handle handle;
-    if (esp_err_t result = nvs_open("bobbycar", NVS_READWRITE, &handle); result != ESP_OK)
-    {
-        ESP_LOGE("BOBBY", "nvs_open() COMMON %s failed with %s", "bobbycar", esp_err_to_name(result));
-        return false;
-    }
-
-    m_handle = handle;
-
-    return true;
-}
-
-void SettingsPersister::closeCommon()
-{
-    if (!m_handle)
-        return;
-
-    nvs_close(m_handle);
-
-    m_handle = {};
 }
 
 bool SettingsPersister::openProfile(uint8_t index)
@@ -268,27 +241,9 @@ bool SettingsPersister::load(T &settings)
 {
     bool result{true};
 
-    if (m_handle)
-    {
-        settings.executeForEveryCommonSetting([&](const char *key, auto &value)
-        {
-            if (esp_err_t result = nvsGetterHelper<std::decay_t<decltype(value)>>::nvs_get(m_handle, key, &value); result != ESP_OK)
-            {
-                if (result != ESP_ERR_NVS_NOT_FOUND)
-                    ESP_LOGE("BOBBY", "nvs_get() COMMON %s failed with %s", key, esp_err_to_name(result));
-                result = false;
-            }
-        });
-    }
-    else
-    {
-        ESP_LOGW("BOBBY", "common nvs handle not valid!");
-        result = false;
-    }
-
     if (m_profile)
     {
-        settings.executeForEveryProfileSetting([&](const char *key, auto &value)
+        profileSettings.executeForEveryProfileSetting([&](const char *key, auto &value)
         {
             if (esp_err_t result = nvsGetterHelper<std::decay_t<decltype(value)>>::nvs_get(m_profile->handle, key, &value); result != ESP_OK)
             {
@@ -307,7 +262,7 @@ bool SettingsPersister::load(T &settings)
     return result;
 }
 
-template bool SettingsPersister::load<Settings>(Settings &settings);
+template bool SettingsPersister::load<ProfileSettings>(ProfileSettings &profileSettings);
 
 template<typename T> struct nvsSetterHelper;
 template<> struct nvsSetterHelper<int8_t> { static constexpr auto nvs_set = &nvs_set_i8; };
@@ -387,26 +342,9 @@ bool SettingsPersister::save(T &settings)
 {
     bool result{true};
 
-    if (m_handle)
-    {
-        settings.executeForEveryCommonSetting([&](const char *key, const auto &value)
-        {
-            if (esp_err_t result = nvsSetterHelper<std::decay_t<decltype(value)>>::nvs_set(m_handle, key, value); result != ESP_OK)
-            {
-                ESP_LOGE("BOBBY", "nvs_set() COMMON %s failed with %s", key, esp_err_to_name(result));
-                result = false;
-            }
-        });
-    }
-    else
-    {
-        ESP_LOGW("BOBBY", "common nvs handle not valid!");
-        result = false;
-    }
-
     if (m_profile)
     {
-        settings.executeForEveryProfileSetting([&](const char *key, const auto &value)
+        profileSettings.executeForEveryProfileSetting([&](const char *key, const auto &value)
         {
             if (esp_err_t result = nvsSetterHelper<std::decay_t<decltype(value)>>::nvs_set(m_profile->handle, key, value); result != ESP_OK)
             {
@@ -424,7 +362,7 @@ bool SettingsPersister::save(T &settings)
     return result;
 }
 
-template bool SettingsPersister::save<Settings>(Settings &settings);
+template bool SettingsPersister::save<ProfileSettings>(ProfileSettings &settings);
 
 std::optional<uint8_t> SettingsPersister::currentlyOpenProfileIndex() const
 {

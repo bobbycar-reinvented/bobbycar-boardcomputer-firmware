@@ -16,8 +16,8 @@ void MotortestMode::start()
 
 void MotortestMode::update()
 {
-    const auto m_pwmMax = settings.motortestMode.maxPwm;
-    m_pwm += m_dir * settings.motortestMode.multiplikator;
+    const auto m_pwmMax = profileSettings.motortestMode.maxPwm;
+    m_pwm += m_dir * profileSettings.motortestMode.multiplikator;
     if (m_pwm > m_pwmMax) {
         m_pwm = m_pwmMax;
         m_dir = -m_dir;

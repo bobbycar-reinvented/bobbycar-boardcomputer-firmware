@@ -20,69 +20,61 @@
 #include "unifiedmodelmode.h"
 #include "modes/larsmmode.h"
 
-struct Settings
+struct ProfileSettings
 {
     struct Limits {
-        int16_t iMotMax;      // [A] Maximum motor current limit // profileSetting
-        int16_t iDcMax;       // [A] Maximum DC Link current limit (This is the current protection. Above this value, current chopping is applied. To avoid this make sure that I_DC_MAX = I_MOT_MAX + 2A) // profileSetting
-        int16_t nMotMax;      // [rpm] Maximum motor speed limit // profileSetting
-        int16_t fieldWeakMax; // [A] Maximum Field Weakening D axis current (only for FOC). Higher current results in higher maximum speed. // profileSetting
-        int16_t phaseAdvMax;  // [deg] Maximum Phase Advance angle (only for SIN). Higher angle results in higher maximum speed. // profileSetting
+        int16_t iMotMax;      // [A] Maximum motor current limit
+        int16_t iDcMax;       // [A] Maximum DC Link current limit (This is the current protection. Above this value, current chopping is applied. To avoid this make sure that I_DC_MAX = I_MOT_MAX + 2A)
+        int16_t nMotMax;      // [rpm] Maximum motor speed limit
+        int16_t fieldWeakMax; // [A] Maximum Field Weakening D axis current (only for FOC). Higher current results in higher maximum speed.
+        int16_t phaseAdvMax;  // [deg] Maximum Phase Advance angle (only for SIN). Higher angle results in higher maximum speed.
     } limits;
 
     struct ControllerHardware {
-        bool enableFrontLeft, enableFrontRight, enableBackLeft, enableBackRight; // profileSetting
-        bool invertFrontLeft, invertFrontRight, invertBackLeft, invertBackRight; // profileSetting
+        bool enableFrontLeft, enableFrontRight, enableBackLeft, enableBackRight;
+        bool invertFrontLeft, invertFrontRight, invertBackLeft, invertBackRight;
     } controllerHardware;
 
     struct DefaultMode {
-        UnifiedModelMode modelMode;        // profileSetting
-        bool squareGas;                    // profileSetting
-        bool squareBrems;                  // profileSetting
-        bool enableSmoothingUp;            // profileSetting
-        bool enableSmoothingDown;          // profileSetting
-        bool enableFieldWeakSmoothingUp;   // profileSetting
-        bool enableFieldWeakSmoothingDown; // profileSetting
-        int16_t smoothing;                 // profileSetting
-        int16_t frontPercentage;           // profileSetting
-        int16_t backPercentage;            // profileSetting
-        int16_t add_schwelle;              // profileSetting
-        int16_t gas1_wert;                 // profileSetting
-        int16_t gas2_wert;                 // profileSetting
-        int16_t brems1_wert;               // profileSetting
-        int16_t brems2_wert;               // profileSetting
-        int16_t fwSmoothLowerLimit;        // profileSetting
+        UnifiedModelMode modelMode;
+        bool squareGas;
+        bool squareBrems;
+        bool enableSmoothingUp;
+        bool enableSmoothingDown;
+        bool enableFieldWeakSmoothingUp;
+        bool enableFieldWeakSmoothingDown;
+        int16_t smoothing;
+        int16_t frontPercentage;
+        int16_t backPercentage;
+        int16_t add_schwelle;
+        int16_t gas1_wert;
+        int16_t gas2_wert;
+        int16_t brems1_wert;
+        int16_t brems2_wert;
+        int16_t fwSmoothLowerLimit;
     } defaultMode;
 
     struct TempomatMode {
-        UnifiedModelMode modelMode; // profileSetting
+        UnifiedModelMode modelMode;
     } tempomatMode;
 
     struct LarsmMode {
-        UnifiedModelMode modelMode; // profileSetting
-        LarsmModeMode mode;         // profileSetting
-        uint8_t iterations;         // profileSetting
+        UnifiedModelMode modelMode;
+        LarsmModeMode mode;
+        uint8_t iterations;
     } larsmMode;
 
     struct MotortestMode {
-        uint8_t multiplikator;      // profileSetting
-        uint16_t maxPwm;            // profileSetting
+        uint8_t multiplikator;
+        uint16_t maxPwm;
     } motortestMode;
-
-    template<typename T>
-    void executeForEveryCommonSetting(T &&callable);
 
     template<typename T>
     void executeForEveryProfileSetting(T &&callable);
 };
 
 template<typename T>
-void Settings::executeForEveryCommonSetting(T &&callable)
-{
-}
-
-template<typename T>
-void Settings::executeForEveryProfileSetting(T &&callable)
+void ProfileSettings::executeForEveryProfileSetting(T &&callable)
 {
     callable("iMotMax", limits.iMotMax);
     callable("iDcMax", limits.iDcMax);

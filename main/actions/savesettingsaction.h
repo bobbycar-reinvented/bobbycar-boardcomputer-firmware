@@ -9,6 +9,6 @@ namespace {
 class SaveSettingsAction : public virtual ActionInterface
 {
 public:
-    void triggered() override { saveSettings(); }
+    void triggered() override { saveProfileSettings(); }
 };
 }

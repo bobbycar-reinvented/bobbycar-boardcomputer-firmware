@@ -10,14 +10,14 @@
 #include <espchrono.h>
 
 // local includes
-#include "settings.h"
+#include "profilesettings.h"
 #include "ledstripdefines.h"
 #include "ledstrip.h"
 
 using namespace std::chrono_literals;
 
 namespace presets {
-constexpr Settings::Limits defaultLimits {
+constexpr ProfileSettings::Limits defaultLimits {
     .iMotMax = DEFAULT_IMOTMAX,           // profileSetting
     .iDcMax = DEFAULT_IDCMAX,             // profileSetting
     .nMotMax = DEFAULT_NMOTMAX,           // profileSetting
@@ -25,7 +25,7 @@ constexpr Settings::Limits defaultLimits {
     .phaseAdvMax = DEFAULT_FIELDADVMAX    // profileSetting
 };
 
-constexpr Settings::Limits kidsLimits {
+constexpr ProfileSettings::Limits kidsLimits {
     .iMotMax = 5,
     .iDcMax = 7,
     .nMotMax = 500,
@@ -33,7 +33,7 @@ constexpr Settings::Limits kidsLimits {
     .phaseAdvMax = 20
 };
 
-constexpr Settings::ControllerHardware defaultControllerHardware {
+constexpr ProfileSettings::ControllerHardware defaultControllerHardware {
     .enableFrontLeft = true,  // profileSetting
     .enableFrontRight = true, // profileSetting
     .enableBackLeft = true,   // profileSetting
@@ -45,7 +45,7 @@ constexpr Settings::ControllerHardware defaultControllerHardware {
     .invertBackRight = DEFAULT_INVERTBACKRIGHT,   // profileSetting
 };
 
-constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
+constexpr ProfileSettings::ControllerHardware mosfetsOffControllerHardware {
     .enableFrontLeft = false,
     .enableFrontRight = false,
     .enableBackLeft = false,
@@ -57,7 +57,7 @@ constexpr Settings::ControllerHardware mosfetsOffControllerHardware {
     .invertBackRight = DEFAULT_INVERTBACKRIGHT,
 };
 
-constexpr Settings::ControllerHardware spinnerControllerHardware {
+constexpr ProfileSettings::ControllerHardware spinnerControllerHardware {
     .enableFrontLeft = true,
     .enableFrontRight = true,
     .enableBackLeft = true,
@@ -69,7 +69,7 @@ constexpr Settings::ControllerHardware spinnerControllerHardware {
     .invertBackRight = !DEFAULT_INVERTBACKRIGHT,
 };
 
-constexpr Settings::DefaultMode defaultDefaultMode {
+constexpr ProfileSettings::DefaultMode defaultDefaultMode {
     .modelMode = UnifiedModelMode::FocTorque, // profileSetting
     .squareGas = true,
     .squareBrems = true,
@@ -88,7 +88,7 @@ constexpr Settings::DefaultMode defaultDefaultMode {
     .fwSmoothLowerLimit = 800                 // profileSetting
 };
 
-constexpr Settings::DefaultMode sinusoidalDefaultMode {
+constexpr ProfileSettings::DefaultMode sinusoidalDefaultMode {
     .modelMode = UnifiedModelMode::Sinusoidal,
     .squareGas = true,
     .squareBrems = true,
@@ -107,22 +107,22 @@ constexpr Settings::DefaultMode sinusoidalDefaultMode {
     .fwSmoothLowerLimit = 800
 };
 
-constexpr Settings::TempomatMode defaultTempomatMode {
-    .modelMode = UnifiedModelMode::FocSpeed // profileSetting
+constexpr ProfileSettings::TempomatMode defaultTempomatMode {
+    .modelMode = UnifiedModelMode::FocSpeed
 };
 
-constexpr Settings::LarsmMode defaultLarsmMode {
-    .modelMode = UnifiedModelMode::Commutation, // profileSetting
-    .mode = LarsmModeMode::Mode4,               // profileSetting
-    .iterations = 100                           // profileSetting
+constexpr ProfileSettings::LarsmMode defaultLarsmMode {
+    .modelMode = UnifiedModelMode::Commutation,
+    .mode = LarsmModeMode::Mode4,
+    .iterations = 100
 };
 
-constexpr Settings::MotortestMode defaultMotortestMode {
+constexpr ProfileSettings::MotortestMode defaultMotortestMode {
     .multiplikator = 2,
     .maxPwm = 400
 };
 
-constexpr Settings defaultSettings {
+constexpr ProfileSettings defaultProfileSettings {
     .limits = defaultLimits,
     .controllerHardware = defaultControllerHardware,
     .defaultMode = defaultDefaultMode,

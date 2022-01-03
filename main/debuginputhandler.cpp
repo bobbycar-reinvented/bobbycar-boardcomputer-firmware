@@ -136,11 +136,11 @@ void handleNormalChar(char c)
         }
         case 'r':
         case 'R':
-            loadSettings();
+            loadProfileSettings();
             break;
         case 's':
         case 'S':
-            saveSettings();
+            saveProfileSettings();
             break;
         case '0':
         case '1':

@@ -20,22 +20,22 @@ struct ReverseBeepDuration0Accessor : public NewSettingsAccessor<int16_t> { Conf
 struct ReverseBeepDuration1Accessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.reverseBeepDuration1; } };
 
 // Limits
-struct IMotMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.iMotMax; } };
-struct IDcMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.iDcMax; } };
+struct IMotMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.limits.iMotMax; } };
+struct IDcMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.limits.iDcMax; } };
 struct NMotMaxKmhAccessor : public virtual espgui::AccessorInterface<int16_t>
 {
-    int16_t getValue() const override { return convertToKmh(settings.limits.nMotMax); }
+    int16_t getValue() const override { return convertToKmh(profileSettings.limits.nMotMax); }
     espgui::AccessorInterface<int16_t>::setter_result_t setValue(int16_t value) override
     {
-        settings.limits.nMotMax = convertFromKmh(value);
-        if (!saveSettings())
-            return tl::make_unexpected("saveSettings() failed!");
+        profileSettings.limits.nMotMax = convertFromKmh(value);
+        if (!saveProfileSettings())
+            return tl::make_unexpected("saveProfileSettings() failed!");
         return {};
     }
 };
-struct NMotMaxRpmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.nMotMax; } };
-struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.fieldWeakMax; } };
-struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.limits.phaseAdvMax; } };
+struct NMotMaxRpmAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.limits.nMotMax; } };
+struct FieldWeakMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.limits.fieldWeakMax; } };
+struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.limits.phaseAdvMax; } };
 
 // Bluetooth Low Energy
 #ifdef FEATURE_BLE
@@ -61,15 +61,15 @@ struct TimeSyncIntervalAccessor : public NewSettingsChronoAdaptorAccessor<espchr
 #endif
 
 // Controller Hardware
-struct FrontLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontLeft; } };
-struct FrontRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableFrontRight; } };
-struct BackLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableBackLeft; } };
-struct BackRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.enableBackRight; } };
+struct FrontLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.controllerHardware.enableFrontLeft; } };
+struct FrontRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.controllerHardware.enableFrontRight; } };
+struct BackLeftEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.controllerHardware.enableBackLeft; } };
+struct BackRightEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.controllerHardware.enableBackRight; } };
 
-struct FrontLeftInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.invertFrontLeft; } };
-struct FrontRightInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.invertFrontRight; } };
-struct BackLeftInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.invertBackLeft; } };
-struct BackRightInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.controllerHardware.invertBackRight; } };
+struct FrontLeftInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.controllerHardware.invertFrontLeft; } };
+struct FrontRightInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.controllerHardware.invertFrontRight; } };
+struct BackLeftInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.controllerHardware.invertBackLeft; } };
+struct BackRightInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.controllerHardware.invertBackRight; } };
 
 struct WheelDiameterMmAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.controllerHardware.wheelDiameter; } };
 struct WheelDiameterInchAccessor : public virtual espgui::AccessorInterface<float>
@@ -77,9 +77,9 @@ struct WheelDiameterInchAccessor : public virtual espgui::AccessorInterface<floa
     float getValue() const override { return convertToInch(configs.controllerHardware.wheelDiameter.value); }
     espgui::AccessorInterface<int16_t>::setter_result_t setValue(float value) override
     {
-//        settings.controllerHardware.wheelDiameter = convertFromInch(value);
-//        if (!saveSettings())
-//            return tl::make_unexpected("saveSettings() failed!");
+//        profileSettings.controllerHardware.wheelDiameter = convertFromInch(value);
+//        if (!saveProfileSettings())
+//            return tl::make_unexpected("saveProfileSettings() failed!");
 //        return {};
         return configs.write_config(configs.controllerHardware.wheelDiameter, convertFromInch(value));
     }
@@ -138,36 +138,36 @@ struct UdpUseStdStringAccessor : public NewSettingsAccessor<bool> { ConfigWrappe
 #endif
 
 // DefaultMode
-struct DefaultModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.defaultMode.modelMode; } };
-struct DefaultModeSquareGasAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.defaultMode.squareGas; } };
-struct DefaultModeSquareBremsAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.defaultMode.squareBrems; } };
+struct DefaultModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return profileSettings.defaultMode.modelMode; } };
+struct DefaultModeSquareGasAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.defaultMode.squareGas; } };
+struct DefaultModeSquareBremsAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.defaultMode.squareBrems; } };
 
-struct DefaultModeEnableSmoothingUpAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.defaultMode.enableSmoothingUp; } };
-struct DefaultModeEnableSmoothingDownAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.defaultMode.enableSmoothingDown; } };
-struct DefaultModeEnableFieldWeakSmoothingUpAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.defaultMode.enableFieldWeakSmoothingUp; } };
-struct DefaultModeEnableFieldWeakSmoothingDownAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.defaultMode.enableFieldWeakSmoothingDown; } };
-struct DefaultModeEnableFieldWeakSmoothingLowerLimitAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.defaultMode.fwSmoothLowerLimit; } };
+struct DefaultModeEnableSmoothingUpAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.defaultMode.enableSmoothingUp; } };
+struct DefaultModeEnableSmoothingDownAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.defaultMode.enableSmoothingDown; } };
+struct DefaultModeEnableFieldWeakSmoothingUpAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.defaultMode.enableFieldWeakSmoothingUp; } };
+struct DefaultModeEnableFieldWeakSmoothingDownAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.defaultMode.enableFieldWeakSmoothingDown; } };
+struct DefaultModeEnableFieldWeakSmoothingLowerLimitAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.defaultMode.fwSmoothLowerLimit; } };
 
-struct DefaultModeSmoothingAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.defaultMode.smoothing; } };
-struct DefaultModeFrontPercentageAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.defaultMode.frontPercentage; } };
-struct DefaultModeBackPercentageAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.defaultMode.backPercentage; } };
-struct DefaultModeAddSchwelleAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.defaultMode.add_schwelle; } };
-struct DefaultModeGas1WertAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.defaultMode.gas1_wert; } };
-struct DefaultModeGas2WertAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.defaultMode.gas2_wert; } };
-struct DefaultModeBrems1WertAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.defaultMode.brems1_wert; } };
-struct DefaultModeBrems2WertAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return settings.defaultMode.brems2_wert; } };
+struct DefaultModeSmoothingAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.defaultMode.smoothing; } };
+struct DefaultModeFrontPercentageAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.defaultMode.frontPercentage; } };
+struct DefaultModeBackPercentageAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.defaultMode.backPercentage; } };
+struct DefaultModeAddSchwelleAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.defaultMode.add_schwelle; } };
+struct DefaultModeGas1WertAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.defaultMode.gas1_wert; } };
+struct DefaultModeGas2WertAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.defaultMode.gas2_wert; } };
+struct DefaultModeBrems1WertAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.defaultMode.brems1_wert; } };
+struct DefaultModeBrems2WertAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &getRef() const override { return profileSettings.defaultMode.brems2_wert; } };
 
 // TempomatMode
-struct TempomatModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.tempomatMode.modelMode; } };
+struct TempomatModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return profileSettings.tempomatMode.modelMode; } };
 
 // LarsmMode
-struct LarsmModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return settings.larsmMode.modelMode; } };
-struct LarsmModeModeAccessor : public RefAccessorSaveSettings<LarsmModeMode> { LarsmModeMode &getRef() const override { return settings.larsmMode.mode; } };
-struct LarsmModeIterationsAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.larsmMode.iterations; } };
+struct LarsmModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return profileSettings.larsmMode.modelMode; } };
+struct LarsmModeModeAccessor : public RefAccessorSaveSettings<LarsmModeMode> { LarsmModeMode &getRef() const override { return profileSettings.larsmMode.mode; } };
+struct LarsmModeIterationsAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return profileSettings.larsmMode.iterations; } };
 
 // MotortestMode
-struct MotortestModeMultiplikatorAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return settings.motortestMode.multiplikator; } };
-struct MotortestMaxPwmAccessor : public RefAccessorSaveSettings<uint16_t> { uint16_t &getRef() const override { return settings.motortestMode.maxPwm; } };
+struct MotortestModeMultiplikatorAccessor : public RefAccessorSaveSettings<uint8_t> { uint8_t &getRef() const override { return profileSettings.motortestMode.multiplikator; } };
+struct MotortestMaxPwmAccessor : public RefAccessorSaveSettings<uint16_t> { uint16_t &getRef() const override { return profileSettings.motortestMode.maxPwm; } };
 
 // Ledstrip
 #ifdef FEATURE_LEDSTRIP

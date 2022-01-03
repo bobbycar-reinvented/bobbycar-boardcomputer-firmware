@@ -13,7 +13,7 @@ void DefaultMode::start()
 
 void DefaultMode::update()
 {
-    auto pair = split(settings.defaultMode.modelMode);
+    auto pair = split(profileSettings.defaultMode.modelMode);
     if (!gas || !brems)
     {
         start();
@@ -48,8 +48,8 @@ void DefaultMode::update()
                 local_brems = 0;
         }
 
-        auto gas_processed = settings.defaultMode.squareGas ? (local_gas * local_gas) / 1000.f : local_gas;
-        auto brems_processed = settings.defaultMode.squareBrems ? (local_brems * local_brems) / 1000 : local_brems;
+        auto gas_processed = profileSettings.defaultMode.squareGas ? (local_gas * local_gas) / 1000.f : local_gas;
+        auto brems_processed = profileSettings.defaultMode.squareBrems ? (local_brems * local_brems) / 1000 : local_brems;
 
         const auto now = espchrono::millis_clock::now();
 
@@ -169,43 +169,43 @@ void DefaultMode::update()
         }
         else
         {
-            if (gas_processed >= settings.defaultMode.add_schwelle)
+            if (gas_processed >= profileSettings.defaultMode.add_schwelle)
             {
-                pwm = (gas_processed/1000.*settings.defaultMode.gas1_wert) + (brems_processed/1000.*settings.defaultMode.brems1_wert);
+                pwm = (gas_processed/1000.*profileSettings.defaultMode.gas1_wert) + (brems_processed/1000.*profileSettings.defaultMode.brems1_wert);
 
-                if ((settings.defaultMode.enableSmoothingUp || settings.defaultMode.enableSmoothingDown) && (pwm > 1000. || m_lastPwm > 1000.))
+                if ((profileSettings.defaultMode.enableSmoothingUp || profileSettings.defaultMode.enableSmoothingDown) && (pwm > 1000. || m_lastPwm > 1000.))
                 {
-                    if (m_lastPwm < pwm && settings.defaultMode.enableSmoothingUp)
+                    if (m_lastPwm < pwm && profileSettings.defaultMode.enableSmoothingUp)
                     {
-                        pwm = std::min(pwm, m_lastPwm + (settings.defaultMode.smoothing * std::chrono::milliseconds{now - m_lastTime}.count() / 100.f));
+                        pwm = std::min(pwm, m_lastPwm + (profileSettings.defaultMode.smoothing * std::chrono::milliseconds{now - m_lastTime}.count() / 100.f));
                         if (pwm < 1000.)
                             pwm = 1000.;
                     }
-                    else if (m_lastPwm > pwm && settings.defaultMode.enableSmoothingDown)
+                    else if (m_lastPwm > pwm && profileSettings.defaultMode.enableSmoothingDown)
                     {
-                        pwm = std::max(pwm, m_lastPwm - (settings.defaultMode.smoothing * std::chrono::milliseconds{now - m_lastTime}.count() / 100.f));
+                        pwm = std::max(pwm, m_lastPwm - (profileSettings.defaultMode.smoothing * std::chrono::milliseconds{now - m_lastTime}.count() / 100.f));
                     }
                 }
             }
             else
             {
-                pwm = (gas_processed/1000.*settings.defaultMode.gas2_wert) - (brems_processed/1000.*settings.defaultMode.brems2_wert);
+                pwm = (gas_processed/1000.*profileSettings.defaultMode.gas2_wert) - (brems_processed/1000.*profileSettings.defaultMode.brems2_wert);
                 if (
-                        (settings.defaultMode.enableFieldWeakSmoothingUp || settings.defaultMode.enableFieldWeakSmoothingDown) &&
-                        (m_lastPwm > settings.defaultMode.fwSmoothLowerLimit) &&
+                        (profileSettings.defaultMode.enableFieldWeakSmoothingUp || profileSettings.defaultMode.enableFieldWeakSmoothingDown) &&
+                        (m_lastPwm > profileSettings.defaultMode.fwSmoothLowerLimit) &&
                         brems_processed > 0)
                 {
-                    if (m_lastPwm < pwm && settings.defaultMode.enableFieldWeakSmoothingUp)
+                    if (m_lastPwm < pwm && profileSettings.defaultMode.enableFieldWeakSmoothingUp)
                     {
-                        auto effective_smoothing = settings.defaultMode.smoothing;
+                        auto effective_smoothing = profileSettings.defaultMode.smoothing;
                         auto difference_to_target = std::abs(pwm-m_lastPwm);
                         effective_smoothing *= std::max((difference_to_target / 500),0.5f);
 
                         pwm = std::min(pwm, m_lastPwm + (effective_smoothing * std::chrono::milliseconds{now - m_lastTime}.count() / 100.f));
                     }
-                    else if (m_lastPwm > pwm && settings.defaultMode.enableFieldWeakSmoothingDown)
+                    else if (m_lastPwm > pwm && profileSettings.defaultMode.enableFieldWeakSmoothingDown)
                     {
-                        auto effective_smoothing = settings.defaultMode.smoothing;
+                        auto effective_smoothing = profileSettings.defaultMode.smoothing;
                         auto difference_to_target = std::abs(pwm-m_lastPwm);
                         effective_smoothing *= std::max((difference_to_target / 500),0.5f);
 
@@ -221,7 +221,7 @@ void DefaultMode::update()
             {
                 motor.ctrlTyp = pair.first;
                 motor.ctrlMod = pair.second;
-                motor.pwm = pwm / 100. * settings.defaultMode.frontPercentage;
+                motor.pwm = pwm / 100. * profileSettings.defaultMode.frontPercentage;
                 motor.cruiseCtrlEna = false;
                 motor.nCruiseMotTgt = 0;
             }
@@ -229,7 +229,7 @@ void DefaultMode::update()
             {
                 motor.ctrlTyp = pair.first;
                 motor.ctrlMod = pair.second;
-                motor.pwm = pwm / 100. * settings.defaultMode.backPercentage;
+                motor.pwm = pwm / 100. * profileSettings.defaultMode.backPercentage;
                 motor.cruiseCtrlEna = false;
                 motor.nCruiseMotTgt = 0;
             }

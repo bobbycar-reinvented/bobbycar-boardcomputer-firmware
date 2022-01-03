@@ -259,7 +259,7 @@ void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
                 if (*m_gas > 100 || *m_brems > 100)
                     return;
                 copyToSettings();
-                saveSettings();
+                saveProfileSettings();
                 if (m_bootup)
                     espgui::switchScreen<StatusDisplay>();
                 else

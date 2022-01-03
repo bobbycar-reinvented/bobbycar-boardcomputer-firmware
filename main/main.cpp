@@ -47,17 +47,14 @@ extern "C" void app_main()
     if (const auto result = configs.init("bobbycar"); result != ESP_OK)
         ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
 
-    settings = presets::defaultSettings;
+    profileSettings = presets::defaultProfileSettings;
 
     if (settingsPersister.init())
     {
-        if (!settingsPersister.openCommon())
-            ESP_LOGE("BOBBY", "openCommon() failed");
-
         if (!settingsPersister.openProfile(0))
             ESP_LOGE("BOBBY", "openProfile(0) failed");
 
-        loadSettings();
+        loadProfileSettings();
     }
     else
         ESP_LOGE("BOBBY", "init() failed");

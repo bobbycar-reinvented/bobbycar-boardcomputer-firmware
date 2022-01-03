@@ -9,6 +9,6 @@ namespace {
 class LoadSettingsAction : public virtual ActionInterface
 {
 public:
-    void triggered() override { loadSettings(); }
+    void triggered() override { loadProfileSettings(); }
 };
 }

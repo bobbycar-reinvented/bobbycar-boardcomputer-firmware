@@ -12,12 +12,12 @@ espchrono::millis_clock::time_point lastReverseBeepToggle;
 
 float convertToKmh(float val)
 {
-    return val /* / settings.controllerHardware.numMagnetPoles */ / 60.f * configs.controllerHardware.wheelDiameter.value / 1000.f * 3.14159265359f * 3.6f;
+    return val /* / profileSettings.controllerHardware.numMagnetPoles */ / 60.f * configs.controllerHardware.wheelDiameter.value / 1000.f * 3.14159265359f * 3.6f;
 }
 
 float convertFromKmh(float val)
 {
-    return val /* * settings.controllerHardware.numMagnetPoles */ * 60.f / configs.controllerHardware.wheelDiameter.value * 1000.f / 3.14159265359f / 3.6f;
+    return val /* * profileSettings.controllerHardware.numMagnetPoles */ * 60.f / configs.controllerHardware.wheelDiameter.value * 1000.f / 3.14159265359f / 3.6f;
 }
 
 float convertToInch(float val)
@@ -102,11 +102,11 @@ void fixCommonParams()
 {
     for (bobbycar::protocol::serial::MotorState &motor : motors())
     {
-        motor.iMotMax = settings.limits.iMotMax;
-        motor.iDcMax = settings.limits.iDcMax;
-        motor.nMotMax = settings.limits.nMotMax;
-        motor.fieldWeakMax = settings.limits.fieldWeakMax;
-        motor.phaseAdvMax = settings.limits.phaseAdvMax;
+        motor.iMotMax = profileSettings.limits.iMotMax;
+        motor.iDcMax = profileSettings.limits.iDcMax;
+        motor.nMotMax = profileSettings.limits.nMotMax;
+        motor.fieldWeakMax = profileSettings.limits.fieldWeakMax;
+        motor.phaseAdvMax = profileSettings.limits.phaseAdvMax;
     }
 
     if (configs.reverseBeep.value)
@@ -146,27 +146,27 @@ void fixCommonParams()
         currentlyReverseBeeping = false;
     }
 
-    controllers.front.command.left.enable = settings.controllerHardware.enableFrontLeft;
-    controllers.front.command.right.enable = settings.controllerHardware.enableFrontRight;
-    controllers.back.command.left.enable = settings.controllerHardware.enableBackLeft;
-    controllers.back.command.right.enable = settings.controllerHardware.enableBackRight;
+    controllers.front.command.left.enable = profileSettings.controllerHardware.enableFrontLeft;
+    controllers.front.command.right.enable = profileSettings.controllerHardware.enableFrontRight;
+    controllers.back.command.left.enable = profileSettings.controllerHardware.enableBackLeft;
+    controllers.back.command.right.enable = profileSettings.controllerHardware.enableBackRight;
 
-    if (settings.controllerHardware.invertFrontLeft)
+    if (profileSettings.controllerHardware.invertFrontLeft)
     {
         controllers.front.command.left.pwm = -controllers.front.command.left.pwm;
         controllers.front.command.left.nCruiseMotTgt = -controllers.front.command.left.nCruiseMotTgt;
     }
-    if (settings.controllerHardware.invertFrontRight)
+    if (profileSettings.controllerHardware.invertFrontRight)
     {
         controllers.front.command.right.pwm = -controllers.front.command.right.pwm;
         controllers.front.command.right.nCruiseMotTgt = -controllers.front.command.right.nCruiseMotTgt;
     }
-    if (settings.controllerHardware.invertBackLeft)
+    if (profileSettings.controllerHardware.invertBackLeft)
     {
         controllers.back.command.left.pwm = -controllers.back.command.left.pwm;
         controllers.back.command.left.nCruiseMotTgt = -controllers.back.command.left.nCruiseMotTgt;
     }
-    if (settings.controllerHardware.invertBackRight)
+    if (profileSettings.controllerHardware.invertBackRight)
     {
         controllers.back.command.right.pwm = -controllers.back.command.right.pwm;
         controllers.back.command.right.nCruiseMotTgt = -controllers.back.command.right.nCruiseMotTgt;
@@ -197,19 +197,19 @@ void updateSwapFrontBack()
 }
 #endif
 
-bool loadSettings()
+bool loadProfileSettings()
 {
     bool result{true};
-    if (!settingsPersister.load(settings))
+    if (!settingsPersister.load(profileSettings))
         result = false;
     return result;
 }
 
-bool saveSettings()
+bool saveProfileSettings()
 {
     if (simplified) return true;
     bool result{true};
-    if (!settingsPersister.save(settings))
+    if (!settingsPersister.save(profileSettings))
         result = false;
     return result;
 }

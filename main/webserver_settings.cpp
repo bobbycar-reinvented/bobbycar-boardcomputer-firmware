@@ -151,7 +151,7 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
             }
 
             HtmlTag divTag{"div", "class=\"form-table\"", body};
-            settings.executeForEveryCommonSetting([&](std::string_view key, const auto &value){
+            profileSettings.executeForEveryProfileSetting([&](std::string_view key, const auto &value){
                 HtmlTag formTag{"form", "class=\"form-table-row\" action=\"/saveSettings\" method=\"GET\"", body};
 
                 {
@@ -279,7 +279,7 @@ esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
     std::string body;
     bool success{true};
 
-    settings.executeForEveryCommonSetting([&](std::string_view key, auto &value){
+    profileSettings.executeForEveryProfileSetting([&](std::string_view key, auto &value){
         char valueBufEncoded[256];
         if (const auto result = httpd_query_key_value(query.data(), key.data(), valueBufEncoded, 256); result != ESP_OK)
         {
@@ -306,7 +306,7 @@ esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
     if (body.empty())
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "text/plain", "nothing changed?!")
 
-    if (settingsPersister.save(settings))
+    if (settingsPersister.save(profileSettings))
         body += "settings persisted successfully";
     else
     {

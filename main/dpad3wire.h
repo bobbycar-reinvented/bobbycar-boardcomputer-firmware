@@ -86,25 +86,25 @@ void update()
         ButtonBack = 2
     };
 
-    if (std::get<ButtonUp>(lastState) != std::get<ButtonUp>(state) && now-debounceUp > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<ButtonUp>(lastState) != std::get<ButtonUp>(state) && now-debounceUp > profileSettings.boardcomputerHardware.dpadDebounce)
     {
         InputDispatcher::upButton(std::get<ButtonUp>(state));
         std::get<ButtonUp>(lastState) = std::get<ButtonUp>(state);
         debounceUp = now;
     }
-    if (std::get<ButtonDown>(lastState) != std::get<ButtonDown>(state) && now-debounceDown > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<ButtonDown>(lastState) != std::get<ButtonDown>(state) && now-debounceDown > profileSettings.boardcomputerHardware.dpadDebounce)
     {
         InputDispatcher::downButton(std::get<ButtonDown>(state));
         std::get<ButtonDown>(lastState) = std::get<ButtonDown>(state);
         debounceDown = now;
     }
-    if (std::get<ButtonConfirm>(lastState) != std::get<ButtonConfirm>(state) && now-debounceConfirm > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<ButtonConfirm>(lastState) != std::get<ButtonConfirm>(state) && now-debounceConfirm > profileSettings.boardcomputerHardware.dpadDebounce)
     {
         InputDispatcher::confirmButton(std::get<ButtonConfirm>(state));
         std::get<ButtonConfirm>(lastState) = std::get<ButtonConfirm>(state);
         debounceConfirm = now;
     }
-    if (std::get<ButtonBack>(lastState) != std::get<ButtonBack>(state) && now-debounceBack > settings.boardcomputerHardware.dpadDebounce)
+    if (std::get<ButtonBack>(lastState) != std::get<ButtonBack>(state) && now-debounceBack > profileSettings.boardcomputerHardware.dpadDebounce)
     {
         InputDispatcher::backButton(std::get<ButtonBack>(state));
         std::get<ButtonBack>(lastState) = std::get<ButtonBack>(state);
