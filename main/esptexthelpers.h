@@ -8,6 +8,7 @@
 #include <espstrutils.h>
 
 // local includes
+#include "can.h"
 #include "textinterface.h"
 
 //template<const char *Ttext, typename TreturnType, TreturnType (EspClass::*Tmethod)()>
@@ -39,6 +40,9 @@ class HeapLargest32Text : public virtual espgui::TextInterface { public: std::st
 
 class LastRebootReasonText : public virtual espgui::TextInterface { public: std::string text() const override {
     return fmt::format("Last Reboot Reason: {}", espcpputils::toString(esp_reset_reason())); }};
+
+class CanIcCrashText : public virtual espgui::TextInterface { public: std::string text() const override {
+    return fmt::format("CAN IC reseted: {}", can::can_total_error_cnt); }};
 
 constexpr char TEXT_ESPCHIPREVISION[] = "Chip revision: ";
 using EspChipRevisionText = espgui::StaticText<TEXT_ESPCHIPREVISION>; //EspStatusTextHelper<TEXT_ESPCHIPREVISION, uint8_t, &EspClass::getChipRevision>;

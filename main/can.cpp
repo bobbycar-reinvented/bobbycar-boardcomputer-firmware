@@ -24,6 +24,7 @@
 using namespace std::chrono_literals;
 
 namespace can {
+uint32_t can_total_error_cnt;
 namespace {
 constexpr const char * const TAG = "BOBBYCAN";
 } // namespace
@@ -257,8 +258,6 @@ void parseCanInput()
 
 void sendCanCommands()
 {
-
-    static uint32_t can_total_error_cnt = 0;
     static uint32_t can_sequential_error_cnt = 0;
 
     constexpr auto send = [](uint32_t addr, auto value){
