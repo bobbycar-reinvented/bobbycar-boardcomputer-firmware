@@ -1,5 +1,8 @@
 #include "lockscreen.h"
 
+// system includes
+#include <algorithm>
+
 // 3rdparty lib includes
 #include <tftinstance.h>
 #include <screenmanager.h>
@@ -11,17 +14,16 @@
 #include "displays/potiscalibratedisplay.h"
 #include "bobbybuttons.h"
 
-bool isValidPin(std::array<int8_t,4> enteredPin)
+namespace {
+bool isValidPin(std::array<int8_t, 4> enteredPin)
 {
-    for (int i = 0; i < 4; i++)
-    {
-        if (enteredPin[i] != configs.lockscreen.pin[i].digit.value)
-        {
-            return false;
-        }
-    }
-    return true;
+    return std::equal(std::cbegin(enteredPin), std::cend(enteredPin),
+                      std::cbegin(configs.lockscreen.pin), std::cend(configs.lockscreen.pin),
+                      [](const int8_t digit, const auto &configuredDigit){
+                          return digit == configuredDigit.value;
+                      });
 }
+} // namespace
 
 void Lockscreen::start()
 {

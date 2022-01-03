@@ -272,20 +272,24 @@ void sendCanCommands()
 
         const auto timestamp_before = espchrono::millis_clock::now();
         const auto result = twai_transmit(&message, timeout);
+        const auto timestamp_after = espchrono::millis_clock::now();
 
-        if (result != ESP_OK && result != ESP_ERR_TIMEOUT)
-        {
-            ESP_LOGE(TAG, "ERROR: twai_transmit() failed with %s", esp_err_to_name(result));
-        }
-        else if (result == ESP_ERR_TIMEOUT)
+        if (result == ESP_ERR_TIMEOUT)
         {
             ++can_sequential_error_cnt;
             ++can_total_error_cnt;
 
-            ESP_LOGW(TAG, "twai_transmit() took %lld ms, seq err: %d, total err: %d",
-                     espchrono::ago(timestamp_before).count(),
+            ESP_LOGW(TAG, "twai_transmit() failed after %lldms with %s, seq err: %d, total err: %d",
+                     (timestamp_after - timestamp_before).count(),
+                     esp_err_to_name(result),
                      can_sequential_error_cnt,
                      can_total_error_cnt);
+        }
+        else if (result != ESP_OK)
+        {
+            ESP_LOGE(TAG, "ERROR: twai_transmit() failed after %lldms with %s",
+                     (timestamp_after - timestamp_before).count(),
+                     esp_err_to_name(result));
         }
         else
         {

@@ -86,15 +86,6 @@ public:
     ConfigWrapper<std::string> url;
 };
 
-class ConfiguredLockscreenDigit
-{
-public:
-    ConfiguredLockscreenDigit(const char *digitKey) :
-        digit{0, DoReset, MinMaxOrZeroValue<int8_t, 1,9>, digitKey }
-    {}
-    ConfigWrapper<int8_t> digit;
-};
-
 class ConfigContainer
 {
     using mac_t = wifi_stack::mac_t;
@@ -265,11 +256,11 @@ public:
         ConfigWrapper<bool> allowPresetSwitch     {true,                                   DoReset,   {},                         "lockAlwPresetSw"     };
         ConfigWrapper<bool> keepLockedAfterReboot {false,                                  DoReset,   {},                         "keepLocked"          };
         ConfigWrapper<bool> locked                {false,                                  DoReset,   {},                         "currentlyLocked"     };
-        std::array<ConfiguredLockscreenDigit, 4> pin {
-            ConfiguredLockscreenDigit {"lockscreenPin0"},
-            ConfiguredLockscreenDigit {"lockscreenPin1"},
-            ConfiguredLockscreenDigit {"lockscreenPin2"},
-            ConfiguredLockscreenDigit {"lockscreenPin3"}
+        std::array<ConfigWrapper<int8_t>, 4> pin {
+            ConfigWrapper<int8_t>                 {1,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin0"      },
+            ConfigWrapper<int8_t>                 {2,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin1"      },
+            ConfigWrapper<int8_t>                 {3,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin2"      },
+            ConfigWrapper<int8_t>                 {4,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin3"      },
         };
     } lockscreen;
 
@@ -542,10 +533,10 @@ public:
     x(lockscreen.allowPresetSwitch) \
     x(lockscreen.keepLockedAfterReboot) \
     x(lockscreen.locked) \
-    x(lockscreen.pin[0].digit) \
-    x(lockscreen.pin[1].digit) \
-    x(lockscreen.pin[2].digit) \
-    x(lockscreen.pin[3].digit) \
+    x(lockscreen.pin[0]) \
+    x(lockscreen.pin[1]) \
+    x(lockscreen.pin[2]) \
+    x(lockscreen.pin[3]) \
     \
     x(savedStatistics.totalCentimeters) \
     \
