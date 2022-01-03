@@ -68,7 +68,7 @@ GreenPassMenu::GreenPassMenu()
 
     for (uint8_t index = 0; index < 4; index++)
     {
-        const std::string nvs_key = fmt::format("covidcert-{}", index);
+        std::string nvs_key = fmt::format("covidcert-{}", index);
         ESP_LOGI("greenpassmenu", "Checking key %s", nvs_key.c_str());
         if (qrimport::has_qr_code(nvs_key))
         {
@@ -84,7 +84,7 @@ GreenPassMenu::GreenPassMenu()
         }
         else
         {
-            constructMenuItem<makeComponentArgs<MenuItem, SwitchQrImportDisplayAction, StaticText<TEXT_ADDCERT>>>(nvs_key);
+            constructMenuItem<makeComponentArgs<MenuItem, SwitchQrImportDisplayAction, StaticText<TEXT_ADDCERT>>>(std::move(nvs_key));
         }
     }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DELCERT>, BobbyCheckbox, DeleteModeAccessor>>();

@@ -13,7 +13,8 @@ class QrImportDisplay : public BobbyDisplay
     using Base = BobbyDisplay;
 
 public:
-    QrImportDisplay(std::string nvs_key);
+    explicit QrImportDisplay(const std::string &nvs_key);
+    explicit QrImportDisplay(std::string &&nvs_key);
 
     void start() override;
     void update() override;
@@ -22,8 +23,9 @@ public:
     void buttonPressed(espgui::Button button) override;
 
 private:
-    bool m_confirmLocked{false};
+    bool m_waitingForResult{false};
     espgui::Label m_statuslabel{5,(espgui::tft.height() / 2)-espgui::tft.fontHeight(4)};
-    tl::expected<std::string, std::string> m_expected;
+
+    tl::expected<std::string, std::string> m_result;
     std::string m_nvs_key;
 };
