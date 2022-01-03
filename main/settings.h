@@ -71,19 +71,12 @@ struct Settings
         uint16_t maxPwm;            // profileSetting
     } motortestMode;
 
-    struct Hybrid {
+    struct Hybrid { // wont convert
         UnifiedModelMode hybridMode;
         bool enable;
         int16_t activationLimit;
         int16_t deactivationLimit;
     } hybrid;
-
-    struct LockscreenSettings {
-        bool allowPresetSwitch;
-        bool keepLockedAfterReboot;
-        bool locked;
-        std::array<int8_t, 4> pin;
-    } lockscreen;
 
     struct SavedStatistics {
         uint32_t totalCentimeters;
@@ -118,11 +111,6 @@ void Settings::executeForEveryCommonSetting(T &&callable)
     callable("hybridEn", hybrid.enable);
     callable("hybridAcL", hybrid.activationLimit);
     callable("hybridDeacL", hybrid.deactivationLimit);
-
-    callable("lockAlwPresetSw", lockscreen.allowPresetSwitch);
-    callable("keepLocked", lockscreen.keepLockedAfterReboot);
-    callable("currentlyLocked", lockscreen.locked);
-    callable("lockscreenPin", lockscreen.pin);
 
     callable("totalCentimeter", savedStatistics.totalCentimeters);
 

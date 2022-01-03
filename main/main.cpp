@@ -79,7 +79,7 @@ extern "C" void app_main()
     {
         espgui::switchScreen<ButtonCalibrateDisplay>(true);
     }
-    else if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+    else if (configs.lockscreen.keepLockedAfterReboot.value && configs.lockscreen.locked.value)
     {
         espgui::switchScreen<Lockscreen>();
     }

@@ -22,6 +22,8 @@
 
 // local includes
 #include "ledstrip.h"
+#include "unifiedmodelmode.h"
+#include "displays/lockscreen.h"
 
 using namespace espconfig;
 
@@ -81,6 +83,15 @@ public:
 
     ConfigWrapper<std::string> name;
     ConfigWrapper<std::string> url;
+};
+
+class ConfiguredLockscreenDigit
+{
+public:
+    ConfiguredLockscreenDigit(const char *digitKey) :
+        digit{0, DoReset, MinMaxOrZeroValue<int8_t, 1,9>, digitKey }
+    {}
+    ConfigWrapper<int8_t> digit;
 };
 
 class ConfigContainer
@@ -248,7 +259,18 @@ public:
         ConfigWrapper<int16_t> back50VoltCalibration {5000,                                DoReset,   {},                         "batB50VCal"          };
         ConfigWrapper<bool> applyCalibration      {true,                                   DoReset,   {},                         "applyBatCal"         };
     } battery;
-    // end old settings
+
+    struct {
+        ConfigWrapper<bool> allowPresetSwitch     {true,                                   DoReset,   {},                         "lockAlwPresetSw"     };
+        ConfigWrapper<bool> keepLockedAfterReboot {false,                                  DoReset,   {},                         "keepLocked"          };
+        ConfigWrapper<bool> locked                {false,                                  DoReset,   {},                         "currentlyLocked"     };
+        std::array<ConfiguredLockscreenDigit, 4> pin {
+            ConfiguredLockscreenDigit {"lockscreenPin0"},
+            ConfiguredLockscreenDigit {"lockscreenPin1"},
+            ConfiguredLockscreenDigit {"lockscreenPin2"},
+            ConfiguredLockscreenDigit {"lockscreenPin3"}
+        };
+    } lockscreen;
 
     struct {
         ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
@@ -496,7 +518,15 @@ public:
     x(battery.back30VoltCalibration) \
     x(battery.front50VoltCalibration) \
     x(battery.back50VoltCalibration) \
-    x(battery.applyCalibration)
+    x(battery.applyCalibration) \
+    \
+    x(lockscreen.allowPresetSwitch) \
+    x(lockscreen.keepLockedAfterReboot) \
+    x(lockscreen.locked) \
+    x(lockscreen.pin[0].digit) \
+    x(lockscreen.pin[1].digit) \
+    x(lockscreen.pin[2].digit) \
+    x(lockscreen.pin[3].digit)
     //x(bleSettings.bleEnabled)
 
     template<typename T>

@@ -216,10 +216,10 @@ struct BatteryWHperKMAccessor : public NewSettingsAccessor<uint16_t> { ConfigWra
 struct BatteryApplyCalibrationAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.battery.applyCalibration; } };
 
 // Lockscreen
-struct LockscreenAllowPresetSwitchAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.allowPresetSwitch; } };
+struct LockscreenAllowPresetSwitchAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.lockscreen.allowPresetSwitch; } };
 template<uint8_t index>
-struct LockscreenPinDigitAccessor : public RefAccessorSaveSettings<int8_t> { int8_t &getRef() const override { return settings.lockscreen.pin[index]; } };
-struct LockscreenKeepLockedAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.lockscreen.keepLockedAfterReboot; } };
+struct LockscreenPinDigitAccessor : public NewSettingsAccessor<int8_t> { ConfigWrapper<int8_t> &getConfig() const override { return configs.lockscreen.pin[index].digit; } };
+struct LockscreenKeepLockedAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.lockscreen.keepLockedAfterReboot; } };
 
 // Handbremse
 struct HandbremsEnabledAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return settings.handbremse.enable; } };

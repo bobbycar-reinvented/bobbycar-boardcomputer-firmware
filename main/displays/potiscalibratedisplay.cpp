@@ -198,11 +198,10 @@ void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
         case Status::Begin:
             if (m_bootup)
                 espgui::switchScreen<StatusDisplay>();
-            else if (settings.lockscreen.keepLockedAfterReboot && settings.lockscreen.locked)
+            else if (configs.lockscreen.keepLockedAfterReboot.value && configs.lockscreen.locked.value)
             {
                 espgui::switchScreen<MainMenu>();
-                settings.lockscreen.locked = false;
-                saveSettings();
+                configs.write_config(configs.lockscreen.locked, false);
             }
             else
                 espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();

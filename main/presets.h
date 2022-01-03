@@ -130,13 +130,6 @@ constexpr Settings::Handbremse defaultHandbremse {
     .visualize = true,
 };
 
-constexpr Settings::LockscreenSettings defaultLockscreen {
-    .allowPresetSwitch = true,
-    .keepLockedAfterReboot = false,
-    .locked = false,
-    .pin = { 1, 2, 3, 4 }
-};
-
 constexpr Settings::Hybrid defaultHybrid {
     .hybridMode = UnifiedModelMode::FocTorque,
     .enable = false,
@@ -169,7 +162,6 @@ constexpr Settings defaultSettings {
     .larsmMode = defaultLarsmMode,
     .motortestMode = defaultMotortestMode,
     .hybrid = defaultHybrid,
-    .lockscreen = defaultLockscreen,
     .savedStatistics = defaultSavedStatistics,
     .handbremse = defaultHandbremse,
 #ifdef FEATURE_ESPNOW
