@@ -16,7 +16,8 @@ struct QrMenu {
 class SwitchQrDisplayAction : public virtual espgui::ActionInterface
 {
 public:
-    SwitchQrDisplayAction(qraction::QrMenu qrmenu);
+    explicit SwitchQrDisplayAction(const qraction::QrMenu &qrmenu);
+    explicit SwitchQrDisplayAction(qraction::QrMenu &&qrmenu);
 
     void triggered() override;
 private:
@@ -27,7 +28,8 @@ private:
 class SwitchQrImportDisplayAction : public virtual espgui::ActionInterface
 {
 public:
-    SwitchQrImportDisplayAction(std::string nvskey);
+    explicit SwitchQrImportDisplayAction(const std::string &nvskey);
+    explicit SwitchQrImportDisplayAction(std::string &&nvskey);
 
     void triggered() override;
 private:

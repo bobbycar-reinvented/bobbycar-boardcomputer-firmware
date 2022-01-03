@@ -12,12 +12,15 @@ constexpr const char * const TAG = "qrimport";
 // local includes
 #include "qrimport.h"
 
-// m_statuslabel needs redraw
-
 using namespace espgui;
 
-QrImportDisplay::QrImportDisplay(std::string nvs_key) :
+QrImportDisplay::QrImportDisplay(const std::string &nvs_key) :
     m_nvs_key{nvs_key}
+{
+}
+
+QrImportDisplay::QrImportDisplay(std::string &&nvs_key) :
+    m_nvs_key{std::move(nvs_key)}
 {
 }
 
@@ -26,48 +29,62 @@ void QrImportDisplay::start()
     Base::start();
 
     m_statuslabel.start();
+
     qrimport::setup_request();
-    m_statuslabel.redraw(fmt::format("Request not running."));
+
+    if (const auto result = qrimport::start_qr_request(); result)
+    {
+        ESP_LOGI(TAG, "started request, waiting for result");
+        m_waitingForResult = true;
+    }
+    else
+    {
+        ESP_LOGE(TAG, "could not start request: %.*s", result.error().size(), result.error().data());
+        m_result = tl::make_unexpected(std::move(result).error());
+    }
 }
 
 void QrImportDisplay::update()
 {
     Base::update();
 
-    m_expected = qrimport::check_request();
-    if (m_expected)
+    if (!m_waitingForResult)
+        return;
+
+    if (qrimport::get_request_running())
+        return;
+
+    m_waitingForResult = false;
+
+    m_result = qrimport::check_request();
+    if (m_result)
     {
-        ESP_LOGI(TAG, "%s", fmt::format("{} => {}", m_nvs_key, *m_expected).c_str());
-        if (const auto result = qrimport::set_qr_code(m_nvs_key, *m_expected); !result)
-        {
-            tft.setTextColor(TFT_RED);
-            m_statuslabel.redraw(esp_err_to_name(result.error()));
-            tft.setTextColor(TFT_WHITE);
-            m_confirmLocked = true;
-        }
-        else
-        {
-            switchScreen<GreenPassMenu>();
-        }
+        ESP_LOGI(TAG, "%.*s => %.*s", m_nvs_key.size(), m_nvs_key.data(), m_result->size(), m_result->data());
+        if (const auto result = qrimport::set_qr_code(m_nvs_key, *m_result); !result)
+            m_result = tl::make_unexpected(fmt::format("saving qr failed: {}", esp_err_to_name(result.error())));
     }
+    else
+        ESP_LOGW(TAG, "failed %.*s => %.*s", m_nvs_key.size(), m_nvs_key.data(), m_result.error().size(), m_result.error().data());
 }
 
 void QrImportDisplay::redraw()
 {
     Base::redraw();
 
-    if (qrimport::get_request_running())
+    if (m_waitingForResult)
     {
-        if (!m_expected)
-        {
-            tft.setTextColor(TFT_RED);
-            m_statuslabel.redraw(*m_expected);
-            tft.setTextColor(TFT_WHITE);
-        }
+        tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+        m_statuslabel.redraw("In progress");
+    }
+    else if (!m_result)
+    {
+        tft.setTextColor(TFT_RED, TFT_BLACK);
+        m_statuslabel.redraw(m_result.error());
     }
     else
     {
-        m_statuslabel.redraw("Request not running");
+        tft.setTextColor(TFT_GREEN, TFT_BLACK);
+        m_statuslabel.redraw("OK");
     }
 }
 
@@ -79,22 +96,10 @@ void QrImportDisplay::buttonPressed(espgui::Button button)
     {
     using espgui::Button;
     case Button::Left:
-        if (!qrimport::get_request_running())
-        {
+        if (!m_waitingForResult)
             switchScreen<GreenPassMenu>();
-        }
-        break;
-    case Button::Right:
-        // start request
-        if (!m_confirmLocked)
-        {
-            if (const auto result = qrimport::start_qr_request(); !result)
-            {
-                switchScreen<GreenPassMenu>();
-            }
-            else
-                m_confirmLocked = true;
-        }
+        else
+            ESP_LOGW(TAG, "tried to leave while waiting for result");
         break;
     default:;
     }

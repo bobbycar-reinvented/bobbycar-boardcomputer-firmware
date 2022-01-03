@@ -135,6 +135,12 @@ tl::expected<std::string, std::string> check_request()
     {
         return tl::make_unexpected(result.error());
     }
+    else if (http_request->statusCode() != 200)
+    {
+        return tl::make_unexpected(fmt::format("unexpected response status: {} {}",
+                                               http_request->statusCode(),
+                                               http_request->takeBuffer()));
+    }
     else
     {
         ESP_LOGI(TAG, "%.*s", http_request->buffer().size(), http_request->buffer().data());
@@ -146,9 +152,10 @@ bool get_request_running()
 {
     if (!http_request.constructed())
     {
+        ESP_LOGW(TAG, "not constructed");
         return false;
     }
 
-    return http_request->finished();
+    return !http_request->finished();
 }
 } // namespace
