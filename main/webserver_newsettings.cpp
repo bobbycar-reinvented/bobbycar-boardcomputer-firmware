@@ -24,6 +24,7 @@
 #include "newsettings.h"
 #include "webserver_lock.h"
 #include "ledstrip.h"
+#include "handbremse.h"
 
 #ifdef FEATURE_WEBSERVER
 using namespace std::chrono_literals;
@@ -53,7 +54,8 @@ typename std::enable_if<
     !std::is_same_v<T, wifi_auth_mode_t> &&
     !std::is_same_v<T, sntp_sync_mode_t> &&
     !std::is_same_v<T, espchrono::DayLightSavingMode> &&
-    !std::is_same_v<T, OtaAnimationModes>
+    !std::is_same_v<T, OtaAnimationModes> &&
+    !std::is_same_v<T, HandbremseMode>
 , void>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
@@ -214,6 +216,20 @@ showInputForSetting(std::string_view key, T value, std::string &body)
         body += esphttpdutils::htmlentities(enumKey);
     });
 }
+
+template<typename T>
+typename std::enable_if<
+    std::is_same_v<T, HandbremseMode>
+, void>::type
+showInputForSetting(std::string_view key, T value, std::string &body)
+{
+    HtmlTag select{"select", fmt::format("name=\"{}\"", esphttpdutils::htmlentities(key)), body};
+
+    iterateHandbremseMode([&](T enumVal, std::string_view enumKey){
+        HtmlTag option{"option", fmt::format("value=\"{}\"{}", std::to_underlying(enumVal), value == enumVal ? " selected" : ""), body};
+        body += esphttpdutils::htmlentities(enumKey);
+    });
+}
 } // namespace
 
 esp_err_t webserver_newSettings_handler(httpd_req_t *req)
@@ -360,7 +376,8 @@ typename std::enable_if<
     !std::is_same_v<T, wifi_auth_mode_t> &&
     !std::is_same_v<T, sntp_sync_mode_t> &&
     !std::is_same_v<T, espchrono::DayLightSavingMode> &&
-    !std::is_same_v<T, OtaAnimationModes>
+    !std::is_same_v<T, OtaAnimationModes> &&
+    !std::is_same_v<T, HandbremseMode>
 , tl::expected<void, std::string>>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
 {
@@ -444,7 +461,8 @@ typename std::enable_if<
     std::is_same_v<T, wifi_auth_mode_t> ||
     std::is_same_v<T, sntp_sync_mode_t> ||
     std::is_same_v<T, espchrono::DayLightSavingMode> ||
-    std::is_same_v<T, OtaAnimationModes>
+    std::is_same_v<T, OtaAnimationModes> ||
+    std::is_same_v<T, HandbremseMode>
 , tl::expected<void, std::string>>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
 {
