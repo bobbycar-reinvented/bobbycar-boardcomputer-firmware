@@ -23,6 +23,7 @@
 // local includes
 #include "newsettings.h"
 #include "webserver_lock.h"
+#include "ledstrip.h"
 
 #ifdef FEATURE_WEBSERVER
 using namespace std::chrono_literals;
@@ -51,7 +52,8 @@ typename std::enable_if<
     !std::is_same_v<T, std::optional<wifi_stack::mac_t>> &&
     !std::is_same_v<T, wifi_auth_mode_t> &&
     !std::is_same_v<T, sntp_sync_mode_t> &&
-    !std::is_same_v<T, espchrono::DayLightSavingMode>
+    !std::is_same_v<T, espchrono::DayLightSavingMode> &&
+    !std::is_same_v<T, OtaAnimationModes>
 , void>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
@@ -194,6 +196,20 @@ showInputForSetting(std::string_view key, T value, std::string &body)
     HtmlTag select{"select", fmt::format("name=\"{}\"", esphttpdutils::htmlentities(key)), body};
 
     espchrono::iterateDayLightSavingMode([&](T enumVal, std::string_view enumKey){
+        HtmlTag option{"option", fmt::format("value=\"{}\"{}", std::to_underlying(enumVal), value == enumVal ? " selected" : ""), body};
+        body += esphttpdutils::htmlentities(enumKey);
+    });
+}
+
+template<typename T>
+typename std::enable_if<
+    std::is_same_v<T, OtaAnimationModes>
+, void>::type
+showInputForSetting(std::string_view key, T value, std::string &body)
+{
+    HtmlTag select{"select", fmt::format("name=\"{}\"", esphttpdutils::htmlentities(key)), body};
+
+    iterateOtaAnimationModes([&](T enumVal, std::string_view enumKey){
         HtmlTag option{"option", fmt::format("value=\"{}\"{}", std::to_underlying(enumVal), value == enumVal ? " selected" : ""), body};
         body += esphttpdutils::htmlentities(enumKey);
     });
@@ -343,7 +359,8 @@ typename std::enable_if<
     !std::is_same_v<T, std::optional<wifi_stack::mac_t>> &&
     !std::is_same_v<T, wifi_auth_mode_t> &&
     !std::is_same_v<T, sntp_sync_mode_t> &&
-    !std::is_same_v<T, espchrono::DayLightSavingMode>
+    !std::is_same_v<T, espchrono::DayLightSavingMode> &&
+    !std::is_same_v<T, OtaAnimationModes>
 , tl::expected<void, std::string>>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
 {
@@ -426,7 +443,8 @@ template<typename T>
 typename std::enable_if<
     std::is_same_v<T, wifi_auth_mode_t> ||
     std::is_same_v<T, sntp_sync_mode_t> ||
-    std::is_same_v<T, espchrono::DayLightSavingMode>
+    std::is_same_v<T, espchrono::DayLightSavingMode> ||
+    std::is_same_v<T, OtaAnimationModes>
 , tl::expected<void, std::string>>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
 {
