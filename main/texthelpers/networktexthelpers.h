@@ -25,3 +25,9 @@ public:
 private:
     const uint8_t m_index;
 };
+
+class WifiTxPowerText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override;
+};

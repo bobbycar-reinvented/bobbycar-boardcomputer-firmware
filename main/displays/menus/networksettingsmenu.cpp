@@ -31,6 +31,7 @@ NetworkSettingsMenu::NetworkSettingsMenu()
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{0});
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{1});
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{2});
+    constructMenuItem<makeComponent<MenuItem,     WifiTxPowerText,              DummyAction>>();
     constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,        SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
 }
 
