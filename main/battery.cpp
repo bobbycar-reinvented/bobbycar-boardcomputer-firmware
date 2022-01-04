@@ -197,4 +197,5 @@ std::string getBatteryDebugString()
 
 namespace battery {
 std::optional<float> bootBatPercentage;
+std::optional<float> bootBatWh;
 }

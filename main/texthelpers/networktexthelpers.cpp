@@ -40,3 +40,11 @@ std::string DnsText::text() const
         text += wifi_stack::toString(*dns_ip);
     return text;
 }
+
+std::string WifiTxPowerText::text() const
+{
+    int8_t power;
+    if(const auto err = esp_wifi_get_max_tx_power(&power); err == ESP_OK)
+        return fmt::format("&stx-power: {:.2f} dBm ({})&f", power * 0.25f, power);
+    return "";
+}

@@ -9,6 +9,8 @@
 #include <textwithvaluehelper.h>
 #include <fmt/core.h>
 
+#include <tftinstance.h>
+
 // Local includes
 #include "utils.h"
 #include "icons/settings.h"
@@ -38,6 +40,15 @@ constexpr char TEXT_VOLTAGECALIBRATION_RESET[] = "Reset calibration";
 constexpr char TEXT_BACK[] = "Back";
 
 class CurrentBatteryStatusText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryPercentageString(); } };
+class WhStatisticsText : public virtual espgui::TextInterface { public: std::string text() const override
+    {
+        if (battery::bootBatWh)
+        {
+            return fmt::format("&s&2{}Wh => &1{}Wh &6({})", (int)*battery::bootBatWh, (int)getRemainingWattHours(), (int)getRemainingWattHours() - (int)battery::bootBatWh.value());
+        }
+        return "";
+    }
+};
 
 using BatteryCellSeriesChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
@@ -64,10 +75,10 @@ using BatteryWHperKMChangeScreen = espgui::makeComponent<
 >;
 } // namespace
 
+using namespace espgui;
+
 BatteryMenu::BatteryMenu()
 {
-    using namespace espgui;
-
     constructMenuItem<makeComponent<MenuItem, CurrentBatteryStatusText,                                                 DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                                DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CELL_SERIES, BatterySeriesCellsAccessor>,        SwitchScreenAction<BatteryCellSeriesChangeScreen>>>();
@@ -75,6 +86,7 @@ BatteryMenu::BatteryMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BATTERY_WHKM, BatteryWHperKMAccessor>,           SwitchScreenAction<BatteryWHperKMChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECT_CELL_TYPE>,                                        SwitchScreenAction<BatteryTypeMenu>>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                                DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, WhStatisticsText,                                                         DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_CALIBRATE>,                                       SwitchScreenAction<CalibrateVoltageDisplay>, StaticMenuItemIcon<&bobbyicons::settings>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
@@ -82,6 +94,13 @@ BatteryMenu::BatteryMenu()
 std::string BatteryMenu::text() const
 {
     return TEXT_BATTERY;
+}
+
+void BatteryMenu::initScreen()
+{
+    Base::initScreen();
+    m_batPercentBootLabel.start();
+    m_batPercentNowLabel.start();
 }
 
 void BatteryMenu::start()
@@ -103,7 +122,16 @@ void BatteryMenu::redraw()
 
     const auto batPercent = getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value));
     if (battery::bootBatPercentage)
+    {
         m_doubleProgressBarBatPercentage.redraw(batPercent, *battery::bootBatPercentage);
+
+        tft.setTextFont(2);
+        tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
+        m_batPercentNowLabel.redraw(fmt::format("{:.2f} %", batPercent));
+        m_batPercentBootLabel.redraw(fmt::format("{:.2f} %", *battery::bootBatPercentage));
+        tft.setTextFont(4);
+        tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    }
 }
 
 void BatteryMenu::back()

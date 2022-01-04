@@ -557,6 +557,7 @@ public:
 #define HELPER(x) callback(x);
         NEW_SETTINGS(HELPER)
 #undef HELPER
+        callback(bleSettings.bleEnabled);
     }
 
     auto getAllConfigParams()

@@ -15,7 +15,6 @@ jobs:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
       SONAR_CACHE_DIR: sonar_cache
-    environment: Analysis
     strategy:
       fail-fast: false
       matrix:

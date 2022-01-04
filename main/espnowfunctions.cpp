@@ -12,10 +12,6 @@
 #include "newsettings.h"
 
 namespace espnow {
-namespace {
-constexpr const char * const TAG = "BOBBY_ESP_NOW";
-} // namespace
-
 uint16_t lastYear; // Used for esp-now timesync
 
 std::deque<esp_now_message_t> message_queue{};
@@ -24,6 +20,33 @@ uint8_t initialized{0};
 
 bool receiveTimeStamp{true};
 bool receiveTsFromOtherBobbycars{true};
+
+namespace {
+constexpr const char * const TAG = "BOBBY_ESP_NOW";
+
+inline bool espnow_init_allowed() {
+    const auto wifi_mode = wifi_stack::get_wifi_mode();
+    return
+    (
+        (configs.espnow.syncBlink.value || configs.espnow.syncTime.value || configs.espnow.syncTimeWithOthers.value)
+        &&
+        (
+            (configs.wifiApEnabled.value && wifi_stack::get_wifi_mode() == WIFI_MODE_AP)
+            ||
+            (
+                configs.wifiStaEnabled.value
+                &&
+                wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::NO_SHIELD
+                &&
+                (
+                    wifi_mode == WIFI_MODE_STA ||
+                    wifi_mode == WIFI_MODE_APSTA
+                )
+            )
+        )
+    );
+}
+} // namespace
 
 namespace {
 extern "C" void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data_len)
@@ -56,7 +79,7 @@ void initESPNow()
 
     if (initialized < 1)
     {
-        if (!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA))
+        if (!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA) && (configs.espnow.syncBlink.value || configs.espnow.syncBlink.value || configs.espnow.syncBlink.value))
         {
             ESP_LOGW(TAG, "cannot execute esp_now_init(): tcp stack is down.");
             return;
@@ -119,12 +142,12 @@ void initESPNow()
 
 void handle()
 {
-    if (initialized < 255 && !(!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA)))
+    if (initialized < 255 && espnow_init_allowed())
     {
         initESPNow();
         return;
     }
-    else if (!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA))
+    else if (!espnow_init_allowed() && initialized >= 255)
     {
         if (initialized > 0)
         {
@@ -189,7 +212,7 @@ void handle()
             if (msg.type == "T")
             {
                 if (!receiveTimeStamp || !configs.espnow.syncTime.value)
-                    return;
+                    goto clear;
 
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
                 {
@@ -203,7 +226,7 @@ void handle()
             else if (msg.type == "BOBBYT")
             {
                 if (!receiveTsFromOtherBobbycars || !configs.espnow.syncTimeWithOthers.value)
-                    return;
+                    goto clear;
 
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
                 {
@@ -220,7 +243,8 @@ void handle()
                 ESP_LOGI(TAG, "Unkown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
             }
         }
-        message_queue.clear();
+clear:
+        message_queue.erase(std::begin(message_queue), std::end(message_queue));
     }
 }
 
