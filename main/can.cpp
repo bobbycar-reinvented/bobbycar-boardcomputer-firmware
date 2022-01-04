@@ -6,8 +6,8 @@
 #include <optional>
 
 // esp-idf
-#include <driver/gpio.h>
 #include <driver/twai.h>
+#include <driver/gpio.h>
 #include <esp_log.h>
 
 // 3rdparty lib includes
@@ -27,6 +27,8 @@ namespace can {
 uint32_t can_total_error_cnt;
 namespace {
 constexpr const char * const TAG = "BOBBYCAN";
+
+bool tryParseCanInput();
 } // namespace
 
 std::optional<int16_t> can_gas, can_brems;
@@ -75,6 +77,13 @@ void initCan()
 
         return;
     }
+}
+
+void updateCan()
+{
+    for (int i = 0; i < 4; i++)
+        if (!tryParseCanInput())
+            break;
 }
 
 namespace {
@@ -189,7 +198,6 @@ bool parseBoardcomputerCanMessage(const twai_message_t &message)
 
     return false;
 }
-} // namespace
 
 bool tryParseCanInput()
 {
@@ -249,12 +257,7 @@ bool tryParseCanInput()
     return true;
 }
 
-void parseCanInput()
-{
-    for (int i = 0; i < 4; i++)
-        if (!tryParseCanInput())
-            break;
-}
+} // namespace
 
 void sendCanCommands()
 {

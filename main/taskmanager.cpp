@@ -119,7 +119,7 @@ espcpputils::SchedulerTask schedulerTasksArr[] {
 #endif
 #endif
 #ifdef FEATURE_CAN
-    espcpputils::SchedulerTask { "can",            can::initCan,          can::parseCanInput,      10ms  },
+    espcpputils::SchedulerTask { "can",            can::initCan,          can::updateCan,          10ms  },
 #endif
     espcpputils::SchedulerTask { "debuginput",     initDebugInput,        handleDebugInput,        50ms  },
 #ifdef FEATURE_SERIAL
