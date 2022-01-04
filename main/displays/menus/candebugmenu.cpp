@@ -118,6 +118,7 @@ protected:
     std::string canStatusText(const twai_status_info_t &can_status_info) const override { return std::to_string(can_status_info.rx_missed_count); }
 };
 
+#ifndef OLD_IDF
 class CanStatusRxOverrunCountText : public CanStatusText
 {
 public:
@@ -127,6 +128,7 @@ protected:
     std::string canStatusName() const override { return "&srx_overrun_count"; }
     std::string canStatusText(const twai_status_info_t &can_status_info) const override { return std::to_string(can_status_info.rx_overrun_count); }
 };
+#endif
 
 class CanStatusArbLostCountText : public CanStatusText
 {
@@ -185,7 +187,9 @@ CanDebugMenu::CanDebugMenu()
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusRxErrorCounterText, DummyAction>>(m_last_can_status_info);
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusTxFailedCountText, DummyAction>>(m_last_can_status_info);
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusRxFailedCountText, DummyAction>>(m_last_can_status_info);
+#ifndef OLD_IDF
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusRxOverrunCountText, DummyAction>>(m_last_can_status_info);
+#endif
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusArbLostCountText, DummyAction>>(m_last_can_status_info);
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusBusErrorCountText, DummyAction>>(m_last_can_status_info);
     constructMenuItem<makeComponentArgs<MenuItem, CanPendingTxCountText, DummyAction>>();
