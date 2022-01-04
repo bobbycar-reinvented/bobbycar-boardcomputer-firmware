@@ -94,6 +94,9 @@ extern "C" void app_main()
     {
         const auto now = espchrono::millis_clock::now();
 
+//       if (!heap_caps_check_integrity_all(true))
+//            ESP_LOGW(TAG, "OIS IM OARSCH!!!!!");
+
         for (auto &schedulerTask : schedulerTasks)
         {
             schedulerTask.loop();
@@ -124,7 +127,10 @@ extern "C" void app_main()
                 }
                 avgVoltage = avgVoltage / controllers.size();
                 if (avgVoltage > 30)
+                {
                     battery::bootBatPercentage = getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value));
+                    battery::bootBatWh = getRemainingWattHours();
+                }
             }
         }
     }
