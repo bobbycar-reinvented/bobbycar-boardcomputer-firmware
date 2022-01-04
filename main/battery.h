@@ -35,4 +35,5 @@ float getTarget_mAh();
 
 namespace battery {
 extern std::optional<float> bootBatPercentage;
+extern std::optional<float> bootBatWh;
 }
