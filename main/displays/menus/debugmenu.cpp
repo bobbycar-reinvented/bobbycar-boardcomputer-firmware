@@ -1,11 +1,10 @@
 #include "debugmenu.h"
 
 // 3rdparty lib includes
-#include "menuitem.h"
-#include "actions/switchscreenaction.h"
-#include "actions/dummyaction.h"
-#include "icons/back.h"
-#include "accessors/settingsaccessors.h"
+#include <menuitem.h>
+#include <actions/switchscreenaction.h>
+#include <actions/dummyaction.h>
+#include <icons/back.h>
 #include <screenmanager.h>
 
 // local includes
@@ -17,8 +16,12 @@
 #include "icons/battery.h"
 #include "debugcolorhelpers.h"
 #include "esptexthelpers.h"
+#include "accessors/settingsaccessors.h"
 #include "displays/qrcodedebug.h"
 #include "displays/menus/taskmanagermenu.h"
+#ifdef FEATURE_CAN
+#include "displays/menus/candebugmenu.h"
+#endif
 #include "displays/menus/commanddebugmenu.h"
 #include "displays/menus/motorstatedebugmenu.h"
 #include "displays/menus/feedbackdebugmenu.h"
@@ -31,6 +34,9 @@
 namespace {
 constexpr char TEXT_DEBUG[] = "Debug";
 constexpr char TEXT_TASKMANAGER[] = "Taskmanager";
+#ifdef FEATURE_CAN
+constexpr char TEXT_CANDEBUG[] = "CAN Debug";
+#endif
 constexpr char TEXT_QRCODE_DEBUG[] = "QR Debug";
 constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
 constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
@@ -57,6 +63,7 @@ DebugMenu::DebugMenu()
 {
     using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TASKMANAGER>,          SwitchScreenAction<TaskmanagerMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANDEBUG>,             SwitchScreenAction<CanDebugMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QRCODE_DEBUG>,         SwitchScreenAction<QrCodeDebugDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         SwitchScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
 #ifdef FEATURE_UDPCLOUD
@@ -95,5 +102,5 @@ std::string DebugMenu::text() const
 
 void DebugMenu::back()
 {
-    switchScreen<MainMenu>();
+    espgui::switchScreen<MainMenu>();
 }
