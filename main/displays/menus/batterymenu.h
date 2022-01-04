@@ -21,6 +21,6 @@ public:
 
 private:
     bobbygui::DoubleProgressBar m_doubleProgressBarBatPercentage{75, 68, 90, 24, 0, 100, TFT_RED, TFT_GREEN};
-    espgui::Label m_batPercentNowLabel {170, 67};
-    espgui::Label m_batPercentBootLabel{170, 83};
+    espgui::Label m_batPercentNowLabel {170, 68};
+    espgui::Label m_batPercentBootLabel{170, 82};
 };
