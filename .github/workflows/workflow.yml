@@ -481,5 +481,5 @@ jobs:
           cd repository
           sonar-scanner \
               --define sonar.host.url="https://sonarcloud.io" \
-              --define sonar.cfamily.build-wrapper-output="../${{ env.BUILD_WRAPPER_OUT_DIR }}" \
+              --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}" \
               --define sonar.cfamily.cache.path="../${{ env.SONAR_CACHE_DIR }}"
