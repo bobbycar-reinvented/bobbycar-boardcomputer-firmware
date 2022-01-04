@@ -213,7 +213,7 @@ struct BatteryApplyCalibrationAccessor : public NewSettingsAccessor<bool> { Conf
 // Lockscreen
 struct LockscreenAllowPresetSwitchAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.lockscreen.allowPresetSwitch; } };
 template<uint8_t index>
-struct LockscreenPinDigitAccessor : public NewSettingsAccessor<int8_t> { ConfigWrapper<int8_t> &getConfig() const override { return configs.lockscreen.pin[index].digit; } };
+struct LockscreenPinDigitAccessor : public NewSettingsAccessor<int8_t> { ConfigWrapper<int8_t> &getConfig() const override { return configs.lockscreen.pin[index]; } };
 struct LockscreenKeepLockedAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.lockscreen.keepLockedAfterReboot; } };
 
 // Handbremse
