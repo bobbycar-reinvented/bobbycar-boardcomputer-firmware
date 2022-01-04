@@ -261,7 +261,7 @@ jobs:
       - name: Build firmware
         run: |
           cd repository
-          export CCACHE_MAXSIZE=400M CCACHE_BASEDIR="$(pwd)"
+          export CCACHE_MAXSIZE=1024M CCACHE_BASEDIR="$(pwd)"
           . export.sh
           ./switchconf.sh ${{ matrix.node }}
           idf.py --ccache build
@@ -373,8 +373,7 @@ jobs:
           java-version: 11
 
       - name: Setup sonar-build-wrapper
-        run: |
-          echo "$(pwd)/sonar-build-wrapper/build-wrapper-linux-x86" >> $GITHUB_PATH
+        run: echo "$(pwd)/sonar-build-wrapper/build-wrapper-linux-x86" >> $GITHUB_PATH
 
       - name: Setup ccache
         uses: 0xFEEDC0DE64/setup_ccache@main
@@ -384,7 +383,7 @@ jobs:
       - name: Build firmware
         run: |
           cd repository
-          export CCACHE_MAXSIZE=400M CCACHE_BASEDIR="$(pwd)"
+          export CCACHE_MAXSIZE=1024M CCACHE_BASEDIR="$(pwd)"
           . export.sh
           ./switchconf.sh allfeatures
           build-wrapper-linux-x86-64 --out-dir "${{ env.BUILD_WRAPPER_OUT_DIR }}" idf.py --ccache build
@@ -464,10 +463,9 @@ jobs:
           java-version: 11
 
       - name: Setup sonar-scanner
-        run: |
-          echo "$(pwd)/sonar-scanner/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
+        run: echo "$(pwd)/sonar-scanner/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
 
-      - name: Cache sonar-scanner
+      - name: Cache sonar-scanner-cache
         uses: 0xFEEDC0DE64/cache-with-update@update-cache-on-cachehit
         with:
           path: ${{ env.SONAR_CACHE_DIR }}
