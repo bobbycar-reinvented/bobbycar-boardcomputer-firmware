@@ -5,6 +5,7 @@
 #include "espnowfunctions.h"
 #endif
 #include "newsettings.h"
+#include "wifi_bobbycar.h"
 
 namespace quickactions {
 
@@ -45,6 +46,9 @@ void handle_bobby_quickaction(espgui::Button button)
         case BobbyQuickActions::OPEN_GARAGE:
             open_garage();
             break;
+        case BobbyQuickActions::WIFI_SCAN:
+            action_wifi_scan();
+            break;
         default:
             return;
         }
@@ -65,6 +69,15 @@ void open_garage()
         }
     }
 #endif
+}
+
+void action_wifi_scan()
+{
+    if (const auto result = wifi_scan(); result != ESP_OK)
+    {
+        ESP_LOGE("BOBBY", "wifi_scan() failed with %s", esp_err_to_name(result));
+        return;
+    }
 }
 
 void blink_left()
