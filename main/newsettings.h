@@ -244,6 +244,7 @@ public:
         ConfigWrapper<bool> enableAnimBlink       {false,                                  DoReset,   {},                         "enAnimBlink"         };
         ConfigWrapper<OtaAnimationModes> otaMode  {OtaAnimationModes::GreenProgressBar,    DoReset,   {},                         "ledOtaAnim"          };
         ConfigWrapper<uint32_t>     maxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
+        ConfigWrapper<bool> enableVisualizeBlink  {false,                                  DoReset,   {},                         "enVisualBlink"       };
     } ledstrip;
 
     struct {
@@ -530,6 +531,7 @@ public:
     x(ledstrip.enableAnimBlink) \
     x(ledstrip.otaMode) \
     x(ledstrip.maxMilliamps) \
+    x(ledstrip.enableVisualizeBlink) \
     \
     x(battery.cellsSeries) \
     x(battery.cellsParallel) \

@@ -22,6 +22,7 @@ constexpr char TEXT_ANIMATION_BLINKLEFT[] = "Blink Left";
 constexpr char TEXT_ANIMATION_BLINKRIGHT[] = "Blink Right";
 constexpr char TEXT_ANIMATION_BLINKBOTH[] = "Blink Both";
 constexpr char TEXT_LEDSTRIP_EN_BLINK_ANIM[] = "Animated Blink";
+constexpr char TEXT_LEDSTRIP_VISUALIZE_BLINK[] = "Visualize Blink";
 constexpr char TEXT_BACK[] = "Back";
 
 class CurrentSelectedBlinkAnimationText : public virtual espgui::TextInterface
@@ -42,6 +43,7 @@ LedstripSelectBlinkMenu::LedstripSelectBlinkMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BLINKRIGHT>,         LedstripAnimationBlinkRightAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BLINKBOTH>,          LedstripAnimationBlinkBothAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_EN_BLINK_ANIM>,       BobbyCheckbox, LedstripEnableBlinkAnimationAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_VISUALIZE_BLINK>,     BobbyCheckbox, LedstripEnableVisualizeBlinkAnimationAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         SwitchScreenAction<LedstripMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

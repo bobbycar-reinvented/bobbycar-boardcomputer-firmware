@@ -202,6 +202,7 @@ struct LedstripEnableBlinkAnimationAccessor : public NewSettingsAccessor<bool> {
 #ifdef FEATURE_OTA
 struct LedstripOtaAnimationAccessor : public NewSettingsAccessor<OtaAnimationModes> { ConfigWrapper<OtaAnimationModes> &getConfig() const override { return configs.ledstrip.otaMode; } };
 #endif
+struct LedstripEnableVisualizeBlinkAnimationAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableVisualizeBlink; } };
 #endif
 
 // Battery
