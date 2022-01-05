@@ -23,8 +23,10 @@ bool receiveTsFromOtherBobbycars{true};
 
 namespace {
 constexpr const char * const TAG = "BOBBY_ESP_NOW";
+} // namespace
 
-inline bool espnow_init_allowed() {
+bool espnow_init_allowed()
+{
     const auto wifi_mode = wifi_stack::get_wifi_mode();
     return
     (
@@ -46,7 +48,6 @@ inline bool espnow_init_allowed() {
         )
     );
 }
-} // namespace
 
 namespace {
 extern "C" void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data_len)

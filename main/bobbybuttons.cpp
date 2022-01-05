@@ -12,6 +12,8 @@
 #include "ledstrip.h"
 #endif
 
+#include "bobbyquickactions.h"
+
 namespace {
 constexpr const char TAG[] = "BUTTONS";
 } // namespace
@@ -69,51 +71,12 @@ void buttonPressedCommon(espgui::Button button)
     case BobbyButton::Profile3:
         settingsutils::switchProfile(3);
         break;
+
     case BobbyButton::Left2:
-#ifdef FEATURE_LEDSTRIP
-        if (blinkAnimation == LEDSTRIP_OVERWRITE_NONE) //transition from off to left
-        {
-            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKLEFT;
-        }
-        else if (blinkAnimation == LEDSTRIP_OVERWRITE_BLINKRIGHT) // transition to warning
-        {
-            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKBOTH;
-        }
-        else // transition to off
-        {
-            blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
-        }
-#endif
-        break;
     case BobbyButton::Right2:
-#ifdef FEATURE_LEDSTRIP
-        if (blinkAnimation == LEDSTRIP_OVERWRITE_NONE) //transition from off to right
-        {
-            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKRIGHT;
-        }
-        else if (blinkAnimation == LEDSTRIP_OVERWRITE_BLINKLEFT) // transition to warning
-        {
-            blinkAnimation = LEDSTRIP_OVERWRITE_BLINKBOTH;
-        }
-        else // transition to off
-        {
-            blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
-        }
-#endif
-        break;
     case BobbyButton::Up2:
-        if (configs.handbremse.enable.value)
-        {
-            using namespace handbremse;
-            if (stateWish == StateWish::brake || angezogen)
-                stateWish = StateWish::release;
-            else
-                stateWish = StateWish::brake;
-            wishTimer = espchrono::millis_clock::now();
-        }
-        break;
     case BobbyButton::Down2:
-        /* TODO */
+        quickactions::handle_bobby_quickaction(button);
         break;
     default:;
     }

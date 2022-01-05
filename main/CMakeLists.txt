@@ -45,6 +45,7 @@ set(headers
     buildserver.h
     can.h
     changevaluedisplay_bluetoothmode.h
+    changevaluedisplay_bobbyquickactions.h
     changevaluedisplay_controlmode.h
     changevaluedisplay_controltype.h
     changevaluedisplay_handbremsmode.h
@@ -123,6 +124,7 @@ set(headers
     displays/menus/selectmodemenu.h
     displays/menus/selectotabuildmenu.h
     displays/menus/settingsmenu.h
+    displays/menus/setupquickactionsmenu.h
     displays/menus/statisticsmenu.h
     displays/menus/taskmanagermenu.h
     displays/menus/tempomatmodesettingsmenu.h
@@ -273,6 +275,7 @@ set(sources
     buildserver.cpp
     can.cpp
     changevaluedisplay_bluetoothmode.cpp
+    changevaluedisplay_bobbyquickactions.cpp
     changevaluedisplay_controlmode.cpp
     changevaluedisplay_controltype.cpp
     changevaluedisplay_handbremsmode.cpp
@@ -349,6 +352,7 @@ set(sources
     displays/menus/selectmodemenu.cpp
     displays/menus/selectotabuildmenu.cpp
     displays/menus/settingsmenu.cpp
+    displays/menus/setupquickactionsmenu.cpp
     displays/menus/statisticsmenu.cpp
     displays/menus/taskmanagermenu.cpp
     displays/menus/tempomatmodesettingsmenu.cpp

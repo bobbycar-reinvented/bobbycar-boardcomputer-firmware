@@ -57,7 +57,7 @@ void GarageMenu::back()
 }
 
 namespace {
-void SendEspNowMessageAction:: triggered()
+void SendEspNowMessageAction::triggered()
 {
     if (const auto error = espnow::send_espnow_message(fmt::format("BOBBYOPEN:{}:{}", configs.wireless_door_configs[m_index].doorId.value, configs.wireless_door_configs[m_index].doorToken.value)); error != ESP_OK)
     {
