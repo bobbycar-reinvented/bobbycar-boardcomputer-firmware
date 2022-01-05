@@ -85,12 +85,42 @@ void StatusDisplay::redraw()
         lastRedraw = now;
     }
 
-    if (configs.handbremse.enable.value && configs.handbremse.visualize.value && handbremse::angezogen)
-        tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_RED);
-    else if (configs.handbremse.enable.value && configs.handbremse.visualize.value && handbremse::stateWish == handbremse::StateWish::brake)
-        tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_YELLOW);
-    else
-        tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_BLACK);
+    {
+        static bool handbremse_fill_with_black;
+        if (configs.handbremse.enable.value && configs.handbremse.visualize.value && handbremse::angezogen)
+        {
+            tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_RED);
+            handbremse_fill_with_black = true;
+        }
+        else if (configs.handbremse.enable.value && configs.handbremse.visualize.value && handbremse::stateWish == handbremse::StateWish::brake)
+        {
+            tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_YELLOW);
+            handbremse_fill_with_black = true;
+        }
+        else if (handbremse_fill_with_black)
+        {
+            handbremse_fill_with_black = false;
+            tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_BLACK);
+        }
+    }
+
+    {
+        static bool blink_fill_with_black;
+        if (configs.ledstrip.enableVisualizeBlink.value && (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) && (blinkAnimation > 0))
+        {
+            if (BLINK_LEFT_EXPR)
+                tft.fillRect(0, 0, tft.width() / 2, 6, TFT_YELLOW);
+            if (BLINK_RIGHT_EXPR)
+                tft.fillRect(tft.width() / 2, 0, tft.width() / 2, 6, TFT_YELLOW);
+
+            blink_fill_with_black = true;
+        }
+        else if (blink_fill_with_black)
+        {
+            blink_fill_with_black = false;
+            tft.fillRect(0, 0, tft.width(), 6, TFT_BLACK);
+        }
+    }
 
     tft.setTextFont(2);
     m_labelRawGas.redraw(raw_gas ? std::to_string(*raw_gas) : "?");
