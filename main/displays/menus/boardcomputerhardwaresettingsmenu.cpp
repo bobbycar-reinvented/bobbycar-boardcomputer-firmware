@@ -19,11 +19,13 @@
 #include "displays/menus/settingsmenu.h"
 #include "displays/buttoncalibratedisplay.h"
 #include "displays/menus/extrabuttoncalibratemenu.h"
+#include "displays/menus/setupquickactionsmenu.h"
 
 namespace {
 constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
 constexpr char TEXT_BUTTONCALIBRATE[] = "Button Calibrate";
 constexpr char TEXT_EXTRABUTTONCALIBRATE[] = "Cal other Buttons";
+constexpr char TEXT_QUICKACTIONS[] = "Quick Actions";
 constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
 constexpr char TEXT_POTISCALIBRATE[] = "Potis Calibrate";
 constexpr char TEXT_SAMPLECOUNT[] = "sampleCount";
@@ -98,6 +100,7 @@ using BremsMaxChangeScreen = espgui::makeComponent<
     espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
     espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
 >;
+
 
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
 using DPadDebounceChangeScreen = espgui::makeComponent<
@@ -175,6 +178,7 @@ BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          SwitchScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUTTONCALIBRATE>,                             SwitchScreenAction<ButtonCalibrateDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_EXTRABUTTONCALIBRATE>,                        SwitchScreenAction<ExtraButtonCalibrateMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QUICKACTIONS>,                                SwitchScreenAction<SetupQuickActionsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, GasText,                                                      DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BremsText,                                                    DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTISCALIBRATE>,                              SwitchScreenAction<PotisCalibrateDisplay>>>();

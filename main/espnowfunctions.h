@@ -19,6 +19,8 @@ struct esp_now_message_t
 extern bool receiveTimeStamp;
 extern bool receiveTsFromOtherBobbycars;
 
+extern bool espnow_init_allowed();
+
 extern std::deque<esp_now_message_t> message_queue;
 extern std::vector<esp_now_peer_info_t> peers;
 

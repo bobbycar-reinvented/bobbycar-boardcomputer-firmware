@@ -248,3 +248,9 @@ struct ButtonProfile3Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrap
 
 // Can
 struct CanResetOnErrorAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.canResetOnError; } };
+
+// Quick Actions
+struct QuickActionLeft2Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionLeft2; } };
+struct QuickActionRight2Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionRight2; } };
+struct QuickActionUp2Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionUp2; } };
+struct QuickActionDown2Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionDown2; } };

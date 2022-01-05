@@ -25,6 +25,7 @@
 #include "unifiedmodelmode.h"
 #include "displays/lockscreen.h"
 #include "handbremse.h"
+#include "bobbyquickactions.h"
 
 using namespace espconfig;
 
@@ -146,6 +147,11 @@ public:
     ConfigWrapper<uint8_t>     dpadMappingRight2  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight2"       };
     ConfigWrapper<uint8_t>     dpadMappingUp2     {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapUp2"          };
     ConfigWrapper<uint8_t>     dpadMappingDown2   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapDown2"        };
+
+    ConfigWrapper<BobbyQuickActions> quickActionLeft2{  BobbyQuickActions::BLINK_LEFT,     DoReset,   {},                           "quickActleft2"       };
+    ConfigWrapper<BobbyQuickActions> quickActionRight2{ BobbyQuickActions::BLINK_RIGHT,    DoReset,   {},                           "quickActright2"      };
+    ConfigWrapper<BobbyQuickActions> quickActionUp2{    BobbyQuickActions::NONE,           DoReset,   {},                           "quickActup2"         };
+    ConfigWrapper<BobbyQuickActions> quickActionDown2{  BobbyQuickActions::HANDBREMSE,     DoReset,   {},                           "quickActdown2"       };
 
     std::array<WirelessDoorsConfig, 5> wireless_door_configs {
         WirelessDoorsConfig { "door_id0", "door_token0" },
@@ -431,6 +437,11 @@ public:
     x(dpadMappingRight2) \
     x(dpadMappingUp2) \
     x(dpadMappingDown2) \
+    \
+    x(quickActionLeft2) \
+    x(quickActionRight2) \
+    x(quickActionUp2) \
+    x(quickActionDown2) \
     \
     x(wireless_door_configs[0].doorId) \
     x(wireless_door_configs[0].doorToken) \
