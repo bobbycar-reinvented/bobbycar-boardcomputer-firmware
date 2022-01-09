@@ -86,18 +86,8 @@ jobs:
           key: ${{ runner.os }}-repository-${{ github.sha }}
 
       - name: Verify that "Cache repostory" had a hit
-        # GitHub doesnt support if
-        #if: steps.cache-repository.outputs.cache-hit != 'true'
-        #run: git submodule update --init --recursive ${{ inputs.submodule }}
-        run: |
-          if echo ${{ steps.cache-repository.outputs.cache-hit }} | grep -c "true"
-          then
-            echo "Cache repository had a hit, good"
-          else
-            echo "Cache repository did not hit? Did the prepare step run successfully?"
-            exit 1
-          fi
-        shell: bash
+        if: ${{ steps.cache-repository.outputs.cache-hit != 'true' }}
+        run: exit 1
 
       - name: Get esp-idf release name
         id: get-esp-idf-release
@@ -113,19 +103,8 @@ jobs:
           key: ${{ runner.os }}-espressif-${{ steps.get-esp-idf-release.outputs.tag_name }}
 
       - name: Install .espressif dependencies
-        # GitHub doesnt support if
-        #if: steps.cache-espressif.outputs.cache-hit != 'true'
-        #run: $(realpath -s "repository/esp-idf")/install.sh
-        run: |
-          if echo ${{ steps.cache-espressif.outputs.cache-hit }} | grep -c "true"
-          then
-            echo "Cache hit - skipping esp-idf install"
-          else
-            $(realpath -s "repository/esp-idf")/install.sh
-          fi
-          # seems there is a caching issue sometimes, install.sh should be fast if already installed
-          #$(realpath -s "repository/esp-idf")/install.sh
-        shell: bash
+        if: ${{ steps.cache-espressif.outputs.cache-hit != 'true' }}
+        run: repository/esp-idf/install.sh
 
   install-sonar-scanner:
     runs-on: ubuntu-latest
@@ -143,18 +122,11 @@ jobs:
       - name: Download and set up sonar-scanner
         env:
           SONAR_SCANNER_DOWNLOAD_URL: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ env.SONAR_SCANNER_VERSION }}-linux.zip
-        # GitHub doesnt support if
-        #if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        #run: $(realpath -s "repository/esp-idf")/install.sh
-        run: |
-          if echo ${{ steps.cache-sonar-scanner.outputs.cache-hit }} | grep -c "true"
-          then
-            echo "Cache hit - skipping sonar-scanner download"
-          else
-            curl -sSLo sonar-scanner.zip ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
-            unzip -o sonar-scanner.zip -d sonar-scanner/
-            echo "$(pwd)/sonar-scanner/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
-          fi
+        if: ${{ steps.cache-sonar-scanner.outputs.cache-hit != 'true' }}
+        run:
+          curl -sSLo sonar-scanner.zip ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
+          unzip -o sonar-scanner.zip -d sonar-scanner/
+          echo "$(pwd)/sonar-scanner/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
 
   install-sonar-build-wrapper:
     runs-on: ubuntu-latest
@@ -170,18 +142,11 @@ jobs:
       - name: Download and set up build-wrapper (for Sonar)
         env:
           BUILD_WRAPPER_DOWNLOAD_URL: https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
-        # GitHub doesnt support if
-        #if: steps.cache-sonar-build-wrapper.outputs.cache-hit != 'true'
-        #run: $(realpath -s "repository/esp-idf")/install.sh
+        if: ${{ steps.cache-sonar-build-wrapper.outputs.cache-hit != 'true' }}
         run: |
-          if echo ${{ steps.cache-sonar-build-wrapper.outputs.cache-hit }} | grep -c "true"
-          then
-            echo "Cache hit - skipping sonar-build-wrapper download"
-          else
-            curl -sSLo build-wrapper-linux-x86.zip ${{ env.BUILD_WRAPPER_DOWNLOAD_URL }}
-            unzip -o build-wrapper-linux-x86.zip -d sonar-build-wrapper/
-            echo "$(pwd)/sonar-build-wrapper/build-wrapper-linux-x86" >> $GITHUB_PATH
-          fi
+          curl -sSLo build-wrapper-linux-x86.zip ${{ env.BUILD_WRAPPER_DOWNLOAD_URL }}
+          unzip -o build-wrapper-linux-x86.zip -d sonar-build-wrapper/
+          echo "$(pwd)/sonar-build-wrapper/build-wrapper-linux-x86" >> $GITHUB_PATH
 
   build:
     runs-on: ubuntu-latest
@@ -202,18 +167,8 @@ jobs:
           key: ${{ runner.os }}-repository-${{ github.sha }}
 
       - name: Verify that "Cache repostory" had a hit
-        # GitHub doesnt support if
-        #if: steps.cache-repository.outputs.cache-hit != 'true'
-        #run: git submodule update --init --recursive ${{ inputs.submodule }}
-        run: |
-          if echo ${{ steps.cache-repository.outputs.cache-hit }} | grep -c "true"
-          then
-            echo "Cache repository had a hit, good"
-          else
-            echo "Cache repository did not hit? Did the prepare step run successfully?"
-            exit 1
-          fi
-        shell: bash
+        if: ${{ steps.cache-repository.outputs.cache-hit != 'true' }}
+        run: exit 1
 
       - name: Get esp-idf release name
         id: get-esp-idf-release
@@ -240,7 +195,6 @@ jobs:
             echo "Cache .espressif did not hit? Did the prepare step run successfully?"
             exit 1
           fi
-        shell: bash
 
       - name: Setup ccache
         uses: 0xFEEDC0DE64/setup_ccache@main
@@ -250,13 +204,11 @@ jobs:
       - name: Unpack ignore folder
         env:
           GPG_KEY: ${{ secrets.GPG_KEY }}
+        if: ${{ matrix.node == 'comred' || matrix.node == 'peter' || matrix.node == 'mick' }}
         run: |
-          if [[ "${{ matrix.node }}" == "comred" ]] || [[ "${{ matrix.node }}" == "peter" ]]
-          then
-            echo Unpacking ignore folder...
-            cd repository
-            tools/bobby-decrypt
-          fi
+          echo Unpacking ignore folder...
+          cd repository
+          tools/bobby-decrypt
 
       - name: Build firmware
         run: |
@@ -299,18 +251,8 @@ jobs:
           key: ${{ runner.os }}-repository-history-${{ github.sha }}
 
       - name: Verify that "Cache repostory" had a hit
-        # GitHub doesnt support if
-        #if: steps.cache-repository.outputs.cache-hit != 'true'
-        #run: git submodule update --init --recursive ${{ inputs.submodule }}
-        run: |
-          if echo ${{ steps.cache-repository.outputs.cache-hit }} | grep -c "true"
-          then
-            echo "Cache repository had a hit, good"
-          else
-            echo "Cache repository did not hit? Did the prepare step run successfully?"
-            exit 1
-          fi
-        shell: bash
+        if: ${{ steps.cache-repository.outputs.cache-hit != 'true' }}
+        run: exit 1
 
       - name: Get esp-idf release name
         id: get-esp-idf-release
@@ -337,7 +279,6 @@ jobs:
             echo "Cache .espressif did not hit? Did the prepare step run successfully?"
             exit 1
           fi
-        shell: bash
 
       - name: Cache sonar-build-wrapper
         uses: actions/cache@v2
@@ -358,7 +299,6 @@ jobs:
             echo "Cache sonar-build-wrapper did not hit? Did the prepare step run successfully?"
             exit 1
           fi
-        shell: bash
 
       - name: Cache sonar-build-wrapper-output
         uses: actions/cache@v2
@@ -434,7 +374,6 @@ jobs:
             echo "Cache sonar-build-wrapper-output did not hit? Did the prepare step run successfully?"
             exit 1
           fi
-        shell: bash
 
       - name: Cache sonar-scanner
         uses: actions/cache@v2
@@ -455,7 +394,6 @@ jobs:
             echo "Cache sonar-scanner did not hit? Did the prepare step run successfully?"
             exit 1
           fi
-        shell: bash
 
       - name: Set up JDK 11 (for Sonar)
         uses: actions/setup-java@v1
