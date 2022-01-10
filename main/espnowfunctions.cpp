@@ -80,7 +80,7 @@ void initESPNow()
 
     if (initialized < 1)
     {
-        if (!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA) && (configs.espnow.syncBlink.value || configs.espnow.syncBlink.value || configs.espnow.syncBlink.value))
+        if (!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA) && (configs.espnow.syncBlink.value || configs.espnow.syncTime.value || configs.espnow.syncTimeWithOthers.value))
         {
             ESP_LOGW(TAG, "cannot execute esp_now_init(): tcp stack is down.");
             return;
