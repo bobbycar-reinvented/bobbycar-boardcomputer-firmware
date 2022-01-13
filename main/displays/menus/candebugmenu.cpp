@@ -149,32 +149,6 @@ protected:
     std::string canStatusName() const override { return "&sbus_error_count"; }
     std::string canStatusText(const twai_status_info_t &can_status_info) const override { return std::to_string(can_status_info.bus_error_count); }
 };
-
-class CanPendingTxCountText : public virtual espgui::TextInterface
-{
-public:
-    std::string text() const override
-    {
-        unsigned pending{};
-        if (const auto result = twai_get_pending_tx(&pending); result == ESP_OK)
-            return fmt::format("pending_TX: {}", pending);
-        else
-            return fmt::format("pending_TX: &1{}", esp_err_to_name(result));
-    }
-};
-
-class CanPendingRxCountText : public virtual espgui::TextInterface
-{
-public:
-    std::string text() const override
-    {
-        unsigned pending{};
-        if (const auto result = twai_get_pending_rx(&pending); result == ESP_OK)
-            return fmt::format("pending_RX: {}", pending);
-        else
-            return fmt::format("pending_RX: &1{}", esp_err_to_name(result));
-    }
-};
 } // namespace
 
 CanDebugMenu::CanDebugMenu()
@@ -192,8 +166,6 @@ CanDebugMenu::CanDebugMenu()
 #endif
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusArbLostCountText, DummyAction>>(m_last_can_status_info);
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusBusErrorCountText, DummyAction>>(m_last_can_status_info);
-    constructMenuItem<makeComponentArgs<MenuItem, CanPendingTxCountText, DummyAction>>();
-    constructMenuItem<makeComponentArgs<MenuItem, CanPendingRxCountText, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
