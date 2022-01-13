@@ -1,0 +1,359 @@
+name: CI
+on:
+  push:
+  release:
+    types:
+      - created
+#  pull_request:
+#    types: [opened, synchronize, reopened]
+
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    name: Checkout (with submodules)
+    steps:
+      - name: Cache repository
+        uses: actions/cache@v2
+        id: cache-repository
+        with:
+          path: repository
+          key: ${{ runner.os }}-repository-${{ github.sha }}
+
+      - name: Checkout (without submodules)
+        uses: actions/checkout@v2
+        with:
+          path: repository
+
+      - name: Fast Submodule Checkout esp-idf
+        uses: 0xFEEDC0DE64/fast_submodule_checkout@main
+        with:
+          submodule: esp-idf
+          repo: repository
+
+      - name: Fast Submodule Checkout components/arduino-esp32
+        uses: 0xFEEDC0DE64/fast_submodule_checkout@main
+        with:
+          submodule: components/arduino-esp32
+          repo: repository
+
+      - name: Checkout remaining submodules
+        run: git -C repository submodule update --init --recursive $(git -C repository submodule | awk '{ if ($2 != "esp-idf" && $2 != "components/arduino-esp32") print $2 }')
+
+  checkout-history:
+    runs-on: ubuntu-latest
+    name: Checkout (with history and submodules)
+    steps:
+      - name: Cache repository
+        uses: actions/cache@v2
+        id: cache-repository
+        with:
+          path: repository
+          key: ${{ runner.os }}-repository-history-${{ github.sha }}
+
+      - name: Checkout (without submodules)
+        uses: actions/checkout@v2
+        with:
+          path: repository
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Fast Submodule Checkout esp-idf
+        uses: 0xFEEDC0DE64/fast_submodule_checkout@main
+        with:
+          submodule: esp-idf
+          repo: repository
+
+      - name: Fast Submodule Checkout components/arduino-esp32
+        uses: 0xFEEDC0DE64/fast_submodule_checkout@main
+        with:
+          submodule: components/arduino-esp32
+          repo: repository
+
+      - name: Checkout remaining submodules
+        run: git -C repository submodule update --init --recursive $(git -C repository submodule | awk '{ if ($2 != "esp-idf" && $2 != "components/arduino-esp32") print $2 }')
+
+  install-idf:
+    runs-on: ubuntu-latest
+    name: Install esp-idf
+    needs:
+      - checkout
+    steps:
+      - name: Cache repository
+        uses: actions/cache@v2
+        id: cache-repository
+        with:
+          path: repository
+          key: ${{ runner.os }}-repository-${{ github.sha }}
+
+      - name: Verify that "Cache repostory" had a hit
+        if: ${{ steps.cache-repository.outputs.cache-hit != 'true' }}
+        run: exit 1
+
+      - name: Get esp-idf release name
+        id: get-esp-idf-release
+        uses: 0xFEEDC0DE64/get_latest_tag@main
+        with:
+          repo: repository/esp-idf
+
+      - name: Cache .espressif
+        id: cache-espressif
+        uses: actions/cache@v2
+        with:
+          path: ~/.espressif
+          key: ${{ runner.os }}-espressif-${{ steps.get-esp-idf-release.outputs.tag_name }}
+
+      - name: Install .espressif dependencies
+        if: ${{ steps.cache-espressif.outputs.cache-hit != 'true' }}
+        run: repository/esp-idf/install.sh
+
+  install-sonar-scanner:
+    runs-on: ubuntu-latest
+    env:
+      SONAR_SCANNER_VERSION: 4.4.0.2170
+    name: Install sonar-scanner
+    steps:
+      - name: Cache sonar-scanner
+        uses: actions/cache@v2
+        id: cache-sonar-scanner
+        with:
+          path: sonar-scanner
+          key: ${{ runner.os }}-sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}
+
+      - name: Download and set up sonar-scanner
+        env:
+          SONAR_SCANNER_DOWNLOAD_URL: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ env.SONAR_SCANNER_VERSION }}-linux.zip
+        if: ${{ steps.cache-sonar-scanner.outputs.cache-hit != 'true' }}
+        run: |
+          curl -sSLo sonar-scanner.zip ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
+          unzip -o sonar-scanner.zip -d sonar-scanner/
+          echo "$(pwd)/sonar-scanner/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
+
+  install-sonar-build-wrapper:
+    runs-on: ubuntu-latest
+    name: Install sonar-build-wrapper
+    steps:
+      - name: Cache sonar-build-wrapper
+        uses: actions/cache@v2
+        id: cache-sonar-build-wrapper
+        with:
+          path: sonar-build-wrapper
+          key: ${{ runner.os }}-sonar-build-wrapper
+
+      - name: Download and set up build-wrapper (for Sonar)
+        env:
+          BUILD_WRAPPER_DOWNLOAD_URL: https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+        if: ${{ steps.cache-sonar-build-wrapper.outputs.cache-hit != 'true' }}
+        run: |
+          curl -sSLo build-wrapper-linux-x86.zip ${{ env.BUILD_WRAPPER_DOWNLOAD_URL }}
+          unzip -o build-wrapper-linux-x86.zip -d sonar-build-wrapper/
+          echo "$(pwd)/sonar-build-wrapper/build-wrapper-linux-x86" >> $GITHUB_PATH
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [feedc0de, comred, peter, mick, nofeatures]
+    name: ${{ matrix.node }}
+    needs:
+      - checkout
+      - install-idf
+    steps:
+      - name: Cache repository
+        uses: actions/cache@v2
+        id: cache-repository
+        with:
+          path: repository
+          key: ${{ runner.os }}-repository-${{ github.sha }}
+
+      - name: Verify that "Cache repostory" had a hit
+        if: ${{ steps.cache-repository.outputs.cache-hit != 'true' }}
+        run: exit 1
+
+      - name: Get esp-idf release name
+        id: get-esp-idf-release
+        uses: 0xFEEDC0DE64/get_latest_tag@main
+        with:
+          repo: repository/esp-idf
+
+      - name: Cache .espressif
+        id: cache-espressif
+        uses: actions/cache@v2
+        with:
+          path: ~/.espressif
+          key: ${{ runner.os }}-espressif-${{ steps.get-esp-idf-release.outputs.tag_name }}
+
+      - name: Verify that "Cache .espressif" had a hit
+        if: ${{ steps.cache-espressif.outputs.cache-hit != 'true' }}
+        run: |
+          echo "Cache .espressif did not hit? Did the prepare step run successfully?"
+          exit 1
+
+      - name: Setup ccache
+        uses: 0xFEEDC0DE64/setup_ccache@main
+        with:
+          key: ${{ runner.os }}-ccache-${{ matrix.node }}
+
+      - name: Unpack ignore folder
+        env:
+          GPG_KEY: ${{ secrets.GPG_KEY }}
+        if: ${{ matrix.node == 'comred' || matrix.node == 'peter' || matrix.node == 'mick' }}
+        run: |
+          echo Unpacking ignore folder...
+          cd repository
+          tools/bobby-decrypt
+
+      - name: Build firmware
+        run: |
+          cd repository
+          export CCACHE_MAXSIZE=1024M CCACHE_BASEDIR="$(pwd)"
+          . export.sh
+          ./switchconf.sh ${{ matrix.node }}
+          idf.py --ccache build
+          ccache -s
+
+      - name: Set outputs
+        id: vars
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: bobbyquad_${{ matrix.node }}
+          path: |
+            repository/build_${{ matrix.node }}/bobbyquad_${{ matrix.node }}.bin
+            repository/build_${{ matrix.node }}/bobbyquad_${{ matrix.node }}.elf
+
+  build-and-analyze:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory
+      SONAR_SCANNER_VERSION: 4.4.0.2170
+      SONAR_CACHE_DIR: sonar_cache
+    name: allfeatures
+    needs:
+      - checkout-history
+      - install-idf
+      - install-sonar-build-wrapper
+      - install-sonar-scanner
+    steps:
+      - name: Cache repository
+        uses: actions/cache@v2
+        id: cache-repository
+        with:
+          path: repository
+          key: ${{ runner.os }}-repository-history-${{ github.sha }}
+
+      - name: Verify that "Cache repostory" had a hit
+        if: ${{ steps.cache-repository.outputs.cache-hit != 'true' }}
+        run: exit 1
+
+      - name: Get esp-idf release name
+        id: get-esp-idf-release
+        uses: 0xFEEDC0DE64/get_latest_tag@main
+        with:
+          repo: repository/esp-idf
+
+      - name: Cache .espressif
+        id: cache-espressif
+        uses: actions/cache@v2
+        with:
+          path: ~/.espressif
+          key: ${{ runner.os }}-espressif-${{ steps.get-esp-idf-release.outputs.tag_name }}
+
+      - name: Verify that "Cache .espressif" had a hit
+        if: ${{ steps.cache-espressif.outputs.cache-hit != 'true' }}
+        run: |
+          echo "Cache .espressif did not hit? Did the prepare step run successfully?"
+          exit 1
+
+      - name: Cache sonar-scanner
+        uses: actions/cache@v2
+        id: cache-sonar-scanner
+        with:
+          path: sonar-scanner
+          key: ${{ runner.os }}-sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}
+
+      - name: Verify that "Cache sonar-scanner" had a hit
+        if: ${{ steps.cache-sonar-scanner.outputs.cache-hit != 'true' }}
+        run: |
+          echo "Cache sonar-scanner did not hit? Did the prepare step run successfully?"
+          exit 1
+
+      - name: Cache sonar-build-wrapper
+        uses: actions/cache@v2
+        id: cache-sonar-build-wrapper
+        with:
+          path: sonar-build-wrapper
+          key: ${{ runner.os }}-sonar-build-wrapper
+
+      - name: Verify that "Cache sonar-build-wrapper" had a hit
+        if: ${{ steps.cache-sonar-build-wrapper.outputs.cache-hit != 'true' }}
+        run: |
+          echo "Cache sonar-build-wrapper did not hit? Did the prepare step run successfully?"
+          exit 1
+
+      - name: Cache sonar-build-wrapper-output
+        uses: actions/cache@v2
+        id: cache-sonar-build-wrapper-output
+        with:
+          path: repository
+          key: ${{ runner.os }}-sonar-build-wrapper-output-${{ github.sha }}
+
+      - name: Set up JDK 11 (for Sonar)
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Setup sonar-build-wrapper
+        run: echo "$(pwd)/sonar-build-wrapper/build-wrapper-linux-x86" >> $GITHUB_PATH
+
+      - name: Setup ccache
+        uses: 0xFEEDC0DE64/setup_ccache@main
+        with:
+          key: ${{ runner.os }}-ccache-allfeatures
+
+      - name: Build firmware
+        run: |
+          cd repository
+          export CCACHE_MAXSIZE=1024M CCACHE_BASEDIR="$(pwd)"
+          . export.sh
+          ./switchconf.sh allfeatures
+          build-wrapper-linux-x86-64 --out-dir "${{ env.BUILD_WRAPPER_OUT_DIR }}" idf.py --ccache build
+          ccache -s
+
+      - name: Set outputs
+        id: vars
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: bobbyquad_allfeatures
+          path: |
+            repository/build_allfeatures/bobbyquad_allfeatures.bin
+            repository/build_allfeatures/bobbyquad_allfeatures.elf
+
+      - name: Setup sonar-scanner
+        run: echo "$(pwd)/sonar-scanner/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
+
+      - name: Cache sonar-scanner-cache
+        uses: 0xFEEDC0DE64/cache-with-update@update-cache-on-cachehit
+        with:
+          path: ${{ env.SONAR_CACHE_DIR }}
+          key: ${{ runner.os }}-sonar-scanner-cache-${{ env.SONAR_SCANNER_VERSION }}
+
+      - name: Run sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd repository
+          sonar-scanner \
+              --define sonar.host.url="https://sonarcloud.io" \
+              --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}" \
+              --define sonar.cfamily.cache.path="../${{ env.SONAR_CACHE_DIR }}"
