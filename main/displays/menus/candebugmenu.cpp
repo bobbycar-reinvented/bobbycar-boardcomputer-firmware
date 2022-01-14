@@ -14,15 +14,35 @@
 #include <actions/dummyaction.h>
 #include <icons/back.h>
 #include <screenmanager.h>
+#include <futurecpp.h>
 
 // local includes
 #include "displays/menus/debugmenu.h"
+#include "bobbyerrorhandler.h"
 
 namespace {
 constexpr char TAG[] = "CANDEBUG";
 
 constexpr char TEXT_CANDEBUG[] = "CAN Debug";
+constexpr char TEXT_TWAI_STOP[] = "twai_stop()";
+constexpr char TEXT_TWAI_START[] = "twai_start()";
+constexpr char TEXT_TWAI_UNINSTALL[] = "twai_drv_uninstall()";
+constexpr char TEXT_TWAI_INSTALL[] = "twai_drv_install()";
 constexpr char TEXT_BACK[] = "Back";
+
+std::string toString(twai_state_t val)
+{
+    switch (val)
+    {
+    case TWAI_STATE_STOPPED:    return "STOPPED";
+    case TWAI_STATE_RUNNING:    return "RUNNING";
+    case TWAI_STATE_BUS_OFF:    return "BUS_OFF";
+    case TWAI_STATE_RECOVERING: return "RECOVERING";
+    default:
+        ESP_LOGW(TAG, "unknown twai_state_t(%i)", std::to_underlying(val));
+        return fmt::format("Unknown twai_state_t({})", std::to_underlying(val));
+    }
+}
 
 class CanStatusText : public virtual espgui::TextInterface
 {
@@ -55,7 +75,12 @@ public:
 
 protected:
     std::string canStatusName() const override { return "state"; }
-    std::string canStatusText(const twai_status_info_t &can_status_info) const override { return std::to_string(can_status_info.state); }
+    std::string canStatusText(const twai_status_info_t &can_status_info) const override
+    {
+        return fmt::format("{}{}",
+                           can_status_info.state==TWAI_STATE_RUNNING?"":"&1",
+                           toString(can_status_info.state));
+    }
 };
 
 class CanStatusMsgsToTxText : public CanStatusText
@@ -149,6 +174,54 @@ protected:
     std::string canStatusName() const override { return "&sbus_error_count"; }
     std::string canStatusText(const twai_status_info_t &can_status_info) const override { return std::to_string(can_status_info.bus_error_count); }
 };
+
+class CanStopAction : public virtual espgui::ActionInterface
+{
+public:
+    void triggered() override
+    {
+        const auto result = twai_stop();
+        ESP_LOGI(TAG, "twai_stop() returned %s", esp_err_to_name(result));
+        BobbyErrorHandler{}.errorOccured(fmt::format("twai_stop() returned {}", esp_err_to_name(result)));
+    }
+};
+
+class CanStartAction : public virtual espgui::ActionInterface
+{
+public:
+    void triggered() override
+    {
+        const auto result = twai_start();
+        ESP_LOGI(TAG, "twai_start() returned %s", esp_err_to_name(result));
+        BobbyErrorHandler{}.errorOccured(fmt::format("twai_start() returned {}", esp_err_to_name(result)));
+    }
+};
+
+class CanUninstallAction : public virtual espgui::ActionInterface
+{
+public:
+    void triggered() override
+    {
+        const auto result = twai_driver_uninstall();
+        ESP_LOGI(TAG, "twai_driver_uninstall() returned %s", esp_err_to_name(result));
+        BobbyErrorHandler{}.errorOccured(fmt::format("twai_driver_uninstall() returned {}", esp_err_to_name(result)));
+    }
+};
+
+class CanInstallAction : public virtual espgui::ActionInterface
+{
+public:
+    void triggered() override
+    {
+        twai_general_config_t g_config = TWAI_GENERAL_CONFIG_DEFAULT(GPIO_NUM_21, GPIO_NUM_22, TWAI_MODE_NORMAL);
+        twai_timing_config_t t_config TWAI_TIMING_CONFIG_250KBITS();
+        twai_filter_config_t f_config TWAI_FILTER_CONFIG_ACCEPT_ALL();
+
+        const auto result = twai_driver_install(&g_config, &t_config, &f_config);
+        ESP_LOGI(TAG, "twai_driver_install() returned %s", esp_err_to_name(result));
+        BobbyErrorHandler{}.errorOccured(fmt::format("twai_driver_install() returned {}", esp_err_to_name(result)));
+    }
+};
 } // namespace
 
 CanDebugMenu::CanDebugMenu()
@@ -166,6 +239,10 @@ CanDebugMenu::CanDebugMenu()
 #endif
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusArbLostCountText, DummyAction>>(m_last_can_status_info);
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusBusErrorCountText, DummyAction>>(m_last_can_status_info);
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_STOP>, CanStopAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_START>, CanStartAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_UNINSTALL>, CanUninstallAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_INSTALL>, CanInstallAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<DebugMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
