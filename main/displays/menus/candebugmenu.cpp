@@ -24,6 +24,7 @@ namespace {
 constexpr char TAG[] = "CANDEBUG";
 
 constexpr char TEXT_CANDEBUG[] = "CAN Debug";
+constexpr char TEXT_TWAI_INITIATE_RECOVERY[] = "twai_initiate_recovery()";
 constexpr char TEXT_TWAI_STOP[] = "twai_stop()";
 constexpr char TEXT_TWAI_START[] = "twai_start()";
 constexpr char TEXT_TWAI_UNINSTALL[] = "twai_drv_uninstall()";
@@ -175,6 +176,17 @@ protected:
     std::string canStatusText(const twai_status_info_t &can_status_info) const override { return std::to_string(can_status_info.bus_error_count); }
 };
 
+class CanInitiateRecoveryAction : public virtual espgui::ActionInterface
+{
+public:
+    void triggered() override
+    {
+        const auto result = twai_initiate_recovery();
+        ESP_LOGI(TAG, "twai_initiate_recovery() returned %s", esp_err_to_name(result));
+        BobbyErrorHandler{}.errorOccured(fmt::format("twai_initiate_recovery() returned {}", esp_err_to_name(result)));
+    }
+};
+
 class CanStopAction : public virtual espgui::ActionInterface
 {
 public:
@@ -239,6 +251,7 @@ CanDebugMenu::CanDebugMenu()
 #endif
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusArbLostCountText, DummyAction>>(m_last_can_status_info);
     constructMenuItem<makeComponentArgs<MenuItem, CanStatusBusErrorCountText, DummyAction>>(m_last_can_status_info);
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_INITIATE_RECOVERY>, CanInitiateRecoveryAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_STOP>, CanStopAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_START>, CanStartAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_UNINSTALL>, CanUninstallAction>>();
