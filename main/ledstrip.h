@@ -23,7 +23,6 @@ DECLARE_BOBBYTYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues
     x(CustomColor)
 DECLARE_BOBBYTYPESAFE_ENUM(LedstripAnimation, : uint8_t, LedstripAnimationValues)
 
-#ifdef FEATURE_LEDSTRIP
 enum Bobbycar_Side
 {
     FRONT_RIGHT,
@@ -52,4 +51,3 @@ void showOtaAnimation();
 
 void initLedStrip();
 void updateLedStrip();
-#endif
