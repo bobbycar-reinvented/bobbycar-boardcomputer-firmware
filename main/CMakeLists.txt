@@ -43,6 +43,7 @@ set(headers
     bobbyerrorhandler.h
     bobbyquickactions.h
     bobbytypesafeenum.h
+    bobbyschedulertask.h
     buildserver.h
     can.h
     changevaluedisplay_bluetoothmode.h
