@@ -311,6 +311,7 @@ public:
         ConfigWrapper<bool> garage                {false,                                  DoReset,   {},                         "f_garage"            };
         ConfigWrapper<bool> cloud                 {false,                                  DoReset,   {},                         "f_cloud"             };
         ConfigWrapper<bool> udpcloud              {false,                                  DoReset,   {},                         "f_udpcloud"          };
+        ConfigWrapper<bool> dnsannounce           {false,                                  DoReset,   {},                         "f_dnsannounce"       };
         ConfigWrapper<bool> gschissene_diode      {false,                                  DoReset,   {},                         "f_gschissDiode"      };
     } feature;
 
@@ -608,7 +609,8 @@ public:
     x(feature.webserver_disable_lock) \
     x(feature.garage) \
     x(feature.udpcloud) \
-    x(feature.cloud)
+    x(feature.cloud) \
+    x(feature.dnsannounce)
     //x(bleSettings.bleEnabled)
 
 #define FEATURES(x) \
@@ -616,7 +618,8 @@ public:
     x(feature.webserver_disable_lock) \
     x(feature.garage) \
     x(feature.udpcloud) \
-    x(feature.cloud)
+    x(feature.cloud) \
+    x(feature.dnsannounce)
     //x(feature.gschisseneDiode)
 
     template<typename T>
