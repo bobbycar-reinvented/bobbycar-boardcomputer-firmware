@@ -314,6 +314,7 @@ public:
         ConfigWrapper<bool> dnsannounce           {false,                                  DoReset,   {},                         "f_dnsannounce"       };
         ConfigWrapper<bool> ntp                   {false,                                  DoReset,   {},                         "f_ntp"               };
         ConfigWrapper<bool> ble                   {false,                                  DoReset,   {},                         "f_ble"               };
+        ConfigWrapper<bool> ota                   {false,                                  DoReset,   {},                         "f_ota"               };
         ConfigWrapper<bool> gschissene_diode      {false,                                  DoReset,   {},                         "f_gschissDiode"      };
     } feature;
 
@@ -614,6 +615,7 @@ public:
     x(feature.dnsannounce) \
     x(feature.ntp) \
     x(feature.ble) \
+    x(feature.ota) \
     x(feature.gschissene_diode)
     //x(bleSettings.bleEnabled)
 
@@ -625,7 +627,8 @@ public:
     x(feature.cloud) \
     x(feature.dnsannounce) \
     x(feature.ntp) \
-    x(feature.ble)
+    x(feature.ble) \
+    x(feature.ota)
     //x(feature.gschisseneDiode)
 
     template<typename T>
