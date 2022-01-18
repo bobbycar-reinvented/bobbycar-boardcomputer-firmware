@@ -330,7 +330,8 @@ public:
         ConfigWrapper<bool> ntp                   {false,                                  DoReset,   {},                         "f_ntp"               };
         ConfigWrapper<bool> ble                   {false,                                  DoReset,   {},                         "f_ble"               };
         ConfigWrapper<bool> ota                   {false,                                  DoReset,   {},                         "f_ota"               };
-        ConfigWrapper<bool> gschissene_diode      {false,                                  DoReset,   {},                         "f_gschissDiode"      };
+        ConfigWrapper<bool> webserver             {true,                                   DoReset,   {},                         "featureWebserv"      };
+        ConfigWrapper<bool> gschissene_diode      {false,                                  DoReset,   {},                         "featurDiodeHin"      };
     } feature;
 
     struct {
@@ -631,6 +632,7 @@ public:
     x(feature.ntp) \
     x(feature.ble) \
     x(feature.ota) \
+    x(feature.webserver) \
     x(feature.gschissene_diode)
     //x(bleSettings.bleEnabled)
 
@@ -643,7 +645,8 @@ public:
     x(feature.dnsannounce) \
     x(feature.ntp) \
     x(feature.ble) \
-    x(feature.ota)
+    x(feature.ota) \
+    x(feature.webserver)
     //x(feature.gschisseneDiode)
 
     template<typename T>
