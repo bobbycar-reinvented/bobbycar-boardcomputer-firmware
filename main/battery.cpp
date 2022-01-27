@@ -123,14 +123,12 @@ float getRemainingWattHours()
 {
     float target_mah = getTarget_mAh();
 
-    float avgVoltage = 0;
-    for (auto &controller : controllers)
+    if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        avgVoltage += controller.getCalibratedVoltage();
+        return (target_mah / 1000.f) * 3.7 * configs.battery.cellsParallel.value * configs.battery.cellsSeries.value * (getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value)) / 100);
     }
-    avgVoltage = avgVoltage / controllers.size();
-
-    return (target_mah / 1000.f) * 3.7 * configs.battery.cellsParallel.value * configs.battery.cellsSeries.value * (getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value)) / 100);
+    else
+        return 0.;
 }
 
 float getPercentageByWh(float wh)
@@ -152,15 +150,13 @@ float getTarget_mAh()
 
 std::string getBatteryPercentageString()
 {
-    float avgVoltage = 0;
-    for (auto &controller : controllers)
+    if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        avgVoltage += controller.getCalibratedVoltage();
+        std::string output = fmt::format("Battery: {:.1f}%", getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value)));
+        return output;
     }
-    avgVoltage = avgVoltage / controllers.size();
-
-    std::string output = fmt::format("Battery: {:.1f}%", getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value)));
-    return output;
+    else
+        return "No Battery.";
 }
 
 std::string getBatteryAdvancedPercentageString()
@@ -186,13 +182,11 @@ std::string getRemainingRangeString()
 
 std::string getBatteryDebugString()
 {
-    float avgVoltage = 0;
-    for (auto &controller : controllers)
+    if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        avgVoltage += controller.getCalibratedVoltage();
+        return fmt::format("{:.1f}V {}A", *avgVoltage, sumCurrent);
     }
-    avgVoltage = avgVoltage / controllers.size();
-    return fmt::format("{:.1f}V {}A", avgVoltage, sumCurrent);
+    return "No Battery";
 }
 
 namespace battery {

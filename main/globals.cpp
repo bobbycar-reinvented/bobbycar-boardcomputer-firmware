@@ -11,6 +11,7 @@ float gametrakX;
 float gametrakY;
 float gametrakDist;
 #endif
+
 float avgSpeed{};
 float avgSpeedKmh{};
 float sumCurrent{};

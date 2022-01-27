@@ -97,17 +97,13 @@ void calculateStatistics()
             }
             drivingStatistics.currentDrivingTime += duration;
 
-            float avgVoltage = 0;
-            for (auto &controller : controllers)
+            if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
             {
-                avgVoltage += controller.getCalibratedVoltage();
+                auto watt = sumCurrent * *avgVoltage;
+                const float ws_driven_now = watt * (duration.count() / 1000.);
+                drivingStatistics.wh_used += ws_driven_now / 3600; // Wh
+                drivingStatistics.batteryWhEstimate -= ws_driven_now / 3600;
             }
-            avgVoltage = avgVoltage / controllers.size();
-
-            auto watt = sumCurrent * avgVoltage;
-            const float ws_driven_now = watt * (duration.count() / 1000.);
-            drivingStatistics.wh_used += ws_driven_now / 3600; // Wh
-            drivingStatistics.batteryWhEstimate -= ws_driven_now / 3600;
         }
         else
         {

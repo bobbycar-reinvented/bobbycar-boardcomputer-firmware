@@ -83,14 +83,11 @@ std::string buildUdpCloudJson()
     std::string buf;
     const auto uptime = espchrono::millis_clock::now().time_since_epoch().count();
 
-    float avgVoltage = 0;
-    for (auto &controller : controllers)
-    {
-        avgVoltage += controller.getCalibratedVoltage();
-    }
-    avgVoltage = avgVoltage / controllers.size();
+    float watt{0};
+    const auto avgVoltage = controllers.getAvgVoltage();
+    if(avgVoltage)
+        watt = sumCurrent * *avgVoltage;
 
-    const auto watt = sumCurrent * avgVoltage;
     // const auto w_per_kmh = watt / avgSpeedKmh;
 
     // User ID
@@ -142,8 +139,11 @@ std::string buildUdpCloudJson()
     }
 
     // Statistics
-    doc["bP"] = getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value));
-    doc["bV"] = avgVoltage;
+    if(avgVoltage)
+    {
+        doc["bP"] = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value));
+        doc["bV"] = *avgVoltage;
+    }
     doc["l"] = isLocked;
     doc["mN"] = drivingStatistics.meters_driven;
     doc["mT"] = drivingStatistics.totalMeters;
@@ -179,14 +179,10 @@ std::string buildUdpCloudString()
 
     const auto uptime = espchrono::millis_clock::now().time_since_epoch().count();
 
-    float avgVoltage = 0;
-    for (auto &controller : controllers)
-    {
-        avgVoltage += controller.getCalibratedVoltage();
-    }
-    avgVoltage = avgVoltage / controllers.size();
-
-    const auto watt = sumCurrent * avgVoltage;
+    float watt{0};
+    const auto avgVoltage = controllers.getAvgVoltage();
+    if(avgVoltage)
+        watt = sumCurrent * *avgVoltage;
     // const auto w_per_kmh = watt / avgSpeedKmh;
 
     buf += "{";
@@ -290,8 +286,11 @@ std::string buildUdpCloudString()
     }
 
     // Statistics
-    buf += fmt::format("\"bP\":{},", getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value)));
-    buf += fmt::format("\"bV\":{},", avgVoltage);
+    if(avgVoltage)
+    {
+        buf += fmt::format("\"bP\":{},", getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value)));
+        buf += fmt::format("\"bV\":{},", *avgVoltage);
+    }
     buf += fmt::format("\"l\":{},", isLocked);
     buf += fmt::format("\"mN\":{},", drivingStatistics.meters_driven);
     buf += fmt::format("\"mT\":{},", drivingStatistics.totalMeters);

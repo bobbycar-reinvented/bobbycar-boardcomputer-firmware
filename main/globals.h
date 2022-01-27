@@ -38,6 +38,7 @@ extern float gametrakX;
 extern float gametrakY;
 extern float gametrakDist;
 #endif
+
 extern float avgSpeed;
 extern float avgSpeedKmh;
 extern float sumCurrent;
@@ -82,6 +83,23 @@ public:
 
     Controller &front{operator[](0)};
     Controller &back{operator[](1)};
+
+    std::optional<float> getAvgVoltage() const
+    {
+        uint8_t voltages{0};
+        float avgVoltage{0.};
+        for (auto &controller : *this)
+        {
+            if (const auto result = controller.getCalibratedVoltage(); !std::isnan(result) && controller.feedbackValid)
+            {
+                avgVoltage += result;
+                voltages++;
+            }
+        }
+        if (!voltages)
+            return std::nullopt;
+        return avgVoltage / voltages;
+    }
 };
 
 extern Controllers controllers;

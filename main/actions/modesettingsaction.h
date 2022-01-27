@@ -7,6 +7,9 @@
 #include "modes/larsmmode.h"
 #include "modes/gametrakmode.h"
 #include "modes/motortestmode.h"
+#ifdef FEATURE_JOYSTICK
+#include "modes/wheelchairmode.h"
+#endif
 #include "displays/menus/defaultmodesettingsmenu.h"
 #include "displays/menus/tempomatmodesettingsmenu.h"
 #include "displays/menus/larsmmodesettingsmenu.h"
@@ -25,7 +28,12 @@ public:
 
 void ModeSettingsAction::triggered()
 {
-    if (currentMode == &modes::defaultMode)
+    if (
+            currentMode == &modes::defaultMode
+        #ifdef FEATURE_JOYSTICK
+         || currentMode == &modes::wheelchairMode
+        #endif
+       )
         switchScreen<DefaultModeSettingsMenu>();
     else if (currentMode == &modes::tempomatMode)
         switchScreen<TempomatModeSettingsMenu>();
