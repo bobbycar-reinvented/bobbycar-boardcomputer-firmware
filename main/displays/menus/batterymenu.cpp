@@ -113,24 +113,20 @@ void BatteryMenu::redraw()
 {
     Base::redraw();
 
-    float avgVoltage = 0;
-    for (auto &controller : controllers)
+    if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        avgVoltage += controller.getCalibratedVoltage();
-    }
-    avgVoltage = avgVoltage / controllers.size();
+        const auto batPercent = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value));
+        if (battery::bootBatPercentage)
+        {
+            m_doubleProgressBarBatPercentage.redraw(batPercent, *battery::bootBatPercentage);
 
-    const auto batPercent = getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value));
-    if (battery::bootBatPercentage)
-    {
-        m_doubleProgressBarBatPercentage.redraw(batPercent, *battery::bootBatPercentage);
-
-        tft.setTextFont(2);
-        tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
-        m_batPercentNowLabel.redraw(fmt::format("{:.2f} %", batPercent));
-        m_batPercentBootLabel.redraw(fmt::format("{:.2f} %", *battery::bootBatPercentage));
-        tft.setTextFont(4);
-        tft.setTextColor(TFT_WHITE, TFT_BLACK);
+            tft.setTextFont(2);
+            tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
+            m_batPercentNowLabel.redraw(fmt::format("{:.2f} %", batPercent));
+            m_batPercentBootLabel.redraw(fmt::format("{:.2f} %", *battery::bootBatPercentage));
+            tft.setTextFont(4);
+            tft.setTextColor(TFT_WHITE, TFT_BLACK);
+        }
     }
 }
 

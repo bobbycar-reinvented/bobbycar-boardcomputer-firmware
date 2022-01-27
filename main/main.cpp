@@ -128,16 +128,13 @@ extern "C" void app_main()
         {
             if(controllers.front.feedbackValid && controllers.back.feedbackValid)
             {
-                float avgVoltage = 0;
-                for (auto &controller : controllers)
+                if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
                 {
-                    avgVoltage += controller.getCalibratedVoltage();
-                }
-                avgVoltage = avgVoltage / controllers.size();
-                if (avgVoltage > 30)
-                {
-                    battery::bootBatPercentage = getBatteryPercentage(avgVoltage, BatteryCellType(configs.battery.cellType.value));
-                    battery::bootBatWh = getRemainingWattHours();
+                    if (avgVoltage > 30)
+                    {
+                        battery::bootBatPercentage = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value));
+                        battery::bootBatWh = getRemainingWattHours();
+                    }
                 }
             }
         }

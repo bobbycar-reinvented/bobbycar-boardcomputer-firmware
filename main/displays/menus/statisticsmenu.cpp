@@ -27,14 +27,13 @@ class WhPerKmText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        float avgVoltage = 0;
-        for (auto &controller : controllers)
-            avgVoltage += controller.getCalibratedVoltage();
-        avgVoltage = avgVoltage / controllers.size();
-
-        auto watt = sumCurrent * avgVoltage;
-        auto w_per_kmh = watt / std::abs(avgSpeedKmh);
-        return fmt::format("{:.0f} Wh/km", w_per_kmh);
+        if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
+        {
+            auto watt = sumCurrent * *avgVoltage;
+            auto w_per_kmh = watt / std::abs(avgSpeedKmh);
+            return fmt::format("{:.0f} Wh/km", w_per_kmh);
+        }
+        return "No Battery";
     }
 };
 

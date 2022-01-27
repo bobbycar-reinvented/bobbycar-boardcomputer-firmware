@@ -26,5 +26,6 @@ void blink_left();
 void blink_right();
 void handle_handbremse();
 void action_wifi_scan();
+void batteryDebugPrint();
 
 } // namespace quickactions

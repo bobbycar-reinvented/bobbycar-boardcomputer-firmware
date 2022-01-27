@@ -129,4 +129,9 @@ void handle_handbremse()
     }
 }
 
+void batteryDebugPrint()
+{
+    ESP_LOGI("BATTERY", "");
+}
+
 } // namespace quickactions
