@@ -79,7 +79,7 @@ constexpr char TEXT_DEBUG[] = "Debug";
 constexpr char TEXT_BATTERY[] = "Battery";
 constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
 constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
-constexpr char TEXT_MANAGEPROFILESMENU[] = "Manage Profile Settings";
+constexpr char TEXT_MANAGEPROFILESMENU[] = "Manage Profiles";
 
 } // namespace
 
@@ -116,8 +116,8 @@ MainMenu::MainMenu()
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMS>,          SwitchScreenAction<BmsMenu>, StaticMenuItemIcon<&bobbyicons::bms>>>(); }
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        SwitchScreenAction<DemosMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>>>(); }
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MANAGEPROFILESMENU>,SwitchScreenAction<ManageProfilesMenu>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     SwitchScreenAction<ProfilesMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MANAGEPROFILESMENU>,SwitchScreenAction<ManageProfilesMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        SwitchScreenAction<DebugMenu>>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,     SwitchScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&bobbyicons::poweroff>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>,       RebootAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
