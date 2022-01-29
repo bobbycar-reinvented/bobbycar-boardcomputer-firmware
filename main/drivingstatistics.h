@@ -4,10 +4,13 @@
 #include <string>
 #include <chrono>
 
+// 3rdparty lib includes
+#include <espchrono.h>
+
 struct DrivingStatistics
 {
     float meters_driven;
-    std::chrono::milliseconds currentDrivingTime;
+    espchrono::millis_clock::duration currentDrivingTime;
     double totalMeters;
     uint32_t last_cm_written;
     float wh_used;
