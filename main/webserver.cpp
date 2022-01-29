@@ -174,7 +174,7 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 #endif
-
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
     std::string wants_json_query;
     if (auto result = esphttpdutils::webserver_get_query(req))
         wants_json_query = *result;

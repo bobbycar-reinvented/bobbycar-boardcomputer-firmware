@@ -35,4 +35,5 @@ private:
 protected:
     bool m_locked{false};
     Actions m_action{Actions::Clear};
+    int8_t m_firstIndex{-1};
 };

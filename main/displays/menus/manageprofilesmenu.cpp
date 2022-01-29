@@ -10,6 +10,7 @@
 #include "globals.h"
 #include "mainmenu.h"
 #include "presets.h"
+#include "settingsutils.h"
 #include "utils.h"
 
 constexpr const char * const TAG = "ProfileManager";
@@ -28,27 +29,101 @@ public:
     ManageProfileMenuItem(ManageProfilesMenu &menu, const uint8_t profileIndex) : m_menu{menu}, m_profileIndex{profileIndex} {}
     void copy()
     {
+        if (m_mode == CONFIRM_COPY)
+        {
+            const auto currProfile = settingsPersister.currentlyOpenProfileIndex();
+            if (!currProfile)
+                return;
 
+            settingsutils::switchProfile(m_menu.m_firstIndex);
+
+            if (!settingsPersister.openProfile(m_profileIndex)) // just switch nvs namespace
+            {
+                BobbyErrorHandler{}.errorOccured(fmt::format("openProfile({}) failed", m_profileIndex));
+                return;
+            }
+            saveProfileSettings();
+            settingsutils::switchProfile(*currProfile);
+            m_mode = _DEFAULT;
+            m_menu.m_firstIndex = -1;
+        }
+        else if (m_menu.m_firstIndex == m_profileIndex && m_mode == SELECT_OTHER)
+        {
+            m_mode = _DEFAULT;
+            m_menu.m_firstIndex = -1;
+        }
+        else if (m_menu.m_firstIndex == -1 && m_mode == _DEFAULT)
+        {
+            m_mode = SELECT_OTHER;
+            m_menu.m_firstIndex = m_profileIndex;
+        }
+        else if (m_menu.m_firstIndex != -1 && m_menu.m_firstIndex != m_profileIndex)
+        {
+            BobbyErrorHandler{}.errorOccured(fmt::format("Press CONFIRM to COPY from Profile {} to Profile {}", m_menu.m_firstIndex, m_profileIndex));
+            m_mode = CONFIRM_COPY;
+        }
     }
 
     void swap()
     {
+        if (m_mode == CONFIRM_SWAP)
+        {
+            const auto currProfile = settingsPersister.currentlyOpenProfileIndex();
+            if (!currProfile)
+                return;
 
+            settingsutils::switchProfile(m_menu.m_firstIndex);
+            const ProfileSettings tmp = profileSettings;
+            settingsutils::switchProfile(m_profileIndex);
+            const ProfileSettings tmp2 = profileSettings;
+
+            profileSettings = tmp;
+            saveProfileSettings();
+            settingsutils::switchProfile(m_menu.m_firstIndex);
+            profileSettings = tmp2;
+            saveProfileSettings();
+
+            m_mode = _DEFAULT;
+            m_menu.m_firstIndex = -1;
+            settingsutils::switchProfile(*currProfile);
+        }
+        else if (m_menu.m_firstIndex == m_profileIndex && m_mode == SELECT_OTHER)
+        {
+            m_mode = _DEFAULT;
+            m_menu.m_firstIndex = -1;
+        }
+        else if (m_menu.m_firstIndex == -1 && m_mode == _DEFAULT)
+        {
+            m_mode = SELECT_OTHER;
+            m_menu.m_firstIndex = m_profileIndex;
+        }
+        else if (m_menu.m_firstIndex != -1 && m_menu.m_firstIndex != m_profileIndex)
+        {
+            BobbyErrorHandler{}.errorOccured(fmt::format("Press CONFIRM to SWAP Profile {} with Profile {}", m_menu.m_firstIndex, m_profileIndex));
+            m_mode = CONFIRM_SWAP;
+        }
     }
 
     void clear()
     {
-        if (m_mode == CONFIRMCLEAR)
+        if (m_mode == CONFIRM_CLEAR)
         {
+            const auto currProfile = settingsPersister.currentlyOpenProfileIndex();
+            if (!currProfile)
+                return;
+
             m_menu.unlock();
             ESP_LOGI(TAG, "Reseting profile %i...", m_profileIndex);
+            settingsutils::switchProfile(m_profileIndex);
             profileSettings = presets::defaultProfileSettings;
+            saveProfileSettings();
             m_mode = _DEFAULT;
+            settingsutils::switchProfile(*currProfile);
         }
-        else
+        else if(m_mode == _DEFAULT)
         {
             m_menu.lock();
-            m_mode = CONFIRMCLEAR;
+            m_mode = CONFIRM_CLEAR;
             BobbyErrorHandler{}.errorOccured("Press CONFIRM to reset Profile or BACK to cancel.");
         }
     }
@@ -59,16 +134,22 @@ public:
         {
         case _DEFAULT:
             return fmt::format("Profile {}", m_profileIndex);
-        case CONFIRMCLEAR:
+        case CONFIRM_CLEAR:
             return fmt::format("&1Profile {}", m_profileIndex);
+        default:
+            break;
         }
         return fmt::format("Profile {}", m_profileIndex);
     }
 
     int color() const override
     {
-        if (m_mode == CONFIRMCLEAR)
+        if (m_mode == CONFIRM_CLEAR || m_mode == CONFIRM_COPY || m_mode == CONFIRM_SWAP)
             return TFT_RED;
+        else if (m_menu.m_firstIndex == m_profileIndex)
+            return TFT_GREEN;
+        else if (m_menu.m_firstIndex != -1)
+            return TFT_GREY;
         else if (m_menu.m_locked)
             return TFT_DARKGREY;
         return TFT_WHITE;
@@ -95,13 +176,16 @@ public:
     void update() override
     {
         Base::update();
-        if (m_mode != _DEFAULT && !m_menu.m_locked)
+        if (m_mode != _DEFAULT && !m_menu.m_locked && m_menu.m_firstIndex == -1)
             m_mode = _DEFAULT;
     }
 private:
     enum Mode : uint8_t {
         _DEFAULT,
-        CONFIRMCLEAR
+        CONFIRM_CLEAR,
+        SELECT_OTHER,
+        CONFIRM_COPY,
+        CONFIRM_SWAP
     } m_mode;
     ManageProfilesMenu &m_menu;
     const uint8_t m_profileIndex;
@@ -122,6 +206,8 @@ public:
         {
             m_menu.m_action = Actions(0);
         }
+        m_menu.m_firstIndex = -1;
+        m_menu.unlock();
     }
 private:
     ManageProfilesMenu &m_menu;
@@ -158,10 +244,18 @@ void ManageProfilesMenu::stop()
 
 void ManageProfilesMenu::back()
 {
-    if (!m_locked)
+    if (!m_locked && m_firstIndex == -1)
+    {
         switchScreen<MainMenu>();
-    else
+        return;
+    }
+
+    if (m_locked)
         m_locked = false;
+
+    if (m_firstIndex != -1)
+        m_firstIndex = -1;
+
 }
 
 std::string ManageProfilesMenu::text() const

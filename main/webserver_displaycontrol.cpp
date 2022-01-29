@@ -281,6 +281,8 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
         }
     }
 
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
+
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, (key_result == ESP_OK) ? "application/json":"text/html", body)
 }
 
@@ -354,6 +356,7 @@ esp_err_t webserver_triggerRawButton_handler(httpd_req_t *req)
     espgui::currentDisplay->rawButtonReleased(button);
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
 }
 
@@ -427,6 +430,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
     espgui::currentDisplay->buttonReleased(button);
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
 }
 
@@ -441,6 +445,7 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 #endif
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
@@ -529,6 +534,8 @@ esp_err_t webserver_setValue_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 #endif
+
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
