@@ -111,6 +111,7 @@ set(headers
     displays/menus/limitssettingsmenu.h
     displays/menus/lockscreensettingsmenu.h
     displays/menus/mainmenu.h
+    displays/menus/manageprofilesmenu.h
     displays/menus/modessettingsmenu.h
     displays/menus/mosfetsmenu.h
     displays/menus/motorfeedbackdebugmenu.h
@@ -341,6 +342,7 @@ set(sources
     displays/menus/limitssettingsmenu.cpp
     displays/menus/lockscreensettingsmenu.cpp
     displays/menus/mainmenu.cpp
+    displays/menus/manageprofilesmenu.cpp
     displays/menus/modessettingsmenu.cpp
     displays/menus/mosfetsmenu.cpp
     displays/menus/motorfeedbackdebugmenu.cpp

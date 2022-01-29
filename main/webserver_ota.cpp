@@ -43,7 +43,7 @@ esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 #endif
-
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
     std::string body;
 
     std::string wants_json_query;
@@ -102,7 +102,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 #endif
-
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
     std::string body;
 
     std::string wants_json_query;
@@ -370,7 +370,7 @@ esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
     }
 #endif
-
+    CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
         query = *result;
