@@ -189,11 +189,11 @@ void WheelchairMode::update()
             {
                 if (m_lastPwm < pwm && profileSettings.defaultMode.enableSmoothingUp)
                 {
-                    pwm = std::min(pwm, m_lastPwm + (profileSettings.defaultMode.smoothing * std::chrono::milliseconds{now - m_lastTime}.count() / 100.f));
+                    pwm = std::min(pwm, m_lastPwm + (profileSettings.defaultMode.smoothing * std::chrono::floor<std::chrono::milliseconds>(now - m_lastTime).count() / 100.f));
                 }
                 else if (m_lastPwm > pwm && profileSettings.defaultMode.enableSmoothingDown)
                 {
-                    pwm = std::max(pwm, m_lastPwm - (profileSettings.defaultMode.smoothing * std::chrono::milliseconds{now - m_lastTime}.count() / 100.f));
+                    pwm = std::max(pwm, m_lastPwm - (profileSettings.defaultMode.smoothing * std::chrono::floor<std::chrono::milliseconds>(now - m_lastTime).count() / 100.f));
                 }
             }
 
