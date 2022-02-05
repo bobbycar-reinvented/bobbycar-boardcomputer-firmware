@@ -27,6 +27,10 @@
 #include "handbremse.h"
 #include "ledstrip.h"
 #include "unifiedmodelmode.h"
+#include "displays/lockscreen.h"
+#include "handbremse.h"
+#include "bobbyquickactions.h"
+#include "cloud.h"
 
 using namespace espconfig;
 
@@ -361,6 +365,8 @@ public:
     struct {
         ConfigWrapperLegacy<bool> cloudEnabled          {false,                                  DoReset,   {},                         "cloudEnabled"        };
         ConfigWrapperLegacy<int16_t> cloudTransmitTimeout{10,                                    DoReset,   {},                         "clodTransmTmout"     };
+        ConfigWrapperLegacy<CloudMode> cloudMode        {CloudMode::INACTIVE,                    DoReset,   {},                         "cloudMode"           };
+        ConfigWrapperLegacy<std::string> cloudKey       {std::string{},                          DoReset,   {},                         "cloudKey"            };
     } cloudSettings;
 
     struct {
@@ -702,6 +708,8 @@ public:
     \
     x(cloudSettings.cloudEnabled) \
     x(cloudSettings.cloudTransmitTimeout) \
+    x(cloudSettings.cloudMode) \
+    x(cloudSettings.cloudKey) \
     \
     x(udpCloudSettings.udpUid) \
     x(udpCloudSettings.udpCloudEnabled) \
