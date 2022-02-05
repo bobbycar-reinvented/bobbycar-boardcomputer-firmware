@@ -18,7 +18,7 @@
 #include "displays/menus/mainmenu.h"
 #include "globals.h"
 #include "ledstrip.h"
-#include "ledstripselectanimationmenu.h"
+#include "displays/menus/typesafeenumchangemenu.h"
 #include "ledstripselectblinkmenu.h"
 #include "bobbycheckbox.h"
 
@@ -149,7 +149,7 @@ LedstripMenu::LedstripMenu()
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_STVO_ENABLEFRONTLIGHT>, BobbyCheckbox, EnableLedstripStVOFrontlight>>();
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDANIMATION>, BobbyCheckbox, EnableLedAnimationAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_SELECTANIMATION>,                                 espgui::SwitchScreenAction<LedstripSelectAnimationMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_SELECTANIMATION>, espgui::SwitchScreenAction<TypeSafeChangeMenu<LedstripAnimation, LedstripMenu, configs.ledstrip.animationType>>>>();
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BRAKELIGHTS>,  BobbyCheckbox,    EnableBrakeLightsAccessor>>();
 

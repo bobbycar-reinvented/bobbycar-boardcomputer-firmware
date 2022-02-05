@@ -105,7 +105,6 @@ set(headers
     displays/menus/invertmenu.h
     displays/menus/larsmmodesettingsmenu.h
     displays/menus/ledstripmenu.h
-    displays/menus/ledstripselectanimationmenu.h
     displays/menus/ledstripselectblinkmenu.h
     displays/menus/ledstripselectotamode.h
     displays/menus/limitssettingsmenu.h
@@ -132,6 +131,7 @@ set(headers
     displays/menus/tempomatmodesettingsmenu.h
     displays/menus/timersmenu.h
     displays/menus/timesettingsmenu.h
+    displays/menus/typesafeenumchangemenu.h
     displays/menus/udpcloudsettingsmenu.h
     displays/menus/wifiapclientsmenu.h
     displays/menus/wifiapsettingsmenu.h
@@ -336,7 +336,6 @@ set(sources
     displays/menus/invertmenu.cpp
     displays/menus/larsmmodesettingsmenu.cpp
     displays/menus/ledstripmenu.cpp
-    displays/menus/ledstripselectanimationmenu.cpp
     displays/menus/ledstripselectblinkmenu.cpp
     displays/menus/ledstripselectotamode.cpp
     displays/menus/limitssettingsmenu.cpp
@@ -363,6 +362,7 @@ set(sources
     displays/menus/tempomatmodesettingsmenu.cpp
     displays/menus/timersmenu.cpp
     displays/menus/timesettingsmenu.cpp
+    displays/menus/typesafeenumchangemenu.cpp
     displays/menus/udpcloudsettingsmenu.cpp
     displays/menus/wifiapclientsmenu.cpp
     displays/menus/wifiapsettingsmenu.cpp
