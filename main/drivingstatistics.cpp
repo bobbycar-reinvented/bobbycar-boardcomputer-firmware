@@ -21,7 +21,7 @@ float getAvgWhPerKm()
 
 float getAvgKmh()
 {
-    return (drivingStatistics.meters_driven / 1000.) / (drivingStatistics.currentDrivingTime.count() / 1000 / 60 / 60); // (meter / 1000) / (ms / 1000 / 60 / 60)
+    return (drivingStatistics.meters_driven / 1000.) / ((drivingStatistics.currentDrivingTime / 1ms) / 1000 / 60 / 60); // (meter / 1000) / (ms / 1000 / 60 / 60)
 }
 
 float getEstimatedKmLeft()
@@ -85,7 +85,7 @@ void calculateStatistics()
         const auto duration = espchrono::ago(last_km_calculation);
         last_km_calculation = espchrono::millis_clock::now();
 
-        const float meters_driven_now = (abs(avgSpeedKmh) / 3.6) * (duration.count() / 1000.);
+        const float meters_driven_now = (abs(avgSpeedKmh) / 3.6) * ((duration / 1ms) / 1000.);
         drivingStatistics.meters_driven += meters_driven_now;
         drivingStatistics.totalMeters += meters_driven_now; // Udate meters driven
 
@@ -100,14 +100,14 @@ void calculateStatistics()
             if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
             {
                 auto watt = sumCurrent * *avgVoltage;
-                const float ws_driven_now = watt * (duration.count() / 1000.);
+                const float ws_driven_now = watt * ((duration / 1ms) / 1000.);
                 drivingStatistics.wh_used += ws_driven_now / 3600; // Wh
                 drivingStatistics.batteryWhEstimate -= ws_driven_now / 3600;
             }
         }
         else
         {
-            drivingStatistics.wh_used += (13 * (duration.count() / 1000.)) / 3600; // Wh
+            drivingStatistics.wh_used += (13 * ((duration / 1ms) / 1000.)) / 3600; // Wh
             drivingStatistics.batteryWhEstimate = getRemainingWattHours();
         }
 

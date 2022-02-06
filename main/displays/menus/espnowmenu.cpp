@@ -48,7 +48,8 @@ class SendBobbycarTimesyncMessageAction : public virtual espgui::ActionInterface
 public:
     void triggered() override
     {
-        const auto message = fmt::format("BOBBYT:{}", espchrono::utc_clock::now().time_since_epoch().count());
+        using namespace std::chrono_literals;
+        const auto message = fmt::format("BOBBYT:{}", espchrono::utc_clock::now().time_since_epoch() / 1ms);
         espnow::send_espnow_message(message);
     }
 };

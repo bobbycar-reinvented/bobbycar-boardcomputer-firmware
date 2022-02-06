@@ -287,7 +287,7 @@ void showSpeedSyncAnimation()
 #endif
 
     static auto last_interval = espchrono::millis_clock::now();
-    auto difference_ms = espchrono::ago(last_interval).count();
+    const auto difference_ms = espchrono::ago(last_interval) / 1ms;
 
     static float hue_result = 0;
 
