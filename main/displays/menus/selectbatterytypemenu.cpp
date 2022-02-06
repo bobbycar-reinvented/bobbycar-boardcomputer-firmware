@@ -26,6 +26,7 @@ constexpr char TEXT_BATTERY_TYPE_HG2[] = "HG2 cells";
 constexpr char TEXT_BATTERY_TYPE_MH1[] = "MH1 cells";
 constexpr char TEXT_BATTERY_TYPE_VTC5[] = "VTC5 cells";
 constexpr char TEXT_BATTERY_TYPE_BAK_25R[] = "BAK / 25R cells";
+constexpr char TEXT_BATTERY_TYPE_HE4[] = "HE4 cells";
 constexpr char TEXT_BATTERY_WHKM[] = "Wh per km";
 constexpr char TEXT_BATTERY_APPLYCALIB[] = "Apply calibration";
 constexpr char TEXT_VOLTAGECALIBRATION_RESET[] = "Reset calibration";
@@ -57,6 +58,7 @@ BatteryTypeMenu::BatteryTypeMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_MH1>,  BatterySelectTypeAction<BatteryCellType::MH1>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_VTC5>, BatterySelectTypeAction<BatteryCellType::VTC5>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_BAK_25R>, BatterySelectTypeAction<BatteryCellType::BAK_25R>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_HE4>, BatterySelectTypeAction<BatteryCellType::HE4>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

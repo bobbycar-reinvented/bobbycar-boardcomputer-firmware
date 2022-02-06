@@ -11,7 +11,8 @@
     x(HG2) \
     x(MH1) \
     x(VTC5) \
-    x(BAK_25R)
+    x(BAK_25R) \
+    x(HE4)
 DECLARE_TYPESAFE_ENUM(BatteryCellType, : uint8_t, BatteryCellTypeValues)
 
 float getBatteryPercentage(float batVoltage, BatteryCellType cellType);
