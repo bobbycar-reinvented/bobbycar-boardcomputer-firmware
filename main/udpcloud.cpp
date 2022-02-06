@@ -55,7 +55,7 @@ void spamUdpBroadcast()
     }
 
     std::string buf;
-    const auto uptime = espchrono::millis_clock::now().time_since_epoch().count();
+    const auto uptime = espchrono::millis_clock::now().time_since_epoch() / 1ms;
 
     buf = fmt::format("uptime: {}", uptime);
 
@@ -81,7 +81,7 @@ std::string buildUdpCloudJson()
     }
     StaticJsonDocument<1024> doc;
     std::string buf;
-    const auto uptime = espchrono::millis_clock::now().time_since_epoch().count();
+    const auto uptime = espchrono::millis_clock::now().time_since_epoch() / 1ms;
 
     float watt{0};
     const auto avgVoltage = controllers.getAvgVoltage();
@@ -147,7 +147,7 @@ std::string buildUdpCloudJson()
     doc["l"] = isLocked;
     doc["mN"] = drivingStatistics.meters_driven;
     doc["mT"] = drivingStatistics.totalMeters;
-    doc["dT"] = drivingStatistics.currentDrivingTime.count();
+    doc["dT"] = drivingStatistics.currentDrivingTime / 1ms;
     doc["cW"] = watt;
     doc["wN"] = drivingStatistics.wh_used;
     doc["wL"] = getRemainingWattHours();
@@ -177,7 +177,7 @@ std::string buildUdpCloudString()
     std::string buf;
     buf.reserve(1024);
 
-    const auto uptime = espchrono::millis_clock::now().time_since_epoch().count();
+    const auto uptime = espchrono::millis_clock::now().time_since_epoch() / 1ms;
 
     float watt{0};
     const auto avgVoltage = controllers.getAvgVoltage();
@@ -294,7 +294,7 @@ std::string buildUdpCloudString()
     buf += fmt::format("\"l\":{},", isLocked);
     buf += fmt::format("\"mN\":{},", drivingStatistics.meters_driven);
     buf += fmt::format("\"mT\":{},", drivingStatistics.totalMeters);
-    buf += fmt::format("\"dT\":{},", drivingStatistics.currentDrivingTime.count());
+    buf += fmt::format("\"dT\":{},", drivingStatistics.currentDrivingTime / 1ms);
     buf += fmt::format("\"cW\":{},", watt);
     buf += fmt::format("\"wN\":{},", drivingStatistics.wh_used);
     buf += fmt::format("\"wL\":{},", getRemainingWattHours());
