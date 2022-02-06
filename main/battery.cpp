@@ -115,6 +115,24 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
         CURVE(3.31, 2.50, 2.25, 2.5)
         break;
     }
+    case BatteryCellType::HE4:
+    {
+        const float expected_ah = 2.3;
+        if(cellVoltage > 4.15){
+            return 100;
+        }
+        CURVE(4.15, 4.02, 0, 0.25)
+        CURVE(4.02, 3.91, 0.25, 0.5)
+        CURVE(3.91, 3.81, 0.5, 0.75)
+        CURVE(3.81, 3.72, 0.75, 1)
+        CURVE(3.72, 3.61, 1, 1.25)
+        CURVE(3.61, 3.62, 1.25, 1.5)
+        CURVE(3.62, 3.53, 1.5, 1.75)
+        CURVE(3.53, 3.45, 1.75, 2)
+        CURVE(3.45, 3.21, 2, 2.25)
+        CURVE(3.21, 2.80, 2.25, 2.3)
+        break;
+    }
     }
     return 0.f;
 }
@@ -145,6 +163,7 @@ float getTarget_mAh()
     if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::MH1) target_mah = 3200;
     if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::VTC5) target_mah = 2600;
     if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::BAK_25R) target_mah = 2500;
+    if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::HE4) target_mah = 2300;
     return target_mah;
 }
 
