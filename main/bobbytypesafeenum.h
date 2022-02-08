@@ -6,7 +6,9 @@
 template<typename T>
 struct iterateEnum;
 
-#define DECLARE_TYPESAFE_ENUM_TYPE(Name) \
+#define DECLARE_BOBBYTYPESAFE_ENUM(Name, Derivation, Values) \
+    DECLARE_TYPESAFE_ENUM(Name, Derivation, Values) \
+    \
     template<> \
     struct iterateEnum<Name> { \
         template<typename T> \
@@ -15,7 +17,3 @@ struct iterateEnum;
             return iterate##Name(std::forward<T>(cb)); \
         } \
     };
-
-#define DECLARE_BOBBYTYPESAFE_ENUM(Name, Derivation, Values) \
-    DECLARE_TYPESAFE_ENUM(Name, Derivation, Values) \
-    DECLARE_TYPESAFE_ENUM_TYPE(Name)

@@ -14,17 +14,16 @@
 
 namespace typesafeenumchangemenu {
 constexpr char TEXT_BACK[] = "Back";
-} // namespace typesafeenumchangemenu
 
 template<typename TEnum>
 class TypesafeEnumCurrentValueMenuItem :
         public espgui::MenuItem
 {
 public:
-    TypesafeEnumCurrentValueMenuItem(const ConfigWrapper<TEnum> &config) : m_config{config} {}
+    TypesafeEnumCurrentValueMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
     std::string text() const override
     {
-        return toString(m_config.value);
+        return toString(m_config->value);
     }
     void triggered() override {}
 
@@ -33,7 +32,7 @@ public:
         return TFT_DARKGREY;
     }
 private:
-    const ConfigWrapper<TEnum> &m_config;
+    ConfigWrapper<TEnum>* m_config;
 };
 
 template<typename TEnum>
@@ -41,7 +40,7 @@ class TypesafeEnumSetterMenuItem :
         public espgui::MenuItem
 {
 public:
-    TypesafeEnumSetterMenuItem(TEnum value, const ConfigWrapper<TEnum> &config) : m_value{value}, m_config{config} {}
+    TypesafeEnumSetterMenuItem(TEnum value, ConfigWrapper<TEnum>* config) : m_value{value}, m_config{config} {}
 
     std::string text() const override
     {
@@ -50,12 +49,12 @@ public:
 
     void triggered() override
     {
-        if (auto result = configs.write_config(m_config, m_value); !result)
+        if (auto result = m_config->write(configs.nvs_handle_user, m_value); !result)
             BobbyErrorHandler{}.errorOccured(std::move(result).error());
     }
 private:
     const TEnum m_value;
-    const ConfigWrapper<TEnum> &m_config;
+    ConfigWrapper<TEnum>* m_config;
 };
 
 template<typename TEnum, typename TMenu>
@@ -63,13 +62,13 @@ class TypeSafeChangeMenu :
         public BobbyMenuDisplay
 {
 public:
-    TypeSafeChangeMenu(const ConfigWrapper<TEnum> &config) : m_config{config}
+    TypeSafeChangeMenu(ConfigWrapper<TEnum>* config) : m_config{config}
     {
         using namespace espgui;
         using namespace typesafeenumchangemenu;
-        constructMenuItem<TypesafeEnumCurrentValueMenuItem<TEnum>>(*m_config);
+        constructMenuItem<TypesafeEnumCurrentValueMenuItem<TEnum>>(m_config);
         constructMenuItem<makeComponent<MenuItem, EmptyText, DummyAction>>();
-        iterateEnum<TEnum>([&](TEnum enum_value, const auto &string_value){
+        iterateEnum<TEnum>::iterate([&](TEnum enum_value, const auto &string_value){
             constructMenuItem<TypesafeEnumSetterMenuItem<TEnum>>(enum_value, m_config);
         });
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<TMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
@@ -77,7 +76,7 @@ public:
 
     std::string text() const override
     {
-        return fmt::format("Select {}", m_config.nvsName());
+        return fmt::format("Select {}", m_config->nvsName());
     }
 
     void back() override
@@ -85,14 +84,15 @@ public:
         espgui::switchScreen<TMenu>();
     }
 private:
-    const ConfigWrapper<TEnum> &m_config;
+    ConfigWrapper<TEnum>* m_config;
 };
+} // namespace typesafeenumchangemenu
 
 template<typename TEnum, typename TMenu, const char *Ttext>
 class SwitchScreenTypeSafeChangeMenuItem : public espgui::MenuItem
 {
 public:
-    SwitchScreenTypeSafeChangeMenuItem(const ConfigWrapper<TEnum> &config) : m_config{config} {}
+    SwitchScreenTypeSafeChangeMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
 
     static constexpr const char *STATIC_TEXT = Ttext;
     std::string text() const override
@@ -102,8 +102,8 @@ public:
 
     void triggered() override
     {
-        espgui::switchScreen<TypeSafeChangeMenu<TEnum, TMenu>>(*m_config);
+        espgui::switchScreen<typesafeenumchangemenu::TypeSafeChangeMenu<TEnum, TMenu>>(m_config);
     }
 private:
-    const ConfigWrapper<TEnum> &m_config;
+    ConfigWrapper<TEnum>* m_config;
 };
