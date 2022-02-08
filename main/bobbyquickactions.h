@@ -1,8 +1,8 @@
 #pragma once
 
 // 3rdparty lib includes
-#include <cpptypesafeenum.h>
 #include <buttonsinterface.h>
+#include <cpptypesafeenum.h>
 
 // local includes
 #include "bobbybuttons.h"

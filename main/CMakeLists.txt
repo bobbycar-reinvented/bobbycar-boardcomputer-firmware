@@ -42,13 +42,13 @@ set(headers
     bobbycheckbox.h
     bobbyerrorhandler.h
     bobbyquickactions.h
+    bobbytypesafeenum.h
     buildserver.h
     can.h
     changevaluedisplay_bluetoothmode.h
     changevaluedisplay_bobbyquickactions.h
     changevaluedisplay_controlmode.h
     changevaluedisplay_controltype.h
-    changevaluedisplay_handbremsmode.h
     changevaluedisplay_larsmmode_mode.h
     changevaluedisplay_unifiedmodelmode.h
     cloud.h
@@ -105,7 +105,6 @@ set(headers
     displays/menus/invertmenu.h
     displays/menus/larsmmodesettingsmenu.h
     displays/menus/ledstripmenu.h
-    displays/menus/ledstripselectanimationmenu.h
     displays/menus/ledstripselectblinkmenu.h
     displays/menus/ledstripselectotamode.h
     displays/menus/limitssettingsmenu.h
@@ -120,7 +119,6 @@ set(headers
     displays/menus/networksettingsmenu.h
     displays/menus/otamenu.h
     displays/menus/profilesmenu.h
-    displays/menus/selectbatterytypemenu.h
     displays/menus/selectbuildserverbranch.h
     displays/menus/selectbuildservermenu.h
     displays/menus/selectmodemenu.h
@@ -132,6 +130,7 @@ set(headers
     displays/menus/tempomatmodesettingsmenu.h
     displays/menus/timersmenu.h
     displays/menus/timesettingsmenu.h
+    displays/menus/typesafeenumchangemenu.h
     displays/menus/udpcloudsettingsmenu.h
     displays/menus/wifiapclientsmenu.h
     displays/menus/wifiapsettingsmenu.h
@@ -281,7 +280,6 @@ set(sources
     changevaluedisplay_bobbyquickactions.cpp
     changevaluedisplay_controlmode.cpp
     changevaluedisplay_controltype.cpp
-    changevaluedisplay_handbremsmode.cpp
     changevaluedisplay_larsmmode_mode.cpp
     changevaluedisplay_unifiedmodelmode.cpp
     cloud.cpp
@@ -336,7 +334,6 @@ set(sources
     displays/menus/invertmenu.cpp
     displays/menus/larsmmodesettingsmenu.cpp
     displays/menus/ledstripmenu.cpp
-    displays/menus/ledstripselectanimationmenu.cpp
     displays/menus/ledstripselectblinkmenu.cpp
     displays/menus/ledstripselectotamode.cpp
     displays/menus/limitssettingsmenu.cpp
@@ -351,7 +348,6 @@ set(sources
     displays/menus/networksettingsmenu.cpp
     displays/menus/otamenu.cpp
     displays/menus/profilesmenu.cpp
-    displays/menus/selectbatterytypemenu.cpp
     displays/menus/selectbuildserverbranch.cpp
     displays/menus/selectbuildservermenu.cpp
     displays/menus/selectmodemenu.cpp
@@ -363,6 +359,7 @@ set(sources
     displays/menus/tempomatmodesettingsmenu.cpp
     displays/menus/timersmenu.cpp
     displays/menus/timesettingsmenu.cpp
+    displays/menus/typesafeenumchangemenu.cpp
     displays/menus/udpcloudsettingsmenu.cpp
     displays/menus/wifiapclientsmenu.cpp
     displays/menus/wifiapsettingsmenu.cpp

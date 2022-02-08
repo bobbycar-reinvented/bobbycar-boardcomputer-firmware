@@ -11,16 +11,23 @@
 
 #ifdef FEATURE_LEDSTRIP
 template<LedstripAnimation type>
+class LedStripSetAnimationActionStatic : public virtual espgui::ActionInterface
+{
+public:
+    void triggered() override
+    {
+        if (auto result = configs.write_config(configs.ledstrip.animationType, type); !result)
+            BobbyErrorHandler{}.errorOccured(std::move(result).error());
+    }
+};
+
 class LedStripSetAnimationAction : public virtual espgui::ActionInterface
 {
 public:
+    LedStripSetAnimationAction(LedstripAnimation animation) : m_animation{animation} {};
     void triggered() override;
+private:
+    const LedstripAnimation m_animation;
 };
 
-template<LedstripAnimation type>
-void LedStripSetAnimationAction<type>::triggered()
-{
-    if (auto result = configs.write_config(configs.ledstrip.animationType, type); !result)
-        BobbyErrorHandler{}.errorOccured(std::move(result).error());
-}
 #endif

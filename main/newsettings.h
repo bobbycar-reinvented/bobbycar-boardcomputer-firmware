@@ -21,6 +21,7 @@
 #include <makearray.h>
 
 // local includes
+#include "battery.h"
 #include "ledstrip.h"
 #include "unifiedmodelmode.h"
 #include "displays/lockscreen.h"
@@ -253,7 +254,7 @@ public:
     struct {
         ConfigWrapper<uint8_t> cellsSeries        {12,                                     DoReset,   {},                         "batteryCS"           };
         ConfigWrapper<uint8_t> cellsParallel      {10,                                     DoReset,   {},                         "batteryCP"           };
-        ConfigWrapper<uint8_t> cellType           {0,                                      DoReset,   {},                         "batteryType"         };
+        ConfigWrapper<BatteryCellType> cellType   {BatteryCellType::_22P,                  DoReset,   {},                         "batteryType"         };
         ConfigWrapper<uint16_t> watthoursPerKilometer{25,                                  DoReset,   {},                         "whkm"                };
         ConfigWrapper<int16_t> front30VoltCalibration{3000,                                DoReset,   {},                         "batF30VCal"          };
         ConfigWrapper<int16_t> back30VoltCalibration {3000,                                DoReset,   {},                         "batB30VCal"          };

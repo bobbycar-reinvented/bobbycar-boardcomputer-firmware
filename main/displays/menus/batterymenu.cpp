@@ -12,29 +12,21 @@
 #include <tftinstance.h>
 
 // Local includes
-#include "utils.h"
-#include "icons/settings.h"
-#include "battery.h"
-#include "selectbatterytypemenu.h"
-#include "displays/bobbychangevaluedisplay.h"
-#include "mainmenu.h"
-#include "displays/calibratevoltagedisplay.h"
 #include "accessors/settingsaccessors.h"
 #include "battery.h"
+#include "displays/bobbychangevaluedisplay.h"
+#include "displays/calibratevoltagedisplay.h"
+#include "icons/settings.h"
+#include "mainmenu.h"
+#include "typesafeenumchangemenu.h"
+#include "utils.h"
 
 namespace {
 constexpr char TEXT_BATTERY[] = "Battery";
 constexpr char TEXT_CELL_SERIES[] = "Cells (Series)";
 constexpr char TEXT_CELL_PARALLEL[] = "Cells (Parallel)";
 constexpr char TEXT_SELECT_CELL_TYPE[] = "Select Cell Type";
-constexpr char TEXT_CELL_TYPE[] = "Cell Type";
 constexpr char TEXT_BATTERY_CALIBRATE[] = "Calibrate Voltages";
-constexpr char TEXT_BATTERY_TYPE_22P[] = "22P cells";
-constexpr char TEXT_BATTERY_TYPE_HG2[] = "HG2 cells";
-constexpr char TEXT_BATTERY_TYPE_MH1[] = "MH1 cells";
-constexpr char TEXT_BATTERY_TYPE_VTC5[] = "VTC5 cells";
-constexpr char TEXT_BATTERY_TYPE_BAK_25R[] = "BAK / 25R cells";
-constexpr char TEXT_BATTERY_TYPE_HE4[] = "HE4 cells";
 constexpr char TEXT_BATTERY_WHKM[] = "Wh per km";
 constexpr char TEXT_BATTERY_APPLYCALIB[] = "Apply calibration";
 constexpr char TEXT_VOLTAGECALIBRATION_RESET[] = "Reset calibration";
@@ -85,7 +77,7 @@ BatteryMenu::BatteryMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CELL_SERIES, BatterySeriesCellsAccessor>,        SwitchScreenAction<BatteryCellSeriesChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CELL_PARALLEL, BatteryParallelCellsAccessor>,    SwitchScreenAction<BatteryCellParallelChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BATTERY_WHKM, BatteryWHperKMAccessor>,           SwitchScreenAction<BatteryWHperKMChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECT_CELL_TYPE>,                                        SwitchScreenAction<BatteryTypeMenu>>>();
+    constructMenuItem<SwitchScreenTypeSafeChangeMenuItem<BatteryCellType, BatteryMenu, TEXT_SELECT_CELL_TYPE>>(&configs.battery.cellType);
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                                DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, WhStatisticsText,                                                         DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_CALIBRATE>,                                       SwitchScreenAction<CalibrateVoltageDisplay>, StaticMenuItemIcon<&bobbyicons::settings>>>();

@@ -11,16 +11,16 @@
 #include <textwithvaluehelper.h>
 
 // local includes
-#include "displays/bobbychangevaluedisplay.h"
 #include "accessors/settingsaccessors.h"
+#include "bobbycheckbox.h"
+#include "displays/bobbychangevaluedisplay.h"
 #include "displays/ledstripcolorsdisplay.h"
 #include "displays/menus/ledstripselectotamode.h"
 #include "displays/menus/mainmenu.h"
+#include "displays/menus/typesafeenumchangemenu.h"
 #include "globals.h"
 #include "ledstrip.h"
-#include "ledstripselectanimationmenu.h"
 #include "ledstripselectblinkmenu.h"
-#include "bobbycheckbox.h"
 
 // clang-format off
 
@@ -149,7 +149,7 @@ LedstripMenu::LedstripMenu()
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_STVO_ENABLEFRONTLIGHT>, BobbyCheckbox, EnableLedstripStVOFrontlight>>();
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDANIMATION>, BobbyCheckbox, EnableLedAnimationAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_SELECTANIMATION>,                                 espgui::SwitchScreenAction<LedstripSelectAnimationMenu>>>();
+    constructMenuItem<SwitchScreenTypeSafeChangeMenuItem<LedstripAnimation, LedstripMenu, TEXT_SELECTANIMATION>>(&configs.ledstrip.animationType);
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BRAKELIGHTS>,  BobbyCheckbox,    EnableBrakeLightsAccessor>>();
 

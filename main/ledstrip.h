@@ -4,24 +4,24 @@
 #include <vector>
 
 // 3rdparty lib includes
-#include <cpptypesafeenum.h>
 #include <FastLED.h>
 
 // local includes
+#include "bobbytypesafeenum.h"
 #include "ledstripdefines.h"
 
 #define OtaAnimationModesValues(x) \
     x(None) \
     x(GreenProgressBar) \
     x(ColorChangeAll)
-DECLARE_TYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues)
+DECLARE_BOBBYTYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues)
 
 #define LedstripAnimationValues(x) \
     x(DefaultRainbow) \
     x(BetterRainbow) \
     x(SpeedSync) \
     x(CustomColor)
-DECLARE_TYPESAFE_ENUM(LedstripAnimation, : uint8_t, LedstripAnimationValues)
+DECLARE_BOBBYTYPESAFE_ENUM(LedstripAnimation, : uint8_t, LedstripAnimationValues)
 
 #ifdef FEATURE_LEDSTRIP
 enum Bobbycar_Side
