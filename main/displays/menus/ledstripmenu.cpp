@@ -149,7 +149,7 @@ LedstripMenu::LedstripMenu()
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_STVO_ENABLEFRONTLIGHT>, BobbyCheckbox, EnableLedstripStVOFrontlight>>();
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDANIMATION>, BobbyCheckbox, EnableLedAnimationAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_SELECTANIMATION>, espgui::SwitchScreenAction<TypeSafeChangeMenu<LedstripAnimation, LedstripMenu, decltype([&](LedstripAnimation enum_value, const auto &string_value)->void {})>>>>(); // this needs to be fixed
+    constructMenuItem<SwitchScreenTypeSafeChangeMenuItem<LedstripAnimation, LedstripMenu, TEXT_SELECTANIMATION>>(&configs.ledstrip.animationType);
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BRAKELIGHTS>,  BobbyCheckbox,    EnableBrakeLightsAccessor>>();
 

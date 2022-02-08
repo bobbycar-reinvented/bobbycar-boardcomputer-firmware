@@ -1,9 +1,7 @@
 #pragma once
 
-// 3rdparty lib includes
-#include <cpptypesafeenum.h>
-
 // local includes
+#include "bobbytypesafeenum.h"
 #include "displays/bobbymenudisplay.h"
 #include "modes/ignoreinputmode.h"
 
@@ -12,7 +10,7 @@
     x(Copy) \
     x(Swap) \
     x(__END__)
-DECLARE_TYPESAFE_ENUM(Actions, : uint8_t, ActionValues)
+DECLARE_BOBBYTYPESAFE_ENUM(Actions, : uint8_t, ActionValues)
 
 class ManageProfilesMenu : public BobbyMenuDisplay
 {

@@ -3,8 +3,8 @@
 // system includes
 #include <cstdint>
 
-// 3rdparty lib includes
-#include <cpptypesafeenum.h>
+// local includes
+#include <bobbytypesafeenum.h>
 
 #define BatteryCellTypeValues(x) \
     x(_22P) \
@@ -13,7 +13,7 @@
     x(VTC5) \
     x(BAK_25R) \
     x(HE4)
-DECLARE_TYPESAFE_ENUM(BatteryCellType, : uint8_t, BatteryCellTypeValues)
+DECLARE_BOBBYTYPESAFE_ENUM(BatteryCellType, : uint8_t, BatteryCellTypeValues)
 
 float getBatteryPercentage(float batVoltage, BatteryCellType cellType);
 

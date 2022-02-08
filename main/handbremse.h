@@ -4,14 +4,16 @@
 #include <cstdint>
 
 // 3rdparty lib includes
-#include <cpptypesafeenum.h>
 #include <espchrono.h>
+
+// local includes
+#include "bobbytypesafeenum.h"
 
 #define HandbremseModeValues(x) \
     x(MOSFETS_OFF) \
     x(OPENMODE) \
     x(SPEED_0)
-DECLARE_TYPESAFE_ENUM(HandbremseMode, : uint8_t, HandbremseModeValues)
+DECLARE_BOBBYTYPESAFE_ENUM(HandbremseMode, : uint8_t, HandbremseModeValues)
 
 namespace handbremse {
 
