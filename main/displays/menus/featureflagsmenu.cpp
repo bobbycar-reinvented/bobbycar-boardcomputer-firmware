@@ -26,8 +26,9 @@ public:
     std::string text() const override
     {
         std::string_view name = m_config.nvsName();
-        if (cpputils::stringStartsWith(name, "f_")) {
-            name.remove_prefix(std::strlen("f_"));
+        constexpr const std::string_view prefix = "f_";
+        if (cpputils::stringStartsWith(name, prefix)) {
+            name.remove_prefix(prefix.size());
         }
         return std::string{name};
     }
