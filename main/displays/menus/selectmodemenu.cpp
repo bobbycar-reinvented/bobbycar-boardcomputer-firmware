@@ -86,17 +86,19 @@ void SelectModeMenu::start()
         setSelectedIndex(1);
     else if (currentMode == &modes::larsmMode)
         setSelectedIndex(2);
-    else if (currentMode == &modes::motortestMode)
+    else if (currentMode == &modes::remoteControlMode)
         setSelectedIndex(3);
+    else if (currentMode == &modes::motortestMode)
+        setSelectedIndex(4);
 #ifdef FEATURE_JOYSTICK
     else if (currentMode == &modes::wheelchairMode)
-        setSelectedIndex(4);
+        setSelectedIndex(5);
 #endif
     else
     {
         //Serial.printf("Unknown mode: %s", currentMode?currentMode->displayName():"");
 #ifdef FEATURE_JOYSTICK
-        setSelectedIndex(5);
+        setSelectedIndex(6);
 #else
         setSelectedIndex(4);
 #endif
