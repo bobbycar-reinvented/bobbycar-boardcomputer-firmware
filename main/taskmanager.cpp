@@ -49,9 +49,7 @@
 #include "ble_bobby.h"
 #include "webserver.h"
 #include "ledstrip.h"
-#ifdef FEATURE_ESPNOW
 #include "espnowfunctions.h"
-#endif
 #include "cloud.h"
 #include "udpcloud.h"
 #include "modes.h"
@@ -108,9 +106,7 @@ BobbySchedulerTask schedulerTasksArr[] {
     BobbySchedulerTask { "ble",            initBle,               handleBle,               100ms },
     BobbySchedulerTask { "webserver",      initWebserver,         handleWebserver,         100ms },
     BobbySchedulerTask { "ledstrip",       initLedStrip,          updateLedStrip,          30ms },
-#ifdef FEATURE_ESPNOW
     BobbySchedulerTask { "espnow",         espnow::initESPNow,    espnow::handle,          100ms },
-#endif
     BobbySchedulerTask { "cloud",          initCloud,             updateCloud,             50ms },
     BobbySchedulerTask { "udpcloud",       udpCloudInit,          udpCloudUpdate,          50ms },
     BobbySchedulerTask { "drivingmode",    initDrivingMode,       updateDrivingMode,       20ms },

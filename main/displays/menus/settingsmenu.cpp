@@ -84,20 +84,19 @@ SettingsMenu::SettingsMenu()
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,            SwitchScreenAction<LimitsSettingsMenu>>>();
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NETWORKSETTINGS>,               SwitchScreenAction<NetworkSettingsMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
-#ifdef FEATURE_ESPNOW
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW>,                        SwitchScreenAction<EspNowMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
-#endif
+    if (configs.feature.esp_now.value)
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW>,                    SwitchScreenAction<EspNowMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
 #ifdef FEATURE_BLUETOOTH
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHSETTINGS>,             SwitchScreenAction<BluetoothSettingsMenu>, StaticMenuItemIcon<&bobbyicons::bluetooth>>>();
 #endif
     if (configs.feature.ble.value)
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLESETTINGS>,                   SwitchScreenAction<BleSettingsMenu>, StaticMenuItemIcon<&bobbyicons::bluetooth>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLESETTINGS>,               SwitchScreenAction<BleSettingsMenu>, StaticMenuItemIcon<&bobbyicons::bluetooth>>>();
     if (configs.feature.cloud.value)
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSETTINGS>,                 SwitchScreenAction<CloudSettingsMenu>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSETTINGS>,             SwitchScreenAction<CloudSettingsMenu>>>();
     if (configs.feature.udpcloud.value)
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPCLOUDSETTINGS>,              SwitchScreenAction<UdpCloudSettingsMenu>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPCLOUDSETTINGS>,          SwitchScreenAction<UdpCloudSettingsMenu>>>();
     if (configs.feature.ota.value)
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILDSERVERMENU>,         SwitchScreenAction<SelectBuildServerMenu>, StaticMenuItemIcon<&bobbyicons::update>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILDSERVERMENU>,     SwitchScreenAction<SelectBuildServerMenu>, StaticMenuItemIcon<&bobbyicons::update>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIME>,                          SwitchScreenAction<TimeSettingsMenu>, StaticMenuItemIcon<&bobbyicons::time>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESSETTINGS>,                 SwitchScreenAction<ModesSettingsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>,    SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware>>>();

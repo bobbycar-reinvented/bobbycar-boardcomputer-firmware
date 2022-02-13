@@ -332,6 +332,7 @@ public:
         ConfigWrapper<bool> ota                   {false,                                  DoReset,   {},                         "f_ota"               };
         ConfigWrapper<bool> webserver             {true,                                   DoReset,   {},                         "featureWebserv"      };
         ConfigWrapper<bool> gschissene_diode      {false,                                  DoReset,   {},                         "featurDiodeHin"      };
+        ConfigWrapper<bool> esp_now               {false,                                  DoReset,   {},                         "featureEspNow"       };
     } feature;
 
     struct {

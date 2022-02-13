@@ -212,11 +212,9 @@ struct HandbremsAutomaticAccessor : public NewSettingsAccessor<bool> { ConfigWra
 struct HandbremsVisualizeAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.handbremse.visualize; } };
 
 // ESP Now
-#ifdef FEATURE_ESPNOW
 struct ESPNowSyncTimeEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.syncTime; } };
 struct ESPNowSyncTimeWithOthersEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.syncTimeWithOthers; } };
 struct ESPNowSyncBlinkEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.syncBlink; } };
-#endif
 
 // Button Mapping accessors
 struct ButtonLeftAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingLeft; } };

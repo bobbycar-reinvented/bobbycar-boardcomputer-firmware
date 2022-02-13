@@ -21,9 +21,7 @@
 #include "displays/menus/demosmenu.h"
 #include "displays/menus/greenpassmenu.h"
 #include "displays/lockscreen.h"
-#ifdef FEATURE_ESPNOW
 #include "displays/menus/garagenmenu.h"
-#endif
 #include "displays/menus/otamenu.h"
 #include "displays/poweroffdisplay.h"
 #include "displays/menus/statisticsmenu.h"
@@ -96,12 +94,10 @@ MainMenu::MainMenu()
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,     SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GREENPASS>,    SwitchScreenAction<GreenPassMenu>, StaticMenuItemIcon<&bobbyicons::greenpass>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>,  SwitchScreenAction<Lockscreen>, StaticMenuItemIcon<&bobbyicons::lock>>>();
-#ifdef FEATURE_ESPNOW
-    if (configs.feature.garage.value)
+    if (configs.feature.garage.value && configs.feature.esp_now.value)
     {
         if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GARAGE>,       SwitchScreenAction<GarageMenu>>>(); }
     }
-#endif
     if (configs.feature.ota.value)
         if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATE>,       SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&bobbyicons::update>>>(); }
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       SwitchScreenAction<GraphsMenu>, StaticMenuItemIcon<&bobbyicons::graph>>>(); }

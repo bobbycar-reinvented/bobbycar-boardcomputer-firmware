@@ -1,9 +1,7 @@
 #include "bobbyquickactions.h"
 
 // local includes
-#ifdef FEATURE_ESPNOW
 #include "espnowfunctions.h"
-#endif
 #include "newsettings.h"
 #include "wifi_bobbycar.h"
 
@@ -30,10 +28,7 @@ void handle_bobby_quickaction(espgui::Button button)
         return;
     }
 
-    if (config)
-    {
-        switch(config->value)
-        {
+    switch (config->value) {
         case BobbyQuickActions::BLINK_LEFT:
             blink_left();
             break;
@@ -51,13 +46,14 @@ void handle_bobby_quickaction(espgui::Button button)
             break;
         default:
             return;
-        }
     }
 }
 
 void open_garage()
 {
-#ifdef FEATURE_ESPNOW
+    if (!configs.feature.esp_now.value)
+        return;
+
     if (!espnow::espnow_init_allowed())
         return;
     for (const auto &config : configs.wireless_door_configs)
@@ -68,7 +64,6 @@ void open_garage()
             continue;
         }
     }
-#endif
 }
 
 void action_wifi_scan()
