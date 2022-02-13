@@ -634,7 +634,8 @@ public:
     x(feature.ble) \
     x(feature.ota) \
     x(feature.webserver) \
-    x(feature.gschissene_diode)
+    x(feature.gschissene_diode)    \
+    x(feature.esp_now)
     //x(bleSettings.bleEnabled)
 
 #define FEATURES(x) \
@@ -646,7 +647,8 @@ public:
     x(feature.dnsannounce) \
     x(feature.ntp) \
     x(feature.ble) \
-    x(feature.ota) \
+    x(feature.ota)  \
+    x(feature.esp_now)  \
     x(feature.webserver)
     //x(feature.gschisseneDiode)
 
