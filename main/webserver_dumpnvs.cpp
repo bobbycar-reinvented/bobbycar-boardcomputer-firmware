@@ -1,9 +1,7 @@
 #include "webserver_dumpnvs.h"
 
 // esp-idf includes
-#ifdef FEATURE_WEBSERVER
 #include <esp_http_server.h>
-#endif
 #include <esp_log.h>
 
 // 3rdparty lib includes
@@ -38,9 +36,7 @@ typename std::enable_if<
         !std::is_same<T, espchrono::minutes32>::value &&
         !std::is_same<T, espchrono::DayLightSavingMode>::value &&
         !std::is_same<T, UnifiedModelMode>::value
-#if defined(FEATURE_LEDSTRIP) && defined(FEATURE_OTA)
         && !std::is_same<T, OtaAnimationModes>::value
-#endif
     , bool>::type
 showInputForSetting(std::string_view key, T value, JsonObject &body)
 {
@@ -120,8 +116,6 @@ showInputForSetting(std::string_view key, T value, JsonObject &body)
     return true;
 }
 
-#if defined(FEATURE_LEDSTRIP) && defined(FEATURE_OTA)
-
 template<typename T>
 typename std::enable_if<
     std::is_same<T, OtaAnimationModes>::value
@@ -131,21 +125,19 @@ showInputForSetting(std::string_view key, T value, JsonObject &body)
     body[key] = int(value);
     return true;
 }
-#endif
 
 esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
 {
-#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
-    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
-    if (!helper.locked())
-    {
-        constexpr const std::string_view msg = "could not lock webserver_lock";
-        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
-    }
-#endif
 
     DynamicJsonDocument doc(6144);
+
+    JsonObject settings = doc.createNestedObject("settings");
+
+    configs.callForEveryConfig([&](auto &config){
+        const std::string_view nvsName{config.nvsName()};
+        showInputForSetting(nvsName, config.value, settings);
+    });
+
     const auto profile = settingsPersister.currentlyOpenProfileIndex();
     const auto switchBackProfile = profile ? int(*profile) : 0;
 
@@ -165,10 +157,9 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
         const auto profile_str = cur_profile ? std::to_string(*cur_profile) : "-";
 
         JsonObject profile = profiles.createNestedObject(profile_str);
-        JsonObject profile_settings = profile.createNestedObject("settings");
 
         profileSettings.executeForEveryProfileSetting([&](const char *key, auto &value){
-            showInputForSetting(key, value, profile_settings);
+            showInputForSetting(key, value, profile);
         });
     }
 

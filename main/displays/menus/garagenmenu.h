@@ -1,7 +1,5 @@
 #pragma once
 
-#if defined(FEATURE_GARAGE) && defined (FEATURE_ESPNOW)
-
 // local includes
 #include "displays/bobbymenudisplay.h"
 
@@ -14,4 +12,3 @@ public:
 
     void back() override;
 };
-#endif

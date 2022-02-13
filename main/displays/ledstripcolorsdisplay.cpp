@@ -21,7 +21,6 @@
 #include "globals.h"
 #include "displays/menus/ledstripmenu.h"
 
-#ifdef FEATURE_LEDSTRIP
 namespace {
 constexpr char TEXT_LEDSTRIPCOLORMENU[] = "Customize Ledstrip";
 
@@ -30,15 +29,15 @@ int8_t selected_color;
 bool state_select_color{false};
 bool last_state = {false};
 
-const std::array<CRGB, 8> Colors = {
-    CRGB{0,0,0},
-    CRGB{255,255,255},
-    CRGB{255,0,0},
-    CRGB{255,255,0},
-    CRGB{0,255,0},
-    CRGB{0,255,255},
-    CRGB{0,0,255},
-    CRGB{255,0,255}
+const std::array<uint32_t, 8> Colors = {
+    CRGB_TO_UINT32(CRGB{0,0,0}),
+    CRGB_TO_UINT32(CRGB{255,255,255}),
+    CRGB_TO_UINT32(CRGB{255,0,0}),
+    CRGB_TO_UINT32(CRGB{255,255,0}),
+    CRGB_TO_UINT32(CRGB{0,255,0}),
+    CRGB_TO_UINT32(CRGB{0,255,255}),
+    CRGB_TO_UINT32(CRGB{0,0,255}),
+    CRGB_TO_UINT32(CRGB{255,0,255})
 };
 
 const std::array<uint16_t, 8> tft_colors = {
@@ -119,7 +118,7 @@ void LedstripColorsDisplay::buttonPressed(espgui::Button button)
         }
         else
         {
-            ledstrip_custom_colors[selected_side] = Colors[selected_color];
+            configs.ledstrip.custom_color[selected_side].write(configs.nvs_handle_user, Colors[selected_color]);
             // Uncomment to close select color menu on color select
             /*
         state_select_color = false;
@@ -258,4 +257,3 @@ void LedstripColorsDisplay::drawSide(Bobbycar_Side side, unsigned int color)
     }
     // espgui::tft.fillCircle(espgui::tft.width() / 2, 140, 100, TFT_BLACK);
 }
-#endif

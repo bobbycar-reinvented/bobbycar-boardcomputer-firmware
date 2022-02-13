@@ -3,10 +3,10 @@
 // local includes
 #include "displays/menudisplaywithtime.h"
 
-class LedstripMenu : public bobbygui::MenuDisplayWithTime
+class FeatureFlagsMenu : public bobbygui::MenuDisplayWithTime
 {
 public:
-    LedstripMenu();
+    FeatureFlagsMenu();
 
     std::string text() const override;
 

@@ -9,7 +9,6 @@
 #include "newsettings.h"
 #include "bobbyerrorhandler.h"
 
-#ifdef FEATURE_LEDSTRIP
 template<LedstripAnimation type>
 class LedStripSetAnimationActionStatic : public virtual espgui::ActionInterface
 {
@@ -29,5 +28,3 @@ public:
 private:
     const LedstripAnimation m_animation;
 };
-
-#endif

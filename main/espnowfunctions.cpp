@@ -1,4 +1,3 @@
-#ifdef FEATURE_ESPNOW
 #include "espnowfunctions.h"
 
 #include <espchrono.h>
@@ -309,4 +308,3 @@ esp_err_t send_espnow_message(std::string_view message)
 }
 
 } // namespace espnow
-#endif

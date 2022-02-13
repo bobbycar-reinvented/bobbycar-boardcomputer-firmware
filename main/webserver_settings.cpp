@@ -4,9 +4,7 @@
 #include <limits>
 
 // esp-idf includes
-#ifdef FEATURE_WEBSERVER
 #include <esp_http_server.h>
-#endif
 #include <esp_log.h>
 
 // 3rdparty lib includes
@@ -22,7 +20,6 @@
 #include "globals.h"
 #include "webserver_lock.h"
 
-#ifdef FEATURE_WEBSERVER
 using namespace std::chrono_literals;
 using esphttpdutils::HtmlTag;
 
@@ -89,15 +86,6 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 
 esp_err_t webserver_settings_handler(httpd_req_t *req)
 {
-#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
-    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
-    if (!helper.locked())
-    {
-        constexpr const std::string_view msg = "could not lock webserver_lock";
-        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
-    }
-#endif
 
     std::string body;
 
@@ -142,9 +130,7 @@ esp_err_t webserver_settings_handler(httpd_req_t *req)
             {
                 HtmlTag pTag{"p", body};
                 body += "<a href=\"/\">Display control</a> - "
-#ifdef FEATURE_OTA
                         "<a href=\"/ota\">Update</a> - "
-#endif
                         "<b>Settings</b> - "
                         "<a href=\"/newSettings\">New Settings</a> - "
                         "<a href=\"/dumpnvs\">Dump NVS</a>";
@@ -257,15 +243,6 @@ saveSetting(T &value, std::string_view newValue, std::string &body)
 
 esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
 {
-#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
-    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
-    if (!helper.locked())
-    {
-        constexpr const std::string_view msg = "could not lock webserver_lock";
-        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
-    }
-#endif
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
@@ -326,4 +303,3 @@ esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
                   "text/plain",
                   body)
 }
-#endif

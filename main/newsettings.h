@@ -52,6 +52,21 @@ public:
         staticDns2   {wifi_stack::ip_address_t{}, DoReset, {},                                             staticDns2Key      }
     {}
 
+    WiFiConfig(const char *ssidNvsKey, const char *keyNvsKey,
+               const char *useStaticIpKey, const char *staticIpKey, const char *staticSubnetKey, const char *staticGatewayKey,
+               const char *useStaticDnsKey, const char *staticDns0Key, const char *staticDns1Key, const char *staticDns2Key, const char *default_ssid, const char *default_key) :
+        ssid         {default_ssid,               DoReset, StringMaxSize<32>,                              ssidNvsKey         },
+        key          {default_key,                DoReset, StringOr<StringEmpty, StringMinMaxSize<8, 64>>, keyNvsKey          },
+        useStaticIp  {false,                      DoReset, {},                                             useStaticIpKey     },
+        staticIp     {wifi_stack::ip_address_t{}, DoReset, {},                                             staticIpKey        },
+        staticSubnet {wifi_stack::ip_address_t{}, DoReset, {},                                             staticSubnetKey    },
+        staticGateway{wifi_stack::ip_address_t{}, DoReset, {},                                             staticGatewayKey   },
+        useStaticDns {false,                      DoReset, {},                                             useStaticDnsKey    },
+        staticDns0   {wifi_stack::ip_address_t{}, DoReset, {},                                             staticDns0Key      },
+        staticDns1   {wifi_stack::ip_address_t{}, DoReset, {},                                             staticDns1Key      },
+        staticDns2   {wifi_stack::ip_address_t{}, DoReset, {},                                             staticDns2Key      }
+    {}
+
     ConfigWrapper<std::string> ssid;
     ConfigWrapper<std::string> key;
     ConfigWrapper<bool> useStaticIp;
@@ -98,7 +113,7 @@ public:
     ConfigWrapper<std::string> hostname           {defaultHostname,                       DoReset,   StringMinMaxSize<4, 32>,       "hostname"            };
     ConfigWrapper<bool>        wifiStaEnabled     {true,                                  DoReset,   {},                            "wifiStaEnabled"      };
     std::array<WiFiConfig, 10> wifi_configs {
-        WiFiConfig {"wifi_ssid0", "wifi_key0", "wifi_usestatic0", "wifi_static_ip0", "wifi_stati_sub0", "wifi_stat_gate0", "wifi_usestadns0", "wifi_stat_dnsA0", "wifi_stat_dnsB0", "wifi_stat_dnsC0"},
+        WiFiConfig {"wifi_ssid0", "wifi_key0", "wifi_usestatic0", "wifi_static_ip0", "wifi_stati_sub0", "wifi_stat_gate0", "wifi_usestadns0", "wifi_stat_dnsA0", "wifi_stat_dnsB0", "wifi_stat_dnsC0", "bobbycar", "12345678"},
         WiFiConfig {"wifi_ssid1", "wifi_key1", "wifi_usestatic1", "wifi_static_ip1", "wifi_stati_sub1", "wifi_stat_gate1", "wifi_usestadns1", "wifi_stat_dnsA1", "wifi_stat_dnsB1", "wifi_stat_dnsC1"},
         WiFiConfig {"wifi_ssid2", "wifi_key2", "wifi_usestatic2", "wifi_static_ip2", "wifi_stati_sub2", "wifi_stat_gate2", "wifi_usestadns2", "wifi_stat_dnsA2", "wifi_stat_dnsB2", "wifi_stat_dnsC2"},
         WiFiConfig {"wifi_ssid3", "wifi_key3", "wifi_usestatic3", "wifi_static_ip3", "wifi_stati_sub3", "wifi_stat_gate3", "wifi_usestadns3", "wifi_stat_dnsA3", "wifi_stat_dnsB3", "wifi_stat_dnsC3"},
@@ -250,6 +265,17 @@ public:
         ConfigWrapper<OtaAnimationModes> otaMode  {OtaAnimationModes::GreenProgressBar,    DoReset,   {},                         "ledOtaAnim"          };
         ConfigWrapper<uint32_t>     maxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
         ConfigWrapper<bool> enableVisualizeBlink  {false,                                  DoReset,   {},                         "enVisualBlink"       };
+        std::array<ConfigWrapper<uint32_t>, 8> custom_color {
+            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol1"       },
+            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol2"       },
+            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol3"       },
+            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol4"       },
+            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol5"       },
+            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol6"       },
+            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol7"       },
+            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol8"       },
+        };
+        ConfigWrapper<uint8_t> leds_per_meter     {144,                                    DoReset,   {},                         "ledsPerMeter"        };
     } ledstrip;
 
     struct {
@@ -293,6 +319,21 @@ public:
         ConfigWrapper<bool> syncTimeWithOthers    {false,                                  DoReset,   {},                         "espnowSyncTWO"       };
         ConfigWrapper<bool> syncBlink             {false,                                  DoReset,   {},                         "espnowSyncBl"        };
     } espnow;
+
+    struct {
+        ConfigWrapper<bool> ledstrip              {false,                                  DoReset,   {},                         "f_ledstrip"          };
+        ConfigWrapper<bool> webserver_disable_lock{false,                                  DoReset,   {},                         "f_no_web_lock"       };
+        ConfigWrapper<bool> garage                {false,                                  DoReset,   {},                         "f_garage"            };
+        ConfigWrapper<bool> cloud                 {false,                                  DoReset,   {},                         "f_cloud"             };
+        ConfigWrapper<bool> udpcloud              {false,                                  DoReset,   {},                         "f_udpcloud"          };
+        ConfigWrapper<bool> dnsannounce           {false,                                  DoReset,   {},                         "f_dnsannounce"       };
+        ConfigWrapper<bool> ntp                   {false,                                  DoReset,   {},                         "f_ntp"               };
+        ConfigWrapper<bool> ble                   {false,                                  DoReset,   {},                         "f_ble"               };
+        ConfigWrapper<bool> ota                   {false,                                  DoReset,   {},                         "f_ota"               };
+        ConfigWrapper<bool> webserver             {true,                                   DoReset,   {},                         "featureWebserv"      };
+        ConfigWrapper<bool> gschissene_diode      {false,                                  DoReset,   {},                         "featurDiodeHin"      };
+        ConfigWrapper<bool> esp_now               {false,                                  DoReset,   {},                         "featureEspNow"       };
+    } feature;
 
     struct {
         ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
@@ -542,6 +583,17 @@ public:
     x(ledstrip.maxMilliamps) \
     x(ledstrip.enableVisualizeBlink) \
     \
+    x(ledstrip.custom_color[0]) \
+    x(ledstrip.custom_color[1]) \
+    x(ledstrip.custom_color[2]) \
+    x(ledstrip.custom_color[3]) \
+    x(ledstrip.custom_color[4]) \
+    x(ledstrip.custom_color[5]) \
+    x(ledstrip.custom_color[6]) \
+    x(ledstrip.custom_color[7]) \
+    \
+    x(ledstrip.leds_per_meter) \
+    \
     x(battery.cellsSeries) \
     x(battery.cellsParallel) \
     x(battery.cellType) \
@@ -570,8 +622,35 @@ public:
     \
     x(espnow.syncTime) \
     x(espnow.syncTimeWithOthers) \
-    x(espnow.syncBlink)
+    x(espnow.syncBlink) \
+    \
+    x(feature.ledstrip) \
+    x(feature.webserver_disable_lock) \
+    x(feature.garage) \
+    x(feature.udpcloud) \
+    x(feature.cloud) \
+    x(feature.dnsannounce) \
+    x(feature.ntp) \
+    x(feature.ble) \
+    x(feature.ota) \
+    x(feature.webserver) \
+    x(feature.gschissene_diode)    \
+    x(feature.esp_now)
     //x(bleSettings.bleEnabled)
+
+#define FEATURES(x) \
+    x(feature.ledstrip) \
+    x(feature.webserver_disable_lock) \
+    x(feature.garage) \
+    x(feature.udpcloud) \
+    x(feature.cloud) \
+    x(feature.dnsannounce) \
+    x(feature.ntp) \
+    x(feature.ble) \
+    x(feature.ota)  \
+    x(feature.esp_now)  \
+    x(feature.webserver)
+    //x(feature.gschisseneDiode)
 
     template<typename T>
     void callForEveryConfig(T &&callback)
@@ -589,6 +668,25 @@ public:
             NEW_SETTINGS(HELPER)
 #undef HELPER
             std::ref<ConfigWrapperInterface>(bleSettings.bleEnabled)
+        );
+    }
+
+    template<typename T>
+    void callForEveryFeature(T &&callback)
+    {
+#define HELPER(x) callback(x);
+        FEATURES(HELPER)
+#undef HELPER
+        callback(feature.gschissene_diode);
+    }
+
+    auto getAllFeatureParams()
+    {
+        return cpputils::make_array(
+#define HELPER(x) std::ref<ConfigWrapperInterface>(x),
+            FEATURES(HELPER)
+#undef HELPER
+            std::ref<ConfigWrapperInterface>(feature.gschissene_diode)
         );
     }
 };

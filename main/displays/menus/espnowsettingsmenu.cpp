@@ -1,7 +1,5 @@
 #include "espnowsettingsmenu.h"
 
-#ifdef FEATURE_ESPNOW
-
 // 3rdparty lib includes
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
@@ -46,4 +44,3 @@ void EspNowSettingsMenu::back()
 {
     espgui::switchScreen<EspNowMenu>();
 }
-#endif

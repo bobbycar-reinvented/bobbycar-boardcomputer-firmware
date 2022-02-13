@@ -1,6 +1,5 @@
 #include "ledstripmenu.h"
 
-#ifdef FEATURE_LEDSTRIP
 // 3rdparty lib includes
 #include <FastLED.h>
 #include <actioninterface.h>
@@ -127,7 +126,11 @@ class AllCustomLedsOffAction : public virtual espgui::ActionInterface
 public:
     void triggered() override
     {
-        std::fill(std::begin(ledstrip_custom_colors), std::end(ledstrip_custom_colors), CRGB{0, 0, 0});
+        // std::fill(std::begin(ledstrip_custom_colors), std::end(ledstrip_custom_colors), CRGB{0, 0, 0});
+        for (uint8_t i = 0; i < configs.ledstrip.custom_color.size(); i++)
+        {
+            configs.write_config(configs.ledstrip.custom_color[i], 0);
+        }
     }
 };
 
@@ -163,9 +166,8 @@ LedstripMenu::LedstripMenu()
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTLENGTH, LedsStVOFrontLengthAccessor>,    espgui::SwitchScreenAction<StVOLengthChangeScreen>>>(); }
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BLINKANIMATION>,                                  espgui::SwitchScreenAction<LedstripSelectBlinkMenu>>>();
-#ifdef FEATURE_OTA
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_CHANGE_OTA_ANIM>,     espgui::SwitchScreenAction<LedstripOtaAnimationChangeMenu>>>(); }
-#endif
+    if (configs.feature.ota.value)
+        if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_CHANGE_OTA_ANIM>,     espgui::SwitchScreenAction<LedstripOtaAnimationChangeMenu>>>(); }
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_ANIMATION_MULTIPLIER>,                            espgui::SwitchScreenAction<AnimationMultiplierChangeScreen>>>();
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSCOUNT, LedsCountAccessor>,           espgui::SwitchScreenAction<LedsCountChangeScreen>>>(); }
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CENTEROFFSET, CenterOffsetAccessor>,     espgui::SwitchScreenAction<CenterOffsetChangeScreen>>>(); }
@@ -185,4 +187,3 @@ void LedstripMenu::back()
 {
     espgui::switchScreen<MainMenu>();
 }
-#endif

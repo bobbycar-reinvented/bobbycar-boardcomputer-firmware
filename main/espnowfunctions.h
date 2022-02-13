@@ -1,5 +1,4 @@
 #pragma once
-#ifdef FEATURE_ESPNOW
 #include <cstdint>
 #include <deque>
 #include <string>
@@ -29,4 +28,4 @@ void handle();
 void onRecvTs(uint64_t millis, bool isFromBobbycar = false);
 esp_err_t send_espnow_message(std::string_view message);
 } // namespace espnow
-#endif
+

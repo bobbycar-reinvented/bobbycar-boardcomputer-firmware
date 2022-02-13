@@ -103,7 +103,8 @@ void StatusDisplay::redraw()
             tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_BLACK);
         }
     }
-#ifdef FEATURE_LEDSTRIP
+
+    if(configs.feature.ledstrip.value)
     {
         static bool blink_fill_with_black;
         if (configs.ledstrip.enableVisualizeBlink.value && (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) && (blinkAnimation > 0))
@@ -126,7 +127,6 @@ void StatusDisplay::redraw()
             m_progressBarGas.start();
         }
     }
-#endif
 
     tft.setTextFont(2);
     m_labelRawGas.redraw(raw_gas ? std::to_string(*raw_gas) : "?");
@@ -150,16 +150,18 @@ void StatusDisplay::redraw()
     m_backStatus.redraw(controllers.back);
 
     tft.setTextFont(2);
-#ifdef FEATURE_UDPCLOUD
-    if(configs.udpCloudSettings.udpCloudEnabled.value && configs.udpCloudSettings.enableCloudDebug.value)
+
+    if (configs.feature.udpcloud.value)
     {
-        tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? TFT_DARKGREY : TFT_BLACK);
+        if(configs.udpCloudSettings.udpCloudEnabled.value && configs.udpCloudSettings.enableCloudDebug.value)
+        {
+            tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? TFT_DARKGREY : TFT_BLACK);
+        }
+//      else // is not needed because of redraw
+//      {
+//          tft.fillRect(125, 258, 8, 8, TFT_BLACK);
+//      }
     }
-//    else // is not needed because of redraw
-//    {
-//        tft.fillRect(125, 258, 8, 8, TFT_BLACK);
-//    }
-#endif
 
     const auto staStatus = wifi_stack::get_sta_status();
     if (staStatus == wifi_stack::WiFiStaStatus::CONNECTED)

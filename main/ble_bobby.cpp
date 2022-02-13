@@ -9,15 +9,12 @@
 #include <futurecpp.h>
 
 // local includes
-#ifdef FEATURE_LEDSTRIP
 #include "ledstrip.h"
-#endif
 #include "globals.h"
 #include "modes/remotecontrolmode.h"
 #include "utils.h"
 #include "newsettings.h"
 
-#ifdef FEATURE_BLE
 namespace {
 constexpr const char * const TAG = "BOBBYBLE";
 
@@ -27,7 +24,6 @@ public:
     void onWrite(NimBLECharacteristic* pCharacteristic) override;
 };
 
-#ifdef FEATURE_WIRELESS_CONFIG
 class WirelessSettingsCallbacks : public NimBLECharacteristicCallbacks
 {
 public:
@@ -39,7 +35,6 @@ class WiFiListCallbacks : public NimBLECharacteristicCallbacks
 public:
     void onRead(NimBLECharacteristic* pCharacteristic) override;
 };
-#endif // FEATURE_WIRELESS_CONFIG
 
 } // namespace
 
@@ -47,18 +42,14 @@ BLEServer *pServer{};
 BLEService *pService{};
 BLECharacteristic *livestatsCharacteristic{};
 BLECharacteristic *remotecontrolCharacteristic{};
-#ifdef FEATURE_WIRELESS_CONFIG
 BLECharacteristic *wirelessConfig{};
 BLECharacteristic *getwifilist{};
-#endif // FEATURE_WIRELESS_CONFIG
 
 namespace {
 RemoteControlCallbacks bleRemoteCallbacks;
 
-#ifdef FEATURE_WIRELESS_CONFIG
 WirelessSettingsCallbacks bleWirelessSettingsCallbacks;
 WiFiListCallbacks bleWiFiListCallbacks;
-#endif // FEATURE_WIRELESS_CONFIG
 
 void createBle()
 {
@@ -75,12 +66,11 @@ void createBle()
     livestatsCharacteristic = pService->createCharacteristic("a48321ea-329f-4eab-a401-30e247211524", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     remotecontrolCharacteristic = pService->createCharacteristic("4201def0-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
     remotecontrolCharacteristic->setCallbacks(&bleRemoteCallbacks);
-#ifdef FEATURE_WIRELESS_CONFIG
+
     wirelessConfig = pService->createCharacteristic("4201def1-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
     wirelessConfig->setCallbacks(&bleWirelessSettingsCallbacks);
     getwifilist = pService->createCharacteristic("4201def2-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::READ);
     getwifilist->setCallbacks(&bleWiFiListCallbacks);
-#endif
 
     pService->start();
 
@@ -100,10 +90,8 @@ void destroyBle()
     pService = {};
     livestatsCharacteristic = {};
     remotecontrolCharacteristic = {};
-#ifdef FEATURE_WIRELESS_CONFIG
     wirelessConfig = {};
     getwifilist = {};
-#endif
 }
 } // namespace
 
@@ -116,6 +104,9 @@ void initBle()
 
 void handleBle()
 {
+    if (!configs.feature.ble.value)
+        return;
+
     if (configs.bleSettings.bleEnabled.value)
     {
         if (!pServer)
@@ -246,10 +237,11 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
         return;
     }
 
-#ifdef FEATURE_LEDSTRIP
-    auto newBlinkAnimation = doc["anim"].as<int16_t>();
-    if (blinkAnimation != newBlinkAnimation) blinkAnimation = newBlinkAnimation;
-#endif // FEATURE_LEDSTRIP
+    if (configs.feature.ledstrip.value)
+    {
+        const auto newBlinkAnimation = doc["anim"].as<int16_t>();
+        if (blinkAnimation != newBlinkAnimation) blinkAnimation = newBlinkAnimation;
+    }
 
     const bool isInverted = (profileSettings.controllerHardware.invertFrontLeft && !profileSettings.controllerHardware.invertFrontRight);
 
@@ -264,7 +256,6 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
     }
 }
 
-#ifdef FEATURE_WIRELESS_CONFIG
 void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
 {
     const auto &val = pCharacteristic->getValue();
@@ -303,8 +294,4 @@ void WiFiListCallbacks::onRead(NimBLECharacteristic *pCharacteristic)
     serializeJson(responseDoc, json);
     pCharacteristic->setValue(json);
 }
-#endif // FEATURE_WIRELESS_CONFIG
-
 } // namespace
-
-#endif
