@@ -40,16 +40,42 @@ std::vector<std::pair<std::string, const espgui::MenuItemIcon*>> menuBuf{};
 esp_err_t webserver_reboot_handler(httpd_req_t *req);
 bool menuDisplayChanged();
 esp_err_t webserver_status_handler(httpd_req_t *req);
-} // namespace bobbywebserver
+
+esp_err_t webserver_middleware_handler(httpd_req_t *req) {
+    const auto handler = reinterpret_cast<esp_err_t(*)(httpd_req_t*)>(req->user_ctx);
+
+    if (configs.feature.webserver_disable_lock.value)
+    {
+        return handler(req);
+    }
+
+    if (!webserver_lock.constructed())
+    {
+        webserver_lock.construct();
+        webserver_lock->take(portMAX_DELAY);
+    }
+
+    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        constexpr const std::string_view msg = "could not lock webserver_lock";
+        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
+        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
+    }
+
+    return handler(req);
+}
+} // namespace
 
 httpd_handle_t httpdHandle;
 
 void initWebserver()
 {
-#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
-    webserver_lock.construct();
-    webserver_lock->take(portMAX_DELAY);
-#endif
+    if(!configs.feature.webserver_disable_lock.value)
+    {
+        webserver_lock.construct();
+        webserver_lock->take(portMAX_DELAY);
+    }
 
     {
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
@@ -64,22 +90,22 @@ void initWebserver()
     }
 
     for (const httpd_uri_t &uri : {
-             httpd_uri_t { .uri = "/",                   .method = HTTP_GET, .handler = webserver_root_handler,               .user_ctx = NULL },
-             httpd_uri_t { .uri = "/triggerRawButton",   .method = HTTP_GET, .handler = webserver_triggerRawButton_handler,   .user_ctx = NULL },
-             httpd_uri_t { .uri = "/triggerButton",      .method = HTTP_GET, .handler = webserver_triggerButton_handler,      .user_ctx = NULL },
-             httpd_uri_t { .uri = "/triggerItem",        .method = HTTP_GET, .handler = webserver_triggerItem_handler,        .user_ctx = NULL },
-             httpd_uri_t { .uri = "/setValue",           .method = HTTP_GET, .handler = webserver_setValue_handler,           .user_ctx = NULL },
-             httpd_uri_t { .uri = "/reboot",             .method = HTTP_GET, .handler = webserver_reboot_handler,             .user_ctx = NULL },
-             httpd_uri_t { .uri = "/ota",                .method = HTTP_GET, .handler = webserver_ota_handler,                .user_ctx = NULL },
-             httpd_uri_t { .uri = "/otaPercent",         .method = HTTP_GET, .handler = webserver_ota_percentage_handler,     .user_ctx = NULL },
-             httpd_uri_t { .uri = "/triggerOta",         .method = HTTP_GET, .handler = webserver_trigger_ota_handler,        .user_ctx = NULL },
-             httpd_uri_t { .uri = "/settings",           .method = HTTP_GET, .handler = webserver_settings_handler,           .user_ctx = NULL },
-             httpd_uri_t { .uri = "/saveSettings",       .method = HTTP_GET, .handler = webserver_saveSettings_handler,       .user_ctx = NULL },
-             httpd_uri_t { .uri = "/newSettings",        .method = HTTP_GET, .handler = webserver_newSettings_handler,        .user_ctx = NULL },
-             httpd_uri_t { .uri = "/saveNewSettings",    .method = HTTP_GET, .handler = webserver_saveNewSettings_handler,    .user_ctx = NULL },
-             httpd_uri_t { .uri = "/resetNewSettings",   .method = HTTP_GET, .handler = webserver_resetNewSettings_handler,   .user_ctx = NULL },
-             httpd_uri_t { .uri = "/dumpnvs",            .method = HTTP_GET, .handler = webserver_dump_nvs_handler,           .user_ctx = NULL },
-             httpd_uri_t { .uri = "/check",              .method = HTTP_GET, .handler = webserver_status_handler,             .user_ctx = NULL },
+             httpd_uri_t { .uri = "/",                   .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_root_handler,              },
+             httpd_uri_t { .uri = "/triggerRawButton",   .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_triggerRawButton_handler,  },
+             httpd_uri_t { .uri = "/triggerButton",      .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_triggerButton_handler,     },
+             httpd_uri_t { .uri = "/triggerItem",        .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_triggerItem_handler,       },
+             httpd_uri_t { .uri = "/setValue",           .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_setValue_handler,          },
+             httpd_uri_t { .uri = "/reboot",             .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_reboot_handler,            },
+             httpd_uri_t { .uri = "/ota",                .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_ota_handler,               },
+             httpd_uri_t { .uri = "/otaPercent",         .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_ota_percentage_handler,    },
+             httpd_uri_t { .uri = "/triggerOta",         .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_trigger_ota_handler,       },
+             httpd_uri_t { .uri = "/settings",           .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_settings_handler,          },
+             httpd_uri_t { .uri = "/saveSettings",       .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_saveSettings_handler,      },
+             httpd_uri_t { .uri = "/newSettings",        .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_newSettings_handler,       },
+             httpd_uri_t { .uri = "/saveNewSettings",    .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_saveNewSettings_handler,   },
+             httpd_uri_t { .uri = "/resetNewSettings",   .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_resetNewSettings_handler,  },
+             httpd_uri_t { .uri = "/dumpnvs",            .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_dump_nvs_handler,          },
+             httpd_uri_t { .uri = "/check",              .method = HTTP_GET, .handler = webserver_middleware_handler, .user_ctx = (void*)&webserver_status_handler,            },
          })
     {
         const auto result = httpd_register_uri_handler(httpdHandle, &uri);
@@ -91,11 +117,12 @@ void initWebserver()
 
 void handleWebserver()
 {
-#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
-    webserver_lock->give();
-    vTaskDelay(1);
-    webserver_lock->take(portMAX_DELAY);
-#endif
+    if (!configs.feature.webserver_disable_lock.value)
+    {
+        webserver_lock->give();
+        vTaskDelay(1);
+        webserver_lock->take(portMAX_DELAY);
+    }
 }
 
 namespace {
@@ -156,16 +183,6 @@ bool menuDisplayChanged()
 
 esp_err_t webserver_status_handler(httpd_req_t *req)
 {
-#ifndef FEATURE_IS_MIR_EGAL_OB_DER_WEBSERVER_KORREKT_ARBEITET
-    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
-    if (!helper.locked())
-    {
-        constexpr const std::string_view msg = "could not lock webserver_lock";
-        ESP_LOGE(TAG, "%.*s", msg.size(), msg.data());
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
-    }
-#endif
-
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
     std::string wants_json_query;
