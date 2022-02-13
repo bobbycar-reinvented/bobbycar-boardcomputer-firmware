@@ -4,6 +4,7 @@
 #include <fmt/core.h>
 #include <actions/switchscreenaction.h>
 #include <icons/back.h>
+#include <strutils.h>
 
 // local includes
 #include "displays/bobbypopupdisplay.h"
@@ -22,7 +23,14 @@ constexpr char TEXT_BACK[] = "Back";
 class FeatureFlagMenuItem : public MenuItem, public virtual BobbyErrorHandler {
 public:
     explicit FeatureFlagMenuItem(ConfigWrapper<bool> &config) : m_config{config} {}
-    std::string text() const override { return m_config.nvsName(); }
+    std::string text() const override
+    {
+        std::string_view name = m_config.nvsName();
+        if (cpputils::stringStartsWith(name, "f_")) {
+            name.remove_prefix(std::strlen("f_"));
+        }
+        return std::string{name};
+    }
 
     void triggered() override
     {
