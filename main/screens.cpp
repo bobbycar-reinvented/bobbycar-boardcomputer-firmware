@@ -5,6 +5,7 @@
 #include <screenmanager.h>
 
 // local includes
+#include "esptexthelpers.h"
 #include "globals.h"
 #include "utils.h"
 #include "icons/logo.h"
@@ -22,6 +23,10 @@ void initScreen()
     tft.pushImage(0, 40, bobbyicons::logo.WIDTH, bobbyicons::logo.HEIGHT, bobbyicons::logo.buffer);
     tft.drawString("Bobbycar-OS", 32, 200);
     tft.drawString("booting...", 32, 225);
+    tft.setTextFont(2);
+    tft.drawString("last reboot reason:", 32, 275);
+    tft.drawString(espcpputils::toString(esp_reset_reason()), 32, 295);
+    tft.setTextFont(4);
     bootLabel.start();
 }
 
