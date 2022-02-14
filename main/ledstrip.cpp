@@ -18,6 +18,9 @@ uint8_t gHue = 0;
 
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
+namespace {
+    bool initialized{false};
+} // namespace
 
 void initLedStrip()
 {
@@ -26,13 +29,23 @@ void initLedStrip()
         leds.resize(configs.ledstrip.ledsCount.value);
         FastLED.addLeds<NEOPIXEL, PINS_LEDSTRIP>(&*std::begin(leds), leds.size())
             .setCorrection(TypicalSMD5050);
+        initialized = true;
     }
 }
 
 void updateLedStrip()
 {
-    if(!configs.feature.ledstrip.value)
-            return;
+    if (configs.feature.ledstrip.value && !initialized)
+        initLedStrip();
+    else if (!configs.feature.ledstrip.value && initialized)
+    {
+        std::fill(std::begin(leds), std::end(leds), CRGB::Black);
+        FastLED.show();
+        initialized = false;
+        return;
+    }
+    else if (!configs.feature.ledstrip.value)
+        return;
 
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }
     static bool have_disabled_beeper = false;

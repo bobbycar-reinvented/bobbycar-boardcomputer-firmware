@@ -2,7 +2,9 @@
 
 // local includes
 #include "espnowfunctions.h"
+#include "handbremse.h"
 #include "newsettings.h"
+#include "tempomat.h"
 #include "wifi_bobbycar.h"
 
 namespace quickactions {
@@ -43,6 +45,9 @@ void handle_bobby_quickaction(espgui::Button button)
             break;
         case BobbyQuickActions::WIFI_SCAN:
             action_wifi_scan();
+            break;
+        case BobbyQuickActions::PWMOMAT:
+            handle_pwmomat();
             break;
         default:
             return;
@@ -117,18 +122,25 @@ void handle_handbremse()
 {
     if (configs.handbremse.enable.value)
     {
-        using namespace handbremse;
-        if (stateWish == StateWish::brake || angezogen)
-            stateWish = StateWish::release;
+        using StateWish = handbremse::StateWish;
+        if (handbremse::stateWish == StateWish::brake || handbremse::angezogen)
+            handbremse::stateWish = StateWish::release;
         else
-            stateWish = StateWish::brake;
-        wishTimer = espchrono::millis_clock::now();
+            handbremse::stateWish = StateWish::brake;
+        handbremse::wishTimer = espchrono::millis_clock::now();
     }
 }
 
-void batteryDebugPrint()
+void handle_pwmomat()
 {
-    ESP_LOGI("BATTERY", "");
+    if (pwmomat::tempomat_pwm)
+    {
+        pwmomat::wish = pwmomat::WISH::WISH_DISABLE;
+    }
+    else
+    {
+        pwmomat::wish = pwmomat::WISH::WISH_ENABLE;
+    }
 }
 
 } // namespace quickactions

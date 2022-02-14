@@ -24,7 +24,6 @@ public:
 
     bool waitForGasLoslass{false};
     bool waitForBremsLoslass{false};
-    bool hybridModeActivated{false};
 
 private:
     espchrono::millis_clock::time_point m_lastTime{espchrono::millis_clock::now()};

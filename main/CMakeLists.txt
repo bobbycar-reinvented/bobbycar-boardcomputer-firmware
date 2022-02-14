@@ -218,6 +218,7 @@ set(headers
     statistics.h
     statustexthelper.h
     taskmanager.h
+    tempomat.h
     texthelpers/networktexthelpers.h
     texthelpers/wifiaptexthelpers.h
     texthelpers/wifistatexthelpers.h
@@ -449,6 +450,7 @@ set(sources
     statistics.cpp
     statustexthelper.cpp
     taskmanager.cpp
+    tempomat.cpp
     texthelpers/networktexthelpers.cpp
     texthelpers/wifiaptexthelpers.cpp
     texthelpers/wifistatexthelpers.cpp

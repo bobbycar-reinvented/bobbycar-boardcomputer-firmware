@@ -13,7 +13,8 @@
     x(BLINK_RIGHT) \
     x(HANDBREMSE) \
     x(OPEN_GARAGE) \
-    x(WIFI_SCAN)
+    x(WIFI_SCAN) \
+    x(PWMOMAT)
 DECLARE_TYPESAFE_ENUM(BobbyQuickActions, : uint8_t, BobbyQuickActionsValues)
 
 namespace quickactions {
@@ -26,6 +27,6 @@ void blink_left();
 void blink_right();
 void handle_handbremse();
 void action_wifi_scan();
-void batteryDebugPrint();
+void handle_pwmomat();
 
 } // namespace quickactions
