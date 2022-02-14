@@ -22,6 +22,7 @@ constexpr char TEXT_QUICKACTION_BLINK_RIGHT[] = "Blink Right";
 constexpr char TEXT_QUICKACTION_HANDBREMSE[] = "Handbremse";
 constexpr char TEXT_QUICKACTION_OPEN_GARAGE[] = "Open Garage";
 constexpr char TEXT_QUICKACTION_WIFI_SCAN[] = "Wifi Scan";
+constexpr char TEXT_QUICKACTION_TEMPOMAT[] = "Toggle PWM-Omat";
 constexpr char TEXT_BACK[] = "Back";
 } // namespace
 
@@ -33,6 +34,7 @@ ChangeValueDisplay<BobbyQuickActions>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_HANDBREMSE>>>(BobbyQuickActions::HANDBREMSE, *this, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_OPEN_GARAGE>>>(BobbyQuickActions::OPEN_GARAGE, *this, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_WIFI_SCAN>>>(BobbyQuickActions::WIFI_SCAN, *this, *this, *this);
+    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_TEMPOMAT>>>(BobbyQuickActions::PWMOMAT, *this, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&espgui::icons::back>>>(*this);
 }
 
@@ -48,9 +50,10 @@ void ChangeValueDisplay<BobbyQuickActions>::start()
     case BobbyQuickActions::HANDBREMSE: setSelectedIndex(3); break;
     case BobbyQuickActions::OPEN_GARAGE: setSelectedIndex(4); break;
     case BobbyQuickActions::WIFI_SCAN: setSelectedIndex(5); break;
-    default:
+    case BobbyQuickActions::PWMOMAT: setSelectedIndex(6); break;
+        default:
         ESP_LOGW(TAG, "Unknown BobbyQuickActions: %i", std::to_underlying(value));
-        setSelectedIndex(6);
+        setSelectedIndex(7);
     }
 }
 

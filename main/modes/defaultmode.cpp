@@ -1,5 +1,9 @@
 #include "defaultmode.h"
 
+// local includes
+#include "handbremse.h"
+#include "tempomat.h"
+
 using namespace std::chrono_literals;
 
 namespace modes {
@@ -213,6 +217,21 @@ void DefaultMode::update()
                     }
                 }
             }
+
+            if (!pwmomat::tempomat_pwm && pwmomat::wish == pwmomat::WISH::WISH_ENABLE)
+            {
+                pwmomat::tempomat_pwm = pwm;
+                pwmomat::wish = pwmomat::WISH::NONE;
+                pwmomat::enabled_time = now;
+            }
+            else if ((pwmomat::tempomat_pwm && pwmomat::enabled_time) && (espchrono::ago(*pwmomat::enabled_time) > 500ms) && (pwm >= std::min(*pwmomat::tempomat_pwm+10, 1500.f) || pwmomat::wish == pwmomat::WISH::WISH_DISABLE)) // disable tempomat when pwm is larger than saved pwm
+            {
+                pwmomat::wish = pwmomat::WISH::NONE;
+                pwmomat::tempomat_pwm = std::nullopt;
+            }
+
+            if (pwmomat::tempomat_pwm)
+                pwm = *pwmomat::tempomat_pwm;
 
             m_lastPwm = pwm;
             m_lastTime = now;
