@@ -34,11 +34,6 @@ std::string defaultHostname();
 
 constexpr const auto INPUT_MAPPING_NONE = std::numeric_limits<uint8_t>::max();
 
-template <typename T>
-std::optional<T*> optional_ptr(T* ptr) {
-    return ptr ? std::optional<T*>(ptr) : std::optional<T*>();
-}
-
 class WiFiConfig
 {
 public:
