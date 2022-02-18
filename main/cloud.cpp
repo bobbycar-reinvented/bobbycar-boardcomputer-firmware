@@ -52,7 +52,7 @@ void initCloud()
 
 void updateCloud()
 {
-    if (!configs.feature.cloud.value)
+    if (!configs.feature.cloud.isEnabled.value)
         return;
 
     const auto now = espchrono::millis_clock::now();

@@ -39,7 +39,7 @@ void udpCloudInit()
 
 void udpCloudUpdate()
 {
-    if (!configs.feature.udpcloud.value)
+    if (!configs.feature.udpcloud.isEnabled.value)
         return;
 
     if (configs.udpCloudSettings.udpCloudEnabled.value && configs.udpCloudSettings.udpUid.touched())

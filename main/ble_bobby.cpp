@@ -104,7 +104,7 @@ void initBle()
 
 void handleBle()
 {
-    if (!configs.feature.ble.value)
+    if (!configs.feature.ble.isEnabled.value)
         return;
 
     if (configs.bleSettings.bleEnabled.value)
@@ -237,7 +237,7 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
         return;
     }
 
-    if (configs.feature.ledstrip.value)
+    if (configs.feature.ledstrip.isEnabled.value)
     {
         const auto newBlinkAnimation = doc["anim"].as<int16_t>();
         if (blinkAnimation != newBlinkAnimation) blinkAnimation = newBlinkAnimation;

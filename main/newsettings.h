@@ -3,36 +3,41 @@
 #include "sdkconfig.h"
 
 // system includes
-#include <string>
 #include <array>
 #include <optional>
+#include <string>
 
 // esp-idf includes
 #include <esp_sntp.h>
 
 // 3rdparty lib includes
-#include <fmt/core.h>
-#include <configmanager.h>
 #include <configconstraints_base.h>
 #include <configconstraints_espchrono.h>
+#include <configmanager.h>
 #include <configwrapper.h>
-#include <espwifiutils.h>
 #include <espchrono.h>
+#include <espwifiutils.h>
+#include <fmt/core.h>
 #include <makearray.h>
 
 // local includes
 #include "battery.h"
-#include "ledstrip.h"
-#include "unifiedmodelmode.h"
+#include "bobbyquickactions.h"
 #include "displays/lockscreen.h"
 #include "handbremse.h"
-#include "bobbyquickactions.h"
+#include "ledstrip.h"
+#include "unifiedmodelmode.h"
 
 using namespace espconfig;
 
 std::string defaultHostname();
 
 constexpr const auto INPUT_MAPPING_NONE = std::numeric_limits<uint8_t>::max();
+
+template <typename T>
+std::optional<T*> optional_ptr(T* ptr) {
+    return ptr ? std::optional<T*>(ptr) : std::optional<T*>();
+}
 
 class WiFiConfig
 {
@@ -101,6 +106,23 @@ public:
 
     ConfigWrapper<std::string> name;
     ConfigWrapper<std::string> url;
+};
+
+class ConfiguredFeatureFlag
+{
+public:
+    ConfiguredFeatureFlag(const char *enabledKey, const bool default_enabled = false, const bool default_is_beta = false, const char* taskName = "") :
+            isEnabled{default_enabled, DoReset, {}, enabledKey },
+            m_isBeta{default_is_beta},
+            m_taskName{taskName}
+    {}
+
+    ConfigWrapper<bool> isEnabled;
+    bool isBeta() const { return m_isBeta; }
+    std::string getTaskName() const { return m_taskName; }
+private:
+    const bool m_isBeta;
+    const std::string m_taskName;
 };
 
 class ConfigContainer
@@ -321,18 +343,18 @@ public:
     } espnow;
 
     struct {
-        ConfigWrapper<bool> ledstrip              {false,                                  DoReset,   {},                         "f_ledstrip"          };
-        ConfigWrapper<bool> webserver_disable_lock{false,                                  DoReset,   {},                         "f_no_web_lock"       };
-        ConfigWrapper<bool> garage                {false,                                  DoReset,   {},                         "f_garage"            };
-        ConfigWrapper<bool> cloud                 {false,                                  DoReset,   {},                         "f_cloud"             };
-        ConfigWrapper<bool> udpcloud              {false,                                  DoReset,   {},                         "f_udpcloud"          };
-        ConfigWrapper<bool> dnsannounce           {false,                                  DoReset,   {},                         "f_dnsannounce"       };
-        ConfigWrapper<bool> ntp                   {false,                                  DoReset,   {},                         "f_ntp"               };
-        ConfigWrapper<bool> ble                   {false,                                  DoReset,   {},                         "f_ble"               };
-        ConfigWrapper<bool> ota                   {false,                                  DoReset,   {},                         "f_ota"               };
-        ConfigWrapper<bool> webserver             {true,                                   DoReset,   {},                         "featureWebserv"      };
-        ConfigWrapper<bool> gschissene_diode      {false,                                  DoReset,   {},                         "featurDiodeHin"      };
-        ConfigWrapper<bool> esp_now               {false,                                  DoReset,   {},                         "featureEspNow"       };
+        ConfiguredFeatureFlag ledstrip              {"f_ledstrip", false, false, "ledstrip"};
+        ConfiguredFeatureFlag webserver_disable_lock{"f_no_web_lock", false, true};
+        ConfiguredFeatureFlag garage                {"f_garage" };
+        ConfiguredFeatureFlag cloud                 {"f_cloud", false, false, "cloud"};
+        ConfiguredFeatureFlag udpcloud              {"f_udpcloud", false, false, "udpcloud"};
+        ConfiguredFeatureFlag dnsannounce           {"f_dnsannounce"};
+        ConfiguredFeatureFlag ntp                   {"f_ntp", false, false, "time"};
+        ConfiguredFeatureFlag ble                   {"f_ble", false, false, "ble"};
+        ConfiguredFeatureFlag ota                   {"f_ota", false, false, "ota"};
+        ConfiguredFeatureFlag webserver             {"featureWebserv", true};
+        ConfiguredFeatureFlag gschissene_diode      {"featurDiodeHin"};
+        ConfiguredFeatureFlag esp_now               {"featureEspNow", false, false, "espnow"};
     } feature;
 
     struct {
@@ -624,33 +646,33 @@ public:
     x(espnow.syncTimeWithOthers) \
     x(espnow.syncBlink) \
     \
-    x(feature.ledstrip) \
-    x(feature.webserver_disable_lock) \
-    x(feature.garage) \
-    x(feature.udpcloud) \
-    x(feature.cloud) \
-    x(feature.dnsannounce) \
-    x(feature.ntp) \
-    x(feature.ble) \
-    x(feature.ota) \
-    x(feature.webserver) \
-    x(feature.gschissene_diode)    \
-    x(feature.esp_now)
+    x(feature.ble.isEnabled) \
+    x(feature.cloud.isEnabled) \
+    x(feature.dnsannounce.isEnabled)\
+    x(feature.esp_now.isEnabled) \
+    x(feature.garage.isEnabled)    \
+    x(feature.gschissene_diode.isEnabled) \
+    x(feature.ledstrip.isEnabled) \
+    x(feature.ntp.isEnabled) \
+    x(feature.ota.isEnabled) \
+    x(feature.udpcloud.isEnabled) \
+    x(feature.webserver.isEnabled) \
+    x(feature.webserver_disable_lock.isEnabled)
     //x(bleSettings.bleEnabled)
 
 #define FEATURES(x) \
-    x(feature.ledstrip) \
-    x(feature.webserver_disable_lock) \
-    x(feature.garage) \
-    x(feature.udpcloud) \
-    x(feature.cloud) \
-    x(feature.dnsannounce) \
-    x(feature.ntp) \
     x(feature.ble) \
-    x(feature.ota)  \
-    x(feature.esp_now)  \
-    x(feature.webserver)
-    //x(feature.gschisseneDiode)
+    x(feature.cloud) \
+    x(feature.dnsannounce)\
+    x(feature.esp_now) \
+    x(feature.garage)    \
+    x(feature.gschissene_diode) \
+    x(feature.ledstrip) \
+    x(feature.ntp) \
+    x(feature.ota) \
+    x(feature.udpcloud) \
+    x(feature.webserver) \
+//    x(feature.webserver_disable_lock)
 
     template<typename T>
     void callForEveryConfig(T &&callback)
@@ -677,16 +699,16 @@ public:
 #define HELPER(x) callback(x);
         FEATURES(HELPER)
 #undef HELPER
-        callback(feature.gschissene_diode);
+        callback(feature.webserver_disable_lock);
     }
 
     auto getAllFeatureParams()
     {
         return cpputils::make_array(
-#define HELPER(x) std::ref<ConfigWrapperInterface>(x),
+#define HELPER(x) std::ref<ConfiguredFeatureFlag>(x),
             FEATURES(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(feature.gschissene_diode)
+            std::ref<ConfiguredFeatureFlag>(feature.webserver_disable_lock)
         );
     }
 };

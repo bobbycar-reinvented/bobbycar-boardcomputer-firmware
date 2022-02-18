@@ -28,7 +28,7 @@ void handleOta()
 
 tl::expected<void, std::string> triggerOta(std::string_view url)
 {
-    if (!configs.feature.ota.value)
+    if (!configs.feature.ota.isEnabled.value)
         return tl::make_unexpected("OTA is not enabled!");
 
     ESP_LOGI(TAG, "%.*s", url.size(), url.data());

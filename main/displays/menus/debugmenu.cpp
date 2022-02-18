@@ -68,7 +68,7 @@ DebugMenu::DebugMenu()
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QRCODE_DEBUG>,         SwitchScreenAction<QrCodeDebugDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         SwitchScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
-    if (configs.feature.udpcloud.value)
+    if (configs.feature.udpcloud.isEnabled.value)
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TOGGLECLOUDDEBUG>,     BobbyCheckbox, CloudDebugEnableAccessor>>();
     }
