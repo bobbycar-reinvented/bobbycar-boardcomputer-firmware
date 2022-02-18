@@ -65,7 +65,8 @@ extern "C" void app_main()
 
     for (const auto &task : schedulerTasks)
     {
-        if (checkEnabledByName(task.name())) {
+        if (checkEnabledByName(task.name()))
+        {
             bootLabel.redraw(task.name());
             task.setup();
         }
