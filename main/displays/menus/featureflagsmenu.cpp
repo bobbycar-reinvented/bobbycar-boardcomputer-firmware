@@ -45,7 +45,12 @@ public:
         }
         else
         {
-            return m_flag.isBeta() ? TFT_ORANGE : TFT_GREY;
+            if (m_flag.isEnabled.value)
+            {
+                return TFT_RED;
+            }
+            else
+                return m_flag.isBeta() ? TFT_ORANGE : TFT_GREY;
         }
     }
 
@@ -80,9 +85,10 @@ public:
 FeatureFlagsMenu::FeatureFlagsMenu()
 {
     configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature){
-
-        if (const auto err = checkInitializedByName(feature.getTaskName()); !err) {
-                constructMenuItem<FeatureFlagMenuItem>(feature, *err);
+        const std::string name = feature.getTaskName();
+        if (const auto err = checkInitializedByName(name); err)
+        {
+            constructMenuItem<FeatureFlagMenuItem>(feature, *err);
         }
         else
             constructMenuItem<FeatureFlagMenuItem>(feature, true);

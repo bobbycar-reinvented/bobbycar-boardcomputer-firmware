@@ -141,6 +141,7 @@ tl::expected<bool, std::string> checkInitializedByName(std::string name)
 {
     for (auto &schedulerTask : schedulerTasks)
     {
+        // ESP_LOGE(TAG, "%s == %s", schedulerTask.name(), name.c_str());
         if (schedulerTask.name() == name)
             return schedulerTask.isInitialized();
     }
@@ -148,11 +149,10 @@ tl::expected<bool, std::string> checkInitializedByName(std::string name)
 }
 
 bool checkEnabledByName(std::string name) {
-    bool enabled = false;
+    bool enabled = true;
     // iterate over all feature flags (runForEveryFeature())
     configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature) {
-        ESP_LOGE(TAG, "checkEnabledByName: %s == %s", feature.getTaskName().c_str(), name.c_str());
-        if (feature.getTaskName() == name && !enabled)
+        if (feature.getTaskName() == name)
             enabled = feature.isEnabled.value;
     });
     return enabled;
