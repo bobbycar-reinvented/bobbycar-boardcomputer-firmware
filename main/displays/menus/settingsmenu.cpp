@@ -84,18 +84,18 @@ SettingsMenu::SettingsMenu()
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,            SwitchScreenAction<LimitsSettingsMenu>>>();
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NETWORKSETTINGS>,               SwitchScreenAction<NetworkSettingsMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
-    if (configs.feature.esp_now.value)
+    if (configs.feature.esp_now.isEnabled.value)
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW>,                    SwitchScreenAction<EspNowMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
 #ifdef FEATURE_BLUETOOTH
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHSETTINGS>,             SwitchScreenAction<BluetoothSettingsMenu>, StaticMenuItemIcon<&bobbyicons::bluetooth>>>();
 #endif
-    if (configs.feature.ble.value)
+    if (configs.feature.ble.isEnabled.value)
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLESETTINGS>,               SwitchScreenAction<BleSettingsMenu>, StaticMenuItemIcon<&bobbyicons::bluetooth>>>();
-    if (configs.feature.cloud.value)
+    if (configs.feature.cloud.isEnabled.value)
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSETTINGS>,             SwitchScreenAction<CloudSettingsMenu>>>();
-    if (configs.feature.udpcloud.value)
+    if (configs.feature.udpcloud.isEnabled.value)
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPCLOUDSETTINGS>,          SwitchScreenAction<UdpCloudSettingsMenu>>>();
-    if (configs.feature.ota.value)
+    if (configs.feature.ota.isEnabled.value)
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILDSERVERMENU>,     SwitchScreenAction<SelectBuildServerMenu>, StaticMenuItemIcon<&bobbyicons::update>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIME>,                          SwitchScreenAction<TimeSettingsMenu>, StaticMenuItemIcon<&bobbyicons::time>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESSETTINGS>,                 SwitchScreenAction<ModesSettingsMenu>>>();

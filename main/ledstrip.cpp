@@ -24,7 +24,7 @@ namespace {
 
 void initLedStrip()
 {
-    if (configs.feature.ledstrip.value)
+    if (configs.feature.ledstrip.isEnabled.value)
     {
         leds.resize(configs.ledstrip.ledsCount.value);
         FastLED.addLeds<NEOPIXEL, PINS_LEDSTRIP>(&*std::begin(leds), leds.size())
@@ -35,16 +35,16 @@ void initLedStrip()
 
 void updateLedStrip()
 {
-    if (configs.feature.ledstrip.value && !initialized)
+    if (configs.feature.ledstrip.isEnabled.value && !initialized)
         initLedStrip();
-    else if (!configs.feature.ledstrip.value && initialized)
+    else if (!configs.feature.ledstrip.isEnabled.value && initialized)
     {
         std::fill(std::begin(leds), std::end(leds), CRGB::Black);
         FastLED.show();
         initialized = false;
         return;
     }
-    else if (!configs.feature.ledstrip.value)
+    else if (!configs.feature.ledstrip.isEnabled.value)
         return;
 
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }

@@ -24,7 +24,7 @@ void init_dns_announce()
 
 void handle_dns_announce()
 {
-    if (!configs.feature.dnsannounce.value || !configs.dns_announce_enabled.value)
+    if (!configs.feature.dnsannounce.isEnabled.value || !configs.dns_announce_enabled.value)
         return;
 
     if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::CONNECTED)

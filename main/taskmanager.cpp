@@ -3,7 +3,6 @@
 #include "sdkconfig.h"
 
 // system includes
-#include <iterator>
 #include <chrono>
 
 // esp-idf includes
@@ -136,4 +135,25 @@ void sched_pushStats(bool printTasks)
 
     if (printTasks)
         ESP_LOGI(TAG, "end listing tasks");
+}
+
+tl::expected<bool, std::string> checkInitializedByName(std::string name)
+{
+    for (auto &schedulerTask : schedulerTasks)
+    {
+        // ESP_LOGE(TAG, "%s == %s", schedulerTask.name(), name.c_str());
+        if (schedulerTask.name() == name)
+            return schedulerTask.isInitialized();
+    }
+    return tl::make_unexpected("Task not found: " + std::string{name});
+}
+
+bool checkEnabledByName(std::string name) {
+    bool enabled = true;
+    // iterate over all feature flags (runForEveryFeature())
+    configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature) {
+        if (feature.getTaskName() == name)
+            enabled = feature.isEnabled.value;
+    });
+    return enabled;
 }

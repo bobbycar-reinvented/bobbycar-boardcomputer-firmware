@@ -44,7 +44,7 @@ esp_err_t webserver_status_handler(httpd_req_t *req);
 esp_err_t webserver_middleware_handler(httpd_req_t *req) {
     const auto handler = reinterpret_cast<esp_err_t(*)(httpd_req_t*)>(req->user_ctx);
 
-    if (configs.feature.webserver_disable_lock.value)
+    if (configs.feature.webserver_disable_lock.isEnabled.value)
     {
         return handler(req);
     }
@@ -71,7 +71,7 @@ httpd_handle_t httpdHandle;
 
 void initWebserver()
 {
-    if(!configs.feature.webserver_disable_lock.value)
+    if(!configs.feature.webserver_disable_lock.isEnabled.value)
     {
         webserver_lock.construct();
         webserver_lock->take(portMAX_DELAY);
@@ -117,7 +117,7 @@ void initWebserver()
 
 void handleWebserver()
 {
-    if (!configs.feature.webserver_disable_lock.value)
+    if (!configs.feature.webserver_disable_lock.isEnabled.value)
     {
         webserver_lock->give();
         vTaskDelay(1);

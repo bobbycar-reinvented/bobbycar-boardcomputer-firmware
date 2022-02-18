@@ -1,16 +1,18 @@
 #include "featureflagsmenu.h"
 
 // 3rdparty lib includes
-#include <fmt/core.h>
+#include <TFT_eSPI.h>
 #include <actions/switchscreenaction.h>
+#include <fmt/core.h>
 #include <icons/back.h>
 #include <strutils.h>
 
 // local includes
+#include "bobbycheckbox.h"
 #include "displays/bobbypopupdisplay.h"
 #include "displays/menus/settingsmenu.h"
-#include "bobbycheckbox.h"
 #include "newsettings.h"
+#include "taskmanager.h"
 
 using namespace espgui;
 
@@ -22,29 +24,49 @@ constexpr char TEXT_BACK[] = "Back";
 
 class FeatureFlagMenuItem : public MenuItem, public virtual BobbyErrorHandler {
 public:
-    explicit FeatureFlagMenuItem(ConfigWrapper<bool> &config) : m_config{config} {}
+    explicit FeatureFlagMenuItem(ConfiguredFeatureFlag &flag, bool isInitialized) : m_flag{flag}, m_isInitialized{isInitialized} {}
     std::string text() const override
     {
-        std::string_view name = m_config.nvsName();
+        std::string_view name = m_flag.isEnabled.nvsName();
         constexpr const std::string_view prefix = "f_";
         if (cpputils::stringStartsWith(name, prefix)) {
             name.remove_prefix(prefix.size());
         }
-        return std::string{name};
+        std::string return_name = std::string{name};
+        return_name += m_flag.isBeta() ? " (beta)" : "";
+        return return_name;
+    }
+
+    int color() const override
+    {
+        if (m_isInitialized)
+        {
+            return m_flag.isBeta() ? TFT_YELLOW : TFT_GREEN;
+        }
+        else
+        {
+            if (m_flag.isEnabled.value)
+            {
+                return TFT_RED;
+            }
+            else
+                return m_flag.isBeta() ? TFT_ORANGE : TFT_GREY;
+        }
     }
 
     void triggered() override
     {
-        if (auto result = m_config.write(configs.nvs_handle_user, !m_config.value); !result)
+        if (auto result = m_flag.isEnabled.write(configs.nvs_handle_user, !m_flag.isEnabled.value); !result)
             errorOccured(std::move(result).error());
     }
 
     const MenuItemIcon *icon() const override
     {
-        return m_config.value ? &icons::checked : &icons::unchecked;
+        return m_flag.isEnabled.value ? &icons::checked : &icons::unchecked;
     }
 private:
-    ConfigWrapper<bool> &m_config;
+    ConfiguredFeatureFlag &m_flag;
+    const bool m_isInitialized;
 };
 
 // TODO: Replace SwitchScreenAction / switchScreen with this action. Needs: BobbyPopupDisplayWithCustomExitAction => pass SwitchScreenAction<SettingsMenu> into it
@@ -62,8 +84,14 @@ public:
 
 FeatureFlagsMenu::FeatureFlagsMenu()
 {
-    configs.callForEveryFeature([&](ConfigWrapper<bool> &feature){
-        constructMenuItem<FeatureFlagMenuItem>(feature);
+    configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature){
+        const std::string name = feature.getTaskName();
+        if (const auto err = checkInitializedByName(name); err)
+        {
+            constructMenuItem<FeatureFlagMenuItem>(feature, *err);
+        }
+        else
+            constructMenuItem<FeatureFlagMenuItem>(feature, true);
     });
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<SettingsMenu>>>();
 }

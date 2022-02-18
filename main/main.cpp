@@ -65,8 +65,11 @@ extern "C" void app_main()
 
     for (const auto &task : schedulerTasks)
     {
-        bootLabel.redraw(task.name());
-        task.setup();
+        if (checkEnabledByName(task.name()))
+        {
+            bootLabel.redraw(task.name());
+            task.setup();
+        }
     }
 
 #ifdef FEATURE_JOYSTICK

@@ -56,7 +56,7 @@ void handle_bobby_quickaction(espgui::Button button)
 
 void open_garage()
 {
-    if (!configs.feature.esp_now.value)
+    if (!configs.feature.esp_now.isEnabled.value)
         return;
 
     if (!espnow::espnow_init_allowed())
@@ -82,7 +82,7 @@ void action_wifi_scan()
 
 void blink_left()
 {
-    if (configs.feature.ledstrip.value)
+    if (configs.feature.ledstrip.isEnabled.value)
     {
         if (blinkAnimation == LEDSTRIP_OVERWRITE_NONE) //transition from off to left
         {
@@ -101,7 +101,7 @@ void blink_left()
 
 void blink_right()
 {
-    if(configs.feature.ledstrip.value)
+    if(configs.feature.ledstrip.isEnabled.value)
     {
         if (blinkAnimation == LEDSTRIP_OVERWRITE_NONE) //transition from off to right
         {

@@ -104,7 +104,7 @@ void StatusDisplay::redraw()
         }
     }
 
-    if(configs.feature.ledstrip.value)
+    if(configs.feature.ledstrip.isEnabled.value)
     {
         static bool blink_fill_with_black;
         if (configs.ledstrip.enableVisualizeBlink.value && (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) && (blinkAnimation > 0))
@@ -151,7 +151,7 @@ void StatusDisplay::redraw()
 
     tft.setTextFont(2);
 
-    if (configs.feature.udpcloud.value)
+    if (configs.feature.udpcloud.isEnabled.value)
     {
         if(configs.udpCloudSettings.udpCloudEnabled.value && configs.udpCloudSettings.enableCloudDebug.value)
         {
