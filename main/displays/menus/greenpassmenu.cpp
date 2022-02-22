@@ -53,7 +53,7 @@ public:
         }
         else
         {
-            espgui::switchScreen<QrDisplay>(m_qrmenu.message, m_qrmenu.ver);
+            espgui::switchScreen<QrDisplay>(m_qrmenu.message);
         }
     }
 private:
@@ -74,7 +74,7 @@ GreenPassMenu::GreenPassMenu()
         {
             if (const auto certTxt = qrimport::get_qr_code(nvs_key); certTxt)
             {
-                constructMenuItem<CertMenuItem>(qraction::QrMenu{.message=*certTxt, .text=nvs_key , .ver=15});
+                constructMenuItem<CertMenuItem>(qraction::QrMenu{.message=*certTxt, .text=nvs_key });
             }
             else
             {
