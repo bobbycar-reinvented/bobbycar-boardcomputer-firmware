@@ -262,9 +262,11 @@ bool tryParseCanInput()
 void sendCanCommands()
 {
     static uint32_t can_sequential_error_cnt = 0;
+    static uint32_t can_sequential_bus_errors = 0;
 
     constexpr auto send = [](uint32_t addr, auto value){
         twai_message_t message;
+        twai_status_info_t status_info;
         message.identifier = addr;
         message.flags = TWAI_MSG_FLAG_SS;
         message.data_length_code = sizeof(value);
@@ -275,12 +277,14 @@ void sendCanCommands()
 
         const auto timestamp_before = espchrono::millis_clock::now();
         const auto result = twai_transmit(&message, timeout);
+        const auto status = twai_get_status_info(&status_info);
         const auto timestamp_after = espchrono::millis_clock::now();
 
-        if (result == ESP_ERR_TIMEOUT)
+        if (result == ESP_ERR_TIMEOUT || (status == ESP_OK && status_info.bus_error_count > can_sequential_bus_errors))
         {
             ++can_sequential_error_cnt;
             ++can_total_error_cnt;
+            can_sequential_bus_errors = status_info.bus_error_count;
 
             ESP_LOGW(TAG, "twai_transmit() failed after %lldms with %s, seq err: %d, total err: %d",
                      (timestamp_after - timestamp_before).count(),
