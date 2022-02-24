@@ -11,3 +11,9 @@ public:
     std::string text() const override;
     void back() override;
 };
+
+class NetworkAccessPointQRAction : public virtual espgui::ActionInterface
+{
+public:
+    void triggered() override;
+};

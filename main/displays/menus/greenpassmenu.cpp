@@ -53,7 +53,7 @@ public:
         }
         else
         {
-            espgui::switchScreen<QrDisplay>(m_qrmenu.message);
+            espgui::switchScreen<QrDisplay<GreenPassMenu>>(m_qrmenu.message);
         }
     }
 private:
@@ -84,7 +84,7 @@ GreenPassMenu::GreenPassMenu()
         }
         else
         {
-            constructMenuItem<makeComponentArgs<MenuItem, SwitchQrImportDisplayAction, StaticText<TEXT_ADDCERT>>>(std::move(nvs_key));
+            constructMenuItem<makeComponentArgs<MenuItem, SwitchQrImportDisplayAction<GreenPassMenu>, StaticText<TEXT_ADDCERT>>>(std::move(nvs_key));
         }
     }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DELCERT>, BobbyCheckbox, DeleteModeAccessor>>();
