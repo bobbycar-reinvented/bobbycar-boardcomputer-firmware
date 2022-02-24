@@ -1,9 +1,15 @@
 #pragma once
 
-#include <actioninterface.h>
+// system includes
 #include <string>
 
+// 3rdparty lib includes
+#include <actioninterface.h>
+
+// local includes
 #include "actions/qraction.h"
+#include "displays/qrdisplay.h"
+#include "displays/qrimportdisplay.h"
 
 namespace qraction {
 struct QrMenu {
@@ -12,24 +18,32 @@ struct QrMenu {
 };
 } // namespace
 
+template<typename TMenu>
 class SwitchQrDisplayAction : public virtual espgui::ActionInterface
 {
 public:
-    explicit SwitchQrDisplayAction(const qraction::QrMenu &qrmenu);
-    explicit SwitchQrDisplayAction(qraction::QrMenu &&qrmenu);
+    explicit SwitchQrDisplayAction(const qraction::QrMenu &qrmenu) : m_msg{qrmenu.message} {}
+    explicit SwitchQrDisplayAction(qraction::QrMenu &&qrmenu) : m_msg{std::move(qrmenu.message)} {}
 
-    void triggered() override;
+    void triggered() override
+    {
+        espgui::switchScreen<QrDisplay<TMenu>>(m_msg);
+    }
 private:
     std::string m_msg;
 };
 
+template<typename TMenu>
 class SwitchQrImportDisplayAction : public virtual espgui::ActionInterface
 {
 public:
-    explicit SwitchQrImportDisplayAction(const std::string &nvskey);
-    explicit SwitchQrImportDisplayAction(std::string &&nvskey);
+    explicit SwitchQrImportDisplayAction(const std::string &nvskey) : m_nvskey{nvskey} {}
+    explicit SwitchQrImportDisplayAction(std::string &&nvskey) : m_nvskey{std::move(nvskey)} {}
 
-    void triggered() override;
+    void triggered() override
+    {
+        espgui::switchScreen<QrImportDisplay<TMenu>>(std::move(m_nvskey));
+    }
 private:
     std::string m_nvskey;
 };
