@@ -6,12 +6,14 @@
 // local includes
 #include "bobbydisplay.h"
 
+uint16_t get_qrver_from_strlen(std::string_view str);
+
 class QrDisplay : public BobbyDisplay
 {
     using Base = BobbyDisplay;
 
 public:
-    QrDisplay(std::string_view msg, uint8_t ver);
+    explicit QrDisplay(std::string_view msg);
 
     void initScreen() override;
 
@@ -19,5 +21,4 @@ public:
 
 private:
     std::string_view m_msg;
-    uint8_t m_ver;
 };

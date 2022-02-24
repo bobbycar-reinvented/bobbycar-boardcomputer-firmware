@@ -9,20 +9,18 @@
 using namespace espgui;
 
 SwitchQrDisplayAction::SwitchQrDisplayAction(const qraction::QrMenu &qrmenu) :
-    m_msg{qrmenu.message},
-    m_ver{qrmenu.ver}
+    m_msg{qrmenu.message}
 {
 }
 
 SwitchQrDisplayAction::SwitchQrDisplayAction(qraction::QrMenu &&qrmenu) :
-    m_msg{std::move(qrmenu.message)},
-    m_ver{qrmenu.ver}
+    m_msg{std::move(qrmenu.message)}
 {
 }
 
 void SwitchQrDisplayAction::triggered()
 {
-    switchScreen<QrDisplay>(m_msg, m_ver);
+    switchScreen<QrDisplay>(m_msg);
 }
 
 SwitchQrImportDisplayAction::SwitchQrImportDisplayAction(const std::string &nvskey) :
