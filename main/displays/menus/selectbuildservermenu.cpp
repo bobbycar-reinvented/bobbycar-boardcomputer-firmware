@@ -33,9 +33,8 @@ public:
 
     void triggered() override
     {
-        configs.write_config(configs.otaServerUrl, m_buildserver_url); // mir egal ob succeeded
-        if (m_buildserver_url.substr(m_buildserver_url.length() - 4) == ".bin")
-            configs.write_config(configs.otaUrl, m_buildserver_url); // mir egal ob es succeeded
+        ESP_LOGE("BOBBY", "Saving buildserver url: %s", m_buildserver_url.c_str());
+        configs.write_config(configs.otaServerUrl, m_buildserver_url);
 
         url_for_latest.clear();
         url_for_hashes.clear();

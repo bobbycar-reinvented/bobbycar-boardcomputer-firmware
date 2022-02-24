@@ -5,13 +5,12 @@
 #include <nvs.h>
 
 // 3rd party includes
+#include <ArduinoJson.h>
 #include <asynchttprequest.h>
 #include <cleanuphelper.h>
-#include <cpputils.h>
 #include <delayedconstruction.h>
 
 // local includes
-#include "globals.h"
 #include "newsettings.h"
 
 namespace qrimport {
@@ -110,7 +109,7 @@ tl::expected<void, std::string> start_qr_request()
         return tl::make_unexpected("request im oarsch");
     }
 
-    if (const auto res = http_request->start(fmt::format("http://api.bobbycar.cloud/qr/{}.qr", configs.otaUsername.value)); !res)
+    if (auto res = http_request->start(fmt::format("http://qr.bobbycar.cloud/qr/{}.qr", configs.otaUsername.value)); !res)
     {
         return res;
     }
@@ -137,9 +136,9 @@ tl::expected<std::string, std::string> check_request()
     }
     else if (http_request->statusCode() != 200)
     {
-        return tl::make_unexpected(fmt::format("unexpected response status: {} {}",
-                                               http_request->statusCode(),
-                                               http_request->takeBuffer()));
+        DynamicJsonDocument doc(256);
+        deserializeJson(doc, http_request->takeBuffer());
+        return tl::make_unexpected(fmt::format("{} {}", http_request->statusCode(), doc["error"].as<std::string>()));
     }
     else
     {

@@ -8,6 +8,7 @@ constexpr const char * const TAG = "qrimport";
 
 // displays/menus includes
 #include "displays/menus/greenpassmenu.h"
+#include "bobbyerrorhandler.h"
 
 // local includes
 #include "qrimport.h"
@@ -76,15 +77,17 @@ void QrImportDisplay::redraw()
         tft.setTextColor(TFT_YELLOW, TFT_BLACK);
         m_statuslabel.redraw("In progress");
     }
-    else if (!m_result)
+    else if (!m_result && !m_result.error().empty())
     {
         tft.setTextColor(TFT_RED, TFT_BLACK);
-        m_statuslabel.redraw(m_result.error());
+        BobbyErrorHandler{}.errorOccured(fmt::format("Error: {}", m_result.error()));
+        m_result.error().clear();
     }
     else
     {
         tft.setTextColor(TFT_GREEN, TFT_BLACK);
         m_statuslabel.redraw("OK");
+        switchScreen<GreenPassMenu>();
     }
 }
 
