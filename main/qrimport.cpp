@@ -110,7 +110,7 @@ tl::expected<void, std::string> start_qr_request()
         return tl::make_unexpected("request im oarsch");
     }
 
-    if (const auto res = http_request->start(fmt::format("http://qr.bobbycar.cloud/{}.qr", configs.otaUsername.value)); !res)
+    if (const auto res = http_request->start(fmt::format("http://api.bobbycar.cloud/qr/{}.qr", configs.otaUsername.value)); !res)
     {
         return res;
     }
