@@ -313,3 +313,20 @@ int16_t map_analog_stick(uint16_t middle, uint16_t start, uint16_t end, uint16_t
         return return_val;
     }
 }
+
+std::string get_wifi_security_string(wifi_auth_mode_t authMode)
+{ // use for qr code
+    switch (authMode)
+    {
+        case WIFI_AUTH_OPEN:
+            return "nopass";
+        case WIFI_AUTH_WEP:
+            return "WEP";
+        case WIFI_AUTH_WPA_PSK:
+        case WIFI_AUTH_WPA2_PSK:
+        case WIFI_AUTH_WPA_WPA2_PSK:
+            return "WPA";
+        default:
+            return "unknown";
+    }
+}
