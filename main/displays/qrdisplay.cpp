@@ -1,5 +1,6 @@
 #include "qrdisplay.h"
 
+// this only works for ECC_MEDIUM
 uint16_t get_qrver_from_strlen(std::string_view str)
 {
     // alpha numeric, ECC Level M

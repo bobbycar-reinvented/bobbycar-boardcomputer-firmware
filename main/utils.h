@@ -77,3 +77,5 @@ inline CRGB UINT32_TO_CRGB(uint32_t color)
 
     return crgb;
 }
+
+std::string get_wifi_security_string(wifi_auth_mode_t authMode);

@@ -11,6 +11,7 @@
 // local includes
 #include "displays/qrdisplay.h"
 #include "globals.h"
+#include "utils.h"
 #include "settingsmenu.h"
 #include "texthelpers/networktexthelpers.h"
 #include "wifiapsettingsmenu.h"
@@ -52,6 +53,6 @@ void NetworkSettingsMenu::back()
 
 void NetworkAccessPointQRAction::triggered()
 {
-    std::string qr = fmt::format("WIFI:T:WPA;S:{};P:{};H:;", configs.wifiApName.value, configs.wifiApKey.value);
+    std::string qr = fmt::format("WIFI:T:{};S:{};P:{};H:;", get_wifi_security_string(configs.wifiApAuthmode.value), configs.wifiApName.value, configs.wifiApKey.value);
     espgui::switchScreen<QrDisplay<NetworkSettingsMenu>>(qr);
 }

@@ -26,7 +26,7 @@ public:
         uint8_t qrcodeBytes[qrcode_getBufferSize(ver)];
         qrcode_initText(&qrcode, qrcodeBytes, ver, ECC_MEDIUM, m_msg.data());
 
-        const uint8_t multiplier = (tft.width() - 9) / qrcode.size;
+        const uint8_t multiplier = (tft.width() - 18) / qrcode.size;
         const uint8_t x_offset = (tft.width() - qrcode.size * multiplier) / 2;
         const uint8_t y_offset = (tft.height() - qrcode.size * multiplier) / 2;
 
