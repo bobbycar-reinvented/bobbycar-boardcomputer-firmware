@@ -221,6 +221,42 @@ float getMaxBatVoltage(BatteryCellType cellType)
     return 0.f;
 }
 
+uint8_t count_curve_points(BatteryCellType cellType)
+{
+#define COUNT_CURVE_POINTS(higherVoltage,lowerVoltage,fromAh,toAh) \
+    count++;
+
+    uint8_t count = 0;
+    switch (cellType)
+    {
+        case BatteryCellType::_22P:
+        {
+            BAT_CURVE_22P(COUNT_CURVE_POINTS);
+        }
+        case BatteryCellType::HG2:
+        {
+            BAT_CURVE_HG2(COUNT_CURVE_POINTS);
+        }
+        case BatteryCellType::MH1:
+        {
+            BAT_CURVE_MH1(COUNT_CURVE_POINTS);
+        }
+        case BatteryCellType::VTC5:
+        {
+            BAT_CURVE_VTC5(COUNT_CURVE_POINTS);
+        }
+        case BatteryCellType::BAK_25R:
+        {
+            BAT_CURVE_25R(COUNT_CURVE_POINTS);
+        }
+        case BatteryCellType::HE4:
+        {
+            BAT_CURVE_HE4(COUNT_CURVE_POINTS);
+        }
+    }
+    return count;
+}
+
 namespace battery {
 std::optional<float> bootBatPercentage;
 std::optional<float> bootBatWh;

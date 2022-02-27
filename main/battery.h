@@ -148,6 +148,8 @@ std::string getBatteryAdvancedPercentageString();
 float getPercentageByWh(float wh);
 float getTarget_mAh();
 
+uint8_t count_curve_points(BatteryCellType cellType);
+
 namespace battery {
 extern std::optional<float> bootBatPercentage;
 extern std::optional<float> bootBatWh;
