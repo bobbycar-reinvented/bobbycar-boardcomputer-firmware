@@ -232,26 +232,32 @@ uint8_t count_curve_points(BatteryCellType cellType)
         case BatteryCellType::_22P:
         {
             BAT_CURVE_22P(COUNT_CURVE_POINTS);
+            break;
         }
         case BatteryCellType::HG2:
         {
             BAT_CURVE_HG2(COUNT_CURVE_POINTS);
+            break;
         }
         case BatteryCellType::MH1:
         {
             BAT_CURVE_MH1(COUNT_CURVE_POINTS);
+            break;
         }
         case BatteryCellType::VTC5:
         {
             BAT_CURVE_VTC5(COUNT_CURVE_POINTS);
+            break;
         }
         case BatteryCellType::BAK_25R:
         {
             BAT_CURVE_25R(COUNT_CURVE_POINTS);
+            break;
         }
         case BatteryCellType::HE4:
         {
             BAT_CURVE_HE4(COUNT_CURVE_POINTS);
+            break;
         }
     }
     return count;
@@ -274,26 +280,32 @@ std::optional<CalibrationPointVoltages> get_point_n_voltages(BatteryCellType cel
         case BatteryCellType::_22P:
         {
             BAT_CURVE_22P(GET_POINT_N_VOLTAGES);
+            break;
         }
         case BatteryCellType::HG2:
         {
             BAT_CURVE_HG2(GET_POINT_N_VOLTAGES);
+            break;
         }
         case BatteryCellType::MH1:
         {
             BAT_CURVE_MH1(GET_POINT_N_VOLTAGES);
+            break;
         }
         case BatteryCellType::VTC5:
         {
             BAT_CURVE_VTC5(GET_POINT_N_VOLTAGES);
+            break;
         }
         case BatteryCellType::BAK_25R:
         {
             BAT_CURVE_25R(GET_POINT_N_VOLTAGES);
+            break;
         }
         case BatteryCellType::HE4:
         {
             BAT_CURVE_HE4(GET_POINT_N_VOLTAGES);
+            break;
         }
     }
     return std::nullopt;

@@ -32,6 +32,10 @@ if (cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) \
     if (fromAh == 0) \
         return higherVoltage * configs.battery.cellsSeries.value;
 
+
+// All curves here have to follow the same order (highest-voltage first)
+// as some functions require this to display data in correct order
+
 // 22P
 #define BAT_MIN_AH_22P 2.2
 #define BAT_CURVE_22P(func) \
