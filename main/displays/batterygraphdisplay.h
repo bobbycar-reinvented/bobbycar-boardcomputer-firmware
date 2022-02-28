@@ -1,7 +1,5 @@
 #pragma once
 
-// 3rdparty lib includes
-
 // local includes
 #include "bobbydisplaywithtitle.h"
 

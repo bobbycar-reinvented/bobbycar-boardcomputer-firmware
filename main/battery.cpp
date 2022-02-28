@@ -257,6 +257,48 @@ uint8_t count_curve_points(BatteryCellType cellType)
     return count;
 }
 
+std::optional<CalibrationPointVoltages> get_point_n_voltages(BatteryCellType cellType, uint8_t num)
+{
+    #define GET_POINT_N_VOLTAGES(higherVoltage,lowerVoltage,fromAh,toAh) \
+        if (count == num) { \
+            uint16_t minVoltage = (lowerVoltage) * 100; \
+            uint16_t maxVoltage = (higherVoltage) * 100; \
+            return CalibrationPointVoltages{ .minVoltage=minVoltage, .maxVoltage=maxVoltage }; \
+        } \
+        count++;
+
+    uint8_t count = 0;
+    CalibrationPointVoltages point;
+    switch (cellType)
+    {
+        case BatteryCellType::_22P:
+        {
+            BAT_CURVE_22P(GET_POINT_N_VOLTAGES);
+        }
+        case BatteryCellType::HG2:
+        {
+            BAT_CURVE_HG2(GET_POINT_N_VOLTAGES);
+        }
+        case BatteryCellType::MH1:
+        {
+            BAT_CURVE_MH1(GET_POINT_N_VOLTAGES);
+        }
+        case BatteryCellType::VTC5:
+        {
+            BAT_CURVE_VTC5(GET_POINT_N_VOLTAGES);
+        }
+        case BatteryCellType::BAK_25R:
+        {
+            BAT_CURVE_25R(GET_POINT_N_VOLTAGES);
+        }
+        case BatteryCellType::HE4:
+        {
+            BAT_CURVE_HE4(GET_POINT_N_VOLTAGES);
+        }
+    }
+    return std::nullopt;
+}
+
 namespace battery {
 std::optional<float> bootBatPercentage;
 std::optional<float> bootBatWh;

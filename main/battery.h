@@ -6,6 +6,11 @@
 // local includes
 #include <bobbytypesafeenum.h>
 
+typedef struct {
+    uint16_t minVoltage;
+    uint16_t maxVoltage;
+} CalibrationPointVoltages;
+
 // battery curves
 #define PERCENTAGE(higherVoltage,lowerVoltage,fromAh,toAh) \
 if (cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) \
@@ -149,6 +154,8 @@ float getPercentageByWh(float wh);
 float getTarget_mAh();
 
 uint8_t count_curve_points(BatteryCellType cellType);
+
+std::optional<CalibrationPointVoltages> get_point_n_voltages(BatteryCellType cellType, uint8_t num);
 
 namespace battery {
 extern std::optional<float> bootBatPercentage;

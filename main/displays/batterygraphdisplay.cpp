@@ -4,22 +4,29 @@
 #include <screenmanager.h>
 
 // local includes
+#include "globals.h"
 #include "displays/menus/batterymenu.h"
 
 namespace {
     constexpr char TEXT_BATTERY_GRAPH[] = "Battery Level";
 } // namespace
 
-void BatteryGraphDisplay::initScreen() {
+void BatteryGraphDisplay::initScreen()
+{
     Base::initScreen();
 }
 
-std::string BatteryGraphDisplay::text() const {
+std::string BatteryGraphDisplay::text() const
+{
     return TEXT_BATTERY_GRAPH;
 }
 
-void BatteryGraphDisplay::redraw() {
+void BatteryGraphDisplay::redraw()
+{
+    using namespace espgui;
     Base::redraw();
+
+    // tft.drawLine() code
 }
 
 void BatteryGraphDisplay::buttonPressed(espgui::Button button)
