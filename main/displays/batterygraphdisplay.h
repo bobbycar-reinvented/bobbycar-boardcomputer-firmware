@@ -12,4 +12,7 @@ public:
     void redraw() override;
 
     void buttonPressed(espgui::Button button) override;
+
+private:
+    float m_lastBatVoltage{0};
 };
