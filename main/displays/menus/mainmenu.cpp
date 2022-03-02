@@ -25,6 +25,7 @@
 #include "displays/menus/otamenu.h"
 #include "displays/poweroffdisplay.h"
 #include "displays/menus/statisticsmenu.h"
+#include "displays/confiscationdisplay.h"
 #include "actions/rebootaction.h"
 #include "displays/menus/debugmenu.h"
 #include "icons/battery.h"
@@ -72,6 +73,7 @@ constexpr char TEXT_REBOOT[] = "Reboot";
 constexpr char TEXT_DEBUG[] = "Debug";
 constexpr char TEXT_BATTERY[] = "Battery";
 constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
+constexpr char TEXT_CONFISCATIONMODE[] = "Confiscation Mode";
 constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
 constexpr char TEXT_MANAGEPROFILESMENU[] = "Manage Profiles";
 
@@ -115,6 +117,7 @@ MainMenu::MainMenu()
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MANAGEPROFILESMENU>,SwitchScreenAction<ManageProfilesMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        SwitchScreenAction<DebugMenu>>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,     SwitchScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&bobbyicons::poweroff>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONFISCATIONMODE>, SwitchScreenAction<ConfiscationDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>,       RebootAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
 //#ifdef MAINMENU_PLUGIN
     // GMEN1
