@@ -14,7 +14,6 @@
 
 using namespace std::chrono_literals;
 
-#if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
 void ConfiscationDisplay::start()
 {
     Base::start();
@@ -114,4 +113,3 @@ std::string ConfiscationDisplay::text() const
 {
     return "Explosions-Modus";
 }
-#endif
