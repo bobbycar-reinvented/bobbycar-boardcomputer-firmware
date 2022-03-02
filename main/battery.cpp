@@ -155,6 +155,11 @@ float getPercentageByWh(float wh)
     return maxWh / wh;
 }
 
+float getBatteryWattHours()
+{
+    return (getTarget_mAh() / 1000.f) * 3.7 * configs.battery.cellsParallel.value * configs.battery.cellsSeries.value;
+}
+
 float getTarget_mAh()
 {
     float target_mah = 2000; //default

@@ -14,6 +14,11 @@
 
 using namespace std::chrono_literals;
 
+float calculateMegaJoules()
+{
+    return getBatteryWattHours() * 0.0036;
+}
+
 void ConfiscationDisplay::start()
 {
     Base::start();
@@ -46,7 +51,7 @@ void ConfiscationDisplay::initScreen()
     espgui::tft.drawString("Bei erneuter, widerrechtlicher", 10, y+=lineheight);
     espgui::tft.drawString("Beschlagnahmung wird die Selbst-", 10, y+=lineheight);
     espgui::tft.drawString("Vernichtung durch Kurzschluss", 10, y+=lineheight);
-    espgui::tft.drawString("der Batterie eingeleitet (ca 4.31MJ)", 10, y+=lineheight);
+    espgui::tft.drawString(fmt::format("der Batterie eingeleitet (ca {:.2f}MJ)", calculateMegaJoules()), 10, y+=lineheight);
 }
 
 void ConfiscationDisplay::redraw()
@@ -74,7 +79,7 @@ void ConfiscationDisplay::update()
     {
         m_progress = 500;
         const auto timeout = cpputils::randomNumber(3, 7, espcpputils::esp_random_device{});
-        ESP_LOGI("BOBBY", "agian in %i", timeout);
+        ESP_LOGI("BOBBY", "again in %i", timeout);
         m_nextRestart = espchrono::millis_clock::now() + std::chrono::seconds{timeout};
     }
     else
