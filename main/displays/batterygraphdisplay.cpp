@@ -7,9 +7,10 @@ constexpr const char * const TAG = "BatteryGraphDisplay";
 
 // local includes
 #include "battery.h"
-#include "globals.h"
 #include "displays/menus/batterymenu.h"
+#include "globals.h"
 #include "newsettings.h"
+#include "utils.h"
 
 namespace {
     constexpr char TEXT_BATTERY_GRAPH[] = "Battery Level";
@@ -21,13 +22,21 @@ void BatteryGraphDisplay::initScreen()
     Base::initScreen();
     const auto points = count_curve_points(configs.battery.cellType.value);
     ESP_LOGI(TAG, "Battery graph points: %d, cell type: %s", points, toString(configs.battery.cellType.value).c_str());
-    const auto available_space = espgui::tft.height() - TOP_OFFSET;
-    const uint16_t onePercent = espgui::tft.width() / 100;
+    const auto max_height = espgui::tft.height() - TOP_OFFSET;
+    const auto max_width = espgui::tft.width();
+    const uint16_t part = max_width / points;
     for (uint8_t i = 0; points >= i; i++) {
         // draw lines between point->minVoltage and point->maxVoltage from left to right
         if (const auto point = get_point_n_voltages(configs.battery.cellType.value, points - i); point)
         {
-            // draw line between minVoltage and maxVoltage of point. When implemented, please contact @CommanderRedYT so that he can move and optimize the code
+            // TODO: Fix float_map to not be broken
+            // Current output: float_map(335, 2.55, 4.5, 0, 280) = 47736
+            const int x1 = part * i;
+            const int y1 = float_map(point->minVoltage, 2.55, 4.5, 0, max_height);
+            const int x2 = part * (i + 1);
+            const int y2 = float_map(point->maxVoltage, 2.55, 4.5, 0, max_height);
+            espgui::tft.drawLine(x1, y1, x2, y2, TFT_WHITE);
+            ESP_LOGI(TAG, "espgui::tft.drawLine(%d, %d, %d, %d, TFT_WHITE);", x1, y1, x2, y2);
         }
     }
 }
