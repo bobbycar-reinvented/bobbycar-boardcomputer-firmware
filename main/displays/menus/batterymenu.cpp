@@ -14,8 +14,10 @@
 // Local includes
 #include "accessors/settingsaccessors.h"
 #include "battery.h"
+#include "displays/batterygraphdisplay.h"
 #include "displays/bobbychangevaluedisplay.h"
 #include "displays/calibratevoltagedisplay.h"
+#include "icons/graph.h"
 #include "icons/settings.h"
 #include "mainmenu.h"
 #include "typesafeenumchangemenu.h"
@@ -26,6 +28,7 @@ constexpr char TEXT_BATTERY[] = "Battery";
 constexpr char TEXT_CELL_SERIES[] = "Cells (Series)";
 constexpr char TEXT_CELL_PARALLEL[] = "Cells (Parallel)";
 constexpr char TEXT_SELECT_CELL_TYPE[] = "Select Cell Type";
+constexpr char TEXT_SHOW_BATTERY_GRAPH[] = "Battery Graph";
 constexpr char TEXT_BATTERY_CALIBRATE[] = "Calibrate Voltages";
 constexpr char TEXT_BATTERY_WHKM[] = "Wh per km";
 constexpr char TEXT_BATTERY_APPLYCALIB[] = "Apply calibration";
@@ -78,6 +81,7 @@ BatteryMenu::BatteryMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CELL_PARALLEL, BatteryParallelCellsAccessor>,    SwitchScreenAction<BatteryCellParallelChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BATTERY_WHKM, BatteryWHperKMAccessor>,           SwitchScreenAction<BatteryWHperKMChangeScreen>>>();
     constructMenuItem<SwitchScreenTypeSafeChangeMenuItem<BatteryCellType, BatteryMenu, TEXT_SELECT_CELL_TYPE>>(&configs.battery.cellType);
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SHOW_BATTERY_GRAPH>,                                      SwitchScreenAction<BatteryGraphDisplay>, StaticMenuItemIcon<&bobbyicons::graph>>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                                DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, WhStatisticsText,                                                         DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_CALIBRATE>,                                       SwitchScreenAction<CalibrateVoltageDisplay>, StaticMenuItemIcon<&bobbyicons::settings>>>();

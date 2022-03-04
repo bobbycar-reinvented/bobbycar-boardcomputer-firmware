@@ -42,8 +42,8 @@ set(headers
     bobbycheckbox.h
     bobbyerrorhandler.h
     bobbyquickactions.h
-    bobbytypesafeenum.h
     bobbyschedulertask.h
+    bobbytypesafeenum.h
     buildserver.h
     can.h
     changevaluedisplay_bluetoothmode.h
@@ -59,6 +59,7 @@ set(headers
     debugcolorhelpers.h
     debuginputhandler.h
     debugtexthelpers.h
+    displays/batterygraphdisplay.h
     displays/bmsdisplay.h
     displays/bobbychangevaluedisplay.h
     displays/bobbydisplay.h
@@ -294,6 +295,7 @@ set(sources
     debugcolorhelpers.cpp
     debuginputhandler.cpp
     debugtexthelpers.cpp
+    displays/batterygraphdisplay.cpp
     displays/bmsdisplay.cpp
     displays/bobbychangevaluedisplay.cpp
     displays/bobbydisplay.cpp

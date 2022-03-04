@@ -9,10 +9,6 @@
 #include "globals.h"
 #include "newsettings.h"
 
-#define CURVE(higherVoltage,lowerVoltage,fromAh,toAh) \
-if (cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) \
-        return 100 * (expected_ah - cpputils::mapValue<float>(cellVoltage, higherVoltage, lowerVoltage, fromAh, toAh)) / expected_ah;
-
 float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
 {
     const float cellVoltage = batVoltage / configs.battery.cellsSeries.value;
@@ -21,116 +17,52 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
     {
     case BatteryCellType::_22P:
     {
-        const float expected_ah = 2.2;
+        const float expected_ah = BAT_MIN_AH_22P;
         if (cellVoltage > 4.15)
             return 100;
-
-        CURVE(4.15, 4.04, 0, 0.25)
-        CURVE(4.04, 3.95, 0.25, 0.5)
-        CURVE(3.95, 3.86, 0.5, 0.75)
-        CURVE(3.86, 3.74, 0.75, 1.0)
-        CURVE(3.74, 3.64, 1.0, 1.25)
-        CURVE(3.64, 3.59, 1.25, 1.5)
-        CURVE(3.59, 3.54, 1.5, 1.75)
-        CURVE(3.54, 3.43, 1.75, 2.0)
-        CURVE(3.43, 3.35, 2.0, 2.1)
-        CURVE(3.35, 2.50, 2.1, 2.2)
+        BAT_CURVE_22P(PERCENTAGE);
         break;
     }
     case BatteryCellType::MH1:
     {
-        const float expected_ah = 3.2;
+        const float expected_ah = BAT_MIN_AH_MH1;
         if (cellVoltage > 4.15)
             return 100;
-
-        CURVE(4.15, 4.09, 0, 0.25)
-        CURVE(4.09, 4.04, 0.25, 0.5)
-        CURVE(4.04, 3.95, 0.5, 0.75)
-        CURVE(3.95, 3.88, 0.75, 1.0)
-        CURVE(3.88, 3.79, 1.0, 1.25)
-        CURVE(3.79, 3.70, 1.25, 1.5)
-        CURVE(3.70, 3.65, 1.5, 1.75)
-        CURVE(3.65, 3.60, 1.75, 2.0)
-        CURVE(3.60, 3.56, 2.0, 2.25)
-        CURVE(3.56, 3.50, 2.25, 2.5)
-        CURVE(3.50, 3.40, 2.5, 2.75)
-        CURVE(3.40, 3.30, 2.75, 3.0)
-        CURVE(3.30, 2.5, 3.0, 3.2)
+        BAT_CURVE_MH1(PERCENTAGE);
         break;
     }
     case BatteryCellType::HG2:
     {
-        const float expected_ah = 3.0;
+        const float expected_ah = BAT_MIN_AH_HG2;
         if (cellVoltage > 4.15)
             return 100;
-
-        CURVE(4.15, 4.08, 0, 0.25)
-        CURVE(4.08, 4.01, 0.25, 0.5)
-        CURVE(4.01, 3.92, 0.5, 0.75)
-        CURVE(3.92, 3.84, 0.75, 1.0)
-        CURVE(3.84, 3.75, 1.0, 1.25)
-        CURVE(3.75, 3.67, 1.25, 1.5)
-        CURVE(3.67, 3.62, 1.5, 1.75)
-        CURVE(3.62, 3.55, 1.75, 2.0)
-        CURVE(3.55, 3.44, 2.0, 2.25)
-        CURVE(3.44, 3.30, 2.25, 2.5)
-        CURVE(3.30, 3.05, 2.5, 2.75)
-        CURVE(3.05, 2.50, 2.75, 3.0)
+        BAT_CURVE_HG2(PERCENTAGE);
         break;
     }
     case BatteryCellType::VTC5:
     {
-        const float expected_ah = 2.6;
+        const float expected_ah = BAT_MIN_AH_VTC5;
         if (cellVoltage > 4.15)
             return 100;
-
-        CURVE(4.15, 4.08, 0, 0.25)
-        CURVE(4.08, 3.98, 0.25, 0.5)
-        CURVE(3.98, 3.89, 0.5, 0.75)
-        CURVE(3.89, 3.79, 0.75, 1.0)
-        CURVE(3.79, 3.71, 1.0, 1.25)
-        CURVE(3.71, 3.64, 1.25, 1.5)
-        CURVE(3.64, 3.53, 1.5, 1.75)
-        CURVE(3.53, 3.44, 1.75, 2.0)
-        CURVE(3.44, 3.20, 2.0, 2.25)
-        CURVE(3.20, 2.80, 2.25, 2.5)
-        CURVE(2.80, 2.50, 2.5, 2.60)
+        BAT_CURVE_VTC5(PERCENTAGE);
         break;
     }
     case BatteryCellType::BAK_25R:
     {
-        const float expected_ah = 2.5;
+        const float expected_ah = BAT_MIN_AH_BAK_25R;
         if(cellVoltage > 4.15){
             return 100;
         }
-        CURVE(4.15, 4.06, 0, 0.25)
-        CURVE(4.06, 3.96, 0.25, 0.5)
-        CURVE(3.96, 3.88, 0.5, 0.75)
-        CURVE(3.88, 3.77, 0.75, 1)
-        CURVE(3.77, 3.68, 1, 1.25)
-        CURVE(3.68, 3.62, 1.25, 1.5)
-        CURVE(3.62, 3.56, 1.5, 1.75)
-        CURVE(3.56, 3.47, 1.75, 2)
-        CURVE(3.47, 3.31, 2, 2.25)
-        CURVE(3.31, 2.50, 2.25, 2.5)
+        BAT_CURVE_25R(PERCENTAGE);
         break;
     }
     case BatteryCellType::HE4:
     {
-        const float expected_ah = 2.3;
+        const float expected_ah = BAT_MIN_AH_HE4;
         if(cellVoltage > 4.15){
             return 100;
         }
-        CURVE(4.15, 4.02, 0, 0.25)
-        CURVE(4.02, 3.91, 0.25, 0.5)
-        CURVE(3.91, 3.81, 0.5, 0.75)
-        CURVE(3.81, 3.72, 0.75, 1)
-        CURVE(3.72, 3.61, 1, 1.25)
-        CURVE(3.61, 3.62, 1.25, 1.5)
-        CURVE(3.62, 3.53, 1.5, 1.75)
-        CURVE(3.53, 3.45, 1.75, 2)
-        CURVE(3.45, 3.21, 2, 2.25)
-        CURVE(3.21, 2.80, 2.25, 2.3)
+        BAT_CURVE_HE4(PERCENTAGE);
         break;
     }
     }
@@ -194,11 +126,6 @@ std::string getBatteryRemainingWattHoursString()
     return fmt::format("{:.1f}Wh", getRemainingWattHours());
 }
 
-std::string getBatteryCellTypeString()
-{
-    return fmt::format("Cells: {}", toString(BatteryCellType(configs.battery.cellType.value)));
-}
-
 std::string getRemainingRangeString()
 {
     return fmt::format("{:.1f} km", getRemainingWattHours() / configs.battery.watthoursPerKilometer.value);
@@ -211,6 +138,174 @@ std::string getBatteryDebugString()
         return fmt::format("{:.1f}V {}A", *avgVoltage, sumCurrent);
     }
     return "No Battery";
+}
+
+float getMinBatCellVoltage(BatteryCellType cellType) {
+    float minimumVoltage = std::numeric_limits<float>::max();
+    switch (cellType)
+    {
+    case BatteryCellType::_22P:
+    {
+        BAT_CURVE_22P(GET_MINIMUM_BAT_VOLTAGE);
+        break;
+    }
+    case BatteryCellType::HG2:
+    {
+        BAT_CURVE_HG2(GET_MINIMUM_BAT_VOLTAGE);
+        break;
+    }
+    case BatteryCellType::MH1:
+    {
+        BAT_CURVE_MH1(GET_MINIMUM_BAT_VOLTAGE);
+        break;
+    }
+    case BatteryCellType::VTC5:
+    {
+        BAT_CURVE_VTC5(GET_MINIMUM_BAT_VOLTAGE);
+        break;
+    }
+    case BatteryCellType::BAK_25R:
+    {
+        BAT_CURVE_25R(GET_MINIMUM_BAT_VOLTAGE);
+        break;
+    }
+    case BatteryCellType::HE4:
+    {
+        BAT_CURVE_HE4(GET_MINIMUM_BAT_VOLTAGE);
+        break;
+    }
+    default:
+        return 0.f;
+    }
+    return minimumVoltage;
+}
+
+float getMaxBatCellVoltage(BatteryCellType cellType)
+{
+    switch (cellType)
+    {
+        case BatteryCellType::_22P:
+        {
+            BAT_CURVE_22P(GET_MAXIMUM_BAT_VOLTAGE);
+            break;
+        }
+        case BatteryCellType::HG2:
+        {
+            BAT_CURVE_HG2(GET_MAXIMUM_BAT_VOLTAGE);
+            break;
+        }
+        case BatteryCellType::MH1:
+        {
+            BAT_CURVE_MH1(GET_MAXIMUM_BAT_VOLTAGE);
+            break;
+        }
+        case BatteryCellType::VTC5:
+        {
+            BAT_CURVE_VTC5(GET_MAXIMUM_BAT_VOLTAGE);
+            break;
+        }
+        case BatteryCellType::BAK_25R:
+        {
+            BAT_CURVE_25R(GET_MAXIMUM_BAT_VOLTAGE);
+            break;
+        }
+        case BatteryCellType::HE4:
+        {
+            BAT_CURVE_HE4(GET_MAXIMUM_BAT_VOLTAGE);
+            break;
+        }
+    }
+    return 0.f;
+}
+
+uint8_t count_curve_points(BatteryCellType cellType)
+{
+#define COUNT_CURVE_POINTS(higherVoltage,lowerVoltage,fromAh,toAh) \
+    count++;
+
+    uint8_t count = 0;
+    switch (cellType)
+    {
+        case BatteryCellType::_22P:
+        {
+            BAT_CURVE_22P(COUNT_CURVE_POINTS);
+            break;
+        }
+        case BatteryCellType::HG2:
+        {
+            BAT_CURVE_HG2(COUNT_CURVE_POINTS);
+            break;
+        }
+        case BatteryCellType::MH1:
+        {
+            BAT_CURVE_MH1(COUNT_CURVE_POINTS);
+            break;
+        }
+        case BatteryCellType::VTC5:
+        {
+            BAT_CURVE_VTC5(COUNT_CURVE_POINTS);
+            break;
+        }
+        case BatteryCellType::BAK_25R:
+        {
+            BAT_CURVE_25R(COUNT_CURVE_POINTS);
+            break;
+        }
+        case BatteryCellType::HE4:
+        {
+            BAT_CURVE_HE4(COUNT_CURVE_POINTS);
+            break;
+        }
+    }
+    return count;
+}
+
+std::optional<CalibrationPointVoltages> get_point_n_voltages(BatteryCellType cellType, uint8_t num)
+{
+    #define GET_POINT_N_VOLTAGES(higherVoltage,lowerVoltage,fromAh,toAh) \
+        if (count == num) { \
+            uint16_t minVoltage = (lowerVoltage) * 100; \
+            uint16_t maxVoltage = (higherVoltage) * 100; \
+            return CalibrationPointVoltages{ .minVoltage=minVoltage, .maxVoltage=maxVoltage }; \
+        } \
+        count++;
+
+    uint8_t count = 0;
+    CalibrationPointVoltages point;
+    switch (cellType)
+    {
+        case BatteryCellType::_22P:
+        {
+            BAT_CURVE_22P(GET_POINT_N_VOLTAGES);
+            break;
+        }
+        case BatteryCellType::HG2:
+        {
+            BAT_CURVE_HG2(GET_POINT_N_VOLTAGES);
+            break;
+        }
+        case BatteryCellType::MH1:
+        {
+            BAT_CURVE_MH1(GET_POINT_N_VOLTAGES);
+            break;
+        }
+        case BatteryCellType::VTC5:
+        {
+            BAT_CURVE_VTC5(GET_POINT_N_VOLTAGES);
+            break;
+        }
+        case BatteryCellType::BAK_25R:
+        {
+            BAT_CURVE_25R(GET_POINT_N_VOLTAGES);
+            break;
+        }
+        case BatteryCellType::HE4:
+        {
+            BAT_CURVE_HE4(GET_POINT_N_VOLTAGES);
+            break;
+        }
+    }
+    return std::nullopt;
 }
 
 namespace battery {

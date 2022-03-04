@@ -79,3 +79,4 @@ inline CRGB UINT32_TO_CRGB(uint32_t color)
 }
 
 std::string get_wifi_security_string(wifi_auth_mode_t authMode);
+float float_map(float x, float in_min, float in_max, float out_min, float out_max);
