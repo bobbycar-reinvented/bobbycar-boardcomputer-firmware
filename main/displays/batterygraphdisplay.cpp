@@ -21,20 +21,20 @@ void BatteryGraphDisplay::initScreen()
 {
     Base::initScreen();
     const auto points = count_curve_points(configs.battery.cellType.value);
-    ESP_LOGI(TAG, "Battery graph points: %d, cell type: %s", points, toString(configs.battery.cellType.value).c_str());
-    const auto max_height = espgui::tft.height() - TOP_OFFSET;
-    const auto max_width = espgui::tft.width();
+    const auto max_height = espgui::tft.height() - 1;
+    const auto max_width = espgui::tft.width() - 4;
     const uint16_t part = max_width / points;
+    const auto min_voltage = getMinBatCellVoltage(configs.battery.cellType.value);
+    const auto max_voltage = getMaxBatCellVoltage(configs.battery.cellType.value);
+    ESP_LOGI(TAG, "min_voltage: %f, max_voltage: %f", min_voltage, max_voltage);
     for (uint8_t i = 0; points >= i; i++) {
         // draw lines between point->minVoltage and point->maxVoltage from left to right
         if (const auto point = get_point_n_voltages(configs.battery.cellType.value, points - i); point)
         {
-            // TODO: Fix float_map to not be broken
-            // Current output: float_map(335, 2.55, 4.5, 0, 280) = 47736
-            const int x1 = part * i;
-            const int y1 = float_map(point->minVoltage, 2.55, 4.5, 0, max_height);
-            const int x2 = part * (i + 1);
-            const int y2 = float_map(point->maxVoltage, 2.55, 4.5, 0, max_height);
+            const int x1 = 2 + part * (points - i + 1);
+            const int y1 = float_map(point->minVoltage / 100.f, min_voltage, max_voltage, max_height, TOP_OFFSET);
+            const int x2 = 2 + part * (points - i);
+            const int y2 = float_map(point->maxVoltage / 100.f, min_voltage, max_voltage, max_height, TOP_OFFSET);
             espgui::tft.drawLine(x1, y1, x2, y2, TFT_WHITE);
             ESP_LOGI(TAG, "espgui::tft.drawLine(%d, %d, %d, %d, TFT_WHITE);", x1, y1, x2, y2);
         }

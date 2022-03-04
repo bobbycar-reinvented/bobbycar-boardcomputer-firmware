@@ -140,50 +140,47 @@ std::string getBatteryDebugString()
     return "No Battery";
 }
 
-float getMinBatVoltage(BatteryCellType cellType) {
+float getMinBatCellVoltage(BatteryCellType cellType) {
+    float minimumVoltage = std::numeric_limits<float>::max();
     switch (cellType)
     {
     case BatteryCellType::_22P:
     {
-        const float expected_ah = BAT_MIN_AH_22P;
         BAT_CURVE_22P(GET_MINIMUM_BAT_VOLTAGE);
         break;
     }
     case BatteryCellType::HG2:
     {
-        const float expected_ah = BAT_MIN_AH_HG2;
         BAT_CURVE_HG2(GET_MINIMUM_BAT_VOLTAGE);
         break;
     }
     case BatteryCellType::MH1:
     {
-        const float expected_ah = BAT_MIN_AH_MH1;
         BAT_CURVE_MH1(GET_MINIMUM_BAT_VOLTAGE);
         break;
     }
     case BatteryCellType::VTC5:
     {
-        const float expected_ah = BAT_MIN_AH_VTC5;
         BAT_CURVE_VTC5(GET_MINIMUM_BAT_VOLTAGE);
         break;
     }
     case BatteryCellType::BAK_25R:
     {
-        const float expected_ah = BAT_MIN_AH_BAK_25R;
         BAT_CURVE_25R(GET_MINIMUM_BAT_VOLTAGE);
         break;
     }
     case BatteryCellType::HE4:
     {
-        const float expected_ah = BAT_MIN_AH_HE4;
         BAT_CURVE_HE4(GET_MINIMUM_BAT_VOLTAGE);
         break;
     }
+    default:
+        return 0.f;
     }
-    return 0.f;
+    return minimumVoltage;
 }
 
-float getMaxBatVoltage(BatteryCellType cellType)
+float getMaxBatCellVoltage(BatteryCellType cellType)
 {
     switch (cellType)
     {

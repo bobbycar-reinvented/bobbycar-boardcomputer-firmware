@@ -25,12 +25,12 @@ if (cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) \
         return higherVoltage;
 
 #define GET_MINIMUM_BAT_VOLTAGE(higherVoltage,lowerVoltage,fromAh,toAh) \
-    if (expected_ah >= toAh) \
-        return lowerVoltage * configs.battery.cellsSeries.value;
+    if (lowerVoltage < minimumVoltage) \
+        minimumVoltage = lowerVoltage;
 
 #define GET_MAXIMUM_BAT_VOLTAGE(higherVoltage,lowerVoltage,fromAh,toAh) \
     if (fromAh == 0) \
-        return higherVoltage * configs.battery.cellsSeries.value;
+        return higherVoltage;
 
 
 // All curves here have to follow the same order (highest-voltage first)
@@ -141,8 +141,8 @@ float getRemainingWattHours();
 
 float getBatteryWattHours();
 
-float getMinBatVoltage(BatteryCellType cellType);
-float getMaxBatVoltage(BatteryCellType cellType);
+float getMinBatCellVoltage(BatteryCellType cellType);
+float getMaxBatCellVoltage(BatteryCellType cellType);
 
 std::string getBatteryPercentageString();
 
