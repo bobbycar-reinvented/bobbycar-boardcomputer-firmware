@@ -69,6 +69,7 @@ set(headers
     displays/bobbysplitgraphdisplay.h
     displays/buttoncalibratedisplay.h
     displays/calibratevoltagedisplay.h
+    displays/confiscationdisplay.h
     displays/gameoflifedisplay.h
     displays/gametrakcalibratedisplay.h
     displays/joystickdebugdisplay.h
@@ -185,6 +186,7 @@ set(headers
     icons/presets.h
     icons/reboot.h
     icons/scan.h
+    icons/shortcircuit.h
     icons/settings.h
     icons/statistics.h
     icons/time.h
@@ -302,6 +304,7 @@ set(sources
     displays/bobbysplitgraphdisplay.cpp
     displays/buttoncalibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
+    displays/confiscationdisplay.cpp
     displays/gameoflifedisplay.cpp
     displays/gametrakcalibratedisplay.cpp
     displays/joystickdebugdisplay.cpp
@@ -416,6 +419,7 @@ set(sources
     icons/presets.cpp
     icons/reboot.cpp
     icons/scan.cpp
+    icons/shortcircuit.cpp
     icons/settings.cpp
     icons/statistics.cpp
     icons/time.cpp

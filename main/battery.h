@@ -19,6 +19,8 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType);
 
 float getRemainingWattHours();
 
+float getBatteryWattHours();
+
 std::string getBatteryPercentageString();
 
 std::string getBatteryRemainingWattHoursString();
