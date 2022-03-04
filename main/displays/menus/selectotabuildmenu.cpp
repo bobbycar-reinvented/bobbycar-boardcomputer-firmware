@@ -6,13 +6,12 @@
 #include "fmt/core.h"
 
 // local includes
-#include "buildserver.h"
-#include "utils.h"
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
-#include "icons/back.h"
+#include "bobbyerrorhandler.h"
+#include "buildserver.h"
 #include "displays/menus/otamenu.h"
-#include "globals.h"
+#include "icons/back.h"
 #include "newsettings.h"
 
 #define MESSAGE(text) constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>()
@@ -108,7 +107,7 @@ void SelectBuildMenu::update()
         check_descriptor_request();
         if (!request_failed.empty())
         {
-            this->buildMenuRequestError(request_failed);
+            BobbyErrorHandler{}.errorOccured(fmt::format("Error: {}", request_failed));
             request_failed = {};
         }
     }
@@ -136,13 +135,6 @@ void SelectBuildMenu::buildMenuFromJson()
         menuitem.setHash(hash);
         menuitem.setUrl(fmt::format(url_for_hashes, hash));
     }
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
-}
-
-void SelectBuildMenu::buildMenuRequestError(std::string error)
-{
-    auto &item = constructMenuItem<makeComponent<MenuItem, ChangeableText, DefaultFont, StaticColor<TFT_RED>, DummyAction>>();
-    item.setTitle(error);
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

@@ -6,12 +6,11 @@
 // local includes
 #include "actions/dummyaction.h"
 #include "actions/switchscreenaction.h"
+#include "bobbyerrorhandler.h"
 #include "buildserver.h"
 #include "displays/menus/otamenu.h"
-#include "globals.h"
 #include "icons/back.h"
 #include "icons/reboot.h"
-#include "utils.h"
 #include "newsettings.h"
 
 namespace {
@@ -124,7 +123,7 @@ void SelectBuildserverBranchMenu::update()
         check_descriptor_request();
         if (!request_failed.empty())
         {
-            this->buildMenuRequestError(request_failed);
+            BobbyErrorHandler{}.errorOccured(fmt::format("Error: {}", request_failed));
             request_failed = {};
         }
     }
@@ -153,13 +152,4 @@ void SelectBuildserverBranchMenu::update()
 void SelectBuildserverBranchMenu::back()
 {
     espgui::switchScreen<OtaMenu>();
-}
-
-void SelectBuildserverBranchMenu::buildMenuRequestError(std::string error)
-{
-    using namespace espgui;
-
-    auto &item = constructMenuItem<makeComponent<MenuItem, ChangeableText, DefaultFont, StaticColor<TFT_RED>, DummyAction>>();
-    item.setTitle(error);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<OtaMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }

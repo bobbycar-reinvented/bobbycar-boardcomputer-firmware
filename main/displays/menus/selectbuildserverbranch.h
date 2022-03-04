@@ -11,7 +11,6 @@ public:
 
     std::string text() const override;
 
-    void buildMenuRequestError(std::string error);
     void update() override;
     void back() override;
 };

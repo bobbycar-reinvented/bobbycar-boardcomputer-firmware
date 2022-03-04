@@ -271,7 +271,6 @@ std::optional<CalibrationPointVoltages> get_point_n_voltages(BatteryCellType cel
         count++;
 
     uint8_t count = 0;
-    CalibrationPointVoltages point;
     switch (cellType)
     {
         case BatteryCellType::_22P:

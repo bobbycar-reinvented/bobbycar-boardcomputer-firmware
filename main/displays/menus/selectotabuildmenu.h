@@ -17,5 +17,4 @@ public:
 
 private:
     void buildMenuFromJson();
-    void buildMenuRequestError(std::string error);
 };
