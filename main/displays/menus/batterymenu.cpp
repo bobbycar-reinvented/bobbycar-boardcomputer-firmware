@@ -80,7 +80,7 @@ BatteryMenu::BatteryMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CELL_SERIES, BatterySeriesCellsAccessor>,        SwitchScreenAction<BatteryCellSeriesChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CELL_PARALLEL, BatteryParallelCellsAccessor>,    SwitchScreenAction<BatteryCellParallelChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BATTERY_WHKM, BatteryWHperKMAccessor>,           SwitchScreenAction<BatteryWHperKMChangeScreen>>>();
-    constructMenuItem<SwitchScreenTypeSafeChangeMenuItem<BatteryCellType, BatteryMenu, TEXT_SELECT_CELL_TYPE>>(&configs.battery.cellType);
+    constructMenuItem<PopScreenTypeSafeChangeMenuItem<BatteryCellType, TEXT_SELECT_CELL_TYPE>>(&configs.battery.cellType);
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SHOW_BATTERY_GRAPH>,                                      SwitchScreenAction<BatteryGraphDisplay>, StaticMenuItemIcon<&bobbyicons::graph>>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                                DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, WhStatisticsText,                                                         DummyAction>>();

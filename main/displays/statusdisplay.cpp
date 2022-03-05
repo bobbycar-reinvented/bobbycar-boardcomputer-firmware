@@ -230,9 +230,7 @@ void StatusDisplay::buttonPressed(espgui::Button button)
     switch (button)
     {
     using espgui::Button;
-    case Button::Right:
-        switchScreen<MainMenu>();
-        break;
+    case Button::Right: pushScreen<MainMenu>(); break;
     case Button::Up:
         if (simplified)
             return;

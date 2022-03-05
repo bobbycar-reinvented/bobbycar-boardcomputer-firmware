@@ -1,14 +1,14 @@
 #include "ledstripselectotamode.h"
 
 // 3rdparty lib includes
-#include "actions/switchscreenaction.h"
+#include "actions/pushscreenaction.h"
+#include "actions/popscreenaction.h"
 #include "icons/back.h"
 
 // local includes
 #include "ledstrip.h"
 #include "newsettings.h"
 #include "utils.h"
-#include "ledstripmenu.h"
 
 namespace {
 constexpr char TEXT_BLINKANIMATION[] = "Blink animation";
@@ -34,7 +34,7 @@ LedstripOtaAnimationChangeMenu::LedstripOtaAnimationChangeMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_NONE>,          LedstripChangeOtaAnimModeAction<OtaAnimationModes::None>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_PROGRESS>,      LedstripChangeOtaAnimModeAction<OtaAnimationModes::GreenProgressBar>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_COLOR>,         LedstripChangeOtaAnimModeAction<OtaAnimationModes::ColorChangeAll>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<LedstripMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string LedstripOtaAnimationChangeMenu::text() const
@@ -44,5 +44,5 @@ std::string LedstripOtaAnimationChangeMenu::text() const
 
 void LedstripOtaAnimationChangeMenu::back()
 {
-    espgui::switchScreen<LedstripMenu>();
+    espgui::popScreen();
 }

@@ -30,24 +30,23 @@ public:
 
 void ModeSettingsAction::triggered()
 {
-    if (
-            currentMode == &modes::defaultMode
-        #ifdef FEATURE_JOYSTICK
+    if (currentMode == &modes::defaultMode
+#ifdef FEATURE_JOYSTICK
          || currentMode == &modes::wheelchairMode
-        #endif
+#endif
        )
-        switchScreen<DefaultModeSettingsMenu>();
+        pushScreen<DefaultModeSettingsMenu>();
     else if (currentMode == &modes::tempomatMode)
-        switchScreen<TempomatModeSettingsMenu>();
+        pushScreen<TempomatModeSettingsMenu>();
     else if (currentMode == &modes::larsmMode)
-        switchScreen<LarsmModeSettingsMenu>();
+        pushScreen<LarsmModeSettingsMenu>();
     else if (currentMode == &modes::mickMode)
-        switchScreen<MickModeSettingsMenu>();
+        pushScreen<MickModeSettingsMenu>();
     else if (currentMode == &modes::motortestMode)
-        switchScreen<MotortestModeSettingsMenu>();
+        pushScreen<MotortestModeSettingsMenu>();
 #ifdef FEATURE_GAMETRAK
     else if (currentMode == &modes::gametrakMode)
-        switchScreen<GametrakModeSettingsMenu>();
+        pushScreen<GametrakModeSettingsMenu>();
 #endif
     else
     {
