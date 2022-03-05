@@ -22,7 +22,7 @@
 #include "displays/menus/demosmenu.h"
 #include "displays/menus/greenpassmenu.h"
 #include "displays/lockscreen.h"
-#include "displays/menus/garagenmenu.h"
+#include "displays/menus/garagemenu.h"
 #include "displays/menus/otamenu.h"
 #include "displays/poweroffdisplay.h"
 #include "displays/menus/statisticsmenu.h"

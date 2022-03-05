@@ -6,13 +6,13 @@
 
 // 3rdparty lib includes
 #include <fmt/core.h>
-#include "actions/switchscreenaction.h"
+#include "actions/pushscreenaction.h"
+#include "actions/popscreenaction.h"
 #include "actions/dummyaction.h"
 #include "icons/back.h"
 
 // local includes
 #include "actions/qraction.h"
-#include "displays/menus/mainmenu.h"
 #include "displays/qrdisplay.h"
 #include "displays/qrimportdisplay.h"
 #include "qrimport.h"
@@ -49,11 +49,11 @@ public:
         if (deleteMode)
         {
             qrimport::delete_qr_code(m_qrmenu.text);
-            espgui::switchScreen<GreenPassMenu>();
+            espgui::popScreen();
         }
         else
         {
-            espgui::switchScreen<QrDisplay<GreenPassMenu>>(m_qrmenu.message);
+            espgui::pushScreen<QrDisplay<GreenPassMenu>>(m_qrmenu.message);
         }
     }
 private:
@@ -87,8 +87,9 @@ GreenPassMenu::GreenPassMenu()
             constructMenuItem<makeComponentArgs<MenuItem, SwitchQrImportDisplayAction<GreenPassMenu>, StaticText<TEXT_ADDCERT>>>(std::move(nvs_key));
         }
     }
+
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DELCERT>, BobbyCheckbox, DeleteModeAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string GreenPassMenu::text() const
@@ -98,5 +99,5 @@ std::string GreenPassMenu::text() const
 
 void GreenPassMenu::back()
 {
-    espgui::switchScreen<MainMenu>();
+    espgui::popScreen();
 }
