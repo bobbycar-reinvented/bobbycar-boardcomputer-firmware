@@ -208,6 +208,7 @@ jobs:
         run: |
           cd repository
           export CCACHE_MAXSIZE=1024M CCACHE_BASEDIR="$(pwd)"
+          ./esp-idf/install.sh
           . export.sh
           ./switchconf.sh ${{ matrix.node }}
           idf.py --ccache build
