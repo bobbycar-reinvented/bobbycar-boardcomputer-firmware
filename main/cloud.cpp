@@ -230,7 +230,7 @@ void cloudSend()
 std::string getLoginMessage()
 {
     using namespace espgui;
-    return fmt::format("{{\"type\": \"hello\", \"name\": \"{}\", \"res\": \"{}x{}\", \"pass\": \"{}\", \"key\": \"{}\"}}",
+    return fmt::format(R"({{"type": "hello", "name": "{}", "res": "{}x{}", "pass": "{}", "key": "{}"}})",
                        configs.otaUsername.value, tft.width(), tft.height(), configs.webserverPassword.value, configs.cloudSettings.cloudKey.value);
 }
 

@@ -5,8 +5,10 @@
 
 // 3rdparty lib includes
 #include <wrappers/websocket_client.h>
-#include <cpptypesafeenum.h>
 #include <espchrono.h>
+
+// local includes
+#include "bobbytypesafeenum.h"
 
 extern espcpputils::websocket_client cloudClient;
 extern bool cloudStarted;
@@ -19,7 +21,7 @@ extern std::string cloudBuffer;
     x(STATISTICS) \
     x(REMOTE_DISPLAY) \
     x(STATISTICS_AND_REMOTE_DISPLAY)
-DECLARE_TYPESAFE_ENUM(CloudMode, : uint8_t, CloudModeValues)
+DECLARE_BOBBYTYPESAFE_ENUM(CloudMode, : uint8_t, CloudModeValues)
 
 void createCloud();
 void destroyCloud();
