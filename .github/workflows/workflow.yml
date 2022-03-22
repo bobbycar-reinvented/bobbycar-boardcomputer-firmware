@@ -349,6 +349,7 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner-cache-${{ env.SONAR_SCANNER_VERSION }}
 
       - name: Run sonar-scanner
+        continue_on_failure: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
