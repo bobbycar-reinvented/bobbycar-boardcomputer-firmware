@@ -234,6 +234,7 @@ struct ButtonProfile3Accessor : public NewSettingsAccessor<uint8_t> { ConfigWrap
 
 // Can
 struct CanResetOnErrorAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.canResetOnError; } };
+struct CanReinstallDriverAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.canUninstallOnReset; } };
 
 // Quick Actions
 struct QuickActionLeft2Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionLeft2; } };

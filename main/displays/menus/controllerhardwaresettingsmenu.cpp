@@ -32,6 +32,7 @@ constexpr char TEXT_BACKSENDCAN[] = "Back send CAN";
 constexpr char TEXT_CANTRANSMITTIMEOUT[] = "CanTransmitTimeout";
 constexpr char TEXT_CANRECEIVETIMEOUT[] = "CanReceiveTimeout";
 constexpr char TEXT_CANRESETONERROR[] = "Reset on error";
+constexpr char TEXT_CANREINSTALLDRIVER[] = "Reinstall on error";
 #endif
 constexpr char TEXT_BACK[] = "Back";
 
@@ -90,6 +91,7 @@ ControllerHardwareSettingsMenu::ControllerHardwareSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANTRANSMITTIMEOUT>, SwitchScreenAction<CanTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVETIMEOUT>,  SwitchScreenAction<CanReceiveTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRESETONERROR>,    BobbyCheckbox, CanResetOnErrorAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANREINSTALLDRIVER>, BobbyCheckbox, CanReinstallDriverAccessor>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
