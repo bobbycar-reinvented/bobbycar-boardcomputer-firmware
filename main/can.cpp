@@ -294,7 +294,7 @@ void sendCanCommands()
         }
         else if (result != ESP_OK)
         {
-            ESP_LOGE(TAG, "ERROR: twai_transmit() failed after %lldms with %s",
+            ESP_LOGD(TAG, "ERROR: twai_transmit() failed after %lldms with %s",
                      (timestamp_after - timestamp_before).count(),
                      esp_err_to_name(result));
         }
