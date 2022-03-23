@@ -159,7 +159,7 @@ public:
     ConfigWrapper<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},             "time_dst"            };
 
     ConfigWrapper<bool>           canResetOnError {false,                                  DoReset,   {},                           "canBusRstErr"        };
-    ConfigWrapper<bool>       canUninstallOnReset {false,                                  DoReset,   {},                           "canUninstlRstErr"    };
+    ConfigWrapper<bool>       canUninstallOnReset {false,                                  DoReset,   {},                           "canUnstlRstErr"      };
 
     ConfigWrapper<int16_t>     sampleCount        {50,                                     DoReset,   {},                           "sampleCount"         };
     ConfigWrapper<int16_t>     gasMin             {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMin"              };
