@@ -41,6 +41,7 @@ set(headers
     bobbybuttons.h
     bobbycheckbox.h
     bobbyerrorhandler.h
+    bobbyhupe.h
     bobbyquickactions.h
     bobbyschedulertask.h
     bobbytypesafeenum.h
@@ -187,8 +188,8 @@ set(headers
     icons/presets.h
     icons/reboot.h
     icons/scan.h
-    icons/shortcircuit.h
     icons/settings.h
+    icons/shortcircuit.h
     icons/statistics.h
     icons/time.h
     icons/update.h
@@ -279,6 +280,7 @@ set(sources
     bmsutils.cpp
     bobbybuttons.cpp
     bobbyerrorhandler.cpp
+    bobbyhupe.cpp
     bobbyquickactions.cpp
     buildserver.cpp
     can.cpp
@@ -421,8 +423,8 @@ set(sources
     icons/presets.cpp
     icons/reboot.cpp
     icons/scan.cpp
-    icons/shortcircuit.cpp
     icons/settings.cpp
+    icons/shortcircuit.cpp
     icons/statistics.cpp
     icons/time.cpp
     icons/update.cpp

@@ -6,10 +6,11 @@
 #include "newsettings.h"
 #include "tempomat.h"
 #include "wifi_bobbycar.h"
+#include "bobbyhupe.h"
 
 namespace quickactions {
 
-void handle_bobby_quickaction(espgui::Button button)
+void handle_bobby_quickaction(espgui::Button button, bool pressed)
 {
     espconfig::ConfigWrapper<BobbyQuickActions> *config = nullptr;
     switch (BobbyButton(button))
@@ -30,27 +31,46 @@ void handle_bobby_quickaction(espgui::Button button)
         return;
     }
 
-    switch (config->value) {
-        case BobbyQuickActions::BLINK_LEFT:
-            blink_left();
-            break;
-        case BobbyQuickActions::BLINK_RIGHT:
-            blink_right();
-            break;
-        case BobbyQuickActions::HANDBREMSE:
-            handle_handbremse();
-            break;
-        case BobbyQuickActions::OPEN_GARAGE:
-            open_garage();
-            break;
-        case BobbyQuickActions::WIFI_SCAN:
-            action_wifi_scan();
-            break;
-        case BobbyQuickActions::PWMOMAT:
-            handle_pwmomat();
-            break;
-        default:
-            return;
+    if (pressed)
+    {
+        switch (config->value) {
+            case BobbyQuickActions::BLINK_LEFT:
+                blink_left();
+                break;
+            case BobbyQuickActions::BLINK_RIGHT:
+                blink_right();
+                break;
+            case BobbyQuickActions::HANDBREMSE:
+                handle_handbremse();
+                break;
+            case BobbyQuickActions::OPEN_GARAGE:
+                open_garage();
+                break;
+            case BobbyQuickActions::WIFI_SCAN:
+                action_wifi_scan();
+                break;
+            case BobbyQuickActions::PWMOMAT:
+                handle_pwmomat();
+                break;
+            case BobbyQuickActions::HUPE:
+                bobbyhupe::activate_hupe();
+                break;
+            case BobbyQuickActions::COMPRESSOR_TOGGLE:
+                bobbyhupe::toggle_compressor();
+                break;
+            default:
+                return;
+        }
+    }
+    else
+    {
+        switch (config->value) {
+            case BobbyQuickActions::HUPE:
+                bobbyhupe::deactivate_hupe();
+                break;
+            default:
+                return;
+        }
     }
 }
 

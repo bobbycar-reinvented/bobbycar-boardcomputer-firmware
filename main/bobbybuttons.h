@@ -22,6 +22,7 @@ enum BobbyButton
 
 [[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button);
 void buttonPressedCommon(espgui::Button button);
+void buttonReleasedCommon(espgui::Button button);
 
 class BobbyButtons : public virtual espgui::ButtonsInterface
 {

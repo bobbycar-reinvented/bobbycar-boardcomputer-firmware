@@ -14,12 +14,17 @@
     x(HANDBREMSE) \
     x(OPEN_GARAGE) \
     x(WIFI_SCAN) \
-    x(PWMOMAT)
+    x(PWMOMAT) \
+    x(HUPE) \
+    x(COMPRESSOR_TOGGLE)
+
 DECLARE_TYPESAFE_ENUM(BobbyQuickActions, : uint8_t, BobbyQuickActionsValues)
 
 namespace quickactions {
 
-void handle_bobby_quickaction(espgui::Button button);
+void handle_bobby_quickaction(espgui::Button button, bool pressed = true);
+
+} // namespace quickactions
 
 // functions
 void open_garage();

@@ -1,14 +1,17 @@
 #include "espnowfunctions.h"
 
+// 3rdparty lib includes
 #include <espchrono.h>
 #include <esp_log.h>
 #include <numberparsing.h>
 #include <espwifistack.h>
 
+// local includes
 #include "globals.h"
 #include "utils.h"
 #include "time_bobbycar.h"
 #include "newsettings.h"
+#include "bobbyhupe.h"
 
 namespace espnow {
 uint16_t lastYear; // Used for esp-now timesync
@@ -142,6 +145,7 @@ void initESPNow()
 
 void handle()
 {
+    bobbyhupe::handle_hupe();
     if (initialized < 255 && espnow_init_allowed())
     {
         initESPNow();
