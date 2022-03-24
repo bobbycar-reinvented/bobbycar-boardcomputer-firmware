@@ -80,6 +80,20 @@ void buttonPressedCommon(espgui::Button button)
     }
 }
 
+void buttonReleasedCommon(espgui::Button button)
+{
+    switch (BobbyButton(button))
+    {
+    case BobbyButton::Left2:
+    case BobbyButton::Right2:
+    case BobbyButton::Up2:
+    case BobbyButton::Down2:
+        quickactions::handle_bobby_quickaction(button, false);
+        break;
+    default:;
+    }
+}
+
 void BobbyButtons::rawButtonPressed(uint8_t button)
 {
     //Base::rawButtonPressed(button);
@@ -103,4 +117,5 @@ void BobbyButtons::buttonPressed(espgui::Button button)
 void BobbyButtons::buttonReleased(espgui::Button button)
 {
     //Base::buttonReleased(button);
+    buttonReleasedCommon(button);
 }
