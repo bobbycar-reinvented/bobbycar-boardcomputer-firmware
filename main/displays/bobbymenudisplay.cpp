@@ -1,6 +1,7 @@
 #include "bobbymenudisplay.h"
 
 // local includes
+#include "esp_log.h"
 #include "bobbybuttons.h"
 
 void BobbyMenuDisplay::rawButtonPressed(uint8_t button)
@@ -26,4 +27,5 @@ void BobbyMenuDisplay::buttonPressed(espgui::Button button)
 void BobbyMenuDisplay::buttonReleased(espgui::Button button)
 {
     //Base::buttonReleased(button);
+    buttonReleasedCommon(button);
 }
