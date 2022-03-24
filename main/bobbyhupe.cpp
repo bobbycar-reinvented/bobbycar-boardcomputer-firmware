@@ -54,7 +54,7 @@ void handle_hupe()
     if ((hupe_state && !hupe_last_time_sent) || (hupe_state && hupe_last_time_sent && espchrono::ago(*hupe_last_time_sent) > 1s))
     {
         hupe_last_time_sent = espchrono::millis_clock::now();
-        sendState("BOBBYHUP_AN");
+        sendState("BOBBYHUPE_AN");
     }
     else if (!hupe_state && hupe_last_time_sent)
     {
