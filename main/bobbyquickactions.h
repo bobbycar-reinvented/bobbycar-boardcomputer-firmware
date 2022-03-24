@@ -24,8 +24,6 @@ namespace quickactions {
 
 void handle_bobby_quickaction(espgui::Button button, bool pressed = true);
 
-} // namespace quickactions
-
 // functions
 void open_garage();
 void blink_left();
