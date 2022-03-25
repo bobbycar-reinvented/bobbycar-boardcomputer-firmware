@@ -14,6 +14,7 @@
 #include "modes/larsmmode.h"
 #include "modes/remotecontrolmode.h"
 #include "modes/gametrakmode.h"
+#include "modes/mickmode.h"
 #include "modes/motortestmode.h"
 #ifdef FEATURE_JOYSTICK
 #include "modes/wheelchairmode.h"
@@ -26,6 +27,7 @@ constexpr char TEXT_SELECTMODE[] = "Select mode";
 constexpr char TEXT_DEFAULT[] = "Default";
 constexpr char TEXT_TEMPOMAT[] = "Tempomat";
 constexpr char TEXT_LARSM[] = "Larsm";
+constexpr char TEXT_MICK[] = "mick";
 constexpr char TEXT_REMOTECONTROL[] = "Remote control";
 constexpr char TEXT_GAMETRAK[] = "Gametrak";
 constexpr char TEXT_MOTORTEST[] = "Motortest";
@@ -44,6 +46,7 @@ using SetDefaultModeAction = SetterAction<ModeInterface*, currentMode, DefaultMo
 using SetTempomatModeAction = SetterAction<ModeInterface*, currentMode, TempomatMode*, &modes::tempomatMode>;
 using SetLarsmModeAction = SetterAction<ModeInterface*, currentMode, LarsmMode*, &modes::larsmMode>;
 using SetRemoteControlModeAction = SetterAction<ModeInterface*, currentMode, RemoteControlMode*, &modes::remoteControlMode>;
+using SetMickModeAction = SetterAction<ModeInterface*, currentMode, MickMode*, &modes::mickMode>;
 using SetMotorTestModeAction = SetterAction<ModeInterface*, currentMode, MotortestMode*, &modes::motortestMode>;
 #ifdef FEATURE_GAMETRAK
 using SetGametrakModeAction = SetterAction<ModeInterface*, currentMode, GametrakMode*, &modes::gametrakMode>;
@@ -60,6 +63,7 @@ SelectModeMenu::SelectModeMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,       MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>>();
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_TEMPOMAT, AvgSpeedAccessor>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,         MultiAction<SetLarsmModeAction, SwitchScreenAction<MainMenu>>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MICK>,         MultiAction<SetMickModeAction, SwitchScreenAction<MainMenu>>>>();
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REMOTECONTROL>, MultiAction<SetRemoteControlModeAction, SwitchScreenAction<MainMenu>>>>(); }
 #ifdef FEATURE_GAMETRAK
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, SwitchScreenAction<MainMenu>>>>();
@@ -86,13 +90,15 @@ void SelectModeMenu::start()
         setSelectedIndex(1);
     else if (currentMode == &modes::larsmMode)
         setSelectedIndex(2);
-    else if (currentMode == &modes::remoteControlMode)
+    else if (currentMode == &modes::mickMode)
         setSelectedIndex(3);
-    else if (currentMode == &modes::motortestMode)
+    else if (currentMode == &modes::remoteControlMode)
         setSelectedIndex(4);
+    else if (currentMode == &modes::motortestMode)
+        setSelectedIndex(5);
 #ifdef FEATURE_JOYSTICK
     else if (currentMode == &modes::wheelchairMode)
-        setSelectedIndex(5);
+        setSelectedIndex(6);
 #endif
     else
     {
@@ -100,7 +106,7 @@ void SelectModeMenu::start()
 #ifdef FEATURE_JOYSTICK
         setSelectedIndex(6);
 #else
-        setSelectedIndex(4);
+        setSelectedIndex(5);
 #endif
     }
 }

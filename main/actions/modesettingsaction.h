@@ -3,6 +3,7 @@
 #include "actioninterface.h"
 #include "globals.h"
 #include "modes/defaultmode.h"
+#include "modes/mickmode.h"
 #include "modes/tempomatmode.h"
 #include "modes/larsmmode.h"
 #include "modes/gametrakmode.h"
@@ -14,6 +15,7 @@
 #include "displays/menus/tempomatmodesettingsmenu.h"
 #include "displays/menus/larsmmodesettingsmenu.h"
 #include "displays/menus/gametrakmodesettingsmenu.h"
+#include "displays/menus/mickmodesettingsmenu.h"
 #include "displays/menus/motortestmodesettingsmenu.h"
 #include "screenmanager.h"
 
@@ -39,6 +41,8 @@ void ModeSettingsAction::triggered()
         switchScreen<TempomatModeSettingsMenu>();
     else if (currentMode == &modes::larsmMode)
         switchScreen<LarsmModeSettingsMenu>();
+    else if (currentMode == &modes::mickMode)
+        switchScreen<MickModeSettingsMenu>();
     else if (currentMode == &modes::motortestMode)
         switchScreen<MotortestModeSettingsMenu>();
 #ifdef FEATURE_GAMETRAK

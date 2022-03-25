@@ -104,6 +104,11 @@ constexpr ProfileSettings::LarsmMode defaultLarsmMode {
     .iterations = 100
 };
 
+constexpr ProfileSettings::MickMode defaultMickMode {
+    .modelMode = UnifiedModelMode::FocVoltage,
+    .smoothing = 1245
+};
+
 constexpr ProfileSettings::MotortestMode defaultMotortestMode {
     .multiplikator = 2,
     .maxPwm = 400
@@ -122,6 +127,7 @@ constexpr ProfileSettings defaultProfileSettings {
     .defaultMode = defaultDefaultMode,
     .tempomatMode = defaultTempomatMode,
     .larsmMode = defaultLarsmMode,
+    .mickMode = defaultMickMode,
     .motortestMode = defaultMotortestMode,
 #ifdef FEATURE_JOYSTICK
     .wheelchairMode = defaultWheelChairMode
