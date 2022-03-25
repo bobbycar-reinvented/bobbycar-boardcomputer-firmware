@@ -116,6 +116,7 @@ set(headers
     displays/menus/lockscreensettingsmenu.h
     displays/menus/mainmenu.h
     displays/menus/manageprofilesmenu.h
+    displays/menus/mickmodesettingsmenu.h
     displays/menus/modessettingsmenu.h
     displays/menus/mosfetsmenu.h
     displays/menus/motorfeedbackdebugmenu.h
@@ -203,6 +204,7 @@ set(headers
     modes/gametrakmode.h
     modes/ignoreinputmode.h
     modes/larsmmode.h
+    modes/mickmode.h
     modes/motortestmode.h
     modes/remotecontrolmode.h
     modes/tempomatmode.h
@@ -351,6 +353,7 @@ set(sources
     displays/menus/lockscreensettingsmenu.cpp
     displays/menus/mainmenu.cpp
     displays/menus/manageprofilesmenu.cpp
+    displays/menus/mickmodesettingsmenu.cpp
     displays/menus/modessettingsmenu.cpp
     displays/menus/mosfetsmenu.cpp
     displays/menus/motorfeedbackdebugmenu.cpp
@@ -439,6 +442,7 @@ set(sources
     modes/gametrakmode.cpp
     modes/ignoreinputmode.cpp
     modes/larsmmode.cpp
+    modes/mickmode.cpp
     modes/motortestmode.cpp
     modes/remotecontrolmode.cpp
     modes/tempomatmode.cpp

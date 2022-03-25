@@ -51,6 +51,11 @@ struct ProfileSettings
         uint8_t iterations;
     } larsmMode;
 
+    struct MickMode {
+        UnifiedModelMode modelMode;
+        uint16_t smoothing;
+    } mickMode;
+
     struct MotortestMode {
         uint8_t multiplikator;
         uint16_t maxPwm;
@@ -108,6 +113,9 @@ void ProfileSettings::executeForEveryProfileSetting(T &&callable)
     callable("larsm.modelMode", larsmMode.modelMode);
     callable("larsm.mode", larsmMode.mode);
     callable("larsm.iters", larsmMode.iterations);
+
+    callable("mick.modelMode", mickMode.modelMode);
+    callable("mick.smoothing", mickMode.smoothing);
 
 #ifdef FEATURE_JOYSTICK
     callable("wc.ses0", wheelchairMode.sensitivity0Kmh);
