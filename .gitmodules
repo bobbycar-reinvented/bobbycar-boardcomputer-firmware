@@ -61,3 +61,6 @@
 [submodule "components/QRCode-esp32"]
 	path = components/QRCode-esp32
 	url = ../QRCode-esp32.git
+[submodule "components/sunset"]
+	path = components/sunset
+	url = ../sunset.git
