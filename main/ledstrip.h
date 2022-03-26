@@ -50,4 +50,4 @@ void showOtaAnimation();
 void initLedStrip();
 void updateLedStrip();
 
-bool activateAutomaticFrontLight();
+[[nodiscard]] bool activateAutomaticFrontLight();

@@ -357,7 +357,7 @@ void showCustomColor()
 #endif
 }
 
-bool activateAutomaticFrontLight()
+[[nodiscard]] bool activateAutomaticFrontLight()
 {
     if (!configs.ledstrip.automaticLight.value)
         return false;
