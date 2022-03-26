@@ -1,6 +1,7 @@
 #include "ledstrip.h"
 
 // 3rdparty lib includes
+#include <sunset.h>
 
 // local includes
 #include "globals.h"
