@@ -338,3 +338,9 @@ float float_map(float x, float in_min, float in_max, float out_min, float out_ma
 
     return (delta * dividend + (divisor / 2.f)) / divisor + out_min;
 }
+
+bool is_valid_timestamp(espchrono::utc_clock::time_point timestamp)
+{
+    using namespace date;
+    return timestamp.time_since_epoch() > sys_seconds{sys_days{1_d/January/2000}}.time_since_epoch();
+}
