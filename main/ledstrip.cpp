@@ -362,8 +362,8 @@ void showCustomColor()
     if (!configs.ledstrip.automaticLight.value)
         return false;
     SunSet sunSet;
-    sunSet.setPosition(47.076668, 15.421371, 1); // Vienna
-    sunSet.setTZOffset(1);
+    sunSet.setPosition(47.076668, 15.421371, 0); // Vienna
+    sunSet.setTZOffset(0);
     const auto today = toDateTime(espchrono::utc_clock::now());
     sunSet.setCurrentDate(static_cast<int>(today.date.year()), static_cast<uint>(today.date.month()), static_cast<uint>(today.date.day()));
     const auto sunrise = static_cast<int>(sunSet.calcSunrise()) / 60;
