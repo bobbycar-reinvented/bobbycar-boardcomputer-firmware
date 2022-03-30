@@ -294,6 +294,7 @@ public:
             ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol8"       },
         };
         ConfigWrapper<uint8_t> leds_per_meter     {144,                                    DoReset,   {},                         "ledsPerMeter"        };
+        ConfigWrapper<bool> automaticLight        {false,                                  DoReset,   {},                         "nightLights"         };
     } ledstrip;
 
     struct {
@@ -600,7 +601,8 @@ public:
     x(ledstrip.enableAnimBlink) \
     x(ledstrip.otaMode) \
     x(ledstrip.maxMilliamps) \
-    x(ledstrip.enableVisualizeBlink) \
+    x(ledstrip.enableVisualizeBlink)\
+    x(ledstrip.automaticLight) \
     \
     x(ledstrip.custom_color[0]) \
     x(ledstrip.custom_color[1]) \

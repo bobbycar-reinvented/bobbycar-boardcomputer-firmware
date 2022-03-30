@@ -49,3 +49,5 @@ void showOtaAnimation();
 
 void initLedStrip();
 void updateLedStrip();
+
+[[nodiscard]] bool activateAutomaticFrontLight();

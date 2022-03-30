@@ -1,15 +1,16 @@
 #include "ledstrip.h"
 
 // 3rdparty lib includes
+#include <cpputils.h>
+#include <espchrono.h>
+#include <sunset.h>
 
 // local includes
 #include "globals.h"
-#include "cpputils.h"
-#include "espchrono.h"
 #include "ledstripdefines.h"
-#include "utils.h"
-#include "ota.h"
 #include "newsettings.h"
+#include "ota.h"
+#include "utils.h"
 
 using namespace std::chrono_literals;
 
@@ -182,7 +183,9 @@ void updateLedStrip()
     }
     else if ((cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) && configs.ledstrip.enableBeepWhenBlink.value) have_disabled_beeper = false;
 
-    if (simplified || configs.ledstrip.enableStVO.value)
+    const auto automaticLight = activateAutomaticFrontLight();
+
+    if (simplified || configs.ledstrip.enableStVO.value || automaticLight)
     {
        const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value);
 
@@ -197,7 +200,7 @@ void updateLedStrip()
            std::fill(center + configs.ledstrip.smallOffset.value + 1U, center + configs.ledstrip.bigOffset.value + 1U, CRGB{255, 0, 0}); // Left
        }
 
-       if (configs.ledstrip.stvoFrontEnable.value)
+       if (configs.ledstrip.stvoFrontEnable.value || automaticLight)
        {
        std::fill(std::begin(leds) + configs.ledstrip.stvoFrontOffset.value, std::begin(leds) + configs.ledstrip.stvoFrontOffset.value + configs.ledstrip.stvoFrontLength.value, CRGB{255, 255, 255});
        std::fill(std::end(leds) - configs.ledstrip.stvoFrontOffset.value - configs.ledstrip.stvoFrontLength.value, std::end(leds) - configs.ledstrip.stvoFrontOffset.value, CRGB{255, 255, 255});
@@ -352,4 +355,18 @@ void showCustomColor()
     std::fill(center + (eighth_length / 2) + eighth_length + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_RIGHT)].value);  // Front Right
     std::fill(center - (eighth_length / 2) - eighth_length - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_LEFT)].value);   // Front Left
 #endif
+}
+
+[[nodiscard]] bool activateAutomaticFrontLight()
+{
+    if (!configs.ledstrip.automaticLight.value)
+        return false;
+    SunSet sunSet;
+    sunSet.setPosition(47.076668, 15.421371, 0); // Vienna
+    sunSet.setTZOffset(0);
+    const auto today = toDateTime(espchrono::utc_clock::now());
+    sunSet.setCurrentDate(static_cast<int>(today.date.year()), static_cast<uint>(today.date.month()), static_cast<uint>(today.date.day()));
+    const auto sunrise = static_cast<int>(sunSet.calcSunrise()) / 60;
+    const auto sunset = static_cast<int>(sunSet.calcSunset()) / 60;
+    return (today.hour >= sunrise && today.hour < sunset);
 }
