@@ -59,18 +59,11 @@ class SuntimeText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        SunSet sunSet;
-        sunSet.setPosition(47.076668, 15.421371, 2); // Vienna
-        sunSet.setTZOffset(2);
-        const auto today = toDateTime(espchrono::utc_clock::now());
-        sunSet.setCurrentDate(static_cast<int>(today.date.year()), static_cast<uint>(today.date.month()), static_cast<uint>(today.date.day()));
-        const auto sunrise = static_cast<int>(sunSet.calcSunrise());
-        const auto sunset = static_cast<int>(sunSet.calcSunset());
-        const int sunriseHour = sunrise / 60;
-        const int sunriseMinute = sunrise % 60;
-        const int sunsetHour = sunset / 60;
-        const int sunsetMinute = sunset % 60;
-        return fmt::format("sunrise: {}:{:02d} sunset: {}:{:02d}", sunriseHour, sunriseMinute, sunsetHour, sunsetMinute);
+        if (!sunrise && !sunset)
+        {
+            return "no sunrise/sunset";
+        }
+        return fmt::format("sunrise: {:02d}:{:02d} sunset: {:02d}:{:02d}", *sunrise / 60, *sunrise % 60, *sunset / 60, *sunset % 60);
     }
 };
 

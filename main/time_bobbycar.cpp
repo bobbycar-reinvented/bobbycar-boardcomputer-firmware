@@ -7,8 +7,11 @@
 
 // 3rdparty lib includes
 #include <espstrutils.h>
+#include <espchrono.h>
+#include <sunset.h>
 
 // local includes
+#include "globals.h"
 #include "newsettings.h"
 
 espchrono::time_zone get_default_timezone() noexcept
@@ -123,4 +126,17 @@ void time_set_now(espchrono::utc_clock::time_point now)
         .tz_dsttime = 0
     };
     settimeofday(&ts, &tz);
+}
+
+void calculate_sun()
+{
+    if (!sunrise_dt)
+        return;
+
+    SunSet sunSet;
+    sunSet.setPosition(47.076668, 15.421371, 0); // Vienna
+    sunSet.setTZOffset(0);
+    sunSet.setCurrentDate(static_cast<int>((*sunrise_dt).date.year()), static_cast<uint>((*sunrise_dt).date.month()), static_cast<uint>((*sunrise_dt).date.day()));
+    sunrise = static_cast<int>(sunSet.calcSunrise());
+    sunset = static_cast<int>(sunSet.calcSunset());
 }
