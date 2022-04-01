@@ -17,6 +17,10 @@ float avgSpeedKmh{};
 float sumCurrent{};
 bool isLocked{};
 
+std::optional<int> sunrise;
+std::optional<int> sunset;
+std::optional<espchrono::DateTime> sunrise_dt;
+
 #ifdef GLOBALS_SOURCE
 GLOBALS_SOURCE
 #endif

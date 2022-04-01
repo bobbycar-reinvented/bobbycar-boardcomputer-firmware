@@ -3,13 +3,13 @@
 // 3rdparty lib includes
 #include <cpputils.h>
 #include <espchrono.h>
-#include <sunset.h>
 
 // local includes
 #include "globals.h"
 #include "ledstripdefines.h"
 #include "newsettings.h"
 #include "ota.h"
+#include "time_bobbycar.h"
 #include "utils.h"
 
 using namespace std::chrono_literals;
@@ -359,14 +359,20 @@ void showCustomColor()
 
 [[nodiscard]] bool activateAutomaticFrontLight()
 {
+    using namespace std::chrono_literals;
     if (!configs.ledstrip.automaticLight.value)
         return false;
-    SunSet sunSet;
-    sunSet.setPosition(47.076668, 15.421371, 0); // Vienna
-    sunSet.setTZOffset(0);
     const auto today = toDateTime(espchrono::utc_clock::now());
-    sunSet.setCurrentDate(static_cast<int>(today.date.year()), static_cast<uint>(today.date.month()), static_cast<uint>(today.date.day()));
-    const auto sunrise = static_cast<int>(sunSet.calcSunrise()) / 60;
-    const auto sunset = static_cast<int>(sunSet.calcSunset()) / 60;
-    return (today.hour >= sunrise && today.hour < sunset);
+
+    if (static_cast<int>(today.date.year()) < 2000)
+        return false;
+
+    if (!sunrise_dt || (*sunrise_dt).date.day() != today.date.day())
+    {
+        sunrise_dt = today;
+        calculate_sun();
+    }
+
+    const int currentTimeInMinutes = today.hour * 60 + today.minute;
+    return (currentTimeInMinutes <= sunrise || currentTimeInMinutes >= sunset);
 }

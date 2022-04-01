@@ -39,6 +39,10 @@ extern float gametrakY;
 extern float gametrakDist;
 #endif
 
+extern std::optional<int> sunrise;
+extern std::optional<int> sunset;
+extern std::optional<espchrono::DateTime> sunrise_dt;
+
 extern float avgSpeed;
 extern float avgSpeedKmh;
 extern float sumCurrent;
