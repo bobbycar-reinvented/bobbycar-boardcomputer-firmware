@@ -41,7 +41,7 @@ void handle_dns_announce()
     EVERY_N_SECONDS ( 2 )
     {
         // Get IPv4
-        if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+        if (const auto result = wifi_stack::get_ip_info(wifi_stack::esp_netifs[ESP_IF_WIFI_STA]); result)
         {
             std::string curIpAddress = wifi_stack::toString(result->ip);
             if (curIpAddress != "0.0.0.0")

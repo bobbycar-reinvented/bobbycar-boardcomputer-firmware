@@ -2,6 +2,7 @@
 
 // esp-idf
 #include <esp_system.h>
+#include <esp_mac.h>
 #include <lwip/dns.h>
 
 // 3rdparty lib includes

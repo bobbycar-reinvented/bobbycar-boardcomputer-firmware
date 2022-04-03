@@ -4,6 +4,7 @@
 #include <esp_log.h>
 #include <esp_wifi.h>
 #include <dhcpserver/dhcpserver.h>
+#include <../lwip/esp_netif_lwip_internal.h>
 
 // 3rdparty lib includes
 #include <menuitem.h>
@@ -13,6 +14,7 @@
 #include <screenmanager.h>
 #include <fmt/format.h>
 #include <espwifiutils.h>
+#include <espwifistack.h>
 
 // local includes
 #include "wifiapsettingsmenu.h"
@@ -142,7 +144,7 @@ std::string WifiApClientMenuItem::text() const
 
 void WifiApClientMenuItem::updateIp()
 {
-    if (!dhcp_search_ip_on_mac(m_info.mac, &m_ip))
+    if (!dhcp_search_ip_on_mac(wifi_stack::esp_netifs[ESP_IF_WIFI_AP]->dhcps, m_info.mac, &m_ip))
     {
         ESP_LOGE(TAG, "dhcp_search_ip_on_mac() failed");
         m_ip = { .addr = {} };

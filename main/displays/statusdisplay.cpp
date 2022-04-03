@@ -190,7 +190,7 @@ showStaStatus:
 
     if (staStatus == wifi_stack::WiFiStaStatus::CONNECTED)
     {
-        if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+        if (const auto result = wifi_stack::get_ip_info(wifi_stack::esp_netifs[ESP_IF_WIFI_STA]); result)
             m_labelIpAddress.redraw(wifi_stack::toString(result->ip));
         else
         {
