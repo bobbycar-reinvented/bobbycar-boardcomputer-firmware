@@ -40,13 +40,10 @@ bool hasAnnouncedItself{};
 void initCloud()
 {
     if (configs.cloudSettings.cloudEnabled.value() &&
-        !configs.cloudUrl.value().empty() && configs.cloudSettings.cloudMode.value() != CloudMode::INACTIVE)
+        !configs.cloudUrl.value().empty() && configs.cloudSettings.cloudMode.value() != CloudMode::INACTIVE && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
     {
         createCloud();
         if (!cloudClient)
-            return;
-
-        if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::CONNECTED)
             return;
 
         startCloud();
@@ -60,11 +57,14 @@ void updateCloud()
 
     const auto now = espchrono::millis_clock::now();
 
-    if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{configs.boardcomputerHardware.timersSettings.cloudCollectRate.value()})
+    if (configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS || configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS_AND_REMOTE_DISPLAY)
     {
-        cloudCollect();
+        if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{
+                configs.boardcomputerHardware.timersSettings.cloudCollectRate.value()}) {
+            cloudCollect();
 
-        lastCloudCollect = now;
+            lastCloudCollect = now;
+        }
     }
 
     if (!lastCloudSend || now - *lastCloudSend >= 1000ms/configs.boardcomputerHardware.timersSettings.cloudSendRate.value())
@@ -175,7 +175,7 @@ void cloudCollect()
 void cloudSend()
 {
     if (configs.cloudSettings.cloudEnabled.value() &&
-        !configs.cloudUrl.value().empty() && (configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS || configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS_AND_REMOTE_DISPLAY))
+        !configs.cloudUrl.value().empty() && (configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS || configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS_AND_REMOTE_DISPLAY) || ((configs.cloudSettings.cloudMode.value() == CloudMode::REMOTE_DISPLAY || configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS_AND_REMOTE_DISPLAY) && !hasAnnouncedItself))
     {
         if (!cloudClient)
         {
@@ -196,18 +196,29 @@ void cloudSend()
 
             startCloud();
         }
+
         if (!cloudStarted)
             return;
 
         if (!cloudClient.is_connected())
             return;
 
-        if (cloudBuffer.empty())
+        if (cloudBuffer.empty() && hasAnnouncedItself)
             return;
 
         cloudBuffer += ']';
 
         const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
+
+        if (!hasAnnouncedItself)
+        {
+            std::string helloWorld = getLoginMessage();
+            ESP_LOGW(TAG, "=====> %s", helloWorld.c_str());
+            const auto written_helloWorld = cloudClient.send_text(helloWorld, timeout);
+            if (written_helloWorld == helloWorld.size())
+                hasAnnouncedItself = true;
+        }
+
         const auto written = cloudClient.send_text(cloudBuffer, timeout);
 
         if (written < 0)
@@ -225,13 +236,17 @@ void cloudSend()
     {
         destroyCloud();
     }
+    else if(!cloudClient || !cloudStarted)
+    {
+        initCloud();
+    }
 }
 
 std::string getLoginMessage()
 {
     using namespace espgui;
     return fmt::format(R"({{"type": "hello", "name": "{}", "res": "{}x{}", "pass": "{}", "key": "{}"}})",
-                       configs.otaUsername.value, tft.width(), tft.height(), configs.webserverPassword.value, configs.cloudSettings.cloudKey.value);
+                       configs.otaUsername.value(), tft.width(), tft.height(), configs.webserverPassword.value(), configs.cloudSettings.cloudKey.value());
 }
 
 
@@ -267,17 +282,6 @@ void cloudSendDisplay(std::string_view data)
 
         auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value}).count();
         int written;
-        if (!hasAnnouncedItself)
-        {
-            std::string helloWorld = getLoginMessage();
-            ESP_LOGW(TAG, "%s", helloWorld.c_str());
-            written = cloudClient.send_text(helloWorld, timeout);
-            if (written == helloWorld.size())
-            {
-                hasAnnouncedItself = true;
-                timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value}).count();
-            }
-        }
 
         if (hasAnnouncedItself)
             written = cloudClient.send_text(data, timeout);
