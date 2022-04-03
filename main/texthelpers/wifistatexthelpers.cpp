@@ -95,7 +95,7 @@ std::string WifiStaIpText::text() const
 {
     std::string text = "&sip: &f";
     if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
-        if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+        if (const auto result = wifi_stack::get_ip_info(wifi_stack::esp_netifs[ESP_IF_WIFI_STA]); result)
             text += wifi_stack::toString(result->ip);
     return text;
 }
@@ -104,7 +104,7 @@ std::string WifiStaNetmaskText::text() const
 {
     std::string text = "&smask: &f";
     if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
-        if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+        if (const auto result = wifi_stack::get_ip_info(wifi_stack::esp_netifs[ESP_IF_WIFI_STA]); result)
             text += wifi_stack::toString(result->netmask);
     return text;
 }
@@ -113,7 +113,7 @@ std::string WifiStaGatewayText::text() const
 {
     std::string text = "&sgw: &f";
     if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
-        if (const auto result = wifi_stack::get_ip_info(TCPIP_ADAPTER_IF_STA); result)
+        if (const auto result = wifi_stack::get_ip_info(wifi_stack::esp_netifs[ESP_IF_WIFI_STA]); result)
             text += wifi_stack::toString(result->gw);
     return text;
 }
