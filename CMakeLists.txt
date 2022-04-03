@@ -25,6 +25,10 @@ include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(EXTRA_COMPONENT_DIRS
+    esp-protocols/components
+)
+
 project(${BOBBY_APP_NAME})
 
 set(expected_build_folder "${CMAKE_CURRENT_SOURCE_DIR}/build")

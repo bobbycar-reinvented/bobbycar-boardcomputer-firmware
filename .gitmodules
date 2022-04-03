@@ -64,3 +64,6 @@
 [submodule "components/sunset"]
 	path = components/sunset
 	url = ../sunset.git
+[submodule "esp-protocols"]
+	path = esp-protocols
+	url = ../../0xFEEDC0DE64/esp-protocols.git
