@@ -63,7 +63,7 @@
 	url = ../QRCode-esp32.git
 [submodule "components/sunset"]
 	path = components/sunset
-	url = ../sunset.git
+	url = ../../bobbycar-graz/sunset.git
 [submodule "esp-protocols"]
 	path = esp-protocols
 	url = ../../0xFEEDC0DE64/esp-protocols.git
