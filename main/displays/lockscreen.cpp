@@ -15,10 +15,19 @@
 #include "bobbybuttons.h"
 
 namespace {
-bool isValidPin(std::array<int8_t, 4> enteredPin)
+bool isValid1stPin(std::array<int8_t, 4> enteredPin)
 {
     return std::equal(std::cbegin(enteredPin), std::cend(enteredPin),
                       std::cbegin(configs.lockscreen.pin), std::cend(configs.lockscreen.pin),
+                      [](const int8_t digit, const auto &configuredDigit){
+                          return digit == configuredDigit.value;
+                      });
+}
+
+bool isValid2ndPin(std::array<int8_t, 4> enteredPin)
+{
+    return std::equal(std::cbegin(enteredPin), std::cend(enteredPin),
+                      std::cbegin(configs.lockscreen.pin2), std::cend(configs.lockscreen.pin2),
                       [](const int8_t digit, const auto &configuredDigit){
                           return digit == configuredDigit.value;
                       });
@@ -95,7 +104,7 @@ void Lockscreen::redraw()
 
         if (!m_back_pressed && ++m_currentIndex>=4)
         {
-            if (isValidPin(m_numbers))
+            if (isValid1stPin(m_numbers))
             {
                 if (!gas || !brems || *gas > 200.f || *brems > 200.f)
                     espgui::switchScreen<PotisCalibrateDisplay>(true);
@@ -103,6 +112,18 @@ void Lockscreen::redraw()
                     espgui::switchScreen<MainMenu>();
 #ifdef LOCKSCREEN_PLUGIN
 #include LOCKSCREEN_PLUGIN
+LOCKSCREEN_PLUGIN_FIXES_1
+#endif
+                return;
+            }
+            else if(isValid2ndPin(m_numbers))
+            {
+                if (!gas || !brems || *gas > 200.f || *brems > 200.f)
+                    espgui::switchScreen<PotisCalibrateDisplay>(true);
+                else
+                    espgui::switchScreen<MainMenu>();
+#ifdef LOCKSCREEN_PLUGIN_FIXES_2
+LOCKSCREEN_PLUGIN_FIXES_2
 #endif
                 return;
             }

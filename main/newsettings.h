@@ -319,6 +319,12 @@ public:
             ConfigWrapper<int8_t>                 {3,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin2"      },
             ConfigWrapper<int8_t>                 {4,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin3"      },
         };
+        std::array<ConfigWrapper<int8_t>, 4> pin2 {
+            ConfigWrapper<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_0"      },
+            ConfigWrapper<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_1"      },
+            ConfigWrapper<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_2"      },
+            ConfigWrapper<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_3"      },
+        };
     } lockscreen;
 
     struct {
