@@ -40,13 +40,13 @@ void JoystickDebugDisplay::update()
         m_x = std::nullopt;
     else
     {
-        m_x = map_analog_stick(m_gasMitte, m_gasMin, m_gasMax, *raw_gas);
+        m_x = map_analog_stick(m_gasMitte, m_gasMin, m_gasMax, configs.deadband.value, *raw_gas);
     }
 
     if (!raw_brems)
         m_y = std::nullopt;
     else
-        m_y = map_analog_stick(m_bremsMitte, m_bremsMin, m_bremsMax, *raw_brems);
+        m_y = map_analog_stick(m_bremsMitte, m_bremsMin, m_bremsMax, configs.deadband.value, *raw_brems);
 }
 
 void JoystickDebugDisplay::redraw()
