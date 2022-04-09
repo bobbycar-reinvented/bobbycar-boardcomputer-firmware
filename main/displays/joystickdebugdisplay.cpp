@@ -83,7 +83,7 @@ void JoystickDebugDisplay::buttonPressed(espgui::Button button)
         tft.fillScreen(TFT_BLACK);
         break;
     case Button::Left:
-        espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
+        espgui::popScreen();
         break;
     default:;
     }

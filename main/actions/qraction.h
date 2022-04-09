@@ -27,7 +27,7 @@ public:
 
     void triggered() override
     {
-        espgui::switchScreen<QrDisplay<TMenu>>(m_msg);
+        espgui::pushScreen<QrDisplay<TMenu>>(m_msg);
     }
 private:
     std::string m_msg;
@@ -42,7 +42,7 @@ public:
 
     void triggered() override
     {
-        espgui::switchScreen<QrImportDisplay<TMenu>>(std::move(m_nvskey));
+        espgui::pushScreen<QrImportDisplay<TMenu>>(std::move(m_nvskey));
     }
 private:
     std::string m_nvskey;

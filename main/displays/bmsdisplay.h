@@ -3,7 +3,6 @@
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 // 3rdparty lib includes
 #include <fmt/core.h>
-#include <actions/switchscreenaction.h>
 #include <widgets/label.h>
 #include <screenmanager.h>
 

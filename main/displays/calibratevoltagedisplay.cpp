@@ -4,7 +4,7 @@
 #include <menuitem.h>
 #include <icons/back.h>
 #include <actions/dummyaction.h>
-#include <actions/switchscreenaction.h>
+#include <actions/popscreenaction.h>
 #include <widgets/label.h>
 #include <fmt/core.h>
 
@@ -122,7 +122,7 @@ CalibrateVoltageDisplay::CalibrateVoltageDisplay()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_30V>,          Save30VCalibrationAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_50V>,          Save50VCalibrationAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_APPLYCALIB>,              BobbyCheckbox, BatteryApplyCalibrationAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                            SwitchScreenAction<BatteryMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                            PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                        DummyAction>>();
 
@@ -141,5 +141,5 @@ std::string CalibrateVoltageDisplay::text() const
 
 void CalibrateVoltageDisplay::back()
 {
-    espgui::switchScreen<BatteryMenu>();
+    espgui::popScreen();
 }

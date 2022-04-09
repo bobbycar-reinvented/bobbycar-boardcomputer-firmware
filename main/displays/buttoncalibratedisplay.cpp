@@ -75,7 +75,7 @@ void ButtonCalibrateDisplay::update()
             return;
         }
 
-        espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
+        espgui::popScreen();
     }
 }
 
