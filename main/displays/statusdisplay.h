@@ -4,7 +4,6 @@
 #include <esp_heap_caps.h>
 
 // 3rdparty lib includes
-#include <actions/switchscreenaction.h>
 #include <widgets/label.h>
 #include <widgets/progressbar.h>
 #include <espchrono.h>

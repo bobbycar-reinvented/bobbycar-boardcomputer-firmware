@@ -88,7 +88,7 @@ public:
         {
             tft.setTextColor(TFT_GREEN, TFT_BLACK);
             m_statuslabel.redraw("OK");
-            switchScreen<TMenu>();
+            popScreen();
         }
     }
 
@@ -102,7 +102,7 @@ public:
             using espgui::Button;
             case Button::Left:
                 if (!m_waitingForResult)
-                    switchScreen<TMenu>();
+                    popScreen();
                 else
                     ESP_LOGW(TAG, "tried to leave while waiting for result");
                 break;
