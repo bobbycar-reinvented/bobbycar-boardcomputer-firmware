@@ -7,17 +7,19 @@
 #include <esp_log.h>
 
 // 3rdparty lib includes
-#include <espwifistack.h>
+#include <ArduinoJson.h>
 #include <esphttpdutils.h>
+#include <espwifistack.h>
 #include <fmt/core.h>
+#include <tftinstance.h>
 #include <tickchrono.h>
 #include <wrappers/websocket_client.h>
-#include <tftinstance.h>
 
 // local includes
+#include "bobbyerrorhandler.h"
 #include "globals.h"
-#include "utils.h"
 #include "newsettings.h"
+#include "utils.h"
 
 using namespace std::chrono_literals;
 
@@ -326,6 +328,39 @@ void createCloud()
 
     cloudClient.register_events(WEBSOCKET_EVENT_CONNECTED, [](void* event_handler_arg, esp_event_base_t event_base, int32_t event_id, void* event_data){
         hasAnnouncedItself = false;
+    }, nullptr);
+
+    cloudClient.register_events(WEBSOCKET_EVENT_DATA, [](void* event_handler_arg, esp_event_base_t event_base, int32_t event_id, void* event_data){
+        using namespace ArduinoJson;
+        auto data = static_cast<esp_websocket_event_data_t*>(event_data);
+
+        if (data->op_code != 1) // text
+            return;
+
+        StaticJsonDocument<768> doc;
+        if (const auto err = deserializeJson(doc, data->data_ptr, data->data_len); err)
+        {
+            ESP_LOGE(TAG, "deserializeJson() failed with %s", err.c_str());
+            return;
+        }
+
+        const std::string type = doc["type"];
+        if (type == "popup")
+        {
+            std::string text = doc["msg"];
+            std::string id = doc["id"];
+            ESP_LOGI(TAG, "popup: %s, id: %s", text.c_str(), id.c_str());
+            BobbyErrorHandler{}.errorOccured(std::move(text));
+
+            if (id.empty())
+                return;
+
+            auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value}).count();
+            const auto message = fmt::format(R"({{"type":"response","id":"{}"}})", id);
+            ESP_LOGI(TAG, "sending response: %s", message.c_str());
+            cloudClient.send_text(message, timeout);
+            return;
+        }
     }, nullptr);
 
     if (!cloudClient)
