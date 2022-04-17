@@ -365,7 +365,7 @@ void showCustomColor()
     const auto today = toDateTime(espchrono::utc_clock::now());
 
     if (static_cast<int>(today.date.year()) < 2000)
-        return false;
+        return true;
 
     if (!sunrise_dt || (*sunrise_dt).date.day() != today.date.day())
     {
