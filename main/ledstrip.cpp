@@ -11,11 +11,13 @@
 #include "ota.h"
 #include "time_bobbycar.h"
 #include "utils.h"
+#include "drivingstatistics.h"
 
 using namespace std::chrono_literals;
 
 std::vector<CRGB> leds;
 uint8_t gHue = 0;
+uint8_t gLedPosition = 0;
 
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
@@ -225,6 +227,8 @@ void showAnimation()
         case LedstripAnimation::BetterRainbow: showBetterRainbow(); break;
         case LedstripAnimation::SpeedSync: showSpeedSyncAnimation(); break;
         case LedstripAnimation::CustomColor: showCustomColor(); break;
+        case LedstripAnimation::SnakeAnimation: showSnakeAnimation(); break;
+        case LedstripAnimation::EfficiencyAnimation: showEfficiencyAnimation(); break;
         default: showDefaultLedstrip();
         }
     }
@@ -322,6 +326,25 @@ void showDefaultLedstrip()
         leds[beatsin16(i + 7, 0, leds.size())] |= CHSV(dothue, 200, 255);
         dothue += 32;
     }
+}
+
+void showSnakeAnimation()
+{
+    fadeToBlackBy(&*std::begin(leds), leds.size(), 20);
+    if(gLedPosition == leds.size()){gLedPosition = 0;}
+    uint8_t snake_2_pos = floor(leds.size()/2) + gLedPosition;
+    if(snake_2_pos > leds.size()){snake_2_pos -= leds.size();}
+    if(gHue == 255){gHue = 0;}
+    leds[gLedPosition] |= CHSV(gHue, 255, 255);
+    leds[snake_2_pos] |= CHSV(gHue, 255, 255);
+    gLedPosition += 1;
+    gHue += 5;
+}
+
+void showEfficiencyAnimation()
+{
+    uint16_t color = getEfficiencyClassColor();
+    std::fill(std::begin(leds), std::end(leds), CRGB(((((color >> 11) & 0x1F) * 527) + 23) >> 6, ((((color >> 5) & 0x3F) * 259) + 33) >> 6, (((color & 0x1F) * 527) + 23) >> 6));
 }
 
 void showCustomColor()
