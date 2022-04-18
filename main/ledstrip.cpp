@@ -17,7 +17,7 @@ using namespace std::chrono_literals;
 
 std::vector<CRGB> leds;
 uint8_t gHue = 0;
-int16_t gLedPosition = 0;
+float gLedPosition = 0; // yes, this is intendet as a float value! Do NOT change!
 
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
@@ -333,7 +333,7 @@ void showDefaultLedstrip()
 
 void showSnakeAnimation()
 {
-    const int16_t leds_per_cycle = floor<int16_t>(1. / std::max<int16_t>(1, configs.ledstrip.animationMultiplier.value)) * (avgSpeedKmh + 1);
+    const float leds_per_cycle = (1. / std::max<int16_t>(1, configs.ledstrip.animationMultiplier.value)) * (avgSpeedKmh + 1); // yes, this is intendet as a float value! Do NOT change!
     fadeToBlackBy(&*std::begin(leds), leds.size(), floor(20*leds_per_cycle));
     if (gLedPosition >= leds.size())
     {

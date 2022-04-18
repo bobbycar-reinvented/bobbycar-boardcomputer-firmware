@@ -39,7 +39,7 @@ enum Bobbycar_Side
 
 extern std::vector<CRGB> leds;
 extern uint8_t gHue;
-extern int16_t gLedPosition;
+extern float gLedPosition; // yes, this is intendet as a float value! Do NOT change!
 
 extern uint16_t blinkAnimation;
 
