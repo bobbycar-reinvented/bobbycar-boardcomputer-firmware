@@ -366,9 +366,9 @@ void showEfficiencyAnimation()
     std::fill(std::begin(leds),
               std::end(leds),
               CRGB(
-                      ((((color >> 11) & 0x1F) * 527) + 23) >> 6,
-                   ((((color >> 5) & 0x3F) * 259) + 33) >> 6,
-                   (((color & 0x1F) * 527) + 23) >> 6)
+                      ((((color >> 11) & 0x1F) * 527u) + 23u) >> 6,
+                   ((((color >> 5) & 0x3F) * 259u) + 33u) >> 6,
+                   (((color & 0x1F) * 527u) + 23u) >> 6)
               );
 }
 
