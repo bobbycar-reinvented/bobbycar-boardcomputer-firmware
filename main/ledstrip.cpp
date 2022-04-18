@@ -17,7 +17,7 @@ using namespace std::chrono_literals;
 
 std::vector<CRGB> leds;
 uint8_t gHue = 0;
-uint8_t gLedPosition = 0;
+float gLedPosition = 0;
 
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
@@ -330,14 +330,18 @@ void showDefaultLedstrip()
 
 void showSnakeAnimation()
 {
-    fadeToBlackBy(&*std::begin(leds), leds.size(), 20);
-    if(gLedPosition == leds.size()){gLedPosition = 0;}
-    uint8_t snake_2_pos = floor(leds.size()/2) + gLedPosition;
-    if(snake_2_pos > leds.size()){snake_2_pos -= leds.size();}
+    float leds_per_cycle = 1. / std::max(uint8_t(1), uint8_t(configs.ledstrip.animationMultiplier.value));
+    leds_per_cycle = leds_per_cycle * (avgSpeedKmh + 1);
+    fadeToBlackBy(&*std::begin(leds), leds.size(), floor(20*leds_per_cycle));
+    if(gLedPosition >= leds.size()){gLedPosition = 0;}
     if(gHue == 255){gHue = 0;}
-    leds[gLedPosition] |= CHSV(gHue, 255, 255);
-    leds[snake_2_pos] |= CHSV(gHue, 255, 255);
-    gLedPosition += 1;
+    for(int i = floor(gLedPosition); i < floor(gLedPosition + leds_per_cycle); i++){
+        leds[i] |= CHSV(gHue, 255, 255);
+        uint8_t snake_2_pos = floor(leds.size()/2) + i;
+        if(snake_2_pos > leds.size()){snake_2_pos -= leds.size();}
+        leds[snake_2_pos] |= CHSV(gHue, 255, 255);
+    }
+    gLedPosition += leds_per_cycle;
     gHue += 5;
 }
 
