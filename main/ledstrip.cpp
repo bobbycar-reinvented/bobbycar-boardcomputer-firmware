@@ -17,7 +17,7 @@ using namespace std::chrono_literals;
 
 std::vector<CRGB> leds;
 uint8_t gHue = 0;
-float gLedPosition = 0;
+int16_t gLedPosition = 0;
 
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
@@ -177,7 +177,7 @@ void updateLedStrip()
         }
     }
 
-    if (have_disabled_beeper == false && (!(cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) || !configs.ledstrip.enableBeepWhenBlink.value))
+    if (!have_disabled_beeper && (!(cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) || !configs.ledstrip.enableBeepWhenBlink.value))
     {
         for (Controller &controller : controllers)
             controller.command.buzzer.freq = 0;
@@ -286,12 +286,15 @@ void fill_rainbow_invert_at( struct CRGB * pFirstLED, int numToFill, int invertA
     hsv.hue = initialhue;
     hsv.val = 255;
     hsv.sat = 240;
-    for( int i = 0; i < numToFill; i++) {
+    for (int i = 0; i < numToFill; i++) {
         hsv.hue = huecalc;
         pFirstLED[i] = hsv;
-        if(i>invertAtLed){
+        if (i>invertAtLed)
+        {
             huecalc -= deltahue;
-        }else{
+        }
+        else
+        {
             huecalc += deltahue;
         }
     }
@@ -330,17 +333,29 @@ void showDefaultLedstrip()
 
 void showSnakeAnimation()
 {
-    float leds_per_cycle = 1. / std::max(uint8_t(1), uint8_t(configs.ledstrip.animationMultiplier.value));
-    leds_per_cycle = leds_per_cycle * (avgSpeedKmh + 1);
+    const int16_t leds_per_cycle = floor<int16_t>(1. / std::max<int16_t>(1, configs.ledstrip.animationMultiplier.value)) * (avgSpeedKmh + 1);
     fadeToBlackBy(&*std::begin(leds), leds.size(), floor(20*leds_per_cycle));
-    if(gLedPosition >= leds.size()){gLedPosition = 0;}
-    if(gHue == 255){gHue = 0;}
-    for(int i = floor(gLedPosition); i < floor(gLedPosition + leds_per_cycle); i++){
+    if (gLedPosition >= leds.size())
+    {
+        gLedPosition = 0;
+    }
+
+    if (gHue == 255) {
+        gHue = 0;
+    }
+
+    for(int16_t i = floor(gLedPosition); i < floor(gLedPosition + leds_per_cycle); i++)
+    {
         leds[i] |= CHSV(gHue, 255, 255);
-        uint8_t snake_2_pos = floor(leds.size()/2) + i;
-        if(snake_2_pos > leds.size()){snake_2_pos -= leds.size();}
+        uint8_t snake_2_pos = floor(leds.size() / 2) + i;
+
+        if (snake_2_pos > leds.size())
+        {
+            snake_2_pos -= leds.size();
+        }
         leds[snake_2_pos] |= CHSV(gHue, 255, 255);
     }
+
     gLedPosition += leds_per_cycle;
     gHue += 5;
 }
@@ -348,7 +363,13 @@ void showSnakeAnimation()
 void showEfficiencyAnimation()
 {
     uint16_t color = getEfficiencyClassColor();
-    std::fill(std::begin(leds), std::end(leds), CRGB(((((color >> 11) & 0x1F) * 527) + 23) >> 6, ((((color >> 5) & 0x3F) * 259) + 33) >> 6, (((color & 0x1F) * 527) + 23) >> 6));
+    std::fill(std::begin(leds),
+              std::end(leds),
+              CRGB(
+                      ((((color >> 11) & 0x1F) * 527) + 23) >> 6,
+                   ((((color >> 5) & 0x3F) * 259) + 33) >> 6,
+                   (((color & 0x1F) * 527) + 23) >> 6)
+              );
 }
 
 void showCustomColor()
