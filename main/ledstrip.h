@@ -22,7 +22,7 @@ DECLARE_BOBBYTYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues
     x(SpeedSync) \
     x(CustomColor) \
     x(SnakeAnimation) \
-    x(EfficiencyAnimation)
+    x(SpeedOMeter)
 DECLARE_BOBBYTYPESAFE_ENUM(LedstripAnimation, : uint8_t, LedstripAnimationValues)
 
 enum Bobbycar_Side
