@@ -3,6 +3,7 @@
 // 3rdparty lib includes
 #include <cpputils.h>
 #include <espchrono.h>
+#include <math.h>
 
 // local includes
 #include "globals.h"
@@ -16,6 +17,7 @@ using namespace std::chrono_literals;
 
 std::vector<CRGB> leds;
 uint8_t gHue = 0;
+float gLedPosition = 0; // yes, this is intendet as a float value! Do NOT change!
 
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
@@ -175,7 +177,7 @@ void updateLedStrip()
         }
     }
 
-    if (have_disabled_beeper == false && (!(cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) || !configs.ledstrip.enableBeepWhenBlink.value))
+    if (!have_disabled_beeper && (!(cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) || !configs.ledstrip.enableBeepWhenBlink.value))
     {
         for (Controller &controller : controllers)
             controller.command.buzzer.freq = 0;
@@ -225,6 +227,8 @@ void showAnimation()
         case LedstripAnimation::BetterRainbow: showBetterRainbow(); break;
         case LedstripAnimation::SpeedSync: showSpeedSyncAnimation(); break;
         case LedstripAnimation::CustomColor: showCustomColor(); break;
+        case LedstripAnimation::SnakeAnimation: showSnakeAnimation(); break;
+        case LedstripAnimation::GasOMeter: showGasOMeterAnimation(); break;
         default: showDefaultLedstrip();
         }
     }
@@ -282,12 +286,15 @@ void fill_rainbow_invert_at( struct CRGB * pFirstLED, int numToFill, int invertA
     hsv.hue = initialhue;
     hsv.val = 255;
     hsv.sat = 240;
-    for( int i = 0; i < numToFill; i++) {
+    for (int i = 0; i < numToFill; i++) {
         hsv.hue = huecalc;
         pFirstLED[i] = hsv;
-        if(i>invertAtLed){
+        if (i>invertAtLed)
+        {
             huecalc -= deltahue;
-        }else{
+        }
+        else
+        {
             huecalc += deltahue;
         }
     }
@@ -321,6 +328,74 @@ void showDefaultLedstrip()
     {
         leds[beatsin16(i + 7, 0, leds.size())] |= CHSV(dothue, 200, 255);
         dothue += 32;
+    }
+}
+
+void showSnakeAnimation()
+{
+    const float leds_per_cycle = (1. / std::max<int16_t>(1, configs.ledstrip.animationMultiplier.value)) * (avgSpeedKmh + 1); // yes, this is intendet as a float value! Do NOT change!
+    fadeToBlackBy(&*std::begin(leds), leds.size(), floor(20*leds_per_cycle));
+    if (gLedPosition >= leds.size())
+    {
+        gLedPosition = 0;
+    }
+
+    if (gHue == 255) {
+        gHue = 0;
+    }
+
+    for(int16_t i = floor(gLedPosition); i < floor(gLedPosition + leds_per_cycle); i++)
+    {
+        leds[i] |= CHSV(gHue, 255, 255);
+        uint8_t snake_2_pos = floor(leds.size() / 2) + i;
+
+        if (snake_2_pos > leds.size())
+        {
+            snake_2_pos -= leds.size();
+        }
+        leds[snake_2_pos] |= CHSV(gHue, 255, 255);
+    }
+
+    gLedPosition += leds_per_cycle;
+    gHue += 5;
+}
+
+void showGasOMeterAnimation()
+{
+    if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
+    {
+        auto watt = sumCurrent * *avgVoltage;
+        auto w_per_kmh = watt / std::abs(avgSpeedKmh);
+        CRGB color = 0;
+        if (isinf(w_per_kmh) || isnan(w_per_kmh))
+        {
+            color = 0;
+        }
+        else if (w_per_kmh <= -40)
+        {
+            color = CRGB(255, 0, 255);
+        }
+        else if (w_per_kmh < -20)
+        {
+            color = CRGB(255, 0, cpputils::mapValueClamped<float>(w_per_kmh, -40, -20, 255., 0.));
+        }
+        else if (w_per_kmh < 0)
+        {
+            color = CRGB(255, cpputils::mapValueClamped<float>(w_per_kmh, -20, 0, 0., 255.), 0);
+        }
+        else if (w_per_kmh < 20)
+        {
+            color = CRGB(cpputils::mapValueClamped<float>(w_per_kmh, 0, 20, 255., 0.), 255, 0);
+        }
+        else if (w_per_kmh < 40)
+        {
+            color = CRGB(0, cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 255., 0.), cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 0., 255.));
+        }
+        else
+        {
+            color = CRGB(0, 0, 255);
+        }
+        std::fill(std::begin(leds), std::end(leds), color);
     }
 }
 

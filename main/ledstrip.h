@@ -20,7 +20,9 @@ DECLARE_BOBBYTYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues
     x(DefaultRainbow) \
     x(BetterRainbow) \
     x(SpeedSync) \
-    x(CustomColor)
+    x(CustomColor) \
+    x(SnakeAnimation) \
+    x(GasOMeter)
 DECLARE_BOBBYTYPESAFE_ENUM(LedstripAnimation, : uint8_t, LedstripAnimationValues)
 
 enum Bobbycar_Side
@@ -37,6 +39,7 @@ enum Bobbycar_Side
 
 extern std::vector<CRGB> leds;
 extern uint8_t gHue;
+extern float gLedPosition; // yes, this is intendet as a float value! Do NOT change!
 
 extern uint16_t blinkAnimation;
 
@@ -45,6 +48,8 @@ void showAnimation();
 void showBetterRainbow();
 void showSpeedSyncAnimation();
 void showCustomColor();
+void showSnakeAnimation();
+void showGasOMeterAnimation();
 void showOtaAnimation();
 
 void initLedStrip();
