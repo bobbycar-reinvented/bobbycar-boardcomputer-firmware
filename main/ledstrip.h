@@ -22,7 +22,7 @@ DECLARE_BOBBYTYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues
     x(SpeedSync) \
     x(CustomColor) \
     x(SnakeAnimation) \
-    x(SpeedOMeter)
+    x(GasOMeter)
 DECLARE_BOBBYTYPESAFE_ENUM(LedstripAnimation, : uint8_t, LedstripAnimationValues)
 
 enum Bobbycar_Side
@@ -49,7 +49,7 @@ void showBetterRainbow();
 void showSpeedSyncAnimation();
 void showCustomColor();
 void showSnakeAnimation();
-void showEfficiencyAnimation();
+void showGasOMeterAnimation();
 void showOtaAnimation();
 
 void initLedStrip();

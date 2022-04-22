@@ -228,7 +228,7 @@ void showAnimation()
         case LedstripAnimation::SpeedSync: showSpeedSyncAnimation(); break;
         case LedstripAnimation::CustomColor: showCustomColor(); break;
         case LedstripAnimation::SnakeAnimation: showSnakeAnimation(); break;
-        case LedstripAnimation::SpeedOMeter: showEfficiencyAnimation(); break;
+        case LedstripAnimation::GasOMeter: showGasOMeterAnimation(); break;
         default: showDefaultLedstrip();
         }
     }
@@ -360,44 +360,43 @@ void showSnakeAnimation()
     gHue += 5;
 }
 
-void showEfficiencyAnimation()
+void showGasOMeterAnimation()
 {
-    //uint16_t color = getEfficiencyClassColor();
-    //std::fill(std::begin(leds),
-    //          std::end(leds),
-    //          CRGB(
-    //                  ((((color >> 11) & 0x1F) * 527u) + 23u) >> 6,
-    //               ((((color >> 5) & 0x3F) * 259u) + 33u) >> 6,
-    //               (((color & 0x1F) * 527u) + 23u) >> 6)
-    //          );
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
+    {
+        auto watt = sumCurrent * *avgVoltage;
+        auto w_per_kmh = watt / std::abs(avgSpeedKmh);
+        CRGB color = 0;
+        if (isinf(w_per_kmh) || isnan(w_per_kmh))
         {
-            auto watt = sumCurrent * *avgVoltage;
-            auto w_per_kmh = watt / std::abs(avgSpeedKmh);
-            CRGB color = 0;
-            if(isinf(w_per_kmh) || isnan(w_per_kmh)){
-                color = 0;
-            }
-            else if(w_per_kmh <= -40){
-                color = CRGB(255, 0, 255);
-            }
-            else if(w_per_kmh < -20){
-                color = CRGB(255, 0, cpputils::mapValueClamped<float>(w_per_kmh, -40, -20, 255., 0.));
-            }
-            else if(w_per_kmh < 0){
-                color = CRGB(255, cpputils::mapValueClamped<float>(w_per_kmh, -20, 0, 0., 255.), 0);
-            }
-            else if(w_per_kmh < 20){
-                color = CRGB(cpputils::mapValueClamped<float>(w_per_kmh, 0, 20, 255., 0.), 255, 0);
-            }
-            else if(w_per_kmh < 40){
-                color = CRGB(0, cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 255., 0.), cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 0., 255.));
-            }
-            else{
-                color = CRGB(0, 0, 255);
-            }
-            std::fill(std::begin(leds), std::end(leds), color);
+            color = 0;
         }
+        else if (w_per_kmh <= -40)
+        {
+            color = CRGB(255, 0, 255);
+        }
+        else if (w_per_kmh < -20)
+        {
+            color = CRGB(255, 0, cpputils::mapValueClamped<float>(w_per_kmh, -40, -20, 255., 0.));
+        }
+        else if (w_per_kmh < 0)
+        {
+            color = CRGB(255, cpputils::mapValueClamped<float>(w_per_kmh, -20, 0, 0., 255.), 0);
+        }
+        else if (w_per_kmh < 20)
+        {
+            color = CRGB(cpputils::mapValueClamped<float>(w_per_kmh, 0, 20, 255., 0.), 255, 0);
+        }
+        else if (w_per_kmh < 40)
+        {
+            color = CRGB(0, cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 255., 0.), cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 0., 255.));
+        }
+        else
+        {
+            color = CRGB(0, 0, 255);
+        }
+        std::fill(std::begin(leds), std::end(leds), color);
+    }
 }
 
 void showCustomColor()
