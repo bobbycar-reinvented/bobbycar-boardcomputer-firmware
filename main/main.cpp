@@ -35,7 +35,7 @@ using namespace std::chrono_literals;
 namespace {
 espchrono::millis_clock::time_point lastStatsPush;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
-}
+} // namespace
 
 extern "C" void app_main()
 {

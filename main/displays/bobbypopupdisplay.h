@@ -1,11 +1,11 @@
 #pragma once
 
 // 3rdparty lib includes
-#include <popupdisplay.h>
+#include <messagepopupdisplay.h>
 
-class BobbyPopupDisplay : public espgui::PopupDisplay
+class BobbyPopupDisplay : public espgui::MessagePopupDisplay
 {
-    using Base = espgui::PopupDisplay;
+    using Base = espgui::MessagePopupDisplay;
 
 public:
     using Base::Base;

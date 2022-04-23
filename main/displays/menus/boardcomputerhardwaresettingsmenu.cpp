@@ -4,7 +4,8 @@
 #include <fmt/core.h>
 #include <changevaluedisplay.h>
 #include <actions/dummyaction.h>
-#include <actions/switchscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <actions/popscreenaction.h>
 #include <icons/back.h>
 #include <textwithvaluehelper.h>
 
@@ -76,36 +77,36 @@ using SampleCountChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SAMPLECOUNT>,
     SampleCountAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GasMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_GASMIN>,
     GasMinAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GasMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_GASMAX>,
     GasMaxAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using BremsMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_BREMSMIN>,
     BremsMinAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using BremsMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_BREMSMAX>,
     BremsMaxAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 
@@ -114,15 +115,15 @@ using DPadDebounceChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_DPADDEBOUNCE>,
     DPadDebounceAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using ButtonDelayChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
     espgui::StaticText<TEXT_BUTTONDELAY>,
     ButtonDelayAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 #endif
 
@@ -144,43 +145,43 @@ using GametrakXMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKXMIN>,
     GametrakXMinAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GametrakXMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKXMAX>,
     GametrakXMaxAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GametrakYMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKYMIN>,
     GametrakYMinAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GametrakYMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKYMAX>,
     GametrakYMaxAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GametrakDistMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKDISTMIN>,
     GametrakDistMinAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GametrakDistMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SETGAMETRAKDISTMAX>,
     GametrakDistMaxAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BoardcomputerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 #endif
 } // namespace
@@ -189,41 +190,41 @@ using namespace espgui;
 
 BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          SwitchScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUTTONCALIBRATE>,                             SwitchScreenAction<ButtonCalibrateDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_EXTRABUTTONCALIBRATE>,                        SwitchScreenAction<ExtraButtonCalibrateMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QUICKACTIONS>,                                SwitchScreenAction<SetupQuickActionsMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          PushScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUTTONCALIBRATE>,                             PushScreenAction<ButtonCalibrateDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_EXTRABUTTONCALIBRATE>,                        PushScreenAction<ExtraButtonCalibrateMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QUICKACTIONS>,                                PushScreenAction<SetupQuickActionsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, GasText,                                                      DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BremsText,                                                    DisabledColor, StaticFont<2>, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTISCALIBRATE>,                              SwitchScreenAction<PotisCalibrateDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTISCALIBRATE>,                              PushScreenAction<PotisCalibrateDisplay>>>();
 #ifdef FEATURE_JOYSTICK
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_JOYSTICK>,                                    SwitchScreenAction<JoystickDebugDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_JOYSTICK>,                                    PushScreenAction<JoystickDebugDisplay>>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SAMPLECOUNT, SampleCountAccessor>,   SwitchScreenAction<SampleCountChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMIN, GasMinAccessor>,             SwitchScreenAction<GasMinChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMAX, GasMaxAccessor>,             SwitchScreenAction<GasMaxChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BREMSMIN, BremsMinAccessor>,         SwitchScreenAction<BremsMinChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BREMSMAX, BremsMaxAccessor>,         SwitchScreenAction<BremsMaxChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SAMPLECOUNT, SampleCountAccessor>,   PushScreenAction<SampleCountChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMIN, GasMinAccessor>,             PushScreenAction<GasMinChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMAX, GasMaxAccessor>,             PushScreenAction<GasMaxChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BREMSMIN, BremsMinAccessor>,         PushScreenAction<BremsMinChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BREMSMAX, BremsMaxAccessor>,         PushScreenAction<BremsMaxChangeScreen>>>();
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW)
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_DPADDEBOUNCE, DPadDebounceAccessor>, SwitchScreenAction<DPadDebounceChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BUTTONDELAY, ButtonDelayAccessor>, SwitchScreenAction<ButtonDelayChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_DPADDEBOUNCE, DPadDebounceAccessor>, PushScreenAction<DPadDebounceChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BUTTONDELAY, ButtonDelayAccessor>, PushScreenAction<ButtonDelayChangeScreen>>>();
 #endif
 #ifdef FEATURE_GAMETRAK
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                    DummyAction>,
     constructMenuItem<makeComponent<MenuItem, GametrakXText,                                                DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, GametrakYText,                                                DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, GametrakDistText,                                             DisabledColor, StaticFont<2>, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAKCALIBRATE>,                           SwitchScreenAction<GametrakCalibrateDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMIN>,                             SwitchScreenAction<GametrakXMinChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMAX>,                             SwitchScreenAction<GametrakXMaxChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKYMIN>,                             SwitchScreenAction<GametrakYMinChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKYMAX>,                             SwitchScreenAction<GametrakYMaxChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMIN>,                          SwitchScreenAction<GametrakDistMinChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMAX>,                          SwitchScreenAction<GametrakDistMaxChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAKCALIBRATE>,                           PushScreenAction<GametrakCalibrateDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMIN>,                             PushScreenAction<GametrakXMinChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKXMAX>,                             PushScreenAction<GametrakXMaxChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKYMIN>,                             PushScreenAction<GametrakYMinChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKYMAX>,                             PushScreenAction<GametrakYMaxChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMIN>,                          PushScreenAction<GametrakDistMinChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETGAMETRAKDISTMAX>,                          PushScreenAction<GametrakDistMaxChangeScreen>>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                    DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIMERS>,                                      SwitchScreenAction<TimersMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIMERS>,                                      PushScreenAction<TimersMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
 }
 
 std::string BoardcomputerHardwareSettingsMenu::text() const

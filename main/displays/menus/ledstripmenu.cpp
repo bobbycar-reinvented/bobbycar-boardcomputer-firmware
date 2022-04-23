@@ -3,7 +3,8 @@
 // 3rdparty lib includes
 #include <FastLED.h>
 #include <actioninterface.h>
-#include <actions/switchscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <actions/popscreenaction.h>
 #include <changevaluedisplay.h>
 #include <icons/back.h>
 #include <menuitem.h>
@@ -53,32 +54,32 @@ using LedsCountChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_LEDSCOUNT>,
     LedsCountAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using CenterOffsetChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CENTEROFFSET>,
     CenterOffsetAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using SmallOffsetChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SMALLOFFSET>,
     SmallOffsetAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using BigOffsetChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_BIGOFFSET>,
     BigOffsetAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using LedStripMaxAmpereChangeScreen = espgui::makeComponent<
@@ -86,40 +87,40 @@ using LedStripMaxAmpereChangeScreen = espgui::makeComponent<
     espgui::StaticText<TEXT_LEDSTRIPCURRENTLIMIT>,
     LedStripMaxAmpereAccessor,
     espgui::RatioNumberStep<float, std::ratio<1,10>>,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using StVOOffsetChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_STVO_FRONTOFFSET>,
     LedsStVOFrontOffsetAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using StVOLengthChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_STVO_FRONTLENGTH>,
     LedsStVOFrontLengthAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using AnimationMultiplierChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_ANIMATION_MULTIPLIER>,
     AnimationMultiplierAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using LedStripBrightnessChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
     espgui::StaticText<TEXT_LEDSTRIP_BRIGHTNESS>,
     LedstripBrightnessAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LedstripMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LedstripMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 class AllCustomLedsOffAction : public virtual espgui::ActionInterface
@@ -154,30 +155,31 @@ LedstripMenu::LedstripMenu()
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_AUTOMATIC_LIGHTS>, BobbyCheckbox, LedstripAutomaticLightAccessor>>();
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDANIMATION>, BobbyCheckbox, EnableLedAnimationAccessor>>();
-    constructMenuItem<SwitchScreenTypeSafeChangeMenuItem<LedstripAnimation, LedstripMenu, TEXT_SELECTANIMATION>>(&configs.ledstrip.animationType);
 
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BRAKELIGHTS>,  BobbyCheckbox,    EnableBrakeLightsAccessor>>();
+    constructMenuItem<PushScreenTypeSafeChangeMenuItem<LedstripAnimation, TEXT_SELECTANIMATION>>(&configs.ledstrip.animationType);
 
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIPCOLORMENU>, espgui::SwitchScreenAction<LedstripColorsDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BRAKELIGHTS>,  BobbyCheckbox, EnableBrakeLightsAccessor>>();
+
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIPCOLORMENU>, espgui::PushScreenAction<LedstripColorsDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_ALLCUSTOMOFF>, AllCustomLedsOffAction>>();
 
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BLINKBEEP>, BobbyCheckbox,       EnableBeepWhenBlinkAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_FULLBLINK>, BobbyCheckbox,       EnableFullBlinkAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BLINKBEEP>, BobbyCheckbox, EnableBeepWhenBlinkAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_FULLBLINK>, BobbyCheckbox, EnableFullBlinkAccessor>>();
 
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTOFFSET, LedsStVOFrontOffsetAccessor>,    espgui::SwitchScreenAction<StVOOffsetChangeScreen>>>(); }
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTLENGTH, LedsStVOFrontLengthAccessor>,    espgui::SwitchScreenAction<StVOLengthChangeScreen>>>(); }
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTOFFSET, LedsStVOFrontOffsetAccessor>, espgui::PushScreenAction<StVOOffsetChangeScreen>>>(); }
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTLENGTH, LedsStVOFrontLengthAccessor>, espgui::PushScreenAction<StVOLengthChangeScreen>>>(); }
 
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BLINKANIMATION>,                                  espgui::SwitchScreenAction<LedstripSelectBlinkMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BLINKANIMATION>,                                  espgui::PushScreenAction<LedstripSelectBlinkMenu>>>();
     if (configs.feature.ota.isEnabled.value)
-        if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_CHANGE_OTA_ANIM>,     espgui::SwitchScreenAction<LedstripOtaAnimationChangeMenu>>>(); }
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_ANIMATION_MULTIPLIER>,                            espgui::SwitchScreenAction<AnimationMultiplierChangeScreen>>>();
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSCOUNT, LedsCountAccessor>,           espgui::SwitchScreenAction<LedsCountChangeScreen>>>(); }
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CENTEROFFSET, CenterOffsetAccessor>,     espgui::SwitchScreenAction<CenterOffsetChangeScreen>>>(); }
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMALLOFFSET, SmallOffsetAccessor>,       espgui::SwitchScreenAction<SmallOffsetChangeScreen>>>(); }
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BIGOFFSET, BigOffsetAccessor>,           espgui::SwitchScreenAction<BigOffsetChangeScreen>>>(); }
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_BRIGHTNESS>,                             espgui::SwitchScreenAction<LedStripBrightnessChangeScreen>>>(); }
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, LedStripMaxCurrentText, espgui::SwitchScreenAction<LedStripMaxAmpereChangeScreen>>>(); }
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BACK>,                                            espgui::SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+        if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_CHANGE_OTA_ANIM>,     espgui::PushScreenAction<LedstripOtaAnimationChangeMenu>>>(); }
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_ANIMATION_MULTIPLIER>,                            espgui::PushScreenAction<AnimationMultiplierChangeScreen>>>();
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSCOUNT, LedsCountAccessor>,           espgui::PushScreenAction<LedsCountChangeScreen>>>(); }
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CENTEROFFSET, CenterOffsetAccessor>,     espgui::PushScreenAction<CenterOffsetChangeScreen>>>(); }
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMALLOFFSET, SmallOffsetAccessor>,       espgui::PushScreenAction<SmallOffsetChangeScreen>>>(); }
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BIGOFFSET, BigOffsetAccessor>,           espgui::PushScreenAction<BigOffsetChangeScreen>>>(); }
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_BRIGHTNESS>,                             espgui::PushScreenAction<LedStripBrightnessChangeScreen>>>(); }
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, LedStripMaxCurrentText, espgui::PushScreenAction<LedStripMaxAmpereChangeScreen>>>(); }
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BACK>,                                            espgui::PushScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string LedstripMenu::text() const
@@ -187,5 +189,5 @@ std::string LedstripMenu::text() const
 
 void LedstripMenu::back()
 {
-    espgui::switchScreen<MainMenu>();
+    espgui::popScreen();
 }

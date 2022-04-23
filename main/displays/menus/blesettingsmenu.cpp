@@ -2,7 +2,8 @@
 
 // 3rdparty lib includes
 #include <actions/dummyaction.h>
-#include <actions/switchscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <actions/popscreenaction.h>
 #include <icons/back.h>
 #include <changevaluedisplay.h>
 #include <changevaluedisplay_string.h>
@@ -26,8 +27,8 @@ using ApSsidChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<std::string>,
     espgui::StaticText<TEXT_NAME>,
     BluetoothNameAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<BleSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<BleSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 } // namespace
 
@@ -37,8 +38,8 @@ BleSettingsMenu::BleSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLED>, BobbyCheckbox, BleEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, BleServerPeerDevicesText,    DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BleCharacSubscribedText,     DisabledColor, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NAME_FORMATTED, BluetoothNameAccessor>, SwitchScreenAction<ApSsidChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NAME_FORMATTED, BluetoothNameAccessor>, PushScreenAction<ApSsidChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string BleSettingsMenu::text() const
@@ -48,5 +49,5 @@ std::string BleSettingsMenu::text() const
 
 void BleSettingsMenu::back()
 {
-    espgui::switchScreen<SettingsMenu>();
+    espgui::popScreen();
 }

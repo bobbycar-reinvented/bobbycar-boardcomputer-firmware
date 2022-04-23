@@ -2,9 +2,10 @@
 
 // 3rdparty lib includes
 #include <actions/multiaction.h>
-#include <actions/switchscreenaction.h>
+#include <actions/popscreenaction.h>
 #include <icons/back.h>
 #include <textwithvaluehelper.h>
+#include <actions/pushscreenaction.h>
 
 // local includes
 #include "utils.h"
@@ -20,7 +21,7 @@
 #include "modes/wheelchairmode.h"
 #endif
 #include "accessors/globalaccessors.h"
-#include "displays/menus/mainmenu.h"
+#include "mainmenu.h"
 
 namespace {
 constexpr char TEXT_SELECTMODE[] = "Select mode";
@@ -60,19 +61,19 @@ using namespace espgui;
 
 SelectModeMenu::SelectModeMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,       MultiAction<SetDefaultModeAction, SwitchScreenAction<MainMenu>>>>();
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_TEMPOMAT, AvgSpeedAccessor>,  MultiAction<SetTempomatModeAction, SwitchScreenAction<MainMenu>>>>(); }
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,         MultiAction<SetLarsmModeAction, SwitchScreenAction<MainMenu>>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MICK>,         MultiAction<SetMickModeAction, SwitchScreenAction<MainMenu>>>>();
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REMOTECONTROL>, MultiAction<SetRemoteControlModeAction, SwitchScreenAction<MainMenu>>>>(); }
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,       MultiAction<SetDefaultModeAction, PushScreenAction<MainMenu>>>>();
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_TEMPOMAT, AvgSpeedAccessor>,  MultiAction<SetTempomatModeAction, PushScreenAction<MainMenu>>>>(); }
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,         MultiAction<SetLarsmModeAction, PushScreenAction<MainMenu>>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MICK>,         MultiAction<SetMickModeAction, PushScreenAction<MainMenu>>>>();
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REMOTECONTROL>, MultiAction<SetRemoteControlModeAction, PushScreenAction<MainMenu>>>>(); }
 #ifdef FEATURE_GAMETRAK
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, SwitchScreenAction<MainMenu>>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, PopScreenAction>>>();
 #endif
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTEST>, MultiAction<SetMotorTestModeAction, SwitchScreenAction<MainMenu>>>>(); }
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTEST>, MultiAction<SetMotorTestModeAction, PushScreenAction<MainMenu>>>>(); }
 #ifdef FEATURE_JOYSTICK
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELCHAIR>, MultiAction<SetWheelchairModeAction, SwitchScreenAction<MainMenu>>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELCHAIR>, MultiAction<SetWheelchairModeAction, PushScreenAction<MainMenu>>>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      PushScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string SelectModeMenu::text() const
@@ -113,5 +114,5 @@ void SelectModeMenu::start()
 
 void SelectModeMenu::back()
 {
-    switchScreen<MainMenu>();
+    popScreen();
 }

@@ -10,9 +10,9 @@
 // local includes
 #include "globals.h"
 #include "utils.h"
-#include "displays/menus/mainmenu.h"
 #include "displays/potiscalibratedisplay.h"
 #include "bobbybuttons.h"
+#include "displays/menus/mainmenu.h"
 
 namespace {
 bool isValid1stPin(std::array<int8_t, 4> enteredPin)
@@ -109,7 +109,7 @@ void Lockscreen::redraw()
                 if (!gas || !brems || *gas > 200.f || *brems > 200.f)
                     espgui::switchScreen<PotisCalibrateDisplay>(true);
                 else
-                    espgui::switchScreen<MainMenu>();
+                    espgui::popScreen();
 #ifdef LOCKSCREEN_PLUGIN
 #include LOCKSCREEN_PLUGIN
 LOCKSCREEN_PLUGIN_FIXES_1

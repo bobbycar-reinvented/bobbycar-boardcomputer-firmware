@@ -67,7 +67,7 @@ void BatteryGraphDisplay::buttonPressed(espgui::Button button)
         using espgui::Button;
         case Button::Left:
         case Button::Right:
-            espgui::switchScreen<BatteryMenu>();
+            espgui::popScreen();
             break;
         default:;
     }

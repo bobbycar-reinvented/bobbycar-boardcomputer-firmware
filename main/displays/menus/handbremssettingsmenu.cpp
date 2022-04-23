@@ -39,7 +39,7 @@ HandbremsSettingsMenu::HandbremsSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_ENABLE>, BobbyCheckbox, HandbremsEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_AUTOMATIC>, BobbyCheckbox, HandbremsAutomaticAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_VISUALIZE>, BobbyCheckbox, HandbremsVisualizeAccessor>>();
-    constructMenuItem<SwitchScreenTypeSafeChangeMenuItem<HandbremseMode, HandbremsSettingsMenu, TEXT_HANDBREMSE_MODE>>(&configs.handbremse.mode);
+    constructMenuItem<PushScreenTypeSafeChangeMenuItem<HandbremseMode, TEXT_HANDBREMSE_MODE>>(&configs.handbremse.mode);
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HANDBREMSE_TRIGGERTIMEOUT, HandbremsTimeoutAccessor>, SwitchScreenAction<HandBremsTriggerTimeoutChangeValueDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<DefaultModeSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }

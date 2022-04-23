@@ -2,7 +2,10 @@
 
 // 3rdparty lib includes
 #include <actions/dummyaction.h>
-#include <actions/switchscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <actions/popscreenaction.h>
+#include <icons/back.h>
+#include <screenmanager.h>
 #include <fmt/format.h>
 #include <icons/back.h>
 #include <menuitem.h>
@@ -13,6 +16,8 @@
 #include "globals.h"
 #include "utils.h"
 #include "settingsmenu.h"
+#include "wifistasettingsmenu.h"
+#include "wifiapsettingsmenu.h"
 #include "texthelpers/networktexthelpers.h"
 #include "wifiapsettingsmenu.h"
 #include "wifistasettingsmenu.h"
@@ -28,17 +33,16 @@ constexpr char TEXT_BACK[] = "Back";
 
 NetworkSettingsMenu::NetworkSettingsMenu()
 {
-    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_STASETTINGS>, SwitchScreenAction<WifiStaSettingsMenu>>>();
-    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_APSETTINGS>,  SwitchScreenAction<WifiApSettingsMenu>>>();
+    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_STASETTINGS>, PushScreenAction<WifiStaSettingsMenu>>>();
+    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_APSETTINGS>,  PushScreenAction<WifiApSettingsMenu>>>();
     constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_APQRCODE>,    NetworkAccessPointQRAction>>();
-
     constructMenuItem<makeComponent<MenuItem,     WifiDefaultMacText,           DummyAction>>();
     constructMenuItem<makeComponent<MenuItem,     WifiBaseMacText,              DummyAction>>();
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{0});
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{1});
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{2});
     constructMenuItem<makeComponent<MenuItem,     WifiTxPowerText,              DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,        SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,        PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
 }
 
 std::string NetworkSettingsMenu::text() const
@@ -48,7 +52,7 @@ std::string NetworkSettingsMenu::text() const
 
 void NetworkSettingsMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    popScreen();
 }
 
 void NetworkAccessPointQRAction::triggered()
