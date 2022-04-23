@@ -12,6 +12,7 @@
 #include "utils.h"
 #include "displays/potiscalibratedisplay.h"
 #include "bobbybuttons.h"
+#include "displays/menus/mainmenu.h"
 
 namespace {
 bool isValid1stPin(std::array<int8_t, 4> enteredPin)
