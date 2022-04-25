@@ -181,11 +181,11 @@ bool parseBoardcomputerCanMessage(const twai_message_t &message)
         return true;
     case Boardcomputer::Command::ButtonPressed:
         if (espgui::currentDisplay)
-            espgui::currentDisplay->rawButtonPressed(espgui::Button(*((const uint8_t*)message.data)));
+            espgui::currentDisplay->buttonPressed(espgui::Button(*((const uint8_t*)message.data)));
         return true;
     case Boardcomputer::Command::ButtonReleased:
         if (espgui::currentDisplay)
-            espgui::currentDisplay->rawButtonPressed(espgui::Button(*((const uint8_t*)message.data)));
+            espgui::currentDisplay->buttonReleased(espgui::Button(*((const uint8_t*)message.data)));
         return true;
     case Boardcomputer::Command::RawGas:
         can_gas = *((int16_t*)message.data);
