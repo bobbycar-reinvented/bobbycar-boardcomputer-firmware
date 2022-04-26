@@ -14,6 +14,7 @@
 #include <espchrono.h>
 #include <tickchrono.h>
 #include <screenmanager.h>
+#include <futurecpp.h>
 
 // local includes
 #include "bobbycar-can.h"
@@ -173,27 +174,27 @@ bool parseBoardcomputerCanMessage(const twai_message_t &message)
     case Boardcomputer::Command::RawButtonPressed:
         if (espgui::currentDisplay)
             espgui::currentDisplay->rawButtonPressed(*((const uint8_t*)message.data));
-        break;
+        return true;
     case Boardcomputer::Command::RawButtonReleased:
         if (espgui::currentDisplay)
             espgui::currentDisplay->rawButtonReleased(*((const uint8_t*)message.data));
-        break;
+        return true;
     case Boardcomputer::Command::ButtonPressed:
         if (espgui::currentDisplay)
-            espgui::currentDisplay->rawButtonPressed(espgui::Button(*((const uint8_t*)message.data)));
-        break;
+            espgui::currentDisplay->buttonPressed(espgui::Button(*((const uint8_t*)message.data)));
+        return true;
     case Boardcomputer::Command::ButtonReleased:
         if (espgui::currentDisplay)
-            espgui::currentDisplay->rawButtonPressed(espgui::Button(*((const uint8_t*)message.data)));
-        break;
+            espgui::currentDisplay->buttonReleased(espgui::Button(*((const uint8_t*)message.data)));
+        return true;
     case Boardcomputer::Command::RawGas:
         can_gas = *((int16_t*)message.data);
         last_can_gas = espchrono::millis_clock::now();
-        break;
+        return true;
     case Boardcomputer::Command::RawBrems:
         can_brems = *((int16_t*)message.data);
         last_can_brems = espchrono::millis_clock::now();
-        break;
+        return true;
     }
 
     return false;
@@ -362,10 +363,10 @@ void sendCanCommands()
     if (const auto index = settingsPersister.currentlyOpenProfileIndex())
         switch (*index)
         {
-        case 0: buttonLeds |= Boardcomputer::ButtonProfile0; break;
-        case 1: buttonLeds |= Boardcomputer::ButtonProfile1; break;
-        case 2: buttonLeds |= Boardcomputer::ButtonProfile2; break;
-        case 3: buttonLeds |= Boardcomputer::ButtonProfile3; break;
+        case 0: buttonLeds |= std::to_underlying(Boardcomputer::Button::Profile0); break;
+        case 1: buttonLeds |= std::to_underlying(Boardcomputer::Button::Profile1); break;
+        case 2: buttonLeds |= std::to_underlying(Boardcomputer::Button::Profile2); break;
+        case 3: buttonLeds |= std::to_underlying(Boardcomputer::Button::Profile3); break;
         }
 
     static struct {
@@ -373,7 +374,7 @@ void sendCanCommands()
             uint8_t freq = 0;
             uint8_t pattern = 0;
         } front, back;
-        uint16_t buttonLeds{};
+        std::underlying_type_t<Boardcomputer::Button> buttonLeds{};
     } lastValues;
 
     static int i{};

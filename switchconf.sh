@@ -9,6 +9,7 @@ VALID_CONFIGS=(
     "nofeatures"
     "allfeatures"
     "seatbot"
+    "gernot"
 )
 
 print_usage() {
