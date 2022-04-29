@@ -33,13 +33,13 @@ bool espnow_init_allowed()
     const auto wifi_mode = wifi_stack::get_wifi_mode();
     return
     (
-        (configs.espnow.syncBlink.value || configs.espnow.syncTime.value || configs.espnow.syncTimeWithOthers.value)
+        (configs.espnow.syncBlink.value() || configs.espnow.syncTime.value() || configs.espnow.syncTimeWithOthers.value())
         &&
         (
-            (configs.wifiApEnabled.value && wifi_stack::get_wifi_mode() == WIFI_MODE_AP)
+            (configs.wifiApEnabled.value() && wifi_stack::get_wifi_mode() == WIFI_MODE_AP)
             ||
             (
-                configs.wifiStaEnabled.value
+                configs.wifiStaEnabled.value()
                 &&
                 wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::NO_SHIELD
                 &&
@@ -83,7 +83,7 @@ void initESPNow()
 
     if (initialized < 1)
     {
-        if (!configs.wifiApEnabled.value && (!configs.wifiStaEnabled.value && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA) && (configs.espnow.syncBlink.value || configs.espnow.syncTime.value || configs.espnow.syncTimeWithOthers.value))
+        if (!configs.wifiApEnabled.value() && (!configs.wifiStaEnabled.value() && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::NO_SHIELD) || (wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_STA && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_AP && wifi_stack::get_wifi_mode() != wifi_mode_t::WIFI_MODE_APSTA) && (configs.espnow.syncBlink.value() || configs.espnow.syncTime.value() || configs.espnow.syncTimeWithOthers.value()))
         {
             ESP_LOGW(TAG, "cannot execute esp_now_init(): tcp stack is down.");
             return;
@@ -121,9 +121,9 @@ void initESPNow()
         std::memcpy(peer.peer_addr, broadcast_address, sizeof(peer.peer_addr));
         peer.channel = 0;
 
-        if (configs.wifiApEnabled.value)
+        if (configs.wifiApEnabled.value())
             peer.ifidx = WIFI_IF_AP;
-        else if (configs.wifiStaEnabled.value)
+        else if (configs.wifiStaEnabled.value())
             peer.ifidx = WIFI_IF_STA;
         else
         {
@@ -217,7 +217,7 @@ void handle()
         {
             if (msg.type == "T")
             {
-                if (!receiveTimeStamp || !configs.espnow.syncTime.value)
+                if (!receiveTimeStamp || !configs.espnow.syncTime.value())
                     goto clear;
 
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
@@ -231,7 +231,7 @@ void handle()
             }
             else if (msg.type == "BOBBYT")
             {
-                if (!receiveTsFromOtherBobbycars || !configs.espnow.syncTimeWithOthers.value)
+                if (!receiveTsFromOtherBobbycars || !configs.espnow.syncTimeWithOthers.value())
                     goto clear;
 
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
@@ -278,7 +278,7 @@ esp_err_t send_espnow_message(std::string_view message)
     if (initialized < 255)
         return ESP_ERR_ESPNOW_NOT_INIT;
 
-    if (!configs.wifiApEnabled.value && !configs.wifiStaEnabled.value)
+    if (!configs.wifiApEnabled.value() && !configs.wifiStaEnabled.value())
     {
         return ESP_ERR_ESPNOW_IF;
     }
@@ -291,9 +291,9 @@ esp_err_t send_espnow_message(std::string_view message)
     for (auto &peer : peers)
     {
 
-        if (configs.wifiApEnabled.value)
+        if (configs.wifiApEnabled.value())
             peer.ifidx = WIFI_IF_AP;
-        else if (configs.wifiStaEnabled.value)
+        else if (configs.wifiStaEnabled.value())
             peer.ifidx = WIFI_IF_STA;
         else
             return ESP_ERR_ESPNOW_IF;

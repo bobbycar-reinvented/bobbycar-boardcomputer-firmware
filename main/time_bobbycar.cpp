@@ -17,7 +17,7 @@
 espchrono::time_zone get_default_timezone() noexcept
 {
     using namespace espchrono;
-    return time_zone{configs.timezoneOffset.value, configs.timeDst.value};
+    return time_zone{configs.timezoneOffset.value(), configs.timeDst.value()};
 }
 
 #ifdef CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE
@@ -37,11 +37,11 @@ void initTime()
 {
     sntp_setoperatingmode(SNTP_OPMODE_POLL);
     static_assert(SNTP_MAX_SERVERS >= 1);
-    sntp_setservername(0, configs.timeServer.value.c_str());
+    sntp_setservername(0, configs.timeServer.value().c_str());
     sntp_set_time_sync_notification_cb(time_sync_notification_cb);
-    sntp_set_sync_mode(configs.timeSyncMode.value);
-    sntp_set_sync_interval(espchrono::milliseconds32{configs.timeSyncInterval.value}.count());
-    if (configs.timeServerEnabled.value)
+    sntp_set_sync_mode(configs.timeSyncMode.value());
+    sntp_set_sync_interval(espchrono::milliseconds32{configs.timeSyncInterval.value()}.count());
+    if (configs.timeServerEnabled.value())
     {
         ESP_LOGI("BOBBY", "sntp_init() ...");
         sntp_init();
@@ -54,12 +54,12 @@ void initTime()
 
 void updateTime()
 {
-    if (!configs.feature.ntp.isEnabled.value)
+    if (!configs.feature.ntp.isEnabled.value())
         return;
 
-    if (bool(sntp_enabled()) != configs.timeServerEnabled.value)
+    if (bool(sntp_enabled()) != configs.timeServerEnabled.value())
     {
-        if (configs.timeServerEnabled.value)
+        if (configs.timeServerEnabled.value())
         {
             ESP_LOGD("BOBBY", "calling sntp_init()...");
             sntp_init();
@@ -73,24 +73,24 @@ void updateTime()
         }
     }
 
-    if (configs.timeServer.value != sntp_getservername(0))
+    if (configs.timeServer.value() != sntp_getservername(0))
     {
-        ESP_LOGD("BOBBY", "calling sntp_getservername() with %s...", configs.timeServer.value.c_str());
-        sntp_setservername(0, configs.timeServer.value.c_str());
+        ESP_LOGD("BOBBY", "calling sntp_getservername() with %s...", configs.timeServer.value().c_str());
+        sntp_setservername(0, configs.timeServer.value().c_str());
         ESP_LOGI("BOBBY", "sntp_getservername() finished");
     }
 
-    if (configs.timeSyncMode.value != sntp_get_sync_mode())
+    if (configs.timeSyncMode.value() != sntp_get_sync_mode())
     {
-        ESP_LOGD("BOBBY", "calling sntp_set_sync_mode() with %s...", espcpputils::toString(configs.timeSyncMode.value).c_str());
-        sntp_set_sync_mode(configs.timeSyncMode.value);
+        ESP_LOGD("BOBBY", "calling sntp_set_sync_mode() with %s...", espcpputils::toString(configs.timeSyncMode.value()).c_str());
+        sntp_set_sync_mode(configs.timeSyncMode.value());
         ESP_LOGI("BOBBY", "sntp_set_sync_mode() finished");
     }
 
-    if (configs.timeSyncInterval.value != espchrono::milliseconds32{sntp_get_sync_interval()})
+    if (configs.timeSyncInterval.value() != espchrono::milliseconds32{sntp_get_sync_interval()})
     {
-        ESP_LOGD("BOBBY", "calling sntp_set_sync_interval() with %s...", espchrono::toString(configs.timeSyncInterval.value).c_str());
-        sntp_set_sync_interval(espchrono::milliseconds32{configs.timeSyncInterval.value}.count());
+        ESP_LOGD("BOBBY", "calling sntp_set_sync_interval() with %s...", espchrono::toString(configs.timeSyncInterval.value()).c_str());
+        sntp_set_sync_interval(espchrono::milliseconds32{configs.timeSyncInterval.value()}.count());
         ESP_LOGI("BOBBY", "sntp_set_sync_interval() finished");
     }
 }

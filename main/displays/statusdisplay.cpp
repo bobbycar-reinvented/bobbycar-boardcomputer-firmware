@@ -87,12 +87,12 @@ void StatusDisplay::redraw()
 
     {
         static bool handbremse_fill_with_black;
-        if (configs.handbremse.enable.value && configs.handbremse.visualize.value && handbremse::angezogen)
+        if (configs.handbremse.enable.value() && configs.handbremse.visualize.value() && handbremse::angezogen)
         {
             tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_RED);
             handbremse_fill_with_black = true;
         }
-        else if (configs.handbremse.enable.value && configs.handbremse.visualize.value && handbremse::stateWish == handbremse::StateWish::brake)
+        else if (configs.handbremse.enable.value() && configs.handbremse.visualize.value() && handbremse::stateWish == handbremse::StateWish::brake)
         {
             tft.fillRect(0, tft.height()-6, tft.width(), 6, TFT_YELLOW);
             handbremse_fill_with_black = true;
@@ -104,10 +104,10 @@ void StatusDisplay::redraw()
         }
     }
 
-    if(configs.feature.ledstrip.isEnabled.value)
+    if(configs.feature.ledstrip.isEnabled.value())
     {
         static bool blink_fill_with_black;
-        if (configs.ledstrip.enableVisualizeBlink.value && (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) && (blinkAnimation > 0))
+        if (configs.ledstrip.enableVisualizeBlink.value() && (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) && (blinkAnimation > 0))
         {
             if (BLINK_LEFT_EXPR)
                 tft.fillRect(0, 0, tft.width() / 2, 6, TFT_YELLOW);
@@ -151,9 +151,9 @@ void StatusDisplay::redraw()
 
     tft.setTextFont(2);
 
-    if (configs.feature.udpcloud.isEnabled.value)
+    if (configs.feature.udpcloud.isEnabled.value())
     {
-        if(configs.udpCloudSettings.udpCloudEnabled.value && configs.udpCloudSettings.enableCloudDebug.value)
+        if(configs.udpCloudSettings.udpCloudEnabled.value() && configs.udpCloudSettings.enableCloudDebug.value())
         {
             tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? TFT_DARKGREY : TFT_BLACK);
         }
@@ -218,7 +218,7 @@ clearIp:
     }
 
     m_labelMode.redraw(currentMode->displayName());
-    m_labelName.redraw(configs.wifiApName.value);
+    m_labelName.redraw(configs.wifiApName.value());
     const auto profile = settingsPersister.currentlyOpenProfileIndex();
     m_labelProfile.redraw(profile ? std::to_string(*profile) : "-");
 }

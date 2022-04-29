@@ -203,7 +203,7 @@ bool parseBoardcomputerCanMessage(const twai_message_t &message)
 bool tryParseCanInput()
 {
     twai_message_t message;
-    const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.controllerHardware.canReceiveTimeout.value}).count();
+    const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.controllerHardware.canReceiveTimeout.value()}).count();
     if (const auto result = twai_receive(&message, timeout); result != ESP_OK)
     {
         if (result != ESP_ERR_TIMEOUT)
@@ -220,8 +220,8 @@ bool tryParseCanInput()
         return false;
     }
 
-    Controller &front = configs.controllerHardware.swapFrontBack.value ? controllers.back : controllers.front;
-    Controller &back = configs.controllerHardware.swapFrontBack.value ? controllers.front : controllers.back;
+    Controller &front = configs.controllerHardware.swapFrontBack.value() ? controllers.back : controllers.front;
+    Controller &back = configs.controllerHardware.swapFrontBack.value() ? controllers.front : controllers.back;
 
     if (parseMotorControllerCanMessage<false>(message, front))
     {
@@ -274,7 +274,7 @@ void sendCanCommands()
         std::fill(std::begin(message.data), std::end(message.data), 0);
         std::memcpy(message.data, &value, sizeof(value));
 
-        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.controllerHardware.canTransmitTimeout.value}).count();
+        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.controllerHardware.canTransmitTimeout.value()}).count();
 
         const auto timestamp_before = espchrono::millis_clock::now();
         const auto result = twai_transmit(&message, timeout);
@@ -308,7 +308,7 @@ void sendCanCommands()
         if (can_sequential_error_cnt > 3)
         {
             can_sequential_error_cnt = 0;
-            if (configs.canResetOnError.value)
+            if (configs.canResetOnError.value())
             {
                 ESP_LOGW(TAG, "WARNING: Something isn't right, trying to restart can ic...");
                 if (const auto err = twai_stop(); err != ESP_OK)
@@ -316,7 +316,7 @@ void sendCanCommands()
                     ESP_LOGE(TAG, "ERROR: twai_stop() failed with %s", esp_err_to_name(err));
                 }
 
-                if (configs.canUninstallOnReset.value)
+                if (configs.canUninstallOnReset.value())
                 {
                     if (const auto err = twai_driver_uninstall(); err != ESP_OK) {
                         ESP_LOGE(TAG, "ERROR: twai_driver_uninstall() failed with %s", esp_err_to_name(err));
@@ -338,13 +338,13 @@ void sendCanCommands()
         return result;
     };
 
-    const bool swap = configs.controllerHardware.swapFrontBack.value;
+    const bool swap = configs.controllerHardware.swapFrontBack.value();
     const Controller *front =
-            (swap ? configs.controllerHardware.sendBackCanCmd.value : configs.controllerHardware.sendFrontCanCmd.value ) ?
+            (swap ? configs.controllerHardware.sendBackCanCmd.value() : configs.controllerHardware.sendFrontCanCmd.value() ) ?
             (swap ? &controllers.back : &controllers.front) :
             nullptr;
     const Controller *back =
-            (swap ? configs.controllerHardware.sendFrontCanCmd.value : configs.controllerHardware.sendBackCanCmd.value ) ?
+            (swap ? configs.controllerHardware.sendFrontCanCmd.value() : configs.controllerHardware.sendBackCanCmd.value() ) ?
             (swap ? &controllers.front : &controllers.back) :
             nullptr;
 

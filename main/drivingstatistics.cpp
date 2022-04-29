@@ -74,10 +74,10 @@ void calculateStatistics()
 {
     static bool saveTotal = false;
 
-    if ((configs.savedStatistics.totalCentimeters.value / 100.f) > drivingStatistics.totalMeters)
+    if ((configs.savedStatistics.totalCentimeters.value() / 100.f) > drivingStatistics.totalMeters)
     {
-        drivingStatistics.totalMeters = configs.savedStatistics.totalCentimeters.value / 100.f;
-        drivingStatistics.last_cm_written = configs.savedStatistics.totalCentimeters.value;
+        drivingStatistics.totalMeters = configs.savedStatistics.totalCentimeters.value() / 100.f;
+        drivingStatistics.last_cm_written = configs.savedStatistics.totalCentimeters.value();
     }
 
     static auto last_km_calculation = espchrono::millis_clock::now();

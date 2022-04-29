@@ -24,7 +24,7 @@ void init_dns_announce()
 
 void handle_dns_announce()
 {
-    if (!configs.feature.dnsannounce.isEnabled.value || !configs.dns_announce_enabled.value)
+    if (!configs.feature.dnsannounce.isEnabled.value() || !configs.dns_announce_enabled.value())
         return;
 
     if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::CONNECTED)
@@ -50,7 +50,7 @@ void handle_dns_announce()
                 {
                     dns_lastIpAddress_v4 = curIpAddress;
                     ip_addr_t tmpIpResolved;
-                    std::string toLookup = fmt::format("{}__{}.{}.announce.bobbycar.cloud", randDNSName, curIpAddress, configs.otaUsername.value);
+                    std::string toLookup = fmt::format("{}__{}.{}.announce.bobbycar.cloud", randDNSName, curIpAddress, configs.otaUsername.value());
                     ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
                     if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
                     {
@@ -76,7 +76,7 @@ void handle_dns_announce()
             {
                 dns_lastIpAddress_v6 = curIpV6Address;
                 ip_addr_t tmpIpResolved;
-                std::string toLookup = fmt::format("{}__{}.{}.announce6.bobbycar.cloud", randDNSName, curIpV6Address, configs.otaUsername.value);
+                std::string toLookup = fmt::format("{}__{}.{}.announce6.bobbycar.cloud", randDNSName, curIpV6Address, configs.otaUsername.value());
                 ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
                 if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
                 {
@@ -96,7 +96,7 @@ void handle_dns_announce()
                 dns_lastIpAddress_v6_global = curIpV6Address;
                 std::replace(curIpV6Address.begin(), curIpV6Address.end(), ':', '-');
                 ip_addr_t tmpIpResolved;
-                std::string toLookup = fmt::format("{}global__{}.{}.announce6.bobbycar.cloud", randDNSName, curIpV6Address, configs.otaUsername.value);
+                std::string toLookup = fmt::format("{}global__{}.{}.announce6.bobbycar.cloud", randDNSName, curIpV6Address, configs.otaUsername.value());
                 ESP_LOGI("BOBBY", "Trying to look up %s", toLookup.c_str());
                 if (const auto err = dns_gethostbyname(toLookup.c_str(), &tmpIpResolved, NULL, NULL); err != ERR_OK && err != ERR_INPROGRESS)
                 {

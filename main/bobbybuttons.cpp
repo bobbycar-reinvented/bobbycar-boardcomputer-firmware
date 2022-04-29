@@ -23,29 +23,29 @@ constexpr const char TAG[] = "BUTTONS";
         return std::nullopt;
 
     using espgui::Button;
-    if (configs.dpadMappingLeft.value == button)
+    if (configs.dpadMappingLeft.value() == button)
         return Button::Left;
-    if (configs.dpadMappingRight.value == button)
+    if (configs.dpadMappingRight.value() == button)
         return Button::Right;
-    if (configs.dpadMappingUp.value == button)
+    if (configs.dpadMappingUp.value() == button)
         return Button::Up;
-    if (configs.dpadMappingDown.value == button)
+    if (configs.dpadMappingDown.value() == button)
         return Button::Down;
-    if (configs.dpadMappingProfile0.value == button)
+    if (configs.dpadMappingProfile0.value() == button)
         return Button(BobbyButton::Profile0);
-    if (configs.dpadMappingProfile1.value == button)
+    if (configs.dpadMappingProfile1.value() == button)
         return Button(BobbyButton::Profile1);
-    if (configs.dpadMappingProfile2.value == button)
+    if (configs.dpadMappingProfile2.value() == button)
         return Button(BobbyButton::Profile2);
-    if (configs.dpadMappingProfile3.value == button)
+    if (configs.dpadMappingProfile3.value() == button)
         return Button(BobbyButton::Profile3);
-    if (configs.dpadMappingLeft2.value == button)
+    if (configs.dpadMappingLeft2.value() == button)
         return Button(BobbyButton::Left2);
-    if (configs.dpadMappingRight2.value == button)
+    if (configs.dpadMappingRight2.value() == button)
         return Button(BobbyButton::Right2);
-    if (configs.dpadMappingUp2.value == button)
+    if (configs.dpadMappingUp2.value() == button)
         return Button(BobbyButton::Up2);
-    if (configs.dpadMappingDown2.value == button)
+    if (configs.dpadMappingDown2.value() == button)
         return Button(BobbyButton::Down2);
     if (configs.dpadMappingExtra1.value == button)
         return Button(BobbyButton::Extra1);

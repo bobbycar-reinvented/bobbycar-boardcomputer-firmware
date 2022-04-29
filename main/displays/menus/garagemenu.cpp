@@ -35,10 +35,10 @@ GarageMenu::GarageMenu()
     for (uint8_t index = 0; index < configs.wireless_door_configs.size(); index++)
     {
         const auto &wirelessDoor = configs.wireless_door_configs[index];
-        if (wirelessDoor.doorId.value.empty() || wirelessDoor.doorToken.value.empty())
+        if (wirelessDoor.doorId.value().empty() || wirelessDoor.doorToken.value().empty())
             continue;
         auto &menuitem = constructMenuItem<makeComponentArgs<MenuItem, SendEspNowMessageAction, ChangeableText>>(index);
-        menuitem.setTitle(wirelessDoor.doorId.value);
+        menuitem.setTitle(wirelessDoor.doorId.value());
     }
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
@@ -57,7 +57,7 @@ void GarageMenu::back()
 namespace {
 void SendEspNowMessageAction::triggered()
 {
-    if (const auto error = espnow::send_espnow_message(fmt::format("BOBBYOPEN:{}:{}", configs.wireless_door_configs[m_index].doorId.value, configs.wireless_door_configs[m_index].doorToken.value)); error != ESP_OK)
+    if (const auto error = espnow::send_espnow_message(fmt::format("BOBBYOPEN:{}:{}", configs.wireless_door_configs[m_index].doorId.value(), configs.wireless_door_configs[m_index].doorToken.value())); error != ESP_OK)
     {
         ESP_LOGE("BOBBY", "send_espnow_message() failed with: %s", esp_err_to_name(error));
         return;

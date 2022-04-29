@@ -138,7 +138,7 @@ std::string WifiStaScanMenuItem::text() const
                 connected = true;
 
     const bool configured = std::any_of(std::begin(configs.wifi_configs), std::end(configs.wifi_configs),
-                                        [&ssid](const WiFiConfig &config){ return cpputils::stringEqualsIgnoreCase(config.ssid.value, ssid); });
+                                        [&ssid](const WiFiConfig &config){ return cpputils::stringEqualsIgnoreCase(config.ssid.value(), ssid); });
 
     return fmt::format("&s{}{} {}&f{}",
                        rssiToColor(m_info.rssi),

@@ -20,7 +20,7 @@ bool isValid1stPin(std::array<int8_t, 4> enteredPin)
     return std::equal(std::cbegin(enteredPin), std::cend(enteredPin),
                       std::cbegin(configs.lockscreen.pin), std::cend(configs.lockscreen.pin),
                       [](const int8_t digit, const auto &configuredDigit){
-                          return digit == configuredDigit.value;
+                          return digit == configuredDigit.value();
                       });
 }
 
@@ -29,7 +29,7 @@ bool isValid2ndPin(std::array<int8_t, 4> enteredPin)
     return std::equal(std::cbegin(enteredPin), std::cend(enteredPin),
                       std::cbegin(configs.lockscreen.pin2), std::cend(configs.lockscreen.pin2),
                       [](const int8_t digit, const auto &configuredDigit){
-                          return digit == configuredDigit.value;
+                          return digit == configuredDigit.value();
                       });
 }
 } // namespace
@@ -47,7 +47,7 @@ void Lockscreen::start()
     currentMode = &m_mode;
 
     isLocked = true;
-    if (configs.lockscreen.keepLockedAfterReboot.value && !configs.lockscreen.locked.value)
+    if (configs.lockscreen.keepLockedAfterReboot.value() && !configs.lockscreen.locked.value())
     {
         configs.write_config(configs.lockscreen.locked, true);
     }
@@ -178,7 +178,7 @@ void Lockscreen::stop()
     isLocked = false;
     if (!(!gas || !brems || *gas > 200.f || *brems > 200.f))
     {
-        if (configs.lockscreen.keepLockedAfterReboot.value && configs.lockscreen.locked.value)
+        if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
         {
             configs.write_config(configs.lockscreen.locked, false);
         }
@@ -187,7 +187,7 @@ void Lockscreen::stop()
 
 void Lockscreen::buttonPressed(espgui::Button button)
 {
-    if (configs.lockscreen.allowPresetSwitch.value ||
+    if (configs.lockscreen.allowPresetSwitch.value() ||
         !cpputils::is_in(button, BobbyButton::Profile0, BobbyButton::Profile1, BobbyButton::Profile2, BobbyButton::Profile3))
     Base::buttonPressed(button);
 

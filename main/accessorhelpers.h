@@ -32,7 +32,7 @@ struct NewSettingsAccessor : public virtual espgui::AccessorInterface<T>
 
     T getValue() const override
     {
-        return getConfig().value;
+        return getConfig().value();
     }
 
     typename espgui::AccessorInterface<T>::setter_result_t setValue(T value) override
@@ -51,7 +51,7 @@ struct NewSettingsChronoAdaptorAccessor<espchrono::minutes32> : public virtual e
 
     int32_t getValue() const override
     {
-        return getConfig().value.count();
+        return getConfig().value().count();
     }
 
     typename espgui::AccessorInterface<int32_t>::setter_result_t setValue(int32_t value) override
@@ -67,7 +67,7 @@ struct NewSettingsChronoAdaptorAccessor<espchrono::milliseconds32> : public virt
 
     int32_t getValue() const override
     {
-        return getConfig().value.count();
+        return getConfig().value().count();
     }
 
     typename espgui::AccessorInterface<int32_t>::setter_result_t setValue(int32_t value) override

@@ -33,8 +33,8 @@ void WheelchairMode::update()
     }
     else
     {
-        const int16_t left_right = configs.gasMin.value == configs.gasMax.value ? 0 : *gas;
-        const int16_t front_back = configs.bremsMin.value == configs.bremsMax.value ? 0 : -*brems;
+        const int16_t left_right = configs.gasMin.value() == configs.gasMax.value() ? 0 : *gas;
+        const int16_t front_back = configs.bremsMin.value() == configs.bremsMax.value() ? 0 : -*brems;
 
         float local_gas = 0;
         float local_brems = 0;
@@ -69,7 +69,7 @@ void WheelchairMode::update()
 
         float pwm;
 
-        if (configs.handbremse.enable.value && handbremse::stateWish == handbremse::StateWish::brake)
+        if (configs.handbremse.enable.value() && handbremse::stateWish == handbremse::StateWish::brake)
         {
             using namespace handbremse;
 
@@ -82,7 +82,7 @@ void WheelchairMode::update()
             }
         }
 
-        if (configs.handbremse.enable.value && configs.handbremse.automatic.value && !handbremse::angezogen)
+        if (configs.handbremse.enable.value() && configs.handbremse.automatic.value() && !handbremse::angezogen)
         {
             using namespace handbremse;
             const auto speed = abs(avgSpeedKmh);
@@ -98,7 +98,7 @@ void WheelchairMode::update()
                 standStillFirstDetected = std::nullopt;
 
             if (standStillFirstDetected && lastAutoRelease)
-                if (espchrono::ago(*standStillFirstDetected) > 100ms * configs.handbremse.triggerTimeout.value && espchrono::ago(*lastAutoRelease) > 5s )
+                if (espchrono::ago(*standStillFirstDetected) > 100ms * configs.handbremse.triggerTimeout.value() && espchrono::ago(*lastAutoRelease) > 5s )
                 {
                     angezogen = true;
                 }
@@ -162,7 +162,7 @@ void WheelchairMode::update()
                 for (bobbycar::protocol::serial::MotorState &motor : motors())
                 {
                     motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
-                    switch (configs.handbremse.mode.value)
+                    switch (configs.handbremse.mode.value())
                     {
                     case HandbremseMode::MOSFETS_OFF:
                         motor.ctrlMod = bobbycar::protocol::ControlMode::Torque;

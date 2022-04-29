@@ -255,9 +255,9 @@ void ExtraButtonCalibrateMenu::back()
 bool ExtraButtonCalibrateMenu::validateNewButton(uint8_t button)
 {
     return (
-            (button != configs.dpadMappingDown.value) &&
-            (button != configs.dpadMappingUp.value) &&
-            (button != configs.dpadMappingLeft.value) &&
-            (button != configs.dpadMappingRight.value)
+            (button != configs.dpadMappingDown.value()) &&
+            (button != configs.dpadMappingUp.value()) &&
+            (button != configs.dpadMappingLeft.value()) &&
+            (button != configs.dpadMappingRight.value())
     );
 }

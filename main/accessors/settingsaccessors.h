@@ -68,7 +68,7 @@ struct BackRightInvertedAccessor : public RefAccessorSaveSettings<bool> { bool &
 struct WheelDiameterMmAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.controllerHardware.wheelDiameter; } };
 struct WheelDiameterInchAccessor : public virtual espgui::AccessorInterface<float>
 {
-    float getValue() const override { return convertToInch(configs.controllerHardware.wheelDiameter.value); }
+    float getValue() const override { return convertToInch(configs.controllerHardware.wheelDiameter.value()); }
     espgui::AccessorInterface<int16_t>::setter_result_t setValue(float value) override
     {
 //        profileSettings.controllerHardware.wheelDiameter = convertFromInch(value);
@@ -80,7 +80,7 @@ struct WheelDiameterInchAccessor : public virtual espgui::AccessorInterface<floa
 };
 struct NumMagnetPolesAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.controllerHardware.numMagnetPoles; } };
 struct SwapFrontBackAccessor : public virtual espgui::AccessorInterface<bool> {
-    bool getValue() const override { return configs.controllerHardware.swapFrontBack.value; }
+    bool getValue() const override { return configs.controllerHardware.swapFrontBack.value(); }
     setter_result_t setValue(bool value) override
     {
         const auto err = configs.write_config(configs.controllerHardware.swapFrontBack, value);
@@ -175,7 +175,7 @@ struct LedStripMaxAmpereAccessor : public virtual espgui::AccessorInterface<floa
 {
     float getValue() const override
     {
-        return configs.ledstrip.maxMilliamps.value / 1000.f;
+        return configs.ledstrip.maxMilliamps.value() / 1000.f;
     }
 
     espgui::AccessorInterface<float>::setter_result_t setValue(float value) override

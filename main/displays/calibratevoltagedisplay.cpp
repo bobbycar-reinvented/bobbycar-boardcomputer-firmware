@@ -72,7 +72,7 @@ class BatteryVoltageCalibrationFront30VText : public virtual espgui::TextInterfa
 public:
     std::string text() const override
     {
-        return fmt::format("30V Front: {}", convertToFloat(configs.battery.front30VoltCalibration.value));
+        return fmt::format("30V Front: {}", convertToFloat(configs.battery.front30VoltCalibration.value()));
     }
 };
 
@@ -81,7 +81,7 @@ class BatteryVoltageCalibrationBack30VText : public virtual espgui::TextInterfac
 public:
     std::string text() const override
     {
-        return fmt::format("30V Back: {}", convertToFloat(configs.battery.back30VoltCalibration.value));
+        return fmt::format("30V Back: {}", convertToFloat(configs.battery.back30VoltCalibration.value()));
     }
 };
 
@@ -90,7 +90,7 @@ class BatteryVoltageCalibrationFront50VText : public virtual espgui::TextInterfa
 public:
     std::string text() const override
     {
-        return fmt::format("50V Front: {}", convertToFloat(configs.battery.front50VoltCalibration.value));
+        return fmt::format("50V Front: {}", convertToFloat(configs.battery.front50VoltCalibration.value()));
     }
 };
 
@@ -99,7 +99,7 @@ class BatteryVoltageCalibrationBack50VText : public virtual espgui::TextInterfac
 public:
     std::string text() const override
     {
-        return fmt::format("50V Back: {}", convertToFloat(configs.battery.back50VoltCalibration.value));
+        return fmt::format("50V Back: {}", convertToFloat(configs.battery.back50VoltCalibration.value()));
     }
 };
 
@@ -108,7 +108,7 @@ class BatteryVoltageCalibratedText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        if (configs.battery.applyCalibration.value)
+        if (configs.battery.applyCalibration.value())
             return fmt::format("F{:.2f}V B{:.2f}", controllers.front.getCalibratedVoltage(), controllers.back.getCalibratedVoltage());
         else
             return "Not activated";

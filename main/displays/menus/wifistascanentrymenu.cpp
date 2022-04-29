@@ -51,7 +51,7 @@ WifiStaScanEntryMenu::WifiStaScanEntryMenu(const wifi_ap_record_t &info) :
 {
     const std::string_view ssid{reinterpret_cast<const char*>(m_info.ssid)};
     const bool configured = std::any_of(std::begin(configs.wifi_configs), std::end(configs.wifi_configs),
-                                        [&ssid](const WiFiConfig &config){ return cpputils::stringEqualsIgnoreCase(config.ssid.value, ssid); });
+                                        [&ssid](const WiFiConfig &config){ return cpputils::stringEqualsIgnoreCase(config.ssid.value(), ssid); });
 
     constructMenuItem<makeComponentArgs<MenuItem, ChangeableText, DummyAction>>(fmt::format("&sssid: &f{}{}", configured?"&4":"", richTextEscape(ssid)));
     constructMenuItem<makeComponentArgs<MenuItem, ChangeableText, DummyAction>>(fmt::format("&sconfigured: &f{}{}", configured?"&2":"&1", configured?"yes":"no"));
@@ -116,7 +116,7 @@ namespace {
 void SaveNewWifiConfigAction::triggered()
 {
     const auto iter = std::find_if(std::begin(configs.wifi_configs), std::end(configs.wifi_configs),
-                                   [](const WiFiConfig &config){ return config.ssid.value.empty() && config.key.value.empty(); });
+                                   [](const WiFiConfig &config){ return config.ssid.value().empty() && config.key.value().empty(); });
     if (iter == std::end(configs.wifi_configs))
     {
         ESP_LOGE(TAG, "no free wifi config slot found!");

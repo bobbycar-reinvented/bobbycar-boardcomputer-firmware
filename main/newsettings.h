@@ -34,6 +34,103 @@ std::string defaultHostname();
 
 constexpr const auto INPUT_MAPPING_NONE = std::numeric_limits<uint8_t>::max();
 
+enum class AllowReset { NoReset, DoReset };
+constexpr auto NoReset = AllowReset::NoReset;
+constexpr auto DoReset = AllowReset::DoReset;
+
+template<typename T>
+class ConfigWrapperLegacy final : public ConfigWrapper<T>
+{
+    CPP_DISABLE_COPY_MOVE(ConfigWrapperLegacy)
+    using Base = ConfigWrapper<T>;
+
+public:
+    using value_t = typename Base::value_t;
+    using ConstraintCallback = typename Base::ConstraintCallback;
+
+    using DefaultValueCallbackRef = T(&)();
+    using DefaultValueCallbackPtr = T(*)();
+
+    ConfigWrapperLegacy(const T &defaultValue, AllowReset allowReset, ConstraintCallback constraintCallback, const char *nvsName) :
+            m_allowReset{allowReset == AllowReset::DoReset},
+            m_nvsName{nvsName},
+            m_defaultType{DefaultByValue},
+            m_defaultValue{defaultValue},
+            m_constraintCallback{constraintCallback}
+    {}
+
+    ConfigWrapperLegacy(T &&defaultValue, AllowReset allowReset, ConstraintCallback constraintCallback, const char *nvsName) :
+            m_allowReset{allowReset == AllowReset::DoReset},
+            m_nvsName{nvsName},
+            m_defaultType{DefaultByValue},
+            m_defaultValue{std::move(defaultValue)},
+            m_constraintCallback{constraintCallback}
+    {}
+
+    ConfigWrapperLegacy(const ConfigWrapper<T> &factoryConfig, ConstraintCallback constraintCallback, const char *nvsName) :
+            m_allowReset{true},
+            m_nvsName{nvsName},
+            m_defaultType{DefaultByFactoryConfig},
+            m_factoryConfig{&factoryConfig},
+            m_constraintCallback{constraintCallback}
+    {}
+
+    ConfigWrapperLegacy(const DefaultValueCallbackRef &defaultCallback, AllowReset allowReset, ConstraintCallback constraintCallback, const char *nvsName) :
+            m_allowReset{allowReset == AllowReset::DoReset},
+            m_nvsName{nvsName},
+            m_defaultType{DefaultByCallback},
+            m_defaultCallback{&defaultCallback},
+            m_constraintCallback{constraintCallback}
+    {}
+
+    ~ConfigWrapperLegacy()
+    {
+        switch (m_defaultType)
+        {
+            case DefaultByValue:         m_defaultValue.~T(); break;
+            case DefaultByFactoryConfig: /*m_factoryConfig.~typeof(m_factoryConfig)();*/ break;
+            case DefaultByCallback:      /*m_defaultCallback.~typeof(m_defaultCallback)();*/ break;
+        }
+    }
+
+    const char *nvsName() const override final { return m_nvsName; }
+    bool allowReset() const override final { return m_allowReset; }
+    T defaultValue() const override final
+    {
+        switch (m_defaultType)
+        {
+            case DefaultByValue:         return m_defaultValue;
+            case DefaultByFactoryConfig: assert(m_factoryConfig->loaded()); return m_factoryConfig->value();
+            case DefaultByCallback:      return m_defaultCallback();
+        }
+
+        __builtin_unreachable();
+    }
+
+    ConfigConstraintReturnType checkValue(value_t value) const override final
+    {
+        if (!m_constraintCallback)
+            return {};
+
+        return m_constraintCallback(value);
+    }
+
+private:
+    const bool m_allowReset;
+    const char * const m_nvsName;
+
+    const enum : uint8_t { DefaultByValue, DefaultByFactoryConfig, DefaultByCallback } m_defaultType;
+
+    union
+    {
+        const T m_defaultValue;
+        const ConfigWrapper<T> * const m_factoryConfig;
+        const DefaultValueCallbackPtr m_defaultCallback;
+    };
+
+    const ConstraintCallback m_constraintCallback;
+};
+
 class WiFiConfig
 {
 public:
@@ -67,16 +164,16 @@ public:
         staticDns2   {wifi_stack::ip_address_t{}, DoReset, {},                                             staticDns2Key      }
     {}
 
-    ConfigWrapper<std::string> ssid;
-    ConfigWrapper<std::string> key;
-    ConfigWrapper<bool> useStaticIp;
-    ConfigWrapper<wifi_stack::ip_address_t> staticIp;
-    ConfigWrapper<wifi_stack::ip_address_t> staticSubnet;
-    ConfigWrapper<wifi_stack::ip_address_t> staticGateway;
-    ConfigWrapper<bool> useStaticDns;
-    ConfigWrapper<wifi_stack::ip_address_t> staticDns0;
-    ConfigWrapper<wifi_stack::ip_address_t> staticDns1;
-    ConfigWrapper<wifi_stack::ip_address_t> staticDns2;
+    ConfigWrapperLegacy<std::string> ssid;
+    ConfigWrapperLegacy<std::string> key;
+    ConfigWrapperLegacy<bool> useStaticIp;
+    ConfigWrapperLegacy<wifi_stack::ip_address_t> staticIp;
+    ConfigWrapperLegacy<wifi_stack::ip_address_t> staticSubnet;
+    ConfigWrapperLegacy<wifi_stack::ip_address_t> staticGateway;
+    ConfigWrapperLegacy<bool> useStaticDns;
+    ConfigWrapperLegacy<wifi_stack::ip_address_t> staticDns0;
+    ConfigWrapperLegacy<wifi_stack::ip_address_t> staticDns1;
+    ConfigWrapperLegacy<wifi_stack::ip_address_t> staticDns2;
 };
 
 class WirelessDoorsConfig
@@ -87,8 +184,8 @@ public:
         doorToken {std::string{}, DoReset, StringMaxSize<24>, doorTokenKey }
     {}
 
-    ConfigWrapper<std::string> doorId;
-    ConfigWrapper<std::string> doorToken;
+    ConfigWrapperLegacy<std::string> doorId;
+    ConfigWrapperLegacy<std::string> doorToken;
 };
 
 class ConfiguredOtaServer
@@ -99,8 +196,8 @@ public:
         url {std::string{}, DoReset, StringOr<StringEmpty, StringValidUrl>, urlKey  }
     {}
 
-    ConfigWrapper<std::string> name;
-    ConfigWrapper<std::string> url;
+    ConfigWrapperLegacy<std::string> name;
+    ConfigWrapperLegacy<std::string> url;
 };
 
 class ConfiguredFeatureFlag
@@ -112,7 +209,7 @@ public:
             m_taskName{taskName}
     {}
 
-    ConfigWrapper<bool> isEnabled;
+    ConfigWrapperLegacy<bool> isEnabled;
     bool isBeta() const { return m_isBeta; }
     std::string getTaskName() const { return m_taskName; }
 private:
@@ -126,9 +223,9 @@ class ConfigContainer
 
 public:
     //                                            default                                 allowReset constraints                    nvsName
-    ConfigWrapper<std::optional<mac_t>> baseMacAddressOverride{std::nullopt,              DoReset,   {},                            "baseMacAddrOver"     };
-    ConfigWrapper<std::string> hostname           {defaultHostname,                       DoReset,   StringMinMaxSize<4, 32>,       "hostname"            };
-    ConfigWrapper<bool>        wifiStaEnabled     {true,                                  DoReset,   {},                            "wifiStaEnabled"      };
+    ConfigWrapperLegacy<std::optional<mac_t>> baseMacAddressOverride{std::nullopt,              DoReset,   {},                            "baseMacAddrOver"     };
+    ConfigWrapperLegacy<std::string> hostname           {defaultHostname,                       DoReset,   StringMinMaxSize<4, 32>,       "hostname"            };
+    ConfigWrapperLegacy<bool>        wifiStaEnabled     {true,                                  DoReset,   {},                            "wifiStaEnabled"      };
     std::array<WiFiConfig, 10> wifi_configs {
         WiFiConfig {"wifi_ssid0", "wifi_key0", "wifi_usestatic0", "wifi_static_ip0", "wifi_stati_sub0", "wifi_stat_gate0", "wifi_usestadns0", "wifi_stat_dnsA0", "wifi_stat_dnsB0", "wifi_stat_dnsC0", "bobbycar", "12345678"},
         WiFiConfig {"wifi_ssid1", "wifi_key1", "wifi_usestatic1", "wifi_static_ip1", "wifi_stati_sub1", "wifi_stat_gate1", "wifi_usestadns1", "wifi_stat_dnsA1", "wifi_stat_dnsB1", "wifi_stat_dnsC1"},
@@ -141,37 +238,37 @@ public:
         WiFiConfig {"wifi_ssid8", "wifi_key8", "wifi_usestatic8", "wifi_static_ip8", "wifi_stati_sub8", "wifi_stat_gate8", "wifi_usestadns8", "wifi_stat_dnsA8", "wifi_stat_dnsB8", "wifi_stat_dnsC8"},
         WiFiConfig {"wifi_ssid9", "wifi_key9", "wifi_usestatic9", "wifi_static_ip9", "wifi_stati_sub9", "wifi_stat_gate9", "wifi_usestadns9", "wifi_stat_dnsA9", "wifi_stat_dnsB9", "wifi_stat_dnsC9"}
     };
-    ConfigWrapper<int8_t>      wifiStaMinRssi     {-90,                                    DoReset,   {},                           "wifiStaMinRssi"      };
+    ConfigWrapperLegacy<int8_t>      wifiStaMinRssi     {-90,                                    DoReset,   {},                           "wifiStaMinRssi"      };
 
-    ConfigWrapper<bool>        wifiApEnabled      {true,                                   DoReset,   {},                           "wifiApEnabled"       };
-    ConfigWrapper<std::string> wifiApName         {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,      "wifiApName"          };
-    ConfigWrapper<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey" };
-    ConfigWrapper<wifi_stack::ip_address_t> wifiApIp{wifi_stack::ip_address_t{10, 0, 0, 1},DoReset,   {},                           "wifiApIp"            };
-    ConfigWrapper<wifi_stack::ip_address_t> wifiApMask{wifi_stack::ip_address_t{255, 255, 255, 0},DoReset, {},                      "wifiApMask"          };
-    ConfigWrapper<uint8_t>     wifiApChannel      {1,                                      DoReset,   MinMaxValue<uint8_t, 1, 14>,  "wifiApChannel"       };
-    ConfigWrapper<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                           "wifiApAuthmode"      };
+    ConfigWrapperLegacy<bool>        wifiApEnabled      {true,                                   DoReset,   {},                           "wifiApEnabled"       };
+    ConfigWrapperLegacy<std::string> wifiApName         {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,      "wifiApName"          };
+    ConfigWrapperLegacy<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey" };
+    ConfigWrapperLegacy<wifi_stack::ip_address_t> wifiApIp{wifi_stack::ip_address_t{10, 0, 0, 1},DoReset,   {},                           "wifiApIp"            };
+    ConfigWrapperLegacy<wifi_stack::ip_address_t> wifiApMask{wifi_stack::ip_address_t{255, 255, 255, 0},DoReset, {},                      "wifiApMask"          };
+    ConfigWrapperLegacy<uint8_t>     wifiApChannel      {1,                                      DoReset,   MinMaxValue<uint8_t, 1, 14>,  "wifiApChannel"       };
+    ConfigWrapperLegacy<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                           "wifiApAuthmode"      };
 
-    ConfigWrapper<bool>     timeServerEnabled     {true,                                   DoReset,   {},                           "timeServerEnabl"     };
-    ConfigWrapper<std::string>   timeServer       {"europe.pool.ntp.org",                  DoReset,   StringMaxSize<64>,            "timeServer"          };
-    ConfigWrapper<sntp_sync_mode_t> timeSyncMode  {SNTP_SYNC_MODE_IMMED,                   DoReset,   {},                           "timeSyncMode"        };
-    ConfigWrapper<espchrono::milliseconds32> timeSyncInterval{espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY}, DoReset, MinTimeSyncInterval, "timeSyncInterva" };
-    ConfigWrapper<espchrono::minutes32> timezoneOffset{espchrono::minutes32{60},           DoReset,   {},                           "timezoneOffset"      }; // MinMaxValue<minutes32, -1440m, 1440m>
-    ConfigWrapper<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},             "time_dst"            };
+    ConfigWrapperLegacy<bool>     timeServerEnabled     {true,                                   DoReset,   {},                           "timeServerEnabl"     };
+    ConfigWrapperLegacy<std::string>   timeServer       {"europe.pool.ntp.org",                  DoReset,   StringMaxSize<64>,            "timeServer"          };
+    ConfigWrapperLegacy<sntp_sync_mode_t> timeSyncMode  {SNTP_SYNC_MODE_IMMED,                   DoReset,   {},                           "timeSyncMode"        };
+    ConfigWrapperLegacy<espchrono::milliseconds32> timeSyncInterval{espchrono::milliseconds32{CONFIG_LWIP_SNTP_UPDATE_DELAY}, DoReset, MinTimeSyncInterval, "timeSyncInterva" };
+    ConfigWrapperLegacy<espchrono::minutes32> timezoneOffset{espchrono::minutes32{60},           DoReset,   {},                           "timezoneOffset"      }; // MinMaxValue<minutes32, -1440m, 1440m>
+    ConfigWrapperLegacy<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},             "time_dst"            };
 
-    ConfigWrapper<bool>           canResetOnError {false,                                  DoReset,   {},                           "canBusRstErr"        };
-    ConfigWrapper<bool>       canUninstallOnReset {false,                                  DoReset,   {},                           "canUnstlRstErr"      };
+    ConfigWrapperLegacy<bool>           canResetOnError {false,                                  DoReset,   {},                           "canBusRstErr"        };
+    ConfigWrapperLegacy<bool>       canUninstallOnReset {false,                                  DoReset,   {},                           "canUnstlRstErr"      };
 
-    ConfigWrapper<int16_t>     sampleCount        {50,                                     DoReset,   {},                           "sampleCount"         };
-    ConfigWrapper<int16_t>     gasMin             {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMin"              };
-    ConfigWrapper<int16_t>     gasMax             {4095,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMax"              };
-    ConfigWrapper<int16_t>     gasMitte           {2048,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMiddle"           };
-    ConfigWrapper<int16_t>     bremsMin           {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMin"            };
-    ConfigWrapper<int16_t>     bremsMax           {4096,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMax"            };
-    ConfigWrapper<int16_t>     bremsMitte         {2048,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMiddle"         };
-    ConfigWrapper<uint16_t>    deadband           {20,                                     DoReset,  MinMaxValue<uint16_t, 0, 4095>,"deadband"            };
+    ConfigWrapperLegacy<int16_t>     sampleCount        {50,                                     DoReset,   {},                           "sampleCount"         };
+    ConfigWrapperLegacy<int16_t>     gasMin             {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMin"              };
+    ConfigWrapperLegacy<int16_t>     gasMax             {4095,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMax"              };
+    ConfigWrapperLegacy<int16_t>     gasMitte           {2048,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMiddle"           };
+    ConfigWrapperLegacy<int16_t>     bremsMin           {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMin"            };
+    ConfigWrapperLegacy<int16_t>     bremsMax           {4096,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMax"            };
+    ConfigWrapperLegacy<int16_t>     bremsMitte         {2048,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMiddle"         };
+    ConfigWrapperLegacy<uint16_t>    deadband           {20,                                     DoReset,  MinMaxValue<uint16_t, 0, 4095>,"deadband"            };
 
-    ConfigWrapper<uint8_t>     dpadDebounce       {25,                                     DoReset,   {},                           "dpadDebounce"        };
-    ConfigWrapper<uint16_t>    buttonReadDelay    {1,                                      DoReset,   {},                           "buttonDelay"         };
+    ConfigWrapperLegacy<uint8_t>     dpadDebounce       {25,                                     DoReset,   {},                           "dpadDebounce"        };
+    ConfigWrapperLegacy<uint16_t>    buttonReadDelay    {1,                                      DoReset,   {},                           "buttonDelay"         };
 
     ConfigWrapper<uint8_t>     dpadMappingLeft    {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapLeft"         };
     ConfigWrapper<uint8_t>     dpadMappingRight   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight"        };
@@ -207,21 +304,21 @@ public:
         WirelessDoorsConfig { "door_id4", "door_token4" }
     };
 
-    ConfigWrapper<std::string> bluetoothName      {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "bluetoothName"       };
+    ConfigWrapperLegacy<std::string> bluetoothName      {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "bluetoothName"       };
 
-    ConfigWrapper<bool>        reverseBeep        {false,                                  DoReset,   {},                         "reverseBeep"         };
-    ConfigWrapper<uint8_t>     reverseBeepFreq0   {3,                                      DoReset,   {},                         "revBeepFreq0"        };
-    ConfigWrapper<uint8_t>     reverseBeepFreq1   {0,                                      DoReset,   {},                         "revBeepFreq1"        };
-    ConfigWrapper<int16_t>     reverseBeepDuration0{500,                                   DoReset,   {},                         "revBeepDur0"         };
-    ConfigWrapper<int16_t>     reverseBeepDuration1{500,                                   DoReset,   {},                         "revBeepDur1"         };
+    ConfigWrapperLegacy<bool>        reverseBeep        {false,                                  DoReset,   {},                         "reverseBeep"         };
+    ConfigWrapperLegacy<uint8_t>     reverseBeepFreq0   {3,                                      DoReset,   {},                         "revBeepFreq0"        };
+    ConfigWrapperLegacy<uint8_t>     reverseBeepFreq1   {0,                                      DoReset,   {},                         "revBeepFreq1"        };
+    ConfigWrapperLegacy<int16_t>     reverseBeepDuration0{500,                                   DoReset,   {},                         "revBeepDur0"         };
+    ConfigWrapperLegacy<int16_t>     reverseBeepDuration1{500,                                   DoReset,   {},                         "revBeepDur1"         };
 
-    ConfigWrapper<std::string> cloudUrl           {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "cloudUrl" };
-    ConfigWrapper<std::string> udpCloudHost       {std::string{},                          DoReset,   {},                         "udpCloudHost"        };
+    ConfigWrapperLegacy<std::string> cloudUrl           {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "cloudUrl" };
+    ConfigWrapperLegacy<std::string> udpCloudHost       {std::string{},                          DoReset,   {},                         "udpCloudHost"        };
 
-    ConfigWrapper<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
-    ConfigWrapper<std::string> otaUsername        {std::string{},                          DoReset,   {},                         "otaUsername"         };
-    ConfigWrapper<std::string> otaServerUrl       {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaServerUrl" };
-    ConfigWrapper<std::string> otaServerBranch    {std::string{},                          DoReset,   {},                         "otaServerBranch"     };
+    ConfigWrapperLegacy<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
+    ConfigWrapperLegacy<std::string> otaUsername        {std::string{},                          DoReset,   {},                         "otaUsername"         };
+    ConfigWrapperLegacy<std::string> otaServerUrl       {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaServerUrl" };
+    ConfigWrapperLegacy<std::string> otaServerBranch    {std::string{},                          DoReset,   {},                         "otaServerBranch"     };
     std::array<ConfiguredOtaServer, 5> otaServers {
         ConfiguredOtaServer { "otaName0", "otaUrl0" },
         ConfiguredOtaServer { "otaName1", "otaUrl1" },
@@ -230,127 +327,127 @@ public:
         ConfiguredOtaServer { "otaName4", "otaUrl4" }
     };
 
-    ConfigWrapper<bool>        dns_announce_enabled{true,                                  DoReset,   {},                         "dnsAnnounceEnab"     };
-    ConfigWrapper<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
-    ConfigWrapper<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
+    ConfigWrapperLegacy<bool>        dns_announce_enabled{true,                                  DoReset,   {},                         "dnsAnnounceEnab"     };
+    ConfigWrapperLegacy<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
+    ConfigWrapperLegacy<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
 
     struct {
-        ConfigWrapper<int16_t>  wheelDiameter     {DEFAULT_WHEELDIAMETER,                  DoReset,   {},                         "wheelDiameter"       };
-        ConfigWrapper<int16_t> numMagnetPoles     {15,                                     DoReset,   {},                         "numMagnetPoles"      };
-        ConfigWrapper<bool>     swapFrontBack     {false,                                  DoReset,   {},                         "swapFrontBack"       };
-        ConfigWrapper<bool>   sendFrontCanCmd     {true,                                   DoReset,   {},                         "sendFrontCanCmd"     };
-        ConfigWrapper<bool>    sendBackCanCmd     {true,                                   DoReset,   {},                         "sendBackCanCmd"      };
-        ConfigWrapper<int16_t> canTransmitTimeout {200,                                    DoReset,   {},                         "canTransmitTime"     };
-        ConfigWrapper<int16_t> canReceiveTimeout  {0,                                      DoReset,   {},                         "canReceiveTimeo"     };
+        ConfigWrapperLegacy<int16_t>  wheelDiameter     {DEFAULT_WHEELDIAMETER,                  DoReset,   {},                         "wheelDiameter"       };
+        ConfigWrapperLegacy<int16_t> numMagnetPoles     {15,                                     DoReset,   {},                         "numMagnetPoles"      };
+        ConfigWrapperLegacy<bool>     swapFrontBack     {false,                                  DoReset,   {},                         "swapFrontBack"       };
+        ConfigWrapperLegacy<bool>   sendFrontCanCmd     {true,                                   DoReset,   {},                         "sendFrontCanCmd"     };
+        ConfigWrapperLegacy<bool>    sendBackCanCmd     {true,                                   DoReset,   {},                         "sendBackCanCmd"      };
+        ConfigWrapperLegacy<int16_t> canTransmitTimeout {200,                                    DoReset,   {},                         "canTransmitTime"     };
+        ConfigWrapperLegacy<int16_t> canReceiveTimeout  {0,                                      DoReset,   {},                         "canReceiveTimeo"     };
     } controllerHardware;
 
     struct {
-        ConfigWrapper<int16_t> gametrakXMin       {0,                                      DoReset,   {},                         "gametrakXMin"        };
-        ConfigWrapper<int16_t> gametrakXMax       {4095,                                   DoReset,   {},                         "gametrakXMax"        };
-        ConfigWrapper<int16_t> gametrakYMin       {0,                                      DoReset,   {},                         "gametrakYMin"        };
-        ConfigWrapper<int16_t> gametrakYMax       {4095,                                   DoReset,   {},                         "gametrakYMax"        };
-        ConfigWrapper<int16_t> gametrakDistMin    {0,                                      DoReset,   {},                         "gametrakDistMin"     };
-        ConfigWrapper<int16_t> gametrakDistMax    {4095,                                   DoReset,   {},                         "gametrakDistMax"     };
+        ConfigWrapperLegacy<int16_t> gametrakXMin       {0,                                      DoReset,   {},                         "gametrakXMin"        };
+        ConfigWrapperLegacy<int16_t> gametrakXMax       {4095,                                   DoReset,   {},                         "gametrakXMax"        };
+        ConfigWrapperLegacy<int16_t> gametrakYMin       {0,                                      DoReset,   {},                         "gametrakYMin"        };
+        ConfigWrapperLegacy<int16_t> gametrakYMax       {4095,                                   DoReset,   {},                         "gametrakYMax"        };
+        ConfigWrapperLegacy<int16_t> gametrakDistMin    {0,                                      DoReset,   {},                         "gametrakDistMin"     };
+        ConfigWrapperLegacy<int16_t> gametrakDistMax    {4095,                                   DoReset,   {},                         "gametrakDistMax"     };
         struct {
-            ConfigWrapper<int16_t> statsUpdateRate{50,                                     DoReset,   {},                         "statsUpdateRate"     };
-            ConfigWrapper<int16_t> cloudCollectRate{100,                                   DoReset,   {},                         "cloudCollectRat"     };
-            ConfigWrapper<int16_t> cloudSendRate  {1,                                      DoReset,   {},                         "cloudSendRate"       };
-            ConfigWrapper<int16_t> udpSendRateMs  {65,                                     DoReset,   {},                         "udpSendRate"         };
+            ConfigWrapperLegacy<int16_t> statsUpdateRate{50,                                     DoReset,   {},                         "statsUpdateRate"     };
+            ConfigWrapperLegacy<int16_t> cloudCollectRate{100,                                   DoReset,   {},                         "cloudCollectRat"     };
+            ConfigWrapperLegacy<int16_t> cloudSendRate  {1,                                      DoReset,   {},                         "cloudSendRate"       };
+            ConfigWrapperLegacy<int16_t> udpSendRateMs  {65,                                     DoReset,   {},                         "udpSendRate"         };
         } timersSettings;
     } boardcomputerHardware;
 
     struct {
-        ConfigWrapper<bool> cloudEnabled          {false,                                  DoReset,   {},                         "cloudEnabled"        };
-        ConfigWrapper<int16_t> cloudTransmitTimeout{10,                                    DoReset,   {},                         "clodTransmTmout"     };
+        ConfigWrapperLegacy<bool> cloudEnabled          {false,                                  DoReset,   {},                         "cloudEnabled"        };
+        ConfigWrapperLegacy<int16_t> cloudTransmitTimeout{10,                                    DoReset,   {},                         "clodTransmTmout"     };
     } cloudSettings;
 
     struct {
-        ConfigWrapper<uint32_t> udpUid            {0,                                      DoReset,   {},                         "cloudUDPUid"         };
-        ConfigWrapper<bool> udpCloudEnabled       {false,                                  DoReset,   {},                         "enUdpCloud"          };
-        ConfigWrapper<bool> enableCloudDebug      {false,                                  DoReset,   {},                         "debugCloud"          };
-        ConfigWrapper<bool> udpUseStdString       {false,                                  DoReset,   {},                         "udpusestdstr"        };
+        ConfigWrapperLegacy<uint32_t> udpUid            {0,                                      DoReset,   {},                         "cloudUDPUid"         };
+        ConfigWrapperLegacy<bool> udpCloudEnabled       {false,                                  DoReset,   {},                         "enUdpCloud"          };
+        ConfigWrapperLegacy<bool> enableCloudDebug      {false,                                  DoReset,   {},                         "debugCloud"          };
+        ConfigWrapperLegacy<bool> udpUseStdString       {false,                                  DoReset,   {},                         "udpusestdstr"        };
     } udpCloudSettings;
 
     struct {
-        ConfigWrapper<bool> enableLedAnimation    {true,                                   DoReset,   {},                         "enableLedAnimat"     };
-        ConfigWrapper<bool> enableBrakeLights     {true,                                   DoReset,   {},                         "enableBrakeLigh"     };
-        ConfigWrapper<int16_t> ledsCount          {288,                                    DoReset,   {},                         "ledsCount"           };
-        ConfigWrapper<int16_t> centerOffset       {1,                                      DoReset,   {},                         "centerOffset"        };
-        ConfigWrapper<int16_t> smallOffset        {4,                                      DoReset,   {},                         "smallOffset"         };
-        ConfigWrapper<int16_t> bigOffset          {10,                                     DoReset,   {},                         "bigOffset"           };
-        ConfigWrapper<bool> enableBeepWhenBlink   {true,                                   DoReset,   {},                         "beepwhenblink"       };
-        ConfigWrapper<LedstripAnimation> animationType{LedstripAnimation::DefaultRainbow,  DoReset,   {},                         "animationType"       };
-        ConfigWrapper<bool> enableFullBlink       {true,                                   DoReset,   {},                         "fullblink"           };
-        ConfigWrapper<bool> enableStVO            {true,                                   DoReset,   {},                         "ledstvo"             };
-        ConfigWrapper<int16_t> stvoFrontOffset    {0,                                      DoReset,   {},                         "ledstvofoff"         };
-        ConfigWrapper<int16_t> stvoFrontLength    {10,                                     DoReset,   {},                         "ledstvoflen"         };
-        ConfigWrapper<bool> stvoFrontEnable       {false,                                  DoReset,   {},                         "ledstvoen"           };
-        ConfigWrapper<int16_t> animationMultiplier{10,                                     DoReset,   {},                         "ledAnimMul"          };
-        ConfigWrapper<uint8_t> brightness         {255,                                    DoReset,   {},                         "ledbrightness"       };
-        ConfigWrapper<bool> enableAnimBlink       {false,                                  DoReset,   {},                         "enAnimBlink"         };
-        ConfigWrapper<OtaAnimationModes> otaMode  {OtaAnimationModes::GreenProgressBar,    DoReset,   {},                         "ledOtaAnim"          };
-        ConfigWrapper<uint32_t>     maxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
-        ConfigWrapper<bool> enableVisualizeBlink  {false,                                  DoReset,   {},                         "enVisualBlink"       };
-        std::array<ConfigWrapper<uint32_t>, 8> custom_color {
-            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol1"       },
-            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol2"       },
-            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol3"       },
-            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol4"       },
-            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol5"       },
-            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol6"       },
-            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol7"       },
-            ConfigWrapper<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol8"       },
+        ConfigWrapperLegacy<bool> enableLedAnimation    {true,                                   DoReset,   {},                         "enableLedAnimat"     };
+        ConfigWrapperLegacy<bool> enableBrakeLights     {true,                                   DoReset,   {},                         "enableBrakeLigh"     };
+        ConfigWrapperLegacy<int16_t> ledsCount          {288,                                    DoReset,   {},                         "ledsCount"           };
+        ConfigWrapperLegacy<int16_t> centerOffset       {1,                                      DoReset,   {},                         "centerOffset"        };
+        ConfigWrapperLegacy<int16_t> smallOffset        {4,                                      DoReset,   {},                         "smallOffset"         };
+        ConfigWrapperLegacy<int16_t> bigOffset          {10,                                     DoReset,   {},                         "bigOffset"           };
+        ConfigWrapperLegacy<bool> enableBeepWhenBlink   {true,                                   DoReset,   {},                         "beepwhenblink"       };
+        ConfigWrapperLegacy<LedstripAnimation> animationType{LedstripAnimation::DefaultRainbow,  DoReset,   {},                         "animationType"       };
+        ConfigWrapperLegacy<bool> enableFullBlink       {true,                                   DoReset,   {},                         "fullblink"           };
+        ConfigWrapperLegacy<bool> enableStVO            {true,                                   DoReset,   {},                         "ledstvo"             };
+        ConfigWrapperLegacy<int16_t> stvoFrontOffset    {0,                                      DoReset,   {},                         "ledstvofoff"         };
+        ConfigWrapperLegacy<int16_t> stvoFrontLength    {10,                                     DoReset,   {},                         "ledstvoflen"         };
+        ConfigWrapperLegacy<bool> stvoFrontEnable       {false,                                  DoReset,   {},                         "ledstvoen"           };
+        ConfigWrapperLegacy<int16_t> animationMultiplier{10,                                     DoReset,   {},                         "ledAnimMul"          };
+        ConfigWrapperLegacy<uint8_t> brightness         {255,                                    DoReset,   {},                         "ledbrightness"       };
+        ConfigWrapperLegacy<bool> enableAnimBlink       {false,                                  DoReset,   {},                         "enAnimBlink"         };
+        ConfigWrapperLegacy<OtaAnimationModes> otaMode  {OtaAnimationModes::GreenProgressBar,    DoReset,   {},                         "ledOtaAnim"          };
+        ConfigWrapperLegacy<uint32_t>     maxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
+        ConfigWrapperLegacy<bool> enableVisualizeBlink  {false,                                  DoReset,   {},                         "enVisualBlink"       };
+        std::array<ConfigWrapperLegacy<uint32_t>, 8> custom_color {
+            ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol1"       },
+            ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol2"       },
+            ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol3"       },
+            ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol4"       },
+            ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol5"       },
+            ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol6"       },
+            ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol7"       },
+            ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol8"       },
         };
-        ConfigWrapper<uint8_t> leds_per_meter     {144,                                    DoReset,   {},                         "ledsPerMeter"        };
-        ConfigWrapper<bool> automaticLight        {false,                                  DoReset,   {},                         "nightLights"         };
+        ConfigWrapperLegacy<uint8_t> leds_per_meter     {144,                                    DoReset,   {},                         "ledsPerMeter"        };
+        ConfigWrapperLegacy<bool> automaticLight        {false,                                  DoReset,   {},                         "nightLights"         };
     } ledstrip;
 
     struct {
-        ConfigWrapper<uint8_t> cellsSeries        {12,                                     DoReset,   {},                         "batteryCS"           };
-        ConfigWrapper<uint8_t> cellsParallel      {10,                                     DoReset,   {},                         "batteryCP"           };
-        ConfigWrapper<BatteryCellType> cellType   {BatteryCellType::_22P,                  DoReset,   {},                         "batteryType"         };
-        ConfigWrapper<uint16_t> watthoursPerKilometer{25,                                  DoReset,   {},                         "whkm"                };
-        ConfigWrapper<int16_t> front30VoltCalibration{3000,                                DoReset,   {},                         "batF30VCal"          };
-        ConfigWrapper<int16_t> back30VoltCalibration {3000,                                DoReset,   {},                         "batB30VCal"          };
-        ConfigWrapper<int16_t> front50VoltCalibration{5000,                                DoReset,   {},                         "batF50VCal"          };
-        ConfigWrapper<int16_t> back50VoltCalibration {5000,                                DoReset,   {},                         "batB50VCal"          };
-        ConfigWrapper<bool> applyCalibration      {true,                                   DoReset,   {},                         "applyBatCal"         };
+        ConfigWrapperLegacy<uint8_t> cellsSeries        {12,                                     DoReset,   {},                         "batteryCS"           };
+        ConfigWrapperLegacy<uint8_t> cellsParallel      {10,                                     DoReset,   {},                         "batteryCP"           };
+        ConfigWrapperLegacy<BatteryCellType> cellType   {BatteryCellType::_22P,                  DoReset,   {},                         "batteryType"         };
+        ConfigWrapperLegacy<uint16_t> watthoursPerKilometer{25,                                  DoReset,   {},                         "whkm"                };
+        ConfigWrapperLegacy<int16_t> front30VoltCalibration{3000,                                DoReset,   {},                         "batF30VCal"          };
+        ConfigWrapperLegacy<int16_t> back30VoltCalibration {3000,                                DoReset,   {},                         "batB30VCal"          };
+        ConfigWrapperLegacy<int16_t> front50VoltCalibration{5000,                                DoReset,   {},                         "batF50VCal"          };
+        ConfigWrapperLegacy<int16_t> back50VoltCalibration {5000,                                DoReset,   {},                         "batB50VCal"          };
+        ConfigWrapperLegacy<bool> applyCalibration      {true,                                   DoReset,   {},                         "applyBatCal"         };
     } battery;
 
     struct {
-        ConfigWrapper<bool> allowPresetSwitch     {true,                                   DoReset,   {},                         "lockAlwPresetSw"     };
-        ConfigWrapper<bool> keepLockedAfterReboot {false,                                  DoReset,   {},                         "keepLocked"          };
-        ConfigWrapper<bool> locked                {false,                                  DoReset,   {},                         "currentlyLocked"     };
-        std::array<ConfigWrapper<int8_t>, 4> pin {
-            ConfigWrapper<int8_t>                 {1,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin0"      },
-            ConfigWrapper<int8_t>                 {2,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin1"      },
-            ConfigWrapper<int8_t>                 {3,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin2"      },
-            ConfigWrapper<int8_t>                 {4,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin3"      },
+        ConfigWrapperLegacy<bool> allowPresetSwitch     {true,                                   DoReset,   {},                         "lockAlwPresetSw"     };
+        ConfigWrapperLegacy<bool> keepLockedAfterReboot {false,                                  DoReset,   {},                         "keepLocked"          };
+        ConfigWrapperLegacy<bool> locked                {false,                                  DoReset,   {},                         "currentlyLocked"     };
+        std::array<ConfigWrapperLegacy<int8_t>, 4> pin {
+            ConfigWrapperLegacy<int8_t>                 {1,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin0"      },
+            ConfigWrapperLegacy<int8_t>                 {2,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin1"      },
+            ConfigWrapperLegacy<int8_t>                 {3,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin2"      },
+            ConfigWrapperLegacy<int8_t>                 {4,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin3"      },
         };
-        std::array<ConfigWrapper<int8_t>, 4> pin2 {
-            ConfigWrapper<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_0"      },
-            ConfigWrapper<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_1"      },
-            ConfigWrapper<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_2"      },
-            ConfigWrapper<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_3"      },
+        std::array<ConfigWrapperLegacy<int8_t>, 4> pin2 {
+            ConfigWrapperLegacy<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_0"      },
+            ConfigWrapperLegacy<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_1"      },
+            ConfigWrapperLegacy<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_2"      },
+            ConfigWrapperLegacy<int8_t>                 {0,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscrnPin1_3"      },
         };
     } lockscreen;
 
     struct {
-        ConfigWrapper<uint32_t> totalCentimeters  {0,                                      DoReset,   {},                         "totalCentimeter"     };
+        ConfigWrapperLegacy<uint32_t> totalCentimeters  {0,                                      DoReset,   {},                         "totalCentimeter"     };
     } savedStatistics;
 
     struct {
-        ConfigWrapper<HandbremseMode> mode        {HandbremseMode::MOSFETS_OFF,            DoReset,   {},                         "handBremsM"          };
-        ConfigWrapper<uint16_t> triggerTimeout    {10,                                     DoReset,   {},                         "handBremsT"          };
-        ConfigWrapper<bool> automatic             {false,                                  DoReset,   {},                         "handBremsA"          };
-        ConfigWrapper<bool> enable                {false,                                  DoReset,   {},                         "handBremsE"          };
-        ConfigWrapper<bool> visualize             {false,                                  DoReset,   {},                         "handBremsV"          };
+        ConfigWrapperLegacy<HandbremseMode> mode        {HandbremseMode::MOSFETS_OFF,            DoReset,   {},                         "handBremsM"          };
+        ConfigWrapperLegacy<uint16_t> triggerTimeout    {10,                                     DoReset,   {},                         "handBremsT"          };
+        ConfigWrapperLegacy<bool> automatic             {false,                                  DoReset,   {},                         "handBremsA"          };
+        ConfigWrapperLegacy<bool> enable                {false,                                  DoReset,   {},                         "handBremsE"          };
+        ConfigWrapperLegacy<bool> visualize             {false,                                  DoReset,   {},                         "handBremsV"          };
     } handbremse;
 
     struct {
-        ConfigWrapper<bool> syncTime              {false,                                  DoReset,   {},                         "espnowSyncT"         };
-        ConfigWrapper<bool> syncTimeWithOthers    {false,                                  DoReset,   {},                         "espnowSyncTWO"       };
-        ConfigWrapper<bool> syncBlink             {false,                                  DoReset,   {},                         "espnowSyncBl"        };
+        ConfigWrapperLegacy<bool> syncTime              {false,                                  DoReset,   {},                         "espnowSyncT"         };
+        ConfigWrapperLegacy<bool> syncTimeWithOthers    {false,                                  DoReset,   {},                         "espnowSyncTWO"       };
+        ConfigWrapperLegacy<bool> syncBlink             {false,                                  DoReset,   {},                         "espnowSyncBl"        };
     } espnow;
 
     struct {
@@ -371,7 +468,7 @@ public:
     ConfigWrapper<uint16_t> anhaenger_id          {0,                                      DoReset,   {},                         "anhaenger_id"        };
 
     struct {
-        ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
+        ConfigWrapperLegacy<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
     } bleSettings;
 
 #define NEW_SETTINGS(x) \

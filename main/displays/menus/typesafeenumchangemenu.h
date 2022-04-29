@@ -24,7 +24,7 @@ public:
     TypesafeEnumCurrentValueMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
     std::string text() const override
     {
-        return toString(m_config->value);
+        return toString(m_config->value());
     }
     void triggered() override {}
 

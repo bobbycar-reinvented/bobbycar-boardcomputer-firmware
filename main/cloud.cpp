@@ -36,8 +36,8 @@ std::optional<espchrono::millis_clock::time_point> lastCloudSend;
 
 void initCloud()
 {
-    if (configs.cloudSettings.cloudEnabled.value &&
-        !configs.cloudUrl.value.empty())
+    if (configs.cloudSettings.cloudEnabled.value() &&
+        !configs.cloudUrl.value().empty())
     {
         createCloud();
         if (!cloudClient)
@@ -52,19 +52,19 @@ void initCloud()
 
 void updateCloud()
 {
-    if (!configs.feature.cloud.isEnabled.value)
+    if (!configs.feature.cloud.isEnabled.value())
         return;
 
     const auto now = espchrono::millis_clock::now();
 
-    if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{configs.boardcomputerHardware.timersSettings.cloudCollectRate.value})
+    if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{configs.boardcomputerHardware.timersSettings.cloudCollectRate.value()})
     {
         cloudCollect();
 
         lastCloudCollect = now;
     }
 
-    if (!lastCloudSend || now - *lastCloudSend >= 1000ms/configs.boardcomputerHardware.timersSettings.cloudSendRate.value)
+    if (!lastCloudSend || now - *lastCloudSend >= 1000ms/configs.boardcomputerHardware.timersSettings.cloudSendRate.value())
     {
         cloudSend();
 
@@ -168,8 +168,8 @@ void cloudCollect()
 
 void cloudSend()
 {
-    if (configs.cloudSettings.cloudEnabled.value &&
-        !configs.cloudUrl.value.empty())
+    if (configs.cloudSettings.cloudEnabled.value() &&
+        !configs.cloudUrl.value().empty())
     {
         if (!cloudClient)
         {
@@ -201,7 +201,7 @@ void cloudSend()
 
         cloudBuffer += ']';
 
-        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value}).count();
+        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
         const auto written = cloudClient.send_text(cloudBuffer, timeout);
 
         if (written < 0)
@@ -234,7 +234,7 @@ void createCloud()
     lastCreateTry = espchrono::millis_clock::now();
 
     const esp_websocket_client_config_t config = {
-        .uri = configs.cloudUrl.value.c_str(),
+        .uri = configs.cloudUrl.value().c_str(),
     };
 
     cloudClient = espcpputils::websocket_client{&config};

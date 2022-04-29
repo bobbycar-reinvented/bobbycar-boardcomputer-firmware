@@ -45,7 +45,7 @@ void handle_bobby_quickaction(espgui::Button button, bool pressed)
 
     if (pressed)
     {
-        switch (config->value) {
+        switch (config->value()) {
             case BobbyQuickActions::BLINK_LEFT:
                 blink_left();
                 break;
@@ -76,7 +76,7 @@ void handle_bobby_quickaction(espgui::Button button, bool pressed)
     }
     else
     {
-        switch (config->value) {
+        switch (config->value()) {
             case BobbyQuickActions::HUPE:
                 bobbyhupe::deactivate_hupe();
                 break;
@@ -88,14 +88,14 @@ void handle_bobby_quickaction(espgui::Button button, bool pressed)
 
 void open_garage()
 {
-    if (!configs.feature.esp_now.isEnabled.value)
+    if (!configs.feature.esp_now.isEnabled.value())
         return;
 
     if (!espnow::espnow_init_allowed())
         return;
     for (const auto &config : configs.wireless_door_configs)
     {
-        if (const auto error = espnow::send_espnow_message(fmt::format("BOBBYOPEN:{}:{}", config.doorId.value, config.doorToken.value)); error != ESP_OK)
+        if (const auto error = espnow::send_espnow_message(fmt::format("BOBBYOPEN:{}:{}", config.doorId.value(), config.doorToken.value())); error != ESP_OK)
         {
             ESP_LOGE("BOBBY", "send_espnow_message() failed with: %s", esp_err_to_name(error));
             continue;
@@ -114,7 +114,7 @@ void action_wifi_scan()
 
 void blink_left()
 {
-    if (configs.feature.ledstrip.isEnabled.value)
+    if (configs.feature.ledstrip.isEnabled.value())
     {
         if (blinkAnimation == LEDSTRIP_OVERWRITE_NONE) //transition from off to left
         {
@@ -133,7 +133,7 @@ void blink_left()
 
 void blink_right()
 {
-    if(configs.feature.ledstrip.isEnabled.value)
+    if(configs.feature.ledstrip.isEnabled.value())
     {
         if (blinkAnimation == LEDSTRIP_OVERWRITE_NONE) //transition from off to right
         {
@@ -152,7 +152,7 @@ void blink_right()
 
 void handle_handbremse()
 {
-    if (configs.handbremse.enable.value)
+    if (configs.handbremse.enable.value())
     {
         using StateWish = handbremse::StateWish;
         if (handbremse::stateWish == StateWish::brake || handbremse::angezogen)

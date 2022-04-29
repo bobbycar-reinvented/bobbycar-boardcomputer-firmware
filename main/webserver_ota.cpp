@@ -46,7 +46,7 @@ esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
     char tmpBuf[256];
 
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
-    if (key_result == ESP_OK && (configs.webserverPassword.value.empty() || configs.webserverPassword.value == tmpBuf))
+    if (key_result == ESP_OK && (configs.webserverPassword.value().empty() || configs.webserverPassword.value() == tmpBuf))
     {
         body += "{";
         if (asyncOta)
@@ -63,7 +63,7 @@ esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
 
         body += "}";
     }
-    else if (key_result != ESP_ERR_NOT_FOUND && configs.webserverPassword.value == tmpBuf)
+    else if (key_result != ESP_ERR_NOT_FOUND && configs.webserverPassword.value() == tmpBuf)
     {
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
     }
@@ -97,7 +97,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
 
     char tmpBuf[256];
     const auto key_result = httpd_query_key_value(wants_json_query.data(), "json", tmpBuf, 256);
-    if (key_result == ESP_OK && (configs.webserverPassword.value.empty() || configs.webserverPassword.value == tmpBuf))
+    if (key_result == ESP_OK && (configs.webserverPassword.value().empty() || configs.webserverPassword.value() == tmpBuf))
     {
 
         body += "{";
@@ -157,7 +157,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
         if (std::string::npos != lastEckig)
             body = body.erase(lastEckig+1, 1);
     }
-    else if (key_result != ESP_ERR_NOT_FOUND && configs.webserverPassword.value == tmpBuf)
+    else if (key_result != ESP_ERR_NOT_FOUND && configs.webserverPassword.value() == tmpBuf)
     {
 
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Unauthorized, "text/plain", "");
@@ -325,7 +325,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                     body += "Trigger Update";
                 }
 
-                body += fmt::format("<input type=\"text\" name=\"url\" value=\"{}\" />", esphttpdutils::htmlentities(configs.otaUrl.value));
+                body += fmt::format("<input type=\"text\" name=\"url\" value=\"{}\" />", esphttpdutils::htmlentities(configs.otaUrl.value()));
 
                 {
                     HtmlTag buttonTag{"button", "type=\"submit\"", body};

@@ -125,7 +125,7 @@ TimeSettingsMenu::TimeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, SuntimeText,                         StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OFFSET>,             SwitchScreenAction<TimezoneOffsetChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DAYLIGHTSAVINGMODE>, SwitchScreenAction<DaylightSavingModeChangeDisplay>>>();
-    if (configs.feature.ntp.isEnabled.value)
+    if (configs.feature.ntp.isEnabled.value())
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPENABLED>,         BobbyCheckbox, TimeServerEnabledAccessor>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPSERVER>,          SwitchScreenAction<TimeServerChangeDisplay>>>();

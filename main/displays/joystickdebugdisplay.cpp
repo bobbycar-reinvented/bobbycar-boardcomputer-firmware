@@ -40,13 +40,13 @@ void JoystickDebugDisplay::update()
         m_x = std::nullopt;
     else
     {
-        m_x = map_analog_stick(m_gasMitte, m_gasMin, m_gasMax, configs.deadband.value, *raw_gas);
+        m_x = map_analog_stick(m_gasMitte, m_gasMin, m_gasMax, configs.deadband.value(), *raw_gas);
     }
 
     if (!raw_brems)
         m_y = std::nullopt;
     else
-        m_y = map_analog_stick(m_bremsMitte, m_bremsMin, m_bremsMax, configs.deadband.value, *raw_brems);
+        m_y = map_analog_stick(m_bremsMitte, m_bremsMin, m_bremsMax, configs.deadband.value(), *raw_brems);
 }
 
 void JoystickDebugDisplay::redraw()
@@ -64,12 +64,12 @@ void JoystickDebugDisplay::redraw()
 
 void JoystickDebugDisplay::copyFromSettings()
 {
-    m_gasMitte = configs.gasMitte.value;
-    m_gasMin = configs.gasMin.value;
-    m_gasMax = configs.gasMax.value;
-    m_bremsMitte = configs.bremsMitte.value;
-    m_bremsMin = configs.bremsMin.value;
-    m_bremsMax = configs.bremsMax.value;
+    m_gasMitte = configs.gasMitte.value();
+    m_gasMin = configs.gasMin.value();
+    m_gasMax = configs.gasMax.value();
+    m_bremsMitte = configs.bremsMitte.value();
+    m_bremsMin = configs.bremsMin.value();
+    m_bremsMax = configs.bremsMax.value();
 }
 
 void JoystickDebugDisplay::buttonPressed(espgui::Button button)

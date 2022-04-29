@@ -86,7 +86,7 @@ MainMenu::MainMenu()
 
     // constructMenuItem<makeComponent<MenuItem, mainmenu::CurrentTimeText,     DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       PushScreenAction<StatusDisplay>, StaticMenuItemIcon<&espgui::icons::back>>>();
-    if (configs.feature.ledstrip.isEnabled.value)
+    if (configs.feature.ledstrip.isEnabled.value())
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     PushScreenAction<LedstripMenu>,   StaticMenuItemIcon<&bobbyicons::neopixel>>>();
     }
@@ -97,11 +97,11 @@ MainMenu::MainMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,     PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GREENPASS>,    PushScreenAction<GreenPassMenu>, StaticMenuItemIcon<&bobbyicons::greenpass>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>,  PushScreenAction<Lockscreen>, StaticMenuItemIcon<&bobbyicons::lock>>>();
-    if (configs.feature.garage.isEnabled.value && configs.feature.esp_now.isEnabled.value)
+    if (configs.feature.garage.isEnabled.value() && configs.feature.esp_now.isEnabled.value())
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GARAGE>,       PushScreenAction<GarageMenu>>>();
     }
-    if (configs.feature.ota.isEnabled.value)
+    if (configs.feature.ota.isEnabled.value())
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATE>,       PushScreenAction<OtaMenu>, StaticMenuItemIcon<&bobbyicons::update>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       PushScreenAction<GraphsMenu>, StaticMenuItemIcon<&bobbyicons::graph>>>();
 #if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)

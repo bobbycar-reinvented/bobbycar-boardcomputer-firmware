@@ -57,6 +57,6 @@ void NetworkSettingsMenu::back()
 
 void NetworkAccessPointQRAction::triggered()
 {
-    std::string qr = fmt::format("WIFI:T:{};S:{};P:{};H:;", get_wifi_security_string(configs.wifiApAuthmode.value), configs.wifiApName.value, configs.wifiApKey.value);
+    std::string qr = fmt::format("WIFI:T:{};S:{};P:{};H:;", get_wifi_security_string(configs.wifiApAuthmode.value()), configs.wifiApName.value(), configs.wifiApKey.value());
     espgui::switchScreen<QrDisplay<NetworkSettingsMenu>>(qr);
 }

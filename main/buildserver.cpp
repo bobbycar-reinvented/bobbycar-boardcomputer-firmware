@@ -22,7 +22,7 @@ namespace buildserver {
     {
         uint16_t count = 0;
         for (const auto &otaServer : configs.otaServers) {
-            if (!otaServer.url.value.empty()) count++;
+            if (!otaServer.url.value().empty()) count++;
         }
         return count;
     }
@@ -50,7 +50,7 @@ namespace buildserver {
             return;
         }
 
-        const auto url = fmt::format("{}/otaDescriptor?username={}&branches", server_base_url, configs.otaUsername.value);
+        const auto url = fmt::format("{}/otaDescriptor?username={}&branches", server_base_url, configs.otaUsername.value());
         ESP_LOGD("BOBBY", "requesting data...");
         if (const auto result = request->start(url); !result)
         {
@@ -136,9 +136,9 @@ namespace buildserver {
         if (index < configs.otaServers.size())
         {
             const auto &otaServer = configs.otaServers[index];
-            if (!otaServer.url.value.empty())
+            if (!otaServer.url.value().empty())
             {
-                return otaServer.url.value;
+                return otaServer.url.value();
             }
             else
             {
@@ -165,10 +165,10 @@ namespace buildserver {
 
     std::string get_descriptor_url(std::string base_url)
     {
-        if (configs.otaServerBranch.value.empty())
-            return fmt::format("{}/otaDescriptor?username={}", base_url, configs.otaUsername.value);
+        if (configs.otaServerBranch.value().empty())
+            return fmt::format("{}/otaDescriptor?username={}", base_url, configs.otaUsername.value());
         else
-            return fmt::format("{}/otaDescriptor?username={}&branch={}", base_url, configs.otaUsername.value, configs.otaServerBranch.value);
+            return fmt::format("{}/otaDescriptor?username={}&branch={}", base_url, configs.otaUsername.value(), configs.otaServerBranch.value());
     }
 
     void parse_response_into_variables(std::string response)
@@ -196,8 +196,8 @@ namespace buildserver {
 
         index = 0;
 
-        url_for_latest = fmt::format("{}{}", configs.otaServerUrl.value, doc["latest"].as<std::string>());
-        url_for_hashes = fmt::format("{}{}", configs.otaServerUrl.value, doc["url"].as<std::string>());
+        url_for_latest = fmt::format("{}{}", configs.otaServerUrl.value(), doc["latest"].as<std::string>());
+        url_for_hashes = fmt::format("{}{}", configs.otaServerUrl.value(), doc["url"].as<std::string>());
         parsing_finished = true;
     }
 

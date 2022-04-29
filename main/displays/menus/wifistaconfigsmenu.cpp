@@ -61,7 +61,7 @@ void WifiStaConfigurationMenuItem::triggered()
 std::string WifiStaConfigurationMenuItem::text() const
 {
     const auto &config = configs.wifi_configs[m_index];
-    const auto &ssid = config.ssid.value;
+    const auto &ssid = config.ssid.value();
 
     bool connected{};
     if (!ssid.empty() && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)

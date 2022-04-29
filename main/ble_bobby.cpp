@@ -55,7 +55,7 @@ void createBle()
 {
     ESP_LOGI("BOBBY", "called");
 
-    BLEDevice::init(configs.bluetoothName.value);
+    BLEDevice::init(configs.bluetoothName.value());
 
     const auto serviceUuid{"0335e46c-f355-4ce6-8076-017de08cee98"};
 
@@ -97,17 +97,17 @@ void destroyBle()
 
 void initBle()
 {
-    if (configs.bleSettings.bleEnabled.value)
+    if (configs.bleSettings.bleEnabled.value())
         createBle();
 }
 
 
 void handleBle()
 {
-    if (!configs.feature.ble.isEnabled.value)
+    if (!configs.feature.ble.isEnabled.value())
         return;
 
-    if (configs.bleSettings.bleEnabled.value)
+    if (configs.bleSettings.bleEnabled.value())
     {
         if (!pServer)
             createBle();
@@ -237,7 +237,7 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
         return;
     }
 
-    if (configs.feature.ledstrip.isEnabled.value)
+    if (configs.feature.ledstrip.isEnabled.value())
     {
         const auto newBlinkAnimation = doc["anim"].as<int16_t>();
         if (blinkAnimation != newBlinkAnimation) blinkAnimation = newBlinkAnimation;
@@ -287,7 +287,7 @@ void WiFiListCallbacks::onRead(NimBLECharacteristic *pCharacteristic)
     ESP_LOGI(TAG, "[ble_wifilist] Got request for listing wifi ssids.");
     for (const auto &wifi : configs.wifi_configs)
     {
-        wifiArray.add(wifi.ssid.value);
+        wifiArray.add(wifi.ssid.value());
     }
     responseDoc["wifi_count"] = configs.wifi_configs.size();
     std::string json;

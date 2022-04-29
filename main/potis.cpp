@@ -30,7 +30,7 @@ void readPotis()
     constexpr auto sampleMultipleTimes = [](uint8_t pin){
           analogRead(pin);
           double sum{};
-          const auto sampleCount = configs.sampleCount.value;
+          const auto sampleCount = configs.sampleCount.value();
           for (int i = 0; i < sampleCount; i++)
               sum += analogRead(pin);
           return sum / sampleCount;
@@ -78,13 +78,13 @@ void readPotis()
 #else
     if (raw_gas)
     {
-        gas = map_analog_stick(configs.gasMitte.value, configs.gasMin.value, configs.gasMax.value, configs.deadband.value, *raw_gas);
+        gas = map_analog_stick(configs.gasMitte.value(), configs.gasMin.value(), configs.gasMax.value(), configs.deadband.value(), *raw_gas);
     }
     else
         gas = std::nullopt;
     if (raw_brems)
     {
-        brems = map_analog_stick(configs.bremsMitte.value, configs.bremsMin.value, configs.bremsMax.value, configs.deadband.value, *raw_brems);
+        brems = map_analog_stick(configs.bremsMitte.value(), configs.bremsMin.value(), configs.bremsMax.value(), configs.deadband.value(), *raw_brems);
     }
     else
         brems = std::nullopt;
