@@ -121,7 +121,7 @@ void update()
 
     const auto now = espchrono::millis_clock::now();
 
-    const std::chrono::milliseconds dpadDebounce{configs.dpadDebounce.value};
+    const std::chrono::milliseconds dpadDebounce{configs.dpadDebounce.value()};
 
     for (auto i = 0; i < 10; i++)
         if (lastState[i] != newState[i] && now - debounce[i] > dpadDebounce)

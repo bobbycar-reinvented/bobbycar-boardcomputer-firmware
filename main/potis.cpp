@@ -68,11 +68,11 @@ void readPotis()
 
 #ifndef FEATURE_JOYSTICK
     if (raw_gas)
-        gas = cpputils::mapValueClamped<float>(*raw_gas, configs.gasMin.value, configs.gasMax.value, 0., 1000.);
+        gas = cpputils::mapValueClamped<float>(*raw_gas, configs.gasMin.value(), configs.gasMax.value(), 0., 1000.);
     else
         gas = std::nullopt;
     if (raw_brems)
-        brems = cpputils::mapValueClamped<float>(*raw_brems, configs.bremsMin.value, configs.bremsMax.value, 0., 1000.);
+        brems = cpputils::mapValueClamped<float>(*raw_brems, configs.bremsMin.value(), configs.bremsMax.value(), 0., 1000.);
     else
         brems = std::nullopt;
 #else
