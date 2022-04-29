@@ -277,7 +277,7 @@ std::string local_clock_string()
 #ifdef CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE
     const auto now = espchrono::local_clock::now();
 #else // mir egal ob die lokalzeit richtig is
-    const auto now = espchrono::utc_clock::now() + configs.timezoneOffset.value;
+    const auto now = espchrono::utc_clock::now() + configs.timezoneOffset.value();
 #endif
     const auto dt = espchrono::toDateTime(now);
     return fmt::format("{:02d}:{:02d}:{:02d}", dt.hour, dt.minute, dt.second);
