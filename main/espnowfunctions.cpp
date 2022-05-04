@@ -246,7 +246,7 @@ void handle()
             }
             else
             {
-                ESP_LOGI(TAG, "Unkown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
+                ESP_LOGI(TAG, "Unknown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
             }
         }
 clear:
@@ -307,7 +307,7 @@ esp_err_t send_espnow_message(std::string_view message)
         else
         {
             const auto timeAfter = espchrono::millis_clock::now();
-            ESP_LOGI(TAG, "Successfully executed esp_now_send(): Took %lldms", std::chrono::floor<std::chrono::milliseconds>(timeAfter-timeBefore).count());
+            ESP_LOGD(TAG, "Successfully executed esp_now_send(): Took %lldms", std::chrono::floor<std::chrono::milliseconds>(timeAfter-timeBefore).count());
         }
     }
     return ESP_OK;

@@ -18,17 +18,18 @@ namespace {
 
     void sendState(const std::string& state)
     {
-        if (const auto error = espnow::send_espnow_message(fmt::format("{}:0:0", state)); error != ESP_OK)
+        if (const auto error = espnow::send_espnow_message(fmt::format("{}:0:{}", state, configs.anhaenger_id.value)); error != ESP_OK)
         {
             ESP_LOGE(TAG, "Error sending blinker message: %s", esp_err_to_name(error));
         }
     }
 
-    bool hasSendNegativePwm{false};
+    bool brakeLightsOffSent{false};
 } // namespace
 
 namespace bobbyblinker {
     std::optional<espchrono::millis_clock::time_point> blinker_last_time_sent;
+    std::optional<espchrono::millis_clock::time_point> brake_last_time_sent;
 
     void handle_blinker()
     {
@@ -36,7 +37,7 @@ namespace bobbyblinker {
             return;
 
         const bool blinker_state = (cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH));
-        if ((blinker_state && !blinker_last_time_sent) || (blinker_state && blinker_last_time_sent && espchrono::ago(*blinker_last_time_sent) > 1s))
+        if ((blinker_state && !blinker_last_time_sent) || (blinker_state && blinker_last_time_sent && espchrono::ago(*blinker_last_time_sent) > 500ms))
         {
             blinker_last_time_sent = espchrono::millis_clock::now();
             if (blinkAnimation == LEDSTRIP_OVERWRITE_BLINKLEFT)
@@ -51,37 +52,32 @@ namespace bobbyblinker {
             {
                 sendState("BLINKBOTH");
             }
-            else
-            {
-                sendState("BLINKOFF");
-            }
-
-            if (configs.ledstrip.enableBrakeLights.value)
-            {
-                float avgPwm{};
-                for (const Controller &controller: controllers)
-                {
-                    avgPwm +=
-                            controller.command.left.pwm * (controller.invertLeft ? -1 : 1) +
-                            controller.command.right.pwm * (controller.invertRight ? -1 : 1);
-                }
-                avgPwm /= 4;
-
-                if (avgPwm < -1.f && !hasSendNegativePwm)
-                {
-                    sendState("BRAKELIGHTSON");
-                    hasSendNegativePwm = true;
-                }
-                else if (avgPwm > -1.f && hasSendNegativePwm)
-                {
-                    sendState("BRAKELIGHTSOFF");
-                    hasSendNegativePwm = false;
-                }
-            }
         }
         else if (!blinker_state && blinker_last_time_sent)
         {
             blinker_last_time_sent = std::nullopt;
+            sendState("BLINKOFF");
+        }
+        if (configs.ledstrip.enableBrakeLights.value && espchrono::ago(*brake_last_time_sent) > 500ms)
+        {
+            float avgPwm{};
+            for (const Controller &controller: controllers) {
+                avgPwm +=
+                        controller.command.left.pwm * (controller.invertLeft ? -1 : 1) +
+                        controller.command.right.pwm * (controller.invertRight ? -1 : 1);
+            }
+            avgPwm /= 4;
+
+            if (avgPwm < -1.f)
+            {
+                sendState("BRAKELIGHTSON");
+                brakeLightsOffSent = false;
+            }
+            else if (!brakeLightsOffSent && avgPwm > -1.f)
+            {
+                sendState("BRAKELIGHTSOFF");
+                brakeLightsOffSent = true;
+            }
         }
     }
 } // namespace bobbyblinker
