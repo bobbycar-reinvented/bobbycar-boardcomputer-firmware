@@ -18,7 +18,7 @@ namespace {
 
     void sendState(const std::string& state)
     {
-        if (const auto error = espnow::send_espnow_message(fmt::format("{}:0:{}", state, configs.anhaenger_id.value)); error != ESP_OK)
+        if (const auto error = espnow::send_espnow_message(fmt::format("{}:{}:{}", state, espchrono::utc_clock::now().time_since_epoch().count(), configs.anhaenger_id.value)); error != ESP_OK)
         {
             ESP_LOGE(TAG, "Error sending blinker message: %s", esp_err_to_name(error));
         }

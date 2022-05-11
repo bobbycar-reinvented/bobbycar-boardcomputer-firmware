@@ -307,7 +307,7 @@ esp_err_t send_espnow_message(std::string_view message)
         else
         {
             const auto timeAfter = espchrono::millis_clock::now();
-            ESP_LOGD(TAG, "Successfully executed esp_now_send(): Took %lldms", std::chrono::floor<std::chrono::milliseconds>(timeAfter-timeBefore).count());
+            ESP_LOGI(TAG, "Successfully executed esp_now_send(): Took %lldms", std::chrono::floor<std::chrono::milliseconds>(timeAfter-timeBefore).count());
         }
     }
     return ESP_OK;
