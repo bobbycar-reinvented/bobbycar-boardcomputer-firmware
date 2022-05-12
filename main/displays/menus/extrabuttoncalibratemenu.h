@@ -16,7 +16,11 @@ enum Status : uint8_t
     WaitingProfile0,
     WaitingProfile1,
     WaitingProfile2,
-    WaitingProfile3
+    WaitingProfile3,
+    WaitingExtra1,
+    WaitingExtra2,
+    WaitingExtra3,
+    WaitingExtra4,
 };
 } // namespace
 
