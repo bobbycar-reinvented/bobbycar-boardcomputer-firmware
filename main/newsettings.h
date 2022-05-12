@@ -522,11 +522,19 @@ public:
     x(dpadMappingRight2) \
     x(dpadMappingUp2) \
     x(dpadMappingDown2) \
+    x(dpadMappingExtra1) \
+    x(dpadMappingExtra2) \
+    x(dpadMappingExtra3) \
+    x(dpadMappingExtra4) \
     \
     x(quickActionLeft2) \
     x(quickActionRight2) \
     x(quickActionUp2) \
     x(quickActionDown2) \
+    x(quickActionExtra1) \
+    x(quickActionExtra2) \
+    x(quickActionExtra3) \
+    x(quickActionExtra4) \
     \
     x(wireless_door_configs[0].doorId) \
     x(wireless_door_configs[0].doorToken) \
