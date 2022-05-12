@@ -150,6 +150,27 @@ void update()
     const auto newState = helper.read();
 
 #ifdef DPAD_BOARDCOMPUTER_V2_DEBUG
+
+    if (newState != lastState) {
+        ESP_LOGI("DPAD_BOARDCOMPUTER_V2", "new state: %s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s",
+            newState[0] ? "1" : "0",
+            newState[1] ? "1" : "0",
+            newState[2] ? "1" : "0",
+            newState[3] ? "1" : "0",
+            newState[4] ? "1" : "0",
+            newState[5] ? "1" : "0",
+            newState[6] ? "1" : "0",
+            newState[7] ? "1" : "0",
+            newState[8] ? "1" : "0",
+            newState[9] ? "1" : "0",
+            newState[10] ? "1" : "0",
+            newState[11] ? "1" : "0",
+            newState[12] ? "1" : "0",
+            newState[13] ? "1" : "0",
+            newState[14] ? "1" : "0",
+            newState[15] ? "1" : "0");
+    }
+
     lastState = newState;
     return;
 #endif
@@ -158,7 +179,7 @@ void update()
 
     const std::chrono::milliseconds dpadDebounce{configs.dpadDebounce.value};
 
-    for (auto i = 0; i < 10; i++)
+    for (auto i = 0; i < newState.size(); i++)
         if (lastState[i] != newState[i] && now - debounce[i] > dpadDebounce)
         {
             lastState[i] = newState[i];
