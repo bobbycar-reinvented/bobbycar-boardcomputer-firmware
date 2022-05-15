@@ -14,6 +14,10 @@
 #endif
 #include <SPI.h>
 
+// esp-idf includes
+#include <esp_chip_info.h>
+#include <esp32/pm.h>
+
 // 3rdparty lib includes
 #include <espchrono.h>
 #include <TFT_eSPI.h>
@@ -42,6 +46,9 @@ extern float gametrakDist;
 extern std::optional<int> sunrise;
 extern std::optional<int> sunset;
 extern std::optional<espchrono::DateTime> sunrise_dt;
+
+extern esp_chip_info_t chip_info;
+extern esp_pm_config_esp32_t pm_config;
 
 extern float avgSpeed;
 extern float avgSpeedKmh;

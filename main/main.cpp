@@ -4,6 +4,9 @@ constexpr const char * const TAG = "BOBBY";
 #include <cstdio>
 
 // esp-idf includes
+#include <esp32/pm.h>
+#include <esp_pm.h>
+#include <esp_chip_info.h>
 #include <esp_log.h>
 
 // 3rdparty lib includes
@@ -100,6 +103,9 @@ extern "C" void app_main()
             espgui::switchScreen<StatusDisplay>();
         }
     }
+
+    esp_chip_info(&chip_info);
+    esp_pm_get_configuration(&pm_config);
 
     while (true)
     {
