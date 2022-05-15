@@ -653,7 +653,11 @@ public:
     x(lockscreen.pin[0]) \
     x(lockscreen.pin[1]) \
     x(lockscreen.pin[2]) \
-    x(lockscreen.pin[3]) \
+    x(lockscreen.pin[3])\
+    x(lockscreen.pin2[0]) \
+    x(lockscreen.pin2[1]) \
+    x(lockscreen.pin2[2]) \
+    x(lockscreen.pin2[3]) \
     \
     x(savedStatistics.totalCentimeters) \
     \
