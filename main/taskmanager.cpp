@@ -159,7 +159,7 @@ bool checkEnabledByName(std::string name) {
     // iterate over all feature flags (runForEveryFeature())
     configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature) {
         if (feature.getTaskName() == name)
-            enabled = feature.isEnabled.value;
+            enabled = feature.isEnabled.value();
     });
     return enabled;
 }

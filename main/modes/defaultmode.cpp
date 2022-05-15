@@ -59,7 +59,7 @@ void DefaultMode::update()
 
         float pwm;
 
-        if (configs.handbremse.enable.value && handbremse::stateWish == handbremse::StateWish::brake)
+        if (configs.handbremse.enable.value() && handbremse::stateWish == handbremse::StateWish::brake)
         {
             using namespace handbremse;
 
@@ -72,7 +72,7 @@ void DefaultMode::update()
             }
         }
 
-        if (configs.handbremse.enable.value && configs.handbremse.automatic.value && !handbremse::angezogen)
+        if (configs.handbremse.enable.value() && configs.handbremse.automatic.value() && !handbremse::angezogen)
         {
             using namespace handbremse;
             const auto speed = abs(avgSpeedKmh);
@@ -88,7 +88,7 @@ void DefaultMode::update()
                 standStillFirstDetected = std::nullopt;
 
             if (standStillFirstDetected && lastAutoRelease)
-                if (espchrono::ago(*standStillFirstDetected) > 100ms * configs.handbremse.triggerTimeout.value && espchrono::ago(*lastAutoRelease) > 5s )
+                if (espchrono::ago(*standStillFirstDetected) > 100ms * configs.handbremse.triggerTimeout.value() && espchrono::ago(*lastAutoRelease) > 5s )
                 {
                     angezogen = true;
                 }
@@ -152,7 +152,7 @@ void DefaultMode::update()
                 for (bobbycar::protocol::serial::MotorState &motor : motors())
                 {
                     motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
-                    switch (configs.handbremse.mode.value)
+                    switch (configs.handbremse.mode.value())
                     {
                     case HandbremseMode::MOSFETS_OFF:
                         motor.ctrlMod = bobbycar::protocol::ControlMode::Torque;

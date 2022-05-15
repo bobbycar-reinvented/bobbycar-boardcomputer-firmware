@@ -54,7 +54,7 @@ public:
 namespace {
 std::string CurrentBranch::text() const
 {
-    return configs.otaServerBranch.value.empty() ? "All builds" : configs.otaServerBranch.value;
+    return configs.otaServerBranch.value().empty() ? "All builds" : configs.otaServerBranch.value();
 }
 
 std::string BranchMenuItem::text() const
@@ -98,7 +98,7 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
         ERR_MESSAGE(TEXT_OTA_NOBUILDSERVERAVAILABLE); // E:No server saved.
     }
 
-    if (configs.otaServerUrl.value.empty())
+    if (configs.otaServerUrl.value().empty())
     {
         ERR_MESSAGE(TEXT_OTA_NOBUILDSERVERSELECTED); // E:No server selected.
     }
@@ -110,7 +110,7 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
 #undef ERR_MESSAGE
 
     SelectBranch::setup_request();
-    SelectBranch::start_descriptor_request(configs.otaServerUrl.value);
+    SelectBranch::start_descriptor_request(configs.otaServerUrl.value());
 }
 
 std::string SelectBuildserverBranchMenu::text() const

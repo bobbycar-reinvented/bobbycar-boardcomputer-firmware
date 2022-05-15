@@ -80,14 +80,14 @@ extern "C" void app_main()
 
     bootLabel.redraw("switchScreen");
 
-    if (configs.dpadMappingLeft.value == INPUT_MAPPING_NONE ||
-        configs.dpadMappingRight.value == INPUT_MAPPING_NONE ||
-        configs.dpadMappingUp.value == INPUT_MAPPING_NONE ||
-        configs.dpadMappingDown.value == INPUT_MAPPING_NONE)
+    if (configs.dpadMappingLeft.value() == INPUT_MAPPING_NONE ||
+        configs.dpadMappingRight.value() == INPUT_MAPPING_NONE ||
+        configs.dpadMappingUp.value() == INPUT_MAPPING_NONE ||
+        configs.dpadMappingDown.value() == INPUT_MAPPING_NONE)
     {
         espgui::switchScreen<ButtonCalibrateDisplay>(true);
     }
-    else if (configs.lockscreen.keepLockedAfterReboot.value && configs.lockscreen.locked.value)
+    else if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
     {
         espgui::switchScreen<Lockscreen>();
     }
@@ -114,7 +114,7 @@ extern "C" void app_main()
                 schedulerTask.loop();
         }
 
-        if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/configs.boardcomputerHardware.timersSettings.statsUpdateRate.value)
+        if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/configs.boardcomputerHardware.timersSettings.statsUpdateRate.value())
         {
             updateAccumulators();
             pushStats();
@@ -136,7 +136,7 @@ extern "C" void app_main()
                 {
                     if (avgVoltage > 30)
                     {
-                        battery::bootBatPercentage = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value));
+                        battery::bootBatPercentage = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
                         battery::bootBatWh = getRemainingWattHours();
                     }
                 }

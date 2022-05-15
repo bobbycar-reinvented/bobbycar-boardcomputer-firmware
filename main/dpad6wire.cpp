@@ -53,8 +53,8 @@ std::array<bool, 10> Helper<OUT, IN1, IN2, IN3, IN4, IN5>::read()
     pinMode(IN4, INPUT_PULLUP);
     pinMode(IN5, INPUT_PULLUP);
 
-    if (configs.buttonReadDelay.value != 0) {
-        delayMicroseconds(configs.buttonReadDelay.value);
+    if (configs.buttonReadDelay.value() != 0) {
+        delayMicroseconds(configs.buttonReadDelay.value());
     } else {
         vPortYield();
     }
@@ -73,8 +73,8 @@ std::array<bool, 10> Helper<OUT, IN1, IN2, IN3, IN4, IN5>::read()
     pinMode(IN4, INPUT_PULLDOWN);
     pinMode(IN5, INPUT_PULLDOWN);
 
-    if (configs.buttonReadDelay.value != 0) {
-        delayMicroseconds(configs.buttonReadDelay.value);
+    if (configs.buttonReadDelay.value() != 0) {
+        delayMicroseconds(configs.buttonReadDelay.value());
     } else {
         vPortYield();
     }
@@ -85,7 +85,7 @@ std::array<bool, 10> Helper<OUT, IN1, IN2, IN3, IN4, IN5>::read()
     result[7] = digitalRead(IN4);
     result[9] = digitalRead(IN5);
 
-    if (configs.feature.gschissene_diode.isEnabled.value && (result[8] && result[9]))
+    if (configs.feature.gschissene_diode.isEnabled.value() && (result[8] && result[9]))
     {
         result[9] = 0;
     }
@@ -121,7 +121,7 @@ void update()
 
     const auto now = espchrono::millis_clock::now();
 
-    const std::chrono::milliseconds dpadDebounce{configs.dpadDebounce.value};
+    const std::chrono::milliseconds dpadDebounce{configs.dpadDebounce.value()};
 
     for (auto i = 0; i < 10; i++)
         if (lastState[i] != newState[i] && now - debounce[i] > dpadDebounce)

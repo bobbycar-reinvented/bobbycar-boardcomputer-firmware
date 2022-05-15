@@ -103,7 +103,7 @@ public:
 
 class SavedTotalCentimetersText : public virtual espgui::TextInterface {
     public: std::string text() const override {
-        return fmt::format("saved: {}cm", configs.savedStatistics.totalCentimeters.value );
+        return fmt::format("saved: {}cm", configs.savedStatistics.totalCentimeters.value() );
     }
 };
 

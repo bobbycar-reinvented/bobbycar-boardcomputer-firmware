@@ -56,8 +56,8 @@ std::array<bool, 16> Helper<OUT1, OUT2, IN1, IN2, IN3, IN4>::read()
     pinMode(IN3, INPUT_PULLUP);
     pinMode(IN4, INPUT_PULLUP);
 
-    if (configs.buttonReadDelay.value != 0) {
-        delayMicroseconds(configs.buttonReadDelay.value);
+    if (configs.buttonReadDelay.value() != 0) {
+        delayMicroseconds(configs.buttonReadDelay.value());
     } else {
         vPortYield();
     }
@@ -74,8 +74,8 @@ std::array<bool, 16> Helper<OUT1, OUT2, IN1, IN2, IN3, IN4>::read()
     pinMode(IN3, INPUT_PULLDOWN);
     pinMode(IN4, INPUT_PULLDOWN);
 
-    if (configs.buttonReadDelay.value != 0) {
-        delayMicroseconds(configs.buttonReadDelay.value);
+    if (configs.buttonReadDelay.value() != 0) {
+        delayMicroseconds(configs.buttonReadDelay.value());
     } else {
         vPortYield();
     }
@@ -96,8 +96,8 @@ std::array<bool, 16> Helper<OUT1, OUT2, IN1, IN2, IN3, IN4>::read()
     pinMode(IN3, INPUT_PULLUP);
     pinMode(IN4, INPUT_PULLUP);
 
-    if (configs.buttonReadDelay.value != 0) {
-        delayMicroseconds(configs.buttonReadDelay.value);
+    if (configs.buttonReadDelay.value() != 0) {
+        delayMicroseconds(configs.buttonReadDelay.value());
     } else {
         vPortYield();
     }
@@ -114,8 +114,8 @@ std::array<bool, 16> Helper<OUT1, OUT2, IN1, IN2, IN3, IN4>::read()
     pinMode(IN3, INPUT_PULLDOWN);
     pinMode(IN4, INPUT_PULLDOWN);
 
-    if (configs.buttonReadDelay.value != 0) {
-        delayMicroseconds(configs.buttonReadDelay.value);
+    if (configs.buttonReadDelay.value() != 0) {
+        delayMicroseconds(configs.buttonReadDelay.value());
     } else {
         vPortYield();
     }
@@ -177,7 +177,7 @@ void update()
 
     const auto now = espchrono::millis_clock::now();
 
-    const std::chrono::milliseconds dpadDebounce{configs.dpadDebounce.value};
+    const std::chrono::milliseconds dpadDebounce{configs.dpadDebounce.value()};
 
     for (auto i = 0; i < newState.size(); i++)
         if (lastState[i] != newState[i] && now - debounce[i] > dpadDebounce)

@@ -27,9 +27,9 @@ namespace {
 
 void initLedStrip()
 {
-    if (configs.feature.ledstrip.isEnabled.value)
+    if (configs.feature.ledstrip.isEnabled.value())
     {
-        leds.resize(configs.ledstrip.ledsCount.value);
+        leds.resize(configs.ledstrip.ledsCount.value());
         FastLED.addLeds<NEOPIXEL, PINS_LEDSTRIP>(&*std::begin(leds), leds.size())
             .setCorrection(TypicalSMD5050);
         initialized = true;
@@ -38,29 +38,29 @@ void initLedStrip()
 
 void updateLedStrip()
 {
-    if (configs.feature.ledstrip.isEnabled.value && !initialized)
+    if (configs.feature.ledstrip.isEnabled.value() && !initialized)
         initLedStrip();
-    else if (!configs.feature.ledstrip.isEnabled.value && initialized)
+    else if (!configs.feature.ledstrip.isEnabled.value() && initialized)
     {
         std::fill(std::begin(leds), std::end(leds), CRGB::Black);
         FastLED.show();
         initialized = false;
         return;
     }
-    else if (!configs.feature.ledstrip.isEnabled.value)
+    else if (!configs.feature.ledstrip.isEnabled.value())
         return;
 
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }
     static bool have_disabled_beeper = false;
-    const bool enAnim = configs.ledstrip.enableAnimBlink.value;
+    const bool enAnim = configs.ledstrip.enableAnimBlink.value();
 
     if (cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH))
     {
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
         if (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms || enAnim)
         {
-            const auto anim_to_fill = time_to_percent(750ms, 500ms, 100ms, configs.ledstrip.enableFullBlink.value ? (leds.size() / 2) : configs.ledstrip.bigOffset.value - configs.ledstrip.smallOffset.value, configs.ledstrip.enableFullBlink.value);
-            if (configs.ledstrip.enableBeepWhenBlink.value)
+            const auto anim_to_fill = time_to_percent(750ms, 500ms, 100ms, configs.ledstrip.enableFullBlink.value() ? (leds.size() / 2) : configs.ledstrip.bigOffset.value() - configs.ledstrip.smallOffset.value(), configs.ledstrip.enableFullBlink.value());
+            if (configs.ledstrip.enableBeepWhenBlink.value())
             {
                 if (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms)
                     for (Controller &controller : controllers)
@@ -70,9 +70,9 @@ void updateLedStrip()
                         controller.command.buzzer.freq = 0;
             }
             auto color = CRGB{255, 200, 0};
-            const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value);
+            const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value());
 
-            if (configs.ledstrip.enableFullBlink.value)
+            if (configs.ledstrip.enableFullBlink.value())
             {
                 // Full
                 if (BLINK_LEFT_EXPR)
@@ -108,11 +108,11 @@ void updateLedStrip()
                     // Blink left
                     if (!enAnim)
                     {
-                        std::fill(center - configs.ledstrip.bigOffset.value, center - configs.ledstrip.smallOffset.value, color);
+                        std::fill(center - configs.ledstrip.bigOffset.value(), center - configs.ledstrip.smallOffset.value(), color);
                     }
                     else
                     {
-                        std::fill(center - configs.ledstrip.smallOffset.value - anim_to_fill, center - configs.ledstrip.smallOffset.value, color);
+                        std::fill(center - configs.ledstrip.smallOffset.value() - anim_to_fill, center - configs.ledstrip.smallOffset.value(), color);
                     }
                 }
                 if (BLINK_RIGHT_EXPR)
@@ -120,16 +120,16 @@ void updateLedStrip()
                     // Blink right
                     if (!enAnim)
                     {
-                        std::fill(center + configs.ledstrip.smallOffset.value, center + configs.ledstrip.bigOffset.value, color);
+                        std::fill(center + configs.ledstrip.smallOffset.value(), center + configs.ledstrip.bigOffset.value(), color);
                     }
                     else
                     {
-                        std::fill(center + configs.ledstrip.smallOffset.value, center + configs.ledstrip.smallOffset.value + anim_to_fill, color);
+                        std::fill(center + configs.ledstrip.smallOffset.value(), center + configs.ledstrip.smallOffset.value() + anim_to_fill, color);
                     }
                 }
             }
         } else {
-            if (configs.ledstrip.enableBeepWhenBlink.value)
+            if (configs.ledstrip.enableBeepWhenBlink.value())
             {
                 for (Controller &controller : controllers)
                     controller.command.buzzer.freq = 0;
@@ -138,7 +138,7 @@ void updateLedStrip()
     }
     else
     {
-        if (configs.ledstrip.enableBrakeLights.value)
+        if (configs.ledstrip.enableBrakeLights.value())
         {
             float avgPwm{};
             for (const Controller &controller : controllers)
@@ -153,17 +153,17 @@ void updateLedStrip()
             {
                 auto color = avgSpeedKmh < -0.1f ? CRGB{255, 255, 255} : CRGB{255, 0, 0};
 
-                const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value);
+                const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value());
 
                 std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
-                if (configs.ledstrip.enableFullBlink.value)
+                if (configs.ledstrip.enableFullBlink.value())
                 {
                     std::fill(std::begin(leds), std::end(leds), color);
                 }
-                else if(!configs.ledstrip.enableAnimBlink.value)
+                else if(!configs.ledstrip.enableAnimBlink.value())
                 {
-                    std::fill(center - configs.ledstrip.bigOffset.value - 2, center - configs.ledstrip.smallOffset.value + 2, color);
-                    std::fill(center + configs.ledstrip.smallOffset.value - 2, center + configs.ledstrip.bigOffset.value + 2, color);
+                    std::fill(center - configs.ledstrip.bigOffset.value() - 2, center - configs.ledstrip.smallOffset.value() + 2, color);
+                    std::fill(center + configs.ledstrip.smallOffset.value() - 2, center + configs.ledstrip.bigOffset.value() + 2, color);
                 }
             }
             else
@@ -177,51 +177,51 @@ void updateLedStrip()
         }
     }
 
-    if (!have_disabled_beeper && (!(cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) || !configs.ledstrip.enableBeepWhenBlink.value))
+    if (!have_disabled_beeper && (!(cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) || !configs.ledstrip.enableBeepWhenBlink.value()))
     {
         for (Controller &controller : controllers)
             controller.command.buzzer.freq = 0;
         have_disabled_beeper = true;
     }
-    else if ((cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) && configs.ledstrip.enableBeepWhenBlink.value) have_disabled_beeper = false;
+    else if ((cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH)) && configs.ledstrip.enableBeepWhenBlink.value()) have_disabled_beeper = false;
 
     const auto automaticLight = activateAutomaticFrontLight();
 
-    if (simplified || configs.ledstrip.enableStVO.value || automaticLight)
+    if (simplified || configs.ledstrip.enableStVO.value() || automaticLight)
     {
-       const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value);
+       const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value());
 
-       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKLEFT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) || configs.ledstrip.enableFullBlink.value) // Condition for right
+       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKLEFT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) || configs.ledstrip.enableFullBlink.value()) // Condition for right
        {
-           std::fill(center - configs.ledstrip.bigOffset.value, center - configs.ledstrip.smallOffset.value, CRGB{0, 0, 0});
-           std::fill(center - configs.ledstrip.bigOffset.value - 1U, center - configs.ledstrip.smallOffset.value - 1U, CRGB{255, 0, 0}); // Right
+           std::fill(center - configs.ledstrip.bigOffset.value(), center - configs.ledstrip.smallOffset.value(), CRGB{0, 0, 0});
+           std::fill(center - configs.ledstrip.bigOffset.value() - 1U, center - configs.ledstrip.smallOffset.value() - 1U, CRGB{255, 0, 0}); // Right
        }
-       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKRIGHT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) || configs.ledstrip.enableFullBlink.value) // Condition for left
+       if (!(blinkAnimation == LEDSTRIP_OVERWRITE_BLINKRIGHT || blinkAnimation == LEDSTRIP_OVERWRITE_BLINKBOTH) || !(espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) || configs.ledstrip.enableFullBlink.value()) // Condition for left
        {
-           std::fill(center + configs.ledstrip.smallOffset.value, center + configs.ledstrip.bigOffset.value, CRGB{0, 0, 0});
-           std::fill(center + configs.ledstrip.smallOffset.value + 1U, center + configs.ledstrip.bigOffset.value + 1U, CRGB{255, 0, 0}); // Left
+           std::fill(center + configs.ledstrip.smallOffset.value(), center + configs.ledstrip.bigOffset.value(), CRGB{0, 0, 0});
+           std::fill(center + configs.ledstrip.smallOffset.value() + 1U, center + configs.ledstrip.bigOffset.value() + 1U, CRGB{255, 0, 0}); // Left
        }
 
-       if (configs.ledstrip.stvoFrontEnable.value || automaticLight)
+       if (configs.ledstrip.stvoFrontEnable.value() || automaticLight)
        {
-       std::fill(std::begin(leds) + configs.ledstrip.stvoFrontOffset.value, std::begin(leds) + configs.ledstrip.stvoFrontOffset.value + configs.ledstrip.stvoFrontLength.value, CRGB{255, 255, 255});
-       std::fill(std::end(leds) - configs.ledstrip.stvoFrontOffset.value - configs.ledstrip.stvoFrontLength.value, std::end(leds) - configs.ledstrip.stvoFrontOffset.value, CRGB{255, 255, 255});
+       std::fill(std::begin(leds) + configs.ledstrip.stvoFrontOffset.value(), std::begin(leds) + configs.ledstrip.stvoFrontOffset.value() + configs.ledstrip.stvoFrontLength.value(), CRGB{255, 255, 255});
+       std::fill(std::end(leds) - configs.ledstrip.stvoFrontOffset.value() - configs.ledstrip.stvoFrontLength.value(), std::end(leds) - configs.ledstrip.stvoFrontOffset.value(), CRGB{255, 255, 255});
        }
     }
 
-    FastLED.setMaxPowerInVoltsAndMilliamps(5, configs.ledstrip.maxMilliamps.value);
-    FastLED.setBrightness(configs.ledstrip.brightness.value);
+    FastLED.setMaxPowerInVoltsAndMilliamps(5, configs.ledstrip.maxMilliamps.value());
+    FastLED.setBrightness(configs.ledstrip.brightness.value());
     FastLED.show();
 }
 
 void showAnimation()
 {
-    if (configs.ledstrip.enableLedAnimation.value
+    if (configs.ledstrip.enableLedAnimation.value()
         && !simplified
-        && !(asyncOtaTaskStarted && configs.ledstrip.otaMode.value != OtaAnimationModes::None)
+        && !(asyncOtaTaskStarted && configs.ledstrip.otaMode.value() != OtaAnimationModes::None)
         )
     {
-        switch (configs.ledstrip.animationType.value)
+        switch (configs.ledstrip.animationType.value())
         {
         case LedstripAnimation::DefaultRainbow: showDefaultLedstrip(); break;
         case LedstripAnimation::BetterRainbow: showBetterRainbow(); break;
@@ -232,7 +232,7 @@ void showAnimation()
         default: showDefaultLedstrip();
         }
     }
-    else if (asyncOtaTaskStarted && configs.ledstrip.otaMode.value != OtaAnimationModes::None)
+    else if (asyncOtaTaskStarted && configs.ledstrip.otaMode.value() != OtaAnimationModes::None)
     {
         // show ota animation
         showOtaAnimation();
@@ -253,7 +253,7 @@ void showOtaAnimation()
     if (const auto totalSize = asyncOta->totalSize(); totalSize && *totalSize > 0)
     {
         percentage = (float(progress) / *totalSize * 100);
-        if (configs.ledstrip.otaMode.value == OtaAnimationModes::GreenProgressBar)
+        if (configs.ledstrip.otaMode.value() == OtaAnimationModes::GreenProgressBar)
         {
             int numLeds = (leds_count * percentage) / 100;
             if (numLeds >= leds_count)
@@ -262,7 +262,7 @@ void showOtaAnimation()
             }
             std::fill(std::begin(leds), std::begin(leds) + numLeds, CRGB{0,255,0});
         }
-        else if (configs.ledstrip.otaMode.value == OtaAnimationModes::ColorChangeAll)
+        else if (configs.ledstrip.otaMode.value() == OtaAnimationModes::ColorChangeAll)
         {
             const uint8_t redChannel = 255 - (2.55 * percentage);
             const uint8_t greenChannel = 2.55 * percentage;
@@ -307,9 +307,9 @@ void showSpeedSyncAnimation()
 
     static float hue_result = 0;
 
-    const float hue_per_led = 1. / std::max(uint8_t(1), uint8_t(configs.ledstrip.animationMultiplier.value));
+    const float hue_per_led = 1. / std::max(uint8_t(1), uint8_t(configs.ledstrip.animationMultiplier.value()));
     const float meter_per_second = avgSpeedKmh / 3.6;
-    const float leds_per_second = meter_per_second * configs.ledstrip.leds_per_meter.value;
+    const float leds_per_second = meter_per_second * configs.ledstrip.leds_per_meter.value();
     const float hue_per_second = leds_per_second * hue_per_led;
 
     hue_result += hue_per_second * difference_ms / 1000.f;
@@ -333,7 +333,7 @@ void showDefaultLedstrip()
 
 void showSnakeAnimation()
 {
-    const float leds_per_cycle = (1. / std::max<int16_t>(1, configs.ledstrip.animationMultiplier.value)) * (avgSpeedKmh + 1); // yes, this is intendet as a float value! Do NOT change!
+    const float leds_per_cycle = (1. / std::max<int16_t>(1, configs.ledstrip.animationMultiplier.value())) * (avgSpeedKmh + 1); // yes, this is intendet as a float value! Do NOT change!
     fadeToBlackBy(&*std::begin(leds), leds.size(), floor(20*leds_per_cycle));
     if (gLedPosition >= leds.size())
     {
@@ -402,40 +402,40 @@ void showGasOMeterAnimation()
 void showCustomColor()
 {
     const auto eighth_length = leds.size() / 8;
-    const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value);
+    const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value());
 
-    std::fill(std::begin(leds), std::end(leds), configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT)].value); // Front
-    std::fill(center - (eighth_length / 2), center + (eighth_length / 2), configs.ledstrip.custom_color[int(Bobbycar_Side::BACK)].value); // Back
+    std::fill(std::begin(leds), std::end(leds), configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT)].value()); // Front
+    std::fill(center - (eighth_length / 2), center + (eighth_length / 2), configs.ledstrip.custom_color[int(Bobbycar_Side::BACK)].value()); // Back
 
 #ifdef LEDSTRIP_WRONG_DIRECTION
-    std::fill(center + (eighth_length / 2), center + (eighth_length / 2) + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::BACK_LEFT)].value);  // Back Left
-    std::fill(center - (eighth_length / 2) - eighth_length, center - (eighth_length / 2), configs.ledstrip.custom_color[int(Bobbycar_Side::BACK_RIGHT)].value); // Back Right
+    std::fill(center + (eighth_length / 2), center + (eighth_length / 2) + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::BACK_LEFT)].value());  // Back Left
+    std::fill(center - (eighth_length / 2) - eighth_length, center - (eighth_length / 2), configs.ledstrip.custom_color[int(Bobbycar_Side::BACK_RIGHT)].value()); // Back Right
 #else
-    std::fill(center + (eighth_length / 2), center + (eighth_length / 2) + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::BACK_RIGHT)].value);  // Back Right
-    std::fill(center - (eighth_length / 2) - eighth_length, center - (eighth_length / 2), configs.ledstrip.custom_color[int(Bobbycar_Side::BACK_LEFT)].value);   // Back Left
+    std::fill(center + (eighth_length / 2), center + (eighth_length / 2) + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::BACK_RIGHT)].value());  // Back Right
+    std::fill(center - (eighth_length / 2) - eighth_length, center - (eighth_length / 2), configs.ledstrip.custom_color[int(Bobbycar_Side::BACK_LEFT)].value());   // Back Left
 #endif
 
 #ifdef LEDSTRIP_WRONG_DIRECTION
-    std::fill(center + (eighth_length / 2) + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::LEFT)].value);  // Left
-    std::fill(center - (eighth_length / 2) - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::RIGHT)].value); // Right
+    std::fill(center + (eighth_length / 2) + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::LEFT)].value());  // Left
+    std::fill(center - (eighth_length / 2) - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::RIGHT)].value()); // Right
 #else
-    std::fill(center + (eighth_length / 2) + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::RIGHT)].value);  // Right
-    std::fill(center - (eighth_length / 2) - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::LEFT)].value);   // Left
+    std::fill(center + (eighth_length / 2) + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::RIGHT)].value());  // Right
+    std::fill(center - (eighth_length / 2) - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::LEFT)].value());   // Left
 #endif
 
 #ifdef LEDSTRIP_WRONG_DIRECTION
-    std::fill(center + (eighth_length / 2) + eighth_length + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_LEFT)].value);  // Front Left
-    std::fill(center - (eighth_length / 2) - eighth_length - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_RIGHT)].value); // Front Right
+    std::fill(center + (eighth_length / 2) + eighth_length + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_LEFT)].value());  // Front Left
+    std::fill(center - (eighth_length / 2) - eighth_length - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_RIGHT)].value()); // Front Right
 #else
-    std::fill(center + (eighth_length / 2) + eighth_length + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_RIGHT)].value);  // Front Right
-    std::fill(center - (eighth_length / 2) - eighth_length - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_LEFT)].value);   // Front Left
+    std::fill(center + (eighth_length / 2) + eighth_length + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_RIGHT)].value());  // Front Right
+    std::fill(center - (eighth_length / 2) - eighth_length - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_LEFT)].value());   // Front Left
 #endif
 }
 
 [[nodiscard]] bool activateAutomaticFrontLight()
 {
     using namespace std::chrono_literals;
-    if (!configs.ledstrip.automaticLight.value)
+    if (!configs.ledstrip.automaticLight.value())
         return false;
     const auto today = toDateTime(espchrono::utc_clock::now());
 

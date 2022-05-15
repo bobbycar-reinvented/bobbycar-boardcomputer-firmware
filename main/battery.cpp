@@ -11,7 +11,7 @@
 
 float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
 {
-    const float cellVoltage = batVoltage / configs.battery.cellsSeries.value;
+    const float cellVoltage = batVoltage / configs.battery.cellsSeries.value();
 
     switch (cellType)
     {
@@ -75,7 +75,7 @@ float getRemainingWattHours()
 
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        return (target_mah / 1000.f) * 3.7 * configs.battery.cellsParallel.value * configs.battery.cellsSeries.value * (getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value)) / 100);
+        return (target_mah / 1000.f) * 3.7 * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value() * (getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())) / 100);
     }
     else
         return 0.;
@@ -83,24 +83,24 @@ float getRemainingWattHours()
 
 float getPercentageByWh(float wh)
 {
-    const float maxWh = (getTarget_mAh() / 1000.f) * 3.7 * configs.battery.cellsParallel.value * configs.battery.cellsSeries.value;
+    const float maxWh = (getTarget_mAh() / 1000.f) * 3.7 * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value();
     return maxWh / wh;
 }
 
 float getBatteryWattHours()
 {
-    return (getTarget_mAh() / 1000.f) * 3.7 * configs.battery.cellsParallel.value * configs.battery.cellsSeries.value;
+    return (getTarget_mAh() / 1000.f) * 3.7 * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value();
 }
 
 float getTarget_mAh()
 {
     float target_mah = 2000; //default
-    if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::_22P) target_mah = 2200;
-    if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::HG2) target_mah = 3000;
-    if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::MH1) target_mah = 3200;
-    if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::VTC5) target_mah = 2600;
-    if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::BAK_25R) target_mah = 2500;
-    if(BatteryCellType(configs.battery.cellType.value) == BatteryCellType::HE4) target_mah = 2300;
+    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::_22P) target_mah = 2200;
+    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::HG2) target_mah = 3000;
+    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::MH1) target_mah = 3200;
+    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::VTC5) target_mah = 2600;
+    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::BAK_25R) target_mah = 2500;
+    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::HE4) target_mah = 2300;
     return target_mah;
 }
 
@@ -108,7 +108,7 @@ std::string getBatteryPercentageString()
 {
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        std::string output = fmt::format("Battery: {:.1f}%", getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value)));
+        std::string output = fmt::format("Battery: {:.1f}%", getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())));
         return output;
     }
     else
@@ -128,7 +128,7 @@ std::string getBatteryRemainingWattHoursString()
 
 std::string getRemainingRangeString()
 {
-    return fmt::format("{:.1f} km", getRemainingWattHours() / configs.battery.watthoursPerKilometer.value);
+    return fmt::format("{:.1f} km", getRemainingWattHours() / configs.battery.watthoursPerKilometer.value());
 }
 
 std::string getBatteryDebugString()

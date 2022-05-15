@@ -12,12 +12,12 @@ espchrono::millis_clock::time_point lastReverseBeepToggle;
 
 float convertToKmh(float val)
 {
-    return val /* / profileSettings.controllerHardware.numMagnetPoles */ / 60.f * configs.controllerHardware.wheelDiameter.value / 1000.f * 3.14159265359f * 3.6f;
+    return val /* / profileSettings.controllerHardware.numMagnetPoles */ / 60.f * configs.controllerHardware.wheelDiameter.value() / 1000.f * 3.14159265359f * 3.6f;
 }
 
 float convertFromKmh(float val)
 {
-    return val /* * profileSettings.controllerHardware.numMagnetPoles */ * 60.f / configs.controllerHardware.wheelDiameter.value * 1000.f / 3.14159265359f / 3.6f;
+    return val /* * profileSettings.controllerHardware.numMagnetPoles */ * 60.f / configs.controllerHardware.wheelDiameter.value() * 1000.f / 3.14159265359f / 3.6f;
 }
 
 float convertToInch(float val)
@@ -109,7 +109,7 @@ void fixCommonParams()
         motor.phaseAdvMax = profileSettings.limits.phaseAdvMax;
     }
 
-    if (configs.reverseBeep.value)
+    if (configs.reverseBeep.value())
     {
         const auto x = motors();
         const auto shouldBeep = std::all_of(std::begin(x), std::end(x), [](const bobbycar::protocol::serial::MotorState &motor){ return motor.pwm < 0; });
@@ -121,7 +121,7 @@ void fixCommonParams()
                 reverseBeepToggle = true;
                 lastReverseBeepToggle = espchrono::millis_clock::now();
                 for (auto &controller : controllers)
-                    controller.command.buzzer = {.freq=configs.reverseBeepFreq0.value, .pattern=0};
+                    controller.command.buzzer = {.freq=configs.reverseBeepFreq0.value(), .pattern=0};
             }
             else
                 for (auto &controller : controllers)
@@ -129,12 +129,12 @@ void fixCommonParams()
 
             currentlyReverseBeeping = shouldBeep;
         }
-        else if (shouldBeep && espchrono::millis_clock::now() - lastReverseBeepToggle >= std::chrono::milliseconds{reverseBeepToggle?configs.reverseBeepDuration0.value:configs.reverseBeepDuration1.value})
+        else if (shouldBeep && espchrono::millis_clock::now() - lastReverseBeepToggle >= std::chrono::milliseconds{reverseBeepToggle?configs.reverseBeepDuration0.value():configs.reverseBeepDuration1.value()})
         {
             reverseBeepToggle = !reverseBeepToggle;
 
             for (auto &controller : controllers)
-                controller.command.buzzer = {.freq=uint8_t(reverseBeepToggle?configs.reverseBeepFreq0.value:configs.reverseBeepFreq1.value), .pattern=0};
+                controller.command.buzzer = {.freq=uint8_t(reverseBeepToggle?configs.reverseBeepFreq0.value():configs.reverseBeepFreq1.value()), .pattern=0};
 
             lastReverseBeepToggle = espchrono::millis_clock::now();
         }
@@ -277,7 +277,7 @@ std::string local_clock_string()
 #ifdef CONFIG_ESPCHRONO_SUPPORT_DEFAULT_TIMEZONE
     const auto now = espchrono::local_clock::now();
 #else // mir egal ob die lokalzeit richtig is
-    const auto now = espchrono::utc_clock::now() + configs.timezoneOffset.value;
+    const auto now = espchrono::utc_clock::now() + configs.timezoneOffset.value();
 #endif
     const auto dt = espchrono::toDateTime(now);
     return fmt::format("{:02d}:{:02d}:{:02d}", dt.hour, dt.minute, dt.second);
@@ -285,7 +285,7 @@ std::string local_clock_string()
 
 int16_t map_analog_stick(uint16_t middle, uint16_t start, uint16_t end, uint16_t deadband, uint16_t raw)
 {
-    if (abs(raw - middle) < configs.deadband.value)
+    if (abs(raw - middle) < configs.deadband.value())
     {
         return 0;
     }
@@ -294,15 +294,15 @@ int16_t map_analog_stick(uint16_t middle, uint16_t start, uint16_t end, uint16_t
     {
         if (raw < middle)
         {
-            raw += configs.deadband.value;
-            start += configs.deadband.value;
+            raw += configs.deadband.value();
+            start += configs.deadband.value();
             const auto return_val = cpputils::mapValueClamped<float>(raw, start, middle, -1000, 0);
             return return_val;
         }
         else
         {
-            raw -= configs.deadband.value;
-            end -= configs.deadband.value;
+            raw -= configs.deadband.value();
+            end -= configs.deadband.value();
             const auto return_val = cpputils::mapValueClamped<float>(raw, middle, end, 0, 1000);
             return return_val;
         }
@@ -311,15 +311,15 @@ int16_t map_analog_stick(uint16_t middle, uint16_t start, uint16_t end, uint16_t
     {
         if (raw < middle)
         {
-            raw += configs.deadband.value;
-            end  += configs.deadband.value;
+            raw += configs.deadband.value();
+            end  += configs.deadband.value();
             const auto return_val = cpputils::mapValueClamped<float>(raw, end, middle, 1000, 0);
             return return_val;
         }
         else
         {
-            raw -= configs.deadband.value;
-            start -= configs.deadband.value;
+            raw -= configs.deadband.value();
+            start -= configs.deadband.value();
             const auto return_val = cpputils::mapValueClamped<float>(raw, middle, start, 0, -1000);
             return return_val;
         }

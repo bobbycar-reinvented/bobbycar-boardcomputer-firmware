@@ -141,7 +141,7 @@ class LedStripMaxCurrentText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        return fmt::format("&sLedstrip max current: &f&2{:.02f}A", configs.ledstrip.maxMilliamps.value / 1000.f);
+        return fmt::format("&sLedstrip max current: &f&2{:.02f}A", configs.ledstrip.maxMilliamps.value() / 1000.f);
     }
 };
 } // namespace
@@ -170,7 +170,7 @@ LedstripMenu::LedstripMenu()
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_STVO_FRONTLENGTH, LedsStVOFrontLengthAccessor>, espgui::PushScreenAction<StVOLengthChangeScreen>>>(); }
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BLINKANIMATION>,                                  espgui::PushScreenAction<LedstripSelectBlinkMenu>>>();
-    if (configs.feature.ota.isEnabled.value)
+    if (configs.feature.ota.isEnabled.value())
         if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_CHANGE_OTA_ANIM>,     espgui::PushScreenAction<LedstripOtaAnimationChangeMenu>>>(); }
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_ANIMATION_MULTIPLIER>,                            espgui::PushScreenAction<AnimationMultiplierChangeScreen>>>();
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSCOUNT, LedsCountAccessor>,           espgui::PushScreenAction<LedsCountChangeScreen>>>(); }

@@ -170,6 +170,10 @@ void handleNormalChar(char c)
                 quickactions::blink_right();
             }
             break;
+        case 'b':
+        case 'B':
+            esp_restart();
+            break;
         }
     }
 }

@@ -334,7 +334,7 @@ esp_err_t webserver_newSettings_handler(httpd_req_t *req)
 
                 {
                     HtmlTag divTag{"div", "class=\"form-table-cell\"", body};
-                    showInputForSetting(nvsName, config.value, body);
+                    showInputForSetting(nvsName, config.value(), body);
                 }
 
                 {

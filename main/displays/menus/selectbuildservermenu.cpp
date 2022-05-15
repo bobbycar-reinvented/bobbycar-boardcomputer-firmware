@@ -52,8 +52,8 @@ SelectBuildServerMenu::SelectBuildServerMenu()
 
     for (const auto &otaServer : configs.otaServers)
     {
-        std::string url = otaServer.url.value;
-        std::string name = (otaServer.name.value.empty()) ? url : otaServer.name.value;
+        std::string url = otaServer.url.value();
+        std::string name = (otaServer.name.value().empty()) ? url : otaServer.name.value();
 
         if (!name.empty())
         {

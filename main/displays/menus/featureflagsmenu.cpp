@@ -45,7 +45,7 @@ public:
         }
         else
         {
-            if (m_flag.isEnabled.value)
+            if (m_flag.isEnabled.value())
             {
                 return TFT_RED;
             }
@@ -56,13 +56,13 @@ public:
 
     void triggered() override
     {
-        if (auto result = m_flag.isEnabled.write(configs.nvs_handle_user, !m_flag.isEnabled.value); !result)
+        if (auto result = m_flag.isEnabled.write(configs.nvs_handle_user, !m_flag.isEnabled.value()); !result)
             errorOccured(std::move(result).error());
     }
 
     const MenuItemIcon *icon() const override
     {
-        return m_flag.isEnabled.value ? &icons::checked : &icons::unchecked;
+        return m_flag.isEnabled.value() ? &icons::checked : &icons::unchecked;
     }
 private:
     ConfiguredFeatureFlag &m_flag;

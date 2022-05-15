@@ -118,7 +118,7 @@ void BatteryMenu::redraw()
 
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        const auto batPercent = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value));
+        const auto batPercent = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
         if (battery::bootBatPercentage)
         {
             m_doubleProgressBarBatPercentage.redraw(batPercent, *battery::bootBatPercentage);

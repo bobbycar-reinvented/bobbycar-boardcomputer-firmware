@@ -207,7 +207,7 @@ void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
         case Status::Begin:
             if (m_bootup)
                 espgui::switchScreen<StatusDisplay>();
-            else if (configs.lockscreen.keepLockedAfterReboot.value && configs.lockscreen.locked.value)
+            else if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
             {
                 espgui::switchScreen<MainMenu>();
                 configs.write_config(configs.lockscreen.locked, false);
@@ -300,13 +300,13 @@ void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
 void PotisCalibrateDisplay::copyFromSettings()
 {
 #ifdef FEATURE_JOYSTICK
-    m_gasMitte = configs.gasMitte.value;
-    m_bremsMitte = configs.bremsMitte.value;
+    m_gasMitte = configs.gasMitte.value();
+    m_bremsMitte = configs.bremsMitte.value();
 #endif
-    m_gasMin = configs.gasMin.value;
-    m_gasMax = configs.gasMax.value;
-    m_bremsMin = configs.bremsMin.value;
-    m_bremsMax = configs.bremsMax.value;
+    m_gasMin = configs.gasMin.value();
+    m_gasMax = configs.gasMax.value();
+    m_bremsMin = configs.bremsMin.value();
+    m_bremsMax = configs.bremsMax.value();
 }
 
 void PotisCalibrateDisplay::copyToSettings()

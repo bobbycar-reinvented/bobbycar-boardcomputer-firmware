@@ -108,7 +108,7 @@ void UpdateDisplay::buttonPressed(espgui::Button button)
         espgui::popScreen();
         break;
     case Button::Right:
-        if (const auto result = triggerOta(configs.otaUrl.value); !result)
+        if (const auto result = triggerOta(configs.otaUrl.value()); !result)
             ESP_LOGE("BOBBY", "triggerOta() failed with %.*s", result.error().size(), result.error().data());
         break;
     default:;

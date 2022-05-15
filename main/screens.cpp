@@ -20,7 +20,9 @@ void initScreen()
     tft.fillScreen(TFT_WHITE);
     tft.setTextColor(TFT_BLACK, TFT_WHITE);
     tft.setTextFont(4);
+    espgui::tft.setSwapBytes(true);
     tft.pushImage(0, 40, bobbyicons::logo.WIDTH, bobbyicons::logo.HEIGHT, bobbyicons::logo.buffer);
+    espgui::tft.setSwapBytes(false);
     tft.drawString("Bobbycar-OS", 32, 200);
     tft.drawString("booting...", 32, 225);
     tft.setTextFont(2);
