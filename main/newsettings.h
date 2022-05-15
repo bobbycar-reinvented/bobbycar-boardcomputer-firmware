@@ -270,31 +270,31 @@ public:
     ConfigWrapperLegacy<uint8_t>     dpadDebounce       {25,                                     DoReset,   {},                           "dpadDebounce"        };
     ConfigWrapperLegacy<uint16_t>    buttonReadDelay    {1,                                      DoReset,   {},                           "buttonDelay"         };
 
-    ConfigWrapper<uint8_t>     dpadMappingLeft    {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapLeft"         };
-    ConfigWrapper<uint8_t>     dpadMappingRight   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight"        };
-    ConfigWrapper<uint8_t>     dpadMappingUp      {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapUp"           };
-    ConfigWrapper<uint8_t>     dpadMappingDown    {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapDown"         };
-    ConfigWrapper<uint8_t>     dpadMappingProfile0{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile0"     };
-    ConfigWrapper<uint8_t>     dpadMappingProfile1{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile1"     };
-    ConfigWrapper<uint8_t>     dpadMappingProfile2{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile2"     };
-    ConfigWrapper<uint8_t>     dpadMappingProfile3{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile3"     };
-    ConfigWrapper<uint8_t>     dpadMappingLeft2   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapLeft2"        };
-    ConfigWrapper<uint8_t>     dpadMappingRight2  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight2"       };
-    ConfigWrapper<uint8_t>     dpadMappingUp2     {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapUp2"          };
-    ConfigWrapper<uint8_t>     dpadMappingDown2   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapDown2"        };
-    ConfigWrapper<uint8_t>     dpadMappingExtra1  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra1"       };
-    ConfigWrapper<uint8_t>     dpadMappingExtra2  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra2"       };
-    ConfigWrapper<uint8_t>     dpadMappingExtra3  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra3"       };
-    ConfigWrapper<uint8_t>     dpadMappingExtra4  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra4"       };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingLeft    {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapLeft"         };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingRight   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight"        };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingUp      {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapUp"           };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingDown    {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapDown"         };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingProfile0{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile0"     };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingProfile1{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile1"     };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingProfile2{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile2"     };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingProfile3{INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapProfile3"     };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingLeft2   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapLeft2"        };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingRight2  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight2"       };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingUp2     {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapUp2"          };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingDown2   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapDown2"        };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingExtra1  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra1"       };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingExtra2  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra2"       };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingExtra3  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra3"       };
+    ConfigWrapperLegacy<uint8_t>     dpadMappingExtra4  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra4"       };
 
-    ConfigWrapper<BobbyQuickActions> quickActionLeft2{  BobbyQuickActions::BLINK_LEFT,     DoReset,   {},                           "quickActleft2"       };
-    ConfigWrapper<BobbyQuickActions> quickActionRight2{ BobbyQuickActions::BLINK_RIGHT,    DoReset,   {},                           "quickActright2"      };
-    ConfigWrapper<BobbyQuickActions> quickActionUp2{    BobbyQuickActions::NONE,           DoReset,   {},                           "quickActup2"         };
-    ConfigWrapper<BobbyQuickActions> quickActionDown2{  BobbyQuickActions::HANDBREMSE,     DoReset,   {},                           "quickActdown2"       };
-    ConfigWrapper<BobbyQuickActions> quickActionExtra1{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra1"      };
-    ConfigWrapper<BobbyQuickActions> quickActionExtra2{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra2"      };
-    ConfigWrapper<BobbyQuickActions> quickActionExtra3{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra3"      };
-    ConfigWrapper<BobbyQuickActions> quickActionExtra4{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra4"      };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionLeft2{  BobbyQuickActions::BLINK_LEFT,     DoReset,   {},                           "quickActleft2"       };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionRight2{ BobbyQuickActions::BLINK_RIGHT,    DoReset,   {},                           "quickActright2"      };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionUp2{    BobbyQuickActions::NONE,           DoReset,   {},                           "quickActup2"         };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionDown2{  BobbyQuickActions::HANDBREMSE,     DoReset,   {},                           "quickActdown2"       };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra1{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra1"      };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra2{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra2"      };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra3{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra3"      };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra4{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra4"      };
 
     std::array<WirelessDoorsConfig, 5> wireless_door_configs {
         WirelessDoorsConfig { "door_id0", "door_token0" },
@@ -465,7 +465,7 @@ public:
         ConfiguredFeatureFlag esp_now               {"featureEspNow", false, false, "espnow"};
     } feature;
 
-    ConfigWrapper<uint16_t> anhaenger_id          {0,                                      DoReset,   {},                         "anhaenger_id"        };
+    ConfigWrapperLegacy<uint16_t> anhaenger_id          {0,                                      DoReset,   {},                         "anhaenger_id"        };
 
     struct {
         ConfigWrapperLegacy<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };

@@ -47,13 +47,13 @@ constexpr const char TAG[] = "BUTTONS";
         return Button(BobbyButton::Up2);
     if (configs.dpadMappingDown2.value() == button)
         return Button(BobbyButton::Down2);
-    if (configs.dpadMappingExtra1.value == button)
+    if (configs.dpadMappingExtra1.value() == button)
         return Button(BobbyButton::Extra1);
-    if (configs.dpadMappingExtra2.value == button)
+    if (configs.dpadMappingExtra2.value() == button)
         return Button(BobbyButton::Extra2);
-    if (configs.dpadMappingExtra3.value == button)
+    if (configs.dpadMappingExtra3.value() == button)
         return Button(BobbyButton::Extra3);
-    if (configs.dpadMappingExtra4.value == button)
+    if (configs.dpadMappingExtra4.value() == button)
         return Button(BobbyButton::Extra4);
 
     ESP_LOGW(TAG, "unknown raw button %hhu", button);

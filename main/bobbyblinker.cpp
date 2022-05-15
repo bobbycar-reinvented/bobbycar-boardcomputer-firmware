@@ -18,7 +18,7 @@ namespace {
 
     void sendState(const std::string& state)
     {
-        if (const auto error = espnow::send_espnow_message(fmt::format("{}:{}:{}", state, espchrono::utc_clock::now().time_since_epoch().count(), configs.anhaenger_id.value)); error != ESP_OK)
+        if (const auto error = espnow::send_espnow_message(fmt::format("{}:{}:{}", state, espchrono::utc_clock::now().time_since_epoch().count(), configs.anhaenger_id.value())); error != ESP_OK)
         {
             ESP_LOGE(TAG, "Error sending blinker message: %s", esp_err_to_name(error));
         }
@@ -33,7 +33,7 @@ namespace bobbyblinker {
 
     void handle_blinker()
     {
-        if (!configs.espnow.syncBlink.value)
+        if (!configs.espnow.syncBlink.value())
             return;
 
         const bool blinker_state = (cpputils::is_in(blinkAnimation, LEDSTRIP_OVERWRITE_BLINKLEFT, LEDSTRIP_OVERWRITE_BLINKRIGHT, LEDSTRIP_OVERWRITE_BLINKBOTH));
@@ -58,7 +58,7 @@ namespace bobbyblinker {
             blinker_last_time_sent = std::nullopt;
             sendState("BLINKOFF");
         }
-        if (configs.ledstrip.enableBrakeLights.value && espchrono::ago(*brake_last_time_sent) > 500ms)
+        if (configs.ledstrip.enableBrakeLights.value() && espchrono::ago(*brake_last_time_sent) > 500ms)
         {
             float avgPwm{};
             for (const Controller &controller: controllers) {
