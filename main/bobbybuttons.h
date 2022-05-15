@@ -16,6 +16,10 @@ enum BobbyButton
     Right2,
     Up2,
     Down2,
+    Extra1,
+    Extra2,
+    Extra3,
+    Extra4,
     Confirm = espgui::Button::Right,
     Back = espgui::Button::Left
 };

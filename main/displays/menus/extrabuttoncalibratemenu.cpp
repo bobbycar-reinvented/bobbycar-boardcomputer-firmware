@@ -32,6 +32,11 @@ constexpr char TEXT_BUTTON_PROFILE1[] = "Profile1";
 constexpr char TEXT_BUTTON_PROFILE2[] = "Profile2";
 constexpr char TEXT_BUTTON_PROFILE3[] = "Profile3";
 
+constexpr char TEXT_BUTTON_EXTRA1[] = "Extra1";
+constexpr char TEXT_BUTTON_EXTRA2[] = "Extra2";
+constexpr char TEXT_BUTTON_EXTRA3[] = "Extra3";
+constexpr char TEXT_BUTTON_EXTRA4[] = "Extra4";
+
 constexpr char TEXT_BACK[] = "Back";
 
 template<const char *Tprefix, typename Taccessor, Status status>
@@ -81,6 +86,11 @@ ExtraButtonCalibrateMenu::ExtraButtonCalibrateMenu()
     constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_PROFILE1, ButtonProfile1Accessor, Status::WaitingProfile1>>();
     constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_PROFILE2, ButtonProfile2Accessor, Status::WaitingProfile2>>();
     constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_PROFILE3, ButtonProfile3Accessor, Status::WaitingProfile3>>();
+
+    constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_EXTRA1, ButtonExtra1Accessor, Status::WaitingExtra1>>();
+    constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_EXTRA2, ButtonExtra2Accessor, Status::WaitingExtra2>>();
+    constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_EXTRA3, ButtonExtra3Accessor, Status::WaitingExtra3>>();
+    constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_EXTRA4, ButtonExtra4Accessor, Status::WaitingExtra4>>();
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
@@ -167,6 +177,34 @@ void ExtraButtonCalibrateMenu::rawButtonPressed(uint8_t button)
             break;
         case WaitingProfile3:
             if (auto result = configs.write_config(configs.dpadMappingProfile3, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingExtra1:
+            if (auto result = configs.write_config(configs.dpadMappingExtra1, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingExtra2:
+            if (auto result = configs.write_config(configs.dpadMappingExtra2, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingExtra3:
+            if (auto result = configs.write_config(configs.dpadMappingExtra3, button); !result)
+            {
+                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                break;
+            }
+            break;
+        case WaitingExtra4:
+            if (auto result = configs.write_config(configs.dpadMappingExtra4, button); !result)
             {
                 BobbyErrorHandler{}.errorOccured(std::move(result).error());
                 break;

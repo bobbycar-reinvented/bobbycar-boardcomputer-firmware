@@ -154,7 +154,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [feedc0de, comred, peter, mick, nofeatures, seatbot, gernot]
+        node: [feedc0de, comred, comred_new, peter, mick, nofeatures, seatbot, gernot]
     name: ${{ matrix.node }}
     needs:
       - checkout
@@ -198,7 +198,7 @@ jobs:
       - name: Unpack ignore folder
         env:
           GPG_KEY: ${{ secrets.GPG_KEY }}
-        if: ${{ matrix.node == 'comred' || matrix.node == 'peter' || matrix.node == 'mick' }}
+        if: ${{ matrix.node == 'comred' || matrix.node == 'peter' || matrix.node == 'mick' || matrix.node == 'comred_new' }}
         run: |
           echo Unpacking ignore folder...
           cd repository

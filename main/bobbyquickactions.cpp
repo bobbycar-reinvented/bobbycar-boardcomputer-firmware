@@ -27,6 +27,18 @@ void handle_bobby_quickaction(espgui::Button button, bool pressed)
     case Down2:
         config = &configs.quickActionDown2;
         break;
+    case Extra1:
+        config = &configs.quickActionExtra1;
+        break;
+    case Extra2:
+        config = &configs.quickActionExtra2;
+        break;
+    case Extra3:
+        config = &configs.quickActionExtra3;
+        break;
+    case Extra4:
+        config = &configs.quickActionExtra4;
+        break;
     default:
         return;
     }

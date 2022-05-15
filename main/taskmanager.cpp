@@ -23,6 +23,9 @@
 #ifdef FEATURE_DPAD_6WIRESW
 #include "dpad6wire.h"
 #endif
+#ifdef DPAD_BOARDCOMPUTER_V2
+#include "dpad_boardcomputer_v2.h"
+#endif
 #ifdef FEATURE_ROTARY
 #include "rotary.h"
 #endif
@@ -79,6 +82,9 @@ BobbySchedulerTask schedulerTasksArr[] {
 #endif
 #ifdef FEATURE_DPAD_6WIRESW
     BobbySchedulerTask { "dpad6wire",      dpad6wire::init,       dpad6wire::update,       20ms  },
+#endif
+#ifdef DPAD_BOARDCOMPUTER_V2
+    BobbySchedulerTask { "dpad_boardcomputer_v2", dpad_boardcomputer_v2::init, dpad_boardcomputer_v2::update, 20ms },
 #endif
 #ifdef FEATURE_ROTARY
     BobbySchedulerTask { "rotary",         initRotary,            updateRotary,            20ms  },

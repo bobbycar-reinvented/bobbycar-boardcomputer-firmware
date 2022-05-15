@@ -185,11 +185,19 @@ public:
     ConfigWrapper<uint8_t>     dpadMappingRight2  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight2"       };
     ConfigWrapper<uint8_t>     dpadMappingUp2     {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapUp2"          };
     ConfigWrapper<uint8_t>     dpadMappingDown2   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapDown2"        };
+    ConfigWrapper<uint8_t>     dpadMappingExtra1  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra1"       };
+    ConfigWrapper<uint8_t>     dpadMappingExtra2  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra2"       };
+    ConfigWrapper<uint8_t>     dpadMappingExtra3  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra3"       };
+    ConfigWrapper<uint8_t>     dpadMappingExtra4  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra4"       };
 
     ConfigWrapper<BobbyQuickActions> quickActionLeft2{  BobbyQuickActions::BLINK_LEFT,     DoReset,   {},                           "quickActleft2"       };
     ConfigWrapper<BobbyQuickActions> quickActionRight2{ BobbyQuickActions::BLINK_RIGHT,    DoReset,   {},                           "quickActright2"      };
     ConfigWrapper<BobbyQuickActions> quickActionUp2{    BobbyQuickActions::NONE,           DoReset,   {},                           "quickActup2"         };
     ConfigWrapper<BobbyQuickActions> quickActionDown2{  BobbyQuickActions::HANDBREMSE,     DoReset,   {},                           "quickActdown2"       };
+    ConfigWrapper<BobbyQuickActions> quickActionExtra1{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra1"      };
+    ConfigWrapper<BobbyQuickActions> quickActionExtra2{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra2"      };
+    ConfigWrapper<BobbyQuickActions> quickActionExtra3{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra3"      };
+    ConfigWrapper<BobbyQuickActions> quickActionExtra4{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra4"      };
 
     std::array<WirelessDoorsConfig, 5> wireless_door_configs {
         WirelessDoorsConfig { "door_id0", "door_token0" },
@@ -514,11 +522,19 @@ public:
     x(dpadMappingRight2) \
     x(dpadMappingUp2) \
     x(dpadMappingDown2) \
+    x(dpadMappingExtra1) \
+    x(dpadMappingExtra2) \
+    x(dpadMappingExtra3) \
+    x(dpadMappingExtra4) \
     \
     x(quickActionLeft2) \
     x(quickActionRight2) \
     x(quickActionUp2) \
     x(quickActionDown2) \
+    x(quickActionExtra1) \
+    x(quickActionExtra2) \
+    x(quickActionExtra3) \
+    x(quickActionExtra4) \
     \
     x(wireless_door_configs[0].doorId) \
     x(wireless_door_configs[0].doorToken) \
@@ -637,7 +653,11 @@ public:
     x(lockscreen.pin[0]) \
     x(lockscreen.pin[1]) \
     x(lockscreen.pin[2]) \
-    x(lockscreen.pin[3]) \
+    x(lockscreen.pin[3])\
+    x(lockscreen.pin2[0]) \
+    x(lockscreen.pin2[1]) \
+    x(lockscreen.pin2[2]) \
+    x(lockscreen.pin2[3]) \
     \
     x(savedStatistics.totalCentimeters) \
     \

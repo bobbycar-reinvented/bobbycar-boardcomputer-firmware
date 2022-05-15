@@ -163,6 +163,7 @@ set(headers
     dpad5wire.h
     dpad5wire_2out.h
     dpad6wire.h
+    dpad_boardcomputer_v2.h
     drivingstatistics.h
     espnowfunctions.h
     esptexthelpers.h
@@ -400,6 +401,7 @@ set(sources
     dpad5wire.cpp
     dpad5wire_2out.cpp
     dpad6wire.cpp
+    dpad_boardcomputer_v2.cpp
     drivingstatistics.cpp
     espnowfunctions.cpp
     esptexthelpers.cpp

@@ -10,6 +10,7 @@ VALID_CONFIGS=(
     "allfeatures"
     "seatbot"
     "gernot"
+    "comred_new"
 )
 
 print_usage() {
