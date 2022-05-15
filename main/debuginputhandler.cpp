@@ -18,6 +18,7 @@
 #include "globals.h"
 #include "utils.h"
 #include "bobbybuttons.h"
+#include "bobbyquickactions.h"
 
 namespace {
 constexpr const char * const TAG = "DEBUG";
@@ -159,16 +160,14 @@ void handleNormalChar(char c)
         case 'Z':
             if (espgui::currentDisplay)
             {
-                espgui::currentDisplay->buttonPressed(espgui::Button(BobbyButton::Left2));
-                espgui::currentDisplay->buttonReleased(espgui::Button(BobbyButton::Left2));
+                quickactions::blink_left();
             }
             break;
         case 'u':
         case 'U':
             if (espgui::currentDisplay)
             {
-                espgui::currentDisplay->buttonPressed(espgui::Button(BobbyButton::Right2));
-                espgui::currentDisplay->buttonReleased(espgui::Button(BobbyButton::Right2));
+                quickactions::blink_right();
             }
             break;
         }

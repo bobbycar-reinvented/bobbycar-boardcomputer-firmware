@@ -38,6 +38,7 @@ set(headers
     bluetoothmode.h
     bluetoothtexthelpers.h
     bmsutils.h
+    bobbyblinker.h
     bobbybuttons.h
     bobbycheckbox.h
     bobbyerrorhandler.h
@@ -281,6 +282,7 @@ set(sources
     bluetoothmode.cpp
     bluetoothtexthelpers.cpp
     bmsutils.cpp
+    bobbyblinker.cpp
     bobbybuttons.cpp
     bobbyerrorhandler.cpp
     bobbyhupe.cpp

@@ -9,35 +9,37 @@
 #include "icons/back.h"
 
 // local includes
-#include "utils.h"
-#include "icons/wifi.h"
-#include "icons/bluetooth.h"
-#include "icons/time.h"
-#include "icons/hardware.h"
-#include "icons/buzzer.h"
-#include "icons/info.h"
-#include "icons/demos.h"
-#include "icons/update.h"
-#include "globals.h"
 #include "accessors/settingsaccessors.h"
-#include "displays/menus/limitssettingsmenu.h"
-#include "displays/menus/networksettingsmenu.h"
-#include "displays/menus/bluetoothsettingsmenu.h"
+#include "bobbycheckbox.h"
+#include "displays/bobbychangevaluedisplay.h"
+#include "displays/menus/aboutmenu.h"
 #include "displays/menus/blesettingsmenu.h"
-#include "displays/menus/cloudsettingsmenu.h"
-#include "displays/menus/udpcloudsettingsmenu.h"
-#include "displays/menus/espnowmenu.h"
-#include "displays/menus/selectbuildservermenu.h"
-#include "displays/menus/timesettingsmenu.h"
-#include "displays/menus/modessettingsmenu.h"
-#include "displays/menus/controllerhardwaresettingsmenu.h"
+#include "displays/menus/bluetoothsettingsmenu.h"
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 #include "displays/menus/buzzermenu.h"
+#include "displays/menus/cloudsettingsmenu.h"
+#include "displays/menus/controllerhardwaresettingsmenu.h"
 #include "displays/menus/crashmenu.h"
-#include "displays/menus/aboutmenu.h"
-#include "displays/menus/mainmenu.h"
+#include "displays/menus/espnowmenu.h"
 #include "displays/menus/featureflagsmenu.h"
-#include "bobbycheckbox.h"
+#include "displays/menus/limitssettingsmenu.h"
+#include "displays/menus/mainmenu.h"
+#include "displays/menus/modessettingsmenu.h"
+#include "displays/menus/networksettingsmenu.h"
+#include "displays/menus/selectbuildservermenu.h"
+#include "displays/menus/timesettingsmenu.h"
+#include "displays/menus/udpcloudsettingsmenu.h"
+#include "globals.h"
+#include "icons/bluetooth.h"
+#include "icons/buzzer.h"
+#include "icons/demos.h"
+#include "icons/hardware.h"
+#include "icons/info.h"
+#include "icons/time.h"
+#include "icons/update.h"
+#include "icons/wifi.h"
+#include "textwithvaluehelper.h"
+#include "utils.h"
 
 namespace {
 constexpr char TEXT_SETTINGS[] = "Settings";
@@ -55,6 +57,7 @@ constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
 constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
 constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
 constexpr char TEXT_FEATUREFLAGS[] = "Feature flags";
+constexpr char TEXT_ANHAENGER_ID[] = "Anhaenger ID";
 constexpr char TEXT_AUTOCONNECTBMS[] = "Auto connect BMS";
 constexpr char TEXT_BUZZER[] = "Buzzer";
 constexpr char TEXT_FRONTLED[] = "Front LED";
@@ -72,6 +75,14 @@ struct BacklightAccessor : public virtual espgui::AccessorInterface<bool>
 #endif
 struct FrontLedAccessor : public espgui::RefAccessor<bool> { bool &getRef() const override { return controllers.front.command.led; } };
 struct BackLedAccessor : public espgui::RefAccessor<bool> { bool &getRef() const override { return controllers.back.command.led; } };
+
+using AnhaengerIdChangeScreen = espgui::makeComponent<
+    BobbyChangeValueDisplay<uint16_t>,
+    espgui::StaticText<TEXT_ANHAENGER_ID>,
+    AnhaengerIdAccessor,
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
+>;
 } // namespace
 
 using namespace espgui;
@@ -106,6 +117,7 @@ SettingsMenu::SettingsMenu()
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>, PushScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware>>>();
     }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FEATUREFLAGS>,                  PushScreenAction<FeatureFlagsMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ANHAENGER_ID, AnhaengerIdAccessor>, espgui::PushScreenAction<AnhaengerIdChangeScreen>>>();
 //#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 //    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                BobbyCheckbox, AutoConnectBmsAccessor>>();
 //#endif

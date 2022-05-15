@@ -12,6 +12,7 @@
 #include "time_bobbycar.h"
 #include "newsettings.h"
 #include "bobbyhupe.h"
+#include "bobbyblinker.h"
 
 namespace espnow {
 uint16_t lastYear; // Used for esp-now timesync
@@ -146,6 +147,7 @@ void initESPNow()
 void handle()
 {
     bobbyhupe::handle_hupe();
+    bobbyblinker::handle_blinker();
     if (initialized < 255 && espnow_init_allowed())
     {
         initESPNow();
@@ -244,7 +246,7 @@ void handle()
             }
             else
             {
-                ESP_LOGI(TAG, "Unkown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
+                ESP_LOGI(TAG, "Unknown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
             }
         }
 clear:

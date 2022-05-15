@@ -368,6 +368,8 @@ public:
         ConfiguredFeatureFlag esp_now               {"featureEspNow", false, false, "espnow"};
     } feature;
 
+    ConfigWrapper<uint16_t> anhaenger_id          {0,                                      DoReset,   {},                         "anhaenger_id"        };
+
     struct {
         ConfigWrapper<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
     } bleSettings;

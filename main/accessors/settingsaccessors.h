@@ -254,3 +254,6 @@ struct QuickActionExtra1Accessor : public NewSettingsAccessor<BobbyQuickActions>
 struct QuickActionExtra2Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionExtra2; } };
 struct QuickActionExtra3Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionExtra3; } };
 struct QuickActionExtra4Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionExtra4; } };
+
+// Other
+struct AnhaengerIdAccessor : public NewSettingsAccessor<uint16_t> { ConfigWrapper<uint16_t> &getConfig() const override { return configs.anhaenger_id; } };
