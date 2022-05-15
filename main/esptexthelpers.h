@@ -2,12 +2,15 @@
 
 // esp-idf includes
 #include <esp_heap_caps.h>
+#include <esp_chip_info.h>
+#include <esp_idf_version.h>
 
 // 3rdparty lib includes
 #include <fmt/core.h>
 #include <espstrutils.h>
 
 // local includes
+#include "globals.h"
 #include "can.h"
 #include "textinterface.h"
 
@@ -47,16 +50,24 @@ class CanIcCrashText : public virtual espgui::TextInterface { public: std::strin
 #endif
 
 constexpr char TEXT_ESPCHIPREVISION[] = "Chip revision: ";
-using EspChipRevisionText = espgui::StaticText<TEXT_ESPCHIPREVISION>; //EspStatusTextHelper<TEXT_ESPCHIPREVISION, uint8_t, &EspClass::getChipRevision>;
+class EspChipRevisionText : public virtual espgui::TextInterface { public: std::string text() const override {
+    return fmt::format("{}{}", TEXT_ESPCHIPREVISION, chip_info.revision);
+}};
 
-constexpr char TEXT_ESPCPUFREQMHZ[] = "Cpu freq MHz: ";
-using EspCpuFreqMHzText = espgui::StaticText<TEXT_ESPCPUFREQMHZ>; //EspStatusTextHelper<TEXT_ESPCPUFREQMHZ, uint32_t, &EspClass::getCpuFreqMHz>;
+constexpr char TEXT_ESPMAXCPUFREQMHZ[] = "Cpu max freq MHz: ";
+class EspCpuMaxFreqMHzText : public virtual espgui::TextInterface { public: std::string text() const override {
+    return fmt::format("{}{}", TEXT_ESPMAXCPUFREQMHZ, pm_config.max_freq_mhz);
+}};
 
-constexpr char TEXT_ESPCYCLECOUNT[] = "Cycle count: ";
-using EspCycleCountText = espgui::StaticText<TEXT_ESPCYCLECOUNT>; //EspStatusTextHelper<TEXT_ESPCYCLECOUNT, uint32_t, &EspClass::getCycleCount>;
+constexpr char TEXT_ESPMINCPUFREQMHZ[] = "Cpu max freq MHz: ";
+class EspCpuMinFreqMHzText : public virtual espgui::TextInterface { public: std::string text() const override {
+        return fmt::format("{}{}", TEXT_ESPMINCPUFREQMHZ, pm_config.min_freq_mhz);
+}};
 
 constexpr char TEXT_ESPSDKVERSION[] = "Sdk version: ";
-using EspSdkVersionText = espgui::StaticText<TEXT_ESPSDKVERSION>; //EspStatusTextHelper<TEXT_ESPSDKVERSION, const char *, &EspClass::getSdkVersion>;
+class EspSdkVersionText : public virtual espgui::TextInterface { public: std::string text() const override {
+    return fmt::format("{}{}", TEXT_ESPSDKVERSION, esp_get_idf_version());
+}};
 
 constexpr char TEXT_ESPFLASHCHIPSIZE[] = "Flash chip size: ";
 using EspFlashChipSizeText = espgui::StaticText<TEXT_ESPFLASHCHIPSIZE>; //EspStatusTextHelper<TEXT_ESPFLASHCHIPSIZE, uint32_t, &EspClass::getFlashChipSize>;
