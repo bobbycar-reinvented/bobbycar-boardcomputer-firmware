@@ -36,9 +36,9 @@ void MickMode::update()
     else
     {
         auto now = espchrono::millis_clock::now();
-        auto timeDelta = std::chrono::floor<std::chrono::milliseconds>(now - lastUpdate_).count();
+        float timeDelta = std::chrono::floor<std::chrono::milliseconds>(now - lastUpdate_).count();
         // Make sure timeDelta can never be negative, otherwise the exponential below may explode
-        timeDelta = std::max(timeDelta, 0ll);
+        timeDelta = std::max(timeDelta, 0.f);
         lastUpdate_ = now;
 
         float alpha = 1.f - expf(-timeDelta / profileSettings.mickMode.smoothing);
