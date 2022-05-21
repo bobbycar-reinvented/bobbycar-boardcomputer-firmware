@@ -97,7 +97,7 @@ void cloudCollect()
         return;
     }
 
-    if (configs.cloudSettings.cloudMode.value == CloudMode::STATISTICS || configs.cloudSettings.cloudMode.value == CloudMode::STATISTICS_AND_REMOTE_DISPLAY)
+    if (configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS || configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS_AND_REMOTE_DISPLAY)
     {
         if (cloudBuffer.empty())
             cloudBuffer = '[';
@@ -234,7 +234,7 @@ void cloudSend()
 
         cloudBuffer.clear();
     }
-    else if (cloudClient && !configs.cloudSettings.cloudEnabled.value)
+    else if (cloudClient && !configs.cloudSettings.cloudEnabled.value())
     {
         destroyCloud();
     }
@@ -254,8 +254,8 @@ std::string getLoginMessage()
 
 void cloudSendDisplay(std::string_view data)
 {
-    if (configs.cloudSettings.cloudEnabled.value &&
-        !configs.cloudUrl.value.empty() && configs.cloudSettings.cloudMode.value != CloudMode::INACTIVE)
+    if (configs.cloudSettings.cloudEnabled.value() &&
+        !configs.cloudUrl.value().empty() && configs.cloudSettings.cloudMode.value() != CloudMode::INACTIVE)
     {
         if (!cloudClient)
         {
@@ -282,7 +282,7 @@ void cloudSendDisplay(std::string_view data)
         if (!cloudClient.is_connected())
             return;
 
-        auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value}).count();
+        auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
         int written;
 
         if (hasAnnouncedItself)
@@ -301,7 +301,7 @@ void cloudSendDisplay(std::string_view data)
             ESP_LOGE("BOBBY", "websocket sent size mismatch, sent=%i, expected=%i", written, data.size());
         }
     }
-    else if (cloudClient && !configs.cloudSettings.cloudEnabled.value)
+    else if (cloudClient && !configs.cloudSettings.cloudEnabled.value())
     {
         destroyCloud();
     }
@@ -355,7 +355,7 @@ void createCloud()
             if (id.empty())
                 return;
 
-            auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value}).count();
+            auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
             const auto message = fmt::format(R"({{"type":"response","id":"{}"}})", id);
             ESP_LOGI(TAG, "sending response: %s", message.c_str());
             cloudClient.send_text(message, timeout);
