@@ -1,17 +1,16 @@
 #include "mickmodesettingsmenu.h"
 
 // 3rdparty lib includes
-#include "changevaluedisplay.h"
-#include "menuitem.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <changevaluedisplay.h>
+#include <icons/back.h>
+#include <menuitem.h>
 
 // local includes
-#include "displays/bobbychangevaluedisplay.h"
-#include "utils.h"
-#include "changevaluedisplay_unifiedmodelmode.h"
 #include "accessors/settingsaccessors.h"
-#include "displays/menus/modessettingsmenu.h"
+#include "changevaluedisplay_unifiedmodelmode.h"
+#include "displays/bobbychangevaluedisplay.h"
 
 namespace {
 constexpr char TEXT_MICKMODESETTINGS[] = "Mick mode settings";
@@ -23,25 +22,25 @@ using MickModeModelModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<UnifiedModelMode>,
     espgui::StaticText<TEXT_MODELMODE>,
     MickModeModelModeAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<MickModeSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<MickModeSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using MickModeSmoothingChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
     espgui::StaticText<TEXT_MICKMODE_SMOOTHING>,
     MickModeSmoothingAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<MickModeSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<MickModeSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 } // namespace
 
-using namespace espgui;
-
 MickModeSettingsMenu::MickModeSettingsMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          SwitchScreenAction<MickModeModelModeChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MICKMODE_SMOOTHING>, SwitchScreenAction<MickModeSmoothingChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<ModesSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    using namespace espgui;
+
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          PushScreenAction<MickModeModelModeChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MICKMODE_SMOOTHING>, PushScreenAction<MickModeSmoothingChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string MickModeSettingsMenu::text() const
@@ -51,5 +50,5 @@ std::string MickModeSettingsMenu::text() const
 
 void MickModeSettingsMenu::back()
 {
-    switchScreen<ModesSettingsMenu>();
+    espgui::popScreen();
 }

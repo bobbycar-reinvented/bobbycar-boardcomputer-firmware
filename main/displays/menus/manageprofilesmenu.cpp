@@ -5,7 +5,8 @@
 #include <TFT_eSPI.h>
 
 // local includes
-#include "actions/switchscreenaction.h"
+#include "actions/pushscreenaction.h"
+#include "actions/popscreenaction.h"
 #include "bobbyerrorhandler.h"
 #include "globals.h"
 #include "mainmenu.h"
@@ -220,7 +221,7 @@ ManageProfilesMenu::ManageProfilesMenu()
        constructMenuItem<ManageProfileMenuItem>(*this, i);
     }
     constructMenuItem<ManageProfileModeMenuItem>(*this);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, espgui::PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 void ManageProfilesMenu::start()
@@ -246,7 +247,7 @@ void ManageProfilesMenu::back()
 {
     if (!m_locked && m_firstIndex == -1)
     {
-        switchScreen<MainMenu>();
+        espgui::popScreen();
         return;
     }
 

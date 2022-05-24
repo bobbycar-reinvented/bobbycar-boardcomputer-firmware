@@ -14,6 +14,7 @@ constexpr const char * const TAG = "BOBBY";
 using namespace std::chrono_literals;
 #include <espwifistack.h>
 #include <schedulertask.h>
+#include <screenmanager.h>
 
 // local includes
 #include "bobbycar-common.h"

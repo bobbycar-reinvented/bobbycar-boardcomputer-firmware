@@ -61,19 +61,19 @@ using namespace espgui;
 
 SelectModeMenu::SelectModeMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,       MultiAction<SetDefaultModeAction, PushScreenAction<MainMenu>>>>();
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_TEMPOMAT, AvgSpeedAccessor>,  MultiAction<SetTempomatModeAction, PushScreenAction<MainMenu>>>>(); }
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,         MultiAction<SetLarsmModeAction, PushScreenAction<MainMenu>>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MICK>,         MultiAction<SetMickModeAction, PushScreenAction<MainMenu>>>>();
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REMOTECONTROL>, MultiAction<SetRemoteControlModeAction, PushScreenAction<MainMenu>>>>(); }
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULT>,       MultiAction<SetDefaultModeAction, PopScreenAction>>>();
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_TEMPOMAT, AvgSpeedAccessor>,  MultiAction<SetTempomatModeAction, PopScreenAction>>>(); }
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSM>,         MultiAction<SetLarsmModeAction, PopScreenAction>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MICK>,         MultiAction<SetMickModeAction, PopScreenAction>>>();
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REMOTECONTROL>, MultiAction<SetRemoteControlModeAction, PopScreenAction>>>(); }
 #ifdef FEATURE_GAMETRAK
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, PopScreenAction>>>();
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAK>,  MultiAction<SetGametrakModeAction, PopScreenAction>>>(); }
 #endif
-    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTEST>, MultiAction<SetMotorTestModeAction, PushScreenAction<MainMenu>>>>(); }
+    if (!simplified) { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTEST>, MultiAction<SetMotorTestModeAction, PopScreenAction>>>(); }
 #ifdef FEATURE_JOYSTICK
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELCHAIR>, MultiAction<SetWheelchairModeAction, PushScreenAction<MainMenu>>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELCHAIR>, MultiAction<SetWheelchairModeAction, PopScreenAction>>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      PushScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string SelectModeMenu::text() const
@@ -114,5 +114,5 @@ void SelectModeMenu::start()
 
 void SelectModeMenu::back()
 {
-    popScreen();
+    espgui::popScreen();
 }

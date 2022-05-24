@@ -4,8 +4,9 @@
 #include <ratio>
 
 // 3rdparty lib includes
+#include "actions/popscreenaction.h"
+#include "actions/pushscreenaction.h"
 #include "changevaluedisplay.h"
-#include "actions/switchscreenaction.h"
 #include "icons/back.h"
 
 // local includes
@@ -40,38 +41,38 @@ using WheelDiameterMmChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_WHEELDIAMETERMM>,
     WheelDiameterMmAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using WheelDiameterInchChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<float>,
     espgui::StaticText<TEXT_WHEELDIAMETERINCH>,
     WheelDiameterInchAccessor,
     espgui::RatioNumberStep<float, std::ratio<1,10>>,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using NumMagnetPolesChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_NUMMAGNETPOLES>,
     NumMagnetPolesAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 #ifdef FEATURE_CAN
 using CanTransmitTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CANTRANSMITTIMEOUT>,
     CanTransmitTimeoutAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using CanReceiveTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CANRECEIVETIMEOUT>,
     CanReceiveTimeoutAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<ControllerHardwareSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 #endif
 } // namespace
@@ -79,21 +80,21 @@ using CanReceiveTimeoutChangeScreen = espgui::makeComponent<
 ControllerHardwareSettingsMenu::ControllerHardwareSettingsMenu()
 {
     using namespace espgui;
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETENABLED>,         SwitchScreenAction<EnableMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETINVERTED>,        SwitchScreenAction<InvertMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERMM>,    SwitchScreenAction<WheelDiameterMmChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERINCH>,  SwitchScreenAction<WheelDiameterInchChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NUMMAGNETPOLES>,     SwitchScreenAction<NumMagnetPolesChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETENABLED>,         PushScreenAction<EnableMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETINVERTED>,        PushScreenAction<InvertMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERMM>,    PushScreenAction<WheelDiameterMmChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELDIAMETERINCH>,  PushScreenAction<WheelDiameterInchChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NUMMAGNETPOLES>,     PushScreenAction<NumMagnetPolesChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SWAPFRONTBACK>,      BobbyCheckbox, SwapFrontBackAccessor>>();
 #ifdef FEATURE_CAN
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTSENDCAN>,       BobbyCheckbox, SendFrontCanCmdAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKSENDCAN>,        BobbyCheckbox, SendBackCanCmdAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANTRANSMITTIMEOUT>, SwitchScreenAction<CanTransmitTimeoutChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVETIMEOUT>,  SwitchScreenAction<CanReceiveTimeoutChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANTRANSMITTIMEOUT>, PushScreenAction<CanTransmitTimeoutChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVETIMEOUT>,  PushScreenAction<CanReceiveTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRESETONERROR>,    BobbyCheckbox, CanResetOnErrorAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANREINSTALLDRIVER>, BobbyCheckbox, CanReinstallDriverAccessor>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string ControllerHardwareSettingsMenu::text() const
@@ -103,5 +104,5 @@ std::string ControllerHardwareSettingsMenu::text() const
 
 void ControllerHardwareSettingsMenu::back()
 {
-    espgui::switchScreen<SettingsMenu>();
+    espgui::popScreen();
 }

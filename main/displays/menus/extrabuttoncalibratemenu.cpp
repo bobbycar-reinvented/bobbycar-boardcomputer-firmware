@@ -9,7 +9,7 @@
 // local includes
 #include "esp_log.h"
 #include "accessors/settingsaccessors.h"
-#include "actions/switchscreenaction.h"
+#include "actions/popscreenaction.h"
 #include "bobbyerrorhandler.h"
 #include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 #include "globals.h"
@@ -92,7 +92,7 @@ ExtraButtonCalibrateMenu::ExtraButtonCalibrateMenu()
     constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_EXTRA3, ButtonExtra3Accessor, Status::WaitingExtra3>>();
     constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_EXTRA4, ButtonExtra4Accessor, Status::WaitingExtra4>>();
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 void ExtraButtonCalibrateMenu::start()
@@ -249,7 +249,7 @@ std::string ExtraButtonCalibrateMenu::text() const
 
 void ExtraButtonCalibrateMenu::back()
 {
-    switchScreen<BoardcomputerHardwareSettingsMenu>();
+    espgui::popScreen();
 }
 
 bool ExtraButtonCalibrateMenu::validateNewButton(uint8_t button)

@@ -4,7 +4,8 @@
 #include <fmt/core.h>
 #include "menuitem.h"
 #include "changevaluedisplay.h"
-#include "actions/switchscreenaction.h"
+#include "actions/pushscreenaction.h"
+#include "actions/popscreenaction.h"
 #include "actions/dummyaction.h"
 #include "icons/back.h"
 
@@ -28,8 +29,8 @@ using CloudTransmitTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CLOUDTRANSMITTIMEOUT>,
     CloudTransmitTimeoutAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 struct CloudBufferLengthText : public virtual espgui::TextInterface
@@ -45,16 +46,16 @@ using CloudCollectRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CLOUDCOLLECTRATE>,
     CloudCollectRateAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using CloudSendRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_CLOUDSENDRATE>,
     CloudSendRateAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<CloudSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 } // namespace
 
@@ -63,14 +64,14 @@ using namespace espgui;
 CloudSettingsMenu::CloudSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDENABLED>,         BobbyCheckbox, CloudEnabledAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDTRANSMITTIMEOUT>, SwitchScreenAction<CloudTransmitTimeoutChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDTRANSMITTIMEOUT>, PushScreenAction<CloudTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, CloudCreatedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudStartedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudConnectedText,                    DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudBufferLengthText,                 DisabledColor, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDCOLLECTRATE>,     SwitchScreenAction<CloudCollectRateChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,        SwitchScreenAction<CloudSendRateChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDCOLLECTRATE>,     PushScreenAction<CloudCollectRateChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,        PushScreenAction<CloudSendRateChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string CloudSettingsMenu::text() const
@@ -80,5 +81,5 @@ std::string CloudSettingsMenu::text() const
 
 void CloudSettingsMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    popScreen();
 }

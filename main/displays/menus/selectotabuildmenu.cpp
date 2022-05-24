@@ -1,24 +1,22 @@
 #include "selectotabuildmenu.h"
 
-#include <espwifistack.h>
+// 3rdparty lib includes
+#include <fmt/core.h>
 #include <TFT_eSPI.h>
-#include "esp_log.h"
-#include "fmt/core.h"
-#include "actions/popscreenaction.h"
-#include "actions/dummyaction.h"
-#include "icons/back.h"
+#include <espwifistack.h>
 
 // local includes
 #include "actions/dummyaction.h"
-#include "actions/switchscreenaction.h"
+#include "actions/popscreenaction.h"
+#include "actions/pushscreenaction.h"
 #include "bobbyerrorhandler.h"
 #include "buildserver.h"
-#include "displays/menus/otamenu.h"
-#include "icons/back.h"
 #include "buildserver.h"
-#include "utils.h"
+#include "displays/menus/otamenu.h"
 #include "globals.h"
+#include "icons/back.h"
 #include "newsettings.h"
+#include "utils.h"
 
 #define MESSAGE(text) constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<TFT_RED>, DummyAction>>()
 

@@ -1,16 +1,15 @@
 #include "modessettingsmenu.h"
 
 // 3rdparty lib includes
-#include "menuitem.h"
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
+#include <actions/pushscreenaction.h>
+#include <icons/back.h>
+#include <menuitem.h>
 
 // local includes
 #include "displays/menus/defaultmodesettingsmenu.h"
-#include "displays/menus/tempomatmodesettingsmenu.h"
-#include "displays/menus/larsmmodesettingsmenu.h"
 #include "displays/menus/gametrakmodesettingsmenu.h"
-#include "displays/menus/settingsmenu.h"
+#include "displays/menus/larsmmodesettingsmenu.h"
+#include "displays/menus/tempomatmodesettingsmenu.h"
 
 namespace {
 constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
@@ -24,13 +23,13 @@ constexpr char TEXT_BACK[] = "Back";
 ModesSettingsMenu::ModesSettingsMenu()
 {
     using namespace espgui;
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTMODESETTIGNS>,   SwitchScreenAction<DefaultModeSettingsMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TEMPOMATMODESETTINGS>,  SwitchScreenAction<TempomatModeSettingsMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSMMODESETTINGS>,     SwitchScreenAction<LarsmModeSettingsMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEFAULTMODESETTIGNS>,   PushScreenAction<DefaultModeSettingsMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TEMPOMATMODESETTINGS>,  PushScreenAction<TempomatModeSettingsMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LARSMMODESETTINGS>,     PushScreenAction<LarsmModeSettingsMenu>>>();
 #ifdef FEATURE_GAMETRAK
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAKMODESETTINGS>,  SwitchScreenAction<GametrakModeSettingsMenu>>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string ModesSettingsMenu::text() const
@@ -40,5 +39,5 @@ std::string ModesSettingsMenu::text() const
 
 void ModesSettingsMenu::back()
 {
-    espgui::switchScreen<SettingsMenu>();
+    espgui::popScreen();
 }

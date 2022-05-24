@@ -1,19 +1,19 @@
 #include "handbremssettingsmenu.h"
 
 // 3rd party libs
-#include <fmt/core.h>
-#include <actions/switchscreenaction.h>
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
+#include <fmt/core.h>
 #include <icons/back.h>
 #include <textwithvaluehelper.h>
 
 // local includes
+#include "accessors/settingsaccessors.h"
+#include "bobbycheckbox.h"
+#include "changevaluedisplay_handbremsmode.h"
 #include "displays/bobbychangevaluedisplay.h"
 #include "displays/menus/typesafeenumchangemenu.h"
-#include "accessors/settingsaccessors.h"
-#include "changevaluedisplay_handbremsmode.h"
-#include "displays/menus/defaultmodesettingsmenu.h"
-#include "bobbycheckbox.h"
 
 namespace {
 constexpr char TEXT_HANDBREMSE_ENABLE[] = "Enable Handbremse";
@@ -28,8 +28,8 @@ using HandBremsTriggerTimeoutChangeValueDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
     espgui::StaticText<TEXT_HANDBREMSE_TRIGGERTIMEOUT>,
     HandbremsTimeoutAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<HandbremsSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 }
 
@@ -40,8 +40,8 @@ HandbremsSettingsMenu::HandbremsSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_AUTOMATIC>, BobbyCheckbox, HandbremsAutomaticAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_VISUALIZE>, BobbyCheckbox, HandbremsVisualizeAccessor>>();
     constructMenuItem<PushScreenTypeSafeChangeMenuItem<HandbremseMode, TEXT_HANDBREMSE_MODE>>(&configs.handbremse.mode);
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HANDBREMSE_TRIGGERTIMEOUT, HandbremsTimeoutAccessor>, SwitchScreenAction<HandBremsTriggerTimeoutChangeValueDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<DefaultModeSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HANDBREMSE_TRIGGERTIMEOUT, HandbremsTimeoutAccessor>, PushScreenAction<HandBremsTriggerTimeoutChangeValueDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string HandbremsSettingsMenu::text() const
@@ -51,5 +51,5 @@ std::string HandbremsSettingsMenu::text() const
 
 void HandbremsSettingsMenu::back()
 {
-    espgui::switchScreen<DefaultModeSettingsMenu>();
+    espgui::popScreen();
 }

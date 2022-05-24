@@ -5,7 +5,7 @@
 #include <fmt/core.h>
 #include <icons/back.h>
 #include <actions/dummyaction.h>
-#include <actions/switchscreenaction.h>
+#include <actions/pushscreenaction.h>
 #include <actions/popscreenaction.h>
 
 // local includes
@@ -89,7 +89,7 @@ private:
 };
 } // namespace typesafeenumchangemenu
 
-template<typename TEnum, typename TMenu, const char *Ttext>
+template<typename TEnum, const char *Ttext>
 class SwitchScreenTypeSafeChangeMenuItem : public espgui::MenuItem
 {
 public:
@@ -103,7 +103,7 @@ public:
 
     void triggered() override
     {
-        espgui::switchScreen<typesafeenumchangemenu::TypeSafeChangeMenu<TEnum>>(m_config);
+        espgui::pushScreen<typesafeenumchangemenu::TypeSafeChangeMenu<TEnum>>(m_config);
     }
 private:
     ConfigWrapper<TEnum>* m_config;

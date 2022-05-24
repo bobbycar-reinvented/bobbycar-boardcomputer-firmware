@@ -1,18 +1,18 @@
 #include "lockscreensettingsmenu.h"
 
 // 3rdparty lib includes
-#include <menuitem.h>
-#include <actions/switchscreenaction.h>
-#include <icons/back.h>
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
+#include <icons/back.h>
+#include <menuitem.h>
 #include <textwithvaluehelper.h>
 
 // local includes
+#include "accessors/settingsaccessors.h"
+#include "bobbycheckbox.h"
 #include "displays/bobbychangevaluedisplay.h"
 #include "globals.h"
-#include "accessors/settingsaccessors.h"
-#include "displays/menus/boardcomputerhardwaresettingsmenu.h"
-#include "bobbycheckbox.h"
 
 namespace {
 constexpr char TEXT_LOCKSCREENSETTINGS[] = "Lockscreen Settings";
@@ -28,32 +28,32 @@ using LockscreenPinDigit0ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT0>,
     LockscreenPinDigitAccessor<0>,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using LockscreenPinDigit1ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT1>,
     LockscreenPinDigitAccessor<1>,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using LockscreenPinDigit2ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT2>,
     LockscreenPinDigitAccessor<2>,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 
 using LockscreenPinDigit3ChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int8_t>,
     espgui::StaticText<TEXT_PINDIGIT3>,
     LockscreenPinDigitAccessor<3>,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<LockscreenSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 } // namespace
 
@@ -62,11 +62,11 @@ LockscreenSettingsMenu::LockscreenSettingsMenu()
     using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ALLOWPRESETSWITCH>, BobbyCheckbox, LockscreenAllowPresetSwitchAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_KEEPLOCKED>, BobbyCheckbox, LockscreenKeepLockedAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT0, LockscreenPinDigitAccessor<0>>, SwitchScreenAction<LockscreenPinDigit0ChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT1, LockscreenPinDigitAccessor<1>>, SwitchScreenAction<LockscreenPinDigit1ChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT2, LockscreenPinDigitAccessor<2>>, SwitchScreenAction<LockscreenPinDigit2ChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT3, LockscreenPinDigitAccessor<3>>, SwitchScreenAction<LockscreenPinDigit3ChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                              SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT0, LockscreenPinDigitAccessor<0>>, PushScreenAction<LockscreenPinDigit0ChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT1, LockscreenPinDigitAccessor<1>>, PushScreenAction<LockscreenPinDigit1ChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT2, LockscreenPinDigitAccessor<2>>, PushScreenAction<LockscreenPinDigit2ChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PINDIGIT3, LockscreenPinDigitAccessor<3>>, PushScreenAction<LockscreenPinDigit3ChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                              PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string LockscreenSettingsMenu::text() const
@@ -76,5 +76,5 @@ std::string LockscreenSettingsMenu::text() const
 
 void LockscreenSettingsMenu::back()
 {
-    espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
+    espgui::popScreen();
 }
