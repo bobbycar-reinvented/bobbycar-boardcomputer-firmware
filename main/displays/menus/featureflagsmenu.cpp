@@ -24,42 +24,13 @@ constexpr char TEXT_POPUP[] = "Feature flags have been changed. Please restart t
 
 bool isDirty{false};
 
-class SpecialPopupDisplay : public BobbyPopupDisplay
-{
-    using Base = BobbyPopupDisplay;
-    using Base::Base;
-public:
-    void buttonPressed(espgui::Button button) override
-    {
-        //Base::buttonPressed(button);
-
-        switch (button)
-        {
-            using espgui::Button;
-            case Button::Left:
-            case Button::Right:
-                espgui::popScreen();
-                break;
-            default:;
-        }
-    }
-};
-
 void exitFeatureFlagsMenu()
 {
+    espgui::popScreen();
     if (isDirty)
     {
-        using namespace espgui;
-        // auto newDisplay = std::make_unique<BobbyPopupDisplay>(, std::move(espgui::displayStack.top()));
-        // newDisplay->initOverlay();
-        // espgui::currentDisplay = std::move(newDisplay);
-
-        auto newDisplay = std::make_unique<SpecialPopupDisplay>(TEXT_POPUP, std::move(espgui::displayStack.top()));
-        newDisplay->initOverlay();
-        espgui::currentDisplay = std::move(newDisplay);
+        BobbyErrorHandler{}.errorOccured(TEXT_POPUP);
     }
-    else
-        espgui::popScreen();
 }
 
 class ExitFeatureFlagsMenuAction : public virtual espgui::ActionInterface
