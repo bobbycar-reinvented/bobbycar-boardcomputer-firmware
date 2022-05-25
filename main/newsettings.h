@@ -247,6 +247,7 @@ public:
     ConfigWrapperLegacy<wifi_stack::ip_address_t> wifiApMask{wifi_stack::ip_address_t{255, 255, 255, 0},DoReset, {},                      "wifiApMask"          };
     ConfigWrapperLegacy<uint8_t>     wifiApChannel      {1,                                      DoReset,   MinMaxValue<uint8_t, 1, 14>,  "wifiApChannel"       };
     ConfigWrapperLegacy<wifi_auth_mode_t> wifiApAuthmode{WIFI_AUTH_WPA2_PSK,                     DoReset,   {},                           "wifiApAuthmode"      };
+    ConfigWrapperLegacy<bool>        wifiApHidden       {false,                                  DoReset,   {},                           "wifiApHidden"        };
 
     ConfigWrapperLegacy<bool>     timeServerEnabled     {true,                                   DoReset,   {},                           "timeServerEnabl"     };
     ConfigWrapperLegacy<std::string>   timeServer       {"europe.pool.ntp.org",                  DoReset,   StringMaxSize<64>,            "timeServer"          };
@@ -586,6 +587,7 @@ public:
     x(wifiApMask) \
     x(wifiApChannel) \
     x(wifiApAuthmode) \
+    x(wifiApHidden) \
     \
     x(timeServerEnabled) \
     x(timeServer) \
