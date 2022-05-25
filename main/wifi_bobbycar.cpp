@@ -137,7 +137,7 @@ std::optional<wifi_stack::ap_config> createApConfig()
         },
         .channel = configs.wifiApChannel.value(),
         .authmode = configs.wifiApAuthmode.value(),
-        .ssid_hidden = false,
+        .ssid_hidden = configs.wifiApHidden.value(),
         .max_connection = 4,
         .beacon_interval = 100,
         .long_range = false

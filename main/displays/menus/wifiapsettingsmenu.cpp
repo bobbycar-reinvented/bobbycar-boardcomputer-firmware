@@ -46,6 +46,7 @@ constexpr char TEXT_CHANNEL[] = "AP Channel";
 constexpr char TEXT_CHANNEL_FORMATTED[] = "&sChannel: &f";
 constexpr char TEXT_AUTHMODE[] = "AP Authmode";
 constexpr char TEXT_AUTHMODE_FORMATTED[] = "&sAuthmode: ";
+constexpr char TEXT_HIDDEN[] = "AP Hidden";
 
 class WifiApClientsAction : public virtual ActionInterface
 {
@@ -106,6 +107,7 @@ WifiApSettingsMenu::WifiApSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLED>,            BobbyCheckbox, WifiApEnabledAccessor>>();
   //constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DISABLEWHENONLINE>,  BobbyCheckbox, WifiApDisableWhenOnlineAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HIDDEN>,             BobbyCheckbox, WiFiApHiddenAccessor>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SSID_FORMATTED, WifiApSsidAccessor>,         PushScreenAction<ApSsidChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_KEY_FORMATTED, WifiApKeyAccessor>,           PushScreenAction<ApKeyChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, WifiApMacText,                       DummyAction>>();
