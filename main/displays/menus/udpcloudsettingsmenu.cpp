@@ -1,18 +1,17 @@
 #include "udpcloudsettingsmenu.h"
 
 // 3rdparty lib includes
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <changevaluedisplay.h>
 #include <fmt/core.h>
-#include "menuitem.h"
-#include "changevaluedisplay.h"
-#include "actions/switchscreenaction.h"
-#include "actions/dummyaction.h"
-#include "icons/back.h"
+#include <icons/back.h>
+#include <menuitem.h>
 
 // local includes
-#include "displays/bobbychangevaluedisplay.h"
 #include "accessors/settingsaccessors.h"
-#include "displays/menus/settingsmenu.h"
 #include "bobbycheckbox.h"
+#include "displays/bobbychangevaluedisplay.h"
 
 namespace {
 constexpr char TEXT_UDPCLOUDSETTINGS[] = "UDP Cloud settings";
@@ -25,8 +24,8 @@ using UdpCloudSendRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_UDPSENDRATE>,
     UdpCloudSendIntervalAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<UdpCloudSettingsMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<UdpCloudSettingsMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 } // namespace
 
@@ -36,8 +35,8 @@ UdpCloudSettingsMenu::UdpCloudSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPCLOUDENABLED>,      BobbyCheckbox, UdpCloudEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPUSESTRING>,         BobbyCheckbox, UdpUseStdStringAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPSENDRATE>,          SwitchScreenAction<UdpCloudSendRateChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPSENDRATE>,          PushScreenAction<UdpCloudSendRateChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string UdpCloudSettingsMenu::text() const
@@ -47,5 +46,5 @@ std::string UdpCloudSettingsMenu::text() const
 
 void UdpCloudSettingsMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    espgui::popScreen();
 }

@@ -5,8 +5,10 @@
 
 class FeatureFlagsMenu : public bobbygui::MenuDisplayWithTime
 {
+    using Base = bobbygui::MenuDisplayWithTime;
 public:
     FeatureFlagsMenu();
+    void start() override;
 
     std::string text() const override;
 

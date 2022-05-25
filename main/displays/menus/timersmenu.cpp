@@ -1,7 +1,8 @@
 #include "timersmenu.h"
 
 // 3rdparty lib includes
-#include "actions/switchscreenaction.h"
+#include "actions/pushscreenaction.h"
+#include "actions/popscreenaction.h"
 #include "changevaluedisplay.h"
 #include "icons/back.h"
 
@@ -19,16 +20,16 @@ using StatsUpdateRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_STATSUPDATERATE>,
     StatsUpdateRateAccessor,
-    espgui::ConfirmActionInterface<espgui::SwitchScreenAction<TimersMenu>>,
-    espgui::BackActionInterface<espgui::SwitchScreenAction<TimersMenu>>
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 } // namespace
 
 TimersMenu::TimersMenu()
 {
     using namespace espgui;
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSUPDATERATE>,   SwitchScreenAction<StatsUpdateRateChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              SwitchScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSUPDATERATE>,   espgui::PushScreenAction<StatsUpdateRateChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              espgui::PushScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string TimersMenu::text() const
@@ -38,5 +39,5 @@ std::string TimersMenu::text() const
 
 void TimersMenu::back()
 {
-    espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
+    espgui::popScreen();
 }

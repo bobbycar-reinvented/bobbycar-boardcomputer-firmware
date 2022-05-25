@@ -2,7 +2,8 @@
 
 // 3rdparty lib includes
 #include <TFT_eSPI.h>
-#include <actions/switchscreenaction.h>
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
 #include <fmt/core.h>
 #include <icons/back.h>
 #include <strutils.h>
@@ -10,19 +11,38 @@
 // local includes
 #include "bobbycheckbox.h"
 #include "displays/bobbypopupdisplay.h"
-#include "displays/menus/settingsmenu.h"
 #include "newsettings.h"
 #include "taskmanager.h"
-
-using namespace espgui;
+#include "bobbyerrorhandler.h"
 
 namespace {
 constexpr const char * const TAG = "FEATUREFLAGSMENU";
 
 constexpr char TEXT_FEATUREFLAGS[] = "Feature Flags";
 constexpr char TEXT_BACK[] = "Back";
+constexpr char TEXT_POPUP[] = "Feature flags have been changed. Please restart the device to apply the changes.";
 
-class FeatureFlagMenuItem : public MenuItem, public virtual BobbyErrorHandler {
+bool isDirty{false};
+
+void exitFeatureFlagsMenu()
+{
+    espgui::popScreen();
+    if (isDirty)
+    {
+        BobbyErrorHandler{}.errorOccured(TEXT_POPUP);
+    }
+}
+
+class ExitFeatureFlagsMenuAction : public virtual espgui::ActionInterface
+{
+public:
+    void triggered() override
+    {
+        exitFeatureFlagsMenu();
+    }
+};
+
+class FeatureFlagMenuItem : public espgui::MenuItem, public virtual BobbyErrorHandler {
 public:
     explicit FeatureFlagMenuItem(ConfiguredFeatureFlag &flag, bool isInitialized) : m_flag{flag}, m_isInitialized{isInitialized} {}
     std::string text() const override
@@ -58,32 +78,24 @@ public:
     {
         if (auto result = m_flag.isEnabled.write(configs.nvs_handle_user, !m_flag.isEnabled.value()); !result)
             errorOccured(std::move(result).error());
+        else
+            isDirty = true;
     }
 
-    const MenuItemIcon *icon() const override
+    const espgui::MenuItemIcon *icon() const override
     {
-        return m_flag.isEnabled.value() ? &icons::checked : &icons::unchecked;
+        return m_flag.isEnabled.value() ? &espgui::icons::checked : &espgui::icons::unchecked;
     }
 private:
     ConfiguredFeatureFlag &m_flag;
     const bool m_isInitialized;
 };
-
-// TODO: Replace SwitchScreenAction / switchScreen with this action. Needs: BobbyPopupDisplayWithCustomExitAction => pass SwitchScreenAction<SettingsMenu> into it
-
-class ExitFeatureFlagsMenuAction : public virtual ActionInterface {
-public:
-    void triggered() override {
-        auto newDisplay = std::make_unique<BobbyPopupDisplay>(std::move("Please reboot if you have changed something"), std::move(espgui::currentDisplay));
-        newDisplay->initOverlay();
-        espgui::currentDisplay = std::move(newDisplay);
-    }
-};
-
 } // namespace
 
 FeatureFlagsMenu::FeatureFlagsMenu()
 {
+    using namespace espgui;
+
     configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature){
         const std::string name = feature.getTaskName();
         if (const auto err = checkInitializedByName(name); err)
@@ -93,7 +105,13 @@ FeatureFlagsMenu::FeatureFlagsMenu()
         else
             constructMenuItem<FeatureFlagMenuItem>(feature, true);
     });
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<SettingsMenu>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, ExitFeatureFlagsMenuAction>>();
+}
+
+void FeatureFlagsMenu::start()
+{
+    Base::start();
+    isDirty = false;
 }
 
 std::string FeatureFlagsMenu::text() const
@@ -103,5 +121,6 @@ std::string FeatureFlagsMenu::text() const
 
 void FeatureFlagsMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    exitFeatureFlagsMenu();
 }
+

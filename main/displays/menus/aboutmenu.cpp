@@ -6,9 +6,7 @@
 #include "actions/popscreenaction.h"
 #include "icons/back.h"
 #include "esptexthelpers.h"
-#include "displays/menus/settingsmenu.h"
 
-#include <espasyncota.h>
 #include <esp_ota_ops.h>
 #include "fmt/core.h"
 

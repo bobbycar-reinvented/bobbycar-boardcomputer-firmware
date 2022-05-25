@@ -2,10 +2,8 @@
 
 // 3rdparty lib includes
 #include <actions/dummyaction.h>
-#include <actions/pushscreenaction.h>
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
-#include <screenmanager.h>
+#include <actions/pushscreenaction.h>
 #include <fmt/format.h>
 #include <icons/back.h>
 #include <menuitem.h>
@@ -14,11 +12,8 @@
 // local includes
 #include "displays/qrdisplay.h"
 #include "globals.h"
-#include "utils.h"
-#include "settingsmenu.h"
-#include "wifistasettingsmenu.h"
-#include "wifiapsettingsmenu.h"
 #include "texthelpers/networktexthelpers.h"
+#include "utils.h"
 #include "wifiapsettingsmenu.h"
 #include "wifistasettingsmenu.h"
 
@@ -58,5 +53,5 @@ void NetworkSettingsMenu::back()
 void NetworkAccessPointQRAction::triggered()
 {
     std::string qr = fmt::format("WIFI:T:{};S:{};P:{};H:;", get_wifi_security_string(configs.wifiApAuthmode.value()), configs.wifiApName.value(), configs.wifiApKey.value());
-    espgui::switchScreen<QrDisplay<NetworkSettingsMenu>>(qr);
+    espgui::pushScreen<QrDisplay>(qr);
 }

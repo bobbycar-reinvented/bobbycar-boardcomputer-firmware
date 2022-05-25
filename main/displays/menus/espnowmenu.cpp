@@ -2,7 +2,7 @@
 
 // 3rdparty lib includes
 #include "actions/dummyaction.h"
-#include "actions/switchscreenaction.h"
+#include "actions/pushscreenaction.h"
 #include "icons/back.h"
 #include <accessorinterface.h>
 #include <actioninterface.h>
@@ -61,8 +61,8 @@ EspNowMenu::EspNowMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SENDTSMSG>, SendBobbycarTimesyncMessageAction, StaticMenuItemIcon<&bobbyicons::time>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_RECEIVETS>, BobbyCheckbox, ReceiveTimeStampAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_RECEIVETSFROMBOBBY>, BobbyCheckbox, ReceiveTsFromOtherBobbycarsAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SETTINGS>, SwitchScreenAction<EspNowSettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SETTINGS>, PushScreenAction<EspNowSettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string EspNowMenu::text() const
@@ -72,5 +72,5 @@ std::string EspNowMenu::text() const
 
 void EspNowMenu::back()
 {
-    espgui::switchScreen<SettingsMenu>();
+    espgui::popScreen();
 }

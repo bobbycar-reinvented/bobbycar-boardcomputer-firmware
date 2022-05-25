@@ -1,13 +1,10 @@
 #include "invertmenu.h"
 
-// 3rdparty lib includes
-#include "actions/switchscreenaction.h"
-#include "icons/back.h"
-
 // local includes
 #include "accessors/settingsaccessors.h"
-#include "displays/menus/controllerhardwaresettingsmenu.h"
+#include "actions/popscreenaction.h"
 #include "bobbycheckbox.h"
+#include "icons/back.h"
 
 namespace {
 constexpr char TEXT_SETINVERTED[] = "Set inverted";
@@ -25,7 +22,7 @@ InvertMenu::InvertMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTRIGHT>, BobbyCheckbox, FrontRightInvertedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKLEFT>,   BobbyCheckbox, BackLeftInvertedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKRIGHT>,  BobbyCheckbox, BackRightInvertedAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             SwitchScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string InvertMenu::text() const
@@ -35,5 +32,5 @@ std::string InvertMenu::text() const
 
 void InvertMenu::back()
 {
-    espgui::switchScreen<ControllerHardwareSettingsMenu>();
+    espgui::popScreen();
 }

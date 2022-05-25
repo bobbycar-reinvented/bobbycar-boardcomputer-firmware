@@ -1,16 +1,15 @@
 #pragma once
 
 // 3rd party includes
-#include <tftinstance.h>
 #include <qrcode.h>
+#include <screenmanager.h>
+#include <tftinstance.h>
 
 // local includes
 #include "bobbydisplay.h"
-#include "screenmanager.h"
 
 uint16_t get_qrver_from_strlen(std::string_view str);
 
-template<typename TMenu>
 class QrDisplay : public BobbyDisplay
 {
     using Base = BobbyDisplay;
@@ -46,14 +45,13 @@ public:
 
     void buttonPressed(espgui::Button button) override
     {
-        using namespace espgui;
         Base::buttonPressed(button);
 
         switch (button)
         {
             case espgui::Button::Left:
             case espgui::Button::Right:
-                switchScreen<TMenu>();
+                espgui::popScreen();
                 break;
             default:;
         }

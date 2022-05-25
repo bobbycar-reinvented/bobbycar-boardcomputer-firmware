@@ -1,22 +1,19 @@
 #include "greenpassmenu.h"
 
-// 3rd party includes
+// 3rdparty lib includes
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
 #include <esp_err.h>
 #include <esp_log.h>
-
-// 3rdparty lib includes
 #include <fmt/core.h>
-#include "actions/pushscreenaction.h"
-#include "actions/popscreenaction.h"
-#include "actions/dummyaction.h"
-#include "icons/back.h"
+#include <icons/back.h>
 
 // local includes
 #include "actions/qraction.h"
+#include "bobbycheckbox.h"
 #include "displays/qrdisplay.h"
 #include "displays/qrimportdisplay.h"
 #include "qrimport.h"
-#include "bobbycheckbox.h"
 
 namespace {
 constexpr char TEXT_GREENPASS[] = "Green Pass";
@@ -53,7 +50,7 @@ public:
         }
         else
         {
-            espgui::pushScreen<QrDisplay<GreenPassMenu>>(m_qrmenu.message);
+            espgui::pushScreen<QrDisplay>(m_qrmenu.message);
         }
     }
 private:
@@ -84,7 +81,7 @@ GreenPassMenu::GreenPassMenu()
         }
         else
         {
-            constructMenuItem<makeComponentArgs<MenuItem, SwitchQrImportDisplayAction<GreenPassMenu>, StaticText<TEXT_ADDCERT>>>(std::move(nvs_key));
+            constructMenuItem<makeComponentArgs<MenuItem, PushQrImportDisplayAction<GreenPassMenu>, StaticText<TEXT_ADDCERT>>>(std::move(nvs_key));
         }
     }
 

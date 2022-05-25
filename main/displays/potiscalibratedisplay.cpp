@@ -2,15 +2,15 @@
 
 // 3rdparty lib includes
 #include <tftinstance.h>
-#include <screenmanager.h>
 
 // local includes
+#include "actions/switchscreenaction.h"
+#include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 #include "displays/menus/mainmenu.h"
 #include "displays/statusdisplay.h"
-#include "displays/menus/boardcomputerhardwaresettingsmenu.h"
+#include "globals.h"
 #include "newsettings.h"
 #include "utils.h"
-#include "globals.h"
 
 namespace {
 constexpr char TEXT_CALIBRATE[] = "Potis Calibrate";
