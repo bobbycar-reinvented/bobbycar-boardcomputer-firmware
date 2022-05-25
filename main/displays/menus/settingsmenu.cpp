@@ -22,6 +22,7 @@
 #include "displays/menus/crashmenu.h"
 #include "displays/menus/espnowmenu.h"
 #include "displays/menus/featureflagsmenu.h"
+#include "displays/menus/gitmenu.h"
 #include "displays/menus/limitssettingsmenu.h"
 #include "displays/menus/mainmenu.h"
 #include "displays/menus/modessettingsmenu.h"
@@ -33,6 +34,7 @@
 #include "icons/bluetooth.h"
 #include "icons/buzzer.h"
 #include "icons/demos.h"
+#include "icons/git.h"
 #include "icons/hardware.h"
 #include "icons/info.h"
 #include "icons/time.h"
@@ -64,6 +66,7 @@ constexpr char TEXT_FRONTLED[] = "Front LED";
 constexpr char TEXT_BACKLED[] = "Back LED";
 constexpr char TEXT_CRASHMENU[] = "Crash Menu";
 constexpr char TEXT_ABOUT[] = "About";
+constexpr char TEXT_GIT[] = "Git";
 constexpr char TEXT_BACK[] = "Back";
 
 #ifdef FEATURE_LEDBACKLIGHT
@@ -126,6 +129,7 @@ SettingsMenu::SettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLED>,                       BobbyCheckbox, BackLedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRASHMENU>,                     PushScreenAction<CrashMenu>,  StaticMenuItemIcon<&bobbyicons::demos>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ABOUT>,                         PushScreenAction<AboutMenu>, StaticMenuItemIcon<&bobbyicons::info>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GIT>,                           PushScreenAction<GitMenu>, StaticMenuItemIcon<&bobbyicons::git>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                          PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

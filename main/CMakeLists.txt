@@ -105,6 +105,7 @@ set(headers
     displays/menus/feedbackdebugmenu.h
     displays/menus/gametrakmodesettingsmenu.h
     displays/menus/garagemenu.h
+    displays/menus/gitmenu.h
     displays/menus/graphsmenu.h
     displays/menus/greenpassmenu.h
     displays/menus/handbremssettingsmenu.h
@@ -179,6 +180,7 @@ set(headers
     icons/buzzer.h
     icons/close.h
     icons/demos.h
+    icons/git.h
     icons/graph.h
     icons/greenpass.h
     icons/hardware.h
@@ -344,6 +346,7 @@ set(sources
     displays/menus/feedbackdebugmenu.cpp
     displays/menus/gametrakmodesettingsmenu.cpp
     displays/menus/garagemenu.cpp
+    displays/menus/gitmenu.cpp
     displays/menus/graphsmenu.cpp
     displays/menus/greenpassmenu.cpp
     displays/menus/handbremssettingsmenu.cpp
@@ -418,6 +421,7 @@ set(sources
     icons/buzzer.cpp
     icons/close.cpp
     icons/demos.cpp
+    icons/git.cpp
     icons/graph.cpp
     icons/greenpass.cpp
     icons/hardware.cpp
@@ -504,6 +508,24 @@ idf_component_register(
         ${dependencies}
 )
 
+execute_process(COMMAND git rev-parse HEAD
+        OUTPUT_VARIABLE GIT_REV ERROR_QUIET
+)
+execute_process(
+        COMMAND git log -1 --pretty=%B
+        OUTPUT_VARIABLE GIT_MESSAGE ERROR_QUIET
+)
+execute_process(
+        COMMAND git rev-parse --abbrev-ref HEAD
+        OUTPUT_VARIABLE GIT_BRANCH
+)
+
+string(STRIP "${GIT_REV}" GIT_REV)
+string(SUBSTRING "${GIT_REV}" 1 7 GIT_SHORT_REV)
+string(STRIP "${GIT_MESSAGE}" GIT_MESSAGE)
+string(SUBSTRING "${GIT_MESSAGE}" 0 100 GIT_MESSAGE)
+string(STRIP "${GIT_BRANCH}" GIT_BRANCH)
+
 target_compile_options(${COMPONENT_TARGET}
     PRIVATE
         -fstack-reuse=all
@@ -513,5 +535,9 @@ target_compile_options(${COMPONENT_TARGET}
         -Wno-deprecated-declarations
         -Wno-missing-field-initializers
         -Wno-parentheses
+        -DGIT_REV="${GIT_REV}"
+        -DGIT_SHORT_REV="${GIT_SHORT_REV}"
+        -DGIT_MESSAGE="${GIT_MESSAGE}"
+        -DGIT_BRANCH="${GIT_BRANCH}"
         ${BOBBYCAR_BUILDFLAGS}
 )
