@@ -71,10 +71,10 @@ CloudSettingsMenu::CloudSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, CloudStartedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudConnectedText,                    DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudBufferLengthText,                 DisabledColor, DummyAction>>();
-    constructMenuItem<SwitchScreenTypeSafeChangeMenuItem<CloudMode, CloudSettingsMenu, TEXT_CLOUDMODE>>(&configs.cloudSettings.cloudMode);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDCOLLECTRATE>,     SwitchScreenAction<CloudCollectRateChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,        SwitchScreenAction<CloudSendRateChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 SwitchScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<SwitchScreenTypeSafeChangeMenuItem<CloudMode, TEXT_CLOUDMODE>>(&configs.cloudSettings.cloudMode);
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDCOLLECTRATE>,     PushScreenAction<CloudCollectRateChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,        PushScreenAction<CloudSendRateChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string CloudSettingsMenu::text() const
