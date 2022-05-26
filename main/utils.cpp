@@ -331,7 +331,7 @@ std::string get_wifi_security_string(wifi_auth_mode_t authMode)
     switch (authMode)
     {
         case WIFI_AUTH_OPEN:
-            return "nopass";
+            return "";
         case WIFI_AUTH_WEP:
             return "WEP";
         case WIFI_AUTH_WPA_PSK:
@@ -339,7 +339,7 @@ std::string get_wifi_security_string(wifi_auth_mode_t authMode)
         case WIFI_AUTH_WPA_WPA2_PSK:
             return "WPA";
         default:
-            return "unknown";
+            return "";
     }
 }
 
