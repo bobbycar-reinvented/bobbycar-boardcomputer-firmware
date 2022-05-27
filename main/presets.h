@@ -121,6 +121,10 @@ constexpr ProfileSettings::WheelchairMode defaultWheelChairMode {
 };
 #endif
 
+constexpr ProfileSettings::RemoteControlMode defaultRemoteControlMode {
+    .modelMode = UnifiedModelMode::FocTorque,
+};
+
 constexpr ProfileSettings defaultProfileSettings {
     .limits = defaultLimits,
     .controllerHardware = defaultControllerHardware,
@@ -129,6 +133,7 @@ constexpr ProfileSettings defaultProfileSettings {
     .larsmMode = defaultLarsmMode,
     .mickMode = defaultMickMode,
     .motortestMode = defaultMotortestMode,
+    .remoteControlMode = defaultRemoteControlMode,
 #ifdef FEATURE_JOYSTICK
     .wheelchairMode = defaultWheelChairMode
 #endif

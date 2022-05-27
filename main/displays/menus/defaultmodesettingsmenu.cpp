@@ -19,9 +19,7 @@
 
 namespace {
 constexpr char TEXT_DEFAULTMODESETTIGNS[] = "Default mode settings";
-constexpr char TEXT_DEFAULTMODESETTINGS[] = "Default mode settings";
 constexpr char TEXT_MODELMODE[] = "Model mode";
-constexpr char TEXT_HYBRIDMODE[] = "Hybrid mode";
 constexpr char TEXT_SQUAREGAS[] = "Square gas";
 constexpr char TEXT_SQUAREBREMS[] = "Square brems";
 constexpr char TEXT_ENABLESMOOTHINGUP[] = "Enable up smoothing";
