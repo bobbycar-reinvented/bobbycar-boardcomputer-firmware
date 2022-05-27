@@ -61,6 +61,10 @@ struct ProfileSettings
         uint16_t maxPwm;
     } motortestMode;
 
+    struct RemoteControlMode {
+        UnifiedModelMode modelMode;
+    } remoteControlMode;
+
 #ifdef FEATURE_JOYSTICK
     struct WheelchairMode {
         uint16_t sensitivity0Kmh;
@@ -116,6 +120,8 @@ void ProfileSettings::executeForEveryProfileSetting(T &&callable)
 
     callable("mick.modelMode", mickMode.modelMode);
     callable("mick.smoothing", mickMode.smoothing);
+
+    callable("rc.modelMode", remoteControlMode.modelMode);
 
 #ifdef FEATURE_JOYSTICK
     callable("wc.ses0", wheelchairMode.sensitivity0Kmh);

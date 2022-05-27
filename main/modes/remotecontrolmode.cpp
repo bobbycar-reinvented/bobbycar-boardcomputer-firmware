@@ -13,6 +13,7 @@ RemoteControlMode remoteControlMode;
 
 void RemoteControlMode::update()
 {
+    auto pair = split(profileSettings.defaultMode.modelMode);
     if (!m_remoteCommand || espchrono::ago(m_timestamp) > 500ms)
     {
         start();
@@ -30,8 +31,8 @@ void RemoteControlMode::update()
     {
         for (bobbycar::protocol::serial::MotorState &motor : motors())
         {
-            motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
-            motor.ctrlMod = bobbycar::protocol::ControlMode::Torque;
+            motor.ctrlTyp = pair.first;
+            motor.ctrlMod = pair.second;
             motor.cruiseCtrlEna = false;
             motor.nCruiseMotTgt = 0;
         }
