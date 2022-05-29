@@ -306,7 +306,7 @@ public:
     ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra2{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra2"      };
     ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra3{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra3"      };
     ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra4{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra4"      };
-.
+
     std::array<WirelessDoorsConfig, 5> wireless_door_configs {
         WirelessDoorsConfig { "door_id0", "door_token0" },
         WirelessDoorsConfig { "door_id1", "door_token1" },
