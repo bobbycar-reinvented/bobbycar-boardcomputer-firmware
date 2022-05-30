@@ -6,7 +6,7 @@ import subprocess
 output = subprocess.check_output(['bash', './switchconf.sh', '--list']).decode('utf-8').splitlines()
 
 # read symlink './sdkconfig' to get the current configuration
-current_config = os.readlink('./sdkconfig')
+current_config = os.readlink('./sdkconfig').split('sdkconfig_')[1]
 
 if len(output) == 0:
     print('No configurations found!')
