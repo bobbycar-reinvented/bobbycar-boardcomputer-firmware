@@ -852,6 +852,15 @@ public:
             std::ref<ConfiguredFeatureFlag>(feature.webserver_disable_lock)
         );
     }
+
+    constexpr size_t getConfigCount() const
+    {
+        size_t count = 0;
+#define HELPER(x) count++;
+        NEW_SETTINGS(HELPER)
+#undef HELPER
+        return count;
+    }
 };
 
 extern ConfigManager<ConfigContainer> configs;

@@ -20,6 +20,7 @@
 #include "bobbyerrorhandler.h"
 #include "globals.h"
 #include "newsettings.h"
+#include "typeutils.h"
 #include "utils.h"
 
 using namespace std::chrono_literals;
@@ -30,15 +31,15 @@ espchrono::millis_clock::time_point lastCreateTry;
 espchrono::millis_clock::time_point lastStartTry;
 std::string cloudBuffer;
 
+namespace {
 std::optional<espchrono::millis_clock::time_point> lastCloudCollect;
 std::optional<espchrono::millis_clock::time_point> lastCloudSend;
 std::optional<espchrono::millis_clock::time_point> lastHeartbeat;
 
 bool hasAnnouncedItself{};
 
-namespace {
 constexpr const char * const TAG = "BOBBYCLOUD";
-constexpr const auto json_document_size = 256;
+constexpr const auto json_document_size = 1024;
 StaticJsonDocument<json_document_size> doc;
 
 template<class T>
@@ -66,149 +67,89 @@ typename std::enable_if<
         !std::is_same_v<T, LedstripAnimation> &&
         !std::is_same_v<T, HandbremseMode> &&
         !std::is_same_v<T, CloudMode> &&
-        !std::is_same_v<T, BobbyQuickActions>
+        !std::is_same_v<T, BobbyQuickActions> &&
+        !std::is_same_v<T, BatteryCellType>
         , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
+toArduinoJson(std::string_view key, T value, JsonObject &object)
 {
-    doc[key.data()] = nullptr;
+    object["name"] = key;
+    object["value"] = nullptr;
 }
 
 template<typename T>
 typename std::enable_if<
-        std::is_same_v<T, bool>
-        , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
-{
-    doc[key.data()] = value;
-}
-
-template<typename T>
-typename std::enable_if<
-        !std::is_same_v<T, bool> &&
+        std::is_same_v<T, bool> ||
         std::is_integral_v<T>
         , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
+toArduinoJson(std::string_view key, T value, JsonObject &object)
 {
-    doc[key.data()] = value;
+    object["name"] = key;
+    object["value"] = value;
 }
 
 template<typename T>
 typename std::enable_if<
         is_duration_v<T>
         , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
+toArduinoJson(std::string_view key, T value, JsonObject &object)
 {
-    doc[key.data()] = value.count();
+    object["name"] = key;
+    object["value"] = value.count();
 }
 
 template<typename T>
 typename std::enable_if<
         std::is_same_v<T, std::string>
         , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
+toArduinoJson(std::string_view key, T value, JsonObject &object)
 {
-    doc[key.data()] = value.data();
+    object["name"] = key;
+    object["value"] = value;
 }
 
 template<typename T>
 typename std::enable_if<
-        std::is_same_v<T, wifi_stack::ip_address_t>
+        std::is_same_v<T, wifi_stack::ip_address_t> ||
+        std::is_same_v<T, wifi_stack::mac_t> ||
+        std::is_same_v<T, wifi_auth_mode_t>
         , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
+toArduinoJson(std::string_view key, T value, JsonObject &object)
 {
-    doc[key.data()] = wifi_stack::toString(value);
-}
-
-template<typename T>
-typename std::enable_if<
-        std::is_same_v<T, wifi_stack::mac_t>
-        , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
-{
-    doc[key.data()] = wifi_stack::toString(value);
+    object["name"] = key;
+    object["value"] = wifi_stack::toString(value);
 }
 
 template<typename T>
 typename std::enable_if<
         std::is_same_v<T, std::optional<wifi_stack::mac_t>>
         , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
+toArduinoJson(std::string_view key, T value, JsonObject &object)
 {
-    doc[key.data()] = value ? wifi_stack::toString(*value) : std::string{};
+    object["name"] = key;
+    if (value)
+        object["value"] = wifi_stack::toString(*value);
+    else
+        object["value"] = nullptr;
 }
 
 template<typename T>
 typename std::enable_if<
-        std::is_same_v<T, wifi_auth_mode_t>
+        std::is_same_v<T, sntp_sync_mode_t> ||
+        std::is_same_v<T, espchrono::DayLightSavingMode> ||
+        std::is_same_v<T, OtaAnimationModes> ||
+        std::is_same_v<T, LedstripAnimation> ||
+        std::is_same_v<T, HandbremseMode> ||
+        std::is_same_v<T, BobbyQuickActions> ||
+        std::is_same_v<T, CloudMode> ||
+        std::is_same_v<T, BatteryCellType>
         , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
+toArduinoJson(std::string_view key, T value, JsonObject &object)
 {
-    doc[key.data()] = wifi_stack::toString(value);
+    object["name"] = key;
+    object["value"] = std::to_underlying(value);
 }
 
-template<typename T>
-typename std::enable_if<
-        std::is_same_v<T, sntp_sync_mode_t>
-        , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
-{
-    doc[key.data()] = std::to_underlying(value);
-}
-
-template<typename T>
-typename std::enable_if<
-        std::is_same_v<T, espchrono::DayLightSavingMode>
-        , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
-{
-    doc[key.data()] = std::to_underlying(value);
-}
-
-template<typename T>
-typename std::enable_if<
-        std::is_same_v<T, OtaAnimationModes>
-        , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
-{
-    doc[key.data()] = std::to_underlying(value);
-}
-
-template<typename T>
-typename std::enable_if<
-        std::is_same_v<T, LedstripAnimation>
-        , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
-{
-    doc[key.data()] = std::to_underlying(value);
-}
-
-template<typename T>
-typename std::enable_if<
-        std::is_same_v<T, HandbremseMode>
-        , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
-{
-    doc[key.data()] = std::to_underlying(value);
-}
-
-template<typename T>
-typename std::enable_if<
-        std::is_same_v<T, BobbyQuickActions>
-        , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
-{
-    doc[key.data()] = std::to_underlying(value);
-}
-
-template<typename T>
-typename std::enable_if<
-        std::is_same_v<T, CloudMode>
-        , void>::type
-toArduinoJson(std::string_view key, T value, StaticJsonDocument<json_document_size> &doc)
-{
-    doc[key.data()] = std::to_underlying(value);
-}
-
+// setter
 
 template<typename T>
 typename std::enable_if<
@@ -225,7 +166,8 @@ typename std::enable_if<
         !std::is_same_v<T, LedstripAnimation> &&
         !std::is_same_v<T, HandbremseMode> &&
         !std::is_same_v<T, CloudMode> &&
-        !std::is_same_v<T, BobbyQuickActions>
+        !std::is_same_v<T, BobbyQuickActions> &&
+        !std::is_same_v<T, BatteryCellType>
         , tl::expected<void, std::string>>::type
 set_config(ConfigWrapper<T> &config, std::string_view newValue)
 {
@@ -313,7 +255,8 @@ typename std::enable_if<
         std::is_same_v<T, LedstripAnimation> ||
         std::is_same_v<T, HandbremseMode> ||
         std::is_same_v<T, BobbyQuickActions> ||
-        std::is_same_v<T, CloudMode>
+        std::is_same_v<T, CloudMode> ||
+        std::is_same_v<T, BatteryCellType>
         , tl::expected<void, std::string>>::type
 set_config(ConfigWrapper<T> &config, std::string_view newValue)
 {
@@ -325,13 +268,27 @@ set_config(ConfigWrapper<T> &config, std::string_view newValue)
 
 void send_config(uint32_t skipCount)
 {
-    doc.clear();
-    doc["type"] = "config";
-
     if (!cloudClient.is_connected())
         return;
+    doc.clear();
+
+    {
+        const std::string body = fmt::format(R"({{"type":"configCount","count":{}}})", configs.getConfigCount());
+        const auto timeout = std::chrono::ceil<espcpputils::ticks>(
+                espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
+        const auto result_size = cloudClient.send_text(body, timeout);
+        if (result_size != body.size()) {
+            ESP_LOGE(TAG, "send_text failed: %d", result_size);
+        }
+    }
+
+    doc["type"] = "config";
+    JsonArray configsArray = doc.createNestedArray("configs");
 
     bool stop{false};
+    bool has_overflowed{false};
+
+    size_t i{0};
 
     configs.callForEveryConfig([&](auto &config) {
         if (skipCount > 0)
@@ -344,24 +301,43 @@ void send_config(uint32_t skipCount)
             return;
 
         const std::string_view nvsName{config.nvsName()};
-        toArduinoJson(nvsName, config.value(), doc);
+
+        i++;
+
+        JsonObject configObject = configsArray.createNestedObject();
+        toArduinoJson(nvsName, config.value(), configObject);
+        configObject["type"] = typeutils::t_to_str<decltype(config.value())>::str;
+
         if (doc.overflowed())
         {
+            has_overflowed = true;
             // send data, clear doc and try again
             std::string body;
-            doc.remove(nvsName);
+            configsArray.remove(i-1);
             serializeJson(doc, body);
-            ESP_LOGI(TAG, "body_size: %d, heap free: %d, stack free: %d", body.size(), esp_get_free_heap_size(), uxTaskGetStackHighWaterMark(nullptr));
             const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
             const auto result_size = cloudClient.send_text(body, timeout);
             if (result_size != body.size())
             {
                 ESP_LOGE(TAG, "send_text failed: %d", result_size);
             }
-            doc["type"] = "config";
             stop = true;
         }
     });
+
+    if (!has_overflowed)
+    {
+        std::string body;
+        doc["last"] = true;
+        doc["type"] = "lastConfig";
+        serializeJson(doc, body);
+        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
+        const auto result_size = cloudClient.send_text(body, timeout);
+        if (result_size != body.size())
+        {
+            ESP_LOGE(TAG, "send_text failed: %d", result_size);
+        }
+    }
 }
 
 void send_single_config(const std::string &nvsName)
@@ -370,11 +346,14 @@ void send_single_config(const std::string &nvsName)
         return;
     doc.clear();
     doc["type"] = "singleConfig";
+
     bool success{false};
     configs.callForEveryConfig([&](auto &config) {
         if (config.nvsName() == nvsName)
         {
-            toArduinoJson(nvsName, config.value(), doc);
+            JsonObject configObject = doc.createNestedObject("config");
+            toArduinoJson(nvsName, config.value(), configObject);
+            configObject["type"] = typeutils::t_to_str<decltype(config.value())>::str;
             success = true;
         }
     });
