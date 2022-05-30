@@ -4,7 +4,7 @@
 #include <array>
 
 // Arduino includes
-#include <Arduino.h>
+#include <esp32-hal-gpio.h>
 
 // 3rdparty lib includes
 #include <espchrono.h>

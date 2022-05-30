@@ -1,7 +1,7 @@
 #include "mosfets.h"
 
 // Arduino includes
-#include <Arduino.h>
+#include <esp32-hal-gpio.h>
 
 #ifdef FEATURE_MOSFETS
 void init_mosfets()
