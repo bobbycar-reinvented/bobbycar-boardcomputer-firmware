@@ -1,8 +1,5 @@
 #include "settingsmenu.h"
 
-// Arduino includes
-#include <Arduino.h>
-
 // 3rdparty lib includes
 #include "actions/pushscreenaction.h"
 #include "actions/popscreenaction.h"

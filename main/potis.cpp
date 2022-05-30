@@ -1,7 +1,7 @@
 #include "potis.h"
 
 // 3rdparty lib includes
-#include <Arduino.h>
+#include <esp32-hal-adc.h>
 #include <cpputils.h>
 
 // local includes

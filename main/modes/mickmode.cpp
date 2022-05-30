@@ -1,7 +1,10 @@
+#include "mickmode.h"
+
+// system includes
 #include <cmath>
 
-#include "espchrono.h"
-#include "mickmode.h"
+// 3rdparty lib includes
+#include <espchrono.h>
 
 // local includes
 #include "globals.h"
@@ -43,7 +46,7 @@ void MickMode::update()
 
         float alpha = 1.f - expf(-timeDelta / profileSettings.mickMode.smoothing);
         // Fall back to fixed smoothing if this calculation fails
-        if (!isfinite(alpha) || alpha < 0.f || alpha > 1.f)
+        if (!std::isfinite(alpha) || alpha < 0.f || alpha > 1.f)
             alpha = 0.02f;
         // Limit time constant to below 3 s at update rate of 20 ms to make stopping possible
         // if misconfiguration or corruption happens
@@ -53,7 +56,7 @@ void MickMode::update()
         float gasOf1500 = *gas * 1500.f / 1000.f;
         float brakeOf1500 = *brems * 1500.f / 1000.f;
         float controlInput = gasOf1500 - brakeOf1500;
-        if (!isfinite(controlInput) || controlInput > 1500.f || controlInput < -1500.f)
+        if (!std::isfinite(controlInput) || controlInput > 1500.f || controlInput < -1500.f)
             controlInput = 0.f;
 
         pwm_ = pwm_ * (1.f-alpha) + controlInput * alpha;
@@ -62,7 +65,7 @@ void MickMode::update()
 
         // This should not happen either, but make sure our state can not get persistently broken
         // in case of corruption. Set to 0 as a last resort (may lead to a hard stop).
-        if (!isfinite(pwm_))
+        if (!std::isfinite(pwm_))
             pwm_ = 0.f;
 
         for (bobbycar::protocol::serial::MotorState &motor : motors())

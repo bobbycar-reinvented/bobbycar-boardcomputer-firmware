@@ -1,10 +1,10 @@
 #pragma once
 
 // 3rdparty lib includes
+#include <bobbycar-common.h>
 #include <espchrono.h>
 
 // local includes
-#include "bobbycar-common.h"
 #include "modeinterface.h"
 
 class MickMode : public ModeInterface

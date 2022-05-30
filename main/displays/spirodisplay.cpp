@@ -1,10 +1,15 @@
 #include "spirodisplay.h"
 
 // 3rdparty lib includes
-#include <randomutils.h>
+#include <cpputils.h>
 #include <esprandom.h>
-#include <tftinstance.h>
+#include <randomutils.h>
 #include <screenmanager.h>
+#include <tftinstance.h>
+
+namespace {
+typedef unsigned char byte;
+} // namespace
 
 void SpiroDisplay::initScreen()
 {
@@ -39,7 +44,7 @@ void SpiroDisplay::redraw()
             sx = std::sin(((i % 360) - 90) * DEG2RAD);
             x1 = sx * r + x0;
             yy1 = sy * r + yy0;
-            espgui::tft.drawPixel(x1, yy1, rainbow(map(i%360,0,360,0,127))); //colour);
+            espgui::tft.drawPixel(x1, yy1, rainbow(cpputils::mapValue<uint16_t>(i%360,0,360,0,127))); //colour);
         }
 
         if (i == (360 * n))
@@ -61,7 +66,7 @@ void SpiroDisplay::redraw()
             sx = std::sin(((new_i % 360) - 90) * DEG2RAD);
             x1 = sx * r + x0;
             yy1 = sy * r + yy0;
-            espgui::tft.drawPixel(x1, yy1, rainbow(map(new_i%360,0,360,0,127))); //colour);
+            espgui::tft.drawPixel(x1, yy1, rainbow(cpputils::mapValue<uint16_t>(new_i%360,0,360,0,127))); //colour);
         }
 
         i++;
