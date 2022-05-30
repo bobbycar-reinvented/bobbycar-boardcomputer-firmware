@@ -1,6 +1,9 @@
 #include "mosfetsmenu.h"
 
 #ifdef FEATURE_MOSFETS
+// Arduino includes
+#include <esp32-hal-gpio.h>
+
 // 3rdparty lib includes
 #include "accessorinterface.h"
 #include "actions/popscreenaction.h"
