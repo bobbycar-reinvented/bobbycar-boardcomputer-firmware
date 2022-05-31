@@ -12,6 +12,7 @@ VALID_CONFIGS=(
     "gernot"
     "comred_new"
     "aveexy"
+    "testdevice"
 )
 
 print_usage() {
