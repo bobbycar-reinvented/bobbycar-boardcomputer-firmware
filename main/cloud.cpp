@@ -673,7 +673,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
 
         doc.clear();
 
-        ESP_LOGI(TAG, "Received: %.*s", data->data_len, data->data_ptr);
+        ESP_LOGD(TAG, "Received: %.*s", data->data_len, data->data_ptr);
 
         if (const auto err = deserializeJson(doc, data->data_ptr, data->data_len); err)
         {
