@@ -19,6 +19,7 @@
 #include "esptexthelpers.h"
 #include "accessors/settingsaccessors.h"
 #include "displays/qrcodedebug.h"
+#include "displays/xydebugdisplay.h"
 #include "displays/menus/taskmanagermenu.h"
 #ifdef FEATURE_CAN
 #include "displays/menus/candebugmenu.h"
@@ -38,6 +39,7 @@ constexpr char TEXT_TASKMANAGER[] = "Taskmanager";
 constexpr char TEXT_CANDEBUG[] = "CAN Debug";
 #endif
 constexpr char TEXT_QRCODE_DEBUG[] = "QR Debug";
+constexpr char TEXT_XY_DEBUG[] = "XY Debug";
 constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
 constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
 //constexpr char TEXT_FRONTCOMMAND[] = "Front command";
@@ -67,6 +69,7 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANDEBUG>,             PushScreenAction<CanDebugMenu>>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QRCODE_DEBUG>,         PushScreenAction<QrCodeDebugDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_XY_DEBUG>,             PushScreenAction<XYDebugDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         PushScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
     if (configs.feature.udpcloud.isEnabled.value())
     {
