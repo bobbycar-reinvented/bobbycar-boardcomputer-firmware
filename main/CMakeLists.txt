@@ -62,6 +62,7 @@ set(headers
     debuginputhandler.h
     debugtexthelpers.h
     displays/batterygraphdisplay.h
+    displays/batteryinfodisplay.h
     displays/bmsdisplay.h
     displays/bobbychangevaluedisplay.h
     displays/bobbydisplay.h
@@ -156,10 +157,12 @@ set(headers
     displays/qrcodedebug.h
     displays/qrdisplay.h
     displays/qrimportdisplay.h
+    displays/speedinfodisplay.h
     displays/spirodisplay.h
     displays/starfielddisplay.h
     displays/statusdisplay.h
     displays/updatedisplay.h
+    displays/xydebugdisplay.h
     dnsannounce.h
     dpad.h
     dpad3wire.h
@@ -308,6 +311,7 @@ set(sources
     debuginputhandler.cpp
     debugtexthelpers.cpp
     displays/batterygraphdisplay.cpp
+    displays/batteryinfodisplay.cpp
     displays/bmsdisplay.cpp
     displays/bobbychangevaluedisplay.cpp
     displays/bobbydisplay.cpp
@@ -400,10 +404,12 @@ set(sources
     displays/qrcodedebug.cpp
     displays/qrdisplay.cpp
     displays/qrimportdisplay.cpp
+    displays/speedinfodisplay.cpp
     displays/spirodisplay.cpp
     displays/starfielddisplay.cpp
     displays/statusdisplay.cpp
     displays/updatedisplay.cpp
+    displays/xydebugdisplay.cpp
     dnsannounce.cpp
     dpad.cpp
     dpad3wire.cpp

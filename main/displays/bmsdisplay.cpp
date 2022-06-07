@@ -2,7 +2,7 @@
 
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 #include "displays/menus/mainmenu.h"
-#include "displays/metersdisplay.h"
+#include "displays/speedinfodisplay.h"
 #include "displays/statusdisplay.h"
 #include "screenmanager.h"
 #include "tftinstance.h"
@@ -102,7 +102,7 @@ void BmsDisplay::buttonPressed(espgui::Button button)
     {
     using espgui::Button;
     case Button::Right: pushScreen<MainMenu>(); break;
-    case Button::Up: switchScreen<MetersDisplay>(); break;
+    case Button::Up: switchScreen<SpeedInfoDisplay>(); break;
     case Button::Down: switchScreen<StatusDisplay>(); break;
     default:;
     }

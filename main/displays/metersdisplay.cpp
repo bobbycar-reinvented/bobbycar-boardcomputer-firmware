@@ -9,7 +9,6 @@
 #include "utils.h"
 #include "displays/menus/mainmenu.h"
 #include "displays/statusdisplay.h"
-#include "displays/bmsdisplay.h"
 
 using namespace espgui;
 
@@ -58,14 +57,12 @@ void MetersDisplay::buttonPressed(espgui::Button button)
     switch (button)
     {
     using espgui::Button;
-    case Button::Right: pushScreen<MainMenu>(); break;
-    case Button::Up: switchScreen<StatusDisplay>(); break;
+    case Button::Right:
+        pushScreen<MainMenu>();
+        break;
+    case Button::Up:
     case Button::Down:
-#ifdef FEATURE_BMS
-        switchScreen<BmsDisplay>();
-#else
         switchScreen<StatusDisplay>();
-#endif
         break;
     default:;
     }

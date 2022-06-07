@@ -4,17 +4,17 @@
 #include <esp_heap_caps.h>
 
 // 3rdparty lib includes
+#include <espchrono.h>
 #include <widgets/label.h>
 #include <widgets/progressbar.h>
-#include <espchrono.h>
 
 // local includes
-#include "bobbydisplay.h"
-#include "modeinterface.h"
-#include "globals.h"
-#include "utils.h"
-#include "icons/alert.h"
 #include "battery.h"
+#include "bobbydisplay.h"
+#include "globals.h"
+#include "icons/alert.h"
+#include "modeinterface.h"
+#include "utils.h"
 
 class StatusDisplay : public BobbyDisplay
 {
