@@ -11,7 +11,9 @@
 #include <esphttpdutils.h>
 #include <espwifistack.h>
 #include <fmt/core.h>
+#include <menudisplay.h>
 #include <numberparsing.h>
+#include <screenmanager.h>
 #include <tftinstance.h>
 #include <tickchrono.h>
 #include <wrappers/websocket_client.h>
@@ -70,10 +72,11 @@ typename std::enable_if<
         !std::is_same_v<T, BobbyQuickActions> &&
         !std::is_same_v<T, BatteryCellType>
         , void>::type
-toArduinoJson(std::string_view key, T value, JsonObject &object)
+toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
-    object["name"] = key;
-    object["value"] = nullptr;
+    object["n"] = key;
+    object["v"] = nullptr;
+    object["d"] = nullptr;
 }
 
 template<typename T>
@@ -81,30 +84,33 @@ typename std::enable_if<
         std::is_same_v<T, bool> ||
         std::is_integral_v<T>
         , void>::type
-toArduinoJson(std::string_view key, T value, JsonObject &object)
+toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
-    object["name"] = key;
-    object["value"] = value;
+    object["n"] = key;
+    object["v"] = value;
+    object["d"] = defaultValue;
 }
 
 template<typename T>
 typename std::enable_if<
         is_duration_v<T>
         , void>::type
-toArduinoJson(std::string_view key, T value, JsonObject &object)
+toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
-    object["name"] = key;
-    object["value"] = value.count();
+    object["n"] = key;
+    object["v"] = value.count();
+    object["d"] = defaultValue.count();
 }
 
 template<typename T>
 typename std::enable_if<
         std::is_same_v<T, std::string>
         , void>::type
-toArduinoJson(std::string_view key, T value, JsonObject &object)
+toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
-    object["name"] = key;
-    object["value"] = value;
+    object["n"] = key;
+    object["v"] = value;
+    object["d"] = defaultValue;
 }
 
 template<typename T>
@@ -113,23 +119,29 @@ typename std::enable_if<
         std::is_same_v<T, wifi_stack::mac_t> ||
         std::is_same_v<T, wifi_auth_mode_t>
         , void>::type
-toArduinoJson(std::string_view key, T value, JsonObject &object)
+toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
-    object["name"] = key;
-    object["value"] = wifi_stack::toString(value);
+    object["n"] = key;
+    object["v"] = wifi_stack::toString(value);
+    object["d"] = wifi_stack::toString(defaultValue);
 }
 
 template<typename T>
 typename std::enable_if<
         std::is_same_v<T, std::optional<wifi_stack::mac_t>>
         , void>::type
-toArduinoJson(std::string_view key, T value, JsonObject &object)
+toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
-    object["name"] = key;
+    object["n"] = key;
     if (value)
-        object["value"] = wifi_stack::toString(*value);
+        object["v"] = wifi_stack::toString(*value);
     else
-        object["value"] = nullptr;
+        object["v"] = nullptr;
+
+    if (defaultValue)
+        object["d"] = wifi_stack::toString(*defaultValue);
+    else
+        object["d"] = nullptr;
 }
 
 template<typename T>
@@ -143,10 +155,11 @@ typename std::enable_if<
         std::is_same_v<T, CloudMode> ||
         std::is_same_v<T, BatteryCellType>
         , void>::type
-toArduinoJson(std::string_view key, T value, JsonObject &object)
+toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
-    object["name"] = key;
-    object["value"] = std::to_underlying(value);
+    object["n"] = key;
+    object["v"] = std::to_underlying(value);
+    object["d"] = std::to_underlying(defaultValue);
 }
 
 // setter
@@ -305,8 +318,9 @@ void send_config(uint32_t skipCount)
         i++;
 
         JsonObject configObject = configsArray.createNestedObject();
-        toArduinoJson(nvsName, config.value(), configObject);
-        configObject["type"] = typeutils::t_to_str<decltype(config.value())>::str;
+        toArduinoJson(nvsName, config.value(), config.defaultValue(), configObject);
+        configObject["T"] = typeutils::t_to_str<decltype(config.value())>::str;
+        configObject["t"] = config.touched();
 
         if (doc.overflowed())
         {
@@ -340,7 +354,7 @@ void send_config(uint32_t skipCount)
     }
 }
 
-void send_single_config(const std::string &nvsName)
+void send_single_config(const std::string &nvsName, bool force_update = false)
 {
     if (!cloudClient.is_connected())
         return;
@@ -352,14 +366,100 @@ void send_single_config(const std::string &nvsName)
         if (config.nvsName() == nvsName)
         {
             JsonObject configObject = doc.createNestedObject("config");
-            toArduinoJson(nvsName, config.value(), configObject);
-            configObject["type"] = typeutils::t_to_str<decltype(config.value())>::str;
+            toArduinoJson(nvsName, config.value(), config.defaultValue(), configObject);
+            configObject["T"] = typeutils::t_to_str<decltype(config.value())>::str;
+            configObject["t"] = config.touched();
+            configObject["f"] = force_update;
             success = true;
         }
     });
     std::string body;
     if (!success)
         doc["error"] = "Config not found";
+    serializeJson(doc, body);
+    doc.clear();
+    const auto timeout = std::chrono::ceil<espcpputils::ticks>(
+            espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
+    cloudClient.send_text(body, timeout);
+}
+
+void send_information()
+{
+    if (!cloudClient.is_connected())
+        return;
+    doc.clear();
+
+    doc["type"] = "info";
+    JsonObject infoObject = doc.createNestedObject("info");
+    JsonObject gitObject = infoObject.createNestedObject("git");
+    gitObject["branch"] = GIT_BRANCH;
+    gitObject["commit"] = GIT_REV;
+
+    JsonObject wifiObject = infoObject.createNestedObject("wifi");
+    const bool wifi_connected = wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED;
+    wifiObject["connected"] = wifi_connected;
+    if (wifi_connected)
+    {
+        if (const auto result = wifi_stack::get_ip_info(wifi_stack::esp_netifs[ESP_IF_WIFI_STA]); result)
+        {
+            wifiObject["ip"] = wifi_stack::toString(result->ip);
+            wifiObject["mask"] = wifi_stack::toString(result->netmask);
+            wifiObject["gw"] = wifi_stack::toString(result->gw);
+        }
+        else
+        {
+            wifiObject["error"] = "Could not get IP info";
+        }
+
+        if (const auto result = wifi_stack::get_sta_ap_info(); result)
+        {
+            wifiObject["ssid"] = std::string_view{reinterpret_cast<const char*>(result->ssid)};
+            wifiObject["bssid"] = wifi_stack::toString(wifi_stack::mac_t{result->bssid});
+            wifiObject["channel"] = result->primary;
+            wifiObject["rssi"] = result->rssi;
+        }
+        else
+        {
+            wifiObject["error"] = "Could not get STA info";
+        }
+    }
+
+    if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))
+    {
+        JsonObject displayObject = infoObject.createNestedObject("display");
+        if (const auto *textInterface = currentDisplay->asTextInterface())
+        {
+            displayObject["name"] = textInterface->text();
+        }
+
+        if (const auto *display = currentDisplay->asMenuDisplay())
+        {
+            displayObject["name"] = display->text();
+        }
+    }
+    else
+    {
+        infoObject["display"] = nullptr;
+    }
+
+    infoObject["uptime"] = espchrono::millis_clock::now().time_since_epoch().count();
+
+    std::string body;
+    serializeJson(doc, body);
+    doc.clear();
+    const auto timeout = std::chrono::ceil<espcpputils::ticks>(
+            espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
+    cloudClient.send_text(body, timeout);
+}
+
+void send_uptime()
+{
+    if (!cloudClient.is_connected())
+        return;
+    doc.clear();
+    doc["type"] = "uptime";
+    doc["info"] = espchrono::millis_clock::now().time_since_epoch().count();
+    std::string body;
     serializeJson(doc, body);
     doc.clear();
     const auto timeout = std::chrono::ceil<espcpputils::ticks>(
@@ -755,10 +855,50 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
             }
             return;
         }
+        else if (type == "resetConfig")
+        {
+            std::string name = doc["nvskey"];
+            doc.clear();
+            bool success{false};
+            configs.callForEveryConfig([&](auto &config){
+                const std::string_view nvsName{config.nvsName()};
+
+                if (nvsName == name)
+                {
+                    if (const auto result = configs.reset_config(config); !result)
+                    {
+                        ESP_LOGE(TAG, "reset_config() failed with %s", result.error().c_str());
+                        return;
+                    }
+                    success = true;
+                }
+            });
+            if (!success)
+            {
+                ESP_LOGE(TAG, "reset_config() failed with %s", "unknown config");
+                return;
+            }
+            else
+            {
+                send_single_config(name, true);
+            }
+        }
+        else if (type == "getInformation")
+        {
+            send_information();
+        }
+        else if (type == "getUptime")
+        {
+            send_uptime();
+        }
         break;
     }
     case WEBSOCKET_EVENT_ERROR:
         ESP_LOGE(TAG, "%s event_id=%s %.*s", event_base, "WEBSOCKET_EVENT_ERROR", data->data_len, data->data_ptr);
+        break;
+    case WEBSOCKET_EVENT_CLOSED:
+        ESP_LOGE(TAG, "%s event_id=%s %.*s", event_base, "WEBSOCKET_EVENT_CLOSED", data->data_len, data->data_ptr);
+        hasAnnouncedItself = false;
         break;
     default:
         ESP_LOGI(TAG, "%s unknown event_id %i", event_base, event_id);
