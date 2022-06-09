@@ -444,6 +444,14 @@ void send_information()
 
     infoObject["uptime"] = espchrono::millis_clock::now().time_since_epoch().count();
 
+    // battery
+    if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
+    {
+        infoObject["percentage"] = fmt::format("{:.1f}%", getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())));
+    }
+    else
+        infoObject["percentage"] = nullptr;
+
     std::string body;
     serializeJson(doc, body);
     doc.clear();
@@ -899,6 +907,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
     case WEBSOCKET_EVENT_CLOSED:
         ESP_LOGE(TAG, "%s event_id=%s %.*s", event_base, "WEBSOCKET_EVENT_CLOSED", data->data_len, data->data_ptr);
         hasAnnouncedItself = false;
+        destroyCloud();
         break;
     default:
         ESP_LOGI(TAG, "%s unknown event_id %i", event_base, event_id);
