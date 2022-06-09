@@ -448,9 +448,13 @@ void send_information()
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
         infoObject["percentage"] = fmt::format("{:.1f}%", getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())));
+        infoObject["voltage"] = *avgVoltage;
     }
     else
+    {
         infoObject["percentage"] = nullptr;
+        infoObject["voltage"] = nullptr;
+    }
 
     std::string body;
     serializeJson(doc, body);
