@@ -22,6 +22,7 @@
 #include "bobbyerrorhandler.h"
 #include "globals.h"
 #include "newsettings.h"
+#include "ota.h"
 #include "typeutils.h"
 #include "utils.h"
 
@@ -37,6 +38,7 @@ namespace {
 std::optional<espchrono::millis_clock::time_point> lastCloudCollect;
 std::optional<espchrono::millis_clock::time_point> lastCloudSend;
 std::optional<espchrono::millis_clock::time_point> lastHeartbeat;
+std::optional<espchrono::millis_clock::time_point> lastOtaStatus;
 
 bool hasAnnouncedItself{};
 
@@ -479,6 +481,50 @@ void send_uptime()
     cloudClient.send_text(body, timeout);
 }
 
+void send_ota_status()
+{
+    if (!cloudClient.is_connected())
+        return;
+    doc.clear();
+    doc["type"] = "otaStatus";
+    if (!asyncOta)
+    {
+        doc["info"] = nullptr;
+    }
+    else
+    {
+        JsonObject otaObject = doc.createNestedObject("info");
+        otaObject["status"] = toString(asyncOta->status());
+        otaObject["progress"] = asyncOta->progress();
+        if (const auto totalSize = asyncOta->totalSize(); totalSize)
+        {
+            otaObject["totalSize"] = *totalSize;
+        }
+        else
+        {
+            otaObject["totalSize"] = nullptr;
+        }
+
+        if (const auto &appDesc = asyncOta->appDesc())
+        {
+            otaObject["newVersion"] = appDesc->version;
+            otaObject["date"] = appDesc->date;
+        }
+        else
+        {
+            otaObject["newVersion"] = nullptr;
+            otaObject["date"] = nullptr;
+        }
+    }
+
+    std::string body;
+    serializeJson(doc, body);
+    doc.clear();
+    const auto timeout = std::chrono::ceil<espcpputils::ticks>(
+            espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
+    cloudClient.send_text(body, timeout);
+}
+
 void cloudHeartbeat()
 {
     if (!cloudClient.is_connected())
@@ -530,6 +576,15 @@ void updateCloud()
     {
         cloudHeartbeat();
         lastHeartbeat = now;
+    }
+
+    if (asyncOtaTaskStarted)
+    {
+        if (!lastOtaStatus || now - *lastOtaStatus >= 1000ms)
+        {
+            send_ota_status();
+            lastOtaStatus = now;
+        }
     }
 }
 
@@ -640,9 +695,8 @@ void cloudSend()
             if (espchrono::ago(lastCreateTry) < 10s)
                 return;
             createCloud();
-        }
-        if (!cloudClient)
             return;
+        }
 
         if (!cloudStarted)
         {
@@ -903,6 +957,14 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
         {
             send_uptime();
         }
+        else if (type == "getOtaStatus")
+        {
+            send_ota_status();
+        }
+        else
+        {
+            ESP_LOGE(TAG, "unknown type: %s", type.c_str());
+        }
         break;
     }
     case WEBSOCKET_EVENT_ERROR:
@@ -911,7 +973,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
     case WEBSOCKET_EVENT_CLOSED:
         ESP_LOGE(TAG, "%s event_id=%s %.*s", event_base, "WEBSOCKET_EVENT_CLOSED", data->data_len, data->data_ptr);
         hasAnnouncedItself = false;
-        destroyCloud();
+        cloudStarted = false;
         break;
     default:
         ESP_LOGI(TAG, "%s unknown event_id %i", event_base, event_id);
