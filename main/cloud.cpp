@@ -458,6 +458,10 @@ void send_information()
         infoObject["voltage"] = nullptr;
     }
 
+    infoObject["tempFront"] = fixBoardTemp(controllers.front.feedback.boardTemp);
+    infoObject["tempBack"] = fixBoardTemp(controllers.back.feedback.boardTemp);
+    infoObject["current"] = sumCurrent;
+
     std::string body;
     serializeJson(doc, body);
     doc.clear();
