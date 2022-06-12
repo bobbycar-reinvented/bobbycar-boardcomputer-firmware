@@ -229,6 +229,7 @@ void showAnimation()
         case LedstripAnimation::CustomColor: showCustomColor(); break;
         case LedstripAnimation::SnakeAnimation: showSnakeAnimation(); break;
         case LedstripAnimation::GasOMeter: showGasOMeterAnimation(); break;
+        case LedstripAnimation::Pride: showPrideAnimation(); break;
         default: showDefaultLedstrip();
         }
     }
@@ -430,6 +431,45 @@ void showCustomColor()
     std::fill(center + (eighth_length / 2) + eighth_length + eighth_length, center + (eighth_length / 2) + eighth_length + eighth_length + eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_RIGHT)].value());  // Front Right
     std::fill(center - (eighth_length / 2) - eighth_length - eighth_length - eighth_length, center - (eighth_length / 2) - eighth_length - eighth_length, configs.ledstrip.custom_color[int(Bobbycar_Side::FRONT_LEFT)].value());   // Front Left
 #endif
+}
+
+void showPrideAnimation()
+{
+    const auto ledstrip_length = leds.size();
+    static uint16_t sPseudotime{0};
+    static espchrono::millis_clock::time_point sLastMillis{};
+    static uint16_t sHue16{0};
+
+    const uint8_t sat8 = beatsin88(87, 220, 250);
+    const uint8_t brightdepth = beatsin88(341, 96, 224);
+    const uint16_t brightnessthetainc16 = beatsin88(203, (25 * 256), (40 * 256));
+    const uint8_t msmultiplier = beatsin88(147, 23, 60);
+
+    uint16_t hue16 = sHue16;//gHue * 256;
+    uint16_t hueinc16 = beatsin88(113, 1, 3000);
+
+    const auto deltams = espchrono::ago(sLastMillis).count() / 1000;
+    sLastMillis = espchrono::millis_clock::now();
+    sPseudotime += deltams * msmultiplier;
+    sHue16 += deltams * beatsin88( 400, 5, 9);
+    uint16_t brightnesstheta16 = sPseudotime;
+
+    for (uint16_t i = 0 ; i < ledstrip_length; i++) {
+        hue16 += hueinc16;
+        const uint8_t hue8 = hue16 / 256;
+
+        brightnesstheta16  += brightnessthetainc16;
+        const uint16_t b16 = sin16(brightnesstheta16) + 32768;
+
+        const uint16_t bri16 = (uint32_t)((uint32_t)b16 * (uint32_t)b16) / 65536;
+        uint8_t bri8 = (uint32_t)(((uint32_t)bri16) * brightdepth) / 65536;
+        bri8 += (255 - brightdepth);
+
+        const CRGB newcolor = CHSV( hue8, sat8, bri8);
+        const uint16_t pixelnumber = (ledstrip_length - 1) - i;
+
+        nblend(leds[pixelnumber], newcolor, 64);
+    }
 }
 
 [[nodiscard]] bool activateAutomaticFrontLight()
