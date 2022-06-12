@@ -93,7 +93,8 @@ extern "C" void app_main()
     }
     else if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
     {
-        espgui::switchScreen<Lockscreen>();
+        espgui::switchScreen<StatusDisplay>();
+        espgui::pushScreen<Lockscreen>();
     }
     else
     {
