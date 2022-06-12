@@ -18,6 +18,7 @@ DECLARE_BOBBYTYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues
 
 #define LedstripAnimationValues(x) \
     x(DefaultRainbow) \
+    x(Pride) \
     x(BetterRainbow) \
     x(SpeedSync) \
     x(CustomColor) \
@@ -51,6 +52,7 @@ void showCustomColor();
 void showSnakeAnimation();
 void showGasOMeterAnimation();
 void showOtaAnimation();
+void showPrideAnimation();
 
 void initLedStrip();
 void updateLedStrip();
