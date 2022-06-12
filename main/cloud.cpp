@@ -983,6 +983,64 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
         {
             send_ota_status();
         }
+        else if (type == "rawBtnPrssd")
+        {
+            uint8_t button;
+            JsonVariant btn_id = doc["btn"];
+            if (btn_id.isNull())
+            {
+                ESP_LOGE(TAG, "btnPressed: btn is null");
+                return;
+            }
+
+            if (auto parsed = cpputils::fromString<decltype(button)>(btn_id.as<std::string>()))
+            {
+                button = *parsed;
+            }
+            else
+            {
+                ESP_LOGE(TAG, "btnPressed: btn is not a number");
+                return;
+            }
+
+            if (!espgui::currentDisplay)
+            {
+                ESP_LOGW(TAG, "espgui::currentDisplay is null");
+                return;
+            }
+
+            espgui::currentDisplay->rawButtonPressed(button);
+            espgui::currentDisplay->rawButtonReleased(button);
+        }
+        else if (type == "btnPressed")
+        {
+            espgui::Button button;
+            JsonVariant btn_id = doc["btn"];
+            if (btn_id.isNull())
+            {
+                ESP_LOGE(TAG, "btnPressed: btn is null");
+                return;
+            }
+
+            if (auto parsed = cpputils::fromString<std::underlying_type_t<espgui::Button>>(btn_id.as<std::string>()))
+            {
+                button = espgui::Button(*parsed);
+            }
+            else
+            {
+                ESP_LOGE(TAG, "btnPressed: btn is not a number");
+                return;
+            }
+
+            if (!espgui::currentDisplay)
+            {
+                ESP_LOGW(TAG, "espgui::currentDisplay is null");
+                return;
+            }
+
+            espgui::currentDisplay->buttonPressed(button);
+            espgui::currentDisplay->buttonReleased(button);
+        }
         else
         {
             ESP_LOGE(TAG, "unknown type: %s", type.c_str());
