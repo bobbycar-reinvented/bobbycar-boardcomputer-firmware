@@ -137,4 +137,10 @@ static constexpr const auto &dpad_init = dpad_boardcomputer_v2::init;
 static constexpr const auto &dpad_update = dpad_boardcomputer_v2::update;
 static constexpr const char * const dpad_name = "dpad_boardcomputer_v2";
 #endif
+#if !defined(FEATURE_DPAD) && !defined(FEATURE_DPAD_3WIRESW) && !defined(FEATURE_DPAD_5WIRESW) && !defined(FEATURE_DPAD_5WIRESW_2OUT) && !defined(FEATURE_DPAD_6WIRESW) && !defined(DPAD_BOARDCOMPUTER_V2)
+static constexpr const auto ButtonCount = 0;
+static constexpr const auto &dpad_init = nullptr;
+static constexpr const auto &dpad_update = nullptr;
+static constexpr const char * const dpad_name = "";
+#endif
 } // namespace bobbydpad
