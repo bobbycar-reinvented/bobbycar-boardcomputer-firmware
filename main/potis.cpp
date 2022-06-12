@@ -29,7 +29,7 @@ void readPotis()
     [[maybe_unused]]
     constexpr auto sampleMultipleTimes = [](uint8_t pin){
           analogRead(pin);
-          double sum{};
+          float sum{};
           const auto sampleCount = configs.sampleCount.value();
           for (int i = 0; i < sampleCount; i++)
               sum += analogRead(pin);
