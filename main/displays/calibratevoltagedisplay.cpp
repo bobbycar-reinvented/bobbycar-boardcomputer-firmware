@@ -64,7 +64,7 @@ public:
 
 float convertToFloat(int16_t value)
 {
-    return value/100.;
+    return value / 100.f;
 }
 
 class BatteryVoltageCalibrationFront30VText : public virtual espgui::TextInterface

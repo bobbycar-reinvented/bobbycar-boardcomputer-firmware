@@ -42,7 +42,7 @@ void GametrakMode::update()
     }
     else
     {
-        if (*gas > 500. || *brems > 500.)
+        if (*gas > 500.f || *brems > 500.f)
         {
             modes::defaultMode.waitForGasLoslass = true;
             modes::defaultMode.waitForBremsLoslass = true;

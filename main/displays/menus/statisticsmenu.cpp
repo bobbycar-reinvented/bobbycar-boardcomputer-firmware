@@ -160,10 +160,10 @@ class ClearCurrentStatsAction : public virtual espgui::ActionInterface
 public:
     void triggered() override
     {
-        drivingStatistics.meters_driven = 0.;
+        drivingStatistics.meters_driven = 0.f;
         drivingStatistics.currentDrivingTime = {};
-        drivingStatistics.wh_used = 0;
-        drivingStatistics.batteryWhEstimate = 0;
+        drivingStatistics.wh_used = 0.f;
+        drivingStatistics.batteryWhEstimate = 0.f;
     }
 };
 } // namespace

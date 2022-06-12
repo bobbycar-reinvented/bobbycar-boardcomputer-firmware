@@ -32,12 +32,12 @@ float convertFromInch(float val)
 
 float fixCurrent(int16_t value)
 {
-    return -value/50.;
+    return -value/50.f;
 }
 
 float fixBoardTemp(int16_t value)
 {
-    return value/10.;
+    return value/10.f;
 }
 
 std::string hallString(const bobbycar::protocol::serial::MotorFeedback &motor)

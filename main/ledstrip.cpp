@@ -265,8 +265,8 @@ void showOtaAnimation()
         }
         else if (configs.ledstrip.otaMode.value() == OtaAnimationModes::ColorChangeAll)
         {
-            const uint8_t redChannel = 255 - (2.55 * percentage);
-            const uint8_t greenChannel = 2.55 * percentage;
+            const uint8_t redChannel = 255 - (2.55f * percentage);
+            const uint8_t greenChannel = 2.55f * percentage;
 
             std::fill(std::begin(leds), std::end(leds), CRGB{redChannel, greenChannel, 0});
         }
@@ -308,8 +308,8 @@ void showSpeedSyncAnimation()
 
     static float hue_result = 0;
 
-    const float hue_per_led = 1. / std::max(uint8_t(1), uint8_t(configs.ledstrip.animationMultiplier.value()));
-    const float meter_per_second = avgSpeedKmh / 3.6;
+    const float hue_per_led = 1.f / std::max(uint8_t(1), uint8_t(configs.ledstrip.animationMultiplier.value()));
+    const float meter_per_second = avgSpeedKmh / 3.6f;
     const float leds_per_second = meter_per_second * configs.ledstrip.leds_per_meter.value();
     const float hue_per_second = leds_per_second * hue_per_led;
 
@@ -334,7 +334,7 @@ void showDefaultLedstrip()
 
 void showSnakeAnimation()
 {
-    const float leds_per_cycle = (1. / std::max<int16_t>(1, configs.ledstrip.animationMultiplier.value())) * (avgSpeedKmh + 1); // yes, this is intendet as a float value! Do NOT change!
+    const float leds_per_cycle = (1.f / std::max<int16_t>(1, configs.ledstrip.animationMultiplier.value())) * (avgSpeedKmh + 1); // yes, this is intended as a float value! Do NOT change!
     fadeToBlackBy(&*std::begin(leds), leds.size(), floor(20*leds_per_cycle));
     if (gLedPosition >= leds.size())
     {
@@ -348,7 +348,7 @@ void showSnakeAnimation()
     for(int16_t i = floor(gLedPosition); i < floor(gLedPosition + leds_per_cycle); i++)
     {
         leds[i] |= CHSV(gHue, 255, 255);
-        uint8_t snake_2_pos = floor(leds.size() / 2) + i;
+        uint8_t snake_2_pos = floorf(leds.size() / 2.f) + i;
 
         if (snake_2_pos > leds.size())
         {
@@ -378,19 +378,19 @@ void showGasOMeterAnimation()
         }
         else if (w_per_kmh < -20)
         {
-            color = CRGB(255, 0, cpputils::mapValueClamped<float>(w_per_kmh, -40, -20, 255., 0.));
+            color = CRGB(255, 0, cpputils::mapValueClamped<float>(w_per_kmh, -40, -20, 255.f, 0.f));
         }
         else if (w_per_kmh < 0)
         {
-            color = CRGB(255, cpputils::mapValueClamped<float>(w_per_kmh, -20, 0, 0., 255.), 0);
+            color = CRGB(255, cpputils::mapValueClamped<float>(w_per_kmh, -20, 0, 0.f, 255.f), 0);
         }
         else if (w_per_kmh < 20)
         {
-            color = CRGB(cpputils::mapValueClamped<float>(w_per_kmh, 0, 20, 255., 0.), 255, 0);
+            color = CRGB(cpputils::mapValueClamped<float>(w_per_kmh, 0, 20, 255.f, 0.f), 255, 0);
         }
         else if (w_per_kmh < 40)
         {
-            color = CRGB(0, cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 255., 0.), cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 0., 255.));
+            color = CRGB(0, cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 255.f, 0.f), cpputils::mapValueClamped<float>(w_per_kmh, 20, 40, 0.f, 255.f));
         }
         else
         {

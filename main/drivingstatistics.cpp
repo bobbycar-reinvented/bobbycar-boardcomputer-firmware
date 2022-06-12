@@ -84,9 +84,9 @@ void calculateStatistics()
     const auto duration = espchrono::ago(last_km_calculation);
     last_km_calculation = espchrono::millis_clock::now();
 
-    const float meters_driven_now = (abs(avgSpeedKmh) / 3.6) * ((duration / 1ms) / 1000.);
+    const float meters_driven_now = (abs(avgSpeedKmh) / 3.6f) * ((duration / 1ms) / 1000.f);
     drivingStatistics.meters_driven += meters_driven_now;
-    drivingStatistics.totalMeters += meters_driven_now; // Udate meters driven
+    drivingStatistics.totalMeters += meters_driven_now; // Update meters driven
 
     if (abs(avgSpeedKmh) > 1)
     {
@@ -98,19 +98,19 @@ void calculateStatistics()
 
         if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
         {
-            auto watt = sumCurrent * *avgVoltage;
-            const float ws_driven_now = watt * ((duration / 1ms) / 1000.);
-            drivingStatistics.wh_used += ws_driven_now / 3600; // Wh
-            drivingStatistics.batteryWhEstimate -= ws_driven_now / 3600;
+            const float watt = sumCurrent * *avgVoltage;
+            const float ws_driven_now = watt * ((duration / 1ms) / 1000.f);
+            drivingStatistics.wh_used += ws_driven_now / 3600.f; // Wh
+            drivingStatistics.batteryWhEstimate -= ws_driven_now / 3600.f;
         }
     }
     else
     {
-        drivingStatistics.wh_used += (13 * ((duration / 1ms) / 1000.)) / 3600; // Wh
+        drivingStatistics.wh_used += (13 * ((duration / 1ms) / 1000.f)) / 3600.f; // Wh
         drivingStatistics.batteryWhEstimate = getRemainingWattHours();
     }
 
-    if ((drivingStatistics.totalMeters > ((drivingStatistics.last_cm_written / 100.f) + 100)) || (saveTotal && abs(avgSpeedKmh) < 0.5))
+    if ((drivingStatistics.totalMeters > ((drivingStatistics.last_cm_written / 100.f) + 100)) || (saveTotal && abs(avgSpeedKmh) < 0.5f))
     {
         if (saveTotal)
         {

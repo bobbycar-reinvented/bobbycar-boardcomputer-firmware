@@ -58,12 +58,12 @@ void PotisCalibrateDisplay::update()
     Base::update();
 
     if (raw_gas)
-        m_gas = cpputils::mapValueClamped<float>(*raw_gas, m_gasMin, m_gasMax, 0., 1000.);
+        m_gas = cpputils::mapValueClamped<float>(*raw_gas, m_gasMin, m_gasMax, 0.f, 1000.f);
     else
         m_gas = std::nullopt;
 
     if (raw_brems)
-        m_brems = cpputils::mapValueClamped<float>(*raw_brems, m_bremsMin, m_bremsMax, 0., 1000.);
+        m_brems = cpputils::mapValueClamped<float>(*raw_brems, m_bremsMin, m_bremsMax, 0.f, 1000.f);
     else
         m_brems = std::nullopt;
 }
