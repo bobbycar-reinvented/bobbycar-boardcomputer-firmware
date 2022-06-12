@@ -175,15 +175,15 @@ void DefaultMode::update()
         {
             if (gas_processed >= profileSettings.defaultMode.add_schwelle)
             {
-                pwm = (gas_processed/1000.*profileSettings.defaultMode.gas1_wert) + (brems_processed/1000.*profileSettings.defaultMode.brems1_wert);
+                pwm = (gas_processed/1000.f*profileSettings.defaultMode.gas1_wert) + (brems_processed/1000.f*profileSettings.defaultMode.brems1_wert);
 
-                if ((profileSettings.defaultMode.enableSmoothingUp || profileSettings.defaultMode.enableSmoothingDown) && (pwm > 1000. || m_lastPwm > 1000.))
+                if ((profileSettings.defaultMode.enableSmoothingUp || profileSettings.defaultMode.enableSmoothingDown) && (pwm > 1000.f || m_lastPwm > 1000.f))
                 {
                     if (m_lastPwm < pwm && profileSettings.defaultMode.enableSmoothingUp)
                     {
                         pwm = std::min(pwm, m_lastPwm + (profileSettings.defaultMode.smoothing * std::chrono::floor<std::chrono::milliseconds>(now - m_lastTime).count() / 100.f));
-                        if (pwm < 1000.)
-                            pwm = 1000.;
+                        if (pwm < 1000.f)
+                            pwm = 1000.f;
                     }
                     else if (m_lastPwm > pwm && profileSettings.defaultMode.enableSmoothingDown)
                     {
@@ -193,7 +193,7 @@ void DefaultMode::update()
             }
             else
             {
-                pwm = (gas_processed/1000.*profileSettings.defaultMode.gas2_wert) - (brems_processed/1000.*profileSettings.defaultMode.brems2_wert);
+                pwm = (gas_processed/1000.f*profileSettings.defaultMode.gas2_wert) - (brems_processed/1000.f*profileSettings.defaultMode.brems2_wert);
                 if (
                         (profileSettings.defaultMode.enableFieldWeakSmoothingUp || profileSettings.defaultMode.enableFieldWeakSmoothingDown) &&
                         (m_lastPwm > profileSettings.defaultMode.fwSmoothLowerLimit) &&
@@ -246,7 +246,7 @@ void DefaultMode::update()
             {
                 motor.ctrlTyp = pair.first;
                 motor.ctrlMod = pair.second;
-                motor.pwm = pwm / 100. * profileSettings.defaultMode.frontPercentage;
+                motor.pwm = pwm / 100.f * profileSettings.defaultMode.frontPercentage;
                 motor.cruiseCtrlEna = false;
                 motor.nCruiseMotTgt = 0;
             }
@@ -254,7 +254,7 @@ void DefaultMode::update()
             {
                 motor.ctrlTyp = pair.first;
                 motor.ctrlMod = pair.second;
-                motor.pwm = pwm / 100. * profileSettings.defaultMode.backPercentage;
+                motor.pwm = pwm / 100.f * profileSettings.defaultMode.backPercentage;
                 motor.cruiseCtrlEna = false;
                 motor.nCruiseMotTgt = 0;
             }

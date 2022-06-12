@@ -29,7 +29,7 @@ void readPotis()
     [[maybe_unused]]
     constexpr auto sampleMultipleTimes = [](uint8_t pin){
           analogRead(pin);
-          double sum{};
+          float sum{};
           const auto sampleCount = configs.sampleCount.value();
           for (int i = 0; i < sampleCount; i++)
               sum += analogRead(pin);
@@ -68,11 +68,11 @@ void readPotis()
 
 #ifndef FEATURE_JOYSTICK
     if (raw_gas)
-        gas = cpputils::mapValueClamped<float>(*raw_gas, configs.gasMin.value(), configs.gasMax.value(), 0., 1000.);
+        gas = cpputils::mapValueClamped<float>(*raw_gas, configs.gasMin.value(), configs.gasMax.value(), 0.f, 1000.f);
     else
         gas = std::nullopt;
     if (raw_brems)
-        brems = cpputils::mapValueClamped<float>(*raw_brems, configs.bremsMin.value(), configs.bremsMax.value(), 0., 1000.);
+        brems = cpputils::mapValueClamped<float>(*raw_brems, configs.bremsMin.value(), configs.bremsMax.value(), 0.f, 1000.f);
     else
         brems = std::nullopt;
 #else

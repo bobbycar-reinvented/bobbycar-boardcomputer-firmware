@@ -27,7 +27,7 @@ float Controller::getCalibratedVoltage() const
     }
     else
     {
-        voltage = voltage / 100.;
+        voltage = voltage / 100.f;
     }
     return voltage;
 }

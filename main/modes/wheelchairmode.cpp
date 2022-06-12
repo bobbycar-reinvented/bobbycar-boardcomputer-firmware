@@ -183,7 +183,7 @@ void WheelchairMode::update()
         }
         else
         {
-            pwm = (gas_processed/1000.*profileSettings.defaultMode.gas1_wert) - (brems_processed/1000.*profileSettings.defaultMode.brems1_wert);
+            pwm = (gas_processed/1000.f*profileSettings.defaultMode.gas1_wert) - (brems_processed/1000.*profileSettings.defaultMode.brems1_wert);
 
             if (profileSettings.defaultMode.enableSmoothingUp || profileSettings.defaultMode.enableSmoothingDown)
             {
@@ -200,12 +200,12 @@ void WheelchairMode::update()
             m_lastPwm = pwm;
             m_lastTime = now;
 
-            float steer = cpputils::mapValueClamped<float>(abs(avgSpeedKmh), 0, 50, profileSettings.wheelchairMode.sensitivity0Kmh, profileSettings.wheelchairMode.sensitivity50Kmh) / 1000. * left_right;
+            float steer = cpputils::mapValueClamped<float>(abs(avgSpeedKmh), 0, 50, profileSettings.wheelchairMode.sensitivity0Kmh, profileSettings.wheelchairMode.sensitivity50Kmh) / 1000.f * left_right;
 
             for (Controller &controller : controllers)
             {
 
-//                motor.pwm = pwm / 100. * profileSettings.defaultMode.frontPercentage;
+//                motor.pwm = pwm / 100.f * profileSettings.defaultMode.frontPercentage;
 
                 controller.command.left.ctrlTyp = pair.first;
                 controller.command.left.ctrlMod = pair.second;

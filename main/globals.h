@@ -97,7 +97,7 @@ public:
     std::optional<float> getAvgVoltage() const
     {
         uint8_t voltages{0};
-        float avgVoltage{0.};
+        float avgVoltage{0.f};
         for (auto &controller : *this)
         {
             if (const auto result = controller.getCalibratedVoltage(); !std::isnan(result) && controller.feedbackValid)

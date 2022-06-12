@@ -18,40 +18,40 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
     case BatteryCellType::_22P:
     {
         const float expected_ah = BAT_MIN_AH_22P;
-        if (cellVoltage > 4.15)
-            return 100;
+        if (cellVoltage > 4.15f)
+            return 100.f;
         BAT_CURVE_22P(PERCENTAGE);
         break;
     }
     case BatteryCellType::MH1:
     {
         const float expected_ah = BAT_MIN_AH_MH1;
-        if (cellVoltage > 4.15)
-            return 100;
+        if (cellVoltage > 4.15f)
+            return 100.f;
         BAT_CURVE_MH1(PERCENTAGE);
         break;
     }
     case BatteryCellType::HG2:
     {
         const float expected_ah = BAT_MIN_AH_HG2;
-        if (cellVoltage > 4.15)
-            return 100;
+        if (cellVoltage > 4.15f)
+            return 100.f;
         BAT_CURVE_HG2(PERCENTAGE);
         break;
     }
     case BatteryCellType::VTC5:
     {
         const float expected_ah = BAT_MIN_AH_VTC5;
-        if (cellVoltage > 4.15)
-            return 100;
+        if (cellVoltage > 4.15f)
+            return 100.f;
         BAT_CURVE_VTC5(PERCENTAGE);
         break;
     }
     case BatteryCellType::BAK_25R:
     {
         const float expected_ah = BAT_MIN_AH_BAK_25R;
-        if(cellVoltage > 4.15){
-            return 100;
+        if(cellVoltage > 4.15f){
+            return 100.f;
         }
         BAT_CURVE_25R(PERCENTAGE);
         break;
@@ -59,8 +59,8 @@ float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
     case BatteryCellType::HE4:
     {
         const float expected_ah = BAT_MIN_AH_HE4;
-        if(cellVoltage > 4.15){
-            return 100;
+        if(cellVoltage > 4.15f){
+            return 100.f;
         }
         BAT_CURVE_HE4(PERCENTAGE);
         break;
@@ -75,21 +75,21 @@ float getRemainingWattHours()
 
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        return (target_mah / 1000.f) * 3.7 * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value() * (getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())) / 100);
+        return (target_mah / 1000.f) * 3.7f * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value() * (getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())) / 100);
     }
     else
-        return 0.;
+        return 0.f;
 }
 
 float getPercentageByWh(float wh)
 {
-    const float maxWh = (getTarget_mAh() / 1000.f) * 3.7 * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value();
+    const float maxWh = (getTarget_mAh() / 1000.f) * 3.7f * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value();
     return maxWh / wh;
 }
 
 float getBatteryWattHours()
 {
-    return (getTarget_mAh() / 1000.f) * 3.7 * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value();
+    return (getTarget_mAh() / 1000.f) * 3.7f * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value();
 }
 
 float getTarget_mAh()
