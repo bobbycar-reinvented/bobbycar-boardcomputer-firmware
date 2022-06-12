@@ -148,14 +148,30 @@ toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 
 template<typename T>
 typename std::enable_if<
-        std::is_same_v<T, sntp_sync_mode_t> ||
-        std::is_same_v<T, espchrono::DayLightSavingMode> ||
         std::is_same_v<T, OtaAnimationModes> ||
         std::is_same_v<T, LedstripAnimation> ||
         std::is_same_v<T, HandbremseMode> ||
         std::is_same_v<T, BobbyQuickActions> ||
         std::is_same_v<T, CloudMode> ||
         std::is_same_v<T, BatteryCellType>
+        , void>::type
+toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
+{
+    object["n"] = key;
+    object["v"] = std::to_underlying(value);
+    object["d"] = std::to_underlying(defaultValue);
+
+    JsonArray enumObject = object.createNestedArray("e");
+
+    iterateEnum<T>::iterate([&](T enum_value, const auto &string_value){
+        enumObject.add(toString(enum_value));
+    });
+}
+
+template<typename T>
+typename std::enable_if<
+        std::is_same_v<T, sntp_sync_mode_t> ||
+        std::is_same_v<T, espchrono::DayLightSavingMode>
         , void>::type
 toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
