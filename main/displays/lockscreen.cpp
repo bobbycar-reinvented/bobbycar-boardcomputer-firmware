@@ -121,7 +121,7 @@ LOCKSCREEN_PLUGIN_FIXES_1
                 if (!gas || !brems || *gas > 200.f || *brems > 200.f)
                     espgui::switchScreen<PotisCalibrateDisplay>(true);
                 else
-                    espgui::switchScreen<MainMenu>();
+                    espgui::popScreen();
 #ifdef LOCKSCREEN_PLUGIN_FIXES_2
 LOCKSCREEN_PLUGIN_FIXES_2
 #endif
