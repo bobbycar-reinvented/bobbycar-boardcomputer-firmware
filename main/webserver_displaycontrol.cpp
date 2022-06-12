@@ -190,7 +190,11 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                         "<a href=\"/triggerRawButton?button=8\">Button8</a> "
                         "<a href=\"/triggerRawButton?button=9\">Button9</a> "
                         "<a href=\"/triggerRawButton?button=10\">Button10</a> "
-                        "<a href=\"/triggerRawButton?button=11\">Button11</a>";
+                        "<a href=\"/triggerRawButton?button=11\">Button11</a> "
+                        "<a href=\"/triggerRawButton?button=12\">Button12</a> "
+                        "<a href=\"/triggerRawButton?button=13\">Button13</a> "
+                        "<a href=\"/triggerRawButton?button=14\">Button14</a> "
+                        "<a href=\"/triggerRawButton?button=15\">Button15</a>";
             }
 
             {
@@ -207,7 +211,11 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                                     "<a href=\"/triggerButton?button={}\">Left2</a> "
                                     "<a href=\"/triggerButton?button={}\">Right2</a> "
                                     "<a href=\"/triggerButton?button={}\">Up2</a> "
-                                    "<a href=\"/triggerButton?button={}\">Down2</a>",
+                                    "<a href=\"/triggerButton?button={}\">Down2</a>"
+                                    "<a href=\"/triggerButton?button={}\">Extra1</a>"
+                                    "<a href=\"/triggerButton?button={}\">Extra2</a>"
+                                    "<a href=\"/triggerButton?button={}\">Extra3</a>"
+                                    "<a href=\"/triggerButton?button={}\">Extra4</a>",
                                     std::to_underlying(espgui::Button::Left),
                                     std::to_underlying(espgui::Button::Right),
                                     std::to_underlying(espgui::Button::Up),
@@ -219,7 +227,11 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                                     std::to_underlying(BobbyButton::Left2),
                                     std::to_underlying(BobbyButton::Right2),
                                     std::to_underlying(BobbyButton::Up2),
-                                    std::to_underlying(BobbyButton::Down2));
+                                    std::to_underlying(BobbyButton::Down2),
+                                    std::to_underlying(BobbyButton::Extra1),
+                                    std::to_underlying(BobbyButton::Extra2),
+                                    std::to_underlying(BobbyButton::Extra3),
+                                    std::to_underlying(BobbyButton::Extra4));
             }
 
             if (auto currentDisplay = static_cast<const espgui::Display *>(espgui::currentDisplay.get()))

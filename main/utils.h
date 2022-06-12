@@ -28,6 +28,25 @@
 #include "can.h"
 #endif
 
+#ifdef FEATURE_DPAD
+#include "dpad.h"
+#endif
+#ifdef FEATURE_DPAD_3WIRESW
+#include "dpad3wire.h"
+#endif
+#ifdef FEATURE_DPAD_5WIRESW
+#include "dpad5wire.h"
+#endif
+#ifdef FEATURE_DPAD_5WIRESW_2OUT
+#include "dpad5wire_2out.h"
+#endif
+#ifdef FEATURE_DPAD_6WIRESW
+#include "dpad6wire.h"
+#endif
+#ifdef DPAD_BOARDCOMPUTER_V2
+#include "dpad_boardcomputer_v2.h"
+#endif
+
 extern bool currentlyReverseBeeping;
 extern bool reverseBeepToggle;
 extern espchrono::millis_clock::time_point lastReverseBeepToggle;
@@ -80,3 +99,42 @@ inline CRGB UINT32_TO_CRGB(uint32_t color)
 std::string get_wifi_security_string(wifi_auth_mode_t authMode);
 float float_map(float x, float in_min, float in_max, float out_min, float out_max);
 bool is_valid_timestamp(espchrono::utc_clock::time_point timestamp);
+
+namespace bobbydpad {
+#ifdef FEATURE_DPAD
+static constexpr const auto ButtonCount = dpad::BUTTON_COUNT;
+static constexpr const auto &dpad_init = dpad::init;
+static constexpr const auto &dpad_update = dpad::update;
+static constexpr const char * const dpad_name = "dpad";
+#endif
+#ifdef FEATURE_DPAD_3WIRESW
+static constexpr const auto ButtonCount = dpad3wire::BUTTON_COUNT;
+static constexpr const auto &dpad_init = dpad3wire::init;
+static constexpr const auto &dpad_update = dpad3wire::update;
+static constexpr const char * const dpad_name = "dpad3wire";
+#endif
+#ifdef FEATURE_DPAD_5WIRESW
+static constexpr const auto ButtonCount = dpad5wire::BUTTON_COUNT;
+static constexpr const auto &dpad_init = dpad5wire::init;
+static constexpr const auto &dpad_update = dpad5wire::update;
+static constexpr const char * const dpad_name = "dpad5wire";
+#endif
+#ifdef FEATURE_DPAD_5WIRESW_2OUT
+static constexpr const auto ButtonCount = dpad5wire_2out::BUTTON_COUNT;
+static constexpr const auto &dpad_init = dpad5wire_2out::init;
+static constexpr const auto &dpad_update = dpad5wire_2out::update;
+static constexpr const char * const dpad_name = "dpad5wire_2out";
+#endif
+#ifdef FEATURE_DPAD_6WIRESW
+static constexpr const auto ButtonCount = dpad6wire::BUTTON_COUNT;
+static constexpr const auto &dpad_init = dpad6wire::init;
+static constexpr const auto &dpad_update = dpad6wire::update;
+static constexpr const char * const dpad_name = "dpad6wire";
+#endif
+#ifdef DPAD_BOARDCOMPUTER_V2
+static constexpr const auto ButtonCount = dpad_boardcomputer_v2::BUTTON_COUNT;
+static constexpr const auto &dpad_init = dpad_boardcomputer_v2::init;
+static constexpr const auto &dpad_update = dpad_boardcomputer_v2::update;
+static constexpr const char * const dpad_name = "dpad_boardcomputer_v2";
+#endif
+} // namespace bobbydpad

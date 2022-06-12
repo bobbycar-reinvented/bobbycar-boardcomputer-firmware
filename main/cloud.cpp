@@ -478,6 +478,8 @@ void send_information()
     infoObject["tempBack"] = fixBoardTemp(controllers.back.feedback.boardTemp);
     infoObject["current"] = sumCurrent;
 
+    infoObject["btnCnt"] = bobbydpad::ButtonCount;
+
     std::string body;
     serializeJson(doc, body);
     doc.clear();

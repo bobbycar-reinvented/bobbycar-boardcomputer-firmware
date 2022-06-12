@@ -111,6 +111,7 @@ void update()
         debounceBack = now;
     }
 }
+constexpr const uint8_t BUTTON_COUNT = 4;
 #endif
-}
-}
+} // namespace dpad3wire
+} // namespace
