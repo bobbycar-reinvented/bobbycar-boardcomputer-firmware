@@ -53,4 +53,4 @@ export PATH=$PATH:$(pwd)/tools
 alias open-ide=open_ide
 alias switchconf=./switchconf.sh
 alias bobby-build="idf.py build"
-export PS1="\033[1;32m(bobby-sourced)\033[;0m$PS1"
+
