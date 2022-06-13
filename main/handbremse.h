@@ -2,6 +2,7 @@
 
 // system
 #include <cstdint>
+#include <optional>
 
 // 3rdparty lib includes
 #include <espchrono.h>

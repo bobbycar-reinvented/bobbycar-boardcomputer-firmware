@@ -2,6 +2,7 @@
 
 // system includes
 #include <cstdint>
+#include <optional>
 
 // local includes
 #include <bobbytypesafeenum.h>

@@ -1,5 +1,8 @@
 #pragma once
 
+// system includes
+#include <optional>
+
 // 3rdparty lib includes
 #include <textinterface.h>
 #include <espchrono.h>
