@@ -81,7 +81,7 @@ public:
         else if (!m_result && !m_result.error().empty())
         {
             tft.setTextColor(TFT_RED, TFT_BLACK);
-            BobbyErrorHandler{}.errorOccured(fmt::format("Error: {}", m_result.error()));
+            BobbyErrorHandler{}.errorOccurred(fmt::format("Error: {}", m_result.error()));
             m_result.error().clear();
         }
         else

@@ -51,7 +51,7 @@ public:
     void triggered() override
     {
         if (auto result = m_config->write(configs.nvs_handle_user, m_value); !result)
-            BobbyErrorHandler{}.errorOccured(std::move(result).error());
+            BobbyErrorHandler{}.errorOccurred(std::move(result).error());
     }
 private:
     const TEnum m_value;

@@ -56,7 +56,7 @@ void ButtonCalibrateDisplay::update()
 
         if (auto result = configs.write_config(configs.dpadMappingLeft, m_leftButton); !result)
         {
-            BobbyErrorHandler{}.errorOccured(std::move(result).error());
+            BobbyErrorHandler{}.errorOccurred(std::move(result).error());
             return;
         }
         else
@@ -66,7 +66,7 @@ void ButtonCalibrateDisplay::update()
 
         if (auto result = configs.write_config(configs.dpadMappingRight, m_rightButton); !result)
         {
-            BobbyErrorHandler{}.errorOccured(std::move(result).error());
+            BobbyErrorHandler{}.errorOccurred(std::move(result).error());
             return;
         }
         else
@@ -75,7 +75,7 @@ void ButtonCalibrateDisplay::update()
         }
         if (auto result = configs.write_config(configs.dpadMappingUp, m_upButton); !result)
         {
-            BobbyErrorHandler{}.errorOccured(std::move(result).error());
+            BobbyErrorHandler{}.errorOccurred(std::move(result).error());
             return;
         }
         else
@@ -84,7 +84,7 @@ void ButtonCalibrateDisplay::update()
         }
         if (auto result = configs.write_config(configs.dpadMappingDown, m_downButton); !result)
         {
-            BobbyErrorHandler{}.errorOccured(std::move(result).error());
+            BobbyErrorHandler{}.errorOccurred(std::move(result).error());
             return;
         }
         else

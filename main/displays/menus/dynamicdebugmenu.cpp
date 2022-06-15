@@ -101,7 +101,7 @@ class OpenPopupAction : public virtual espgui::ActionInterface
 public:
     void triggered() override
     {
-        BobbyErrorHandler{}.errorOccured("Das\nist\nein sehr langer text, der nicht in eine zeile passt");
+        BobbyErrorHandler{}.errorOccurred("Das\nist\nein sehr langer text, der nicht in eine zeile passt");
     }
 };
 } // namespace

@@ -16,7 +16,7 @@ public:
     void triggered() override
     {
         if (auto result = configs.write_config(configs.ledstrip.animationType, type); !result)
-            BobbyErrorHandler{}.errorOccured(std::move(result).error());
+            BobbyErrorHandler{}.errorOccurred(std::move(result).error());
     }
 };
 

@@ -182,7 +182,7 @@ public:
     {
         const auto result = twai_initiate_recovery();
         ESP_LOGI(TAG, "twai_initiate_recovery() returned %s", esp_err_to_name(result));
-        BobbyErrorHandler{}.errorOccured(fmt::format("twai_initiate_recovery() returned {}", esp_err_to_name(result)));
+        BobbyErrorHandler{}.errorOccurred(fmt::format("twai_initiate_recovery() returned {}", esp_err_to_name(result)));
     }
 };
 
@@ -193,7 +193,7 @@ public:
     {
         const auto result = twai_stop();
         ESP_LOGI(TAG, "twai_stop() returned %s", esp_err_to_name(result));
-        BobbyErrorHandler{}.errorOccured(fmt::format("twai_stop() returned {}", esp_err_to_name(result)));
+        BobbyErrorHandler{}.errorOccurred(fmt::format("twai_stop() returned {}", esp_err_to_name(result)));
     }
 };
 
@@ -204,7 +204,7 @@ public:
     {
         const auto result = twai_start();
         ESP_LOGI(TAG, "twai_start() returned %s", esp_err_to_name(result));
-        BobbyErrorHandler{}.errorOccured(fmt::format("twai_start() returned {}", esp_err_to_name(result)));
+        BobbyErrorHandler{}.errorOccurred(fmt::format("twai_start() returned {}", esp_err_to_name(result)));
     }
 };
 
@@ -215,7 +215,7 @@ public:
     {
         const auto result = twai_driver_uninstall();
         ESP_LOGI(TAG, "twai_driver_uninstall() returned %s", esp_err_to_name(result));
-        BobbyErrorHandler{}.errorOccured(fmt::format("twai_driver_uninstall() returned {}", esp_err_to_name(result)));
+        BobbyErrorHandler{}.errorOccurred(fmt::format("twai_driver_uninstall() returned {}", esp_err_to_name(result)));
     }
 };
 
@@ -230,7 +230,7 @@ public:
 
         const auto result = twai_driver_install(&g_config, &t_config, &f_config);
         ESP_LOGI(TAG, "twai_driver_install() returned %s", esp_err_to_name(result));
-        BobbyErrorHandler{}.errorOccured(fmt::format("twai_driver_install() returned {}", esp_err_to_name(result)));
+        BobbyErrorHandler{}.errorOccurred(fmt::format("twai_driver_install() returned {}", esp_err_to_name(result)));
     }
 };
 } // namespace

@@ -111,7 +111,7 @@ void SelectBuildMenu::update()
         check_descriptor_request();
         if (!request_failed.empty())
         {
-            BobbyErrorHandler{}.errorOccured(fmt::format("Error: {}", request_failed));
+            BobbyErrorHandler{}.errorOccurred(fmt::format("Error: {}", request_failed));
             request_failed = {};
         }
     }
