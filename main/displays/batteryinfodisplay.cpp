@@ -7,8 +7,8 @@
 // local includes
 #include "battery.h"
 #include "displays/menus/mainmenu.h"
+#include "displays/metersdisplay.h"
 #include "displays/speedinfodisplay.h"
-#include "displays/statusdisplay.h"
 
 // display with big battery and ten bars (0-100%)
 
@@ -68,7 +68,7 @@ void BatteryInfoDisplay::buttonPressed(espgui::Button button)
             espgui::pushScreen<MainMenu>();
             break;
         case Button::Up:
-            espgui::switchScreen<StatusDisplay>();
+            espgui::switchScreen<MetersDisplay>();
             break;
         case Button::Down:
             espgui::switchScreen<SpeedInfoDisplay>();

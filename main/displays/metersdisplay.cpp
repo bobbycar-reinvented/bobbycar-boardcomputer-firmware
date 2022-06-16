@@ -5,10 +5,11 @@
 #include <fmt/core.h>
 
 // local includes
-#include "globals.h"
-#include "utils.h"
+#include "displays/batteryinfodisplay.h"
 #include "displays/menus/mainmenu.h"
 #include "displays/statusdisplay.h"
+#include "globals.h"
+#include "utils.h"
 
 using namespace espgui;
 
@@ -61,8 +62,10 @@ void MetersDisplay::buttonPressed(espgui::Button button)
         pushScreen<MainMenu>();
         break;
     case Button::Up:
-    case Button::Down:
         switchScreen<StatusDisplay>();
+        break;
+    case Button::Down:
+        switchScreen<BatteryInfoDisplay>();
         break;
     default:;
     }

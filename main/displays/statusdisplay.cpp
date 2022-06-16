@@ -245,7 +245,7 @@ void StatusDisplay::buttonPressed(espgui::Button button)
     case Button::Down:
         if (simplified)
             return;
-        switchScreen<BatteryInfoDisplay>();
+        switchScreen<MetersDisplay>();
         break;
     default:;
     }
