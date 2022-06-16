@@ -19,8 +19,13 @@ public:
 
     void buttonPressed(espgui::Button button) override;
 private:
-    espgui::Label m_labelSpeed{28, 70};
+    espgui::Label m_labelSpeed{5, 5};
 
-    espgui::ReverseProgressBar m_dischargingBar{10, 155, espgui::tft.width()/2 - 10, 25, 0, 40, TFT_GREEN};
-    espgui::ProgressBar m_chargingBar{espgui::tft.width()/2, 155, espgui::tft.width()/2 - 10, 25, 0, 40, TFT_RED};
+    espgui::ReverseProgressBar m_dischargingBar{10, 110, espgui::tft.width()/2 - 10, 25, 0, 40, TFT_GREEN};
+    espgui::ProgressBar m_chargingBar{espgui::tft.width()/2, 110, espgui::tft.width()/2 - 10, 25, 0, 40, TFT_RED};
+
+    espgui::Label m_batteryPercentLabel{5, 150};
+    espgui::Label m_voltageLabel{5, 190};
+    espgui::Label m_distanceLabel{5, 230};
+    espgui::Label m_currentConsumptionLabel{5, 270};
 };
