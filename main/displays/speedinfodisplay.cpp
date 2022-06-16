@@ -18,6 +18,11 @@ void SpeedInfoDisplay::initScreen()
 
     m_dischargingBar.start();
     m_chargingBar.start();
+
+    m_batteryPercentLabel.start();
+    m_voltageLabel.start();
+    m_distanceLabel.start();
+    m_currentConsumptionLabel.start();
 }
 
 void SpeedInfoDisplay::redraw()

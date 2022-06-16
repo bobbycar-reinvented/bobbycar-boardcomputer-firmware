@@ -24,8 +24,9 @@ private:
     espgui::ReverseProgressBar m_dischargingBar{10, 110, espgui::tft.width()/2 - 10, 25, 0, 40, TFT_GREEN};
     espgui::ProgressBar m_chargingBar{espgui::tft.width()/2, 110, espgui::tft.width()/2 - 10, 25, 0, 40, TFT_RED};
 
-    espgui::Label m_batteryPercentLabel{5, 150};
-    espgui::Label m_voltageLabel{5, 190};
-    espgui::Label m_distanceLabel{5, 230};
-    espgui::Label m_currentConsumptionLabel{5, 270};
+#define START_Y 150
+    espgui::Label m_batteryPercentLabel{5, START_Y};
+    espgui::Label m_voltageLabel{5, START_Y + 29 * 1};
+    espgui::Label m_distanceLabel{5, START_Y + 29 * 2};
+    espgui::Label m_currentConsumptionLabel{5, START_Y + 29 * 3};
 };
