@@ -9,6 +9,8 @@
 #include "displays/menus/mainmenu.h"
 #include "displays/metersdisplay.h"
 #include "displays/speedinfodisplay.h"
+#include "globals.h"
+#include "newsettings.h"
 
 // display with big battery and ten bars (0-100%)
 
