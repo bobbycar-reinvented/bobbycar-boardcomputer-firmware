@@ -217,7 +217,6 @@ void updateLedStrip()
 void showAnimation()
 {
     if (configs.ledstrip.enableLedAnimation.value()
-        && !simplified
         && !(asyncOtaTaskStarted && configs.ledstrip.otaMode.value() != OtaAnimationModes::None)
         )
     {
