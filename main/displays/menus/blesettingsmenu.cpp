@@ -19,6 +19,7 @@
 namespace {
 constexpr char TEXT_BLESETTINGS[] = "BLE settings";
 constexpr char TEXT_ENABLED[] = "Enabled";
+constexpr char TEXT_FENCE_ENABLED[] = "Fence enabled";
 constexpr char TEXT_NAME[] = "Name";
 constexpr char TEXT_NAME_FORMATTED[] = "Name: &s";
 constexpr char TEXT_BACK[] = "Back";
@@ -36,6 +37,7 @@ BleSettingsMenu::BleSettingsMenu()
 {
     using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLED>, BobbyCheckbox, BleEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FENCE_ENABLED>, BobbyCheckbox, BleFenceEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, BleServerPeerDevicesText,    DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BleCharacSubscribedText,     DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NAME_FORMATTED, BluetoothNameAccessor>, PushScreenAction<ApSsidChangeScreen>>>();

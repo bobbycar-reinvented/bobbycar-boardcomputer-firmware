@@ -39,6 +39,7 @@ struct PhaseAdvMaxAccessor : public RefAccessorSaveSettings<int16_t> { int16_t &
 
 // Bluetooth Low Energy
 struct BleEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.bleSettings.bleEnabled; } };
+struct BleFenceEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.bleSettings.bleFenceEnabled; } };
 
 // Cloud
 struct CloudEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.cloudSettings.cloudEnabled; } };

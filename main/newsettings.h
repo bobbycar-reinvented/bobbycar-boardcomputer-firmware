@@ -471,6 +471,7 @@ public:
 
     struct {
         ConfigWrapperLegacy<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
+        ConfigWrapperLegacy<bool> bleFenceEnabled       {false,                                  DoReset,   {},                         "bleFenceEnabled"     };
     } bleSettings;
 
 #define NEW_SETTINGS(x) \
@@ -808,6 +809,7 @@ public:
         NEW_SETTINGS(HELPER)
 #undef HELPER
         callback(bleSettings.bleEnabled);
+        callback(bleSettings.bleFenceEnabled);
     }
 
     auto getAllConfigParams()
@@ -816,7 +818,8 @@ public:
 #define HELPER(x) std::ref<ConfigWrapperInterface>(x),
             NEW_SETTINGS(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(bleSettings.bleEnabled)
+            std::ref<ConfigWrapperInterface>(bleSettings.bleEnabled),
+            std::ref<ConfigWrapperInterface>(bleSettings.bleFenceEnabled)
         );
     }
 
