@@ -21,4 +21,9 @@ void updateDrivingMode()
 
     if (currentMode)
         currentMode->update();
+
+    fixCommonParams();
+
+    // Last, send values to motor controllers
+    sendCommands();
 }

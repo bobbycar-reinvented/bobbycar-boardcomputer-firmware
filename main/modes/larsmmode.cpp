@@ -105,8 +105,4 @@ void LarsmMode::update()
             motor.nCruiseMotTgt = 0;
         }
     }
-
-    fixCommonParams();
-
-    sendCommands();
 }

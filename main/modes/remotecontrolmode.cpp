@@ -42,10 +42,6 @@ void RemoteControlMode::update()
         controllers.back.command.left.pwm = m_remoteCommand->backLeft;
         controllers.back.command.right.pwm = m_remoteCommand->backRight;
     }
-
-    fixCommonParams();
-
-    sendCommands();
 }
 
 void RemoteControlMode::setCommand(const RemoteCommand &command)

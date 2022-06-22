@@ -76,9 +76,5 @@ void GametrakMode::update()
             motor.nCruiseMotTgt = 0;
         }
     }
-
-    fixCommonParams();
-
-    sendCommands();
 }
 #endif

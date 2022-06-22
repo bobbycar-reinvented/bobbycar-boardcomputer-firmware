@@ -14,8 +14,4 @@ void IgnoreInputMode::update()
         motor.cruiseCtrlEna = false;
         motor.nCruiseMotTgt = 0;
     }
-
-    fixCommonParams();
-
-    sendCommands();
 }
