@@ -44,13 +44,16 @@ void SpeedInfoDisplay::redraw()
     tft.setTextSize(1);
     m_batteryPercentLabel.redraw(getBatteryPercentageString());
 
-    if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage) {
+    if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
+    {
         auto watt = sumCurrent * *avgVoltage;
         auto wh_per_km = std::abs(avgSpeedKmh) > 0.1 ? watt / std::abs(avgSpeedKmh) : 0;
 
         m_voltageLabel.redraw(fmt::format("{:.1f} V", avgVoltage.value()));
         m_currentConsumptionLabel.redraw(fmt::format("{:.1f} Wh/km", wh_per_km));
-    } else {
+    }
+    else
+    {
         m_voltageLabel.redraw("No voltage");
         m_currentConsumptionLabel.redraw("No comsumption");
     }
@@ -72,21 +75,22 @@ void SpeedInfoDisplay::buttonPressed(espgui::Button button)
 {
     Base::buttonPressed(button);
 
-    switch (button) {
-        using espgui::Button;
-        case Button::Right:
-            espgui::pushScreen<MainMenu>();
-            break;
-        case Button::Up:
-            espgui::switchScreen<BatteryInfoDisplay>();
-            break;
-        case Button::Down:
+    switch (button)
+    {
+    using espgui::Button;
+    case Button::Right:
+        espgui::pushScreen<MainMenu>();
+        break;
+    case Button::Up:
+        espgui::switchScreen<BatteryInfoDisplay>();
+        break;
+    case Button::Down:
 #ifdef FEATURE_BMS
-            espgui::switchScreen<BmsDisplay>();
+        espgui::switchScreen<BmsDisplay>();
 #else
-            espgui::switchScreen<StatusDisplay>();
+        espgui::switchScreen<StatusDisplay>();
 #endif
-            break;
-        default:;
+        break;
+    default:;
     }
 }
