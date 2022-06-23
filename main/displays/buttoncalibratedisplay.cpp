@@ -9,9 +9,9 @@
 #include <screenmanager.h>
 
 // local includes
-#include "newsettings.h"
-#include "displays/menus/boardcomputerhardwaresettingsmenu.h"
 #include "bobbyerrorhandler.h"
+#include "displays/statusdisplay.h"
+#include "newsettings.h"
 
 namespace {
 constexpr const char TAG[] = "BUTTON";
@@ -59,23 +59,45 @@ void ButtonCalibrateDisplay::update()
             BobbyErrorHandler{}.errorOccured(std::move(result).error());
             return;
         }
+        else
+        {
+            ESP_LOGI(TAG, "Left button set to %d", m_leftButton);
+        }
+
         if (auto result = configs.write_config(configs.dpadMappingRight, m_rightButton); !result)
         {
             BobbyErrorHandler{}.errorOccured(std::move(result).error());
             return;
+        }
+        else
+        {
+            ESP_LOGI(TAG, "Right button set to %d", m_rightButton);
         }
         if (auto result = configs.write_config(configs.dpadMappingUp, m_upButton); !result)
         {
             BobbyErrorHandler{}.errorOccured(std::move(result).error());
             return;
         }
+        else
+        {
+            ESP_LOGI(TAG, "Up button set to %d", m_upButton);
+        }
         if (auto result = configs.write_config(configs.dpadMappingDown, m_downButton); !result)
         {
             BobbyErrorHandler{}.errorOccured(std::move(result).error());
             return;
         }
+        else
+        {
+            ESP_LOGI(TAG, "Down button set to %d", m_downButton);
+        }
 
-        espgui::popScreen();
+        if (espgui::displayStack.empty())
+        {
+            espgui::switchScreen<StatusDisplay>();
+        }
+        else
+            espgui::popScreen();
     }
 }
 
