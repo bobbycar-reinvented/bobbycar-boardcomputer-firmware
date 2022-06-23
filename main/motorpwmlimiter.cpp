@@ -9,7 +9,7 @@
 namespace motor_pwm_limiter {
 void update()
 {
-    if (!configs.bleSettings.bleFenceEnabled.value() || pServer->getPeerDevices().size())
+    if (!configs.bleSettings.bleEnabled.value() || !configs.bleSettings.bleFenceEnabled.value() || (pServer && !pServer->getPeerDevices().empty()))
     {
         soft_pwm_limiter::trigger = false;
         soft_pwm_limiter::update();
