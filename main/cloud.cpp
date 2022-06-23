@@ -8,7 +8,6 @@
 
 // 3rdparty lib includes
 #include <ArduinoJson.h>
-#include <esphttpdutils.h>
 #include <espwifistack.h>
 #include <fmt/core.h>
 #include <menudisplay.h>
@@ -876,7 +875,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
             std::string id = doc["id"];
             doc.clear();
             ESP_LOGI(TAG, "popup: %s, id: %s", text.c_str(), id.c_str());
-            BobbyErrorHandler{}.errorOccured(std::move(text));
+            BobbyErrorHandler{}.errorOccurred(std::move(text));
 
             if (id.empty())
                 return;
@@ -985,7 +984,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
         }
         else if (type == "rawBtnPrssd")
         {
-            uint8_t button;
+            int8_t button;
             JsonVariant btn_id = doc["btn"];
             if (btn_id.isNull())
             {
@@ -1009,12 +1008,11 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
                 return;
             }
 
-            espgui::currentDisplay->rawButtonPressed(button);
-            espgui::currentDisplay->rawButtonReleased(button);
+            rawButtonRequest = button;
         }
         else if (type == "btnPressed")
         {
-            espgui::Button button;
+            int8_t button;
             JsonVariant btn_id = doc["btn"];
             if (btn_id.isNull())
             {
@@ -1022,9 +1020,9 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
                 return;
             }
 
-            if (auto parsed = cpputils::fromString<std::underlying_type_t<espgui::Button>>(btn_id.as<std::string>()))
+            if (auto parsed = cpputils::fromString<decltype(button)>(btn_id.as<std::string>()))
             {
-                button = espgui::Button(*parsed);
+                button = *parsed;
             }
             else
             {
@@ -1038,8 +1036,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
                 return;
             }
 
-            espgui::currentDisplay->buttonPressed(button);
-            espgui::currentDisplay->buttonReleased(button);
+            buttonRequest = button;
         }
         else
         {

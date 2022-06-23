@@ -23,8 +23,9 @@
 
 // local includes
 #include "bobbybuttons.h"
-#include "webserver_lock.h"
+#include "globals.h"
 #include "newsettings.h"
+#include "webserver_lock.h"
 
 using esphttpdutils::HtmlTag;
 using namespace std::chrono_literals;
@@ -297,7 +298,7 @@ esp_err_t webserver_triggerRawButton_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
     }
 
-    uint8_t button;
+    int8_t button;
     constexpr const std::string_view buttonParamName{"button"};
 
     {
@@ -335,15 +336,7 @@ esp_err_t webserver_triggerRawButton_handler(httpd_req_t *req)
         }
     }
 
-    if (!espgui::currentDisplay)
-    {
-        constexpr const std::string_view msg = "espgui::currentDisplay is null";
-        ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
-    }
-
-    espgui::currentDisplay->rawButtonPressed(button);
-    espgui::currentDisplay->rawButtonReleased(button);
+    rawButtonRequest.store(button);
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
@@ -362,7 +355,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
     }
 
-    espgui::Button button;
+    int8_t button;
     constexpr const std::string_view buttonParamName{"button"};
 
     {
@@ -388,9 +381,9 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 
         std::string_view value{valueBuf};
 
-        if (auto parsed = cpputils::fromString<std::underlying_type_t<espgui::Button>>(value))
+        if (auto parsed = cpputils::fromString<int8_t>(value))
         {
-            button = espgui::Button(*parsed);
+            button = *parsed;
         }
         else
         {
@@ -400,15 +393,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
         }
     }
 
-    if (!espgui::currentDisplay)
-    {
-        constexpr const std::string_view msg = "espgui::currentDisplay is null";
-        ESP_LOGW(TAG, "%.*s", msg.size(), msg.data());
-        CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", msg);
-    }
-
-    espgui::currentDisplay->buttonPressed(button);
-    espgui::currentDisplay->buttonReleased(button);
+    buttonRequest.store(button);
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");

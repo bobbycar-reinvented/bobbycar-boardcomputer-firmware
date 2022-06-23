@@ -7,7 +7,6 @@
 // local includes
 #include "esptexthelpers.h"
 #include "globals.h"
-#include "utils.h"
 #include "icons/logo.h"
 
 using namespace espgui;
@@ -41,6 +40,21 @@ void updateDisplay()
     {
         changeScreenCallback();
         changeScreenCallback = {};
+    }
+
+    if (const int8_t rawButton = rawButtonRequest.load(); rawButton != -1 && currentDisplay)
+    {
+        currentDisplay->rawButtonPressed(rawButton);
+        currentDisplay->rawButtonReleased(rawButton);
+        rawButtonRequest = -1;
+    }
+
+    if (const int8_t button = buttonRequest.load(); button != -1 && currentDisplay)
+    {
+        const auto btn = espgui::Button(button);
+        currentDisplay->buttonPressed(btn);
+        currentDisplay->buttonReleased(btn);
+        buttonRequest = -1;
     }
 }
 
