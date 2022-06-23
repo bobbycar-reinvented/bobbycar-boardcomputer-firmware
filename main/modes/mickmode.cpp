@@ -78,8 +78,4 @@ void MickMode::update()
             motor.nCruiseMotTgt = 0;
         }
     }
-
-    fixCommonParams();
-
-    sendCommands();
 }

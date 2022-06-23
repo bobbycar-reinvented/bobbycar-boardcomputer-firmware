@@ -53,8 +53,4 @@ void TempomatMode::update()
             motor.nCruiseMotTgt = nCruiseMotTgt;
         }
     }
-
-    fixCommonParams();
-
-    sendCommands();
 }

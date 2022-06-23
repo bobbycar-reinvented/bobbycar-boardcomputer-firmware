@@ -219,9 +219,7 @@ void WheelchairMode::update()
                 controller.command.right.cruiseCtrlEna = false;
                 controller.command.right.nCruiseMotTgt = 0;
             }
-            fixCommonParams();
         }
     }
-    sendCommands();
 }
 #endif

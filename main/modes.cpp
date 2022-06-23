@@ -2,6 +2,8 @@
 
 // local includes
 #include "globals.h"
+#include "motorpwmlimiter.h"
+#include "utils.h"
 
 void initDrivingMode()
 {
@@ -21,4 +23,10 @@ void updateDrivingMode()
 
     if (currentMode)
         currentMode->update();
+
+    fixCommonParams();
+    motor_pwm_limiter::update();
+
+    // Last, send values to motor controllers
+    sendCommands();
 }
