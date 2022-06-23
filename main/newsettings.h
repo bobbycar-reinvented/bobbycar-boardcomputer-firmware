@@ -31,6 +31,7 @@
 using namespace espconfig;
 
 std::string defaultHostname();
+std::string defaultUsername();
 
 constexpr const auto INPUT_MAPPING_NONE = std::numeric_limits<uint8_t>::max();
 
@@ -224,7 +225,7 @@ class ConfigContainer
 public:
     //                                            default                                 allowReset constraints                    nvsName
     ConfigWrapperLegacy<std::optional<mac_t>> baseMacAddressOverride{std::nullopt,              DoReset,   {},                            "baseMacAddrOver"     };
-    ConfigWrapperLegacy<std::string> hostname           {defaultHostname,                       DoReset,   StringMinMaxSize<4, 32>,       "hostname"            };
+    ConfigWrapperLegacy<std::string> hostname           {defaultUsername,                       DoReset,   StringMinMaxSize<4, 32>,       "hostname"            };
     ConfigWrapperLegacy<bool>        wifiStaEnabled     {true,                                  DoReset,   {},                            "wifiStaEnabled"      };
     std::array<WiFiConfig, 10> wifi_configs {
         WiFiConfig {"wifi_ssid0", "wifi_key0", "wifi_usestatic0", "wifi_static_ip0", "wifi_stati_sub0", "wifi_stat_gate0", "wifi_usestadns0", "wifi_stat_dnsA0", "wifi_stat_dnsB0", "wifi_stat_dnsC0", "bobbycar", "12345678"},
@@ -241,7 +242,7 @@ public:
     ConfigWrapperLegacy<int8_t>      wifiStaMinRssi     {-90,                                    DoReset,   {},                           "wifiStaMinRssi"      };
 
     ConfigWrapperLegacy<bool>        wifiApEnabled      {true,                                   DoReset,   {},                           "wifiApEnabled"       };
-    ConfigWrapperLegacy<std::string> wifiApName         {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,      "wifiApName"          };
+    ConfigWrapperLegacy<std::string> wifiApName         {defaultUsername,                        DoReset,   StringMinMaxSize<4, 32>,      "wifiApName"          };
     ConfigWrapperLegacy<std::string> wifiApKey          {"Passwort_123",                         DoReset,   StringOr<StringEmpty, StringMinMaxSize<8, 64>>, "wifiApKey" };
     ConfigWrapperLegacy<wifi_stack::ip_address_t> wifiApIp{wifi_stack::ip_address_t{10, 0, 0, 1},DoReset,   {},                           "wifiApIp"            };
     ConfigWrapperLegacy<wifi_stack::ip_address_t> wifiApMask{wifi_stack::ip_address_t{255, 255, 255, 0},DoReset, {},                      "wifiApMask"          };
@@ -305,7 +306,7 @@ public:
         WirelessDoorsConfig { "door_id4", "door_token4" }
     };
 
-    ConfigWrapperLegacy<std::string> bluetoothName      {defaultHostname,                        DoReset,   StringMinMaxSize<4, 32>,    "bluetoothName"       };
+    ConfigWrapperLegacy<std::string> bluetoothName      {defaultUsername,                        DoReset,   StringMinMaxSize<4, 32>,    "bluetoothName"       };
 
     ConfigWrapperLegacy<bool>        reverseBeep        {false,                                  DoReset,   {},                         "reverseBeep"         };
     ConfigWrapperLegacy<uint8_t>     reverseBeepFreq0   {3,                                      DoReset,   {},                         "revBeepFreq0"        };
@@ -317,7 +318,7 @@ public:
     ConfigWrapperLegacy<std::string> udpCloudHost       {std::string{},                          DoReset,   {},                         "udpCloudHost"        };
 
     ConfigWrapperLegacy<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
-    ConfigWrapperLegacy<std::string> otaUsername        {std::string{},                          DoReset,   {},                         "otaUsername"         };
+    ConfigWrapperLegacy<std::string> otaUsername        {std::string{BOBBY_DEFAULT_OTA_NAME},                DoReset,   {},                         "otaUsername"         };
     ConfigWrapperLegacy<std::string> otaServerUrl       {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaServerUrl" };
     ConfigWrapperLegacy<std::string> otaServerBranch    {std::string{},                          DoReset,   {},                         "otaServerBranch"     };
     std::array<ConfiguredOtaServer, 5> otaServers {
