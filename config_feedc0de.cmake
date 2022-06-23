@@ -1,4 +1,5 @@
 set(BOBBY_APP_NAME bobbyquad_feedc0de)
+set(BOBBY_DEFAULT_OTA_NAME feedc0de)
 
 add_definitions(
   -DUSER_SETUP_LOADED=1
