@@ -11,6 +11,7 @@ VALID_CONFIGS=(
     "seatbot"
     "gernot"
     "comred_new"
+    "aveexy"
 )
 
 print_usage() {
