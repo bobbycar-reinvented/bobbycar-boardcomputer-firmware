@@ -215,6 +215,7 @@ set(headers
     modes/tempomatmode.h
     modes/wheelchairmode.h
     mosfets.h
+    motorpwmlimiter.h
     newsettings.h
     ota.h
     potis.h
@@ -226,6 +227,7 @@ set(headers
     serial_bobby.h
     settingspersister.h
     settingsutils.h
+    softpwmlimiter.h
     statistics.h
     statustexthelper.h
     taskmanager.h
@@ -458,6 +460,7 @@ set(sources
     modes/tempomatmode.cpp
     modes/wheelchairmode.cpp
     mosfets.cpp
+    motorpwmlimiter.cpp
     newsettings.cpp
     ota.cpp
     potis.cpp
@@ -469,6 +472,7 @@ set(sources
     serial_bobby.cpp
     settingspersister.cpp
     settingsutils.cpp
+    softpwmlimiter.cpp
     statistics.cpp
     statustexthelper.cpp
     taskmanager.cpp

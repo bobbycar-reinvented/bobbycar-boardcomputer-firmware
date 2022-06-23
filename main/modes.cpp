@@ -3,6 +3,7 @@
 // local includes
 #include "globals.h"
 #include "motorpwmlimiter.h"
+#include "utils.h"
 
 void initDrivingMode()
 {

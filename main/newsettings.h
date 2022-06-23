@@ -785,8 +785,8 @@ public:
     x(feature.ota.isEnabled) \
     x(feature.udpcloud.isEnabled) \
     x(feature.webserver.isEnabled) \
-    x(feature.webserver_disable_lock.isEnabled)
-    //x(bleSettings.bleEnabled)
+    x(feature.webserver_disable_lock.isEnabled) \
+    x(bleSettings.bleEnabled)
 
 #define FEATURES(x) \
     x(feature.ble) \
@@ -808,7 +808,6 @@ public:
 #define HELPER(x) callback(x);
         NEW_SETTINGS(HELPER)
 #undef HELPER
-        callback(bleSettings.bleEnabled);
         callback(bleSettings.bleFenceEnabled);
     }
 
@@ -818,7 +817,6 @@ public:
 #define HELPER(x) std::ref<ConfigWrapperInterface>(x),
             NEW_SETTINGS(HELPER)
 #undef HELPER
-            std::ref<ConfigWrapperInterface>(bleSettings.bleEnabled),
             std::ref<ConfigWrapperInterface>(bleSettings.bleFenceEnabled)
         );
     }
