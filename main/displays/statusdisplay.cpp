@@ -4,23 +4,23 @@
 #include <esp_log.h>
 
 // 3rdparty lib includes
-#include <fmt/core.h>
 #include <espwifistack.h>
+#include <fmt/core.h>
 #include <tftinstance.h>
-#include <schedulertask.h>
 
 // local includes
-#include "displays/menus/mainmenu.h"
+#include "displays/batteryinfodisplay.h"
+#include "displays/speedinfodisplay.h"
 #ifdef FEATURE_BMS
 #include "displays/bmsdisplay.h"
-#else
-#include "displays/metersdisplay.h"
 #endif
+#include "displays/menus/mainmenu.h"
+#include "displays/metersdisplay.h"
 #include "drivingstatistics.h"
-#include "udpcloud.h"
 #include "modes/defaultmode.h"
-#include "taskmanager.h"
 #include "newsettings.h"
+#include "taskmanager.h"
+#include "udpcloud.h"
 
 using namespace std::chrono_literals;
 using namespace espgui;
@@ -230,14 +230,16 @@ void StatusDisplay::buttonPressed(espgui::Button button)
     switch (button)
     {
     using espgui::Button;
-    case Button::Right: pushScreen<MainMenu>(); break;
+    case Button::Right:
+        pushScreen<MainMenu>();
+        break;
     case Button::Up:
         if (simplified)
             return;
 #ifdef FEATURE_BMS
         switchScreen<BmsDisplay>();
 #else
-        switchScreen<MetersDisplay>();
+        switchScreen<SpeedInfoDisplay>();
 #endif
         break;
     case Button::Down:
@@ -245,8 +247,7 @@ void StatusDisplay::buttonPressed(espgui::Button button)
             return;
         switchScreen<MetersDisplay>();
         break;
-    default:
-        break;
+    default:;
     }
 }
 

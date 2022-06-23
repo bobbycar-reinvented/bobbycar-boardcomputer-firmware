@@ -29,7 +29,7 @@ namespace {
     public:
         void triggered() override
         {
-            BobbyErrorHandler{}.errorOccured(TEXT_GIT_MESSAGE);
+            BobbyErrorHandler{}.errorOccurred(TEXT_GIT_MESSAGE);
         }
     };
 

@@ -5,5 +5,5 @@
 
 struct BobbyErrorHandler : public virtual espgui::ErrorHandlerInterface
 {
-    void errorOccured(std::string &&error) override;
+    void errorOccurred(std::string &&error) override;
 };

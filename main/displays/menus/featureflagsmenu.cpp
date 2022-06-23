@@ -29,7 +29,7 @@ void exitFeatureFlagsMenu()
     espgui::popScreen();
     if (isDirty)
     {
-        BobbyErrorHandler{}.errorOccured(TEXT_POPUP);
+        BobbyErrorHandler{}.errorOccurred(TEXT_POPUP);
     }
 }
 
@@ -77,7 +77,7 @@ public:
     void triggered() override
     {
         if (auto result = m_flag.isEnabled.write(configs.nvs_handle_user, !m_flag.isEnabled.value()); !result)
-            errorOccured(std::move(result).error());
+            errorOccurred(std::move(result).error());
         else
             isDirty = true;
     }

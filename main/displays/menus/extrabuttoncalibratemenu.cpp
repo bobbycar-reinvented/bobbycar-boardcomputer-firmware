@@ -129,84 +129,84 @@ void ExtraButtonCalibrateMenu::rawButtonPressed(uint8_t button)
         case WaitingUp2:
             if (auto result = configs.write_config(configs.dpadMappingUp2, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingDown2:
             if (auto result = configs.write_config(configs.dpadMappingDown2, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingLeft2:
             if (auto result = configs.write_config(configs.dpadMappingLeft2, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingRight2:
             if (auto result = configs.write_config(configs.dpadMappingRight2, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingProfile0:
             if (auto result = configs.write_config(configs.dpadMappingProfile0, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingProfile1:
             if (auto result = configs.write_config(configs.dpadMappingProfile1, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingProfile2:
             if (auto result = configs.write_config(configs.dpadMappingProfile2, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingProfile3:
             if (auto result = configs.write_config(configs.dpadMappingProfile3, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingExtra1:
             if (auto result = configs.write_config(configs.dpadMappingExtra1, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingExtra2:
             if (auto result = configs.write_config(configs.dpadMappingExtra2, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingExtra3:
             if (auto result = configs.write_config(configs.dpadMappingExtra3, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;
         case WaitingExtra4:
             if (auto result = configs.write_config(configs.dpadMappingExtra4, button); !result)
             {
-                BobbyErrorHandler{}.errorOccured(std::move(result).error());
+                BobbyErrorHandler{}.errorOccurred(std::move(result).error());
                 break;
             }
             break;

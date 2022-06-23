@@ -6,7 +6,7 @@
 // local includes
 #include "displays/bobbypopupdisplay.h"
 
-void BobbyErrorHandler::errorOccured(std::string &&error)
+void BobbyErrorHandler::errorOccurred(std::string &&error)
 {
     auto newDisplay = std::make_unique<BobbyPopupDisplay>(std::move(error), std::move(espgui::currentDisplay));
     newDisplay->initOverlay();

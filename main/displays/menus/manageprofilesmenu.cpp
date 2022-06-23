@@ -40,7 +40,7 @@ public:
 
             if (!settingsPersister.openProfile(m_profileIndex)) // just switch nvs namespace
             {
-                BobbyErrorHandler{}.errorOccured(fmt::format("openProfile({}) failed", m_profileIndex));
+                BobbyErrorHandler{}.errorOccurred(fmt::format("openProfile({}) failed", m_profileIndex));
                 return;
             }
             saveProfileSettings();
@@ -60,7 +60,9 @@ public:
         }
         else if (m_menu.m_firstIndex != -1 && m_menu.m_firstIndex != m_profileIndex)
         {
-            BobbyErrorHandler{}.errorOccured(fmt::format("Press CONFIRM to COPY from Profile {} to Profile {}", m_menu.m_firstIndex, m_profileIndex));
+            BobbyErrorHandler{}.errorOccurred(
+                    fmt::format("Press CONFIRM to COPY from Profile {} to Profile {}", m_menu.m_firstIndex,
+                                m_profileIndex));
             m_mode = CONFIRM_COPY;
         }
     }
@@ -100,7 +102,9 @@ public:
         }
         else if (m_menu.m_firstIndex != -1 && m_menu.m_firstIndex != m_profileIndex)
         {
-            BobbyErrorHandler{}.errorOccured(fmt::format("Press CONFIRM to SWAP Profile {} with Profile {}", m_menu.m_firstIndex, m_profileIndex));
+            BobbyErrorHandler{}.errorOccurred(
+                    fmt::format("Press CONFIRM to SWAP Profile {} with Profile {}", m_menu.m_firstIndex,
+                                m_profileIndex));
             m_mode = CONFIRM_SWAP;
         }
     }
@@ -125,7 +129,7 @@ public:
         {
             m_menu.lock();
             m_mode = CONFIRM_CLEAR;
-            BobbyErrorHandler{}.errorOccured("Press CONFIRM to reset Profile or BACK to cancel.");
+            BobbyErrorHandler{}.errorOccurred("Press CONFIRM to reset Profile or BACK to cancel.");
         }
     }
 
