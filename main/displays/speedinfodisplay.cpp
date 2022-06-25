@@ -36,10 +36,9 @@ void SpeedInfoDisplay::redraw()
 
     tft.setTextSize(4);
 
-    m_labelSpeed.redraw(fmt::format(
-            std::abs(avgSpeedKmh) < 10 ? "{:.2f}" :
-            (std::abs(avgSpeedKmh) < 100 ? "{:.1f}" : "{:.0f}"),
-            avgSpeedKmh));
+    m_labelSpeed.redraw(
+            std::abs(avgSpeedKmh) < 10 ? fmt::format("{:.2f}", avgSpeedKmh) :
+            (std::abs(avgSpeedKmh) < 100 ? fmt::format("{:.1f}", avgSpeedKmh) : fmt::format("{:.0f}", avgSpeedKmh)));
 
     tft.setTextSize(1);
     m_batteryPercentLabel.redraw(getBatteryPercentageString());
@@ -58,12 +57,9 @@ void SpeedInfoDisplay::redraw()
         m_currentConsumptionLabel.redraw("No comsumption");
     }
 
-    m_distanceLabel.redraw(fmt::format(
-            drivingStatistics.meters_driven > 1000 ? "{:.3f} km" :
-            (drivingStatistics.meters_driven > 100 ? "{:.1f} m" : "{:.2f} m"),
-            drivingStatistics.meters_driven > 1000 ?
-                drivingStatistics.meters_driven / 1000 :
-                drivingStatistics.meters_driven));
+    m_distanceLabel.redraw(
+            drivingStatistics.meters_driven > 1000 ? fmt::format("{:.3f} km", drivingStatistics.meters_driven / 1000) :
+            (drivingStatistics.meters_driven > 100 ? fmt::format("{:.1f} m", drivingStatistics.meters_driven) : fmt::format("{:.2f} m", drivingStatistics.meters_driven)));
 
     tft.setTextSize(1);
 

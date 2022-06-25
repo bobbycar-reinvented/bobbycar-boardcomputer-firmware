@@ -137,7 +137,7 @@ void SelectBuildMenu::buildMenuFromJson()
     {
         auto &menuitem = constructMenuItem<VersionMenuItem<TFT_WHITE>>();
         menuitem.setHash(hash);
-        menuitem.setUrl(fmt::format(url_for_hashes, hash));
+        menuitem.setUrl(fmt::format(fmt::runtime(url_for_hashes), hash));
     }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
