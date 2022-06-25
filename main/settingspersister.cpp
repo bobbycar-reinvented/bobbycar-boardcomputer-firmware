@@ -13,7 +13,6 @@
 #include <fmt/core.h>
 #include <cpputils.h>
 #include <espchrono.h>
-#include <futurecpp.h>
 
 // local includes
 #include "profilesettings.h"

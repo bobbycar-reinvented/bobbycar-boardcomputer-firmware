@@ -12,7 +12,6 @@
 
 // 3rdparty lib includes
 #include <espchrono.h>
-#include <futurecpp.h>
 #include <cpputils.h>
 
 // local includes

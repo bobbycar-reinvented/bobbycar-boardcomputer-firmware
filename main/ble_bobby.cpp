@@ -6,7 +6,6 @@
 // 3rdparty lib includes
 #include <ArduinoJson.h>
 #include <wifi_bobbycar.h>
-#include <futurecpp.h>
 
 // local includes
 #include "ledstrip.h"

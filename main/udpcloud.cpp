@@ -203,7 +203,7 @@ std::string buildUdpCloudString()
     const auto addController = [&](const Controller &controller, const bool isBack) {
         if (controller.feedbackValid)
         {
-            buf += fmt::format("\"{}\":{", !isBack ? "f":"b");
+            buf += fmt::format("\"{}\":{{", !isBack ? "f":"b");
             // Voltage
             if (controller.getCalibratedVoltage())
                 buf += fmt::format("\"V\":{},", controller.getCalibratedVoltage());

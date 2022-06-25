@@ -155,7 +155,7 @@ namespace buildserver {
 
     std::string get_hash_url(std::string hash)
     {
-        return fmt::format(url_for_hashes, hash);
+        return fmt::format(fmt::runtime(url_for_hashes), hash);
     }
 
     std::string get_latest_url()
