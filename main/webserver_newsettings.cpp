@@ -52,7 +52,6 @@ typename std::enable_if<
     !std::is_same_v<T, OtaAnimationModes> &&
     !std::is_same_v<T, LedstripAnimation> &&
     !std::is_same_v<T, HandbremseMode> &&
-    !std::is_same_v<T, CloudMode> &&
     !std::is_same_v<T, BatteryCellType>
 , void>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
@@ -206,7 +205,6 @@ typename std::enable_if<
     std::is_same_v<T, OtaAnimationModes> ||
     std::is_same_v<T, LedstripAnimation> ||
     std::is_same_v<T, BatteryCellType> ||
-    std::is_same_v<T, CloudMode> ||
     std::is_same_v<T, HandbremseMode>
 , void>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
@@ -355,7 +353,6 @@ typename std::enable_if<
     !std::is_same_v<T, OtaAnimationModes> &&
     !std::is_same_v<T, LedstripAnimation> &&
     !std::is_same_v<T, HandbremseMode> &&
-    !std::is_same_v<T, CloudMode> &&
     !std::is_same_v<T, BobbyQuickActions>
 , tl::expected<void, std::string>>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
@@ -443,8 +440,7 @@ typename std::enable_if<
     std::is_same_v<T, OtaAnimationModes> ||
     std::is_same_v<T, LedstripAnimation> ||
     std::is_same_v<T, HandbremseMode> ||
-    std::is_same_v<T, BobbyQuickActions> ||
-    std::is_same_v<T, CloudMode>
+    std::is_same_v<T, BobbyQuickActions>
 , tl::expected<void, std::string>>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
 {

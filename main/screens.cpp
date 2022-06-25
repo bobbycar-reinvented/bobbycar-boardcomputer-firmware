@@ -56,6 +56,12 @@ void updateDisplay()
         currentDisplay->buttonReleased(btn);
         buttonRequest = -1;
     }
+
+    if (initScreenRequest && currentDisplay)
+    {
+        currentDisplay->initScreen();
+        initScreenRequest = false;
+    }
 }
 
 void redrawDisplay()

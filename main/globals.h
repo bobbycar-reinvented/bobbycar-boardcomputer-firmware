@@ -69,6 +69,7 @@ extern SettingsPersister settingsPersister;
 
 extern std::atomic<int8_t> rawButtonRequest;
 extern std::atomic<int8_t> buttonRequest;
+extern bool initScreenRequest;
 
 class Controllers : public std::array<Controller, 2>
 {

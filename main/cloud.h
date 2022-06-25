@@ -16,13 +16,6 @@ extern espchrono::millis_clock::time_point lastCreateTry;
 extern espchrono::millis_clock::time_point lastStartTry;
 extern std::string cloudBuffer;
 
-#define CloudModeValues(x) \
-    x(INACTIVE) \
-    x(STATISTICS) \
-    x(REMOTE_DISPLAY) \
-    x(STATISTICS_AND_REMOTE_DISPLAY)
-DECLARE_BOBBYTYPESAFE_ENUM(CloudMode, : uint8_t, CloudModeValues)
-
 void createCloud();
 void destroyCloud();
 void startCloud();

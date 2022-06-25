@@ -40,6 +40,7 @@ std::optional<espchrono::millis_clock::time_point> lastHeartbeat;
 std::optional<espchrono::millis_clock::time_point> lastOtaStatus;
 
 bool hasAnnouncedItself{};
+espchrono::millis_clock::time_point isSendingNvs{};
 
 constexpr const char * const TAG = "BOBBYCLOUD";
 constexpr const auto json_document_size = 1024;
@@ -69,7 +70,6 @@ typename std::enable_if<
         !std::is_same_v<T, OtaAnimationModes> &&
         !std::is_same_v<T, LedstripAnimation> &&
         !std::is_same_v<T, HandbremseMode> &&
-        !std::is_same_v<T, CloudMode> &&
         !std::is_same_v<T, BobbyQuickActions> &&
         !std::is_same_v<T, BatteryCellType>
         , void>::type
@@ -151,7 +151,6 @@ typename std::enable_if<
         std::is_same_v<T, LedstripAnimation> ||
         std::is_same_v<T, HandbremseMode> ||
         std::is_same_v<T, BobbyQuickActions> ||
-        std::is_same_v<T, CloudMode> ||
         std::is_same_v<T, BatteryCellType>
         , void>::type
 toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
@@ -195,7 +194,6 @@ typename std::enable_if<
         !std::is_same_v<T, OtaAnimationModes> &&
         !std::is_same_v<T, LedstripAnimation> &&
         !std::is_same_v<T, HandbremseMode> &&
-        !std::is_same_v<T, CloudMode> &&
         !std::is_same_v<T, BobbyQuickActions> &&
         !std::is_same_v<T, BatteryCellType>
         , tl::expected<void, std::string>>::type
@@ -285,7 +283,6 @@ typename std::enable_if<
         std::is_same_v<T, LedstripAnimation> ||
         std::is_same_v<T, HandbremseMode> ||
         std::is_same_v<T, BobbyQuickActions> ||
-        std::is_same_v<T, CloudMode> ||
         std::is_same_v<T, BatteryCellType>
         , tl::expected<void, std::string>>::type
 set_config(ConfigWrapper<T> &config, std::string_view newValue)
@@ -559,7 +556,7 @@ void cloudHeartbeat()
 void initCloud()
 {
     if (configs.cloudSettings.cloudEnabled.value() &&
-        !configs.cloudUrl.value().empty() && configs.cloudSettings.cloudMode.value() != CloudMode::INACTIVE && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
+        !configs.cloudUrl.value().empty() && wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
     {
         createCloud();
         if (!cloudClient)
@@ -576,7 +573,7 @@ void updateCloud()
 
     const auto now = espchrono::millis_clock::now();
 
-    if (configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS || configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS_AND_REMOTE_DISPLAY)
+    if (configs.cloudSettings.sendStatistic.value())
     {
         if (!lastCloudCollect || now - *lastCloudCollect >= std::chrono::milliseconds{
                 configs.boardcomputerHardware.timersSettings.cloudCollectRate.value()}) {
@@ -629,7 +626,7 @@ void cloudCollect()
         return;
     }
 
-    if (configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS || configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS_AND_REMOTE_DISPLAY)
+    if (configs.cloudSettings.sendStatistic.value())
     {
         if (cloudBuffer.empty())
             cloudBuffer = '[';
@@ -708,71 +705,68 @@ void cloudCollect()
 
 void cloudSend()
 {
-    if (configs.cloudSettings.cloudEnabled.value() &&
-        !configs.cloudUrl.value().empty() && (configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS || configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS_AND_REMOTE_DISPLAY) || ((configs.cloudSettings.cloudMode.value() == CloudMode::REMOTE_DISPLAY || configs.cloudSettings.cloudMode.value() == CloudMode::STATISTICS_AND_REMOTE_DISPLAY) && !hasAnnouncedItself))
+    if (!configs.cloudSettings.cloudEnabled.value())
     {
-        if (!cloudClient)
-        {
-            if (espchrono::ago(lastCreateTry) < 10s)
-                return;
-            createCloud();
-            return;
-        }
-
-        if (!cloudStarted)
-        {
-            if (espchrono::ago(lastStartTry) < 10s)
-                return;
-
-            if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::CONNECTED)
-                return;
-
-            startCloud();
-        }
-
-        if (!cloudStarted)
-            return;
-
-        if (!cloudClient.is_connected())
-            return;
-
-        if (cloudBuffer.empty() && hasAnnouncedItself)
-            return;
-
-        cloudBuffer += ']';
-
-        const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
-
-        if (!hasAnnouncedItself && configs.cloudSettings.cloudEnabled.value())
-        {
-            std::string helloWorld = getLoginMessage();
-            ESP_LOGW(TAG, "=====> %s", helloWorld.c_str());
-            const auto written_helloWorld = cloudClient.send_text(helloWorld, timeout);
-            if (written_helloWorld == helloWorld.size())
-                hasAnnouncedItself = true;
-        }
-
-        const auto written = cloudClient.send_text(cloudBuffer, timeout);
-
-        if (written < 0)
-        {
-            ESP_LOGE("BOBBY", "cloudClient.send_text() failed with %i", written);
-        }
-        else if (written != cloudBuffer.size())
-        {
-            ESP_LOGE("BOBBY", "websocket sent size mismatch, sent=%i, expected=%i", written, cloudBuffer.size());
-        }
-
-        cloudBuffer.clear();
+        if (cloudClient)
+            destroyCloud();
+        return;
     }
-    else if (cloudClient && !configs.cloudSettings.cloudEnabled.value())
-    {
-        destroyCloud();
-    }
-    else if(!cloudClient || !cloudStarted)
+
+    if (!cloudClient)
     {
         initCloud();
+        return;
     }
+
+    if (configs.cloudUrl.value().empty())
+        return;
+
+    if (!configs.cloudSettings.sendStatistic.value() && !configs.cloudSettings.sendScreen.value())
+        return;
+
+    if (!cloudStarted)
+    {
+        if (espchrono::ago(lastStartTry) < 10s)
+            return;
+
+        if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::CONNECTED)
+            return;
+
+        startCloud();
+        return;
+    }
+
+    if (!cloudClient.is_connected())
+        return;
+
+    if (cloudBuffer.empty() && hasAnnouncedItself)
+        return;
+
+    cloudBuffer += ']';
+
+    const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
+
+    if (!hasAnnouncedItself && configs.cloudSettings.cloudEnabled.value())
+    {
+        std::string helloWorld = getLoginMessage();
+        ESP_LOGW(TAG, "=====> %s", helloWorld.c_str());
+        const auto written_helloWorld = cloudClient.send_text(helloWorld, timeout);
+        if (written_helloWorld == helloWorld.size())
+            hasAnnouncedItself = true;
+    }
+
+    const auto written = cloudClient.send_text(cloudBuffer, timeout);
+
+    if (written < 0)
+    {
+        ESP_LOGE("BOBBY", "cloudClient.send_text() failed with %i", written);
+    }
+    else if (written != cloudBuffer.size())
+    {
+        ESP_LOGE("BOBBY", "websocket sent size mismatch, sent=%i, expected=%i", written, cloudBuffer.size());
+    }
+
+    cloudBuffer.clear();
 }
 
 std::string getLoginMessage()
@@ -785,56 +779,37 @@ std::string getLoginMessage()
 
 void cloudSendDisplay(std::string_view data)
 {
-    if (configs.cloudSettings.cloudEnabled.value() &&
-        !configs.cloudUrl.value().empty() && configs.cloudSettings.cloudMode.value() != CloudMode::INACTIVE)
+    static std::string screenBuffer;
+    static uint64_t msg_id{0};
+
+    if (!cloudStarted || !cloudClient || !cloudClient.is_connected() || espchrono::ago(isSendingNvs) < 4s)
+        return;
+
+    /* custom menu display handling
+    if (!espgui::currentDisplay)
+        return;
+
+    if (const auto &menuDisplay = espgui::currentDisplay->asMenuDisplay(); menuDisplay)
     {
-        if (!cloudClient)
-        {
-            if (espchrono::ago(lastCreateTry) < 10s)
-                return;
-            createCloud();
-        }
-        if (!cloudClient)
-            return;
-
-        if (!cloudStarted)
-        {
-            if (espchrono::ago(lastStartTry) < 10s)
-                return;
-
-            if (wifi_stack::get_sta_status() != wifi_stack::WiFiStaStatus::CONNECTED)
-                return;
-
-            startCloud();
-        }
-        if (!cloudStarted)
-            return;
-
-        if (!cloudClient.is_connected())
-            return;
-
-        auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
-        int written;
-
-        if (hasAnnouncedItself)
-            written = cloudClient.send_text(data, timeout);
-        else
-            return;
-        ESP_LOGW(TAG, "%s", fmt::format("{}", data).c_str());
-
-        if (written < 0)
-        {
-            ESP_LOGE("BOBBY", "cloudClient.send_text() failed with %i", written);
-            hasAnnouncedItself = false;
-        }
-        else if (written != data.size())
-        {
-            ESP_LOGE("BOBBY", "websocket sent size mismatch, sent=%i, expected=%i", written, data.size());
-        }
+        // custom handle menu display
+        return;
     }
-    else if (cloudClient && !configs.cloudSettings.cloudEnabled.value())
+     */
+
+    // fill 1024 bytes with the data
+    screenBuffer += std::string{data} + '\u0000';
+
+    if (screenBuffer.length() > 1024)
     {
-        destroyCloud();
+        // send data
+        const auto timeout = std::chrono::ceil<espcpputils::ticks>(
+                espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
+        cloudClient.send_text(screenBuffer, timeout);
+
+        // clear buffer
+        screenBuffer.clear();
+        ESP_LOGI(TAG, "sent screen data %lu", msg_id);
+        msg_id++;
     }
 }
 
@@ -896,6 +871,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
             }
             const auto id = _id.as<uint32_t>();
             doc.clear();
+            isSendingNvs = espchrono::millis_clock::now();
             send_config(id);
             return;
         }
@@ -1037,6 +1013,10 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
             }
 
             buttonRequest = button;
+        }
+        else if (type == "initScreen")
+        {
+            initScreenRequest = true;
         }
         else
         {
