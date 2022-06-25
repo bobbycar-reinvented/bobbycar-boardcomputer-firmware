@@ -274,7 +274,7 @@ public:
     ConfigWrapperLegacy<int16_t>     gasMax             {4095,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMax"              };
     ConfigWrapperLegacy<int16_t>     gasMitte           {2048,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMiddle"           };
     ConfigWrapperLegacy<int16_t>     bremsMin           {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMin"            };
-    ConfigWrapperLegacy<int16_t>     bremsMax           {4096,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMax"            };
+    ConfigWrapperLegacy<int16_t>     bremsMax           {4095,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMax"            };
     ConfigWrapperLegacy<int16_t>     bremsMitte         {2048,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMiddle"         };
     ConfigWrapperLegacy<uint16_t>    deadband           {20,                                     DoReset,  MinMaxValue<uint16_t, 0, 4095>,"deadband"            };
 
