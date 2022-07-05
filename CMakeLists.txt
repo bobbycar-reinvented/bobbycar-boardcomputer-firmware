@@ -28,6 +28,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_definitions(-DASIO_DISABLE_CONCEPTS=1)
 
 set(EXTRA_COMPONENT_DIRS
+    esp_boost
     esp-protocols/components
 )
 
