@@ -154,7 +154,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [feedc0de, comred_new, peter, mick, nofeatures, seatbot]
+        node: [feedc0de, feedc0de_new, comred_new, peter, mick, nofeatures, seatbot]
     name: ${{ matrix.node }}
     needs:
       - checkout
