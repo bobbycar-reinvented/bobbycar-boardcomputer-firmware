@@ -13,7 +13,7 @@ RemoteControlMode remoteControlMode;
 
 void RemoteControlMode::update()
 {
-    auto pair = split(profileSettings.defaultMode.modelMode);
+    auto pair = split(profileSettings.remoteControlMode.modelMode);
     if (!m_remoteCommand || espchrono::ago(m_timestamp) > 500ms)
     {
         start();
