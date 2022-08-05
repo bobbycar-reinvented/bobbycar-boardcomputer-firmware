@@ -296,7 +296,8 @@ void sendCanCommands()
         const auto status = twai_get_status_info(&status_info);
         const auto timestamp_after = espchrono::millis_clock::now();
 
-        if ((result == ESP_ERR_TIMEOUT || status_info.state == TWAI_STATE_BUS_OFF) || (status == ESP_OK && status_info.bus_error_count > can_sequential_bus_errors))
+        if ((result == ESP_ERR_TIMEOUT || status_info.state == TWAI_STATE_BUS_OFF) ||
+            (status == ESP_OK && status_info.bus_error_count > can_sequential_bus_errors))
         {
             ++can_sequential_error_cnt;
             ++can_total_error_cnt;

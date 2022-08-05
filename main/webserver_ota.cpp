@@ -12,7 +12,7 @@
 #include <esphttpdutils.h>
 #include <lockhelper.h>
 #include <tickchrono.h>
-#include <espstrutils.h>
+#include <strutils.h>
 
 // local includes
 #include "ota.h"
@@ -109,7 +109,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
             body += fmt::format("\"cur_secver\":\"{}\",", app_desc->secure_version);
             body += fmt::format("\"cur_ts\":\"{}\",", app_desc->time);
             body += fmt::format("\"cur_idf\":\"{}\",", app_desc->idf_ver);
-            body += fmt::format("\"cur_sha\":\"{}\",", espcpputils::toHexString({app_desc->app_elf_sha256, 8}));
+            body += fmt::format("\"cur_sha\":\"{}\",", cpputils::toHexString({app_desc->app_elf_sha256, 8}));
         }
         else
         {
@@ -135,7 +135,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                 body += fmt::format("\"new_secver\":\"{}\",", appDesc->secure_version);
                 body += fmt::format("\"new_ts\":\"{}\",", appDesc->time);
                 body += fmt::format("\"new_idf\":\"{}\",", appDesc->idf_ver);
-                body += fmt::format("\"new_sha\":\"{}\",", espcpputils::toHexString({appDesc->app_elf_sha256, 8}));
+                body += fmt::format("\"new_sha\":\"{}\",", cpputils::toHexString({appDesc->app_elf_sha256, 8}));
 
             }
             else
@@ -231,7 +231,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                 {
                     HtmlTag trTag{"tr", body};
                     { HtmlTag tdTag{"td", body}; body += "Current sha256"; }
-                    { HtmlTag tdTag{"td", body}; body += esphttpdutils::htmlentities(espcpputils::toHexString({app_desc->app_elf_sha256, 8})); }
+                    { HtmlTag tdTag{"td", body}; body += esphttpdutils::htmlentities(cpputils::toHexString({app_desc->app_elf_sha256, 8})); }
                 }
             }
             else
@@ -307,7 +307,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                     {
                         HtmlTag trTag{"tr", body};
                         { HtmlTag tdTag{"td", body}; body += "New sha256"; }
-                        { HtmlTag tdTag{"td", body}; body += esphttpdutils::htmlentities(espcpputils::toHexString({appDesc->app_elf_sha256, 8})); }
+                        { HtmlTag tdTag{"td", body}; body += esphttpdutils::htmlentities(cpputils::toHexString({appDesc->app_elf_sha256, 8})); }
                     }
                 }
             }

@@ -49,9 +49,8 @@ public:
     {
         std::string_view name = m_flag.isEnabled.nvsName();
         constexpr const std::string_view prefix = "f_";
-        if (cpputils::stringStartsWith(name, prefix)) {
+        if (name.ends_with(prefix))
             name.remove_prefix(prefix.size());
-        }
         std::string return_name = std::string{name};
         return_name += m_flag.isBeta() ? " (beta)" : "";
         return return_name;
