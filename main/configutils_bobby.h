@@ -6,12 +6,13 @@
 
 // local includes
 #include "battery.h"
-#include "ledstrip.h"
-#include "handbremse.h"
 #include "bobbyquickactions.h"
+#include "cloud.h"
+#include "handbremse.h"
+#include "ledstrip.h"
 
-IMPLEMENT_NVS_GET_SET_ENUM(OtaAnimationModes)
+IMPLEMENT_NVS_GET_SET_ENUM(BatteryCellType)
+IMPLEMENT_NVS_GET_SET_ENUM(BobbyQuickActions)
 IMPLEMENT_NVS_GET_SET_ENUM(HandbremseMode)
 IMPLEMENT_NVS_GET_SET_ENUM(LedstripAnimation)
-IMPLEMENT_NVS_GET_SET_ENUM(BobbyQuickActions)
-IMPLEMENT_NVS_GET_SET_ENUM(BatteryCellType)
+IMPLEMENT_NVS_GET_SET_ENUM(OtaAnimationModes)

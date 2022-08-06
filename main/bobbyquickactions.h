@@ -2,9 +2,9 @@
 
 // 3rdparty lib includes
 #include <buttonsinterface.h>
-#include <cpptypesafeenum.h>
 
 // local includes
+#include "bobbytypesafeenum.h"
 #include "bobbybuttons.h"
 
 #define BobbyQuickActionsValues(x) \
@@ -18,7 +18,7 @@
     x(HUPE) \
     x(COMPRESSOR_TOGGLE)
 
-DECLARE_TYPESAFE_ENUM(BobbyQuickActions, : uint8_t, BobbyQuickActionsValues)
+DECLARE_BOBBYTYPESAFE_ENUM(BobbyQuickActions, : uint8_t, BobbyQuickActionsValues)
 
 namespace quickactions {
 

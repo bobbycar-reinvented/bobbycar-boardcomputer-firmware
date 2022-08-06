@@ -265,6 +265,9 @@ void sendCanCommands()
     static uint32_t can_sequential_error_cnt = 0;
     static uint32_t can_sequential_bus_errors = 0;
 
+    if (!configs.controllerHardware.sendFrontCanCmd.value() && !configs.controllerHardware.sendBackCanCmd.value())
+        return;
+
     constexpr auto send = [](uint32_t addr, auto value){
         twai_message_t message;
         twai_status_info_t status_info;

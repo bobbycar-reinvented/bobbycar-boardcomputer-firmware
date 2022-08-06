@@ -21,7 +21,8 @@ enum BobbyButton
     Extra3,
     Extra4,
     Confirm = espgui::Button::Right,
-    Back = espgui::Button::Left
+    Back = espgui::Button::Left,
+    ButtonMax = Back
 };
 
 [[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button);

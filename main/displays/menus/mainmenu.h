@@ -22,7 +22,7 @@ namespace {
 
 class MainMenu : public bobbygui::MenuDisplayWithTime
 {
-    using Base = espgui::MenuDisplay;
+    using Base = bobbygui::MenuDisplayWithTime;
 
 public:
     MainMenu();

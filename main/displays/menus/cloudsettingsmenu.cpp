@@ -10,17 +10,19 @@
 #include "icons/back.h"
 
 // local includes
-#include "displays/bobbychangevaluedisplay.h"
-#include "cloudtexthelpers.h"
 #include "accessors/settingsaccessors.h"
-#include "cloud.h"
-#include "displays/menus/settingsmenu.h"
 #include "bobbycheckbox.h"
+#include "cloud.h"
+#include "cloudtexthelpers.h"
+#include "displays/bobbychangevaluedisplay.h"
+#include "displays/menus/settingsmenu.h"
+#include "displays/menus/typesafeenumchangemenu.h"
 
 namespace {
 constexpr char TEXT_CLOUDSETTINGS[] = "Cloud settings";
 constexpr char TEXT_CLOUDENABLED[] = "Cloud enabled";
 constexpr char TEXT_CLOUDTRANSMITTIMEOUT[] = "Transmit timeout";
+constexpr char TEXT_SENDSTATISTICS[] = "Send Statistics";
 constexpr char TEXT_CLOUDCOLLECTRATE[] = "Cloud collect rate";
 constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
 constexpr char TEXT_BACK[] = "Back";
@@ -65,13 +67,14 @@ CloudSettingsMenu::CloudSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDENABLED>,         BobbyCheckbox, CloudEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDTRANSMITTIMEOUT>, PushScreenAction<CloudTransmitTimeoutChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SENDSTATISTICS>,       BobbyCheckbox, CloudSendStatisticsAccessor>>();
     constructMenuItem<makeComponent<MenuItem, CloudCreatedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudStartedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudConnectedText,                    DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudBufferLengthText,                 DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDCOLLECTRATE>,     PushScreenAction<CloudCollectRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,        PushScreenAction<CloudSendRateChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 
 std::string CloudSettingsMenu::text() const
