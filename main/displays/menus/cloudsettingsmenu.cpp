@@ -23,7 +23,6 @@ constexpr char TEXT_CLOUDSETTINGS[] = "Cloud settings";
 constexpr char TEXT_CLOUDENABLED[] = "Cloud enabled";
 constexpr char TEXT_CLOUDTRANSMITTIMEOUT[] = "Transmit timeout";
 constexpr char TEXT_SENDSTATISTICS[] = "Send Statistics";
-constexpr char TEXT_SENDSCREEN[] = "Send Screen";
 constexpr char TEXT_CLOUDCOLLECTRATE[] = "Cloud collect rate";
 constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
 constexpr char TEXT_BACK[] = "Back";
@@ -69,7 +68,6 @@ CloudSettingsMenu::CloudSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDENABLED>,         BobbyCheckbox, CloudEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDTRANSMITTIMEOUT>, PushScreenAction<CloudTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SENDSTATISTICS>,       BobbyCheckbox, CloudSendStatisticsAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SENDSCREEN>,           BobbyCheckbox, CloudSendScreenAccessor>>();
     constructMenuItem<makeComponent<MenuItem, CloudCreatedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudStartedText,                      DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CloudConnectedText,                    DisabledColor, DummyAction>>();

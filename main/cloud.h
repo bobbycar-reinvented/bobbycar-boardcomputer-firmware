@@ -24,6 +24,5 @@ void initCloud();
 void updateCloud();
 void cloudCollect();
 void cloudSend();
-void cloudSendDisplay(std::string_view data);
 
 std::string getLoginMessage();

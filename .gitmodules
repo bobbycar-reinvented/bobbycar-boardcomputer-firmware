@@ -66,4 +66,4 @@
 	url = ../../0xFEEDC0DE64/esp-protocols.git
 [submodule "components/TFT_eSPI"]
 	path = components/TFT_eSPI
-	url = ../../bobbycar-graz/TFT_eSPI.git
+	url = ../../0xFEEDC0DE64/TFT_eSPI.git

@@ -372,7 +372,6 @@ public:
         ConfigWrapperLegacy<int16_t> cloudTransmitTimeout{10,                                    DoReset,   {},                         "clodTransmTmout"     };
         ConfigWrapperLegacy<std::string> cloudKey       {std::string{},                          DoReset,   {},                         "cloudKey"            };
         ConfigWrapperLegacy<bool> sendStatistic         {false,                                  DoReset,   {},                         "cloudSendStats"      };
-        ConfigWrapperLegacy<bool> sendScreen            {false,                                  DoReset,   {},                         "cloudSendScreen"     };
     } cloudSettings;
 
     struct {
@@ -716,7 +715,6 @@ public:
     x(cloudSettings.cloudTransmitTimeout) \
     x(cloudSettings.cloudKey) \
     x(cloudSettings.sendStatistic) \
-    x(cloudSettings.sendScreen) \
     \
     x(udpCloudSettings.udpUid) \
     x(udpCloudSettings.udpCloudEnabled) \
