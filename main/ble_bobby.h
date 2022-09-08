@@ -13,3 +13,10 @@ extern BLECharacteristic *getwifilist;
 void initBle();
 
 void handleBle();
+
+struct RemoteCommand {
+    int16_t frontLeft{};
+    int16_t frontRight{};
+    int16_t backLeft{};
+    int16_t backRight{};
+};

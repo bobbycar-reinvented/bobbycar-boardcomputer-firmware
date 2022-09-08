@@ -10,13 +10,7 @@
 // local includes
 #include "bobbycar-common.h"
 #include "modeinterface.h"
-
-struct RemoteCommand {
-    int16_t frontLeft{};
-    int16_t frontRight{};
-    int16_t backLeft{};
-    int16_t backRight{};
-};
+#include "ble_bobby.h"
 
 class RemoteControlMode : public ModeInterface
 {
@@ -27,8 +21,9 @@ public:
 
     const char *displayName() const override { return "RemoteControl"; }
 
-    void setCommand(const RemoteCommand &command);
+    void setRemoteCommand(const RemoteCommand &command);
 
+private:
     std::optional<RemoteCommand> m_remoteCommand;
     espchrono::millis_clock::time_point m_timestamp;
 };

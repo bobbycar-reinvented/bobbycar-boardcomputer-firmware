@@ -11,6 +11,7 @@
 #include "modeinterface.h"
 #include "globals.h"
 #include "utils.h"
+#include "ble_bobby.h"
 
 class DefaultMode : public ModeInterface
 {
@@ -25,9 +26,14 @@ public:
     bool waitForGasLoslass{false};
     bool waitForBremsLoslass{false};
 
+    void setRemoteCommand(const RemoteCommand &command);
+
 private:
     espchrono::millis_clock::time_point m_lastTime{espchrono::millis_clock::now()};
     float m_lastPwm{0};
+
+    std::optional<RemoteCommand> m_remoteCommand;
+    espchrono::millis_clock::time_point m_timestamp;
 };
 
 namespace modes {

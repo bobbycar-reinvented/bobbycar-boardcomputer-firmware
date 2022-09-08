@@ -44,7 +44,7 @@ void RemoteControlMode::update()
     }
 }
 
-void RemoteControlMode::setCommand(const RemoteCommand &command)
+void RemoteControlMode::setRemoteCommand(const RemoteCommand &command)
 {
     m_remoteCommand = command;
     m_timestamp = espchrono::millis_clock::now();

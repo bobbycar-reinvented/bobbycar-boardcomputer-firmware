@@ -260,4 +260,18 @@ void DefaultMode::update()
             }
         }
     }
+
+    if (m_remoteCommand && espchrono::ago(m_timestamp) < 500ms)
+    {
+        controllers.front.command.left.pwm += m_remoteCommand->frontLeft;
+        controllers.front.command.right.pwm += m_remoteCommand->frontRight;
+        controllers.back.command.left.pwm += m_remoteCommand->backLeft;
+        controllers.back.command.left.pwm += m_remoteCommand->backRight;
+    }
+}
+
+void DefaultMode::setRemoteCommand(const RemoteCommand &command)
+{
+    m_remoteCommand = command;
+    m_timestamp = espchrono::millis_clock::now();
 }
