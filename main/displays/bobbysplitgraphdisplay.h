@@ -46,5 +46,6 @@ template<std::size_t COUNT0, std::size_t COUNT1>
 void BobbySplitGraphDisplay<COUNT0, COUNT1>::buttonReleased(espgui::Button button)
 {
     //Base::buttonReleased(button);
+    buttonReleasedCommon(button);
 }
 

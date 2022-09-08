@@ -26,4 +26,5 @@ void BobbyDisplayWithTitle::buttonPressed(espgui::Button button)
 void BobbyDisplayWithTitle::buttonReleased(espgui::Button button)
 {
     //Base::buttonReleased(button);
+    buttonReleasedCommon(button);
 }
