@@ -20,6 +20,7 @@
 namespace {
 constexpr char TEXT_DEFAULTMODESETTIGNS[] = "Default mode settings";
 constexpr char TEXT_MODELMODE[] = "Model mode";
+constexpr char TEXT_ALLOWREMOTECONTROL[] = "Allow remote control";
 constexpr char TEXT_SQUAREGAS[] = "Square gas";
 constexpr char TEXT_SQUAREBREMS[] = "Square brems";
 constexpr char TEXT_ENABLESMOOTHINGUP[] = "Enable up smoothing";
@@ -120,6 +121,7 @@ using namespace espgui;
 DefaultModeSettingsMenu::DefaultModeSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          PushScreenAction<DefaultModeModelModeChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ALLOWREMOTECONTROL>, BobbyCheckbox,  DefaultModeAllowRemoteControlAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREGAS>,          BobbyCheckbox,  DefaultModeSquareGasAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SQUAREBREMS>,        BobbyCheckbox,  DefaultModeSquareBremsAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLESMOOTHINGUP>,    BobbyCheckbox,  DefaultModeEnableSmoothingUpAccessor>>();

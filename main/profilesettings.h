@@ -24,6 +24,7 @@ struct ProfileSettings
 
     struct DefaultMode {
         UnifiedModelMode modelMode;
+        bool allowRemoteControl;
         bool squareGas;
         bool squareBrems;
         bool enableSmoothingUp;
@@ -110,6 +111,7 @@ void ProfileSettings::executeForEveryProfileSetting(T &&callable)
     callable("default.brems1_", defaultMode.brems1_wert);
     callable("default.brems2_", defaultMode.brems2_wert);
     callable("default.squareG", defaultMode.squareGas);
+    callable("default.alwRemo", defaultMode.allowRemoteControl);
     callable("default.squareB", defaultMode.squareBrems);
 
     callable("tempoma.modelMo", tempomatMode.modelMode);

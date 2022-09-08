@@ -261,7 +261,7 @@ void DefaultMode::update()
         }
     }
 
-    if (m_remoteCommand && espchrono::ago(m_timestamp) < 500ms)
+    if (profileSettings.defaultMode.allowRemoteControl && m_remoteCommand && espchrono::ago(m_timestamp) < 500ms)
     {
         controllers.front.command.left.pwm += m_remoteCommand->frontLeft;
         controllers.front.command.right.pwm += m_remoteCommand->frontRight;

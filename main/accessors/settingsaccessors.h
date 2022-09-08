@@ -132,6 +132,7 @@ struct UdpUseStdStringAccessor : public NewSettingsAccessor<bool> { ConfigWrappe
 
 // DefaultMode
 struct DefaultModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return profileSettings.defaultMode.modelMode; } };
+struct DefaultModeAllowRemoteControlAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.defaultMode.allowRemoteControl; } };
 struct DefaultModeSquareGasAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.defaultMode.squareGas; } };
 struct DefaultModeSquareBremsAccessor : public RefAccessorSaveSettings<bool> { bool &getRef() const override { return profileSettings.defaultMode.squareBrems; } };
 
