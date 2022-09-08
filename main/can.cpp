@@ -387,18 +387,33 @@ void sendCanCommands()
 
     static struct {
         struct {
-            uint8_t freq = 0;
-            uint8_t pattern = 0;
+            struct {
+                int16_t nCruiseMotTgt{};
+                bool cruiseCtrlEna{};
+            } left, right;
+            uint8_t freq{};
+            uint8_t pattern{};
         } front, back;
         std::underlying_type_t<Boardcomputer::Button> buttonLeds{};
     } lastValues;
 
     static int i{};
 
-    if ((front && front->command.buzzer.freq    != lastValues.front.freq ) ||
-        (front && front->command.buzzer.pattern != lastValues.front.pattern ) ||
-        (back && back->command.buzzer.freq     != lastValues.back.freq) ||
-        (back && back->command.buzzer.pattern  != lastValues.back.pattern))
+    // anti aufklatsch when tempomat
+         if ((front && front->command.left.nCruiseMotTgt  != lastValues.front.left.nCruiseMotTgt) ||
+             (front && front->command.right.nCruiseMotTgt != lastValues.front.right.nCruiseMotTgt) ||
+             (back && back->command.left.nCruiseMotTgt    != lastValues.back.left.nCruiseMotTgt) ||
+             (back && back->command.right.nCruiseMotTgt   != lastValues.back.right.nCruiseMotTgt))
+        i = 8;
+    else if ((front && front->command.left.cruiseCtrlEna  != lastValues.front.left.cruiseCtrlEna) ||
+             (front && front->command.right.cruiseCtrlEna != lastValues.front.right.cruiseCtrlEna) ||
+             (back && back->command.left.cruiseCtrlEna    != lastValues.back.left.cruiseCtrlEna) ||
+             (back && back->command.right.cruiseCtrlEna   != lastValues.back.right.cruiseCtrlEna))
+        i = 9;
+    else if ((front && front->command.buzzer.freq    != lastValues.front.freq ) ||
+             (front && front->command.buzzer.pattern != lastValues.front.pattern ) ||
+             (back && back->command.buzzer.freq      != lastValues.back.freq) ||
+             (back && back->command.buzzer.pattern   != lastValues.back.pattern))
         i = 10;
     else if (buttonLeds              != lastValues.buttonLeds)
         i = 12;
@@ -473,16 +488,16 @@ void sendCanCommands()
         if (back) send(MotorController<true, true>::Command::PhaseAdvMax, back->command.right.phaseAdvMax);
         break;
     case 8:
-        if (front) send(MotorController<false, false>::Command::CruiseCtrlEna, front->command.left.cruiseCtrlEna);
-        if (front) send(MotorController<false, true>::Command::CruiseCtrlEna, front->command.right.cruiseCtrlEna);
-        if (back) send(MotorController<true, false>::Command::CruiseCtrlEna, back->command.left.cruiseCtrlEna);
-        if (back) send(MotorController<true, true>::Command::CruiseCtrlEna, back->command.right.cruiseCtrlEna);
-        break;
-    case 9:
         if (front) send(MotorController<false, false>::Command::CruiseMotTgt, front->command.left.nCruiseMotTgt);
         if (front) send(MotorController<false, true>::Command::CruiseMotTgt, front->command.right.nCruiseMotTgt);
         if (back) send(MotorController<true, false>::Command::CruiseMotTgt, back->command.left.nCruiseMotTgt);
         if (back) send(MotorController<true, true>::Command::CruiseMotTgt, back->command.right.nCruiseMotTgt);
+        break;
+    case 9:
+        if (front) send(MotorController<false, false>::Command::CruiseCtrlEna, front->command.left.cruiseCtrlEna);
+        if (front) send(MotorController<false, true>::Command::CruiseCtrlEna, front->command.right.cruiseCtrlEna);
+        if (back) send(MotorController<true, false>::Command::CruiseCtrlEna, back->command.left.cruiseCtrlEna);
+        if (back) send(MotorController<true, true>::Command::CruiseCtrlEna, back->command.right.cruiseCtrlEna);
         break;
     case 10:
         if (front && send(MotorController<false, false>::Command::BuzzerFreq, front->command.buzzer.freq) == ESP_OK)
