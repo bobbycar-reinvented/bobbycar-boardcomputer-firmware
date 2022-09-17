@@ -265,7 +265,7 @@ bool tryParseCanInput()
     if (parseBoardcomputerCanMessage(message))
         return true;
 
-    ESP_LOGW(TAG, "Unknown CAN info received .identifier = %u", message.identifier);
+    ESP_LOGW(TAG, "Unknown CAN info received .identifier = %lu", message.identifier);
 
     return true;
 }
@@ -303,7 +303,7 @@ void sendCanCommands()
             ++can_total_error_cnt;
             can_sequential_bus_errors = status_info.bus_error_count;
 
-            ESP_LOGW(TAG, "twai_transmit() failed after %lldms with %s, seq err: %d, total err: %d",
+            ESP_LOGW(TAG, "twai_transmit() failed after %lldms with %s, seq err: %lu, total err: %lu",
                      std::chrono::floor<std::chrono::milliseconds>(timestamp_after - timestamp_before).count(),
                      esp_err_to_name(result),
                      can_sequential_error_cnt,

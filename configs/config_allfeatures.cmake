@@ -17,8 +17,6 @@ add_definitions(
 
 set(BOBBYCAR_BUILDFLAGS
 # Pins
-    -DPINS_GAS=34
-    -DPINS_BREMS=35
 #    -DFEATURE_JOYSTICK
 #    -DPINS_RX1=4
 #    -DPINS_TX1=5

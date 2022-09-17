@@ -106,7 +106,7 @@ tl::expected<void, std::string> time_requestSync()
 void time_sync_notification_cb(struct timeval *tv)
 {
     if (tv)
-        ESP_LOGI("BOBBY", "%ld", tv->tv_sec);
+        ESP_LOGI("BOBBY", "%lld", tv->tv_sec);
     else
         ESP_LOGI("BOBBY", "nullptr");
 }
