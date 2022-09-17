@@ -240,6 +240,7 @@ set(headers
     texthelpers/wifistatexthelpers.h
     time_bobbycar.h
     types.h
+    typeutils.h
     udpcloud.h
     unifiedmodelmode.h
     utils.h

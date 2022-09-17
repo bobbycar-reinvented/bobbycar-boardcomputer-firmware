@@ -39,6 +39,10 @@ bool simplified =
 ProfileSettings profileSettings;
 SettingsPersister settingsPersister;
 
+std::atomic<int8_t> rawButtonRequest;
+std::atomic<int8_t> buttonRequest;
+bool initScreenRequest{false};
+
 Controllers controllers;
 
 #ifdef FEATURE_BLUETOOTH

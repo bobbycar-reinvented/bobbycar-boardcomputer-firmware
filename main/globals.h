@@ -2,6 +2,7 @@
 
 // system includes
 #include <array>
+#include <atomic>
 #include <memory>
 #include <optional>
 
@@ -25,11 +26,11 @@
 // local includes
 #include "controller.h"
 #include "display.h"
-#include "modeinterface.h"
-#include "profilesettings.h"
-#include "newsettings.h"
-#include "settingspersister.h"
 #include "macros_bobbycar.h"
+#include "modeinterface.h"
+#include "newsettings.h"
+#include "profilesettings.h"
+#include "settingspersister.h"
 
 extern std::optional<int16_t> raw_gas, raw_brems;
 extern std::optional<float> gas, brems;
@@ -65,6 +66,10 @@ extern bool simplified;
 
 extern ProfileSettings profileSettings;
 extern SettingsPersister settingsPersister;
+
+extern std::atomic<int8_t> rawButtonRequest;
+extern std::atomic<int8_t> buttonRequest;
+extern bool initScreenRequest;
 
 class Controllers : public std::array<Controller, 2>
 {

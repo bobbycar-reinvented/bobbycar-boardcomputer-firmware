@@ -44,6 +44,7 @@ struct BleFenceEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrappe
 // Cloud
 struct CloudEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.cloudSettings.cloudEnabled; } };
 struct CloudTransmitTimeoutAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.cloudSettings.cloudTransmitTimeout; } };
+struct CloudSendStatisticsAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.cloudSettings.sendStatistic; } };
 
 // Time
 //struct TimezoneOffsetAccessor : public NewSettingsAccessor<int32_t> { ConfigWrapper<int32_t> &getConfig() const override { return configs.timezoneOffset; } };

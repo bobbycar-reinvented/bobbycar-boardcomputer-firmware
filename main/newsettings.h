@@ -27,6 +27,10 @@
 #include "handbremse.h"
 #include "ledstrip.h"
 #include "unifiedmodelmode.h"
+#include "displays/lockscreen.h"
+#include "handbremse.h"
+#include "bobbyquickactions.h"
+#include "cloud.h"
 
 using namespace espconfig;
 
@@ -197,6 +201,11 @@ public:
         url {std::string{}, DoReset, StringOr<StringEmpty, StringValidUrl>, urlKey  }
     {}
 
+    ConfiguredOtaServer(const char *nameKey, const char *urlKey, const char *default_name, const char *default_url) :
+        name{default_name, DoReset, {},                                    nameKey },
+        url {default_url,  DoReset, StringOr<StringEmpty, StringValidUrl>, urlKey  }
+    {}
+
     ConfigWrapperLegacy<std::string> name;
     ConfigWrapperLegacy<std::string> url;
 };
@@ -265,12 +274,12 @@ public:
     ConfigWrapperLegacy<int16_t>     gasMax             {4095,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMax"              };
     ConfigWrapperLegacy<int16_t>     gasMitte           {2048,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMiddle"           };
     ConfigWrapperLegacy<int16_t>     bremsMin           {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMin"            };
-    ConfigWrapperLegacy<int16_t>     bremsMax           {4096,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMax"            };
+    ConfigWrapperLegacy<int16_t>     bremsMax           {4095,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMax"            };
     ConfigWrapperLegacy<int16_t>     bremsMitte         {2048,                                   DoReset,  MinMaxValue<int16_t, 0, 4095>, "bremsMiddle"         };
     ConfigWrapperLegacy<uint16_t>    deadband           {20,                                     DoReset,  MinMaxValue<uint16_t, 0, 4095>,"deadband"            };
 
     ConfigWrapperLegacy<uint8_t>     dpadDebounce       {25,                                     DoReset,   {},                           "dpadDebounce"        };
-    ConfigWrapperLegacy<uint16_t>    buttonReadDelay    {1,                                      DoReset,   {},                           "buttonDelay"         };
+    ConfigWrapperLegacy<uint16_t>    buttonReadDelay    {20,                                      DoReset,   {},                           "buttonDelay"         };
 
     ConfigWrapperLegacy<uint8_t>     dpadMappingLeft    {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapLeft"         };
     ConfigWrapperLegacy<uint8_t>     dpadMappingRight   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight"        };
@@ -289,10 +298,10 @@ public:
     ConfigWrapperLegacy<uint8_t>     dpadMappingExtra3  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra3"       };
     ConfigWrapperLegacy<uint8_t>     dpadMappingExtra4  {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapExtra4"       };
 
-    ConfigWrapperLegacy<BobbyQuickActions> quickActionLeft2{  BobbyQuickActions::BLINK_LEFT,     DoReset,   {},                           "quickActleft2"       };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionLeft2 { BobbyQuickActions::BLINK_LEFT,     DoReset,   {},                           "quickActleft2"       };
     ConfigWrapperLegacy<BobbyQuickActions> quickActionRight2{ BobbyQuickActions::BLINK_RIGHT,    DoReset,   {},                           "quickActright2"      };
-    ConfigWrapperLegacy<BobbyQuickActions> quickActionUp2{    BobbyQuickActions::NONE,           DoReset,   {},                           "quickActup2"         };
-    ConfigWrapperLegacy<BobbyQuickActions> quickActionDown2{  BobbyQuickActions::HANDBREMSE,     DoReset,   {},                           "quickActdown2"       };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionUp2   { BobbyQuickActions::NONE,           DoReset,   {},                           "quickActup2"         };
+    ConfigWrapperLegacy<BobbyQuickActions> quickActionDown2 { BobbyQuickActions::HANDBREMSE,     DoReset,   {},                           "quickActdown2"       };
     ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra1{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra1"      };
     ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra2{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra2"      };
     ConfigWrapperLegacy<BobbyQuickActions> quickActionExtra3{ BobbyQuickActions::NONE,           DoReset,   {},                           "quickActextra3"      };
@@ -314,15 +323,15 @@ public:
     ConfigWrapperLegacy<int16_t>     reverseBeepDuration0{500,                                   DoReset,   {},                         "revBeepDur0"         };
     ConfigWrapperLegacy<int16_t>     reverseBeepDuration1{500,                                   DoReset,   {},                         "revBeepDur1"         };
 
-    ConfigWrapperLegacy<std::string> cloudUrl           {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "cloudUrl" };
-    ConfigWrapperLegacy<std::string> udpCloudHost       {std::string{},                          DoReset,   {},                         "udpCloudHost"        };
+    ConfigWrapperLegacy<std::string> cloudUrl           {"ws://api.bobbycar.cloud/ws",                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "cloudUrl"     };
+    ConfigWrapperLegacy<std::string> udpCloudHost       {"updates.bobbycar.cloud",                          DoReset,   {},                                        "udpCloudHost" };
 
     ConfigWrapperLegacy<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
-    ConfigWrapperLegacy<std::string> otaUsername        {std::string{BOBBY_DEFAULT_OTA_NAME},                DoReset,   {},                         "otaUsername"         };
+    ConfigWrapperLegacy<std::string> otaUsername        {std::string{BOBBY_DEFAULT_OTA_NAME},    DoReset,   {},                                 "otaUsername" };
     ConfigWrapperLegacy<std::string> otaServerUrl       {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaServerUrl" };
     ConfigWrapperLegacy<std::string> otaServerBranch    {std::string{},                          DoReset,   {},                         "otaServerBranch"     };
     std::array<ConfiguredOtaServer, 5> otaServers {
-        ConfiguredOtaServer { "otaName0", "otaUrl0" },
+        ConfiguredOtaServer { "otaName0", "otaUrl0", "bobbycloud", "http://updates.bobbycar.cloud" },
         ConfiguredOtaServer { "otaName1", "otaUrl1" },
         ConfiguredOtaServer { "otaName2", "otaUrl2" },
         ConfiguredOtaServer { "otaName3", "otaUrl3" },
@@ -331,7 +340,7 @@ public:
 
     ConfigWrapperLegacy<bool>        dns_announce_enabled{true,                                  DoReset,   {},                         "dnsAnnounceEnab"     };
     ConfigWrapperLegacy<std::string> dns_announce_key   {std::string{},                          DoReset,   {},                         "dnsAnnounceKey"      };
-    ConfigWrapperLegacy<std::string> webserverPassword  {std::string{},                          DoReset,   {},                         "websPassword"        };
+    ConfigWrapperLegacy<std::string> webserverPassword  {"Passwort_123",                         DoReset,   {},                         "websPassword"        };
 
     struct {
         ConfigWrapperLegacy<int16_t>  wheelDiameter     {DEFAULT_WHEELDIAMETER,                  DoReset,   {},                         "wheelDiameter"       };
@@ -361,6 +370,8 @@ public:
     struct {
         ConfigWrapperLegacy<bool> cloudEnabled          {false,                                  DoReset,   {},                         "cloudEnabled"        };
         ConfigWrapperLegacy<int16_t> cloudTransmitTimeout{10,                                    DoReset,   {},                         "clodTransmTmout"     };
+        ConfigWrapperLegacy<std::string> cloudKey       {std::string{},                          DoReset,   {},                         "cloudKey"            };
+        ConfigWrapperLegacy<bool> sendStatistic         {false,                                  DoReset,   {},                         "cloudSendStats"      };
     } cloudSettings;
 
     struct {
@@ -702,6 +713,8 @@ public:
     \
     x(cloudSettings.cloudEnabled) \
     x(cloudSettings.cloudTransmitTimeout) \
+    x(cloudSettings.cloudKey) \
+    x(cloudSettings.sendStatistic) \
     \
     x(udpCloudSettings.udpUid) \
     x(udpCloudSettings.udpCloudEnabled) \
@@ -838,6 +851,15 @@ public:
 #undef HELPER
             std::ref<ConfiguredFeatureFlag>(feature.webserver_disable_lock)
         );
+    }
+
+    constexpr size_t getConfigCount() const
+    {
+        size_t count = 0;
+#define HELPER(x) count++;
+        NEW_SETTINGS(HELPER)
+#undef HELPER
+        return count;
     }
 };
 

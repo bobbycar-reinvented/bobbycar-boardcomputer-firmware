@@ -10,22 +10,6 @@
 
 // local includes
 #include "wifi_bobbycar.h"
-#include "dpad.h"
-#ifdef FEATURE_DPAD_3WIRESW
-#include "dpad3wire.h"
-#endif
-#ifdef FEATURE_DPAD_5WIRESW
-#include "dpad5wire.h"
-#endif
-#ifdef FEATURE_DPAD_5WIRESW_2OUT
-#include "dpad5wire_2out.h"
-#endif
-#ifdef FEATURE_DPAD_6WIRESW
-#include "dpad6wire.h"
-#endif
-#ifdef DPAD_BOARDCOMPUTER_V2
-#include "dpad_boardcomputer_v2.h"
-#endif
 #ifdef FEATURE_ROTARY
 #include "rotary.h"
 #endif
@@ -58,6 +42,7 @@
 #include "drivingstatistics.h"
 #include "dnsannounce.h"
 #include "screens.h"
+#include "utils.h"
 
 using namespace std::chrono_literals;
 
@@ -68,23 +53,8 @@ void not_needed() {}
 
 BobbySchedulerTask schedulerTasksArr[] {
     BobbySchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms },
-#ifdef FEATURE_DPAD
-    BobbySchedulerTask { "dpad",           dpad::init,            dpad::update,            20ms  },
-#endif
-#ifdef FEATURE_DPAD_3WIRESW
-    BobbySchedulerTask { "dpad3wire",      dpad3wire::init,       dpad3wire::update,       20ms  },
-#endif
-#ifdef FEATURE_DPAD_5WIRESW
-    BobbySchedulerTask { "dpad5wire",      dpad5wire::init,       dpad5wire::update,       20ms  },
-#endif
-#ifdef FEATURE_DPAD_5WIRESW_2OUT
-    BobbySchedulerTask { "dpad5wire_2out", dpad5wire_2out::init,  dpad5wire_2out::update,  20ms  },
-#endif
-#ifdef FEATURE_DPAD_6WIRESW
-    BobbySchedulerTask { "dpad6wire",      dpad6wire::init,       dpad6wire::update,       20ms  },
-#endif
-#ifdef DPAD_BOARDCOMPUTER_V2
-    BobbySchedulerTask { "dpad_boardcomputer_v2", dpad_boardcomputer_v2::init, dpad_boardcomputer_v2::update, 20ms },
+#if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined(FEATURE_DPAD_6WIRESW) || defined(DPAD_BOARDCOMPUTER_V2)
+    BobbySchedulerTask { bobbydpad::dpad_name,  bobbydpad::dpad_init,       bobbydpad::dpad_update,       20ms  },
 #endif
 #ifdef FEATURE_ROTARY
     BobbySchedulerTask { "rotary",         initRotary,            updateRotary,            20ms  },

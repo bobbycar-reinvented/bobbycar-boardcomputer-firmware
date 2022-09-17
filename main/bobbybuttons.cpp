@@ -6,9 +6,7 @@
 // local includes
 #include "newsettings.h"
 #include "settingsutils.h"
-#include "modes/defaultmode.h"
 #include "ledstripdefines.h"
-#include "ledstrip.h"
 
 #include "bobbyquickactions.h"
 
