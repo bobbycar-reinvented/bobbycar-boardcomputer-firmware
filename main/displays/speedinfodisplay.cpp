@@ -22,7 +22,7 @@ void SpeedInfoDisplay::initScreen()
     m_batteryPercentLabel.start();
     m_voltageLabel.start();
     m_distanceLabel.start();
-    m_currentConsumptionLabel.start();
+    m_currentPowerLabel.start();
 }
 
 void SpeedInfoDisplay::redraw()
@@ -46,15 +46,16 @@ void SpeedInfoDisplay::redraw()
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
         auto watt = sumCurrent * *avgVoltage;
-        auto wh_per_km = std::abs(avgSpeedKmh) > 0.1 ? watt / std::abs(avgSpeedKmh) : 0;
 
         m_voltageLabel.redraw(fmt::format("{:.1f} V", avgVoltage.value()));
-        m_currentConsumptionLabel.redraw(fmt::format("{:.1f} Wh/km", wh_per_km));
+        tft.setTextSize(2);
+        m_currentPowerLabel.redraw(fmt::format("{:.0f} W", watt));
+        tft.setTextSize(1);
     }
     else
     {
         m_voltageLabel.redraw("No voltage");
-        m_currentConsumptionLabel.redraw("No comsumption");
+        m_currentPowerLabel.redraw("No power");
     }
 
     m_distanceLabel.redraw(

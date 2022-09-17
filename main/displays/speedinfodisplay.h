@@ -28,5 +28,5 @@ private:
     espgui::Label m_batteryPercentLabel{5, START_Y};
     espgui::Label m_voltageLabel{5, START_Y + 29 * 1};
     espgui::Label m_distanceLabel{5, START_Y + 29 * 2};
-    espgui::Label m_currentConsumptionLabel{5, START_Y + 29 * 3};
+    espgui::Label m_currentPowerLabel{5, START_Y + 29 * 3};
 };
