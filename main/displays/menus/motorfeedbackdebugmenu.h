@@ -35,6 +35,8 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::DcPhaCFixedText,  ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::ChopsText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::HallText,         ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::IqText,           ColorInterface<TFT_DARKGREY>, DummyAction>>();
+        constructMenuItem<makeComponent<MenuItem, typename Ttexts::IdText,           ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
     }
 

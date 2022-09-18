@@ -161,6 +161,18 @@ bool parseMotorControllerCanMessage(const twai_message_t &message, Controller &c
     case MotorController<isBack, true>::Feedback::Temp:
         controller.feedback.boardTemp = *((int16_t*)message.data);
         return true;
+    case MotorController<isBack, false>::Feedback::Id:
+        controller.feedback.left.id = *((int16_t*)message.data);
+        return true;
+    case MotorController<isBack, true>::Feedback::Id:
+        controller.feedback.right.id = *((int16_t*)message.data);
+        return true;
+    case MotorController<isBack, false>::Feedback::Iq:
+        controller.feedback.left.iq = *((int16_t*)message.data);
+        return true;
+    case MotorController<isBack, true>::Feedback::Iq:
+        controller.feedback.right.iq = *((int16_t*)message.data);
+        return true;
     }
 
     return false;

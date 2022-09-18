@@ -77,6 +77,8 @@ private:
         struct DcPhaCFixedText : public virtual TextInterface { public: std::string text() const override { std::string line{"dcPhaC: "}; if (controller::get().feedbackValid) line += fmt::format("{:.2f}A", fixCurrent(MotorFeedbackGetter::get().dcPhaC)); return line; } };
         struct ChopsText : public virtual TextInterface { public: std::string text() const override { std::string line{"chops: "}; if (controller::get().feedbackValid) line += std::to_string(MotorFeedbackGetter::get().chops); return line; } };
         struct HallText : public virtual TextInterface { public: std::string text() const override { std::string line{"hall: "}; if (controller::get().feedbackValid) line += hallString(MotorFeedbackGetter::get()); return line; } };
+        struct IdText : public virtual TextInterface { public: std::string text() const override { std::string line{"id: "}; if (controller::get().feedbackValid) line += fmt::format("{:.2f}A", fixCurrent(MotorFeedbackGetter::get().id)); return line; } };
+        struct IqText : public virtual TextInterface { public: std::string text() const override { std::string line{"iq: "}; if (controller::get().feedbackValid) line += fmt::format("{:.2f}A", fixCurrent(MotorFeedbackGetter::get().iq)); return line; } };
     };
 
 public:
