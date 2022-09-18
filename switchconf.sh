@@ -86,7 +86,7 @@ else
 fi
 
 ln -vs "build_$1" "build"
-ln -vs "sdkconfig_$1" "sdkconfig"
-ln -vs "config_$1.cmake" "config.cmake"
+ln -vs "configs/sdkconfig_$1" "sdkconfig"
+ln -vs "configs/config_$1.cmake" "config.cmake"
 
 echo all ok
