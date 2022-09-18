@@ -1,19 +1,6 @@
 #!/bin/bash
 
-VALID_CONFIGS=(
-    "comred"
-    "peter"
-    "feedc0de"
-    "mick"
-    "greyhash"
-    "nofeatures"
-    "allfeatures"
-    "seatbot"
-    "gernot"
-    "comred_new"
-    "aveexy"
-    "testdevice"
-)
+VALID_CONFIGS=($(ls configs/ | grep ".cmake" | sed 's/config_//;s/.cmake//'))
 
 print_usage() {
     echo "usage: ./switchconf.sh ${VALID_CONFIGS[@]}"
