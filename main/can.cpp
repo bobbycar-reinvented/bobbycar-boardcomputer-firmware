@@ -303,11 +303,12 @@ void sendCanCommands()
             ++can_total_error_cnt;
             can_sequential_bus_errors = status_info.bus_error_count;
 
-            ESP_LOGW(TAG, "twai_transmit() failed after %lldms with %s, seq err: %lu, total err: %lu",
-                     std::chrono::floor<std::chrono::milliseconds>(timestamp_after - timestamp_before).count(),
-                     esp_err_to_name(result),
-                     can_sequential_error_cnt,
-                     can_total_error_cnt);
+            if (can_total_error_cnt < 500)
+                ESP_LOGW(TAG, "twai_transmit() failed after %lldms with %s, seq err: %lu, total err: %lu",
+                         std::chrono::floor<std::chrono::milliseconds>(timestamp_after - timestamp_before).count(),
+                         esp_err_to_name(result),
+                         can_sequential_error_cnt,
+                         can_total_error_cnt);
         }
         else if (result != ESP_OK)
         {
