@@ -10,17 +10,19 @@
 #include <textwithvaluehelper.h>
 
 // local includes
-#include "displays/bobbychangevaluedisplay.h"
-#include "utils.h"
-#include "icons/lock.h"
 #include "accessors/settingsaccessors.h"
-#include "displays/menus/lockscreensettingsmenu.h"
-#include "displays/potiscalibratedisplay.h"
-#include "displays/menus/timersmenu.h"
-#include "displays/menus/settingsmenu.h"
+#include "bobbycheckbox.h"
+#include "displays/bobbychangevaluedisplay.h"
 #include "displays/buttoncalibratedisplay.h"
 #include "displays/menus/extrabuttoncalibratemenu.h"
+#include "displays/menus/lockscreensettingsmenu.h"
+#include "displays/menus/settingsmenu.h"
 #include "displays/menus/setupquickactionsmenu.h"
+#include "displays/menus/timersmenu.h"
+#include "displays/potiscalibratedisplay.h"
+#include "icons/lock.h"
+#include "utils.h"
+
 #ifdef FEATURE_JOYSTICK
 #include "displays/joystickdebugdisplay.h"
 #endif
@@ -35,6 +37,7 @@ constexpr char TEXT_POTISCALIBRATE[] = "Potis Calibrate";
 #ifdef FEATURE_JOYSTICK
 constexpr char TEXT_JOYSTICK[] = "Debug Joystick";
 #endif
+constexpr char TEXT_FLIPDISPLAY[] = "Flip Display";
 constexpr char TEXT_SAMPLECOUNT[] = "sampleCount";
 constexpr char TEXT_GASMIN[] = "gasMin";
 constexpr char TEXT_GASMAX[] = "gasMax";
@@ -200,6 +203,7 @@ BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 #ifdef FEATURE_JOYSTICK
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_JOYSTICK>,                                    PushScreenAction<JoystickDebugDisplay>>>();
 #endif
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FLIPDISPLAY>,                                 BobbyCheckbox, FlipScreenAccessor>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SAMPLECOUNT, SampleCountAccessor>,   PushScreenAction<SampleCountChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMIN, GasMinAccessor>,             PushScreenAction<GasMinChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMAX, GasMaxAccessor>,             PushScreenAction<GasMaxChangeScreen>>>();
