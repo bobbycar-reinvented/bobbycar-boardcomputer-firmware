@@ -15,10 +15,12 @@ Label bootLabel{32, 250};
 
 void initScreen()
 {
+    // vertical screen
     tft.init();
     tft.fillScreen(TFT_WHITE);
     tft.setTextColor(TFT_BLACK, TFT_WHITE);
     tft.setTextFont(4);
+    tft.setRotation(configs.boardcomputerHardware.flipScreen.value() ? 2 : 0);
     espgui::tft.setSwapBytes(true);
     tft.pushImage(0, 40, bobbyicons::logo.WIDTH, bobbyicons::logo.HEIGHT, bobbyicons::logo.buffer);
     espgui::tft.setSwapBytes(false);
@@ -40,6 +42,13 @@ void updateDisplay()
     {
         changeScreenCallback();
         changeScreenCallback = {};
+    }
+
+    if (tft.getRotation() != (configs.boardcomputerHardware.flipScreen.value() ? 2 : 0))
+    {
+        tft.setRotation(configs.boardcomputerHardware.flipScreen.value() ? 2 : 0);
+        if (currentDisplay)
+            currentDisplay->initScreen();
     }
 
     if (const int8_t rawButton = rawButtonRequest.load(); rawButton != -1 && currentDisplay)

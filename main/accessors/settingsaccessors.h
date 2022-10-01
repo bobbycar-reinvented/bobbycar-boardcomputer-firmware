@@ -262,5 +262,8 @@ struct QuickActionExtra2Accessor : public NewSettingsAccessor<BobbyQuickActions>
 struct QuickActionExtra3Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionExtra3; } };
 struct QuickActionExtra4Accessor : public NewSettingsAccessor<BobbyQuickActions> { ConfigWrapper<BobbyQuickActions> &getConfig() const override { return configs.quickActionExtra4; } };
 
+// boardcomputer-hardware
+struct FlipScreenAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.boardcomputerHardware.flipScreen; } };
+
 // Other
 struct AnhaengerIdAccessor : public NewSettingsAccessor<uint16_t> { ConfigWrapper<uint16_t> &getConfig() const override { return configs.anhaenger_id; } };
