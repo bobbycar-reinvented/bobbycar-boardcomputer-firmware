@@ -128,6 +128,7 @@ set(headers
     displays/menus/networksettingsmenu.h
     displays/menus/otamenu.h
     displays/menus/profilesmenu.h
+    displays/menus/recoverymenu.h
     displays/menus/remotecontrolmodesettingsmenu.h
     displays/menus/selectbuildserverbranch.h
     displays/menus/selectbuildservermenu.h
@@ -376,6 +377,7 @@ set(sources
     displays/menus/networksettingsmenu.cpp
     displays/menus/otamenu.cpp
     displays/menus/profilesmenu.cpp
+    displays/menus/recoverymenu.cpp
     displays/menus/remotecontrolmodesettingsmenu.cpp
     displays/menus/selectbuildserverbranch.cpp
     displays/menus/selectbuildservermenu.cpp

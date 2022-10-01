@@ -470,11 +470,11 @@ public:
         ConfiguredFeatureFlag garage                {"f_garage" };
         ConfiguredFeatureFlag cloud                 {"f_cloud", false, false, "cloud"};
         ConfiguredFeatureFlag udpcloud              {"f_udpcloud", false, false, "udpcloud"};
-        ConfiguredFeatureFlag dnsannounce           {"f_dnsannounce"};
+        ConfiguredFeatureFlag dnsannounce           {"f_dnsannounce", false, false, "dnsannounce"};
         ConfiguredFeatureFlag ntp                   {"f_ntp", false, false, "time"};
         ConfiguredFeatureFlag ble                   {"f_ble", false, false, "ble"};
         ConfiguredFeatureFlag ota                   {"f_ota", false, false, "ota"};
-        ConfiguredFeatureFlag webserver             {"featureWebserv", true};
+        ConfiguredFeatureFlag webserver             {"featureWebserv", true, false, "webserver"};
         ConfiguredFeatureFlag gschissene_diode      {"featurDiodeHin"};
         ConfiguredFeatureFlag esp_now               {"featureEspNow", false, false, "espnow"};
     } feature;
