@@ -15,6 +15,8 @@ using namespace std::chrono_literals;
 #include <espwifistack.h>
 #include <schedulertask.h>
 #include <screenmanager.h>
+#include <tickchrono.h>
+#include <espstrutils.h>
 
 // local includes
 #include "bobbycar-common.h"
@@ -29,16 +31,18 @@ using namespace std::chrono_literals;
 #else
 #include "modes/defaultmode.h"
 #endif
-#include "displays/statusdisplay.h"
-#include "displays/lockscreen.h"
-#include "displays/potiscalibratedisplay.h"
 #include "displays/buttoncalibratedisplay.h"
+#include "displays/lockscreen.h"
+#include "displays/menus/recoverymenu.h"
+#include "displays/potiscalibratedisplay.h"
+#include "displays/statusdisplay.h"
 #include "newsettings.h"
 #include "taskmanager.h"
 
 namespace {
 espchrono::millis_clock::time_point lastStatsPush;
 std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
+RTC_NOINIT_ATTR bool recovery;
 } // namespace
 
 extern "C" void app_main()
@@ -47,6 +51,48 @@ extern "C" void app_main()
     pinMode(PINS_LEDBACKLIGHT, OUTPUT);
     digitalWrite(PINS_LEDBACKLIGHT, ledBacklightInverted ? LOW : HIGH);
 #endif
+
+    if (const auto reset_reason = esp_reset_reason(); reset_reason == ESP_RST_POWERON)
+    {
+        recovery = false;
+    }
+
+    if (recovery)
+    {
+        initScreen();
+
+        ESP_LOGE(TAG, "Recovery mode (%s)", espcpputils::toString(esp_reset_reason()).c_str());
+        bootLabel.redraw("Entering recovery mode");
+
+        if (const auto result = configs.init("bobbycar"); result != ESP_OK)
+            ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
+
+        for (auto &task : schedulerTasks)
+        {
+            task.setup(recovery);
+        }
+
+        espgui::switchScreen<RecoveryMenu>();
+
+        recovery = false;
+
+        while (true)
+        {
+            const auto now = espchrono::millis_clock::now();
+
+            for (auto &schedulerTask : schedulerTasks)
+            {
+                if (schedulerTask.isInitialized())
+                    schedulerTask.loop();
+            }
+
+            espcpputils::delay(1ms);
+        };
+    }
+    else
+    {
+        recovery = true;
+    }
 
     initScreen();
 
@@ -67,12 +113,12 @@ extern "C" void app_main()
     else
         ESP_LOGE("BOBBY", "init() failed");
 
-    for (const auto &task : schedulerTasks)
+    for (auto &task : schedulerTasks)
     {
         if (checkEnabledByName(task.name()))
         {
             bootLabel.redraw(task.name());
-            task.setup();
+            task.setup(false);
         }
     }
 
@@ -113,6 +159,12 @@ extern "C" void app_main()
     {
         const auto now = espchrono::millis_clock::now();
 
+        if (recovery && now.time_since_epoch() > 5s)
+        {
+            ESP_LOGI(TAG, "Booting successful, disabling recovery...");
+            recovery = false;
+        }
+
 //       if (!heap_caps_check_integrity_all(true))
 //            ESP_LOGW(TAG, "OIS IM OARSCH!!!!!");
 
@@ -150,5 +202,7 @@ extern "C" void app_main()
                 }
             }
         }
+
+        espcpputils::delay(1ms);
     }
 }
