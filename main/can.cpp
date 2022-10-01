@@ -265,7 +265,7 @@ bool tryParseCanInput()
     if (parseBoardcomputerCanMessage(message))
         return true;
 
-    ESP_LOGW(TAG, "Unknown CAN info received .identifier = %u", message.identifier);
+    ESP_LOGW(TAG, "Unknown CAN info received .identifier = %lu", message.identifier);
 
     return true;
 }
@@ -296,22 +296,24 @@ void sendCanCommands()
         const auto status = twai_get_status_info(&status_info);
         const auto timestamp_after = espchrono::millis_clock::now();
 
-        if ((result == ESP_ERR_TIMEOUT || status_info.state == TWAI_STATE_BUS_OFF) || (status == ESP_OK && status_info.bus_error_count > can_sequential_bus_errors))
+        if ((result == ESP_ERR_TIMEOUT || status_info.state == TWAI_STATE_BUS_OFF) ||
+            (status == ESP_OK && status_info.bus_error_count > can_sequential_bus_errors))
         {
             ++can_sequential_error_cnt;
             ++can_total_error_cnt;
             can_sequential_bus_errors = status_info.bus_error_count;
 
-            ESP_LOGW(TAG, "twai_transmit() failed after %lldms with %s, seq err: %d, total err: %d",
-                     (timestamp_after - timestamp_before).count(),
-                     esp_err_to_name(result),
-                     can_sequential_error_cnt,
-                     can_total_error_cnt);
+            if (can_total_error_cnt < 500)
+                ESP_LOGW(TAG, "twai_transmit() failed after %lldms with %s, seq err: %lu, total err: %lu",
+                         std::chrono::floor<std::chrono::milliseconds>(timestamp_after - timestamp_before).count(),
+                         esp_err_to_name(result),
+                         can_sequential_error_cnt,
+                         can_total_error_cnt);
         }
         else if (result != ESP_OK)
         {
-            ESP_LOGD(TAG, "ERROR: twai_transmit() failed after %lldms with %s",
-                     (timestamp_after - timestamp_before).count(),
+            ESP_LOGE(TAG, "twai_transmit() failed after %lldms with %s",
+                     std::chrono::floor<std::chrono::milliseconds>(timestamp_after - timestamp_before).count(),
                      esp_err_to_name(result));
         }
         else
@@ -325,28 +327,28 @@ void sendCanCommands()
             can_sequential_error_cnt = 0;
             if (configs.canResetOnError.value())
             {
-                ESP_LOGW(TAG, "WARNING: Something isn't right, trying to restart can ic...");
+                ESP_LOGW(TAG, "Something isn't right, trying to restart can ic...");
                 if (const auto err = twai_stop(); err != ESP_OK)
                 {
-                    ESP_LOGE(TAG, "ERROR: twai_stop() failed with %s", esp_err_to_name(err));
+                    ESP_LOGE(TAG, "twai_stop() failed with %s", esp_err_to_name(err));
                 }
 
                 if (configs.canUninstallOnReset.value())
                 {
                     if (const auto err = twai_driver_uninstall(); err != ESP_OK) {
-                        ESP_LOGE(TAG, "ERROR: twai_driver_uninstall() failed with %s", esp_err_to_name(err));
+                        ESP_LOGE(TAG, "twai_driver_uninstall() failed with %s", esp_err_to_name(err));
                     }
                     twai_general_config_t g_config = TWAI_GENERAL_CONFIG_DEFAULT(GPIO_NUM_21, GPIO_NUM_22,
                                                                                  TWAI_MODE_NORMAL);
                     twai_timing_config_t t_config = TWAI_TIMING_CONFIG_250KBITS();
                     twai_filter_config_t f_config = TWAI_FILTER_CONFIG_ACCEPT_ALL();
                     if (const auto err = twai_driver_install(&g_config, &t_config, &f_config); err != ESP_OK) {
-                        ESP_LOGE(TAG, "ERROR: twai_driver_install() failed with %s", esp_err_to_name(err));
+                        ESP_LOGE(TAG, "twai_driver_install() failed with %s", esp_err_to_name(err));
                     }
                 }
                 if (const auto err = twai_start(); err != ESP_OK)
                 {
-                    ESP_LOGE(TAG, "ERROR: twai_start() failed with %s", esp_err_to_name(err));
+                    ESP_LOGE(TAG, "twai_start() failed with %s", esp_err_to_name(err));
                 }
             }
         }
@@ -386,18 +388,33 @@ void sendCanCommands()
 
     static struct {
         struct {
-            uint8_t freq = 0;
-            uint8_t pattern = 0;
+            struct {
+                int16_t nCruiseMotTgt{};
+                bool cruiseCtrlEna{};
+            } left, right;
+            uint8_t freq{};
+            uint8_t pattern{};
         } front, back;
         std::underlying_type_t<Boardcomputer::Button> buttonLeds{};
     } lastValues;
 
     static int i{};
 
-    if ((front && front->command.buzzer.freq    != lastValues.front.freq ) ||
-        (front && front->command.buzzer.pattern != lastValues.front.pattern ) ||
-        (back && back->command.buzzer.freq     != lastValues.back.freq) ||
-        (back && back->command.buzzer.pattern  != lastValues.back.pattern))
+    // anti aufklatsch when tempomat
+         if ((front && front->command.left.nCruiseMotTgt  != lastValues.front.left.nCruiseMotTgt) ||
+             (front && front->command.right.nCruiseMotTgt != lastValues.front.right.nCruiseMotTgt) ||
+             (back && back->command.left.nCruiseMotTgt    != lastValues.back.left.nCruiseMotTgt) ||
+             (back && back->command.right.nCruiseMotTgt   != lastValues.back.right.nCruiseMotTgt))
+        i = 8;
+    else if ((front && front->command.left.cruiseCtrlEna  != lastValues.front.left.cruiseCtrlEna) ||
+             (front && front->command.right.cruiseCtrlEna != lastValues.front.right.cruiseCtrlEna) ||
+             (back && back->command.left.cruiseCtrlEna    != lastValues.back.left.cruiseCtrlEna) ||
+             (back && back->command.right.cruiseCtrlEna   != lastValues.back.right.cruiseCtrlEna))
+        i = 9;
+    else if ((front && front->command.buzzer.freq    != lastValues.front.freq ) ||
+             (front && front->command.buzzer.pattern != lastValues.front.pattern ) ||
+             (back && back->command.buzzer.freq      != lastValues.back.freq) ||
+             (back && back->command.buzzer.pattern   != lastValues.back.pattern))
         i = 10;
     else if (buttonLeds              != lastValues.buttonLeds)
         i = 12;
@@ -472,16 +489,16 @@ void sendCanCommands()
         if (back) send(MotorController<true, true>::Command::PhaseAdvMax, back->command.right.phaseAdvMax);
         break;
     case 8:
-        if (front) send(MotorController<false, false>::Command::CruiseCtrlEna, front->command.left.cruiseCtrlEna);
-        if (front) send(MotorController<false, true>::Command::CruiseCtrlEna, front->command.right.cruiseCtrlEna);
-        if (back) send(MotorController<true, false>::Command::CruiseCtrlEna, back->command.left.cruiseCtrlEna);
-        if (back) send(MotorController<true, true>::Command::CruiseCtrlEna, back->command.right.cruiseCtrlEna);
-        break;
-    case 9:
         if (front) send(MotorController<false, false>::Command::CruiseMotTgt, front->command.left.nCruiseMotTgt);
         if (front) send(MotorController<false, true>::Command::CruiseMotTgt, front->command.right.nCruiseMotTgt);
         if (back) send(MotorController<true, false>::Command::CruiseMotTgt, back->command.left.nCruiseMotTgt);
         if (back) send(MotorController<true, true>::Command::CruiseMotTgt, back->command.right.nCruiseMotTgt);
+        break;
+    case 9:
+        if (front) send(MotorController<false, false>::Command::CruiseCtrlEna, front->command.left.cruiseCtrlEna);
+        if (front) send(MotorController<false, true>::Command::CruiseCtrlEna, front->command.right.cruiseCtrlEna);
+        if (back) send(MotorController<true, false>::Command::CruiseCtrlEna, back->command.left.cruiseCtrlEna);
+        if (back) send(MotorController<true, true>::Command::CruiseCtrlEna, back->command.right.cruiseCtrlEna);
         break;
     case 10:
         if (front && send(MotorController<false, false>::Command::BuzzerFreq, front->command.buzzer.freq) == ESP_OK)

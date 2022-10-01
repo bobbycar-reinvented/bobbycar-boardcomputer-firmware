@@ -10,6 +10,7 @@
 // local includes
 #include "ledstrip.h"
 #include "globals.h"
+#include "modes/defaultmode.h"
 #include "modes/remotecontrolmode.h"
 #include "utils.h"
 #include "newsettings.h"
@@ -246,12 +247,14 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
 
     if (!simplified)
     {
-        modes::remoteControlMode.setCommand(RemoteCommand{
+        RemoteCommand cmd {
             .frontLeft = doc[isInverted ? "fr":"fl"].as<int16_t>(),
             .frontRight = doc[isInverted ? "fl":"fr"].as<int16_t>(),
             .backLeft = doc["bl"].as<int16_t>(),
             .backRight = doc["br"].as<int16_t>()
-        });
+        };
+        modes::defaultMode.setRemoteCommand(cmd);
+        modes::remoteControlMode.setRemoteCommand(cmd);
     }
 }
 
@@ -270,7 +273,7 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
 
     if (write_type == "wifi") {
         const int index = doc["wifi_index"].as<int>();
-        ESP_LOGI(TAG, "[ble_config]: Set wifi%i: WiFi-SSID: %s, WiFi-Password: ***", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>());
+        ESP_LOGI(TAG, "Set wifi%i: WiFi-SSID: %s, WiFi-Password: ***", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>());
         configs.write_config(configs.wifi_configs[index].ssid, doc["wifi_ssid"].as<std::string>());
         configs.write_config(configs.wifi_configs[index].key, doc["wifi_pass"].as<std::string>());
     } else {
@@ -283,7 +286,7 @@ void WiFiListCallbacks::onRead(NimBLECharacteristic *pCharacteristic)
 {
     StaticJsonDocument<768> responseDoc;
     auto wifiArray = responseDoc.createNestedArray("wifis");
-    ESP_LOGI(TAG, "[ble_wifilist] Got request for listing wifi ssids.");
+    ESP_LOGI(TAG, "Got request for listing wifi ssids.");
     for (const auto &wifi : configs.wifi_configs)
     {
         wifiArray.add(wifi.ssid.value());

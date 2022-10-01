@@ -996,7 +996,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
         cloudStarted = false;
         break;
     default:
-        ESP_LOGI(TAG, "%s unknown event_id %i", event_base, event_id);
+        ESP_LOGI(TAG, "%s unknown event_id %li", event_base, event_id);
     }
 }
 

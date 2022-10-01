@@ -1,7 +1,12 @@
 #include "potis.h"
 
+// esp-idf includes
+#include <esp_log.h>
+#include <esp_adc/adc_oneshot.h>
+#include <esp_adc/adc_cali.h>
+#include <esp_adc/adc_cali_scheme.h>
+
 // 3rdparty lib includes
-#include <esp32-hal-adc.h>
 #include <cpputils.h>
 
 // local includes
@@ -14,6 +19,23 @@
 
 using namespace std::chrono_literals;
 
+namespace {
+constexpr const char * const TAG = "POTIS";
+
+adc_oneshot_unit_handle_t adc1_handle;
+
+constexpr adc_channel_t ADC_CHANNEL_GAS = ADC_CHANNEL_6;
+constexpr adc_channel_t ADC_CHANNEL_BREMS = ADC_CHANNEL_7;
+
+//constexpr auto DEFAULT_VREF = 1100;
+//constexpr adc_atten_t attenuation = ADC_ATTEN_DB_11;
+
+//constexpr const double ADC_COUNTS = 3300.;
+
+//esp_adc_cal_characteristics_t adc_chars;
+
+} // namespace
+
 void initPotis()
 {
     raw_gas = std::nullopt;
@@ -21,20 +43,36 @@ void initPotis()
     gas = std::nullopt;
     brems = std::nullopt;
 
+    adc_oneshot_unit_init_cfg_t init_config1 = {
+        .unit_id = ADC_UNIT_1,
+        .ulp_mode = ADC_ULP_MODE_DISABLE,
+    };
+    if (const auto result = adc_oneshot_new_unit(&init_config1, &adc1_handle); result != ESP_OK)
+        ESP_LOGE(TAG, "adc_oneshot_new_unit() failed with %s", esp_err_to_name(result));
+
+    adc_oneshot_chan_cfg_t config = {
+        .atten = ADC_ATTEN_DB_11,
+        .bitwidth = ADC_BITWIDTH_DEFAULT,
+    };
+    if (const auto result = adc_oneshot_config_channel(adc1_handle, ADC_CHANNEL_GAS, &config); result != ESP_OK)
+        ESP_LOGE(TAG, "adc_oneshot_config_channel() failed with %s", esp_err_to_name(result));
+    if (const auto result = adc_oneshot_config_channel(adc1_handle, ADC_CHANNEL_BREMS, &config); result != ESP_OK)
+        ESP_LOGE(TAG, "adc_oneshot_config_channel() failed with %s", esp_err_to_name(result));
+
     readPotis();
 }
 
 void readPotis()
 {
-    [[maybe_unused]]
-    constexpr auto sampleMultipleTimes = [](uint8_t pin){
-          analogRead(pin);
-          float sum{};
-          const auto sampleCount = configs.sampleCount.value();
-          for (int i = 0; i < sampleCount; i++)
-              sum += analogRead(pin);
-          return sum / sampleCount;
-      };
+//    [[maybe_unused]]
+//    constexpr auto sampleMultipleTimes = [](uint8_t pin){
+//          analogRead(pin);
+//          float sum{};
+//          const auto sampleCount = configs.sampleCount.value();
+//          for (int i = 0; i < sampleCount; i++)
+//              sum += analogRead(pin);
+//          return sum / sampleCount;
+//    };
 
     raw_gas = std::nullopt;
     raw_brems = std::nullopt;
@@ -61,9 +99,21 @@ void readPotis()
 
 #ifdef FEATURE_ADC_IN
     if (!raw_gas)
-        raw_gas = sampleMultipleTimes(PINS_GAS);
+    {
+        int raw;
+        if (const auto result = adc_oneshot_read(adc1_handle, ADC_CHANNEL_GAS, &raw); result == ESP_OK)
+            raw_gas = raw;
+        else
+            ESP_LOGE(TAG, "adc_oneshot_read() failed with %s", esp_err_to_name(result));
+    }
     if (!raw_brems)
-        raw_brems = sampleMultipleTimes(PINS_BREMS);
+    {
+        int raw;
+        if (const auto result = adc_oneshot_read(adc1_handle, ADC_CHANNEL_BREMS, &raw); result == ESP_OK)
+            raw_brems = raw;
+        else
+            ESP_LOGE(TAG, "adc_oneshot_read() failed with %s", esp_err_to_name(result));
+    }
 #endif
 
 #ifndef FEATURE_JOYSTICK

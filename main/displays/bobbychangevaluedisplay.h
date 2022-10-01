@@ -48,5 +48,6 @@ void BobbyChangeValueDisplay<Tvalue>::buttonPressed(espgui::Button button)
 template<typename Tvalue>
 void BobbyChangeValueDisplay<Tvalue>::buttonReleased(espgui::Button button)
 {
-    //Base::buttonReleased(button);
+    Base::buttonReleased(button);
+    buttonReleasedCommon(button);
 }

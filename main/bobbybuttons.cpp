@@ -110,6 +110,7 @@ void buttonReleasedCommon(espgui::Button button)
 
 void BobbyButtons::rawButtonPressed(uint8_t button)
 {
+    ESP_LOGI(TAG, "%hhu", button);
     //Base::rawButtonPressed(button);
     if (const auto translated = translateRawButton(button))
         buttonPressed(*translated);
@@ -117,6 +118,7 @@ void BobbyButtons::rawButtonPressed(uint8_t button)
 
 void BobbyButtons::rawButtonReleased(uint8_t button)
 {
+    ESP_LOGI(TAG, "%hhu", button);
     //Base::rawButtonReleased(button);
     if (const auto translated = translateRawButton(button))
         buttonReleased(*translated);

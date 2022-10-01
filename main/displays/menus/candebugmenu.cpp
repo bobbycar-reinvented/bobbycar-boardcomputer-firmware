@@ -277,7 +277,7 @@ void CanDebugMenu::update()
     }
     else
     {
-        ESP_LOGD(TAG, "state=%i msgs_to_tx=%u tx_error_counter=%u tx_failed_count=%u arb_lost_count=%u bus_error_count=%u",
+        ESP_LOGD(TAG, "state=%i msgs_to_tx=%lu tx_error_counter=%lu tx_failed_count=%lu arb_lost_count=%lu bus_error_count=%lu",
                  status_info.state, status_info.msgs_to_tx, status_info.tx_error_counter,
                  status_info.tx_failed_count, status_info.arb_lost_count, status_info.bus_error_count);
         m_last_can_status_info = status_info;

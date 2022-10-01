@@ -58,6 +58,7 @@ constexpr ProfileSettings::ControllerHardware spinnerControllerHardware {
 
 constexpr ProfileSettings::DefaultMode defaultDefaultMode {
     .modelMode = UnifiedModelMode::FocTorque, // profileSetting
+    .allowRemoteControl = true,
     .squareGas = true,
     .squareBrems = true,
     .enableSmoothingUp = true,                // profileSetting

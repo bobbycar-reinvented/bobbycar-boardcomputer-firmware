@@ -3,6 +3,9 @@
 // system includes
 #include <array>
 
+// esp-idf includes
+#include <esp_log.h>
+
 // Arduino includes
 #include <esp32-hal-gpio.h>
 #include <esp32-hal-misc.h>
@@ -19,6 +22,8 @@
 #include "bobbybuttons.h"
 
 namespace {
+static const constexpr char TAG[] = "DPAD";
+
 template<pin_t OUT, pin_t IN1, pin_t IN2, pin_t IN3, pin_t IN4>
 class Helper
 {
