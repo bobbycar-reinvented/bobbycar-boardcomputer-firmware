@@ -94,14 +94,12 @@ extern "C" void app_main()
         recovery = true;
     }
 
-    initScreen();
-
     bootLabel.redraw("settings");
 
     if (const auto result = configs.init("bobbycar"); result != ESP_OK)
         ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
 
-    updateRotation();
+    initScreen();
 
     profileSettings = presets::defaultProfileSettings;
 
