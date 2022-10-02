@@ -33,6 +33,16 @@ void initScreen()
     bootLabel.start();
 }
 
+void updateRotation()
+{
+    if (tft.getRotation() != (configs.boardcomputerHardware.flipScreen.value() ? 2 : 0))
+    {
+        tft.setRotation(configs.boardcomputerHardware.flipScreen.value() ? 2 : 0);
+        if (currentDisplay)
+            currentDisplay->initScreen();
+    }
+}
+
 void updateDisplay()
 {
     if (currentDisplay)
@@ -44,12 +54,7 @@ void updateDisplay()
         changeScreenCallback = {};
     }
 
-    if (tft.getRotation() != (configs.boardcomputerHardware.flipScreen.value() ? 2 : 0))
-    {
-        tft.setRotation(configs.boardcomputerHardware.flipScreen.value() ? 2 : 0);
-        if (currentDisplay)
-            currentDisplay->initScreen();
-    }
+    updateRotation();
 
     if (const int8_t rawButton = rawButtonRequest.load(); rawButton != -1 && currentDisplay)
     {

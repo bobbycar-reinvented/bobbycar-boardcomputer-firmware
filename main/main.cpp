@@ -101,6 +101,8 @@ extern "C" void app_main()
     if (const auto result = configs.init("bobbycar"); result != ESP_OK)
         ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
 
+    updateRotation();
+
     profileSettings = presets::defaultProfileSettings;
 
     if (settingsPersister.init())

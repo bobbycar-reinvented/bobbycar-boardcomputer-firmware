@@ -1,4 +1,5 @@
 set(BOBBY_APP_NAME testdevice2)
+set(BOBBY_DEFAULT_OTA_NAME testdevice2)
 
 add_definitions(
   -DUSER_SETUP_LOADED=1
