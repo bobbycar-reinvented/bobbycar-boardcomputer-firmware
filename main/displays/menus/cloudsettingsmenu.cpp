@@ -1,13 +1,15 @@
 #include "cloudsettingsmenu.h"
 
 // 3rdparty lib includes
+#include <actions/dummyaction.h>
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <changevaluedisplay.h>
+#include <changevaluedisplay_string.h>
 #include <fmt/core.h>
-#include "menuitem.h"
-#include "changevaluedisplay.h"
-#include "actions/pushscreenaction.h"
-#include "actions/popscreenaction.h"
-#include "actions/dummyaction.h"
-#include "icons/back.h"
+#include <icons/back.h>
+#include <menuitem.h>
+
 
 // local includes
 #include "accessors/settingsaccessors.h"
@@ -16,16 +18,33 @@
 #include "cloudtexthelpers.h"
 #include "displays/bobbychangevaluedisplay.h"
 #include "displays/menus/settingsmenu.h"
-#include "displays/menus/typesafeenumchangemenu.h"
 
 namespace {
 constexpr char TEXT_CLOUDSETTINGS[] = "Cloud settings";
+constexpr char TEXT_CLOUDURL[] = "Cloud URL";
+constexpr char TEXT_CLOUDKEY[] = "Cloud Key";
 constexpr char TEXT_CLOUDENABLED[] = "Cloud enabled";
 constexpr char TEXT_CLOUDTRANSMITTIMEOUT[] = "Transmit timeout";
 constexpr char TEXT_SENDSTATISTICS[] = "Send Statistics";
 constexpr char TEXT_CLOUDCOLLECTRATE[] = "Cloud collect rate";
 constexpr char TEXT_CLOUDSENDRATE[] = "Cloud send rate";
 constexpr char TEXT_BACK[] = "Back";
+
+using CloudURLChangeScreen = espgui::makeComponent<
+        BobbyChangeValueDisplay<std::string>,
+        espgui::StaticText<TEXT_CLOUDURL>,
+        CloudURLAccessor,
+        espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+        espgui::BackActionInterface<espgui::PopScreenAction>
+>;
+
+using CloudKeyChangeScreen = espgui::makeComponent<
+        BobbyChangeValueDisplay<std::string>,
+        espgui::StaticText<TEXT_CLOUDKEY>,
+        CloudKeyAccessor,
+        espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+        espgui::BackActionInterface<espgui::PopScreenAction>
+>;
 
 using CloudTransmitTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
@@ -66,6 +85,8 @@ using namespace espgui;
 CloudSettingsMenu::CloudSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDENABLED>,         BobbyCheckbox, CloudEnabledAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDURL>,             PushScreenAction<CloudURLChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDKEY>,             PushScreenAction<CloudKeyChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDTRANSMITTIMEOUT>, PushScreenAction<CloudTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SENDSTATISTICS>,       BobbyCheckbox, CloudSendStatisticsAccessor>>();
     constructMenuItem<makeComponent<MenuItem, CloudCreatedText,                      DisabledColor, DummyAction>>();

@@ -721,9 +721,6 @@ void cloudSend()
     if (configs.cloudUrl.value().empty())
         return;
 
-    if (!configs.cloudSettings.sendStatistic.value())
-        return;
-
     if (!cloudStarted)
     {
         if (espchrono::ago(lastStartTry) < 10s)
