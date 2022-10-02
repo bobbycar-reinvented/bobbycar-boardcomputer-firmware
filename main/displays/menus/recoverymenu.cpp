@@ -5,12 +5,15 @@
 
 // local includes
 #include "actions/rebootaction.h"
+#include "actions/resetnvsaction.h"
 #include "bobbycheckbox.h"
 #include "bobbyerrorhandler.h"
+#include "icons/info.h"
 #include "icons/reboot.h"
 #include "newsettings.h"
 
 namespace {
+constexpr char TEXT_RESET_NVS[] = "Reset NVS";
 constexpr char TEXT_REBOOT[] = "Reboot";
 }
 
@@ -47,6 +50,7 @@ RecoveryMenu::RecoveryMenu()
     configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature){
         constructMenuItem<BasicFeatureFlagMenuItem>(feature);
     });
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS>, ResetNVSAction, StaticMenuItemIcon<&bobbyicons::info>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>, RebootAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
 }
 

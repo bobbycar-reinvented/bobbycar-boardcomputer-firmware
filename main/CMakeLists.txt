@@ -24,6 +24,7 @@ set(headers
     actions/modesettingsaction.h
     actions/qraction.h
     actions/rebootaction.h
+        actions/resetnvsaction.h
     actions/savesettingsaction.h
     actions/switchprofileaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
@@ -278,6 +279,7 @@ set(sources
     actions/modesettingsaction.cpp
     actions/qraction.cpp
     actions/rebootaction.cpp
+        actions/resetnvsaction.cpp
     actions/savesettingsaction.cpp
     actions/switchprofileaction.cpp
     actions/tempomatmodeapplycurrentpeedaction.cpp
