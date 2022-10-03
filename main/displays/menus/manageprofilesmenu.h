@@ -26,9 +26,12 @@ public:
 
     std::string text() const override;
     std::string action_text() const;
-    void back() override;
     void lock();
     void unlock();
+
+    void back() override {};
+
+    void buttonPressed(espgui::Button button) override;
 private:
     ModeInterface *m_oldMode;
     IgnoreInputMode m_mode{0, bobbycar::protocol::ControlType::FieldOrientedControl, bobbycar::protocol::ControlMode::Torque};

@@ -1,12 +1,12 @@
 #include "manageprofilesmenu.h"
 
 // 3rdparty lib includes
-#include <icons/back.h>
 #include <TFT_eSPI.h>
+#include <icons/back.h>
 
 // local includes
-#include "actions/pushscreenaction.h"
 #include "actions/popscreenaction.h"
+#include "actions/pushscreenaction.h"
 #include "bobbyerrorhandler.h"
 #include "globals.h"
 #include "mainmenu.h"
@@ -14,11 +14,10 @@
 #include "settingsutils.h"
 #include "utils.h"
 
-constexpr const char * const TAG = "ProfileManager";
-
 using namespace espgui;
 
-namespace  {
+namespace {
+constexpr const char * const TAG = "ProfileManager";
 constexpr char TEXT_MANAGEPROFILESMENU[] = "Manage Profiles Menu";
 constexpr char TEXT_BACK[] = "Back";
 } // namespace
@@ -35,6 +34,8 @@ public:
             const auto currProfile = settingsPersister.currentlyOpenProfileIndex();
             if (!currProfile)
                 return;
+
+            m_menu.unlock();
 
             settingsutils::switchProfile(m_menu.m_firstIndex);
 
@@ -60,10 +61,11 @@ public:
         }
         else if (m_menu.m_firstIndex != -1 && m_menu.m_firstIndex != m_profileIndex)
         {
+            m_menu.lock();
+            m_mode = CONFIRM_COPY;
             BobbyErrorHandler{}.errorOccurred(
                     fmt::format("Press CONFIRM to COPY from Profile {} to Profile {}", m_menu.m_firstIndex,
                                 m_profileIndex));
-            m_mode = CONFIRM_COPY;
         }
     }
 
@@ -74,6 +76,8 @@ public:
             const auto currProfile = settingsPersister.currentlyOpenProfileIndex();
             if (!currProfile)
                 return;
+
+            m_menu.unlock();
 
             settingsutils::switchProfile(m_menu.m_firstIndex);
             const ProfileSettings tmp = profileSettings;
@@ -102,10 +106,11 @@ public:
         }
         else if (m_menu.m_firstIndex != -1 && m_menu.m_firstIndex != m_profileIndex)
         {
+            m_menu.lock();
+            m_mode = CONFIRM_SWAP;
             BobbyErrorHandler{}.errorOccurred(
                     fmt::format("Press CONFIRM to SWAP Profile {} with Profile {}", m_menu.m_firstIndex,
                                 m_profileIndex));
-            m_mode = CONFIRM_SWAP;
         }
     }
 
@@ -247,38 +252,59 @@ void ManageProfilesMenu::stop()
     }
 }
 
-void ManageProfilesMenu::back()
-{
-    if (!m_locked && m_firstIndex == -1)
-    {
-        espgui::popScreen();
-        return;
-    }
-
-    if (m_locked)
-        m_locked = false;
-
-    if (m_firstIndex != -1)
-        m_firstIndex = -1;
-
-}
-
 std::string ManageProfilesMenu::text() const
 {
     return TEXT_MANAGEPROFILESMENU;
 }
 
-std::string ManageProfilesMenu::action_text() const {
+std::string ManageProfilesMenu::action_text() const
+{
     return toString(m_action);
 }
 
-void ManageProfilesMenu::lock() {
+void ManageProfilesMenu::lock()
+{
     m_locked = true;
 }
 
-void ManageProfilesMenu::unlock() {
+void ManageProfilesMenu::unlock()
+{
     m_locked = false;
 }
-// functions: clear profile, copy profile, move profile
-// TODO: If m_locked == true, only confirm and back (espgui::Button::Right and espgui::Button::Left) should be allowed to pass to the menuitems.
-//
+
+void ManageProfilesMenu::buttonPressed(espgui::Button button)
+{
+    using namespace espgui;
+
+    switch (button)
+    {
+    case Button::Left:
+    {
+        if (!m_locked && m_firstIndex == -1)
+        {
+            espgui::popScreen();
+            return;
+        }
+
+        if (m_locked)
+        {
+            m_locked = false;
+        }
+
+        if (m_firstIndex != -1)
+        {
+            m_firstIndex = -1;
+        }
+        break;
+    }
+    case Button::Up:
+    case Button::Down:
+        if (m_locked)
+        {
+            return;
+        }
+    default:
+        Base::buttonPressed(button);
+        break;
+    }
+}
