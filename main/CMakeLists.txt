@@ -24,7 +24,7 @@ set(headers
     actions/modesettingsaction.h
     actions/qraction.h
     actions/rebootaction.h
-        actions/resetnvsaction.h
+    actions/resetnvsaction.h
     actions/savesettingsaction.h
     actions/switchprofileaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
@@ -279,7 +279,7 @@ set(sources
     actions/modesettingsaction.cpp
     actions/qraction.cpp
     actions/rebootaction.cpp
-        actions/resetnvsaction.cpp
+    actions/resetnvsaction.cpp
     actions/savesettingsaction.cpp
     actions/switchprofileaction.cpp
     actions/tempomatmodeapplycurrentpeedaction.cpp
@@ -543,6 +543,10 @@ string(STRIP "${GIT_MESSAGE}" GIT_MESSAGE)
 string(REPLACE "\n" " " GIT_MESSAGE "${GIT_MESSAGE}")
 string(SUBSTRING "${GIT_MESSAGE}" 0 100 GIT_MESSAGE)
 string(STRIP "${GIT_BRANCH}" GIT_BRANCH)
+
+if(NOT DEFINED BOBBY_DEFAULT_OTA_NAME)
+    message(FATAL_ERROR "Please define BOBBY_DEFAULT_OTA_NAME")
+endif()
 
 target_compile_options(${COMPONENT_TARGET}
     PRIVATE
