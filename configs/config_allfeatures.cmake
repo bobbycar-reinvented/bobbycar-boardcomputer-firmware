@@ -1,4 +1,5 @@
 set(BOBBY_APP_NAME bobbyquad_allfeatures)
+set(BOBBY_DEFAULT_OTA_NAME allfeatures)
 
 add_definitions(
   -DUSER_SETUP_LOADED=1
