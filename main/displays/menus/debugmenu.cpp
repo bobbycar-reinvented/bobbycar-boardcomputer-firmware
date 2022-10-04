@@ -13,8 +13,10 @@
 #include "actions/loadsettingsaction.h"
 #include "actions/savesettingsaction.h"
 #include "actions/erasenvsaction.h"
+#include "actions/resetnvsaction.h"
 #include "icons/lock.h"
 #include "icons/battery.h"
+#include "icons/info.h"
 #include "debugcolorhelpers.h"
 #include "esptexthelpers.h"
 #include "accessors/settingsaccessors.h"
@@ -57,6 +59,7 @@ constexpr char TEXT_TOGGLECLOUDDEBUG[] = "Cloud Debug";
 constexpr char TEXT_LOADSETTINGS[] = "Load settings (old)";
 constexpr char TEXT_SAVESETTINGS[] = "Save settings (old)";
 constexpr char TEXT_ERASENVS[] = "Erase NVS (old)";
+constexpr char TEXT_RESET_NVS_NEW[] = "Reset NVS (new)";
 constexpr char TEXT_DYNAMICMENU[] = "GUI experiments";
 constexpr char TEXT_BACK[] = "Back";
 } // namespace
@@ -99,6 +102,8 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOADSETTINGS>,         LoadSettingsAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SAVESETTINGS>,         SaveSettingsAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ERASENVS>,             EraseNvsAction>>();
+    constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS_NEW>,        ResetNVSAction, StaticMenuItemIcon<&bobbyicons::info>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          PushScreenAction<DynamicDebugMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
