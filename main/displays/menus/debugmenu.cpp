@@ -103,7 +103,7 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SAVESETTINGS>,         SaveSettingsAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ERASENVS>,             EraseNvsAction>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS_NEW>,        ResetNVSAction, StaticMenuItemIcon<&bobbyicons::info>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS_NEW>,        ResetNVSAction<true>, StaticMenuItemIcon<&bobbyicons::info>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          PushScreenAction<DynamicDebugMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
 }

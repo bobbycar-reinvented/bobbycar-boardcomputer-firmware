@@ -364,7 +364,7 @@ public:
             ConfigWrapperLegacy<int16_t> cloudSendRate  {1,                                      DoReset,   {},                         "cloudSendRate"       };
             ConfigWrapperLegacy<int16_t> udpSendRateMs  {65,                                     DoReset,   {},                         "udpSendRate"         };
         } timersSettings;
-        ConfigWrapperLegacy<bool>    flipScreen         {false,                                  DoReset,   {},                         "flipScreen"          };
+        ConfigWrapperLegacy<bool>    flipScreen         {false,                                  NoReset,   {},                         "flipScreen"          };
     } boardcomputerHardware;
 
     struct {
