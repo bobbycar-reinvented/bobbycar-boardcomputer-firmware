@@ -32,7 +32,6 @@ private:
     std::string m_msg;
 };
 
-template<typename TMenu>
 class PushQrImportDisplayAction : public virtual espgui::ActionInterface
 {
 public:
@@ -41,7 +40,7 @@ public:
 
     void triggered() override
     {
-        espgui::pushScreen<QrImportDisplay<TMenu>>(std::move(m_nvskey));
+        espgui::pushScreen<QrImportDisplay>(std::move(m_nvskey));
     }
 private:
     std::string m_nvskey;
