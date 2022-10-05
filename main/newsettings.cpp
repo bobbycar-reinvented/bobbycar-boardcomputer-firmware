@@ -23,7 +23,7 @@ std::string defaultHostname()
 
 std::string defaultUsername()
 {
-    return fmt::format("bobby_{}", BOBBY_DEFAULT_OTA_NAME);
+    return fmt::format("bobby_{}", BOBBY_DEFAULT_USERNAME);
 }
 
 ConfigManager<ConfigContainer> configs;

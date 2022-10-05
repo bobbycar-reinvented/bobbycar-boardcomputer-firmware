@@ -1,22 +1,24 @@
 #include "udpcloud.h"
 
+// system includes
+#include <esp_log.h>
+#include <esp_ota_ops.h>
+#include <lwip/dns.h>
+
 // 3rd party includes
 #include <ArduinoJson.h>
 #include <FastLED.h>
-#include <esp_ota_ops.h>
+#include <espchrono.h>
 #include <espwifistack.h>
+#include <fmt/format.h>
 
 // local includes
-#include "udpsender.h"
-#include "esp_log.h"
-#include "fmt/format.h"
-#include "globals.h"
-#include "utils.h"
-#include "lwip/dns.h"
-#include "espchrono.h"
 #include "battery.h"
 #include "drivingstatistics.h"
+#include "globals.h"
 #include "newsettings.h"
+#include "udpsender.h"
+#include "utils.h"
 
 using namespace std::chrono_literals;
 
@@ -25,6 +27,8 @@ constexpr const char * const TAG = "bobbycloud";
 
 espchrono::millis_clock::time_point timestampLastFailed;
 espchrono::millis_clock::time_point lastSend;
+
+uint8_t packageType{0}; // cycle through packages.
 } // namespace
 
 // Little "flash" on statusdisplay when udp stuff is happening
@@ -40,99 +44,121 @@ void udpCloudUpdate()
     if (!configs.feature.udpcloud.isEnabled.value())
         return;
 
-    if (configs.udpCloudSettings.udpCloudEnabled.value() && configs.udpCloudSettings.udpUid.touched())
+    if (configs.udpCloudSettings.udpCloudEnabled.value() && configs.udpCloudSettings.udpToken.touched())
         sendUdpCloudPacket();
 }
 
-std::string buildUdpCloudJson()
+std::optional<std::string> buildUdpCloudJson()
 {
-    static std::string version_string;
-    if (version_string.empty() || version_string == "-")
+    StaticJsonDocument<512> doc;
+
+    switch (++packageType)
     {
-        if (const esp_app_desc_t *app_desc = esp_ota_get_app_description())
-        {
-            version_string = app_desc->version;
-        }
-        else
-        {
-            version_string = "-";
-        }
+    default:
+        packageType = 0;
+    case 0:
+    {
+        // uptime, potis
+        const auto uptime = espchrono::millis_clock::now().time_since_epoch() / 1ms;
+        doc["upt"] = uptime;
+
+        if (gas)
+            doc["pcg"] = *gas; // poti calculated gas
+        if (raw_gas)
+            doc["prg"] = *raw_gas; // poti raw gas
+        if (brems)
+            doc["pcb"] = *brems; // poti calculated brems
+        if (raw_brems)
+            doc["prb"] = *raw_brems; // poti raw brems
+
+        doc["loc"] = isLocked;
+        doc["mdr"] = drivingStatistics.meters_driven;
+        doc["mdt"] = drivingStatistics.totalMeters;
+        doc["cdt"] = drivingStatistics.currentDrivingTime / 1ms;
+        doc["sha"] = GIT_REV;
+        break;
     }
-    StaticJsonDocument<1024> doc;
-    std::string buf;
-    const auto uptime = espchrono::millis_clock::now().time_since_epoch() / 1ms;
+    case 1:
+    {
 
-    float watt{0};
-    const auto avgVoltage = controllers.getAvgVoltage();
-    if(avgVoltage)
-        watt = sumCurrent * *avgVoltage;
-
-    // const auto w_per_kmh = watt / avgSpeedKmh;
-
-    // User ID
-    doc["uid"] = configs.udpCloudSettings.udpUid.value();
-    doc["upt"] = uptime;
-
-    const auto addController = [&](const Controller &controller, const bool isBack) {
+        if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
+        {
+            doc["bap"] = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
+            doc["bav"] = *avgVoltage; // battery voltage
+            doc["pwr"] = sumCurrent * *avgVoltage; // total watt
+        }
+        doc["whl"] = getRemainingWattHours(); // watt hours left
+        doc["kml"] = getRemainingWattHours() / configs.battery.watthoursPerKilometer.value(); // calculated kilometers left
+        doc["ekm"] = getEstimatedKmLeft(); // kilometers left live calculation
+        break;
+    }
+    case 2:
+    {
+        const auto &controller = controllers.front;
         if (controller.feedbackValid)
         {
-            auto arr = doc.createNestedObject(!isBack ? "f":"b");
-            // Voltage
-            arr["V"] = controller.getCalibratedVoltage();
+            doc["fbv"] = controller.getCalibratedVoltage();
 
             // Amperes
-            arr["lA"] = fixCurrent(controller.feedback.left.dcLink);
-            arr["rA"] = fixCurrent(controller.feedback.right.dcLink);
+            doc["fla"] = fixCurrent(controller.feedback.left.dcLink);
+            doc["fra"] = fixCurrent(controller.feedback.right.dcLink);
 
             // Temperature
-            arr[!isBack ? "fT":"bT"] = fixBoardTemp(controller.feedback.boardTemp);
+            doc["fbt"] = fixBoardTemp(controller.feedback.boardTemp);
 
             // Errors
-            arr[!isBack ? "flE":"blE"] = controller.feedback.left.error;
-            arr[!isBack ? "frE":"brE"] = controller.feedback.right.error;
+            doc["fle"] = controller.feedback.left.error;
+            doc["fre"] = controller.feedback.right.error;
 
             // Speed
-            arr[!isBack ? "flS":"blS"] = convertToKmh(controller.feedback.left.speed) * (controller.invertLeft?-1:1);
-            arr[!isBack ? "frS":"brS"] = convertToKmh(controller.feedback.right.speed) * (controller.invertRight?-1:1);
+            doc["fls"] = convertToKmh(controller.feedback.left.speed) * (controller.invertLeft?-1:1);
+            doc["frs"] = convertToKmh(controller.feedback.right.speed) * (controller.invertRight?-1:1);
         }
         else
         {
-            doc[!isBack ? "f":"b"] = nullptr;
+            return std::nullopt;
         }
-    };
-
-    addController(controllers.front, false);
-    addController(controllers.back, true);
-
-    // Potis
+        break;
+    }
+    case 3:
     {
-        auto arr = doc.createNestedObject("p");
-        if (gas)
-            arr["g"] = *gas;
-        if (raw_gas)
-            arr["rg"] = *raw_gas;
-        if (brems)
-            arr["b"] = *brems;
-        if (raw_brems)
-            arr["rb"] = *raw_brems;
+        const auto &controller = controllers.back;
+        if (controller.feedbackValid)
+        {
+            doc["bbv"] = controller.getCalibratedVoltage();
+
+            // Amperes
+            doc["bla"] = fixCurrent(controller.feedback.left.dcLink);
+            doc["bra"] = fixCurrent(controller.feedback.right.dcLink);
+
+            // Temperature
+            doc["bbt"] = fixBoardTemp(controller.feedback.boardTemp);
+
+            // Errors
+            doc["ble"] = controller.feedback.left.error;
+            doc["bre"] = controller.feedback.right.error;
+
+            // Speed
+            doc["bls"] = convertToKmh(controller.feedback.left.speed) * (controller.invertLeft?-1:1);
+            doc["brs"] = convertToKmh(controller.feedback.right.speed) * (controller.invertRight?-1:1);
+        }
+        else
+        {
+            return std::nullopt;
+        }
+        break;
+    }
     }
 
-    // Statistics
-    if(avgVoltage)
+    // if empty, return empty string
+    if (doc.isNull())
     {
-        doc["bP"] = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
-        doc["bV"] = *avgVoltage;
+        return std::nullopt;
     }
-    doc["l"] = isLocked;
-    doc["mN"] = drivingStatistics.meters_driven;
-    doc["mT"] = drivingStatistics.totalMeters;
-    doc["dT"] = drivingStatistics.currentDrivingTime / 1ms;
-    doc["cW"] = watt;
-    doc["wN"] = drivingStatistics.wh_used;
-    doc["wL"] = getRemainingWattHours();
-    doc["kmL"] = getRemainingWattHours() / configs.battery.watthoursPerKilometer.value();
-    doc["ver"] = version_string.substr(0, 6);
 
+    doc["__t"] = configs.udpCloudSettings.udpToken.value();
+
+    std::string buf;
     serializeJson(doc, buf);
     return buf;
 }
@@ -145,7 +171,7 @@ void sendUdpCloudPacket()
         return;
     }
 
-    if (configs.udpCloudHost.value().empty())
+    if (configs.udpCloudSettings.udpCloudHost.value().empty() || configs.udpCloudSettings.udpCloudPort.value() == 0)
     {
         visualSendUdpPacket = false;
         return;
@@ -157,15 +183,15 @@ void sendUdpCloudPacket()
         return;
     }
 
-    if(espchrono::ago(lastSend) / 1000ms > configs.boardcomputerHardware.timersSettings.udpSendRateMs.value())
+    if(espchrono::ago(lastSend) / 1ms > configs.boardcomputerHardware.timersSettings.udpSendRateMs.value())
     {
         lastSend = espchrono::millis_clock::now();
 
         ip_addr_t udpCloudIp;
 
-        if (const auto res = dns_gethostbyname(configs.udpCloudHost.value().c_str(), &udpCloudIp, nullptr, nullptr); res != ERR_OK)
+        if (const auto res = dns_gethostbyname(configs.udpCloudSettings.udpCloudHost.value().c_str(), &udpCloudIp, nullptr, nullptr); res != ERR_OK)
         {
-            ESP_LOGE(TAG, "dns_gethostbyname() failed because: %i", res);
+            ESP_LOGE(TAG, "dns_gethostbyname() failed because: (%s) (%i)", lwip_strerr(res), res);
             timestampLastFailed = espchrono::millis_clock::now();
             visualSendUdpPacket = false;
             return;
@@ -180,12 +206,21 @@ void sendUdpCloudPacket()
         }
 
         sockaddr_in receipient;
-        receipient.sin_port = htons(24242);
+        receipient.sin_port = htons(configs.udpCloudSettings.udpCloudPort.value());
         receipient.sin_addr.s_addr = udpCloudIp.u_addr.ip4.addr;
         receipient.sin_family = AF_INET;
 
         wifi_stack::UdpSender udpCloudSender;
-        const auto buf = buildUdpCloudJson();
+        std::string buf;
+
+        if (const auto json = buildUdpCloudJson(); !json)
+        {
+            return;
+        }
+        else
+        {
+            buf = *json;
+        }
 
         if (const auto result = udpCloudSender.send(receipient, buf); !result)
         {
@@ -193,7 +228,7 @@ void sendUdpCloudPacket()
             ESP_LOGE(TAG, "send to cloud failed: %.*s (ip=%s)", result.error().size(), result.error().data(), wifi_stack::toString(udpCloudIp.u_addr.ip4).c_str());
         }
 
-        ESP_LOGI(TAG, "%s", buf.c_str());
+        // ESP_LOGI(TAG, "%s", buf.c_str());
 
         visualSendUdpPacket = !visualSendUdpPacket;
     }

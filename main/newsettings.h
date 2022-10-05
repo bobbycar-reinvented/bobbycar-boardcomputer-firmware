@@ -324,10 +324,9 @@ public:
     ConfigWrapperLegacy<int16_t>     reverseBeepDuration1{500,                                   DoReset,   {},                         "revBeepDur1"         };
 
     ConfigWrapperLegacy<std::string> cloudUrl           {"ws://api.bobbycar.cloud/ws",                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "cloudUrl"     };
-    ConfigWrapperLegacy<std::string> udpCloudHost       {"updates.bobbycar.cloud",                          DoReset,   {},                                        "udpCloudHost" };
 
     ConfigWrapperLegacy<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
-    ConfigWrapperLegacy<std::string> otaUsername        {std::string{BOBBY_DEFAULT_OTA_NAME},    DoReset,   {},                                 "otaUsername" };
+    ConfigWrapperLegacy<std::string> otaUsername        {std::string{BOBBY_DEFAULT_USERNAME},    DoReset,   {},                                 "otaUsername" };
     ConfigWrapperLegacy<std::string> otaServerUrl       {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaServerUrl" };
     ConfigWrapperLegacy<std::string> otaServerBranch    {std::string{},                          DoReset,   {},                         "otaServerBranch"     };
     std::array<ConfiguredOtaServer, 5> otaServers {
@@ -376,9 +375,11 @@ public:
     } cloudSettings;
 
     struct {
-        ConfigWrapperLegacy<uint32_t> udpUid            {0,                                      DoReset,   {},                         "cloudUDPUid"         };
+        ConfigWrapperLegacy<std::string> udpToken       {std::string{},                          DoReset,   {},                         "udpToken"            };
         ConfigWrapperLegacy<bool> udpCloudEnabled       {false,                                  DoReset,   {},                         "enUdpCloud"          };
         ConfigWrapperLegacy<bool> enableCloudDebug      {false,                                  DoReset,   {},                         "debugCloud"          };
+        ConfigWrapperLegacy<uint16_t> udpCloudPort      {24243,                                  DoReset,   {},                         "udpCloudPort"        };
+        ConfigWrapperLegacy<std::string> udpCloudHost   {"updates.bobbycar.cloud",               DoReset,   {},                         "udpCloudHost"        };
     } udpCloudSettings;
 
     struct {
@@ -671,7 +672,6 @@ public:
     x(reverseBeepDuration1) \
     \
     x(cloudUrl) \
-    x(udpCloudHost) \
     \
     x(otaUrl) \
     x(otaUsername) \
@@ -719,9 +719,11 @@ public:
     x(cloudSettings.cloudKey) \
     x(cloudSettings.sendStatistic) \
     \
-    x(udpCloudSettings.udpUid) \
+    x(udpCloudSettings.udpToken) \
     x(udpCloudSettings.udpCloudEnabled) \
-    x(udpCloudSettings.enableCloudDebug) \
+    x(udpCloudSettings.enableCloudDebug)  \
+    x(udpCloudSettings.udpCloudPort) \
+    x(udpCloudSettings.udpCloudHost) \
     \
     x(ledstrip.enableLedAnimation) \
     x(ledstrip.enableBrakeLights) \

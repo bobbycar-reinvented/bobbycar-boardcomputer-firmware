@@ -1,9 +1,11 @@
 #include "settingsmenu.h"
 
 // 3rdparty lib includes
-#include "actions/pushscreenaction.h"
-#include "actions/popscreenaction.h"
-#include "icons/back.h"
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <changevaluedisplay_string.h>
+#include <icons/back.h>
+#include <textwithvaluehelper.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
@@ -21,7 +23,6 @@
 #include "displays/menus/featureflagsmenu.h"
 #include "displays/menus/gitmenu.h"
 #include "displays/menus/limitssettingsmenu.h"
-#include "displays/menus/mainmenu.h"
 #include "displays/menus/modessettingsmenu.h"
 #include "displays/menus/networksettingsmenu.h"
 #include "displays/menus/selectbuildservermenu.h"
@@ -37,8 +38,6 @@
 #include "icons/time.h"
 #include "icons/update.h"
 #include "icons/wifi.h"
-#include "textwithvaluehelper.h"
-#include "utils.h"
 
 namespace {
 constexpr char TEXT_SETTINGS[] = "Settings";
@@ -56,6 +55,7 @@ constexpr char TEXT_MODESSETTINGS[] = "Modes settings";
 constexpr char TEXT_CONTROLLERHARDWARESETTINGS[] = "Controller H/W settings";
 constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W settings";
 constexpr char TEXT_FEATUREFLAGS[] = "Feature flags";
+constexpr char TEXT_USERNAME[] = "Username"; // ota-name
 constexpr char TEXT_ANHAENGER_ID[] = "Anhaenger ID";
 constexpr char TEXT_AUTOCONNECTBMS[] = "Auto connect BMS";
 constexpr char TEXT_BUZZER[] = "Buzzer";
@@ -80,6 +80,14 @@ using AnhaengerIdChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
     espgui::StaticText<TEXT_ANHAENGER_ID>,
     AnhaengerIdAccessor,
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
+>;
+
+using UsernameChangeScreen = espgui::makeComponent<
+    BobbyChangeValueDisplay<std::string>,
+    espgui::StaticText<TEXT_USERNAME>,
+    UsernameAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
@@ -117,7 +125,8 @@ SettingsMenu::SettingsMenu()
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>, PushScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware>>>();
     }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FEATUREFLAGS>,                  PushScreenAction<FeatureFlagsMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
-    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ANHAENGER_ID, AnhaengerIdAccessor>, espgui::PushScreenAction<AnhaengerIdChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_USERNAME>,                      PushScreenAction<UsernameChangeScreen>>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ANHAENGER_ID, AnhaengerIdAccessor>, PushScreenAction<AnhaengerIdChangeScreen>>>();
 //#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 //    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                BobbyCheckbox, AutoConnectBmsAccessor>>();
 //#endif

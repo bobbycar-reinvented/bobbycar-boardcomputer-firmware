@@ -1,5 +1,5 @@
 set(BOBBY_APP_NAME bobbyquad_comred)
-set(BOBBY_DEFAULT_OTA_NAME comred)
+set(BOBBY_DEFAULT_USERNAMENAME comred)
 
 add_definitions(
   -DUSER_SETUP_LOADED=1
