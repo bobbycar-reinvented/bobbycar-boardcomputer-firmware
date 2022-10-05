@@ -379,7 +379,6 @@ public:
         ConfigWrapperLegacy<uint32_t> udpUid            {0,                                      DoReset,   {},                         "cloudUDPUid"         };
         ConfigWrapperLegacy<bool> udpCloudEnabled       {false,                                  DoReset,   {},                         "enUdpCloud"          };
         ConfigWrapperLegacy<bool> enableCloudDebug      {false,                                  DoReset,   {},                         "debugCloud"          };
-        ConfigWrapperLegacy<bool> udpUseStdString       {false,                                  DoReset,   {},                         "udpusestdstr"        };
     } udpCloudSettings;
 
     struct {
@@ -722,7 +721,6 @@ public:
     x(udpCloudSettings.udpUid) \
     x(udpCloudSettings.udpCloudEnabled) \
     x(udpCloudSettings.enableCloudDebug) \
-    x(udpCloudSettings.udpUseStdString) \
     \
     x(ledstrip.enableLedAnimation) \
     x(ledstrip.enableBrakeLights) \
