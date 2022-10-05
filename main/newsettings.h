@@ -487,6 +487,8 @@ public:
         ConfigWrapperLegacy<bool> bleFenceEnabled       {false,                                  DoReset,   {},                         "bleFenceEnabled"     };
     } bleSettings;
 
+    ConfigWrapperLegacy<bool> setupDone             {false,                                      DoReset,   {},                         "setupDone"           };
+
 #define NEW_SETTINGS(x) \
     x(baseMacAddressOverride) \
     x(hostname) \
