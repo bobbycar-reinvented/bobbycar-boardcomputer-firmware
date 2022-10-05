@@ -538,6 +538,16 @@ execute_process(
         COMMAND git rev-parse --abbrev-ref HEAD
         OUTPUT_VARIABLE GIT_BRANCH
 )
+execute_process(
+        COMMAND git status --short
+        OUTPUT_VARIABLE GIT_STATUS
+)
+
+if (NOT GIT_STATUS STREQUAL "")
+    set(GIT_STATUS "dirty")
+else()
+    set(GIT_STATUS "clean")
+endif()
 
 string(STRIP "${GIT_REV}" GIT_REV)
 string(SUBSTRING "${GIT_REV}" 1 7 GIT_SHORT_REV)
@@ -551,6 +561,7 @@ message(WARNING "Git revision: ${GIT_REV}")
 message(WARNING "Git short revision: ${GIT_SHORT_REV}")
 message(WARNING "Git message: ${GIT_MESSAGE}")
 message(WARNING "Git branch: ${GIT_BRANCH}")
+message(WARNING "Git status: ${GIT_STATUS}")
 
 if(NOT DEFINED BOBBY_DEFAULT_USERNAME)
     message(FATAL_ERROR "Please define BOBBY_DEFAULT_USERNAME")
