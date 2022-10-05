@@ -82,6 +82,11 @@ void initCan()
 
 void updateCan()
 {
+    if (configs.emulateFeedback.value())
+    {
+        return;
+    }
+
     for (int i = 0; i < 4; i++)
         if (!tryParseCanInput())
             break;

@@ -399,7 +399,7 @@ public:
         ConfigWrapperLegacy<uint8_t> brightness         {255,                                    DoReset,   {},                         "ledbrightness"       };
         ConfigWrapperLegacy<bool> enableAnimBlink       {false,                                  DoReset,   {},                         "enAnimBlink"         };
         ConfigWrapperLegacy<OtaAnimationModes> otaMode  {OtaAnimationModes::GreenProgressBar,    DoReset,   {},                         "ledOtaAnim"          };
-        ConfigWrapperLegacy<uint32_t>     maxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
+        ConfigWrapperLegacy<uint32_t> maxMilliamps      {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
         ConfigWrapperLegacy<bool> enableVisualizeBlink  {false,                                  DoReset,   {},                         "enVisualBlink"       };
         std::array<ConfigWrapperLegacy<uint32_t>, 8> custom_color {
             ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol1"       },
@@ -479,6 +479,7 @@ public:
     } feature;
 
     ConfigWrapperLegacy<uint16_t> anhaenger_id          {0,                                      DoReset,   {},                         "anhaenger_id"        };
+    ConfigWrapperLegacy<bool> emulateFeedback           {false,                                  DoReset,   {},                         "emuFeedback"         };
 
     struct {
         ConfigWrapperLegacy<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
@@ -800,7 +801,8 @@ public:
     x(feature.udpcloud.isEnabled) \
     x(feature.webserver.isEnabled) \
     x(feature.webserver_disable_lock.isEnabled) \
-    x(bleSettings.bleEnabled)
+    x(bleSettings.bleEnabled) \
+    x(emulateFeedback)
 
 #define FEATURES(x) \
     x(feature.ble) \

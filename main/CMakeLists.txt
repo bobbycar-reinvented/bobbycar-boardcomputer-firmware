@@ -175,6 +175,7 @@ set(headers
     drivingstatistics.h
     espnowfunctions.h
     esptexthelpers.h
+    feedbackemulator.h
     feedbackparser.h
     globals.h
     handbremse.h
@@ -425,6 +426,7 @@ set(sources
     drivingstatistics.cpp
     espnowfunctions.cpp
     esptexthelpers.cpp
+    feedbackemulator.cpp
     feedbackparser.cpp
     globals.cpp
     handbremse.cpp
