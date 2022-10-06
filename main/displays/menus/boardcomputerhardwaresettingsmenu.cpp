@@ -16,12 +16,10 @@
 #include "displays/buttoncalibratedisplay.h"
 #include "displays/menus/extrabuttoncalibratemenu.h"
 #include "displays/menus/lockscreensettingsmenu.h"
-#include "displays/menus/settingsmenu.h"
 #include "displays/menus/setupquickactionsmenu.h"
 #include "displays/menus/timersmenu.h"
 #include "displays/potiscalibratedisplay.h"
 #include "icons/lock.h"
-#include "utils.h"
 
 #ifdef FEATURE_JOYSTICK
 #include "displays/joystickdebugdisplay.h"
@@ -238,5 +236,5 @@ std::string BoardcomputerHardwareSettingsMenu::text() const
 
 void BoardcomputerHardwareSettingsMenu::back()
 {
-    switchScreen<SettingsMenu>();
+    popScreen();
 }
