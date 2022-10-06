@@ -117,6 +117,9 @@ void calculateStatistics()
             saveTotal = false;
         }
         drivingStatistics.last_cm_written = drivingStatistics.totalMeters * 100; // Save total Meters
-        configs.write_config(configs.savedStatistics.totalCentimeters, drivingStatistics.last_cm_written);
+        if (!configs.emulateFeedback.value())
+        {
+            configs.write_config(configs.savedStatistics.totalCentimeters, drivingStatistics.last_cm_written);
+        }
     }
 }

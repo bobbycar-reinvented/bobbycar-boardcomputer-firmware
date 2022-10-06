@@ -27,8 +27,11 @@ constexpr const char * const TAG = "bobbycloud";
 
 espchrono::millis_clock::time_point timestampLastFailed;
 espchrono::millis_clock::time_point lastSend;
+espchrono::millis_clock::time_point lastDNSQuery;
 
 uint8_t packageType{0}; // cycle through packages.
+std::optional<sockaddr_in> receipient;
+ip_addr_t udpCloudIp;
 } // namespace
 
 // Little "flash" on statusdisplay when udp stuff is happening
@@ -79,6 +82,7 @@ std::optional<std::string> buildUdpCloudJson()
         break;
     }
     case 1:
+    case 4:
     {
 
         if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
@@ -93,6 +97,7 @@ std::optional<std::string> buildUdpCloudJson()
         break;
     }
     case 2:
+    case 5:
     {
         const auto &controller = controllers.front;
         if (controller.feedbackValid)
@@ -121,6 +126,7 @@ std::optional<std::string> buildUdpCloudJson()
         break;
     }
     case 3:
+    case 6:
     {
         const auto &controller = controllers.back;
         if (controller.feedbackValid)
@@ -183,12 +189,10 @@ void sendUdpCloudPacket()
         return;
     }
 
-    if(espchrono::ago(lastSend) / 1ms > configs.boardcomputerHardware.timersSettings.udpSendRateMs.value())
+    if (espchrono::ago(lastDNSQuery) > 10s || !receipient.has_value())
     {
-        lastSend = espchrono::millis_clock::now();
-
-        ip_addr_t udpCloudIp;
-
+        lastDNSQuery = espchrono::millis_clock::now();
+        receipient = sockaddr_in{};
         if (const auto res = dns_gethostbyname(configs.udpCloudSettings.udpCloudHost.value().c_str(), &udpCloudIp, nullptr, nullptr); res != ERR_OK)
         {
             ESP_LOGE(TAG, "dns_gethostbyname() failed because: (%s) (%i)", lwip_strerr(res), res);
@@ -205,10 +209,19 @@ void sendUdpCloudPacket()
             return;
         }
 
-        sockaddr_in receipient;
-        receipient.sin_port = htons(configs.udpCloudSettings.udpCloudPort.value());
-        receipient.sin_addr.s_addr = udpCloudIp.u_addr.ip4.addr;
-        receipient.sin_family = AF_INET;
+        (*receipient).sin_port = htons(configs.udpCloudSettings.udpCloudPort.value());
+        (*receipient).sin_addr.s_addr = udpCloudIp.u_addr.ip4.addr;
+        (*receipient).sin_family = AF_INET;
+    }
+
+    if(espchrono::ago(lastSend) / 1ms > configs.boardcomputerHardware.timersSettings.udpSendRateMs.value())
+    {
+        lastSend = espchrono::millis_clock::now();
+
+        if (!receipient)
+        {
+            return;
+        }
 
         wifi_stack::UdpSender udpCloudSender;
         std::string buf;
@@ -222,7 +235,7 @@ void sendUdpCloudPacket()
             buf = *json;
         }
 
-        if (const auto result = udpCloudSender.send(receipient, buf); !result)
+        if (const auto result = udpCloudSender.send(*receipient, buf); !result)
         {
             timestampLastFailed = espchrono::millis_clock::now();
             ESP_LOGE(TAG, "send to cloud failed: %.*s (ip=%s)", result.error().size(), result.error().data(), wifi_stack::toString(udpCloudIp.u_addr.ip4).c_str());
