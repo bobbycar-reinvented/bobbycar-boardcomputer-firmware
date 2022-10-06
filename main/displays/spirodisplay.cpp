@@ -7,6 +7,9 @@
 #include <screenmanager.h>
 #include <tftinstance.h>
 
+// local includes
+#include "screens.h"
+
 namespace {
 typedef unsigned char byte;
 } // namespace
@@ -15,6 +18,7 @@ void SpiroDisplay::initScreen()
 {
     Base::initScreen();
 
+    disableScreenFlip(true);
     espgui::tft.setRotation(3);
 }
 
@@ -79,7 +83,7 @@ void SpiroDisplay::stop()
 {
     Base::stop();
 
-    espgui::tft.setRotation(0);
+    disableScreenFlip(false);
 }
 
 void SpiroDisplay::buttonPressed(espgui::Button button)

@@ -13,6 +13,10 @@ using namespace espgui;
 
 Label bootLabel{32, 250};
 
+namespace {
+bool disable_screen_flip{false};
+}
+
 void initScreen()
 {
     // vertical screen
@@ -54,7 +58,8 @@ void updateDisplay()
         changeScreenCallback = {};
     }
 
-    updateRotation();
+    if (!disable_screen_flip)
+        updateRotation();
 
     if (const int8_t rawButton = rawButtonRequest.load(); rawButton != -1 && currentDisplay)
     {
@@ -84,4 +89,9 @@ void redrawDisplay()
     {
         currentDisplay->redraw();
     }
+}
+
+void disableScreenFlip(bool enable)
+{
+    disable_screen_flip = enable;
 }
