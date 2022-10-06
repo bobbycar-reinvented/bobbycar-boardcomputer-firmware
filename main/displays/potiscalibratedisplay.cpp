@@ -16,7 +16,7 @@ namespace {
 constexpr char TEXT_CALIBRATE[] = "Potis Calibrate";
 } // namespace
 
-
+/*
 std::string PotisCalibrateDisplay::text() const
 {
     return TEXT_CALIBRATE;
@@ -321,3 +321,4 @@ void PotisCalibrateDisplay::copyToSettings()
     configs.write_config(configs.bremsMin, m_bremsMin);
     configs.write_config(configs.bremsMax, m_bremsMax);
 }
+*/

@@ -19,6 +19,7 @@
 #include "displays/menus/setupquickactionsmenu.h"
 #include "displays/menus/timersmenu.h"
 #include "displays/potiscalibratedisplay.h"
+#include "displays/setupdisplay.h"
 #include "icons/lock.h"
 
 #ifdef FEATURE_JOYSTICK
@@ -192,12 +193,12 @@ using namespace espgui;
 BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          PushScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
-    // constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUTTONCALIBRATE>,                             PushScreenAction<ButtonCalibrateDisplay>>>();
+    constructMenuItem<makeComponentArgs<MenuItem, PushSetupDisplayAction,                                   StaticText<TEXT_BUTTONCALIBRATE>>>(SetupStep::BASIC_BUTTONS, true);
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_EXTRABUTTONCALIBRATE>,                        PushScreenAction<ExtraButtonCalibrateMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QUICKACTIONS>,                                PushScreenAction<SetupQuickActionsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, GasText,                                                      DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BremsText,                                                    DisabledColor, StaticFont<2>, DummyAction>>();
-    // constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTISCALIBRATE>,                              PushScreenAction<PotisCalibrateDisplay>>>();
+    constructMenuItem<makeComponentArgs<MenuItem, PushSetupDisplayAction,                                   StaticText<TEXT_POTISCALIBRATE>>>(SetupStep::CALIBRATE_POTIS, true);
 #ifdef FEATURE_JOYSTICK
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_JOYSTICK>,                                    PushScreenAction<JoystickDebugDisplay>>>();
 #endif

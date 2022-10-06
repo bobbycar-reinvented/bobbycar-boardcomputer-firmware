@@ -529,8 +529,6 @@ idf_component_register(
         ${dependencies}
 )
 
-add_library(bobbyboardcomputer ${BOBBY_SOURCES} ${BOBBY_HEADERS})
-
 execute_process(COMMAND git rev-parse HEAD
         OUTPUT_VARIABLE GIT_REV ERROR_QUIET
 )

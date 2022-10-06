@@ -16,7 +16,7 @@
 #include "modeinterface.h"
 #include "modes/ignoreinputmode.h"
 
-
+/*
 class PotisCalibrateDisplay : public BobbyDisplayWithTitle
 {
     using Base = BobbyDisplayWithTitle;
@@ -91,3 +91,4 @@ private:
     ;
     std::optional<float> m_gas, m_brems;
 };
+*/

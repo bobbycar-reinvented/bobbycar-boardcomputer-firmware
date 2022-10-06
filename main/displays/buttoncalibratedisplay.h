@@ -9,7 +9,7 @@
 #include "modeinterface.h"
 #include "modes/ignoreinputmode.h"
 
-
+/*
 class ButtonCalibrateDisplay : public espgui::DisplayWithTitle
 {
     using Base = espgui::DisplayWithTitle;
@@ -52,4 +52,4 @@ private:
 
     bool m_finished;
 };
-
+*/

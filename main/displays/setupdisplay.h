@@ -2,13 +2,18 @@
 
 // system includes
 #include <string_view>
+#include <optional>
 
 // 3rdparty lib includes
+#include <actioninterface.h>
 #include <espchrono.h>
+#include <screenmanager.h>
 
 // local includes
 #include "bobbydisplaywithtitle.h"
 #include "bobbytypesafeenum.h"
+#include "modeinterface.h"
+#include "modes/ignoreinputmode.h"
 
 #define SetupStepValues(x) \
     x(INFORMATION)         \
@@ -22,13 +27,25 @@
 
 DECLARE_BOBBYTYPESAFE_ENUM(SetupStep, : uint8_t, SetupStepValues);
 
+namespace setupdisplay {
+enum CurrentButton : int8_t
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    FINISHED
+};
+}
+
 class SetupDisplay : public BobbyDisplayWithTitle
 {
     using Base = BobbyDisplayWithTitle;
 public:
-    explicit SetupDisplay(SetupStep initialStep = SetupStep::INFORMATION) :
+    explicit SetupDisplay(SetupStep initialStep = SetupStep::INFORMATION, bool early_return = false) :
         m_current_setupStep{initialStep},
-        m_last_setupStep{initialStep}
+        m_last_setupStep{initialStep},
+        m_early_return{early_return}
     {}
 
     void start() override;
@@ -37,16 +54,48 @@ public:
     void update() override;
     void stop() override;
 
+    void rawButtonPressed(uint8_t button) override;
+    void rawButtonReleased(uint8_t button) override;
     void buttonPressed(espgui::Button button) override;
+    void buttonReleased(espgui::Button button) override;
 
     std::string text() const override;
 private:
     SetupStep m_current_setupStep;
     SetupStep m_last_setupStep;
     espchrono::millis_clock::time_point m_menu_opened_timestamp;
-    bool initialRender{true};
+    bool m_initialRender{true};
+    const bool m_early_return;
 
     static void drawLargeText(const std::string&& text);
-    static void clearLargeText();
+    static void clearArea();
+    void drawButtons(setupdisplay::CurrentButton button);
     void nextStep();
+
+    // button calibration
+    ModeInterface *m_oldMode;
+    IgnoreInputMode m_mode{0, bobbycar::protocol::ControlType::FieldOrientedControl, bobbycar::protocol::ControlMode::Torque};
+
+    std::optional<uint8_t> m_lastButton;
+
+    setupdisplay::CurrentButton m_button_cal_status;
+    uint8_t m_leftButton, m_rightButton, m_upButton, m_downButton;
+    bool m_button_cal_finished;
+    void saveButtons();
+};
+
+class PushSetupDisplayAction : public virtual espgui::ActionInterface {
+public:
+    explicit PushSetupDisplayAction(SetupStep setupStep, bool early_return = false) :
+        m_setupStep{setupStep},
+        m_early_return{early_return}
+    {}
+
+    void triggered() override
+    {
+        espgui::pushScreen<SetupDisplay>(m_setupStep, m_early_return);
+    }
+private:
+    const SetupStep m_setupStep;
+    const bool m_early_return;
 };
