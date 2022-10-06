@@ -6,6 +6,9 @@
 #include <tftinstance.h>
 #include <screenmanager.h>
 
+// local includes
+#include <screens.h>
+
 PingPongDisplay::PingPongDisplay() :
     lpaddle_y(cpputils::randomNumber<uint8_t>(0, h - paddle_h, espcpputils::esp_random_device{})),
     rpaddle_y(cpputils::randomNumber<uint8_t>(0, h - paddle_h, espcpputils::esp_random_device{})),
@@ -18,6 +21,8 @@ PingPongDisplay::PingPongDisplay() :
 void PingPongDisplay::initScreen()
 {
     Base::initScreen();
+
+    disableScreenFlip(true);
 
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setRotation(1);
@@ -41,7 +46,7 @@ void PingPongDisplay::stop()
 {
     Base::stop();
 
-    espgui::tft.setRotation(0);
+    disableScreenFlip(false);
 }
 
 void PingPongDisplay::buttonPressed(espgui::Button button)

@@ -7,8 +7,9 @@
 #include <screenmanager.h>
 
 // local includes
-#include "globals.h"
 #include "displays/menus/demosmenu.h"
+#include "globals.h"
+#include "screens.h"
 
 StarfieldDisplay::StarfieldDisplay() :
     za(cpputils::randomNumber<uint8_t>(espcpputils::esp_random_device{})),
@@ -21,6 +22,8 @@ StarfieldDisplay::StarfieldDisplay() :
 void StarfieldDisplay::initScreen()
 {
     Base::initScreen();
+
+    disableScreenFlip(true);
 
     espgui::tft.fillScreen(TFT_BLACK);
     espgui::tft.setRotation(1);
@@ -75,8 +78,7 @@ void StarfieldDisplay::redraw()
 void StarfieldDisplay::stop()
 {
     Base::stop();
-
-    espgui::tft.setRotation(0);
+    disableScreenFlip(false);
 }
 
 void StarfieldDisplay::buttonPressed(espgui::Button button)

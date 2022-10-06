@@ -9,3 +9,4 @@ void initScreen();
 void updateDisplay();
 void updateRotation();
 void redrawDisplay();
+void disableScreenFlip(bool enable);

@@ -6,6 +6,9 @@
 #include <tftinstance.h>
 #include <screenmanager.h>
 
+// local includes
+#include "screens.h"
+
 void GameOfLifeDisplay::start()
 {
     Base::start();
@@ -17,6 +20,8 @@ void GameOfLifeDisplay::start()
 void GameOfLifeDisplay::initScreen()
 {
     Base::initScreen();
+
+    disableScreenFlip(true);
 
     espgui::tft.setRotation(3);
     espgui::tft.fillScreen(TFT_BLACK);
@@ -45,7 +50,8 @@ void GameOfLifeDisplay::stop()
 {
     Base::stop();
 
-    espgui::tft.setRotation(0);
+    disableScreenFlip(false);
+
     m_grid = nullptr;
     m_newgrid = nullptr;
 }
