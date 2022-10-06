@@ -1,18 +1,19 @@
 #pragma once
 
 // esp-idf includes
-#include <esp_heap_caps.h>
 #include <esp_chip_info.h>
+#include <esp_heap_caps.h>
 #include <esp_idf_version.h>
 
 // 3rdparty lib includes
-#include <fmt/core.h>
 #include <espstrutils.h>
+#include <fmt/core.h>
 
 // local includes
-#include "globals.h"
 #include "can.h"
+#include "globals.h"
 #include "textinterface.h"
+#include "utils.h"
 
 //template<const char *Ttext, typename TreturnType, TreturnType (EspClass::*Tmethod)()>
 //using EspStatusTextHelper = StatusTextHelper<Ttext, EspClass, &ESP, TreturnType, Tmethod>;
@@ -53,6 +54,11 @@ constexpr char TEXT_ESPCHIPREVISION[] = "Chip revision: ";
 class EspChipRevisionText : public virtual espgui::TextInterface { public: std::string text() const override {
     return fmt::format("{}{}", TEXT_ESPCHIPREVISION, chip_info.revision);
 }};
+
+constexpr char TEXT_ESPCHIPMODEL[] = "Chip Model: ";
+class EspChipModelText : public virtual espgui::TextInterface { public: std::string text() const override {
+        return fmt::format("{}{}", TEXT_ESPCHIPMODEL, toString(chip_info.model));
+    }};
 
 constexpr char TEXT_ESPMAXCPUFREQMHZ[] = "Cpu max freq MHz: ";
 class EspCpuMaxFreqMHzText : public virtual espgui::TextInterface { public: std::string text() const override {

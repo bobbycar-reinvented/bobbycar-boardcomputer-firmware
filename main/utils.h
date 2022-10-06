@@ -100,6 +100,8 @@ std::string get_wifi_security_string(wifi_auth_mode_t authMode);
 float float_map(float x, float in_min, float in_max, float out_min, float out_max);
 bool is_valid_timestamp(espchrono::utc_clock::time_point timestamp);
 
+std::string toString(esp_chip_model_t esp_chip_model);
+
 namespace bobbydpad {
 #ifdef FEATURE_DPAD
 static constexpr const auto ButtonCount = dpad::BUTTON_COUNT;

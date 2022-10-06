@@ -359,3 +359,24 @@ bool is_valid_timestamp(espchrono::utc_clock::time_point timestamp)
     using namespace date;
     return timestamp.time_since_epoch() > sys_seconds{sys_days{1_d/January/2000}}.time_since_epoch();
 }
+
+std::string toString(esp_chip_model_t esp_chip_model)
+{
+    switch (esp_chip_model)
+    {
+    case CHIP_ESP32:
+        return "ESP32";
+    case CHIP_ESP32S2:
+        return "ESP32S2";
+    case CHIP_ESP32S3:
+        return "ESP32S3";
+    case CHIP_ESP32C3:
+        return "ESP32C3";
+    case CHIP_ESP32H2:
+        return "ESP32H2";
+    case CHIP_ESP32C2:
+        return "ESP32C2";
+    default:
+        return "invalid";
+    }
+}
