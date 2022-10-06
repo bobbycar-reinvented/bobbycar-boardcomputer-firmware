@@ -155,7 +155,7 @@ namespace buildserver {
 
     std::string get_hash_url(std::string hash)
     {
-        return fmt::format(fmt::runtime(url_for_hashes), hash);
+        return fmt::format("{}{}.bin", url_for_hashes, hash);
     }
 
     std::string get_latest_url()
@@ -197,7 +197,7 @@ namespace buildserver {
         index = 0;
 
         url_for_latest = fmt::format("{}{}", configs.otaServerUrl.value(), doc["latest"].as<std::string>());
-        url_for_hashes = fmt::format("{}{}", configs.otaServerUrl.value(), doc["url"].as<std::string>());
+        url_for_hashes = fmt::format("{}{}", configs.otaServerUrl.value(), doc["new_url"].as<std::string>());
         parsing_finished = true;
     }
 
