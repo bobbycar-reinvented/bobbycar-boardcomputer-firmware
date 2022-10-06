@@ -45,6 +45,7 @@ AboutMenu::AboutMenu()
     constructMenuItem<makeComponent<MenuItem, HeapLargest32Text,            StaticFont<2>, DisabledColor, DummyAction>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, EspChipRevisionText,          StaticFont<2>, DisabledColor, DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, EspChipModelText,             StaticFont<2>, DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EspCpuMinFreqMHzText,         StaticFont<2>, DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EspCpuMaxFreqMHzText,         StaticFont<2>, DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EspSdkVersionText,            StaticFont<2>, DisabledColor, DummyAction>>();
