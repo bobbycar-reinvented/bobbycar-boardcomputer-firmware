@@ -380,3 +380,27 @@ std::string toString(esp_chip_model_t esp_chip_model)
         return "invalid";
     }
 }
+
+std::optional<SetupStep> checkIfInCalibration()
+{
+    if (!configs.boardcomputerHardware.setupFinished.value())
+    {
+        return SetupStep::INFORMATION;
+    }
+    else if (
+        configs.dpadMappingLeft.value() == INPUT_MAPPING_NONE ||
+        configs.dpadMappingRight.value() == INPUT_MAPPING_NONE ||
+        configs.dpadMappingUp.value() == INPUT_MAPPING_NONE ||
+        configs.dpadMappingDown.value() == INPUT_MAPPING_NONE
+    )
+    {
+        // espgui::switchScreen<ButtonCalibrateDisplay>(true);
+        return SetupStep::BASIC_BUTTONS;
+    }
+    else if (!gas || !brems || *gas > 200.f || *brems > 200.f)
+    {
+        // espgui::switchScreen<PotisCalibrateDisplay>(true);
+        return SetupStep::CALIBRATE_POTIS;
+    }
+    return std::nullopt;
+}

@@ -192,12 +192,12 @@ using namespace espgui;
 BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          PushScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUTTONCALIBRATE>,                             PushScreenAction<ButtonCalibrateDisplay>>>();
+    // constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUTTONCALIBRATE>,                             PushScreenAction<ButtonCalibrateDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_EXTRABUTTONCALIBRATE>,                        PushScreenAction<ExtraButtonCalibrateMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QUICKACTIONS>,                                PushScreenAction<SetupQuickActionsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, GasText,                                                      DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BremsText,                                                    DisabledColor, StaticFont<2>, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTISCALIBRATE>,                              PushScreenAction<PotisCalibrateDisplay>>>();
+    // constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTISCALIBRATE>,                              PushScreenAction<PotisCalibrateDisplay>>>();
 #ifdef FEATURE_JOYSTICK
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_JOYSTICK>,                                    PushScreenAction<JoystickDebugDisplay>>>();
 #endif

@@ -16,6 +16,7 @@ namespace {
 constexpr char TEXT_CALIBRATE[] = "Potis Calibrate";
 } // namespace
 
+
 std::string PotisCalibrateDisplay::text() const
 {
     return TEXT_CALIBRATE;

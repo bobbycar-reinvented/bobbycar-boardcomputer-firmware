@@ -364,7 +364,8 @@ public:
             ConfigWrapperLegacy<int16_t> cloudSendRate  {1,                                      DoReset,   {},                         "cloudSendRate"       };
             ConfigWrapperLegacy<int16_t> udpSendRateMs  {65,                                     DoReset,   {},                         "udpSendRate"         };
         } timersSettings;
-        ConfigWrapperLegacy<bool>    flipScreen         {false,                                  NoReset,   {},                         "flipScreen"          };
+        ConfigWrapperLegacy<bool> flipScreen            {false,                                  NoReset,   {},                         "flipScreen"          };
+        ConfigWrapperLegacy<bool> setupFinished         {false,                                  DoReset,   {},                         "setupFinished"       };
     } boardcomputerHardware;
 
     struct {
@@ -712,9 +713,10 @@ public:
     x(boardcomputerHardware.timersSettings.statsUpdateRate) \
     x(boardcomputerHardware.timersSettings.cloudCollectRate) \
     x(boardcomputerHardware.timersSettings.cloudSendRate) \
-    x(boardcomputerHardware.timersSettings.udpSendRateMs)   \
+    x(boardcomputerHardware.timersSettings.udpSendRateMs) \
     \
     x(boardcomputerHardware.flipScreen) \
+    x(boardcomputerHardware.setupFinished) \
     \
     x(cloudSettings.cloudEnabled) \
     x(cloudSettings.cloudTransmitTimeout) \

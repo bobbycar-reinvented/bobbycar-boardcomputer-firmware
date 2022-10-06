@@ -159,8 +159,7 @@ set(BOBBY_HEADERS
         displays/qrcodedebug.h
         displays/qrdisplay.h
         displays/qrimportdisplay.h
-        displays/setup/bobbycloudconfig.h
-        displays/setup/screenorientation.h
+        displays/setupdisplay.h
         displays/speedinfodisplay.h
         displays/spirodisplay.h
         displays/starfielddisplay.h
@@ -412,8 +411,7 @@ set(BOBBY_SOURCES
         displays/qrcodedebug.cpp
         displays/qrdisplay.cpp
         displays/qrimportdisplay.cpp
-        displays/setup/bobbycloudconfig.cpp
-        displays/setup/screenorientation.cpp
+        displays/setupdisplay.cpp
         displays/speedinfodisplay.cpp
         displays/spirodisplay.cpp
         displays/starfielddisplay.cpp

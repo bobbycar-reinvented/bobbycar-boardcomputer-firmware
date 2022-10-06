@@ -35,6 +35,7 @@ using namespace std::chrono_literals;
 #include "displays/lockscreen.h"
 #include "displays/menus/recoverymenu.h"
 #include "displays/potiscalibratedisplay.h"
+#include "displays/setupdisplay.h"
 #include "displays/statusdisplay.h"
 #include "newsettings.h"
 #include "taskmanager.h"
@@ -130,12 +131,9 @@ extern "C" void app_main()
 
     bootLabel.redraw("switchScreen");
 
-    if (configs.dpadMappingLeft.value() == INPUT_MAPPING_NONE ||
-        configs.dpadMappingRight.value() == INPUT_MAPPING_NONE ||
-        configs.dpadMappingUp.value() == INPUT_MAPPING_NONE ||
-        configs.dpadMappingDown.value() == INPUT_MAPPING_NONE)
+    if (const auto result = checkIfInCalibration(); result)
     {
-        espgui::switchScreen<ButtonCalibrateDisplay>(true);
+        espgui::switchScreen<SetupDisplay>(*result);
     }
     else if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
     {
@@ -144,12 +142,7 @@ extern "C" void app_main()
     }
     else
     {
-        if (!gas || !brems || *gas > 200.f || *brems > 200.f)
-            espgui::switchScreen<PotisCalibrateDisplay>(true);
-        else
-        {
-            espgui::switchScreen<StatusDisplay>();
-        }
+        espgui::switchScreen<StatusDisplay>();
     }
 
     esp_chip_info(&chip_info);

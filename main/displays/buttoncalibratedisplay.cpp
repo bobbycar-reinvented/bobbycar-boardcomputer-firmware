@@ -17,6 +17,7 @@ namespace {
 constexpr const char TAG[] = "BUTTON";
 } // namespace
 
+
 std::string ButtonCalibrateDisplay::text() const
 {
     return "Button calibrate";
@@ -219,3 +220,4 @@ void ButtonCalibrateDisplay::buttonReleased(espgui::Button button)
 {
     //Base::buttonReleased(button);
 }
+

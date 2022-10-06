@@ -16,6 +16,7 @@
 #include "modeinterface.h"
 #include "modes/ignoreinputmode.h"
 
+
 class PotisCalibrateDisplay : public BobbyDisplayWithTitle
 {
     using Base = BobbyDisplayWithTitle;
