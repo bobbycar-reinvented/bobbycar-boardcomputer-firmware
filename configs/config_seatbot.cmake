@@ -1,5 +1,5 @@
 set(BOBBY_APP_NAME bobbyquad_seatbot)
-set(BOBBY_DEFAULT_OTA_NAME seatbot)
+set(BOBBY_DEFAULT_USERNAME seatbot)
 
 add_definitions(
   -DUSER_SETUP_LOADED=1

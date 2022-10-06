@@ -1,7 +1,7 @@
 #pragma once
 /*
  * In this file there will be
- *  - a web-handler to get qr as plain text from http://qr.bobbycar.cloud/files/[OTA_NAME].qr that can be later triggered via in qrimportdisplay.h
+ *  - a web-handler to get qr as plain text from http://qr.bobbycar.cloud/files/[USERNAME].qr that can be later triggered via in qrimportdisplay.h
  *  - getter and setter that use NVS
  */
 

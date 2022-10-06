@@ -324,10 +324,9 @@ public:
     ConfigWrapperLegacy<int16_t>     reverseBeepDuration1{500,                                   DoReset,   {},                         "revBeepDur1"         };
 
     ConfigWrapperLegacy<std::string> cloudUrl           {"ws://api.bobbycar.cloud/ws",                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "cloudUrl"     };
-    ConfigWrapperLegacy<std::string> udpCloudHost       {"updates.bobbycar.cloud",                          DoReset,   {},                                        "udpCloudHost" };
 
     ConfigWrapperLegacy<std::string> otaUrl             {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaUrl"   };
-    ConfigWrapperLegacy<std::string> otaUsername        {std::string{BOBBY_DEFAULT_OTA_NAME},    DoReset,   {},                                 "otaUsername" };
+    ConfigWrapperLegacy<std::string> otaUsername        {std::string{BOBBY_DEFAULT_USERNAME},    DoReset,   {},                                 "otaUsername" };
     ConfigWrapperLegacy<std::string> otaServerUrl       {std::string{},                          DoReset,   StringOr<StringEmpty, StringValidUrl>, "otaServerUrl" };
     ConfigWrapperLegacy<std::string> otaServerBranch    {std::string{},                          DoReset,   {},                         "otaServerBranch"     };
     std::array<ConfiguredOtaServer, 5> otaServers {
@@ -376,10 +375,11 @@ public:
     } cloudSettings;
 
     struct {
-        ConfigWrapperLegacy<uint32_t> udpUid            {0,                                      DoReset,   {},                         "cloudUDPUid"         };
+        ConfigWrapperLegacy<std::string> udpToken       {std::string{},                          DoReset,   {},                         "udpToken"            };
         ConfigWrapperLegacy<bool> udpCloudEnabled       {false,                                  DoReset,   {},                         "enUdpCloud"          };
         ConfigWrapperLegacy<bool> enableCloudDebug      {false,                                  DoReset,   {},                         "debugCloud"          };
-        ConfigWrapperLegacy<bool> udpUseStdString       {false,                                  DoReset,   {},                         "udpusestdstr"        };
+        ConfigWrapperLegacy<uint16_t> udpCloudPort      {24243,                                  DoReset,   {},                         "udpCloudPort"        };
+        ConfigWrapperLegacy<std::string> udpCloudHost   {"updates.bobbycar.cloud",               DoReset,   {},                         "udpCloudHost"        };
     } udpCloudSettings;
 
     struct {
@@ -400,7 +400,7 @@ public:
         ConfigWrapperLegacy<uint8_t> brightness         {255,                                    DoReset,   {},                         "ledbrightness"       };
         ConfigWrapperLegacy<bool> enableAnimBlink       {false,                                  DoReset,   {},                         "enAnimBlink"         };
         ConfigWrapperLegacy<OtaAnimationModes> otaMode  {OtaAnimationModes::GreenProgressBar,    DoReset,   {},                         "ledOtaAnim"          };
-        ConfigWrapperLegacy<uint32_t>     maxMilliamps  {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
+        ConfigWrapperLegacy<uint32_t> maxMilliamps      {3000,                                   DoReset,   {},                         "ledMaxMilliamps"     };
         ConfigWrapperLegacy<bool> enableVisualizeBlink  {false,                                  DoReset,   {},                         "enVisualBlink"       };
         std::array<ConfigWrapperLegacy<uint32_t>, 8> custom_color {
             ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol1"       },
@@ -480,6 +480,7 @@ public:
     } feature;
 
     ConfigWrapperLegacy<uint16_t> anhaenger_id          {0,                                      DoReset,   {},                         "anhaenger_id"        };
+    ConfigWrapperLegacy<bool> emulateFeedback           {false,                                  DoReset,   {},                         "emuFeedback"         };
 
     struct {
         ConfigWrapperLegacy<bool> bleEnabled            {true,                                   DoReset,   {},                         "bleEnabled"          };
@@ -671,7 +672,6 @@ public:
     x(reverseBeepDuration1) \
     \
     x(cloudUrl) \
-    x(udpCloudHost) \
     \
     x(otaUrl) \
     x(otaUsername) \
@@ -719,10 +719,11 @@ public:
     x(cloudSettings.cloudKey) \
     x(cloudSettings.sendStatistic) \
     \
-    x(udpCloudSettings.udpUid) \
+    x(udpCloudSettings.udpToken) \
     x(udpCloudSettings.udpCloudEnabled) \
-    x(udpCloudSettings.enableCloudDebug) \
-    x(udpCloudSettings.udpUseStdString) \
+    x(udpCloudSettings.enableCloudDebug)  \
+    x(udpCloudSettings.udpCloudPort) \
+    x(udpCloudSettings.udpCloudHost) \
     \
     x(ledstrip.enableLedAnimation) \
     x(ledstrip.enableBrakeLights) \
@@ -802,7 +803,8 @@ public:
     x(feature.udpcloud.isEnabled) \
     x(feature.webserver.isEnabled) \
     x(feature.webserver_disable_lock.isEnabled) \
-    x(bleSettings.bleEnabled)
+    x(bleSettings.bleEnabled) \
+    x(emulateFeedback)
 
 #define FEATURES(x) \
     x(feature.ble) \

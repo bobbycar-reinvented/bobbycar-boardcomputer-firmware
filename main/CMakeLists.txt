@@ -175,6 +175,7 @@ set(headers
     drivingstatistics.h
     espnowfunctions.h
     esptexthelpers.h
+    feedbackemulator.h
     feedbackparser.h
     globals.h
     handbremse.h
@@ -425,6 +426,7 @@ set(sources
     drivingstatistics.cpp
     espnowfunctions.cpp
     esptexthelpers.cpp
+    feedbackemulator.cpp
     feedbackparser.cpp
     globals.cpp
     handbremse.cpp
@@ -544,8 +546,8 @@ string(REPLACE "\n" " " GIT_MESSAGE "${GIT_MESSAGE}")
 string(SUBSTRING "${GIT_MESSAGE}" 0 100 GIT_MESSAGE)
 string(STRIP "${GIT_BRANCH}" GIT_BRANCH)
 
-if(NOT DEFINED BOBBY_DEFAULT_OTA_NAME)
-    message(FATAL_ERROR "Please define BOBBY_DEFAULT_OTA_NAME")
+if(NOT DEFINED BOBBY_DEFAULT_USERNAME)
+    message(FATAL_ERROR "Please define BOBBY_DEFAULT_USERNAME")
 endif()
 
 target_compile_options(${COMPONENT_TARGET}
@@ -561,6 +563,6 @@ target_compile_options(${COMPONENT_TARGET}
         -DGIT_SHORT_REV="${GIT_SHORT_REV}"
         -DGIT_MESSAGE="${GIT_MESSAGE}"
         -DGIT_BRANCH="${GIT_BRANCH}"
-        -DBOBBY_DEFAULT_OTA_NAME="${BOBBY_DEFAULT_OTA_NAME}"
+        -DBOBBY_DEFAULT_USERNAME="${BOBBY_DEFAULT_USERNAME}"
         ${BOBBYCAR_BUILDFLAGS}
 )

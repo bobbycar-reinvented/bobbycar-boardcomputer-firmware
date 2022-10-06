@@ -1,5 +1,5 @@
 set(BOBBY_APP_NAME bobbyquad_mick)
-set(BOBBY_DEFAULT_OTA_NAME mick)
+set(BOBBY_DEFAULT_USERNAME mick)
 
 add_definitions(
   -DUSER_SETUP_LOADED=1

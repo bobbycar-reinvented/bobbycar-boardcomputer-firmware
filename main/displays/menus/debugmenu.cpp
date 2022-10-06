@@ -73,7 +73,7 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         PushScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
     if (configs.feature.udpcloud.isEnabled.value())
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TOGGLECLOUDDEBUG>, BobbyCheckbox, CloudDebugEnableAccessor>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TOGGLECLOUDDEBUG>, BobbyCheckbox, UdpCloudDebugEnableAccessor>>();
     }
     constructMenuItem<makeComponent<MenuItem, LastRebootReasonText,                  StaticFont<2>, DisabledColor, DummyAction>>();
 #ifdef FEATURE_CAN

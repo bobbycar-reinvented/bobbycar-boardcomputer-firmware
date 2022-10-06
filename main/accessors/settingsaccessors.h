@@ -129,8 +129,9 @@ struct CloudSendRateAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapp
 
 struct UdpCloudSendIntervalAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.timersSettings.udpSendRateMs; } };
 struct UdpCloudEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.udpCloudSettings.udpCloudEnabled; } };
-struct CloudDebugEnableAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.udpCloudSettings.enableCloudDebug; } };
-struct UdpUseStdStringAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.udpCloudSettings.udpUseStdString; } };
+struct UdpCloudDebugEnableAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.udpCloudSettings.enableCloudDebug; } };
+struct UdpCloudHostAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.udpCloudSettings.udpCloudHost; } };
+struct UdpCloudPortAccessor : public NewSettingsAccessor<uint16_t> { ConfigWrapper<uint16_t> &getConfig() const override { return configs.udpCloudSettings.udpCloudPort; } };
 
 // DefaultMode
 struct DefaultModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return profileSettings.defaultMode.modelMode; } };
@@ -269,3 +270,4 @@ struct FlipScreenAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<boo
 
 // Other
 struct AnhaengerIdAccessor : public NewSettingsAccessor<uint16_t> { ConfigWrapper<uint16_t> &getConfig() const override { return configs.anhaenger_id; } };
+struct UsernameAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.otaUsername; } };

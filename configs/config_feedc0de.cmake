@@ -1,5 +1,5 @@
 set(BOBBY_APP_NAME bobbyquad_feedc0de)
-set(BOBBY_DEFAULT_OTA_NAME feedc0de)
+set(BOBBY_DEFAULT_USERNAME feedc0de)
 
 set(BOBBYCAR_BUILDFLAGS
 # Pins
