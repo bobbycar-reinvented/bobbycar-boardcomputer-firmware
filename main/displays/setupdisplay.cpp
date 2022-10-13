@@ -15,6 +15,7 @@
 #include "displays/menus/extrabuttoncalibratemenu.h"
 #include "displays/statusdisplay.h"
 #include "globals.h"
+#include "taskmanager.h"
 
 using namespace espgui;
 using namespace std::chrono_literals;
@@ -170,6 +171,9 @@ void SetupDisplay::buttonPressed(espgui::Button button)
             break;
         case espgui::Right: // enter cloud setup
             m_current_setupStep = SetupStep::SETUP_CLOUD;
+            configs.write_config(configs.feature.cloud.isEnabled, true);
+            configs.write_config(configs.feature.udpcloud.isEnabled, true);
+            reload_tasks();
             break;
         default:;
         }

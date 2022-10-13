@@ -115,7 +115,7 @@ void sched_pushStats(bool printTasks)
         ESP_LOGI(TAG, "end listing tasks");
 }
 
-tl::expected<bool, std::string> checkInitializedByName(std::string name)
+tl::expected<bool, std::string> checkInitializedByName(const std::string& name)
 {
     for (auto &schedulerTask : schedulerTasks)
     {
@@ -126,7 +126,7 @@ tl::expected<bool, std::string> checkInitializedByName(std::string name)
     return tl::make_unexpected("Task not found: " + std::string{name});
 }
 
-bool checkEnabledByName(std::string name) {
+bool checkEnabledByName(const std::string& name) {
     bool enabled = true;
     // iterate over all feature flags (runForEveryFeature())
     configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature) {
@@ -134,4 +134,15 @@ bool checkEnabledByName(std::string name) {
             enabled = feature.isEnabled.value();
     });
     return enabled;
+}
+
+void reload_tasks()
+{
+    for (auto &task : schedulerTasks)
+    {
+        if (checkEnabledByName(task.name()) && !task.isInitialized())
+        {
+            task.setup();
+        }
+    }
 }
