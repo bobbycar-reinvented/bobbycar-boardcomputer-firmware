@@ -46,7 +46,7 @@
 #ifdef DPAD_BOARDCOMPUTER_V2
 #include "dpad_boardcomputer_v2.h"
 #endif
-#include "displays/setupdisplay.h"
+#include "setup.h"
 
 extern bool currentlyReverseBeeping;
 extern bool reverseBeepToggle;
@@ -103,6 +103,7 @@ bool is_valid_timestamp(espchrono::utc_clock::time_point timestamp);
 
 std::string toString(esp_chip_model_t esp_chip_model);
 std::optional<SetupStep> checkIfInCalibration();
+void drawLargeText(const std::string&& text);
 
 namespace bobbydpad {
 #ifdef FEATURE_DPAD

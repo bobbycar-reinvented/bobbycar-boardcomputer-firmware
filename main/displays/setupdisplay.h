@@ -17,27 +17,7 @@
 #include "modeinterface.h"
 #include "modes/ignoreinputmode.h"
 
-#define SetupStepValues(x) \
-    x(INFORMATION)         \
-    x(BASIC_BUTTONS)       \
-    x(CALIBRATE_POTIS)     \
-    x(ASK_SETUP_CLOUDS)    \
-    x(SETUP_CLOUD)         \
-    x(ASK_CALIBRATE_OTHER_BUTTONS) /*add pushScreen<Name> after switchScreen<StatusDisplay>*/ \
-    x(FINAL_INFORMATION)
-
-DECLARE_BOBBYTYPESAFE_ENUM(SetupStep, : uint8_t, SetupStepValues);
-
 namespace setupdisplay {
-enum CurrentButton : int8_t
-{
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-    FINISHED
-};
-
 enum CurrentCloudSelect : uint8_t
 {
     CLOUD_ENABLE,
@@ -45,10 +25,10 @@ enum CurrentCloudSelect : uint8_t
     CLOUD_KEY,
     DONE,
     _LAST,
-};
+}; // cloud setup
 namespace {
-constexpr char const TEXT_CLOUDURL[] = "Cloud URL";
-constexpr char const TEXT_CLOUDKEY[] = "Cloud Key";
+constexpr char const TEXT_CLOUDURL[] = "Cloud URL"; // cloud setup
+constexpr char const TEXT_CLOUDKEY[] = "Cloud Key"; // cloud setup
 } // namespace
 }
 
@@ -94,7 +74,6 @@ private:
     IgnoreInputMode m_mode{0, bobbycar::protocol::ControlType::FieldOrientedControl, bobbycar::protocol::ControlMode::Torque};
 
     std::optional<uint8_t> m_lastButton;
-
     setupdisplay::CurrentButton m_button_cal_status;
     uint8_t m_leftButton, m_rightButton, m_upButton, m_downButton;
     bool m_button_cal_finished;
@@ -108,18 +87,3 @@ private:
     setupdisplay::CurrentCloudSelect m_cloud_selected_item{setupdisplay::CLOUD_ENABLE};
 };
 
-class PushSetupDisplayAction : public virtual espgui::ActionInterface {
-public:
-    explicit PushSetupDisplayAction(SetupStep setupStep, bool early_return = false) :
-        m_setupStep{setupStep},
-        m_early_return{early_return}
-    {}
-
-    void triggered() override
-    {
-        espgui::pushScreen<SetupDisplay>(m_setupStep, m_early_return);
-    }
-private:
-    const SetupStep m_setupStep;
-    const bool m_early_return;
-};

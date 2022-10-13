@@ -26,6 +26,7 @@ set(BOBBY_HEADERS
     actions/rebootaction.h
     actions/resetnvsaction.h
     actions/savesettingsaction.h
+    actions/setupactions.h
     actions/switchprofileaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
     actions/updateswapfrontbackaction.h
@@ -72,7 +73,6 @@ set(BOBBY_HEADERS
     displays/bobbymenudisplay.h
     displays/bobbypopupdisplay.h
     displays/bobbysplitgraphdisplay.h
-    displays/buttoncalibratedisplay.h
     displays/calibratevoltagedisplay.h
     displays/confiscationdisplay.h
     displays/gameoflifedisplay.h
@@ -159,7 +159,13 @@ set(BOBBY_HEADERS
     displays/qrcodedebug.h
     displays/qrdisplay.h
     displays/qrimportdisplay.h
-    displays/setupdisplay.h
+    displays/setup/ask_calibrate_other_buttons.h
+    displays/setup/ask_setup_clouds.h
+    displays/setup/basic_buttons.h
+    displays/setup/calibrate_potis.h
+    displays/setup/final_information.h
+    displays/setup/information.h
+    displays/setup/setup_cloud.h
     displays/speedinfodisplay.h
     displays/spirodisplay.h
     displays/starfielddisplay.h
@@ -234,6 +240,7 @@ set(BOBBY_HEADERS
     serial_bobby.h
     settingspersister.h
     settingsutils.h
+    setup.h
     softpwmlimiter.h
     statistics.h
     statustexthelper.h
@@ -283,6 +290,7 @@ set(BOBBY_SOURCES
     actions/rebootaction.cpp
     actions/resetnvsaction.cpp
     actions/savesettingsaction.cpp
+    actions/setupactions.cpp
     actions/switchprofileaction.cpp
     actions/tempomatmodeapplycurrentpeedaction.cpp
     actions/updateswapfrontbackaction.cpp
@@ -326,7 +334,6 @@ set(BOBBY_SOURCES
     displays/bobbymenudisplay.cpp
     displays/bobbypopupdisplay.cpp
     displays/bobbysplitgraphdisplay.cpp
-    displays/buttoncalibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
     displays/confiscationdisplay.cpp
     displays/gameoflifedisplay.cpp
@@ -411,7 +418,13 @@ set(BOBBY_SOURCES
     displays/qrcodedebug.cpp
     displays/qrdisplay.cpp
     displays/qrimportdisplay.cpp
-    displays/setupdisplay.cpp
+    displays/setup/ask_calibrate_other_buttons.cpp
+    displays/setup/ask_setup_clouds.cpp
+    displays/setup/basic_buttons.cpp
+    displays/setup/calibrate_potis.cpp
+    displays/setup/final_information.cpp
+    displays/setup/information.cpp
+    displays/setup/setup_cloud.cpp
     displays/speedinfodisplay.cpp
     displays/spirodisplay.cpp
     displays/starfielddisplay.cpp
@@ -487,6 +500,7 @@ set(BOBBY_SOURCES
     serial_bobby.cpp
     settingspersister.cpp
     settingsutils.cpp
+    setup.cpp
     softpwmlimiter.cpp
     statistics.cpp
     statustexthelper.cpp

@@ -21,11 +21,6 @@ using namespace espgui;
 using namespace std::chrono_literals;
 
 namespace setupdisplay {
-constexpr char const InformationText[] = "Congratulations on your new\nbobbycar! This guide will help\nyou through initial setup,\ncalibrate everything and\nget you ready!";
-constexpr char const ButtonText[] = "Please press the highlighted\n buttons!";
-constexpr char const AskCloudText[] = "Do you want to setup cloud?\nWith this, you will be able\nto send data to graphana,\nremote control things like Buttons\nand NVS and more!\n\nPress LEFT to skip cloud.\nPress RIGHT to setup cloud.";
-constexpr char const AskSetupOtherButtonsText[] = "Do you want to setup other\nbuttons?\n(Blinker, Profile Buttons, etc.)\n\nPress LEFT to skip other buttons.\nPress RIGHT to setup buttons.";
-constexpr char const FinalInformationText[] = "Setup is done!\nIf cloud is setup, go to\nhttps://service.bobbycar.cloud/\nand register this bobbycar!\nThis is also used\nto setup udp cloud.\nPress any button to exit.";
 constexpr const char * const TAG = "SETUPDISPLAY";
 } // setupdisplay
 
@@ -35,7 +30,7 @@ using CloudURLChangeScreen = espgui::makeComponent<
     CloudURLAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
->;
+>; // cloud setup
 
 using CloudKeyChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<std::string>,
@@ -43,7 +38,7 @@ using CloudKeyChangeScreen = espgui::makeComponent<
     CloudKeyAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
->;
+>; // cloud setup
 
 void SetupDisplay::start()
 {

@@ -3,6 +3,9 @@
 // system includes
 #include <utility>
 
+// 3rdparty lib includes
+#include <tftinstance.h>
+
 // local includes
 #include "globals.h"
 #include "newsettings.h"
@@ -394,13 +397,44 @@ std::optional<SetupStep> checkIfInCalibration()
         configs.dpadMappingDown.value() == INPUT_MAPPING_NONE
     )
     {
-        // espgui::switchScreen<ButtonCalibrateDisplay>(true);
         return SetupStep::BASIC_BUTTONS;
     }
     else if (!gas || !brems || *gas > 200.f || *brems > 200.f)
     {
-        // espgui::switchScreen<PotisCalibrateDisplay>(true);
         return SetupStep::CALIBRATE_POTIS;
     }
     return std::nullopt;
+}
+
+void drawLargeText(const std::string&& text)
+{
+    using namespace espgui;
+
+    const auto topMargin = 50;
+    const uint8_t leftMargin = 8;
+    const auto rightMargin = leftMargin;
+    const auto bottomMargin = leftMargin;
+
+    int x = leftMargin + 5;
+    int y = topMargin + 5;
+
+    tft.setTextColor(TFT_WHITE);
+
+    for (char c : text)
+    {
+        if (c == '\n' || x > tft.width() - rightMargin - 10)
+        {
+            x = leftMargin + 5;
+            y += tft.fontHeight(2);
+        }
+
+        if (c != '\n')
+        {
+            const auto addedWidth = tft.drawChar(tft.decodeUTF8(c), x, y, 2);
+            x += addedWidth;
+        }
+
+        if (y >= tft.height() - bottomMargin)
+            break;
+    }
 }

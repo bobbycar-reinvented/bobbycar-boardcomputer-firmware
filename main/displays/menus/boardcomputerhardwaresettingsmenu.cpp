@@ -11,15 +11,14 @@
 
 // local includes
 #include "accessors/settingsaccessors.h"
+#include "actions/setupactions.h"
 #include "bobbycheckbox.h"
 #include "displays/bobbychangevaluedisplay.h"
-#include "displays/buttoncalibratedisplay.h"
 #include "displays/menus/extrabuttoncalibratemenu.h"
 #include "displays/menus/lockscreensettingsmenu.h"
 #include "displays/menus/setupquickactionsmenu.h"
 #include "displays/menus/timersmenu.h"
 #include "displays/potiscalibratedisplay.h"
-#include "displays/setupdisplay.h"
 #include "icons/lock.h"
 
 #ifdef FEATURE_JOYSTICK
@@ -193,12 +192,12 @@ using namespace espgui;
 BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          PushScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
-    constructMenuItem<makeComponentArgs<MenuItem, PushSetupDisplayAction,                                   StaticText<TEXT_BUTTONCALIBRATE>>>(SetupStep::BASIC_BUTTONS, true);
+    constructMenuItem<makeComponentArgs<MenuItem, PushButtonCalibrateDisplayAction,                         StaticText<TEXT_BUTTONCALIBRATE>>>(true);
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_EXTRABUTTONCALIBRATE>,                        PushScreenAction<ExtraButtonCalibrateMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QUICKACTIONS>,                                PushScreenAction<SetupQuickActionsMenu>>>();
     constructMenuItem<makeComponent<MenuItem, GasText,                                                      DisabledColor, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BremsText,                                                    DisabledColor, StaticFont<2>, DummyAction>>();
-    constructMenuItem<makeComponentArgs<MenuItem, PushSetupDisplayAction,                                   StaticText<TEXT_POTISCALIBRATE>>>(SetupStep::CALIBRATE_POTIS, true);
+    constructMenuItem<makeComponentArgs<MenuItem, PushPotiCalibrateDisplayAction,                           StaticText<TEXT_POTISCALIBRATE>>>(true);
 #ifdef FEATURE_JOYSTICK
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_JOYSTICK>,                                    PushScreenAction<JoystickDebugDisplay>>>();
 #endif

@@ -31,11 +31,12 @@ using namespace std::chrono_literals;
 #else
 #include "modes/defaultmode.h"
 #endif
-#include "displays/buttoncalibratedisplay.h"
 #include "displays/lockscreen.h"
 #include "displays/menus/recoverymenu.h"
 #include "displays/potiscalibratedisplay.h"
-#include "displays/setupdisplay.h"
+#include "displays/setup/information.h"
+#include "displays/setup/basic_buttons.h"
+#include "displays/setup/calibrate_potis.h"
 #include "displays/statusdisplay.h"
 #include "newsettings.h"
 #include "taskmanager.h"
@@ -133,7 +134,19 @@ extern "C" void app_main()
 
     if (const auto result = checkIfInCalibration(); result)
     {
-        espgui::switchScreen<SetupDisplay>(*result);
+        switch(*result)
+        {
+        case SetupStep::INFORMATION:
+            espgui::switchScreen<SetupInformationDisplay>();
+            break;
+        case SetupStep::BASIC_BUTTONS:
+            espgui::switchScreen<SetupBasicButtonsDisplay>(true);
+            break;
+        /*case SetupStep::CALIBRATE_POTIS:
+            espgui::switchScreen<SetupCalibratePotisDisplay>(true);
+            break;*/
+        default:;
+        }
     }
     else if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
     {
