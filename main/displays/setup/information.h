@@ -15,6 +15,7 @@ public:
     void initScreen() override;
     void start() override;
     void update() override;
+    void redraw() override;
 
     void buttonPressed(espgui::Button button) override;
 

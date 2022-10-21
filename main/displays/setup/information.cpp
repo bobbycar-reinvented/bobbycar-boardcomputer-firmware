@@ -39,9 +39,14 @@ void SetupInformationDisplay::update()
         espgui::switchScreen<SetupBasicButtonsDisplay>();
     }
 
-    m_init_text_progressbar.redraw(espchrono::ago(m_menu_opened_timestamp) / 50ms );
-
     Base::update();
+}
+
+void SetupInformationDisplay::redraw()
+{
+    m_init_text_progressbar.redraw(espchrono::ago(m_menu_opened_timestamp) / 50ms);
+
+    Base::redraw();
 }
 
 void SetupInformationDisplay::buttonPressed(espgui::Button button)
