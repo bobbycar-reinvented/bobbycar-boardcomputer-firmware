@@ -38,7 +38,7 @@ void BobbyGraphDisplay<COUNT>::rawButtonReleased(uint8_t button)
 template<size_t COUNT>
 void BobbyGraphDisplay<COUNT>::buttonPressed(espgui::Button button)
 {
-    //Base::buttonPressed(button);
+    Base::buttonPressed(button);
     buttonPressedCommon(button);
 }
 

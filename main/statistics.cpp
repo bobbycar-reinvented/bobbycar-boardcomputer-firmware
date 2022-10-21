@@ -1,7 +1,7 @@
 #include "statistics.h"
 
 namespace statistics {
-ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent,
+ContainerType raw_gas, raw_brems, gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent,
 #ifdef FEATURE_BMS
     bmsVoltage, bmsCurrent, bmsPower,
 #endif
@@ -10,6 +10,10 @@ ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backV
 
 void pushStats()
 {
+    if (raw_gas)
+        statistics::raw_gas.push_back(*raw_gas);
+    if (raw_brems)
+        statistics::raw_brems.push_back(*raw_brems);
     if (gas)
         statistics::gas.push_back(*gas);
     if (brems)

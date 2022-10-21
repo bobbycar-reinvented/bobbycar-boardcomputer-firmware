@@ -15,6 +15,8 @@
 
 namespace {
 constexpr char TEXT_GRAPHS[] = "Graphs";
+constexpr char TEXT_RAW_GAS[] = "Raw Gas";
+constexpr char TEXT_RAW_BREMS[] = "Raw Brems";
 constexpr char TEXT_GAS[] = "Gas";
 constexpr char TEXT_BREMS[] = "Brems";
 constexpr char TEXT_POTIS[] = "Potis";
@@ -32,6 +34,20 @@ constexpr char TEXT_MOTORCURRENTS[] = "Motor currents";
 constexpr char TEXT_RSSI[] = "RSSI";
 constexpr char TEXT_BACK[] = "Back";
 
+using RawGasGraphDisplay = espgui::makeComponent<
+        BobbyGraphDisplay<1>,
+        espgui::StaticText<TEXT_RAW_GAS>,
+        espgui::SingleGraphAccessor<RawGasStatistics>,
+        espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+        espgui::BackActionInterface<espgui::PopScreenAction>
+>;
+using RawBremsGraphDisplay = espgui::makeComponent<
+        BobbyGraphDisplay<1>,
+        espgui::StaticText<TEXT_RAW_BREMS>,
+        espgui::SingleGraphAccessor<RawBremsStatistics>,
+        espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+        espgui::BackActionInterface<espgui::PopScreenAction>
+>;
 using GasGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticText<TEXT_GAS>,
@@ -173,6 +189,8 @@ using RssiGraphDisplay = espgui::makeComponent<
 GraphsMenu::GraphsMenu()
 {
     using namespace espgui;
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RAW_GAS>,               PushScreenAction<RawGasGraphDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RAW_BREMS>,             PushScreenAction<RawBremsGraphDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAS>,                   PushScreenAction<GasGraphDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BREMS>,                 PushScreenAction<BremsGraphDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POTIS>,                 PushScreenAction<PotisGraphDisplay>>>();

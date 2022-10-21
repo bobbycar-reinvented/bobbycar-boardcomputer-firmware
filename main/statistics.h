@@ -11,7 +11,7 @@
 
 namespace statistics {
 using ContainerType = ring_buffer<float, 200>;
-extern ContainerType gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent,
+extern ContainerType raw_gas, raw_brems, gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent,
 #ifdef FEATURE_BMS
     bmsVoltage, bmsCurrent, bmsPower,
 #endif
@@ -33,6 +33,8 @@ public:
     const statistics::ContainerType &getBuffer() const override { return T; }
 };
 
+using RawGasStatistics = BufferAccessorImpl<statistics::raw_gas>;
+using RawBremsStatistics = BufferAccessorImpl<statistics::raw_brems>;
 using GasStatistics = BufferAccessorImpl<statistics::gas>;
 using BremsStatistics = BufferAccessorImpl<statistics::brems>;
 using AvgSpeedStatistics = BufferAccessorImpl<statistics::avgSpeed>;
