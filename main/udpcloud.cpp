@@ -241,8 +241,6 @@ void sendUdpCloudPacket()
             ESP_LOGE(TAG, "send to cloud failed: %.*s (ip=%s)", result.error().size(), result.error().data(), wifi_stack::toString(udpCloudIp.u_addr.ip4).c_str());
         }
 
-        // ESP_LOGI(TAG, "%s", buf.c_str());
-
         visualSendUdpPacket = !visualSendUdpPacket;
     }
 }

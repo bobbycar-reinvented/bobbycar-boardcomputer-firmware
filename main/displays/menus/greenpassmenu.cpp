@@ -81,7 +81,7 @@ GreenPassMenu::GreenPassMenu()
         }
         else
         {
-            constructMenuItem<makeComponentArgs<MenuItem, PushQrImportDisplayAction<GreenPassMenu>, StaticText<TEXT_ADDCERT>>>(std::move(nvs_key));
+            constructMenuItem<makeComponentArgs<MenuItem, PushQrImportDisplayAction, StaticText<TEXT_ADDCERT>>>(std::move(nvs_key));
         }
     }
 

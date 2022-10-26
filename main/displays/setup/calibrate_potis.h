@@ -2,45 +2,38 @@
 
 // system includes
 #include <array>
-#include <string>
 #include <optional>
 
 // 3rdparty lib includes
-#include <fmt/core.h>
-#include <cpputils.h>
 #include <widgets/label.h>
 #include <widgets/progressbar.h>
 
 // local includes
-#include "bobbydisplaywithtitle.h"
-#include "modeinterface.h"
-#include "modes/ignoreinputmode.h"
+#include "displays/bobbydisplaywithtitle.h"
 
-/*
-class PotisCalibrateDisplay : public BobbyDisplayWithTitle
+class SetupCalibratePotisDisplay : public virtual BobbyDisplayWithTitle
 {
     using Base = BobbyDisplayWithTitle;
-
 public:
-    PotisCalibrateDisplay() = default;
-    explicit PotisCalibrateDisplay(bool bootup) : m_bootup{bootup} {}
+    explicit SetupCalibratePotisDisplay(bool early_return = false) :
+            m_early_return{early_return}
+    {}
 
-    std::string text() const override;
-    void start() override;
     void initScreen() override;
+    void start() override;
     void update() override;
     void redraw() override;
     void stop() override;
 
     void buttonPressed(espgui::Button button) override;
 
+    [[nodiscard]] std::string text() const override;
+
 private:
     void copyFromSettings();
-    void copyToSettings();
+    void copyToSettings() const;
 
-    const bool m_bootup{false};
-    ModeInterface *m_oldMode;
-    IgnoreInputMode m_mode{0, bobbycar::protocol::ControlType::FieldOrientedControl, bobbycar::protocol::ControlMode::Torque};
+    const bool m_early_return;
 
     std::array<espgui::Label, 11> m_labels {{
         espgui::Label{25, 72}, // 100, 23
@@ -80,15 +73,14 @@ private:
 
     Status m_status;
     int16_t
-        m_gasMin,
-        m_gasMax,
-        m_bremsMin,
-        m_bremsMax
+            m_gasMin,
+            m_gasMax,
+            m_bremsMin,
+            m_bremsMax
 #ifdef FEATURE_JOYSTICK
-        ,m_gasMitte
+    ,m_gasMitte
         ,m_bremsMitte
 #endif
     ;
     std::optional<float> m_gas, m_brems;
 };
-*/

@@ -31,13 +31,19 @@ using namespace std::chrono_literals;
 #else
 #include "modes/defaultmode.h"
 #endif
-#include "displays/buttoncalibratedisplay.h"
 #include "displays/lockscreen.h"
 #include "displays/menus/recoverymenu.h"
 #include "displays/potiscalibratedisplay.h"
+#include "displays/setup/information.h"
+#include "displays/setup/basic_buttons.h"
+#include "displays/setup/calibrate_potis.h"
 #include "displays/statusdisplay.h"
 #include "newsettings.h"
 #include "taskmanager.h"
+
+#define BOOT_PROGRESS(s) \
+    bootLabel.redraw(s); \
+    ESP_LOGI("BOOT", "%s", s);
 
 namespace {
 espchrono::millis_clock::time_point lastStatsPush;
@@ -94,7 +100,7 @@ extern "C" void app_main()
         recovery = true;
     }
 
-    bootLabel.redraw("settings");
+    BOOT_PROGRESS("settings");
 
     if (const auto result = configs.init("bobbycar"); result != ESP_OK)
         ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
@@ -117,7 +123,7 @@ extern "C" void app_main()
     {
         if (checkEnabledByName(task.name()))
         {
-            bootLabel.redraw(task.name());
+            BOOT_PROGRESS(task.name());
             task.setup(false);
         }
     }
@@ -128,32 +134,42 @@ extern "C" void app_main()
     currentMode = &modes::defaultMode;
 #endif
 
-    bootLabel.redraw("switchScreen");
+    BOOT_PROGRESS("switchScreen");
 
-    if (configs.dpadMappingLeft.value() == INPUT_MAPPING_NONE ||
-        configs.dpadMappingRight.value() == INPUT_MAPPING_NONE ||
-        configs.dpadMappingUp.value() == INPUT_MAPPING_NONE ||
-        configs.dpadMappingDown.value() == INPUT_MAPPING_NONE)
+    if (const auto result = checkIfInCalibration(); result)
     {
-        espgui::switchScreen<ButtonCalibrateDisplay>(true);
+        switch(*result)
+        {
+        case SetupStep::INFORMATION:
+            BOOT_PROGRESS("Calibtration");
+            espgui::switchScreen<SetupInformationDisplay>();
+            break;
+        case SetupStep::BASIC_BUTTONS:
+            BOOT_PROGRESS("Calibtration");
+            espgui::switchScreen<SetupBasicButtonsDisplay>(true);
+            break;
+        case SetupStep::CALIBRATE_POTIS:
+            espgui::switchScreen<SetupCalibratePotisDisplay>(true);
+            break;
+        default:;
+        }
     }
     else if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
     {
+        BOOT_PROGRESS("Locked");
         espgui::switchScreen<StatusDisplay>();
         espgui::pushScreen<Lockscreen>();
     }
     else
     {
-        if (!gas || !brems || *gas > 200.f || *brems > 200.f)
-            espgui::switchScreen<PotisCalibrateDisplay>(true);
-        else
-        {
-            espgui::switchScreen<StatusDisplay>();
-        }
+        BOOT_PROGRESS("StatusDisplay")
+        espgui::switchScreen<StatusDisplay>();
     }
 
     esp_chip_info(&chip_info);
     esp_pm_get_configuration(&pm_config);
+
+    ESP_LOGI(TAG, "Entering main loop...");
 
     while (true)
     {

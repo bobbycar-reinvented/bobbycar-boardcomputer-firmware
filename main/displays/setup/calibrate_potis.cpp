@@ -1,49 +1,26 @@
-#include "potiscalibratedisplay.h"
+#include "calibrate_potis.h"
 
 // 3rdparty lib includes
+#include <cpputils.h>
+#include <screenmanager.h>
 #include <tftinstance.h>
 
 // local includes
-#include "actions/switchscreenaction.h"
-#include "displays/menus/boardcomputerhardwaresettingsmenu.h"
-#include "displays/menus/mainmenu.h"
-#include "displays/statusdisplay.h"
+#include "displays/setup/ask_setup_clouds.h"
 #include "globals.h"
-#include "newsettings.h"
-#include "utils.h"
+#include "setup.h"
 
-namespace {
-constexpr char TEXT_CALIBRATE[] = "Potis Calibrate";
-} // namespace
+using namespace espgui;
 
-/*
-std::string PotisCalibrateDisplay::text() const
-{
-    return TEXT_CALIBRATE;
-}
-
-void PotisCalibrateDisplay::start()
-{
-    Base::start();
-
-    m_oldMode = currentMode;
-    currentMode = &m_mode;
-    m_selectedButton = 0;
-    m_status = Status::Begin;
-    copyFromSettings();
-    m_gas = std::nullopt;
-    m_brems = std::nullopt;
-}
-
-void PotisCalibrateDisplay::initScreen()
+void SetupCalibratePotisDisplay::initScreen()
 {
     Base::initScreen();
 
-    espgui::tft.setTextFont(4);
-    espgui::tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextFont(4);
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-    espgui::tft.drawString("gas:", 25, 47);
-    espgui::tft.drawString("brems:", 25, 147);
+    tft.drawString("gas:", 25, 47);
+    tft.drawString("brems:", 25, 147);
 
     for (auto &label : m_labels)
         label.start();
@@ -54,7 +31,19 @@ void PotisCalibrateDisplay::initScreen()
     m_renderedButton = -1;
 }
 
-void PotisCalibrateDisplay::update()
+void SetupCalibratePotisDisplay::start()
+{
+    Base::start();
+
+    setup::lock();
+
+    m_selectedButton = 0;
+    m_status = Status::Begin;
+    copyFromSettings();
+    m_gas = std::nullopt;
+    m_brems = std::nullopt;
+}
+void SetupCalibratePotisDisplay::update()
 {
     Base::update();
 
@@ -69,7 +58,7 @@ void PotisCalibrateDisplay::update()
         m_brems = std::nullopt;
 }
 
-void PotisCalibrateDisplay::redraw()
+void SetupCalibratePotisDisplay::redraw()
 {
     Base::redraw();
 
@@ -108,7 +97,7 @@ void PotisCalibrateDisplay::redraw()
         {
         case Status::Begin: return "Start calibrating?";
 #ifdef FEATURE_JOYSTICK
-        case Status::Mitte: return "Release joystick";
+            case Status::Mitte: return "Release joystick";
 #endif
         case Status::GasMin: return "Release gas";
         case Status::GasMax: return "Press gas";
@@ -128,7 +117,7 @@ void PotisCalibrateDisplay::redraw()
             {
             case Status::Begin: return "Yes";
 #ifdef FEATURE_JOYSTICK
-            case Status::Mitte:
+                case Status::Mitte:
 #endif
             case Status::GasMin:
             case Status::GasMax:
@@ -149,7 +138,7 @@ void PotisCalibrateDisplay::redraw()
         {
         case Status::Begin: return "No";
 #ifdef FEATURE_JOYSTICK
-        case Status::Mitte:
+            case Status::Mitte:
 #endif
         case Status::GasMin:
         case Status::GasMax:
@@ -166,27 +155,23 @@ void PotisCalibrateDisplay::redraw()
     m_renderedButton = m_selectedButton;
 }
 
-void PotisCalibrateDisplay::stop()
+void SetupCalibratePotisDisplay::stop()
 {
-    Base::stop();
-
-    if (currentMode == &m_mode)
+    if (m_early_return)
     {
-        // to avoid crash after deconstruction
-        m_mode.stop();
-        lastMode = nullptr;
-
-        currentMode = m_oldMode;
+        setup::unlock();
     }
+
+    Base::stop();
 }
 
-void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
+void SetupCalibratePotisDisplay::buttonPressed(espgui::Button button)
 {
     Base::buttonPressed(button);
 
     switch (button)
     {
-    using espgui::Button;
+        using espgui::Button;
     case Button::Up:
         m_selectedButton--;
 
@@ -206,18 +191,13 @@ void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
         switch (m_status)
         {
         case Status::Begin:
-            if (m_bootup)
-                espgui::switchScreen<StatusDisplay>();
-            else if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
-            {
-                espgui::switchScreen<MainMenu>();
-                configs.write_config(configs.lockscreen.locked, false);
-            }
+            if (m_early_return)
+                espgui::popScreen();
             else
-                espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
+                espgui::switchScreen<SetupAskSetupCloudsDisplay>();
             break;
 #ifdef FEATURE_JOYSTICK
-        case Status::Mitte:
+            case Status::Mitte:
 #endif
         case Status::GasMin:
         case Status::GasMax:
@@ -244,7 +224,7 @@ void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
                 m_status = Status::GasMin;
                 break;
 #else
-            case Status::Begin:
+                case Status::Begin:
                 m_status = Status::Mitte;
                 break;
 
@@ -283,12 +263,13 @@ void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
             case Status::Confirm:
                 if (*m_gas > 100 || *m_brems > 100)
                     return;
+
                 copyToSettings();
-                saveProfileSettings();
-                if (m_bootup)
-                    espgui::switchScreen<StatusDisplay>();
+
+                if (m_early_return)
+                    espgui::popScreen();
                 else
-                    espgui::switchScreen<BoardcomputerHardwareSettingsMenu>();
+                    espgui::switchScreen<SetupAskSetupCloudsDisplay>();
             }
             break;
         case 1: // right button pressed
@@ -296,9 +277,14 @@ void PotisCalibrateDisplay::buttonPressed(espgui::Button button)
         }
         break;
     }
+};
+
+std::string SetupCalibratePotisDisplay::text() const
+{
+    return "Calibrate Potis";
 }
 
-void PotisCalibrateDisplay::copyFromSettings()
+void SetupCalibratePotisDisplay::copyFromSettings()
 {
 #ifdef FEATURE_JOYSTICK
     m_gasMitte = configs.gasMitte.value();
@@ -310,7 +296,7 @@ void PotisCalibrateDisplay::copyFromSettings()
     m_bremsMax = configs.bremsMax.value();
 }
 
-void PotisCalibrateDisplay::copyToSettings()
+void SetupCalibratePotisDisplay::copyToSettings() const
 {
 #ifdef FEATURE_JOYSTICK
     configs.write_config(configs.gasMitte, m_gasMitte);
@@ -321,4 +307,3 @@ void PotisCalibrateDisplay::copyToSettings()
     configs.write_config(configs.bremsMin, m_bremsMin);
     configs.write_config(configs.bremsMax, m_bremsMax);
 }
-*/

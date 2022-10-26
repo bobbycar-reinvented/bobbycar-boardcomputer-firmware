@@ -1,4 +1,4 @@
-set(headers
+set(BOBBY_HEADERS
     accessorhelpers.h
     accessors/globalaccessors.h
     accessors/settingsaccessors.h
@@ -26,6 +26,7 @@ set(headers
     actions/rebootaction.h
     actions/resetnvsaction.h
     actions/savesettingsaction.h
+    actions/setupactions.h
     actions/switchprofileaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
     actions/updateswapfrontbackaction.h
@@ -72,7 +73,6 @@ set(headers
     displays/bobbymenudisplay.h
     displays/bobbypopupdisplay.h
     displays/bobbysplitgraphdisplay.h
-    displays/buttoncalibratedisplay.h
     displays/calibratevoltagedisplay.h
     displays/confiscationdisplay.h
     displays/gameoflifedisplay.h
@@ -159,6 +159,13 @@ set(headers
     displays/qrcodedebug.h
     displays/qrdisplay.h
     displays/qrimportdisplay.h
+    displays/setup/ask_calibrate_other_buttons.h
+    displays/setup/ask_setup_clouds.h
+    displays/setup/basic_buttons.h
+    displays/setup/calibrate_potis.h
+    displays/setup/final_information.h
+    displays/setup/information.h
+    displays/setup/setup_cloud.h
     displays/speedinfodisplay.h
     displays/spirodisplay.h
     displays/starfielddisplay.h
@@ -233,6 +240,7 @@ set(headers
     serial_bobby.h
     settingspersister.h
     settingsutils.h
+    setup.h
     softpwmlimiter.h
     statistics.h
     statustexthelper.h
@@ -259,7 +267,7 @@ set(headers
     wifiguiutils.h
 )
 
-set(sources
+set(BOBBY_SOURCES
     accessors/wifistaconfigaccessors.cpp
     actions/assertaction.cpp
     actions/bluetoothbeginaction.cpp
@@ -282,6 +290,7 @@ set(sources
     actions/rebootaction.cpp
     actions/resetnvsaction.cpp
     actions/savesettingsaction.cpp
+    actions/setupactions.cpp
     actions/switchprofileaction.cpp
     actions/tempomatmodeapplycurrentpeedaction.cpp
     actions/updateswapfrontbackaction.cpp
@@ -325,7 +334,6 @@ set(sources
     displays/bobbymenudisplay.cpp
     displays/bobbypopupdisplay.cpp
     displays/bobbysplitgraphdisplay.cpp
-    displays/buttoncalibratedisplay.cpp
     displays/calibratevoltagedisplay.cpp
     displays/confiscationdisplay.cpp
     displays/gameoflifedisplay.cpp
@@ -410,6 +418,13 @@ set(sources
     displays/qrcodedebug.cpp
     displays/qrdisplay.cpp
     displays/qrimportdisplay.cpp
+    displays/setup/ask_calibrate_other_buttons.cpp
+    displays/setup/ask_setup_clouds.cpp
+    displays/setup/basic_buttons.cpp
+    displays/setup/calibrate_potis.cpp
+    displays/setup/final_information.cpp
+    displays/setup/information.cpp
+    displays/setup/setup_cloud.cpp
     displays/speedinfodisplay.cpp
     displays/spirodisplay.cpp
     displays/starfielddisplay.cpp
@@ -485,6 +500,7 @@ set(sources
     serial_bobby.cpp
     settingspersister.cpp
     settingsutils.cpp
+    setup.cpp
     softpwmlimiter.cpp
     statistics.cpp
     statustexthelper.cpp
@@ -519,8 +535,8 @@ set(dependencies
 
 idf_component_register(
     SRCS
-        ${headers}
-        ${sources}
+        ${BOBBY_HEADERS}
+        ${BOBBY_SOURCES}
     INCLUDE_DIRS
         .
     REQUIRES
@@ -538,13 +554,30 @@ execute_process(
         COMMAND git rev-parse --abbrev-ref HEAD
         OUTPUT_VARIABLE GIT_BRANCH
 )
+execute_process(
+        COMMAND git status --short
+        OUTPUT_VARIABLE GIT_STATUS
+)
+
+if (NOT GIT_STATUS STREQUAL "")
+    set(GIT_STATUS "dirty")
+else()
+    set(GIT_STATUS "clean")
+endif()
 
 string(STRIP "${GIT_REV}" GIT_REV)
 string(SUBSTRING "${GIT_REV}" 1 7 GIT_SHORT_REV)
 string(STRIP "${GIT_MESSAGE}" GIT_MESSAGE)
 string(REPLACE "\n" " " GIT_MESSAGE "${GIT_MESSAGE}")
+string(REPLACE "\"" "\\\"" GIT_MESSAGE "${GIT_MESSAGE}")
 string(SUBSTRING "${GIT_MESSAGE}" 0 100 GIT_MESSAGE)
 string(STRIP "${GIT_BRANCH}" GIT_BRANCH)
+
+message(WARNING "Git revision: ${GIT_REV}")
+message(WARNING "Git short revision: ${GIT_SHORT_REV}")
+message(WARNING "Git message: ${GIT_MESSAGE}")
+message(WARNING "Git branch: ${GIT_BRANCH}")
+message(WARNING "Git status: ${GIT_STATUS}")
 
 if(NOT DEFINED BOBBY_DEFAULT_USERNAME)
     message(FATAL_ERROR "Please define BOBBY_DEFAULT_USERNAME")

@@ -16,6 +16,8 @@ extern const BobbySchedulerTask &drivingModeTask;
 
 void sched_pushStats(bool printTasks);
 
-tl::expected<bool, std::string> checkInitializedByName(std::string name);
+tl::expected<bool, std::string> checkInitializedByName(const std::string& name);
 
-bool checkEnabledByName(std::string name);
+bool checkEnabledByName(const std::string& name);
+
+void reload_tasks();

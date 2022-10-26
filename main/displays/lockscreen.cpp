@@ -106,10 +106,7 @@ void Lockscreen::redraw()
         {
             if (isValid1stPin(m_numbers))
             {
-                if (!gas || !brems || *gas > 200.f || *brems > 200.f)
-                    espgui::switchScreen<PotisCalibrateDisplay>(true);
-                else
-                    espgui::popScreen();
+                espgui::popScreen();
 #ifdef LOCKSCREEN_PLUGIN
 #include LOCKSCREEN_PLUGIN
 LOCKSCREEN_PLUGIN_FIXES_1
@@ -118,10 +115,7 @@ LOCKSCREEN_PLUGIN_FIXES_1
             }
             else if(isValid2ndPin(m_numbers))
             {
-                if (!gas || !brems || *gas > 200.f || *brems > 200.f)
-                    espgui::switchScreen<PotisCalibrateDisplay>(true);
-                else
-                    espgui::popScreen();
+                espgui::popScreen();
 #ifdef LOCKSCREEN_PLUGIN_FIXES_2
 LOCKSCREEN_PLUGIN_FIXES_2
 #endif
