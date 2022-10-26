@@ -590,7 +590,7 @@ void updateCloud()
         lastCloudSend = now;
     }
 
-    if (!lastHeartbeat || now - *lastHeartbeat >= 1500ms)
+    if (!lastHeartbeat || now - *lastHeartbeat >= 1500ms && !configs.cloudSettings.cloudKey.value().empty())
     {
         cloudHeartbeat();
         lastHeartbeat = now;
@@ -743,7 +743,7 @@ void cloudSend()
 
     const auto timeout = std::chrono::ceil<espcpputils::ticks>(espchrono::milliseconds32{configs.cloudSettings.cloudTransmitTimeout.value()}).count();
 
-    if (!hasAnnouncedItself && configs.cloudSettings.cloudEnabled.value())
+    if (!hasAnnouncedItself && configs.cloudSettings.cloudEnabled.value() && !configs.cloudSettings.cloudKey.value().empty())
     {
         std::string helloWorld = getLoginMessage();
         ESP_LOGW(TAG, "=====> %s", helloWorld.c_str());
