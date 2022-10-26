@@ -148,9 +148,9 @@ extern "C" void app_main()
             BOOT_PROGRESS("Calibtration");
             espgui::switchScreen<SetupBasicButtonsDisplay>(true);
             break;
-        /*case SetupStep::CALIBRATE_POTIS:
+        case SetupStep::CALIBRATE_POTIS:
             espgui::switchScreen<SetupCalibratePotisDisplay>(true);
-            break;*/
+            break;
         default:;
         }
     }

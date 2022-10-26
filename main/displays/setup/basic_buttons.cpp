@@ -9,8 +9,7 @@
 
 // local includes
 #include "bobbyerrorhandler.h"
-#include "displays/setup/ask_setup_clouds.h"
-// #include "displays/setup/calibrate_potis.h" // commented out until implemented
+#include "displays/setup/calibrate_potis.h"
 #include "setup.h"
 #include "utils.h"
 
@@ -52,7 +51,7 @@ void SetupBasicButtonsDisplay::update()
         }
         else
         {
-            espgui::switchScreen<SetupAskSetupCloudsDisplay>();
+            espgui::switchScreen<SetupCalibratePotisDisplay>();
         }
     }
 
