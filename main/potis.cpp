@@ -73,6 +73,18 @@ void readPotis()
 //              sum += analogRead(pin);
 //          return sum / sampleCount;
 //    };
+    constexpr auto sampleMultipleTimes = [](adc_channel_t channel){
+        int sum{};
+        const auto sampleCount = configs.sampleCount.value();
+        for (int i = 0; i < sampleCount; i++)
+        {
+            int value;
+            if (const auto result = adc_oneshot_read(adc1_handle, channel, &value); result != ESP_OK)
+                ESP_LOGE(TAG, "adc_oneshot_read_channel() failed with %s", esp_err_to_name(result));
+            sum += value;
+        }
+        return sum / sampleCount;
+    };
 
     raw_gas = std::nullopt;
     raw_brems = std::nullopt;
@@ -100,19 +112,13 @@ void readPotis()
 #ifdef FEATURE_ADC_IN
     if (!raw_gas)
     {
-        int raw;
-        if (const auto result = adc_oneshot_read(adc1_handle, ADC_CHANNEL_GAS, &raw); result == ESP_OK)
-            raw_gas = raw;
-        else
-            ESP_LOGE(TAG, "adc_oneshot_read() failed with %s", esp_err_to_name(result));
+        raw_gas = sampleMultipleTimes(ADC_CHANNEL_GAS);
+        ESP_LOGD(TAG, "raw_gas: %d", *raw_gas);
     }
     if (!raw_brems)
     {
-        int raw;
-        if (const auto result = adc_oneshot_read(adc1_handle, ADC_CHANNEL_BREMS, &raw); result == ESP_OK)
-            raw_brems = raw;
-        else
-            ESP_LOGE(TAG, "adc_oneshot_read() failed with %s", esp_err_to_name(result));
+        raw_brems = sampleMultipleTimes(ADC_CHANNEL_BREMS);
+        ESP_LOGD(TAG, "raw_brems: %d", *raw_brems);
     }
 #endif
 
