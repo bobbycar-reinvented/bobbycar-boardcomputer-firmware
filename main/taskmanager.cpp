@@ -84,12 +84,12 @@ BobbySchedulerTask schedulerTasksArr[] {
     BobbySchedulerTask { "ledstrip",       initLedStrip,          updateLedStrip,          30ms, false },
     BobbySchedulerTask { "espnow",         espnow::initESPNow,    espnow::handle,          100ms, false },
     BobbySchedulerTask { "cloud",          initCloud,             updateCloud,             50ms, false },
-    BobbySchedulerTask { "udpcloud",       udpCloudInit,          udpCloudUpdate,          25ms, false },
+    BobbySchedulerTask { "udpcloud",       udpCloudInit,          udpCloudUpdate,          50ms, false },
     BobbySchedulerTask { "drivingmode",    initDrivingMode,       updateDrivingMode,       20ms, false },
     BobbySchedulerTask { "drivingstatistics", initStatistics,     calculateStatistics,     100ms, false },
     BobbySchedulerTask { "dnsannounce",    init_dns_announce,     handle_dns_announce,     100ms, false },
     BobbySchedulerTask { "updateDisp",     not_needed,            updateDisplay,           20ms, true },
-    BobbySchedulerTask { "redrawDisp",     not_needed,            redrawDisplay,           20ms, true },
+    BobbySchedulerTask { "redrawDisp",     not_needed,            redrawDisplay,           40ms, true },
     BobbySchedulerTask { "feedbackEmulator", feedbackemulator::init, feedbackemulator::update, 500ms, false},
 };
 } // namespace
