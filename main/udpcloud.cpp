@@ -17,6 +17,7 @@
 #include "drivingstatistics.h"
 #include "globals.h"
 #include "newsettings.h"
+#include "taskmanager.h"
 #include "udpsender.h"
 #include "utils.h"
 
@@ -163,6 +164,7 @@ std::optional<std::string> buildUdpCloudJson()
     }
 
     doc["__t"] = configs.udpCloudSettings.udpToken.value();
+    doc["per"] = drivingModeTask.callCount();
 
     std::string buf;
     serializeJson(doc, buf);
