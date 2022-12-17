@@ -44,6 +44,8 @@ extern float gLedPosition; // yes, this is intendet as a float value! Do NOT cha
 
 extern uint16_t blinkAnimation;
 
+extern bool brakeLightsStatus;
+
 void showDefaultLedstrip();
 void showAnimation();
 void showBetterRainbow();

@@ -60,23 +60,18 @@ namespace bobbyblinker {
         }
         if (configs.ledstrip.enableBrakeLights.value() && espchrono::ago(*brake_last_time_sent) > 500ms)
         {
-            float avgPwm{};
-            for (const Controller &controller: controllers) {
-                avgPwm +=
-                        controller.command.left.pwm * (controller.invertLeft ? -1 : 1) +
-                        controller.command.right.pwm * (controller.invertRight ? -1 : 1);
-            }
-            avgPwm /= 4;
-
-            if (avgPwm < -1.f)
+            if (brakeLightsStatus == brakeLightsOffSent)
             {
-                sendState("BRAKELIGHTSON");
-                brakeLightsOffSent = false;
-            }
-            else if (!brakeLightsOffSent && avgPwm > -1.f)
-            {
-                sendState("BRAKELIGHTSOFF");
-                brakeLightsOffSent = true;
+                if (brakeLightsStatus)
+                {
+                    sendState("BRAKELIGHTSON");
+                    brakeLightsOffSent = false;
+                }
+                else if (!brakeLightsOffSent)
+                {
+                    sendState("BRAKELIGHTSOFF");
+                    brakeLightsOffSent = true;
+                }
             }
         }
     }

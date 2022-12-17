@@ -248,6 +248,28 @@ void updateAccumulators()
     sumCurrent = fixCurrent(sumCurrent);
 
     avgSpeedKmh = convertToKmh(avgSpeed);
+
+    // accel
+    EVERY_N_MILLIS(100)
+    {
+        const auto now = espchrono::millis_clock::now();
+        const auto delta = now - lastAvgSpeedKmhTs;
+        const auto deltaSpeedKmh = avgSpeedKmh - lastAvgSpeedKmh;
+
+        // ESP_LOGI("utils.cpp", "delta: %lli ms, deltaSpeedKmh: %f", delta.count() / 1000, deltaSpeedKmh);
+
+        const auto deltaMilliseconds = delta.count() / 1000.f;
+
+        const auto kmh_s = deltaSpeedKmh / deltaMilliseconds; // km/h / s
+        const auto m_s2 = kmh_s * 1000.f / 3600.f; // m/s^2
+
+        // ESP_LOGI("utils.cpp", "m_s2: %f", m_s2);
+
+        avgAccel = m_s2;
+
+        lastAvgSpeedKmh = avgSpeedKmh;
+        lastAvgSpeedKmhTs = espchrono::millis_clock::now();
+    }
 }
 
 float wattToAmpere(float watt) {

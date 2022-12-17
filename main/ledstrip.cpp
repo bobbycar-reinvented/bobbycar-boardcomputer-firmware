@@ -19,6 +19,8 @@ std::vector<CRGB> leds;
 uint8_t gHue = 0;
 float gLedPosition = 0; // yes, this is intendet as a float value! Do NOT change!
 
+bool brakeLightsStatus;
+
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
 namespace {
@@ -149,11 +151,12 @@ void updateLedStrip()
             }
             avgPwm /= 4;
 
-            if (avgPwm < -1.f)
+            // avgAccel in m/s/s
+            if (avgPwm < -1.f || (avgAccel < -0.001f && avgSpeedKmh > 5.f))
             {
                 auto color = avgSpeedKmh < -0.1f ? CRGB{255, 255, 255} : CRGB{255, 0, 0};
 
-                const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value());
+                brakeLightsStatus = true;
 
                 std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
                 if (configs.ledstrip.enableFullBlink.value())
@@ -162,12 +165,15 @@ void updateLedStrip()
                 }
                 else if(!configs.ledstrip.enableAnimBlink.value())
                 {
+                    const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value());
+
                     std::fill(center - configs.ledstrip.bigOffset.value() - 2, center - configs.ledstrip.smallOffset.value() + 2, color);
                     std::fill(center + configs.ledstrip.smallOffset.value() - 2, center + configs.ledstrip.bigOffset.value() + 2, color);
                 }
             }
             else
             {
+                brakeLightsStatus = false;
                 showAnimation();
             }
         }

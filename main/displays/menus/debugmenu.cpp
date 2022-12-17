@@ -62,6 +62,15 @@ constexpr char TEXT_ERASENVS[] = "Erase NVS (old)";
 constexpr char TEXT_RESET_NVS_NEW[] = "Reset NVS (new)";
 constexpr char TEXT_DYNAMICMENU[] = "GUI experiments";
 constexpr char TEXT_BACK[] = "Back";
+
+class AccelerationText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        return fmt::format("Accel: {:.6f}", avgAccel);
+    }
+};
 } // namespace
 
 DebugMenu::DebugMenu()
@@ -82,6 +91,7 @@ DebugMenu::DebugMenu()
 #ifdef FEATURE_CAN
     constructMenuItem<makeComponent<MenuItem, CanIcCrashText,                        StaticFont<2>, DisabledColor, DummyAction>>();
 #endif
+    constructMenuItem<makeComponent<MenuItem, AccelerationText,                      StaticFont<2>, DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTCOMMAND>,         PushScreenAction<FrontCommandDebugMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKCOMMAND>,          PushScreenAction<BackCommandDebugMenu>>>();
