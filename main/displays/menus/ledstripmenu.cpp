@@ -48,6 +48,8 @@ constexpr char TEXT_ANIMATION_MULTIPLIER[] = "Animation Multiplier";
 constexpr char TEXT_LEDSTRIP_BRIGHTNESS[] = "Ledstrip Brightness";
 constexpr char TEXT_LEDSTRIP_ALLCUSTOMOFF[] = "All custom off";
 constexpr char TEXT_LEDSTRIP_CHANGE_OTA_ANIM[] = "Change Ota animation";
+constexpr char TEXT_LEDSTRIP_BRAKE_USE_ACCEL[] = "Brakelight use acceleration";
+constexpr char TEXT_LEDSTRIP_BRAKE_USE_POWER[] = "Brakelight use motor power";
 constexpr char TEXT_BACK[] = "Back";
 
 using LedsCountChangeScreen = espgui::makeComponent<
@@ -179,6 +181,8 @@ LedstripMenu::LedstripMenu()
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BIGOFFSET, BigOffsetAccessor>,           espgui::PushScreenAction<BigOffsetChangeScreen>>>(); }
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_BRIGHTNESS>,                             espgui::PushScreenAction<LedStripBrightnessChangeScreen>>>(); }
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, LedStripMaxCurrentText, espgui::PushScreenAction<LedStripMaxAmpereChangeScreen>>>(); }
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_BRAKE_USE_ACCEL>, BobbyCheckbox, LedstripBrakeLightUseAccelAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_BRAKE_USE_POWER>, BobbyCheckbox, LedstripBrakeLightUsePowerAccessor>>();
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BACK>,                                            espgui::PushScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
 }
 

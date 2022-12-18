@@ -53,7 +53,11 @@ extern esp_pm_config_esp32_t pm_config;
 
 extern float avgSpeed;
 extern float avgSpeedKmh;
+extern float lastAvgSpeedKmh;
+extern float avgAccel;
 extern float sumCurrent;
+
+extern espchrono::millis_clock::time_point lastAvgSpeedKmhTs;
 
 extern bool isLocked;
 

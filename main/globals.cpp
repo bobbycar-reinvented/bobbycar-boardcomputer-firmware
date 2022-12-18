@@ -15,7 +15,11 @@ float gametrakDist;
 float avgSpeed{};
 float avgSpeedKmh{};
 float sumCurrent{};
+float lastAvgSpeedKmh{};
+float avgAccel{};
 bool isLocked{};
+
+espchrono::millis_clock::time_point lastAvgSpeedKmhTs{};
 
 std::optional<int> sunrise;
 std::optional<int> sunset;
