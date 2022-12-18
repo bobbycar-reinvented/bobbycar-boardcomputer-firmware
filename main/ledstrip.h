@@ -4,6 +4,7 @@
 #include <vector>
 
 // 3rdparty lib includes
+#include <espchrono.h>
 #include <FastLED.h>
 
 // local includes
@@ -45,6 +46,8 @@ extern float gLedPosition; // yes, this is intendet as a float value! Do NOT cha
 extern uint16_t blinkAnimation;
 
 extern bool brakeLightsStatus;
+
+extern espchrono::millis_clock::time_point brakeLightTimer;
 
 void showDefaultLedstrip();
 void showAnimation();

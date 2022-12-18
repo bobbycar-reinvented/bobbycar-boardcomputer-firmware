@@ -265,7 +265,7 @@ void updateAccumulators()
 
         // ESP_LOGI("utils.cpp", "m_s2: %f", m_s2);
 
-        avgAccel = m_s2;
+        avgAccel = avgAccel * 0.3f + m_s2 * 0.7f;
 
         lastAvgSpeedKmh = avgSpeedKmh;
         lastAvgSpeedKmhTs = espchrono::millis_clock::now();

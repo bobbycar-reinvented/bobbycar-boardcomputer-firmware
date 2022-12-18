@@ -21,6 +21,8 @@ float gLedPosition = 0; // yes, this is intendet as a float value! Do NOT change
 
 bool brakeLightsStatus;
 
+espchrono::millis_clock::time_point brakeLightTimer;
+
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
 namespace {
@@ -152,8 +154,13 @@ void updateLedStrip()
             avgPwm /= 4;
 
             // avgAccel in m/s/s
-            if (avgPwm < -1.f || (avgAccel < -0.001f && avgSpeedKmh > 5.f))
+            if (avgPwm < -1.f || (avgAccel < -0.001f && avgSpeedKmh > 5.f) || espchrono::ago(brakeLightTimer) < 200ms)
             {
+                if (!(espchrono::ago(brakeLightTimer) < 200ms))
+                {
+                    brakeLightTimer = espchrono::millis_clock::now();
+                }
+
                 auto color = avgSpeedKmh < -0.1f ? CRGB{255, 255, 255} : CRGB{255, 0, 0};
 
                 brakeLightsStatus = true;
