@@ -415,6 +415,8 @@ public:
         };
         ConfigWrapperLegacy<uint8_t> leds_per_meter     {144,                                    DoReset,   {},                         "ledsPerMeter"        };
         ConfigWrapperLegacy<bool> automaticLight        {false,                                  DoReset,   {},                         "nightLights"         };
+        ConfigWrapperLegacy<bool> brakeLights_useAccel  {false,                                  DoReset,   {},                         "brakeLightsA"    };
+        ConfigWrapperLegacy<bool> brakeLights_usePower  {false,                                  DoReset,   {},                         "brakeLightsP"    };
     } ledstrip;
 
     struct {
@@ -749,6 +751,8 @@ public:
     x(ledstrip.maxMilliamps) \
     x(ledstrip.enableVisualizeBlink)\
     x(ledstrip.automaticLight) \
+    x(ledstrip.brakeLights_useAccel) \
+    x(ledstrip.brakeLights_usePower) \
     \
     x(ledstrip.custom_color[0]) \
     x(ledstrip.custom_color[1]) \

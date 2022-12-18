@@ -205,6 +205,9 @@ struct LedstripEnableBlinkAnimationAccessor : public NewSettingsAccessor<bool> {
 struct LedstripOtaAnimationAccessor : public NewSettingsAccessor<OtaAnimationModes> { ConfigWrapper<OtaAnimationModes> &getConfig() const override { return configs.ledstrip.otaMode; } };
 struct LedstripEnableVisualizeBlinkAnimationAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableVisualizeBlink; } };
 struct LedstripAutomaticLightAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.automaticLight; } };
+struct LedstripBrakeLightUseAccelAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.brakeLights_useAccel; } };
+struct LedstripBrakeLightUsePowerAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.brakeLights_usePower; } };
+
 
 // Battery
 struct BatterySeriesCellsAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.battery.cellsSeries; } };

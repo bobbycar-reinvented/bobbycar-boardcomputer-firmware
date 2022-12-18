@@ -26,7 +26,46 @@ espchrono::millis_clock::time_point brakeLightTimer;
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
 namespace {
-    bool initialized{false};
+bool initialized{false};
+
+bool brakeLights()
+{
+    float avgPwm{};
+    for (const Controller &controller : controllers)
+    {
+        avgPwm +=
+                controller.command.left.pwm * (controller.invertLeft ? -1 : 1) +
+                controller.command.right.pwm * (controller.invertRight ? -1 : 1);
+    }
+    avgPwm /= 4;
+
+    if (avgPwm < -1.f)
+    {
+        return true;
+    }
+
+    if (configs.ledstrip.brakeLights_useAccel.value() && (avgAccel < -0.001f && avgSpeedKmh > 2.f))
+    {
+        return true;
+    }
+
+    if (espchrono::ago(brakeLightTimer) < 200ms)
+    {
+        return true;
+    }
+
+    if (configs.ledstrip.brakeLights_usePower.value() && brakeLightsStatus)
+    {
+        if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
+        {
+            auto watt = sumCurrent * *avgVoltage;
+
+            return watt < -20;
+        }
+    }
+
+    return false;
+}
 } // namespace
 
 void initLedStrip()
@@ -144,17 +183,8 @@ void updateLedStrip()
     {
         if (configs.ledstrip.enableBrakeLights.value())
         {
-            float avgPwm{};
-            for (const Controller &controller : controllers)
-            {
-                avgPwm +=
-                    controller.command.left.pwm * (controller.invertLeft ? -1 : 1) +
-                    controller.command.right.pwm * (controller.invertRight ? -1 : 1);
-            }
-            avgPwm /= 4;
-
             // avgAccel in m/s/s
-            if (avgPwm < -1.f || (avgAccel < -0.001f && avgSpeedKmh > 5.f) || espchrono::ago(brakeLightTimer) < 200ms)
+            if (brakeLights())
             {
                 if (!(espchrono::ago(brakeLightTimer) < 200ms))
                 {
