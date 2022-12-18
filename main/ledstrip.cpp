@@ -58,9 +58,9 @@ bool brakeLights()
     {
         if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
         {
-            auto watt = sumCurrent * *avgVoltage;
+            const auto watt = sumCurrent * *avgVoltage;
 
-            return watt < -20;
+            return watt < -1;
         }
     }
 
