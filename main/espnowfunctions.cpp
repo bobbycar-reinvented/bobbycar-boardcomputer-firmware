@@ -53,7 +53,7 @@ bool espnow_init_allowed()
 }
 
 namespace {
-extern "C" void onReceive(const uint8_t *mac_addr, const uint8_t *data, int data_len)
+extern "C" void onReceive(const esp_now_recv_info* info, const uint8_t *data, int data_len)
 {
     ESP_LOGD(TAG, "Received data");
     const std::string_view data_str{(const char *)data, size_t(data_len)};

@@ -397,10 +397,12 @@ std::string toString(esp_chip_model_t esp_chip_model)
         return "ESP32S3";
     case CHIP_ESP32C3:
         return "ESP32C3";
-    case CHIP_ESP32H2:
-        return "ESP32H2";
+    case CHIP_ESP32H4:
+        return "ESP32H4";
     case CHIP_ESP32C2:
         return "ESP32C2";
+    case CHIP_ESP32C6:
+        return "ESP32C6";
     default:
         return "invalid";
     }
