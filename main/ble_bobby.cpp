@@ -55,7 +55,7 @@ void createBle()
 {
     ESP_LOGI("BOBBY", "called");
 
-    NimBLEDevice::init("foo");//configs.bluetoothName.value());
+    NimBLEDevice::init(configs.bluetoothName.value());
 
     const auto serviceUuid{"0335e46c-f355-4ce6-8076-017de08cee98"};
 
