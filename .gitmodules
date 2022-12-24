@@ -36,7 +36,7 @@
 	url = ../../0xFEEDC0DE64/espwifistack.git
 [submodule "components/esp-nimble-cpp"]
 	path = components/esp-nimble-cpp
-	url = ../../0xFEEDC0DE64/esp-nimble-cpp.git
+	url = ../../bobbycar-graz/esp-nimble-cpp.git
 [submodule "components/espasyncota"]
 	path = components/espasyncota
 	url = ../../0xFEEDC0DE64/espasyncota.git
