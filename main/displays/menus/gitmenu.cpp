@@ -22,6 +22,8 @@ namespace {
     constexpr char TEXT_GIT_MESSAGE_TITLE[] = "Commit Message";
     constexpr char TEXT_GIT_MESSAGE[] = GIT_MESSAGE;
     constexpr char TEXT_GITHUB_URL[] = "Github URL";
+    constexpr char TEXT_IDF_VERSION[] = "ESP-IDF Version";
+    constexpr char TEXT_IDF_VERSION_VALUE[] = IDF_VER;
     constexpr char TEXT_BACK[] = "Back";
 
     class OpenPopupAction : public virtual espgui::ActionInterface
@@ -49,6 +51,8 @@ GitMenu::GitMenu()
 {
     using namespace espgui;
 
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_IDF_VERSION>,        StaticColor<TFT_GREY>, StaticFont<2>, DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_IDF_VERSION_VALUE>,  DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GIT_BRANCH_TITLE>,   StaticColor<TFT_GREY>, StaticFont<2>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GIT_BRANCH>,         DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GIT_COMMIT_TITLE>,   StaticColor<TFT_GREY>, StaticFont<2>, DummyAction>>();
