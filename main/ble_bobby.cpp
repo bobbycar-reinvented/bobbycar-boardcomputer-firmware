@@ -55,13 +55,19 @@ void createBle()
 {
     ESP_LOGI("BOBBY", "called");
 
-    BLEDevice::init(configs.bluetoothName.value());
+    NimBLEDevice::init("foo");//configs.bluetoothName.value());
 
     const auto serviceUuid{"0335e46c-f355-4ce6-8076-017de08cee98"};
 
-    pServer = BLEDevice::createServer();
+    ESP_LOGI(TAG, "Creating BLE server");
+
+    pServer = NimBLEDevice::createServer();
+
+    ESP_LOGI(TAG, "Creating BLE service");
 
     pService = pServer->createService(serviceUuid);
+
+    ESP_LOGI(TAG, "Creating BLE characteristics");
 
     livestatsCharacteristic = pService->createCharacteristic("a48321ea-329f-4eab-a401-30e247211524", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     remotecontrolCharacteristic = pService->createCharacteristic("4201def0-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
@@ -72,19 +78,23 @@ void createBle()
     getwifilist = pService->createCharacteristic("4201def2-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::READ);
     getwifilist->setCallbacks(&bleWiFiListCallbacks);
 
+    ESP_LOGI(TAG, "Starting BLE service");
+
     pService->start();
 
-    BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+    ESP_LOGI(TAG, "Starting BLE advertising");
+
+    NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
     pAdvertising->addServiceUUID(serviceUuid);
     pAdvertising->setScanResponse(true);
-    BLEDevice::startAdvertising();
+    NimBLEDevice::startAdvertising();
 }
 
 void destroyBle()
 {
     ESP_LOGI("BOBBY", "called");
 
-    BLEDevice::deinit(true);
+    NimBLEDevice::deinit(true);
 
     pServer = {};
     pService = {};
