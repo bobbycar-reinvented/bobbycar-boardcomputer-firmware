@@ -1,34 +1,33 @@
 #include "powersupplydisplay.h"
 
 // 3rdparty lib includes
-
 #include <screenmanager.h>
+#include <tftcolors.h>
+#include <tftinterface.h>
 
 // local includes
 #include "globals.h"
 
 #if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
-void PowerSupplyDisplay::initScreen()
+
+namespace bobby {
+
+void PowerSupplyDisplay::initScreen(espgui::TftInterface &tft)
 {
-    Base::initScreen();
+    Base::initScreen(tft);
 
-    espgui::tft.fillScreen(TFT_BLACK);
-    espgui::tft.setTextColor(TFT_WHITE, TFT_BLACK);
-
-    espgui::tft.setTextFont(4);
-
-    espgui::tft.drawString("Voltage:", 0, m_voltageLabel.y());
-    m_voltageLabel.start();
-    espgui::tft.drawString("Current:", 0, m_currentLabel.y());
-    m_currentLabel.start();
+    tft.drawString("Voltage:", 0, m_voltageLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    m_voltageLabel.start(tft);
+    tft.drawString("Current:", 0, m_currentLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    m_currentLabel.start(tft);
 }
 
-void PowerSupplyDisplay::redraw()
+void PowerSupplyDisplay::redraw(espgui::TftInterface &tft)
 {
-    Base::redraw();
+    Base::redraw(tft);
 
-    m_voltageLabel.redraw(std::to_string(50.4) + 'V');
-    m_currentLabel.redraw(std::to_string(15.1) + 'A');
+    m_voltageLabel.redraw(tft, std::to_string(50.4) + 'V', espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    m_currentLabel.redraw(tft, std::to_string(15.1) + 'A', espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 }
 
 void PowerSupplyDisplay::buttonPressed(espgui::Button button)
@@ -45,4 +44,5 @@ void PowerSupplyDisplay::buttonPressed(espgui::Button button)
     default:;
     }
 }
+} // namespace bobby
 #endif
