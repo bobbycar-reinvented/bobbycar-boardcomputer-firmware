@@ -5,13 +5,15 @@
 #include <esp32-hal-gpio.h>
 
 // 3rdparty lib includes
-#include "accessorinterface.h"
-#include "actions/popscreenaction.h"
-#include "icons/back.h"
+#include <accessorinterface.h>
+#include <actions/popscreenaction.h>
+#include <icons/back.h>
 
 // local includes
-#include "bobbycheckbox.h"
+#include "guihelpers/bobbycheckbox.h"
 #include "types.h"
+
+namespace bobby {
 
 namespace {
 constexpr char TEXT_MOSFETS[] = "Mosfets";
@@ -51,5 +53,5 @@ void MosfetsMenu::back()
 {
     espgui::popScreen();
 }
-
+} // namespace bobby
 #endif

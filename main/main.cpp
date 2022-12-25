@@ -75,8 +75,6 @@ extern "C" void app_main()
 
         while (true)
         {
-            const auto now = espchrono::millis_clock::now();
-
             for (auto &schedulerTask : schedulerTasks)
             {
                 if (schedulerTask.isInitialized())

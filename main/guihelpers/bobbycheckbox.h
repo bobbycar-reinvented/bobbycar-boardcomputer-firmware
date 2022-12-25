@@ -1,8 +1,8 @@
 #pragma once
 
 // 3rdparty lib includes
-#include "../../components/esp-gui-lib/src/actions/toggleboolaction.h"
-#include "../../components/esp-gui-lib/src/checkboxicon.h"
+#include <actions/toggleboolaction.h>
+#include <checkboxicon.h>
 
 // local includes
 #include "bobbyerrorhandler.h"

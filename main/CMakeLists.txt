@@ -554,4 +554,5 @@ target_compile_options(${COMPONENT_TARGET}
         -DGIT_BRANCH="${GIT_BRANCH}"
         -DBOBBY_DEFAULT_USERNAME="${BOBBY_DEFAULT_USERNAME}"
         ${BOBBYCAR_BUILDFLAGS}
+        -Werror=unused-but-set-variable
 )

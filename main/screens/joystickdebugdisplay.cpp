@@ -2,8 +2,9 @@
 #include "joystickdebugdisplay.h"
 
 // 3rdparty lib includes
-
 #include <screenmanager.h>
+#include <tftcolors.h>
+#include <tftinterface.h>
 
 // local includes
 #include "screens/statusdisplay.h"
@@ -11,6 +12,8 @@
 #include "newsettings.h"
 #include "utils.h"
 #include "globals.h"
+
+namespace bobby {
 
 using namespace espgui;
 
@@ -49,16 +52,22 @@ void JoystickDebugDisplay::update()
         m_y = map_analog_stick(m_bremsMitte, m_bremsMin, m_bremsMax, configs.deadband.value(), *raw_brems);
 }
 
-void JoystickDebugDisplay::redraw()
+void JoystickDebugDisplay::redraw(espgui::TftInterface &tft)
 {
-    Base::redraw();
+    Base::redraw(tft);
 
     if (m_x && m_y)
     {
         tft.drawPixel(
                     (tft.width() / 2) + *m_x / 10,
                     (tft.height() / 2) + *m_y / 10,
-                    TFT_WHITE);
+                    espgui::TFT_WHITE);
+    }
+
+    if (m_clear)
+    {
+        tft.fillScreen(espgui::TFT_BLACK);
+        m_clear = false;
     }
 }
 
@@ -80,7 +89,7 @@ void JoystickDebugDisplay::buttonPressed(espgui::Button button)
     {
         using espgui::Button;
     case Button::Right:
-        tft.fillScreen(TFT_BLACK);
+        m_clear = true;
         break;
     case Button::Left:
         espgui::popScreen();
@@ -88,4 +97,5 @@ void JoystickDebugDisplay::buttonPressed(espgui::Button button)
     default:;
     }
 }
+} // namespace bobby
 #endif

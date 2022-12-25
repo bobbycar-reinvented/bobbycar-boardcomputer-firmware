@@ -4,6 +4,7 @@
 #include <screenmanager.h>
 #include <tftcolors.h>
 #include <tftespiimpl.h>
+#include <tftinterface.h>
 
 // local includes
 #include "globals.h"

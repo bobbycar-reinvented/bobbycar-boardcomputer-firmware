@@ -5,6 +5,8 @@
 // local includes
 #include "guihelpers/bobbymenudisplay.h"
 
+namespace bobby {
+
 class MosfetsMenu : public BobbyMenuDisplay
 {
 public:
@@ -14,4 +16,5 @@ public:
 
     void back() override;
 };
+} // namespace bobby
 #endif
