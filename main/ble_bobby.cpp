@@ -8,12 +8,12 @@
 #include <wifi_bobbycar.h>
 
 // local includes
-#include "ledstrip.h"
 #include "globals.h"
+#include "ledstrip.h"
 #include "modes/defaultmode.h"
 #include "modes/remotecontrolmode.h"
-#include "utils.h"
 #include "newsettings.h"
+#include "utils.h"
 
 namespace {
 constexpr const char * const TAG = "BOBBYBLE";
