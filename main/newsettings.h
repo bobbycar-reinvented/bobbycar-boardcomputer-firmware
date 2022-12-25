@@ -23,14 +23,11 @@
 // local includes
 #include "battery.h"
 #include "bobbyquickactions.h"
-#include "displays/lockscreen.h"
+#include "cloud.h"
 #include "handbremse.h"
 #include "ledstrip.h"
+#include "screens/lockscreen.h"
 #include "unifiedmodelmode.h"
-#include "displays/lockscreen.h"
-#include "handbremse.h"
-#include "bobbyquickactions.h"
-#include "cloud.h"
 
 using namespace espconfig;
 

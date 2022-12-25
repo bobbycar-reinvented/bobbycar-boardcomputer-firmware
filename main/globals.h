@@ -21,12 +21,10 @@
 
 // 3rdparty lib includes
 #include <espchrono.h>
-#include <TFT_eSPI.h>
 
 // local includes
 #include "controller.h"
 #include "display.h"
-#include "macros_bobbycar.h"
 #include "modeinterface.h"
 #include "newsettings.h"
 #include "profilesettings.h"
