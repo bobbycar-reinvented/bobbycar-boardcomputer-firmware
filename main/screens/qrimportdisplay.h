@@ -37,8 +37,11 @@ public:
     void redraw(espgui::TftInterface &tft) override;
     void buttonPressed(espgui::Button button) override;
 
+    void start_request();
+
 private:
     bool m_waitingForResult{false};
+    bool m_requestStarted{false};
     espgui::Label m_statuslabel;
 
     tl::expected<std::string, std::string> m_result;

@@ -47,9 +47,10 @@ void SetupBasicButtonsDisplay::update()
         m_button_cal_finished = false;
         saveButtons();
 
+        setup::unlock();
+
         if (m_early_return)
         {
-            setup::unlock();
             espgui::popScreen();
         }
         else

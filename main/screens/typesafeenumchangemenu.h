@@ -70,7 +70,6 @@ public:
         using namespace espgui;
         using namespace typesafeenumchangemenu;
         constructMenuItem<TypesafeEnumCurrentValueMenuItem<TEnum>>(m_config);
-        constructMenuItem<makeComponent<MenuItem, EmptyText, DummyAction>>();
         iterateEnum<TEnum>::iterate([&](TEnum enum_value, const auto &string_value){
             constructMenuItem<TypesafeEnumSetterMenuItem<TEnum>>(enum_value, m_config);
         });

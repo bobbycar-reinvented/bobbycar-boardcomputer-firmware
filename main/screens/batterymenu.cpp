@@ -105,6 +105,14 @@ void BatteryMenu::redraw(espgui::TftInterface &tft)
 {
     Base::redraw(tft);
 
+    if (m_fullRedraw)
+    {
+        m_fullRedraw = false;
+        m_doubleProgressBarBatPercentage.start(tft);
+        m_batPercentBootLabel.clear(tft, espgui::TFT_BLACK);
+        m_batPercentNowLabel.clear(tft, espgui::TFT_BLACK);
+    }
+
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
         const auto batPercent = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
@@ -115,6 +123,20 @@ void BatteryMenu::redraw(espgui::TftInterface &tft)
             m_batPercentNowLabel.redraw(tft, fmt::format("{:.2f} %", batPercent), espgui::TFT_DARKGREY, espgui::TFT_BLACK, 2);
             m_batPercentBootLabel.redraw(tft, fmt::format("{:.2f} %", *battery::bootBatPercentage), espgui::TFT_DARKGREY, espgui::TFT_BLACK, 2);
         }
+    }
+}
+
+void BatteryMenu::buttonPressed(espgui::Button button)
+{
+    Base::buttonPressed(button);
+
+    switch (button)
+    {
+    case espgui::Up:
+    case espgui::Down:
+        m_fullRedraw = true;
+        break;
+    default:;
     }
 }
 

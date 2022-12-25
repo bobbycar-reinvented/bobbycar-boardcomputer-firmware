@@ -24,10 +24,14 @@ public:
     void redraw(espgui::TftInterface &tft) override;
     void back() override;
 
+    void buttonPressed(espgui::Button button) override;
+
 private:
     bobby::DoubleProgressBar m_doubleProgressBarBatPercentage{75, 68, 90, 24, 0, 100, espgui::TFT_RED, espgui::TFT_GREEN};
     espgui::Label m_batPercentNowLabel {170, 68};
     espgui::Label m_batPercentBootLabel{170, 82};
+
+    bool m_fullRedraw{true};
 };
 
 } // namespace bobby
