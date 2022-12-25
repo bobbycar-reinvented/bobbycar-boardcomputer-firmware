@@ -6,13 +6,12 @@
 #include <actions/pushscreenaction.h>
 #include <espchrono.h>
 #include <fmt/core.h>
-#include <icons/back.h>
-#include <menudisplay.h>
 #include <textinterface.h>
 
 // local includes
 #include "espnowfunctions.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "icons/settings.h"
 #include "icons/time.h"
 #include "screens/espnowsettingsmenu.h"
@@ -63,7 +62,7 @@ EspNowMenu::EspNowMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_RECEIVETS>, BobbyCheckbox, ReceiveTimeStampAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_RECEIVETSFROMBOBBY>, BobbyCheckbox, ReceiveTsFromOtherBobbycarsAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SETTINGS>, PushScreenAction<EspNowSettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string EspNowMenu::text() const

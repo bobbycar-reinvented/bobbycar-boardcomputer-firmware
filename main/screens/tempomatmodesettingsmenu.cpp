@@ -4,7 +4,6 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <textwithvaluehelper.h>
 
@@ -14,6 +13,7 @@
 #include "actions/tempomatmodeapplycurrentpeedaction.h"
 #include "changevaluedisplay_unifiedmodelmode.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "icons/back.h"
 #include "utils.h"
 
 namespace bobby {
@@ -49,7 +49,7 @@ TempomatModeSettingsMenu::TempomatModeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_APPLY, AvgSpeedAccessor>, TempomatModeApplyCurrentSpeedAction>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NCRUISEMOTTGT, TempomatModeCruiseMotTgtAccessor>, PushScreenAction<TempomatModeModelModeChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>, PushScreenAction<TempomatModeModelModeChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string TempomatModeSettingsMenu::text() const

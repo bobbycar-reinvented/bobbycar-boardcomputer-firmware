@@ -12,11 +12,11 @@
 #include <espwifistack.h>
 #include <espwifiutils.h>
 #include <fmt/format.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <screenmanager.h>
 
 // local includes
+#include "icons/back.h"
 #include "wifiapsettingsmenu.h"
 #include "wifiguiutils.h"
 
@@ -53,7 +53,7 @@ private:
 WifiApClientsMenu::WifiApClientsMenu() :
     espgui::ChangeableText{"AP Clients"s}
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 void WifiApClientsMenu::back()

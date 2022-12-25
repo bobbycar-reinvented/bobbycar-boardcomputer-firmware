@@ -9,7 +9,6 @@
 #include <espwifistack.h>
 #include <espwifiutils.h>
 #include <fmt/format.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <richtextrenderer.h>
 #include <screenmanager.h>
@@ -18,6 +17,7 @@
 // local includes
 #include "actions/wifistascanaction.h"
 #include "actions/wifistascanclearaction.h"
+#include "icons/back.h"
 #include "newsettings.h"
 #include "wifiguiutils.h"
 #include "wifistascanentrymenu.h"
@@ -52,7 +52,7 @@ WifiStaScanMenu::WifiStaScanMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STARTSCAN>, WifiStaScanAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLEARRESULTS>, WifiStaScanClearAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string WifiStaScanMenu::text() const

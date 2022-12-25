@@ -4,13 +4,13 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <textwithvaluehelper.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "icons/back.h"
 #include "utils.h"
 
 namespace bobby {
@@ -79,7 +79,7 @@ LimitsSettingsMenu::LimitsSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NMOTMAX, NMotMaxRpmAccessor>,        PushScreenAction<NMotMaxRpmChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_FIELDWEAKMAX, FieldWeakMaxAccessor>, PushScreenAction<FieldWeakMaxChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_PHASEADVMAX, PhaseAdvMaxAccessor>,   PushScreenAction<PhaseAdvMaxChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string LimitsSettingsMenu::text() const

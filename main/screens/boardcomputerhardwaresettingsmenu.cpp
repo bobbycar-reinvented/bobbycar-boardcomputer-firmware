@@ -6,7 +6,6 @@
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 #include <textwithvaluehelper.h>
 
 // local includes
@@ -14,6 +13,7 @@
 #include "actions/setupactions.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "icons/lock.h"
 #include "screens/extrabuttoncalibratemenu.h"
 #include "screens/lockscreensettingsmenu.h"
@@ -227,7 +227,7 @@ BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 #endif
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                    DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIMERS>,                                      PushScreenAction<TimersMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string BoardcomputerHardwareSettingsMenu::text() const

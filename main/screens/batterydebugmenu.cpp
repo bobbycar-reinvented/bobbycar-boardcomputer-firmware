@@ -1,17 +1,17 @@
 #include "batterydebugmenu.h"
 
 // 3rdparty lib includes
-#include "menuitem.h"
-#include "icons/back.h"
-#include "actions/dummyaction.h"
-#include "actions/popscreenaction.h"
-#include "fmt/core.h"
+#include <menuitem.h>
+#include <actions/dummyaction.h>
+#include <actions/popscreenaction.h>
+#include <fmt/core.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
-#include "utils.h"
-#include "icons/settings.h"
 #include "battery.h"
+#include "icons/back.h"
+#include "icons/settings.h"
+#include "utils.h"
 
 namespace bobby {
 
@@ -83,7 +83,7 @@ BatteryDebugMenu::BatteryDebugMenu()
     constructMenuItem<makeComponent<MenuItem, BatteryDebug2Text,                                                        DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BatteryDebug3Text,                                                        DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CurrentAdvancedBatteryPercentageText,                                     DisabledColor, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string BatteryDebugMenu::text() const

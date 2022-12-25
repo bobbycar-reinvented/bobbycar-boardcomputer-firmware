@@ -6,12 +6,12 @@
 #include <actions/pushscreenaction.h>
 #include <configwrapper.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 
 // local includes
-#include "guihelpers/bobbymenudisplay.h"
 #include "globals.h"
 #include "guihelpers/bobbyerrorhandler.h"
+#include "guihelpers/bobbymenudisplay.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -74,7 +74,7 @@ public:
         iterateEnum<TEnum>::iterate([&](TEnum enum_value, const auto &string_value){
             constructMenuItem<TypesafeEnumSetterMenuItem<TEnum>>(enum_value, m_config);
         });
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
     }
 
     std::string text() const override

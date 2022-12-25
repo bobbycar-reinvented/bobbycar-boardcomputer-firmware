@@ -9,17 +9,15 @@
 #include "esp_log.h"
 
 // 3rdparty lib includes
-#include "fmt/core.h"
-
-// 3rdparty lib includes
-#include "menuitem.h"
-#include "actions/popscreenaction.h"
-#include "actions/dummyaction.h"
-#include "icons/back.h"
-#include "screenmanager.h"
+#include <actions/dummyaction.h>
+#include <actions/popscreenaction.h>
+#include <fmt/core.h>
+#include <menuitem.h>
+#include <screenmanager.h>
 
 // local includes
 #include "guihelpers/bobbyerrorhandler.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -259,7 +257,7 @@ CanDebugMenu::CanDebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_START>, CanStartAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_UNINSTALL>, CanUninstallAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_INSTALL>, CanInstallAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string CanDebugMenu::text() const

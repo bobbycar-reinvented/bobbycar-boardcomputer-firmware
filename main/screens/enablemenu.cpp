@@ -24,7 +24,7 @@ EnableMenu::EnableMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEFRONTRIGHT>, BobbyCheckbox, FrontRightEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEBACKLEFT>,   BobbyCheckbox, BackLeftEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ENABLEBACKRIGHT>,  BobbyCheckbox, BackRightEnabledAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string EnableMenu::text() const

@@ -1,14 +1,14 @@
 #pragma once
 
 // 3rdparty lib includes
-#include "actions/dummyaction.h"
-#include "actions/popscreenaction.h"
-#include "icons/back.h"
-#include "menuitem.h"
+#include <actions/dummyaction.h>
+#include <actions/popscreenaction.h>
+#include <menuitem.h>
 
 // local includes
 #include "debugcolorhelpers.h"
 #include "guihelpers/bobbymenudisplay.h"
+#include "icons/back.h"
 #include "texthelpers/debugtexthelpers.h"
 #include "utils.h"
 
@@ -41,7 +41,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::HallText,         ColorInterface<espgui::TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::IqText,           ColorInterface<espgui::TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::IdText,           ColorInterface<espgui::TFT_DARKGREY>, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
     }
 
 private:

@@ -4,12 +4,12 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
-#include <icons/back.h>
 #include <menuitem.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "icons/back.h"
 #include "utils.h"
 
 namespace bobby {
@@ -43,7 +43,7 @@ MotortestModeSettingsMenu::MotortestModeSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTESTMULTIPLIKATOR>,  PushScreenAction<MotortestMultiplikatorChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTESTMAXPWM>,         PushScreenAction<MotortestMaxPwmChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string MotortestModeSettingsMenu::text() const

@@ -32,7 +32,7 @@ ChangeValueDisplay<BluetoothMode>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BluetoothMode>, StaticText<TEXT_OFF>>>(BluetoothMode::Off, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BluetoothMode>, StaticText<TEXT_MASTER>>>(BluetoothMode::Master, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BluetoothMode>, StaticText<TEXT_SLAVE>>>(BluetoothMode::Slave, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&espgui::icons::back>>>(*this);
+    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&bobbyicons::back>>>(*this);
 }
 
 void ChangeValueDisplay<BluetoothMode>::start()

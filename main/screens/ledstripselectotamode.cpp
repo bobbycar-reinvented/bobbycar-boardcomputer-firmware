@@ -3,9 +3,9 @@
 // 3rdparty lib includes
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
-#include <icons/back.h>
 
 // local includes
+#include "icons/back.h"
 #include "ledstrip.h"
 #include "newsettings.h"
 #include "utils.h"
@@ -36,7 +36,7 @@ LedstripOtaAnimationChangeMenu::LedstripOtaAnimationChangeMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_NONE>,          LedstripChangeOtaAnimModeAction<OtaAnimationModes::None>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_PROGRESS>,      LedstripChangeOtaAnimModeAction<OtaAnimationModes::GreenProgressBar>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_COLOR>,         LedstripChangeOtaAnimModeAction<OtaAnimationModes::ColorChangeAll>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string LedstripOtaAnimationChangeMenu::text() const

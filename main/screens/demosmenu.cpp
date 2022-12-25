@@ -1,16 +1,16 @@
 #include "demosmenu.h"
 
 // 3rdparty lib includes
-#include <menuitem.h>
-#include <actions/pushscreenaction.h>
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
-#include <screens/starfielddisplay.h>
+#include <actions/pushscreenaction.h>
+#include <menuitem.h>
+#include <screens/gameoflifedisplay.h>
 #include <screens/pingpongdisplay.h>
 #include <screens/spirodisplay.h>
-#include <screens/gameoflifedisplay.h>
+#include <screens/starfielddisplay.h>
 
 // local includes
+#include "icons/back.h"
 #include "utils.h"
 
 namespace bobby {
@@ -31,7 +31,7 @@ DemosMenu::DemosMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PINGPONG>,   PushScreenAction<PingPongDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SPIRO>,      PushScreenAction<SpiroDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMEOFLIFE>, PushScreenAction<GameOfLifeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string DemosMenu::text() const

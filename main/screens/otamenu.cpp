@@ -5,15 +5,15 @@
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
-#include <icons/back.h>
 
 // local includes
+#include "icons/back.h"
+#include "icons/presets.h"
+#include "icons/update.h"
 #include "screens/selectbuildserverbranch.h"
 #include "screens/selectbuildservermenu.h"
 #include "screens/selectotabuildmenu.h"
 #include "screens/updatedisplay.h"
-#include "icons/presets.h"
-#include "icons/update.h"
 
 namespace bobby {
 
@@ -33,7 +33,7 @@ OtaMenu::OtaMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECT_BRANCH>,           PushScreenAction<SelectBuildserverBranchMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATENOW>,               PushScreenAction<UpdateDisplay>, StaticMenuItemIcon<&bobbyicons::update>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILDSERVERMENU>,   PushScreenAction<SelectBuildServerMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string OtaMenu::text() const

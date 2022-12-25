@@ -25,7 +25,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::BuzzerPatternText, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::PoweroffText,      DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::LedText,           DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
     }
 
 private:

@@ -5,13 +5,13 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <fmt/format.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <screenmanager.h>
 
 // local includes
-#include "screens/qrdisplay.h"
 #include "globals.h"
+#include "icons/back.h"
+#include "screens/qrdisplay.h"
 #include "texthelpers/networktexthelpers.h"
 #include "utils.h"
 #include "wifiapsettingsmenu.h"
@@ -39,7 +39,7 @@ NetworkSettingsMenu::NetworkSettingsMenu()
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{1});
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{2});
     constructMenuItem<makeComponent<MenuItem,     WifiTxPowerText,              DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,        PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,        PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string NetworkSettingsMenu::text() const

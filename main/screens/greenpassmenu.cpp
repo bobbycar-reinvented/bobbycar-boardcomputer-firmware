@@ -7,14 +7,14 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 
 // local includes
 #include "actions/qraction.h"
+#include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
+#include "qrimport.h"
 #include "screens/qrdisplay.h"
 #include "screens/qrimportdisplay.h"
-#include "guihelpers/bobbycheckbox.h"
-#include "qrimport.h"
 
 namespace bobby {
 
@@ -89,7 +89,7 @@ GreenPassMenu::GreenPassMenu()
     }
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DELCERT>, BobbyCheckbox, DeleteModeAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string GreenPassMenu::text() const

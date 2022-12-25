@@ -1,12 +1,10 @@
 #include "invertmenu.h"
 
-// 3rdparty lib includes
-#include <icons/back.h>
-
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "actions/popscreenaction.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -26,7 +24,7 @@ InvertMenu::InvertMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTFRONTRIGHT>, BobbyCheckbox, FrontRightInvertedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKLEFT>,   BobbyCheckbox, BackLeftInvertedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_INVERTBACKRIGHT>,  BobbyCheckbox, BackRightInvertedAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string InvertMenu::text() const

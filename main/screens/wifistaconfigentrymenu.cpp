@@ -7,7 +7,6 @@
 #include <changevaluedisplay.h>
 #include <changevaluedisplay_ip_address_t.h>
 #include <changevaluedisplay_string.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <screenmanager.h>
 #include <textwithvaluehelper.h>
@@ -16,6 +15,7 @@
 #include "accessors/wifistaconfigaccessors.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "newsettings.h"
 #include "wifistaconfigsmenu.h"
 
@@ -126,7 +126,7 @@ WifiStaConfigEntryMenu::WifiStaConfigEntryMenu(int index) :
     constructMenuItem<StaStaticDns1MenuItem>(index);
     constructMenuItem<StaStaticDns2MenuItem>(index);
     constructMenuItem<makeComponentArgs<MenuItem, ClearConfigAction,                 StaticText<TEXT_DELETECONFIG>>>(index);
-    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string WifiStaConfigEntryMenu::text() const

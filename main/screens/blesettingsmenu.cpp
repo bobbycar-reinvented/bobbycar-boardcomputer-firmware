@@ -6,14 +6,14 @@
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
 #include <changevaluedisplay_string.h>
-#include <icons/back.h>
 #include <textwithvaluehelper.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
-#include "screens/settingsmenu.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
+#include "screens/settingsmenu.h"
 #include "texthelpers/bletexthelpers.h"
 
 namespace bobby {
@@ -43,7 +43,7 @@ BleSettingsMenu::BleSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, BleServerPeerDevicesText,    DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, BleCharacSubscribedText,     DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NAME_FORMATTED, BluetoothNameAccessor>, PushScreenAction<ApSsidChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,       PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string BleSettingsMenu::text() const

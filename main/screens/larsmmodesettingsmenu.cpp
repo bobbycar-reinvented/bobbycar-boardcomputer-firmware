@@ -5,13 +5,13 @@
 #include <menuitem.h>
 #include <actions/pushscreenaction.h>
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "changevaluedisplay_larsmmode_mode.h"
 #include "changevaluedisplay_unifiedmodelmode.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "icons/back.h"
 #include "utils.h"
 
 namespace bobby {
@@ -53,7 +53,7 @@ LarsmModeSettingsMenu::LarsmModeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,     PushScreenAction<LarsmModeModelModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODE>,       PushScreenAction<LarsmModeModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETITERATIONS>, PushScreenAction<LarsmModeIterationsChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,          PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,          PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string LarsmModeSettingsMenu::text() const

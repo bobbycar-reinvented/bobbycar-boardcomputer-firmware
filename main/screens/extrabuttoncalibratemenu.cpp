@@ -5,7 +5,6 @@
 
 // 3rd party includes
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <textwithvaluehelper.h>
 #include <tftcolors.h>
@@ -13,9 +12,10 @@
 
 // local includes
 #include "accessors/settingsaccessors.h"
-#include "screens/boardcomputerhardwaresettingsmenu.h"
 #include "globals.h"
 #include "guihelpers/bobbyerrorhandler.h"
+#include "icons/back.h"
+#include "screens/boardcomputerhardwaresettingsmenu.h"
 
 namespace bobby {
 
@@ -97,7 +97,7 @@ ExtraButtonCalibrateMenu::ExtraButtonCalibrateMenu()
     constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_EXTRA3, ButtonExtra3Accessor, Status::WaitingExtra3>>();
     constructMenuItem<ButtonCalibrateMenuItem<TEXT_BUTTON_EXTRA4, ButtonExtra4Accessor, Status::WaitingExtra4>>();
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 void ExtraButtonCalibrateMenu::start()

@@ -5,15 +5,15 @@
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 #include <textwithvaluehelper.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "changevaluedisplay_handbremsmode.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
-#include "screens/typesafeenumchangemenu.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
+#include "screens/typesafeenumchangemenu.h"
 
 namespace bobby {
 
@@ -43,7 +43,7 @@ HandbremsSettingsMenu::HandbremsSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_VISUALIZE>, BobbyCheckbox, HandbremsVisualizeAccessor>>();
     constructMenuItem<PushScreenTypeSafeChangeMenuItem<HandbremseMode, TEXT_HANDBREMSE_MODE>>(&configs.handbremse.mode);
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HANDBREMSE_TRIGGERTIMEOUT, HandbremsTimeoutAccessor>, PushScreenAction<HandBremsTriggerTimeoutChangeValueDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string HandbremsSettingsMenu::text() const

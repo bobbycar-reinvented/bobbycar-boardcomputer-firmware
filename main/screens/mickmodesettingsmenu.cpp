@@ -4,13 +4,13 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
-#include <icons/back.h>
 #include <menuitem.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "changevaluedisplay_unifiedmodelmode.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -42,7 +42,7 @@ MickModeSettingsMenu::MickModeSettingsMenu()
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          PushScreenAction<MickModeModelModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MICKMODE_SMOOTHING>, PushScreenAction<MickModeSmoothingChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string MickModeSettingsMenu::text() const

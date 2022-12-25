@@ -16,7 +16,7 @@ class ContainerModeSettingsMenu :
 public:
     ContainerModeSettingsMenu()
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
     }
 
     std::string text() const override

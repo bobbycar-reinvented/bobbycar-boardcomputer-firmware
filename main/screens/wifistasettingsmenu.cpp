@@ -5,7 +5,6 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <screenmanager.h>
 #include <textwithvaluehelper.h>
@@ -14,6 +13,7 @@
 #include "accessors/wifistaconfigaccessors.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "texthelpers/wifistatexthelpers.h"
 #include "wifistaconfigsmenu.h"
 #include "wifistascanmenu.h"
@@ -58,7 +58,7 @@ WifiStaSettingsMenu::WifiStaSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, WifiStaIpv6LinklocalText,        DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, WifiStaIpv6GlobalText,           DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_MIN_RSSI_FORMATTED, WifiStaMinRssiAccessor>, PushScreenAction<StaMinRssiChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,           PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,           PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string WifiStaSettingsMenu::text() const

@@ -3,12 +3,12 @@
 // 3rdparty lib includes
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "actions/ledstripblinkactions.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "ledstrip.h"
 #include "ledstripdefines.h"
 
@@ -43,7 +43,7 @@ LedstripSelectBlinkMenu::LedstripSelectBlinkMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ANIMATION_BLINKBOTH>,          LedstripAnimationBlinkBothAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_EN_BLINK_ANIM>,       BobbyCheckbox, LedstripEnableBlinkAnimationAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP_VISUALIZE_BLINK>,     BobbyCheckbox, LedstripEnableVisualizeBlinkAnimationAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                         PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string LedstripSelectBlinkMenu::text() const

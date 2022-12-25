@@ -3,12 +3,12 @@
 // 3rdparty lib includes
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
 #include <menuitem.h>
 
 // local includes
 #include "debugcolorhelpers.h"
 #include "guihelpers/bobbymenudisplay.h"
+#include "icons/back.h"
 #include "screens/debugmenu.h"
 #include "texthelpers/debugtexthelpers.h"
 #include "utils.h"
@@ -30,7 +30,7 @@ public:
         //constructMenuItem<makeComponent<MenuItem, typename Ttexts::BoardTempText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::BoardTempFixedText,   ColorInterface<espgui::TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::TimeoutCntSerialText, StaticFont<2>, ColorInterface<espgui::TFT_DARKGREY>, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
     }
 
 private:

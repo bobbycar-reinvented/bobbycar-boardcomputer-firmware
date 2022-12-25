@@ -4,7 +4,6 @@
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <screenmanager.h>
 
@@ -18,6 +17,7 @@
 #include "screens/taskmanagermenu.h"
 #include "screens/qrcodedebug.h"
 #include "screens/xydebugdisplay.h"
+#include "icons/back.h"
 #include "icons/battery.h"
 #include "icons/info.h"
 #include "icons/lock.h"
@@ -117,7 +117,7 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS_NEW>,        ResetNVSAction, StaticMenuItemIcon<&bobbyicons::info>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          PushScreenAction<DynamicDebugMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string DebugMenu::text() const

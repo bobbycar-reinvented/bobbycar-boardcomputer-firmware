@@ -8,8 +8,10 @@
 #include "actions/resetnvsaction.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "guihelpers/bobbyerrorhandler.h"
+#include "icons/checked.h"
 #include "icons/info.h"
 #include "icons/reboot.h"
+#include "icons/unchecked.h"
 #include "newsettings.h"
 #include "screens/rebootscreen.h"
 
@@ -40,7 +42,7 @@ public:
 
     const espgui::MenuItemIcon *icon() const override
     {
-        return m_flag.isEnabled.value() ? &espgui::icons::checked : &espgui::icons::unchecked;
+        return m_flag.isEnabled.value() ? &bobbyicons::checked : &bobbyicons::unchecked;
     }
 private:
     ConfiguredFeatureFlag &m_flag;

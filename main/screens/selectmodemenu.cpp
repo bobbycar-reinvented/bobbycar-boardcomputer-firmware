@@ -3,7 +3,6 @@
 // 3rdparty lib includes
 #include <actions/multiaction.h>
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
 #include <textwithvaluehelper.h>
 #include <actions/pushscreenaction.h>
 
@@ -22,6 +21,7 @@
 #endif
 #include "accessors/globalaccessors.h"
 #include "mainmenu.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -75,7 +75,7 @@ SelectModeMenu::SelectModeMenu()
 #ifdef FEATURE_JOYSTICK
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_WHEELCHAIR>, MultiAction<SetWheelchairModeAction, PopScreenAction>>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string SelectModeMenu::text() const

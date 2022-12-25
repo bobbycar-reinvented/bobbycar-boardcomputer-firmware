@@ -4,7 +4,6 @@
 #include <esp_log.h>
 
 // 3rdparty lib includes
-#include <icons/back.h>
 #include <menuitem.h>
 #include <screenmanager.h>
 #include <tftcolors.h>
@@ -12,6 +11,7 @@
 
 // local includes
 #include "globals.h"
+#include "icons/back.h"
 #include "icons/bobbycar.h"
 #include "utils.h"
 

@@ -4,12 +4,12 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <graphdisplay.h>
-#include <icons/back.h>
 #include <splitgraphdisplay.h>
 
 // local includes
 #include "guihelpers/bobbygraphdisplay.h"
 #include "guihelpers/bobbysplitgraphdisplay.h"
+#include "icons/back.h"
 #include "statistics.h"
 
 namespace bobby {
@@ -211,7 +211,7 @@ GraphsMenu::GraphsMenu()
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORCURRENTS>,         PushScreenAction<MotorCurrentsGraphDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RSSI>,                  PushScreenAction<RssiGraphDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string GraphsMenu::text() const

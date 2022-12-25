@@ -4,13 +4,13 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
-#include <icons/back.h>
 #include <menuitem.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "changevaluedisplay_unifiedmodelmode.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -33,7 +33,7 @@ RemoteControlModeSettingsMenu::RemoteControlModeSettingsMenu()
     using namespace espgui;
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          PushScreenAction<RemoteControlModeModelModeChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string RemoteControlModeSettingsMenu::text() const

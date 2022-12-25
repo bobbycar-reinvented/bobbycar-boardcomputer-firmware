@@ -1,13 +1,13 @@
 #include "espnowsettingsmenu.h"
 
 // 3rdparty lib includes
-#include "actions/popscreenaction.h"
-#include "icons/back.h"
-#include "textinterface.h"
+#include <actions/popscreenaction.h>
+#include <textinterface.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -26,7 +26,7 @@ EspNowSettingsMenu::EspNowSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SYNCTIME>, BobbyCheckbox, ESPNowSyncTimeEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SYNCWITHOTHERS>, BobbyCheckbox, ESPNowSyncTimeWithOthersEnabledAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SYNCBLINK>, BobbyCheckbox, ESPNowSyncBlinkEnabledAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string EspNowSettingsMenu::text() const

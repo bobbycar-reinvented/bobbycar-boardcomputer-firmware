@@ -5,15 +5,15 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <textwithvaluehelper.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "changevaluedisplay_unifiedmodelmode.h"
-#include "guihelpers/bobbycheckbox.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "screens/handbremssettingsmenu.h"
 #include "utils.h"
 
@@ -140,7 +140,7 @@ DefaultModeSettingsMenu::DefaultModeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SUBBRAKEVAL, DefaultModeBrems2WertAccessor>,                     PushScreenAction<DefaultModeBrems2WertChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ADDGASVAL, DefaultModeGas1WertAccessor>,                         PushScreenAction<DefaultModeGas1WertChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ADDBRAKEVAL, DefaultModeBrems1WertAccessor>,                     PushScreenAction<DefaultModeBrems1WertChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                    PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string DefaultModeSettingsMenu::text() const

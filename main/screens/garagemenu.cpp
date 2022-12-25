@@ -1,16 +1,17 @@
 #include "garagemenu.h"
 
+// esp-idf includes
+#include <esp_log.h>
+
 // 3rd party libs
-#include "icons/back.h"
-#include "menuitem.h"
-#include "actioninterface.h"
-#include "esp_log.h"
-#include "menuitem.h"
+#include <actioninterface.h>
+#include <menuitem.h>
 
 // local includes
 #include "actions/popscreenaction.h"
 #include "espnowfunctions.h"
 #include "globals.h"
+#include "icons/back.h"
 #include "newsettings.h"
 
 namespace bobby {
@@ -43,7 +44,7 @@ GarageMenu::GarageMenu()
         menuitem.setTitle(wirelessDoor.doorId.value());
     }
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string GarageMenu::text() const

@@ -2,21 +2,18 @@
 
 // 3rdparty lib includes
 #include <menuitem.h>
-#include <icons/back.h>
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
 #include <widgets/label.h>
 #include <fmt/core.h>
 
 // Local includes
-#include "utils.h"
-#include "icons/settings.h"
-#include "battery.h"
-#include "batterymenu.h"
-#include "newsettings.h"
-#include "screens/batterymenu.h"
 #include "accessors/settingsaccessors.h"
+#include "batterymenu.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
+#include "newsettings.h"
+#include "utils.h"
 
 namespace bobby {
 
@@ -124,7 +121,7 @@ CalibrateVoltageDisplay::CalibrateVoltageDisplay()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_30V>,          Save30VCalibrationAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_50V>,          Save50VCalibrationAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_APPLYCALIB>,              BobbyCheckbox, BatteryApplyCalibrationAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                            PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                            PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                        DummyAction>>();
 

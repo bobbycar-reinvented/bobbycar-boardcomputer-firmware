@@ -2,15 +2,13 @@
 
 // 3rdparty lib includes
 #include <actions/popscreenaction.h>
-#include <actions/pushscreenaction.h>
-#include <fmt/core.h>
-#include <icons/back.h>
-#include <strutils.h>
 
 // local includes
-#include "guihelpers/bobbypopupdisplay.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "guihelpers/bobbyerrorhandler.h"
+#include "guihelpers/bobbypopupdisplay.h"
+#include "icons/checked.h"
+#include "icons/unchecked.h"
 #include "newsettings.h"
 #include "taskmanager.h"
 
@@ -84,7 +82,7 @@ public:
 
     const espgui::MenuItemIcon *icon() const override
     {
-        return m_flag.isEnabled.value() ? &espgui::icons::checked : &espgui::icons::unchecked;
+        return m_flag.isEnabled.value() ? &bobbyicons::checked : &bobbyicons::unchecked;
     }
 private:
     ConfiguredFeatureFlag &m_flag;

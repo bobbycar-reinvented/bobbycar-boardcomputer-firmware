@@ -6,12 +6,12 @@
 #include <actions/pushscreenaction.h>
 #include <espwifistack.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <screenmanager.h>
 #include <strutils.h>
 
 // local includes
+#include "icons/back.h"
 #include "newsettings.h"
 #include "wifistaconfigentrymenu.h"
 #include "wifistasettingsmenu.h"
@@ -40,7 +40,7 @@ WifiStaConfigsMenu::WifiStaConfigsMenu()
 {
     for (int i = 0; i < configs.wifi_configs.size(); i++)
         constructMenuItem<WifiStaConfigurationMenuItem>(i);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,           PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,           PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string WifiStaConfigsMenu::text() const

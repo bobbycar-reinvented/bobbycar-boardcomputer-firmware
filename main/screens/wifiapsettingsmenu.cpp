@@ -8,7 +8,6 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <espwifistack.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <screenmanager.h>
 #include <textwithvaluehelper.h>
@@ -21,6 +20,7 @@
 #include "changevaluedisplay_wifi_auth_mode_t.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "networksettingsmenu.h"
 #include "texthelpers/wifiaptexthelpers.h"
 #include "wifiapclientsmenu.h"
@@ -119,7 +119,7 @@ WifiApSettingsMenu::WifiApSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_AUTHMODE_FORMATTED, WifiApAuthmodeAccessor>, PushScreenAction<ApAuthmodeChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, WifiApHostnameText,                                                   DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, WifiApClientsText,                                                    WifiApClientsAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string WifiApSettingsMenu::text() const

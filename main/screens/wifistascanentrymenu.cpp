@@ -12,13 +12,13 @@
 #include <actions/pushscreenaction.h>
 #include <espwifiutils.h>
 #include <fmt/format.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <richtextrenderer.h>
 #include <screenmanager.h>
 #include <strutils.h>
 
 // local includes
+#include "icons/back.h"
 #include "newsettings.h"
 #include "wifiguiutils.h"
 #include "wifistaconfigentrymenu.h"
@@ -100,7 +100,7 @@ WifiStaScanEntryMenu::WifiStaScanEntryMenu(const wifi_ap_record_t &info) :
                                                                                                 default: return std::to_string(m_info.country.policy);
                                                                                                 }
                                                                                             }()));
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string WifiStaScanEntryMenu::text() const

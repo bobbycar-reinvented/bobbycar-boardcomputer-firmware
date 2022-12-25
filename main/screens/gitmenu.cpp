@@ -4,10 +4,10 @@
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 
 // local includes
 #include "guihelpers/bobbyerrorhandler.h"
+#include "icons/back.h"
 #include "icons/info.h"
 #include "icons/modes.h"
 #include "screens/qrdisplay.h"
@@ -62,7 +62,7 @@ GitMenu::GitMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GIT_COMMIT_SHORT>,   DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GIT_MESSAGE_TITLE>,  OpenPopupAction, StaticMenuItemIcon<&bobbyicons::info>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GITHUB_URL>,         GitQrAction, StaticMenuItemIcon<&bobbyicons::modes>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string GitMenu::text() const

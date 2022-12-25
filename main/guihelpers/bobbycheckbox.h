@@ -2,16 +2,16 @@
 
 // 3rdparty lib includes
 #include <actions/toggleboolaction.h>
-#include <checkboxicon.h>
 
 // local includes
+#include "bobbycheckboxicon.h"
 #include "bobbyerrorhandler.h"
 
 namespace bobby {
 
 class BobbyCheckbox :
     public virtual espgui::ToggleBoolAction,
-    public virtual espgui::CheckboxIcon,
+    public virtual BobbyCheckboxIcon,
     public virtual BobbyErrorHandler
 {
 };

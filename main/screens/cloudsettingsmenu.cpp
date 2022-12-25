@@ -1,23 +1,23 @@
 #include "cloudsettingsmenu.h"
 
 // 3rdparty lib includes
-#include "actions/dummyaction.h"
-#include "actions/popscreenaction.h"
-#include "actions/pushscreenaction.h"
-#include "changevaluedisplay.h"
-#include "changevaluedisplay_string.h"
-#include "fmt/core.h"
-#include "icons/back.h"
-#include "menuitem.h"
+#include <actions/dummyaction.h>
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <changevaluedisplay.h>
+#include <changevaluedisplay_string.h>
+#include <fmt/core.h>
+#include <menuitem.h>
 
 
 // local includes
 #include "accessors/settingsaccessors.h"
-#include "guihelpers/bobbycheckbox.h"
 #include "cloud.h"
-#include "texthelpers/cloudtexthelpers.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "screens/settingsmenu.h"
+#include "texthelpers/cloudtexthelpers.h"
 
 namespace bobby {
 
@@ -97,7 +97,7 @@ CloudSettingsMenu::CloudSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, CloudBufferLengthText,                 DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDCOLLECTRATE>,     PushScreenAction<CloudCollectRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSENDRATE>,        PushScreenAction<CloudSendRateChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string CloudSettingsMenu::text() const

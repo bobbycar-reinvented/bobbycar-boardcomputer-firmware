@@ -3,7 +3,6 @@
 // 3rdparty lib includes
 #include <actions/pushscreenaction.h>
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
 
 // local includes
 #include "screens/selectmodemenu.h"
@@ -46,6 +45,8 @@
 #include "icons/greenpass.h"
 #include "icons/time.h"
 #include "screens/statusdisplay.h"
+#include "icons/back.h"
+
 
 namespace bobby {
 
@@ -86,7 +87,7 @@ MainMenu::MainMenu()
     using namespace espgui;
 
     // constructMenuItem<makeComponent<MenuItem, mainmenu::CurrentTimeText,     DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       PushScreenAction<StatusDisplay>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       PushScreenAction<StatusDisplay>, StaticMenuItemIcon<&bobbyicons::back>>>();
     if (configs.feature.ledstrip.isEnabled.value())
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     PushScreenAction<LedstripMenu>,   StaticMenuItemIcon<&bobbyicons::neopixel>>>();

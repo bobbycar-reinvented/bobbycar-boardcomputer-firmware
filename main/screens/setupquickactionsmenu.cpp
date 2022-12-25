@@ -3,7 +3,6 @@
 // 3rdparty lib includes
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
-#include <icons/back.h>
 #include <textwithvaluehelper.h>
 
 // local includes
@@ -11,6 +10,7 @@
 #include "bobbyquickactions.h"
 #include "changevaluedisplay_bobbyquickactions.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -48,7 +48,7 @@ SetupQuickActionsMenu::SetupQuickActionsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SETUPEXTRA2, QuickActionExtra2Accessor>,  PushScreenAction<QuickActionChangeValueDisplay<BobbyQuickActions, TEXT_SETUPEXTRA2, QuickActionExtra2Accessor>>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SETUPEXTRA3, QuickActionExtra3Accessor>,  PushScreenAction<QuickActionChangeValueDisplay<BobbyQuickActions, TEXT_SETUPEXTRA3, QuickActionExtra3Accessor>>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SETUPEXTRA4, QuickActionExtra4Accessor>,  PushScreenAction<QuickActionChangeValueDisplay<BobbyQuickActions, TEXT_SETUPEXTRA4, QuickActionExtra4Accessor>>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,  PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,  PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string SetupQuickActionsMenu::text() const

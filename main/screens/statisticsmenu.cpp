@@ -5,11 +5,11 @@
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 #include <menuitem.h>
 
 // local includes
 #include "drivingstatistics.h"
+#include "icons/back.h"
 #include "icons/reboot.h"
 #include "icons/time.h"
 #include "icons/update.h"
@@ -188,7 +188,7 @@ StatisticsMenu::StatisticsMenu()
     constructMenuItem<makeComponent<MenuItem, EmptyText,                           DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSSAVE>,          SaveKilometersAction, StaticMenuItemIcon<&bobbyicons::update>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSCLEAR>,         ClearCurrentStatsAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string StatisticsMenu::text() const

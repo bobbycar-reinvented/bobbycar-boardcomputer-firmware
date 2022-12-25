@@ -5,7 +5,6 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <textwithvaluehelper.h>
 #include <tftcolors.h>
@@ -15,12 +14,12 @@
 #include "accessors/settingsaccessors.h"
 #include "battery.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "icons/back.h"
 #include "icons/graph.h"
 #include "icons/settings.h"
 #include "screens/batterygraphdisplay.h"
 #include "screens/calibratevoltagedisplay.h"
 #include "typesafeenumchangemenu.h"
-#include "utils.h"
 
 namespace bobby {
 
@@ -85,7 +84,7 @@ BatteryMenu::BatteryMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SHOW_BATTERY_GRAPH>,                                      PushScreenAction<BatteryGraphDisplay>, StaticMenuItemIcon<&bobbyicons::graph>>>();
     constructMenuItem<makeComponent<MenuItem, WhStatisticsText,                                                         DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_CALIBRATE>,                                       PushScreenAction<CalibrateVoltageDisplay>, StaticMenuItemIcon<&bobbyicons::settings>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string BatteryMenu::text() const

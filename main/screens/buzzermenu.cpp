@@ -1,19 +1,17 @@
 #include "buzzermenu.h"
 
 // 3rdparty lib includes
-#include "changevaluedisplay.h"
-#include "menuitem.h"
-#include "actions/pushscreenaction.h"
-#include "actions/popscreenaction.h"
-#include "icons/back.h"
+#include <changevaluedisplay.h>
+#include <menuitem.h>
+#include <actions/pushscreenaction.h>
+#include <actions/popscreenaction.h>
 
 // local includes
-#include "guihelpers/bobbychangevaluedisplay.h"
-#include "utils.h"
-#include "globals.h"
 #include "accessors/settingsaccessors.h"
-#include "screens/settingsmenu.h"
+#include "globals.h"
+#include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -109,7 +107,7 @@ BuzzerMenu::BuzzerMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPFREQ1>,     PushScreenAction<ReverseBeepFreq1ChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPDURATION0>, PushScreenAction<ReverseBeepDuration0ChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REVERSEBEEPDURATION1>, PushScreenAction<ReverseBeepDuration1ChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string BuzzerMenu::text() const

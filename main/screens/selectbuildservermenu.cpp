@@ -7,12 +7,12 @@
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
 
 // local includes
 #include "buildserver.h"
+#include "icons/back.h"
 #include "newsettings.h"
 #include "utils.h"
 
@@ -72,7 +72,7 @@ SelectBuildServerMenu::SelectBuildServerMenu()
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NOBUILDSERVERCONFIGURED>, DefaultFont, StaticColor<espgui::TFT_RED>, DummyAction>>();
     }
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string SelectBuildServerMenu::text() const

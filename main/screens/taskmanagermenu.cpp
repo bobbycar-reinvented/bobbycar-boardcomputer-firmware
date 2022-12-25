@@ -4,10 +4,10 @@
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 #include <schedulertask.h>
 
 // local includes
+#include "icons/back.h"
 #include "taskmanager.h"
 
 namespace bobby {
@@ -39,7 +39,7 @@ TaskmanagerMenu::TaskmanagerMenu()
 {
     for (const auto &task : schedulerTasks)
         constructMenuItem<makeComponentArgs<MenuItem, TaskText, DummyAction>>(task);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string TaskmanagerMenu::text() const

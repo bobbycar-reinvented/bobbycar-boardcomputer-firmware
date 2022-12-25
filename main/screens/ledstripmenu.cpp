@@ -5,21 +5,21 @@
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <changevaluedisplay.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <textwithvaluehelper.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
+#include "globals.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
+#include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
+#include "ledstrip.h"
+#include "ledstripselectblinkmenu.h"
 #include "screens/ledstripcolorsdisplay.h"
 #include "screens/ledstripselectotamode.h"
 #include "screens/mainmenu.h"
 #include "screens/typesafeenumchangemenu.h"
-#include "globals.h"
-#include "guihelpers/bobbycheckbox.h"
-#include "ledstrip.h"
-#include "ledstripselectblinkmenu.h"
 
 namespace bobby {
 
@@ -182,7 +182,7 @@ LedstripMenu::LedstripMenu()
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, LedStripMaxCurrentText, espgui::PushScreenAction<LedStripMaxAmpereChangeScreen>>>(); }
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_BRAKE_USE_ACCEL>, BobbyCheckbox, LedstripBrakeLightUseAccelAccessor>>();
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_BRAKE_USE_POWER>, BobbyCheckbox, LedstripBrakeLightUsePowerAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BACK>,                                            espgui::PushScreenAction<MainMenu>, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BACK>,                                            espgui::PushScreenAction<MainMenu>, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string LedstripMenu::text() const

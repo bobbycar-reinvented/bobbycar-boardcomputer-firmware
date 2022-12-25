@@ -3,11 +3,11 @@
 // 3rdparty lib includes
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
-#include <icons/back.h>
 
 // local includes
 #include "globals.h"
 #include "guihelpers/bobbyerrorhandler.h"
+#include "icons/back.h"
 #include "mainmenu.h"
 #include "presets.h"
 #include "settingsutils.h"
@@ -231,7 +231,7 @@ ManageProfilesMenu::ManageProfilesMenu()
        constructMenuItem<ManageProfileMenuItem>(*this, i);
     }
     constructMenuItem<ManageProfileModeMenuItem>(*this);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, espgui::PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, espgui::PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 void ManageProfilesMenu::start()

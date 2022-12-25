@@ -14,17 +14,17 @@
 #include <espchrono.h>
 #include <esprandom.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 #include <menuitem.h>
 #include <randomutils.h>
 #include <tftcolors.h>
 
 // local includes
 #include "guihelpers/bobbychangevaluedisplay.h"
-#include "utils.h"
-#include "icons/lock.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "guihelpers/bobbyerrorhandler.h"
+#include "icons/back.h"
+#include "icons/lock.h"
+#include "utils.h"
 
 namespace bobby {
 
@@ -176,7 +176,7 @@ DynamicDebugMenu::DynamicDebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 void DynamicDebugMenu::back()

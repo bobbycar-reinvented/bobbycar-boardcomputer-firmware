@@ -4,13 +4,13 @@
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
 #include <espwifistack.h>
-#include <icons/back.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
 
 // local includes
 #include "buildserver.h"
 #include "guihelpers/bobbyerrorhandler.h"
+#include "icons/back.h"
 #include "icons/reboot.h"
 #include "newsettings.h"
 
@@ -88,7 +88,7 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
 
 #define ERR_MESSAGE(text)                                                                                                                       \
     constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<espgui::TFT_RED>, DummyAction>>();                             \
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>(); \
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>(); \
     return;
 
     if (count_available_buildserver() < 1)
@@ -147,7 +147,7 @@ void SelectBuildserverBranchMenu::update()
 
         constructMenuItem<makeComponent<MenuItem, EmptyText, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECT_BRANCH_CLEAR>, ClearBranchAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
     }
     Base::update();
 }

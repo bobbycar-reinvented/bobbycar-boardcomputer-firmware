@@ -4,15 +4,15 @@
 #include <actioninterface.h>
 #include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
 #include <menuitem.h>
 
 // local includes
 #include "battery.h"
 #include "batterymenu.h"
+#include "icons/back.h"
+#include "newsettings.h"
 #include "screens/batterymenu.h"
 #include "screens/mainmenu.h"
-#include "newsettings.h"
 #include "utils.h"
 
 namespace bobby {
@@ -59,7 +59,7 @@ BatteryTypeMenu::BatteryTypeMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_MH1>,  BatterySelectTypeAction<BatteryCellType::MH1>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_VTC5>, BatterySelectTypeAction<BatteryCellType::VTC5>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_TYPE_BAK_25R>, BatterySelectTypeAction<BatteryCellType::BAK_25R>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string BatteryTypeMenu::text() const

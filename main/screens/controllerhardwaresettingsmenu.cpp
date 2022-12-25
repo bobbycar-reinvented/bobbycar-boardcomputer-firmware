@@ -4,20 +4,20 @@
 #include <ratio>
 
 // 3rdparty lib includes
-#include "actions/popscreenaction.h"
-#include "actions/pushscreenaction.h"
-#include "changevaluedisplay.h"
-#include "icons/back.h"
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <changevaluedisplay.h>
 
 // local includes
-#include "guihelpers/bobbychangevaluedisplay.h"
-#include "utils.h"
-#include "globals.h"
 #include "accessors/settingsaccessors.h"
+#include "globals.h"
+#include "guihelpers/bobbychangevaluedisplay.h"
+#include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "screens/enablemenu.h"
 #include "screens/invertmenu.h"
 #include "screens/settingsmenu.h"
-#include "guihelpers/bobbycheckbox.h"
+#include "utils.h"
 
 namespace bobby {
 
@@ -96,7 +96,7 @@ ControllerHardwareSettingsMenu::ControllerHardwareSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRESETONERROR>,    BobbyCheckbox, CanResetOnErrorAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANREINSTALLDRIVER>, BobbyCheckbox, CanReinstallDriverAccessor>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string ControllerHardwareSettingsMenu::text() const

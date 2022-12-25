@@ -2,11 +2,11 @@
 
 // 3rdparty lib includes
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
 #include <menudisplay.h>
 
 // local includes
 #include "actions/switchprofileaction.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -25,7 +25,7 @@ ProfilesMenu::ProfilesMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILE1>, SwitchProfileAction<1>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILE2>, SwitchProfileAction<2>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILE3>, SwitchProfileAction<3>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,     PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,     PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string ProfilesMenu::text() const

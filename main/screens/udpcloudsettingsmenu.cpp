@@ -1,17 +1,17 @@
 #include "udpcloudsettingsmenu.h"
 
 // 3rdparty lib includes
-#include "actions/popscreenaction.h"
-#include "actions/pushscreenaction.h"
-#include "changevaluedisplay_string.h"
-#include "fmt/core.h"
-#include "icons/back.h"
-#include "menuitem.h"
+#include <actions/popscreenaction.h>
+#include <actions/pushscreenaction.h>
+#include <changevaluedisplay_string.h>
+#include <fmt/core.h>
+#include <menuitem.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 
 namespace bobby {
 
@@ -56,7 +56,7 @@ UdpCloudSettingsMenu::UdpCloudSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPSENDRATE>,          PushScreenAction<UdpCloudSendRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPHOST>,              PushScreenAction<UdpCloudHostChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPPORT>,              PushScreenAction<UdpCloudPortChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string UdpCloudSettingsMenu::text() const

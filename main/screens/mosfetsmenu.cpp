@@ -7,10 +7,10 @@
 // 3rdparty lib includes
 #include <accessorinterface.h>
 #include <actions/popscreenaction.h>
-#include <icons/back.h>
 
 // local includes
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
 #include "types.h"
 
 namespace bobby {
@@ -41,7 +41,7 @@ MosfetsMenu::MosfetsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET0>, BobbyCheckbox, Mosfet0Accessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET1>, BobbyCheckbox, Mosfet1Accessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOSFET2>, BobbyCheckbox, Mosfet2Accessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string MosfetsMenu::text() const

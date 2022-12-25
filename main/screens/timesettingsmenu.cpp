@@ -13,14 +13,14 @@
 #include <espchrono.h>
 #include <espstrutils.h>
 #include <fmt/core.h>
-#include <icons/back.h>
 #include <sunset.h>
 
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
-#include "screens/settingsmenu.h"
 #include "guihelpers/bobbycheckbox.h"
+#include "icons/back.h"
+#include "screens/settingsmenu.h"
 #include "utils.h"
 
 namespace bobby {
@@ -136,7 +136,7 @@ TimeSettingsMenu::TimeSettingsMenu()
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NTPINTERVAL>,        PushScreenAction<TimeSyncIntervalChangeDisplay>>>();
         constructMenuItem<makeComponent<MenuItem, NtpSyncStatusText,                   DummyAction>>();
     }
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&espgui::icons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
 std::string TimeSettingsMenu::text() const

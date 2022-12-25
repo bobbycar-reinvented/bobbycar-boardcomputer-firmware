@@ -70,18 +70,25 @@ set(BOBBY_HEADERS
     globals.h
     guihelpers/bobbychangevaluedisplay.h
     guihelpers/bobbycheckbox.h
+    guihelpers/bobbycheckboxicon.h
     guihelpers/bobbydisplay.h
     guihelpers/bobbydisplaywithtitle.h
     guihelpers/bobbyerrorhandler.h
+    guihelpers/bobbygraphdisplay.h
     guihelpers/bobbymenudisplay.h
     guihelpers/bobbypopupdisplay.h
+    guihelpers/bobbysplitgraphdisplay.h
+    guihelpers/menudisplaywithtime.cpp
+    guihelpers/menudisplaywithtime.h
     handbremse.h
     icons/alert.h
+    icons/back.h
     icons/battery.h
     icons/bluetooth.h
     icons/bms.h
     icons/bobbycar.h
     icons/buzzer.h
+    icons/checked.h
     icons/close.h
     icons/demos.h
     icons/git.h
@@ -101,6 +108,7 @@ set(BOBBY_HEADERS
     icons/shortcircuit.h
     icons/statistics.h
     icons/time.h
+    icons/unchecked.h
     icons/update.h
     icons/wifi.h
     ledstrip.h
@@ -136,8 +144,6 @@ set(BOBBY_HEADERS
     screens/bmsdisplay.h
     screens/bmsmenu.h
     screens/boardcomputerhardwaresettingsmenu.h
-        guihelpers/bobbygraphdisplay.h
-    guihelpers/bobbysplitgraphdisplay.h
     screens/buzzermenu.h
     screens/calibratevoltagedisplay.h
     screens/candebugmenu.h
@@ -176,8 +182,6 @@ set(BOBBY_HEADERS
     screens/lockscreensettingsmenu.h
     screens/mainmenu.h
     screens/manageprofilesmenu.h
-        guihelpers/menudisplaywithtime.cpp
-        guihelpers/menudisplaywithtime.h
     screens/metersdisplay.h
     screens/mickmodesettingsmenu.h
     screens/modessettingsmenu.h
@@ -188,7 +192,7 @@ set(BOBBY_HEADERS
     screens/networksettingsmenu.h
     screens/otamenu.h
     screens/pingpongdisplay.h
-        screens/poweroffdisplay.h
+    screens/poweroffdisplay.h
     screens/powersupplydisplay.h
     screens/profilesmenu.h
     screens/qrcodedebug.h
@@ -308,15 +312,19 @@ set(BOBBY_SOURCES
     guihelpers/bobbydisplay.cpp
     guihelpers/bobbydisplaywithtitle.cpp
     guihelpers/bobbyerrorhandler.cpp
+    guihelpers/bobbygraphdisplay.cpp
     guihelpers/bobbymenudisplay.cpp
     guihelpers/bobbypopupdisplay.cpp
+    guihelpers/bobbysplitgraphdisplay.cpp
     handbremse.cpp
     icons/alert.cpp
+    icons/back.cpp
     icons/battery.cpp
     icons/bluetooth.cpp
     icons/bms.cpp
     icons/bobbycar.cpp
     icons/buzzer.cpp
+    icons/checked.cpp
     icons/close.cpp
     icons/demos.cpp
     icons/git.cpp
@@ -336,6 +344,7 @@ set(BOBBY_SOURCES
     icons/shortcircuit.cpp
     icons/statistics.cpp
     icons/time.cpp
+    icons/unchecked.cpp
     icons/update.cpp
     icons/wifi.cpp
     ledstrip.cpp
@@ -367,8 +376,6 @@ set(BOBBY_SOURCES
     screens/bmsdisplay.cpp
     screens/bmsmenu.cpp
     screens/boardcomputerhardwaresettingsmenu.cpp
-        guihelpers/bobbygraphdisplay.cpp
-    guihelpers/bobbysplitgraphdisplay.cpp
     screens/buzzermenu.cpp
     screens/calibratevoltagedisplay.cpp
     screens/candebugmenu.cpp
@@ -411,7 +418,7 @@ set(BOBBY_SOURCES
     screens/networksettingsmenu.cpp
     screens/otamenu.cpp
     screens/pingpongdisplay.cpp
-        screens/poweroffdisplay.cpp
+    screens/poweroffdisplay.cpp
     screens/powersupplydisplay.cpp
     screens/profilesmenu.cpp
     screens/qrcodedebug.cpp
