@@ -104,6 +104,7 @@ void LedstripColorsDisplay::redraw(espgui::TftInterface &tft)
         tft.fillRect(0, 228, tft.width(), ((tft.width() - 40) / 8) + 4, espgui::TFT_BLACK);
         clearSides(tft);
         drawSide(tft, static_cast<Bobbycar_Side>(selected_side), espgui::TFT_GOLD);
+        state_redraw_side_needed = false;
     }
 }
 
@@ -160,15 +161,12 @@ void LedstripColorsDisplay::buttonPressed(espgui::Button button)
             }
         }
 
-        /* TODO commander: move into redraw method */
         if (state_select_color)
         {
-            // drawColors();
             state_draw_colors_needed = true;
         }
         else
         {
-            // drawSide();
             state_redraw_side_needed = true;
         }
 
@@ -191,7 +189,6 @@ void LedstripColorsDisplay::buttonPressed(espgui::Button button)
             }
         }
 
-        /* TODO commander: move into redraw method */
         if (state_select_color)
         {
             state_draw_colors_needed = true;
@@ -225,7 +222,7 @@ void LedstripColorsDisplay::clearSides(espgui::TftInterface &tft)
 {
     for(int index = 0; index < 8; index++)
     {
-        drawSide(tft, static_cast<Bobbycar_Side>(index), TFT_BLACK);
+        drawSide(tft, static_cast<Bobbycar_Side>(index), espgui::TFT_BLACK);
     }
 }
 
