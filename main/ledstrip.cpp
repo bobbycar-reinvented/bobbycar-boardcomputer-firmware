@@ -280,10 +280,8 @@ void showAnimation()
         // show ota animation
         showOtaAnimation();
     }
-    else
-    {
-        std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
-    }
+
+    fadeToBlackBy(leds.data(), leds.size(), 35);
 }
 
 void showOtaAnimation()
