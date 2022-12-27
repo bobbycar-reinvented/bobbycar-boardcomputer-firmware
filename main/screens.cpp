@@ -1,5 +1,12 @@
 #include "screens.h"
 
+// esp-idf includes
+#ifdef FEATURE_LEDBACKLIGHT
+#include <driver/ledc.h>
+#include <esp32-hal-gpio.h>
+#include <esp_log.h>
+#endif
+
 // 3rdparty lib includes
 #include <screenmanager.h>
 #include <tftcolors.h>
@@ -12,6 +19,34 @@
 #include "texthelpers/esptexthelpers.h"
 
 namespace bobby {
+
+namespace {
+constexpr const char * const TAG = "DIPSLAY_BOBBY";
+}
+
+#ifdef FEATURE_LEDBACKLIGHT
+namespace display {
+uint8_t currentBrightness{0};
+
+bool backlight_disabled{false};
+
+int fixDuty(int duty)
+{
+    if (ledBacklightInverted)
+        return displayMaxDuty - duty;
+    return duty;
+}
+
+void disableBacklight(bool disable)
+{
+    backlight_disabled = disable;
+}
+bool backlightDisabled()
+{
+    return backlight_disabled;
+}
+} // namespace display
+#endif
 
 using namespace espgui;
 
@@ -30,6 +65,38 @@ void tft_init()
 
 void initScreen()
 {
+#ifdef FEATURE_LEDBACKLIGHT
+    ledc_timer_config_t display_backlight{
+            .speed_mode = LEDC_LOW_SPEED_MODE,
+            .duty_resolution = display::displayBacklightResolution,
+            .timer_num = LEDC_TIMER_0,
+            .freq_hz = display::displayBacklightFrequency,
+            .clk_cfg = LEDC_AUTO_CLK,
+    };
+
+    if (const auto res = ledc_timer_config(&display_backlight); res != ESP_OK)
+        ESP_LOGE(TAG, "ledc_timer_config() failed with %s", esp_err_to_name(res));
+
+    ledc_channel_config_t display_backlight_channel{
+            .gpio_num = display::displayBacklightPin,
+            .speed_mode = LEDC_LOW_SPEED_MODE,
+            .channel = display::displayBacklightChannel,
+            .intr_type = LEDC_INTR_DISABLE,
+            .timer_sel = LEDC_TIMER_0,
+            .duty = 0,
+            .hpoint = 0,
+    };
+
+    if (const auto res = ledc_channel_config(&display_backlight_channel); res != ESP_OK)
+        ESP_LOGE(TAG, "ledc_channel_config() failed with %s", esp_err_to_name(res));
+
+    if (const auto res = ledc_set_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel, display::fixDuty(0)); res != ESP_OK)
+        ESP_LOGE(TAG, "ledc_set_duty() failed with %s", esp_err_to_name(res));
+
+    if (const auto res = ledc_update_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel); res != ESP_OK)
+        ESP_LOGE(TAG, "ledc_update_duty() failed with %s", esp_err_to_name(res));
+#endif
+
     // vertical screen
     tft.init();
     tft.fillScreen(espgui::TFT_WHITE);
@@ -42,6 +109,14 @@ void initScreen()
     tft.drawString("last reboot reason:", 32, 275, espgui::TFT_BLACK, espgui::TFT_WHITE, 2);
     tft.drawString(espcpputils::toString(esp_reset_reason()), 32, 295, espgui::TFT_BLACK, espgui::TFT_WHITE, 2);
     bootLabel.start(tft);
+
+#ifdef FEATURE_LEDBACKLIGHT
+    if (const auto res = ledc_set_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel, display::fixDuty(display::displayMaxDuty)); res != ESP_OK)
+        ESP_LOGE(TAG, "ledc_set_duty() failed with %s", esp_err_to_name(res));
+
+    if (const auto res = ledc_update_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel); res != ESP_OK)
+        ESP_LOGE(TAG, "ledc_update_duty() failed with %s", esp_err_to_name(res));
+#endif
 }
 
 void updateRotation()
@@ -56,6 +131,31 @@ void updateRotation()
 
 void updateDisplay()
 {
+#ifdef FEATURE_LEDBACKLIGHT
+    if (!display::backlightDisabled() && configs.boardcomputerHardware.display_brightness.value() != display::currentBrightness)
+    {
+        using namespace display;
+        currentBrightness += (configs.boardcomputerHardware.display_brightness.value() > currentBrightness) ? std::max(1, (configs.boardcomputerHardware.display_brightness.value() - currentBrightness) / 10) : std::min(-1, (configs.boardcomputerHardware.display_brightness.value() - currentBrightness) / display::displayFadeDivider);
+
+        if (const auto res = ledc_set_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel, fixDuty(currentBrightness * display::displayMaxDuty / 100)); res != ESP_OK)
+            ESP_LOGE(TAG, "ledc_set_duty() failed with %s", esp_err_to_name(res));
+
+        if (const auto res = ledc_update_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel); res != ESP_OK)
+            ESP_LOGE(TAG, "ledc_update_duty() failed with %s", esp_err_to_name(res));
+    }
+    else if (display::backlightDisabled() && display::currentBrightness != 0)
+    {
+        using namespace display;
+        currentBrightness = 0;
+
+        if (const auto res = ledc_set_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel, fixDuty(currentBrightness * display::displayMaxDuty / 100)); res != ESP_OK)
+            ESP_LOGE(TAG, "ledc_set_duty() failed with %s", esp_err_to_name(res));
+
+        if (const auto res = ledc_update_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel); res != ESP_OK)
+            ESP_LOGE(TAG, "ledc_update_duty() failed with %s", esp_err_to_name(res));
+    }
+#endif
+
     if (currentDisplay)
         currentDisplay->update();
 
