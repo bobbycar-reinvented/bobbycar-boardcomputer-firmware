@@ -44,11 +44,6 @@ RTC_NOINIT_ATTR bool recovery;
 
 extern "C" void app_main()
 {
-#ifdef FEATURE_LEDBACKLIGHT
-    pinMode(PINS_LEDBACKLIGHT, OUTPUT);
-    digitalWrite(PINS_LEDBACKLIGHT, ledBacklightInverted ? LOW : HIGH);
-#endif
-
     if (const auto reset_reason = esp_reset_reason(); reset_reason == ESP_RST_POWERON)
     {
         recovery = false;

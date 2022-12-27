@@ -276,7 +276,7 @@ public:
     ConfigWrapperLegacy<uint16_t>    deadband           {20,                                     DoReset,  MinMaxValue<uint16_t, 0, 4095>,"deadband"            };
 
     ConfigWrapperLegacy<uint8_t>     dpadDebounce       {25,                                     DoReset,   {},                           "dpadDebounce"        };
-    ConfigWrapperLegacy<uint16_t>    buttonReadDelay    {20,                                      DoReset,   {},                           "buttonDelay"         };
+    ConfigWrapperLegacy<uint16_t>    buttonReadDelay    {20,                                     DoReset,   {},                           "buttonDelay"         };
 
     ConfigWrapperLegacy<uint8_t>     dpadMappingLeft    {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapLeft"         };
     ConfigWrapperLegacy<uint8_t>     dpadMappingRight   {INPUT_MAPPING_NONE,                     DoReset,   {},                           "dpadMapRight"        };
@@ -363,6 +363,7 @@ public:
         } timersSettings;
         ConfigWrapperLegacy<bool> flipScreen            {false,                                  NoReset,   {},                         "flipScreen"          };
         ConfigWrapperLegacy<bool> setupFinished         {false,                                  DoReset,   {},                         "setupFinished"       };
+        ConfigWrapperLegacy<uint8_t> display_brightness {100,                                    DoReset,   MinMaxValue<uint8_t, 1, 100>, "displayBrig"       };
     } boardcomputerHardware;
 
     struct {
@@ -716,6 +717,7 @@ public:
     \
     x(boardcomputerHardware.flipScreen) \
     x(boardcomputerHardware.setupFinished) \
+    x(boardcomputerHardware.display_brightness) \
     \
     x(cloudSettings.cloudEnabled) \
     x(cloudSettings.cloudTransmitTimeout) \

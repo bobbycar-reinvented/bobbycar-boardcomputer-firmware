@@ -270,6 +270,7 @@ struct QuickActionExtra4Accessor : public NewSettingsAccessor<BobbyQuickActions>
 
 // boardcomputer-hardware
 struct FlipScreenAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.boardcomputerHardware.flipScreen; } };
+struct DisplayBrightnessAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.boardcomputerHardware.display_brightness; } };
 
 // Other
 struct AnhaengerIdAccessor : public NewSettingsAccessor<uint16_t> { ConfigWrapper<uint16_t> &getConfig() const override { return configs.anhaenger_id; } };

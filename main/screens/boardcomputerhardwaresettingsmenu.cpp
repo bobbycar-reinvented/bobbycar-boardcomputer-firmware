@@ -37,6 +37,7 @@ constexpr char TEXT_POTISCALIBRATE[] = "Potis Calibrate";
 constexpr char TEXT_JOYSTICK[] = "Debug Joystick";
 #endif
 constexpr char TEXT_FLIPDISPLAY[] = "Flip Display";
+constexpr char TEXT_BRIGHTNESS[] = "Brightness";
 constexpr char TEXT_SAMPLECOUNT[] = "sampleCount";
 constexpr char TEXT_GASMIN[] = "gasMin";
 constexpr char TEXT_GASMAX[] = "gasMax";
@@ -75,6 +76,13 @@ public:
     }
 };
 
+using DisplayBrightnessChangeScreen = espgui::makeComponent<
+        BobbyChangeValueDisplay<uint8_t>,
+        espgui::StaticText<TEXT_BRIGHTNESS>,
+        DisplayBrightnessAccessor,
+        espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+        espgui::BackActionInterface<espgui::PopScreenAction>
+>;
 using SampleCountChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticText<TEXT_SAMPLECOUNT>,
@@ -203,6 +211,7 @@ BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_JOYSTICK>,                                    PushScreenAction<JoystickDebugDisplay>>>();
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FLIPDISPLAY>,                                 BobbyCheckbox, FlipScreenAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BRIGHTNESS, DisplayBrightnessAccessor>, PushScreenAction<DisplayBrightnessChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SAMPLECOUNT, SampleCountAccessor>,   PushScreenAction<SampleCountChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMIN, GasMinAccessor>,             PushScreenAction<GasMinChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_GASMAX, GasMaxAccessor>,             PushScreenAction<GasMaxChangeScreen>>>();

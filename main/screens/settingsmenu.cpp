@@ -22,6 +22,7 @@
 #include "icons/time.h"
 #include "icons/update.h"
 #include "icons/wifi.h"
+#include "screens.h"
 #include "screens/aboutmenu.h"
 #include "screens/blesettingsmenu.h"
 #include "screens/bluetoothsettingsmenu.h"
@@ -72,10 +73,15 @@ constexpr char TEXT_BACK[] = "Back";
 #ifdef FEATURE_LEDBACKLIGHT
 struct BacklightAccessor : public virtual espgui::AccessorInterface<bool>
 {
-    bool getValue() const override { return digitalRead(PINS_LEDBACKLIGHT) != ledBacklightInverted; }
-    espgui::AccessorInterface<bool>::setter_result_t setValue(bool value) override { digitalWrite(PINS_LEDBACKLIGHT, value != ledBacklightInverted); return {}; }
+    bool getValue() const override { return !display::backlightDisabled(); }
+    setter_result_t setValue(bool value) override
+    {
+        display::disableBacklight(!value);
+        return {};
+    }
 };
 #endif
+
 struct FrontLedAccessor : public espgui::RefAccessor<bool> { bool &getRef() const override { return controllers.front.command.led; } };
 struct BackLedAccessor : public espgui::RefAccessor<bool> { bool &getRef() const override { return controllers.back.command.led; } };
 
