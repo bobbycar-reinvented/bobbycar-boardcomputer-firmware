@@ -101,7 +101,7 @@ void Lockscreen::redraw(espgui::TftInterface &tft)
         {
             if (isValid1stPin(m_numbers))
             {
-                espgui::popScreen();
+                exit();
 #ifdef LOCKSCREEN_PLUGIN
 #include LOCKSCREEN_PLUGIN
 LOCKSCREEN_PLUGIN_FIXES_1
@@ -110,7 +110,7 @@ LOCKSCREEN_PLUGIN_FIXES_1
             }
             else if(isValid2ndPin(m_numbers))
             {
-                espgui::popScreen();
+                exit();
 #ifdef LOCKSCREEN_PLUGIN_FIXES_2
 LOCKSCREEN_PLUGIN_FIXES_2
 #endif
@@ -203,6 +203,18 @@ void Lockscreen::buttonPressed(espgui::Button button)
 void Lockscreen::drawRect(espgui::TftInterface &tft, int index, int offset, uint32_t color)
 {
     tft.drawRect(m_labels[index].x()-offset, m_labels[index].y()-offset, boxWidth+(offset*2), boxHeight+(offset*2), color);
+}
+
+void Lockscreen::exit() const
+{
+    if (m_switchScreen)
+    {
+        switchToDefaultStatusDisplay();
+    }
+    else
+    {
+        espgui::popScreen();
+    }
 }
 
 } // namespace bobby

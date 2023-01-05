@@ -87,7 +87,7 @@ MainMenu::MainMenu()
     using namespace espgui;
 
     // constructMenuItem<makeComponent<MenuItem, mainmenu::CurrentTimeText,     DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,       PushScreenAction<StatusDisplay>, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,          PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
     if (configs.feature.ledstrip.isEnabled.value())
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     PushScreenAction<LedstripMenu>,   StaticMenuItemIcon<&bobbyicons::neopixel>>>();
@@ -98,7 +98,7 @@ MainMenu::MainMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY>,      PushScreenAction<BatteryMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,     PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GREENPASS>,    PushScreenAction<GreenPassMenu>, StaticMenuItemIcon<&bobbyicons::greenpass>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKVEHICLE>,  PushScreenAction<Lockscreen>, StaticMenuItemIcon<&bobbyicons::lock>>>();
+    constructMenuItem<makeComponentArgs<MenuItem, PushScreenActionArgs<Lockscreen, bool>, StaticText<TEXT_LOCKVEHICLE>, StaticMenuItemIcon<&bobbyicons::lock>>>(false);
     if (configs.feature.garage.isEnabled.value() && configs.feature.esp_now.isEnabled.value())
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GARAGE>,       PushScreenAction<GarageMenu>>>();

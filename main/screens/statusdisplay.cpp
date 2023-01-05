@@ -215,8 +215,6 @@ void StatusDisplay::buttonPressed(espgui::Button button)
         pushScreen<MainMenu>();
         break;
     case Button::Up:
-        if (simplified)
-            return;
 #ifdef FEATURE_BMS
         switchScreen<BmsDisplay>();
 #else
@@ -224,8 +222,6 @@ void StatusDisplay::buttonPressed(espgui::Button button)
 #endif
         break;
     case Button::Down:
-        if (simplified)
-            return;
         switchScreen<MetersDisplay>();
         break;
     default:;

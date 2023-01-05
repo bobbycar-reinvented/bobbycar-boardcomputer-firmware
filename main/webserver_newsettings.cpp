@@ -51,6 +51,8 @@ typename std::enable_if<
     !std::is_same_v<T, espchrono::DayLightSavingMode> &&
     !std::is_same_v<T, OtaAnimationModes> &&
     !std::is_same_v<T, LedstripAnimation> &&
+    !std::is_same_v<T, DefaultStatusDisplay> &&
+    !std::is_same_v<T, DefaultStatusDisplay> &&
     !std::is_same_v<T, HandbremseMode> &&
     !std::is_same_v<T, BatteryCellType>
 , void>::type
@@ -204,6 +206,7 @@ template<typename T>
 typename std::enable_if<
     std::is_same_v<T, OtaAnimationModes> ||
     std::is_same_v<T, LedstripAnimation> ||
+    std::is_same_v<T, DefaultStatusDisplay> ||
     std::is_same_v<T, BatteryCellType> ||
     std::is_same_v<T, HandbremseMode>
 , void>::type
@@ -352,6 +355,7 @@ typename std::enable_if<
     !std::is_same_v<T, espchrono::DayLightSavingMode> &&
     !std::is_same_v<T, OtaAnimationModes> &&
     !std::is_same_v<T, LedstripAnimation> &&
+    !std::is_same_v<T, DefaultStatusDisplay> &&
     !std::is_same_v<T, HandbremseMode> &&
     !std::is_same_v<T, BobbyQuickActions>
 , tl::expected<void, std::string>>::type
@@ -439,6 +443,7 @@ typename std::enable_if<
     std::is_same_v<T, espchrono::DayLightSavingMode> ||
     std::is_same_v<T, OtaAnimationModes> ||
     std::is_same_v<T, LedstripAnimation> ||
+    std::is_same_v<T, DefaultStatusDisplay> ||
     std::is_same_v<T, HandbremseMode> ||
     std::is_same_v<T, BobbyQuickActions>
 , tl::expected<void, std::string>>::type

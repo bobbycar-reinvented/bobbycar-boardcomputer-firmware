@@ -24,6 +24,7 @@
 #include "battery.h"
 #include "bobbyquickactions.h"
 #include "cloud.h"
+#include "defaultstatusdisplay.h"
 #include "handbremse.h"
 #include "ledstrip.h"
 #include "screens/lockscreen.h"
@@ -488,6 +489,8 @@ public:
         ConfigWrapperLegacy<bool> bleFenceEnabled       {false,                                  DoReset,   {},                         "bleFenceEnabled"     };
     } bleSettings;
 
+    ConfigWrapperLegacy<DefaultStatusDisplay> defaultStatusDisplay {DefaultStatusDisplay::Default, DoReset, {},                         "statusdisplay"       };
+
     ConfigWrapperLegacy<bool> setupDone             {false,                                      DoReset,   {},                         "setupDone"           };
 
 #define NEW_SETTINGS(x) \
@@ -811,6 +814,7 @@ public:
     x(feature.webserver.isEnabled) \
     x(feature.webserver_disable_lock.isEnabled) \
     x(bleSettings.bleEnabled) \
+    x(defaultStatusDisplay) \
     x(emulateFeedback)
 
 #define FEATURES(x) \

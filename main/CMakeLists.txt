@@ -18,7 +18,6 @@ set(BOBBY_HEADERS
     actions/bmsturnondischargeaction.h
     actions/dividebyzeroaction.h
     actions/erasenvsaction.h
-    actions/ledstripanimationactions.h
     actions/ledstripblinkactions.h
     actions/loadsettingsaction.h
     actions/modesettingsaction.h
@@ -56,6 +55,7 @@ set(BOBBY_HEADERS
     controller.h
     debugcolorhelpers.h
     debuginputhandler.h
+    defaultstatusdisplay.h
     dnsannounce.h
     dpad.h
     dpad3wire.h
@@ -274,7 +274,6 @@ set(BOBBY_SOURCES
     accessors/wifistaconfigaccessors.cpp
     actions/assertaction.cpp
     actions/dividebyzeroaction.cpp
-    actions/ledstripanimationactions.cpp
     actions/ledstripblinkactions.cpp
     actions/modesettingsaction.cpp
     actions/qraction.cpp
@@ -299,6 +298,7 @@ set(BOBBY_SOURCES
     configwrapper_bobby.cpp
     controller.cpp
     debuginputhandler.cpp
+    defaultstatusdisplay.cpp
     dnsannounce.cpp
     dpad5wire.cpp
     dpad5wire_2out.cpp
