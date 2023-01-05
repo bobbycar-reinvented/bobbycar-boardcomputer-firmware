@@ -17,6 +17,7 @@
 #include <wrappers/websocket_client.h>
 
 // local includes
+#include "defaultstatusdisplay.h"
 #include "globals.h"
 #include "guihelpers/bobbyerrorhandler.h"
 #include "newsettings.h"
@@ -69,6 +70,7 @@ typename std::enable_if<
         !std::is_same_v<T, espchrono::DayLightSavingMode> &&
         !std::is_same_v<T, OtaAnimationModes> &&
         !std::is_same_v<T, LedstripAnimation> &&
+        !std::is_same_v<T, DefaultStatusDisplay> &&
         !std::is_same_v<T, HandbremseMode> &&
         !std::is_same_v<T, BobbyQuickActions> &&
         !std::is_same_v<T, BatteryCellType>
@@ -149,6 +151,7 @@ template<typename T>
 typename std::enable_if<
         std::is_same_v<T, OtaAnimationModes> ||
         std::is_same_v<T, LedstripAnimation> ||
+        std::is_same_v<T, DefaultStatusDisplay> ||
         std::is_same_v<T, HandbremseMode> ||
         std::is_same_v<T, BobbyQuickActions> ||
         std::is_same_v<T, BatteryCellType>
@@ -193,6 +196,7 @@ typename std::enable_if<
         !std::is_same_v<T, espchrono::DayLightSavingMode> &&
         !std::is_same_v<T, OtaAnimationModes> &&
         !std::is_same_v<T, LedstripAnimation> &&
+        !std::is_same_v<T, DefaultStatusDisplay> &&
         !std::is_same_v<T, HandbremseMode> &&
         !std::is_same_v<T, BobbyQuickActions> &&
         !std::is_same_v<T, BatteryCellType>
@@ -281,6 +285,7 @@ typename std::enable_if<
         std::is_same_v<T, espchrono::DayLightSavingMode> ||
         std::is_same_v<T, OtaAnimationModes> ||
         std::is_same_v<T, LedstripAnimation> ||
+        std::is_same_v<T, DefaultStatusDisplay> ||
         std::is_same_v<T, HandbremseMode> ||
         std::is_same_v<T, BobbyQuickActions> ||
         std::is_same_v<T, BatteryCellType>

@@ -44,7 +44,7 @@ void SetupFinalInformationDisplay::buttonPressed(espgui::Button button)
     configs.write_config(configs.boardcomputerHardware.setupFinished, true);
     if (espgui::displayStack.empty())
     {
-        espgui::switchScreen<StatusDisplay>();
+        switchToDefaultStatusDisplay();
     }
     else
     {

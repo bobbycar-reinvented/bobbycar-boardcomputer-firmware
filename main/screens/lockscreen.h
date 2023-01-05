@@ -25,6 +25,9 @@ class Lockscreen : public BobbyDisplay
     static constexpr auto spacing = 20;
 
 public:
+    Lockscreen(bool switchScreen) :
+        m_switchScreen(switchScreen) {}
+
     void start() override;
     void initScreen(espgui::TftInterface &tft) override;
     void update() override;
@@ -34,7 +37,10 @@ public:
     void buttonPressed(espgui::Button button) override;
 
 private:
+    const bool m_switchScreen;
+
     void drawRect(espgui::TftInterface &tft, int index, int offset, uint32_t color);
+    void exit() const;
 
     std::array<espgui::Label, 4> m_labels {{
         espgui::Label{spacing, 100}, // boxWidth, boxHeight

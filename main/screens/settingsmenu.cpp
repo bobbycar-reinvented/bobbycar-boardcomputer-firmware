@@ -39,6 +39,7 @@
 #include "screens/networksettingsmenu.h"
 #include "screens/selectbuildservermenu.h"
 #include "screens/timesettingsmenu.h"
+#include "screens/typesafeenumchangemenu.h"
 #include "screens/udpcloudsettingsmenu.h"
 
 namespace bobby {
@@ -61,6 +62,7 @@ constexpr char TEXT_BOARDCOMPUTERHARDWARESETTINGS[] = "Boardcomputer H/W setting
 constexpr char TEXT_FEATUREFLAGS[] = "Feature flags";
 constexpr char TEXT_USERNAME[] = "Username"; // ota-name
 constexpr char TEXT_ANHAENGER_ID[] = "Anhaenger ID";
+constexpr char TEXT_SELECT_DEFAULT_STATUSDISPLAY[] = "Select default display";
 constexpr char TEXT_AUTOCONNECTBMS[] = "Auto connect BMS";
 constexpr char TEXT_BUZZER[] = "Buzzer";
 constexpr char TEXT_FRONTLED[] = "Front LED";
@@ -136,6 +138,7 @@ SettingsMenu::SettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FEATUREFLAGS>,                  PushScreenAction<FeatureFlagsMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_USERNAME>,                      PushScreenAction<UsernameChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ANHAENGER_ID, AnhaengerIdAccessor>, PushScreenAction<AnhaengerIdChangeScreen>>>();
+    constructMenuItem<PushScreenTypeSafeChangeMenuItem<DefaultStatusDisplay, TEXT_SELECT_DEFAULT_STATUSDISPLAY>>(&configs.defaultStatusDisplay);
 //#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 //    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                BobbyCheckbox, AutoConnectBmsAccessor>>();
 //#endif

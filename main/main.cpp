@@ -8,7 +8,6 @@ constexpr const char * const TAG = "BOBBY";
 // 3rdparty lib includes
 #include <espchrono.h>
 using namespace std::chrono_literals;
-#include <espwifistack.h>
 #include <tickchrono.h>
 #include <espstrutils.h>
 #include <screenmanager.h>
@@ -31,6 +30,7 @@ using namespace std::chrono_literals;
 #include "screens/statusdisplay.h"
 #include "newsettings.h"
 #include "taskmanager.h"
+#include "defaultstatusdisplay.h"
 
 #define BOOT_PROGRESS(s) \
     bobby::set_boot_msg(s); \
@@ -141,13 +141,12 @@ extern "C" void app_main()
     else if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
     {
         BOOT_PROGRESS("Locked");
-        espgui::switchScreen<bobby::StatusDisplay>();
-        espgui::pushScreen<bobby::Lockscreen>();
+        espgui::pushScreen<bobby::Lockscreen>(true);
     }
     else
     {
         BOOT_PROGRESS("StatusDisplay")
-        espgui::switchScreen<bobby::StatusDisplay>();
+        switchToDefaultStatusDisplay();
     }
 
     esp_chip_info(&chip_info);

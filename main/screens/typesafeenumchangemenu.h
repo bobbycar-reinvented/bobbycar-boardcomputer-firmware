@@ -32,7 +32,7 @@ public:
 
     int color() const override
     {
-        return TFT_DARKGREY;
+        return espgui::TFT_DARKGREY;
     }
 private:
     ConfigWrapper<TEnum>* m_config;
