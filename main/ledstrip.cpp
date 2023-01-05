@@ -272,6 +272,9 @@ void showAnimation()
         case LedstripAnimation::SnakeAnimation: showSnakeAnimation(); break;
         case LedstripAnimation::GasOMeter: showGasOMeterAnimation(); break;
         case LedstripAnimation::Pride: showPrideAnimation(); break;
+        case LedstripAnimation::WarningAnimation: showWarningAnimation(); break;
+        case LedstripAnimation::Drehlicht: showDrehlichtAnimation(); break;
+        case LedstripAnimation::MancheLKWsHabenDieseAnimation: showMancheLKWShabensoeinelichtanimation(); break;
         default: showDefaultLedstrip();
         }
     }
@@ -509,6 +512,59 @@ void showPrideAnimation()
         const uint16_t pixelnumber = (ledstrip_length - 1) - i;
 
         nblend(leds[pixelnumber], newcolor, 64);
+    }
+}
+
+void showWarningAnimation()
+{
+    // breathing yellow
+    const bool isOn = (espchrono::utc_clock::now().time_since_epoch() % 750ms < 350ms);
+    static uint8_t brightness{0};
+
+    // cubic easing
+    brightness = isOn ? std::min(brightness + 2, 255) : std::max(brightness - 2, 0);
+
+    CRGB color = CRGB::Yellow;
+
+    color.r = (color.r * brightness) / 255;
+    color.g = (color.g * brightness) / 255;
+    color.b = (color.b * brightness) / 255;
+
+    std::fill(leds.begin(), leds.end(), color);
+}
+
+void showDrehlichtAnimation()
+{
+    static uint16_t position{0};
+
+    for (uint8_t i = 0; i < 15; i++) {
+        leds[position] = CRGB::Yellow;
+        position = (position + 1) % leds.size();
+        fadeToBlackBy(leds.data(), leds.size(), 2);
+    }
+
+    fadeToBlackBy(leds.data(), leds.size(), 10);
+}
+
+void showMancheLKWShabensoeinelichtanimation()
+{
+    const auto now = espchrono::utc_clock::now();
+
+    const bool is_links_und_nicht_rechts = (now.time_since_epoch() % 1600ms < 800ms);
+
+    const auto is_an = (now.time_since_epoch() % 200ms < 100ms) && (now.time_since_epoch() % 800ms < 600ms);
+
+    std::fill(std::begin(leds), std::end(leds), CRGB::Black);
+
+    const auto center = (std::begin(leds) + (leds.size() / 2) + configs.ledstrip.centerOffset.value());
+
+    if (is_links_und_nicht_rechts)
+    {
+        std::fill(center, std::end(leds), is_an ? CRGB::Yellow : CRGB::Black);
+    }
+    else
+    {
+        std::fill(std::begin(leds), center, is_an ? CRGB::Yellow : CRGB::Black);
     }
 }
 
