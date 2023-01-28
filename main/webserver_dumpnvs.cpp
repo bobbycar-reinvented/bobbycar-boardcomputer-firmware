@@ -136,6 +136,7 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
     configs.callForEveryConfig([&](auto &config){
         const std::string_view nvsName{config.nvsName()};
         showInputForSetting(nvsName, config.value(), settings);
+        return false;
     });
 
     const auto profile = settingsPersister.currentlyOpenProfileIndex();

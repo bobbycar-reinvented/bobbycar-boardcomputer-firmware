@@ -313,4 +313,8 @@ esp_err_t send_espnow_message(std::string_view message)
     return ESP_OK;
 }
 
+bool isInitialized()
+{
+    return initialized >= 255;
+}
 } // namespace espnow

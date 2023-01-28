@@ -99,6 +99,7 @@ struct SwapFrontBackAccessor : public virtual espgui::AccessorInterface<bool> {
 #ifdef FEATURE_CAN
 struct SendFrontCanCmdAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.controllerHardware.sendFrontCanCmd; } };
 struct SendBackCanCmdAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.controllerHardware.sendBackCanCmd; } };
+struct RecvCanCmdAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.controllerHardware.recvCanCmd; } };
 struct CanTransmitTimeoutAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.controllerHardware.canTransmitTimeout; } };
 struct CanReceiveTimeoutAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.controllerHardware.canReceiveTimeout; } };
 #endif

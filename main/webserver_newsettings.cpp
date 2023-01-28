@@ -331,6 +331,7 @@ esp_err_t webserver_newSettings_handler(httpd_req_t *req)
                         }
                     }
                 }
+                return false;
             });
         }
     }
@@ -485,7 +486,7 @@ esp_err_t webserver_saveNewSettings_handler(httpd_req_t *req)
                 body += '\n';
                 success = false;
             }
-            return;
+            return false;
         }
 
         char valueBuf[257];
@@ -498,6 +499,7 @@ esp_err_t webserver_saveNewSettings_handler(httpd_req_t *req)
             body += fmt::format("{} failed: {}\n", esphttpdutils::htmlentities(nvsName), esphttpdutils::htmlentities(result.error()));
             success = false;
         }
+        return false;
     });
 
     if (body.empty())
@@ -545,7 +547,7 @@ esp_err_t webserver_resetNewSettings_handler(httpd_req_t *req)
                 body += '\n';
                 success = false;
             }
-            return;
+            return false;
         }
 
         body += nvsName;
@@ -560,6 +562,7 @@ esp_err_t webserver_resetNewSettings_handler(httpd_req_t *req)
         }
 
         body += '\n';
+        return false;
     });
 
     if (body.empty())

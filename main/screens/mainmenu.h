@@ -6,7 +6,7 @@
 // local includes
 #include "guihelpers/menudisplaywithtime.h"
 #ifdef MAINMENU_PLUGIN
-#include MAINMENU_PLUGIN "../../ignore/mainmenu_plugin.h"
+#include MAINMENU_PLUGIN
 #endif
 
 namespace bobby {

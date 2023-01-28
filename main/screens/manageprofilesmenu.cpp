@@ -304,6 +304,8 @@ void ManageProfilesMenu::buttonPressed(espgui::Button button)
         {
             return;
         }
+        Base::buttonPressed(button);
+        break;
     default:
         Base::buttonPressed(button);
         break;

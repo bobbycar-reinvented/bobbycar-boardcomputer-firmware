@@ -29,6 +29,8 @@ uint32_t can_total_error_cnt;
 namespace {
 constexpr const char * const TAG = "BOBBYCAN";
 
+constexpr const auto CAN_TIMEOUT = 100ms;
+
 bool tryParseCanInput();
 } // namespace
 
@@ -228,10 +230,22 @@ bool tryParseCanInput()
             ESP_LOGE(TAG, "twai_receive() failed with %s", esp_err_to_name(result));
         }
 
-        if (espchrono::millis_clock::now() - controllers.front.lastCanFeedback > 100ms)
+        if (espchrono::millis_clock::now() - controllers.front.lastCanFeedback > CAN_TIMEOUT)
             controllers.front.feedbackValid = false;
 
-        if (espchrono::millis_clock::now() - controllers.back.lastCanFeedback > 100ms)
+        if (espchrono::millis_clock::now() - controllers.back.lastCanFeedback > CAN_TIMEOUT)
+            controllers.back.feedbackValid = false;
+
+        ESP_LOGI(TAG, "frontValid: %s, backValid: %s", controllers.front.feedbackValid ? "true" : "false", controllers.back.feedbackValid ? "true" : "false");
+        return false;
+    }
+
+    if (!configs.controllerHardware.recvCanCmd.value())
+    {
+        if (espchrono::millis_clock::now() - controllers.front.lastCanFeedback > CAN_TIMEOUT)
+            controllers.front.feedbackValid = false;
+
+        if (espchrono::millis_clock::now() - controllers.back.lastCanFeedback > CAN_TIMEOUT)
             controllers.back.feedbackValid = false;
 
         return false;
@@ -242,7 +256,7 @@ bool tryParseCanInput()
 
     if (parseMotorControllerCanMessage<false>(message, front))
     {
-        if (espchrono::millis_clock::now() - back.lastCanFeedback > 100ms)
+        if (espchrono::millis_clock::now() - back.lastCanFeedback > CAN_TIMEOUT)
             back.feedbackValid = false;
 
         front.lastCanFeedback = espchrono::millis_clock::now();
@@ -251,7 +265,7 @@ bool tryParseCanInput()
     }
     else
     {
-        if (espchrono::millis_clock::now() - front.lastCanFeedback > 100ms)
+        if (espchrono::millis_clock::now() - front.lastCanFeedback > CAN_TIMEOUT)
             front.feedbackValid = false;
     }
 
@@ -263,7 +277,7 @@ bool tryParseCanInput()
     }
     else
     {
-        if (espchrono::millis_clock::now() - back.lastCanFeedback > 100ms)
+        if (espchrono::millis_clock::now() - back.lastCanFeedback > CAN_TIMEOUT)
             back.feedbackValid = false;
     }
 

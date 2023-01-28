@@ -102,6 +102,7 @@ FeatureFlagsMenu::FeatureFlagsMenu()
         }
         else
             constructMenuItem<FeatureFlagMenuItem>(feature, true);
+        return false;
     });
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, ExitFeatureFlagsMenuAction>>();
 }

@@ -345,6 +345,7 @@ public:
         ConfigWrapperLegacy<bool>     swapFrontBack     {false,                                  DoReset,   {},                         "swapFrontBack"       };
         ConfigWrapperLegacy<bool>   sendFrontCanCmd     {true,                                   DoReset,   {},                         "sendFrontCanCmd"     };
         ConfigWrapperLegacy<bool>    sendBackCanCmd     {true,                                   DoReset,   {},                         "sendBackCanCmd"      };
+        ConfigWrapperLegacy<bool>        recvCanCmd     {true,                                   DoReset,   {},                         "recvCanCmd"          };
         ConfigWrapperLegacy<int16_t> canTransmitTimeout {200,                                    DoReset,   {},                         "canTransmitTime"     };
         ConfigWrapperLegacy<int16_t> canReceiveTimeout  {0,                                      DoReset,   {},                         "canReceiveTimeo"     };
     } controllerHardware;
@@ -493,388 +494,266 @@ public:
 
     ConfigWrapperLegacy<bool> setupDone             {false,                                      DoReset,   {},                         "setupDone"           };
 
-#define NEW_SETTINGS(x) \
-    x(baseMacAddressOverride) \
-    x(hostname) \
-    \
-    x(wifiStaEnabled) \
-    x(wifi_configs[0].ssid) \
-    x(wifi_configs[0].key) \
-    x(wifi_configs[0].useStaticIp) \
-    x(wifi_configs[0].staticIp) \
-    x(wifi_configs[0].staticSubnet) \
-    x(wifi_configs[0].staticGateway) \
-    x(wifi_configs[0].useStaticDns) \
-    x(wifi_configs[0].staticDns0) \
-    x(wifi_configs[0].staticDns1) \
-    x(wifi_configs[0].staticDns2) \
-    x(wifi_configs[1].ssid) \
-    x(wifi_configs[1].key) \
-    x(wifi_configs[1].useStaticIp) \
-    x(wifi_configs[1].staticIp) \
-    x(wifi_configs[1].staticSubnet) \
-    x(wifi_configs[1].staticGateway) \
-    x(wifi_configs[1].useStaticDns) \
-    x(wifi_configs[1].staticDns0) \
-    x(wifi_configs[1].staticDns1) \
-    x(wifi_configs[1].staticDns2) \
-    x(wifi_configs[2].ssid) \
-    x(wifi_configs[2].key) \
-    x(wifi_configs[2].useStaticIp) \
-    x(wifi_configs[2].staticIp) \
-    x(wifi_configs[2].staticSubnet) \
-    x(wifi_configs[2].staticGateway) \
-    x(wifi_configs[2].useStaticDns) \
-    x(wifi_configs[2].staticDns0) \
-    x(wifi_configs[2].staticDns1) \
-    x(wifi_configs[2].staticDns2) \
-    x(wifi_configs[3].ssid) \
-    x(wifi_configs[3].key) \
-    x(wifi_configs[3].useStaticIp) \
-    x(wifi_configs[3].staticIp) \
-    x(wifi_configs[3].staticSubnet) \
-    x(wifi_configs[3].staticGateway) \
-    x(wifi_configs[3].useStaticDns) \
-    x(wifi_configs[3].staticDns0) \
-    x(wifi_configs[3].staticDns1) \
-    x(wifi_configs[3].staticDns2) \
-    x(wifi_configs[4].ssid) \
-    x(wifi_configs[4].key) \
-    x(wifi_configs[4].useStaticIp) \
-    x(wifi_configs[4].staticIp) \
-    x(wifi_configs[4].staticSubnet) \
-    x(wifi_configs[4].staticGateway) \
-    x(wifi_configs[4].useStaticDns) \
-    x(wifi_configs[4].staticDns0) \
-    x(wifi_configs[4].staticDns1) \
-    x(wifi_configs[4].staticDns2) \
-    x(wifi_configs[5].ssid) \
-    x(wifi_configs[5].key) \
-    x(wifi_configs[5].useStaticIp) \
-    x(wifi_configs[5].staticIp) \
-    x(wifi_configs[5].staticSubnet) \
-    x(wifi_configs[5].staticGateway) \
-    x(wifi_configs[5].useStaticDns) \
-    x(wifi_configs[5].staticDns0) \
-    x(wifi_configs[5].staticDns1) \
-    x(wifi_configs[5].staticDns2) \
-    x(wifi_configs[6].ssid) \
-    x(wifi_configs[6].key) \
-    x(wifi_configs[6].useStaticIp) \
-    x(wifi_configs[6].staticIp) \
-    x(wifi_configs[6].staticSubnet) \
-    x(wifi_configs[6].staticGateway) \
-    x(wifi_configs[6].useStaticDns) \
-    x(wifi_configs[6].staticDns0) \
-    x(wifi_configs[6].staticDns1) \
-    x(wifi_configs[6].staticDns2) \
-    x(wifi_configs[7].ssid) \
-    x(wifi_configs[7].key) \
-    x(wifi_configs[7].useStaticIp) \
-    x(wifi_configs[7].staticIp) \
-    x(wifi_configs[7].staticSubnet) \
-    x(wifi_configs[7].staticGateway) \
-    x(wifi_configs[7].useStaticDns) \
-    x(wifi_configs[7].staticDns0) \
-    x(wifi_configs[7].staticDns1) \
-    x(wifi_configs[7].staticDns2) \
-    x(wifi_configs[8].ssid) \
-    x(wifi_configs[8].key) \
-    x(wifi_configs[8].useStaticIp) \
-    x(wifi_configs[8].staticIp) \
-    x(wifi_configs[8].staticSubnet) \
-    x(wifi_configs[8].staticGateway) \
-    x(wifi_configs[8].useStaticDns) \
-    x(wifi_configs[8].staticDns0) \
-    x(wifi_configs[8].staticDns1) \
-    x(wifi_configs[8].staticDns2) \
-    x(wifi_configs[9].ssid) \
-    x(wifi_configs[9].key) \
-    x(wifi_configs[9].useStaticIp) \
-    x(wifi_configs[9].staticIp) \
-    x(wifi_configs[9].staticSubnet) \
-    x(wifi_configs[9].staticGateway) \
-    x(wifi_configs[9].useStaticDns) \
-    x(wifi_configs[9].staticDns0) \
-    x(wifi_configs[9].staticDns1) \
-    x(wifi_configs[9].staticDns2) \
-    \
-    x(wifiStaMinRssi) \
-    \
-    x(wifiApEnabled) \
-    x(wifiApName) \
-    x(wifiApKey) \
-    x(wifiApIp) \
-    x(wifiApMask) \
-    x(wifiApChannel) \
-    x(wifiApAuthmode) \
-    x(wifiApHidden) \
-    \
-    x(timeServerEnabled) \
-    x(timeServer) \
-    x(timeSyncMode) \
-    x(timeSyncInterval) \
-    x(timezoneOffset) \
-    x(timeDst) \
-    \
-    x(canResetOnError)  \
-    x(canUninstallOnReset)    \
-    \
-    x(sampleCount) \
-    x(gasMin) \
-    x(gasMax) \
-    x(gasMitte) \
-    x(bremsMin) \
-    x(bremsMax) \
-    x(bremsMitte) \
-    x(deadband) \
-    \
-    x(dpadDebounce) \
-    x(buttonReadDelay) \
-    \
-    x(dpadMappingLeft) \
-    x(dpadMappingRight) \
-    x(dpadMappingUp) \
-    x(dpadMappingDown) \
-    x(dpadMappingProfile0) \
-    x(dpadMappingProfile1) \
-    x(dpadMappingProfile2) \
-    x(dpadMappingProfile3) \
-    x(dpadMappingLeft2) \
-    x(dpadMappingRight2) \
-    x(dpadMappingUp2) \
-    x(dpadMappingDown2) \
-    x(dpadMappingExtra1) \
-    x(dpadMappingExtra2) \
-    x(dpadMappingExtra3) \
-    x(dpadMappingExtra4) \
-    \
-    x(quickActionLeft2) \
-    x(quickActionRight2) \
-    x(quickActionUp2) \
-    x(quickActionDown2) \
-    x(quickActionExtra1) \
-    x(quickActionExtra2) \
-    x(quickActionExtra3) \
-    x(quickActionExtra4) \
-    \
-    x(wireless_door_configs[0].doorId) \
-    x(wireless_door_configs[0].doorToken) \
-    x(wireless_door_configs[1].doorId) \
-    x(wireless_door_configs[1].doorToken) \
-    x(wireless_door_configs[2].doorId) \
-    x(wireless_door_configs[2].doorToken) \
-    x(wireless_door_configs[3].doorId) \
-    x(wireless_door_configs[3].doorToken) \
-    x(wireless_door_configs[4].doorId) \
-    x(wireless_door_configs[4].doorToken) \
-    \
-    x(bluetoothName) \
-    \
-    x(reverseBeep) \
-    x(reverseBeepFreq0) \
-    x(reverseBeepFreq1) \
-    x(reverseBeepDuration0) \
-    x(reverseBeepDuration1) \
-    \
-    x(cloudUrl) \
-    \
-    x(otaUrl) \
-    x(otaUsername) \
-    x(otaServerUrl) \
-    x(otaServerBranch) \
-    x(otaServers[0].name) \
-    x(otaServers[0].url) \
-    x(otaServers[1].name) \
-    x(otaServers[1].url) \
-    x(otaServers[2].name) \
-    x(otaServers[2].url) \
-    x(otaServers[3].name) \
-    x(otaServers[3].url) \
-    x(otaServers[4].name) \
-    x(otaServers[4].url) \
-    \
-    x(dns_announce_enabled) \
-    x(dns_announce_key) \
-    x(webserverPassword) \
-    \
-    x(controllerHardware.wheelDiameter) \
-    x(controllerHardware.numMagnetPoles) \
-    x(controllerHardware.swapFrontBack) \
-    x(controllerHardware.sendFrontCanCmd) \
-    x(controllerHardware.sendBackCanCmd) \
-    x(controllerHardware.canTransmitTimeout) \
-    x(controllerHardware.canReceiveTimeout) \
-    \
-    x(boardcomputerHardware.gametrakXMin) \
-    x(boardcomputerHardware.gametrakYMin) \
-    x(boardcomputerHardware.gametrakXMax) \
-    x(boardcomputerHardware.gametrakYMax) \
-    x(boardcomputerHardware.gametrakDistMin) \
-    x(boardcomputerHardware.gametrakDistMax) \
-    \
-    x(boardcomputerHardware.timersSettings.statsUpdateRate) \
-    x(boardcomputerHardware.timersSettings.cloudCollectRate) \
-    x(boardcomputerHardware.timersSettings.cloudSendRate) \
-    x(boardcomputerHardware.timersSettings.udpSendRateMs) \
-    \
-    x(boardcomputerHardware.flipScreen) \
-    x(boardcomputerHardware.setupFinished) \
-    x(boardcomputerHardware.display_brightness) \
-    \
-    x(cloudSettings.cloudEnabled) \
-    x(cloudSettings.cloudTransmitTimeout) \
-    x(cloudSettings.cloudKey) \
-    x(cloudSettings.sendStatistic) \
-    \
-    x(udpCloudSettings.udpToken) \
-    x(udpCloudSettings.udpCloudEnabled) \
-    x(udpCloudSettings.enableCloudDebug)  \
-    x(udpCloudSettings.udpCloudPort) \
-    x(udpCloudSettings.udpCloudHost) \
-    \
-    x(ledstrip.enableLedAnimation) \
-    x(ledstrip.enableBrakeLights) \
-    x(ledstrip.ledsCount) \
-    x(ledstrip.centerOffset) \
-    x(ledstrip.smallOffset) \
-    x(ledstrip.bigOffset) \
-    x(ledstrip.enableBeepWhenBlink) \
-    x(ledstrip.animationType) \
-    x(ledstrip.enableFullBlink) \
-    x(ledstrip.enableStVO) \
-    x(ledstrip.stvoFrontOffset) \
-    x(ledstrip.stvoFrontLength) \
-    x(ledstrip.stvoFrontEnable) \
-    x(ledstrip.animationMultiplier) \
-    x(ledstrip.brightness) \
-    x(ledstrip.enableAnimBlink) \
-    x(ledstrip.otaMode) \
-    x(ledstrip.maxMilliamps) \
-    x(ledstrip.enableVisualizeBlink)\
-    x(ledstrip.automaticLight) \
-    x(ledstrip.brakeLights_useAccel) \
-    x(ledstrip.brakeLights_usePower) \
-    \
-    x(ledstrip.custom_color[0]) \
-    x(ledstrip.custom_color[1]) \
-    x(ledstrip.custom_color[2]) \
-    x(ledstrip.custom_color[3]) \
-    x(ledstrip.custom_color[4]) \
-    x(ledstrip.custom_color[5]) \
-    x(ledstrip.custom_color[6]) \
-    x(ledstrip.custom_color[7]) \
-    \
-    x(ledstrip.leds_per_meter) \
-    \
-    x(battery.cellsSeries) \
-    x(battery.cellsParallel) \
-    x(battery.cellType) \
-    x(battery.watthoursPerKilometer) \
-    x(battery.front30VoltCalibration) \
-    x(battery.back30VoltCalibration) \
-    x(battery.front50VoltCalibration) \
-    x(battery.back50VoltCalibration) \
-    x(battery.applyCalibration) \
-    \
-    x(lockscreen.allowPresetSwitch) \
-    x(lockscreen.keepLockedAfterReboot) \
-    x(lockscreen.locked) \
-    x(lockscreen.pin[0]) \
-    x(lockscreen.pin[1]) \
-    x(lockscreen.pin[2]) \
-    x(lockscreen.pin[3])\
-    x(lockscreen.pin2[0]) \
-    x(lockscreen.pin2[1]) \
-    x(lockscreen.pin2[2]) \
-    x(lockscreen.pin2[3]) \
-    \
-    x(savedStatistics.totalCentimeters) \
-    \
-    x(handbremse.mode) \
-    x(handbremse.triggerTimeout) \
-    x(handbremse.automatic) \
-    x(handbremse.enable) \
-    x(handbremse.visualize) \
-    \
-    x(espnow.syncTime) \
-    x(espnow.syncTimeWithOthers) \
-    x(espnow.syncBlink) \
-    \
-    x(feature.ble.isEnabled) \
-    x(feature.cloud.isEnabled) \
-    x(feature.dnsannounce.isEnabled)\
-    x(feature.esp_now.isEnabled) \
-    x(feature.garage.isEnabled)    \
-    x(feature.gschissene_diode.isEnabled) \
-    x(feature.ledstrip.isEnabled) \
-    x(feature.ntp.isEnabled) \
-    x(feature.ota.isEnabled) \
-    x(feature.udpcloud.isEnabled) \
-    x(feature.webserver.isEnabled) \
-    x(feature.webserver_disable_lock.isEnabled) \
-    x(bleSettings.bleEnabled) \
-    x(defaultStatusDisplay) \
-    x(emulateFeedback)
-
-#define FEATURES(x) \
-    x(feature.ble) \
-    x(feature.cloud) \
-    x(feature.dnsannounce)\
-    x(feature.esp_now) \
-    x(feature.garage)    \
-    x(feature.gschissene_diode) \
-    x(feature.ledstrip) \
-    x(feature.ntp) \
-    x(feature.ota) \
-    x(feature.udpcloud) \
-    x(feature.webserver) \
-//    x(feature.webserver_disable_lock)
-
     template<typename T>
-    void callForEveryConfig(T &&callback)
+    void callForEveryConfig(T &&callable)
     {
-#define HELPER(x) callback(x);
-        NEW_SETTINGS(HELPER)
-#undef HELPER
-        callback(bleSettings.bleFenceEnabled);
-    }
+#define REGISTER_CONFIG(name) \
+        if (callable(name)) return;
 
-    auto getAllConfigParams()
-    {
-        return cpputils::make_array(
-#define HELPER(x) std::ref<ConfigWrapperInterface>(x),
-            NEW_SETTINGS(HELPER)
-#undef HELPER
-            std::ref<ConfigWrapperInterface>(bleSettings.bleFenceEnabled)
-        );
+        REGISTER_CONFIG(baseMacAddressOverride)
+        REGISTER_CONFIG(hostname)
+
+        REGISTER_CONFIG(wifiStaEnabled)
+        for (auto &entry : wifi_configs)
+        {
+            REGISTER_CONFIG(entry.ssid)
+            REGISTER_CONFIG(entry.key)
+            REGISTER_CONFIG(entry.useStaticIp)
+            REGISTER_CONFIG(entry.staticIp)
+            REGISTER_CONFIG(entry.staticSubnet)
+            REGISTER_CONFIG(entry.staticGateway)
+            REGISTER_CONFIG(entry.useStaticDns)
+            REGISTER_CONFIG(entry.staticDns0)
+            REGISTER_CONFIG(entry.staticDns1)
+            REGISTER_CONFIG(entry.staticDns2)
+        }
+        REGISTER_CONFIG(wifiStaMinRssi)
+
+        REGISTER_CONFIG(wifiApEnabled)
+        REGISTER_CONFIG(wifiApName)
+        REGISTER_CONFIG(wifiApKey)
+        REGISTER_CONFIG(wifiApIp)
+        REGISTER_CONFIG(wifiApMask)
+        REGISTER_CONFIG(wifiApChannel)
+        REGISTER_CONFIG(wifiApAuthmode)
+        REGISTER_CONFIG(wifiApHidden)
+
+        REGISTER_CONFIG(timeServerEnabled)
+        REGISTER_CONFIG(timeServer)
+        REGISTER_CONFIG(timeSyncMode)
+        REGISTER_CONFIG(timeSyncInterval)
+        REGISTER_CONFIG(timezoneOffset)
+        REGISTER_CONFIG(timeDst)
+
+        REGISTER_CONFIG(canResetOnError)
+        REGISTER_CONFIG(canUninstallOnReset)
+
+        REGISTER_CONFIG(sampleCount)
+        REGISTER_CONFIG(gasMin)
+        REGISTER_CONFIG(gasMax)
+        REGISTER_CONFIG(gasMitte)
+        REGISTER_CONFIG(deadband)
+
+        REGISTER_CONFIG(dpadDebounce)
+        REGISTER_CONFIG(buttonReadDelay)
+
+        REGISTER_CONFIG(dpadMappingLeft)
+        REGISTER_CONFIG(dpadMappingRight)
+        REGISTER_CONFIG(dpadMappingUp)
+        REGISTER_CONFIG(dpadMappingDown)
+        REGISTER_CONFIG(dpadMappingProfile0)
+        REGISTER_CONFIG(dpadMappingProfile1)
+        REGISTER_CONFIG(dpadMappingProfile2)
+        REGISTER_CONFIG(dpadMappingProfile3)
+        REGISTER_CONFIG(dpadMappingLeft2)
+        REGISTER_CONFIG(dpadMappingRight2)
+        REGISTER_CONFIG(dpadMappingUp2)
+        REGISTER_CONFIG(dpadMappingDown2)
+        REGISTER_CONFIG(dpadMappingExtra1)
+        REGISTER_CONFIG(dpadMappingExtra2)
+        REGISTER_CONFIG(dpadMappingExtra3)
+        REGISTER_CONFIG(dpadMappingExtra4)
+
+        REGISTER_CONFIG(quickActionLeft2)
+        REGISTER_CONFIG(quickActionRight2)
+        REGISTER_CONFIG(quickActionUp2)
+        REGISTER_CONFIG(quickActionDown2)
+        REGISTER_CONFIG(quickActionExtra1)
+        REGISTER_CONFIG(quickActionExtra2)
+        REGISTER_CONFIG(quickActionExtra3)
+        REGISTER_CONFIG(quickActionExtra4)
+
+        for (auto &entry : wireless_door_configs)
+        {
+            REGISTER_CONFIG(entry.doorId)
+            REGISTER_CONFIG(entry.doorToken)
+        }
+
+        REGISTER_CONFIG(bluetoothName)
+
+        REGISTER_CONFIG(reverseBeep)
+        REGISTER_CONFIG(reverseBeepFreq0)
+        REGISTER_CONFIG(reverseBeepFreq1)
+        REGISTER_CONFIG(reverseBeepDuration0)
+        REGISTER_CONFIG(reverseBeepDuration1)
+
+        REGISTER_CONFIG(cloudUrl)
+
+        REGISTER_CONFIG(otaUrl)
+        REGISTER_CONFIG(otaUsername)
+        REGISTER_CONFIG(otaServerUrl)
+        REGISTER_CONFIG(otaServerBranch)
+
+        for (auto &entry : otaServers)
+        {
+            REGISTER_CONFIG(entry.name)
+            REGISTER_CONFIG(entry.url)
+        }
+
+        REGISTER_CONFIG(dns_announce_enabled)
+        REGISTER_CONFIG(dns_announce_key)
+
+        REGISTER_CONFIG(webserverPassword)
+
+        REGISTER_CONFIG(controllerHardware.wheelDiameter)
+        REGISTER_CONFIG(controllerHardware.numMagnetPoles)
+        REGISTER_CONFIG(controllerHardware.swapFrontBack)
+        REGISTER_CONFIG(controllerHardware.sendFrontCanCmd)
+        REGISTER_CONFIG(controllerHardware.sendBackCanCmd)
+        REGISTER_CONFIG(controllerHardware.recvCanCmd)
+        REGISTER_CONFIG(controllerHardware.canTransmitTimeout)
+        REGISTER_CONFIG(controllerHardware.canReceiveTimeout)
+
+        REGISTER_CONFIG(boardcomputerHardware.gametrakXMin)
+        REGISTER_CONFIG(boardcomputerHardware.gametrakYMin)
+        REGISTER_CONFIG(boardcomputerHardware.gametrakXMax)
+        REGISTER_CONFIG(boardcomputerHardware.gametrakYMax)
+        REGISTER_CONFIG(boardcomputerHardware.gametrakDistMin)
+        REGISTER_CONFIG(boardcomputerHardware.gametrakDistMax)
+
+        REGISTER_CONFIG(boardcomputerHardware.timersSettings.statsUpdateRate)
+        REGISTER_CONFIG(boardcomputerHardware.timersSettings.cloudCollectRate)
+        REGISTER_CONFIG(boardcomputerHardware.timersSettings.cloudSendRate)
+        REGISTER_CONFIG(boardcomputerHardware.timersSettings.udpSendRateMs)
+
+        REGISTER_CONFIG(boardcomputerHardware.flipScreen)
+        REGISTER_CONFIG(boardcomputerHardware.setupFinished)
+        REGISTER_CONFIG(boardcomputerHardware.display_brightness)
+
+        REGISTER_CONFIG(cloudSettings.cloudEnabled)
+        REGISTER_CONFIG(cloudSettings.cloudTransmitTimeout)
+        REGISTER_CONFIG(cloudSettings.cloudKey)
+        REGISTER_CONFIG(cloudSettings.sendStatistic)
+
+        REGISTER_CONFIG(udpCloudSettings.udpToken)
+        REGISTER_CONFIG(udpCloudSettings.udpCloudEnabled)
+        REGISTER_CONFIG(udpCloudSettings.enableCloudDebug)
+        REGISTER_CONFIG(udpCloudSettings.udpCloudPort)
+        REGISTER_CONFIG(udpCloudSettings.udpCloudHost)
+
+        REGISTER_CONFIG(ledstrip.enableLedAnimation)
+        REGISTER_CONFIG(ledstrip.enableBrakeLights)
+        REGISTER_CONFIG(ledstrip.ledsCount)
+        REGISTER_CONFIG(ledstrip.centerOffset)
+        REGISTER_CONFIG(ledstrip.smallOffset)
+        REGISTER_CONFIG(ledstrip.bigOffset)
+        REGISTER_CONFIG(ledstrip.enableBeepWhenBlink)
+        REGISTER_CONFIG(ledstrip.animationType)
+        REGISTER_CONFIG(ledstrip.enableFullBlink)
+        REGISTER_CONFIG(ledstrip.enableStVO)
+        REGISTER_CONFIG(ledstrip.stvoFrontOffset)
+        REGISTER_CONFIG(ledstrip.stvoFrontLength)
+        REGISTER_CONFIG(ledstrip.stvoFrontEnable)
+        REGISTER_CONFIG(ledstrip.animationMultiplier)
+        REGISTER_CONFIG(ledstrip.brightness)
+        REGISTER_CONFIG(ledstrip.enableAnimBlink)
+        REGISTER_CONFIG(ledstrip.otaMode)
+        REGISTER_CONFIG(ledstrip.maxMilliamps)
+        REGISTER_CONFIG(ledstrip.enableVisualizeBlink)
+        REGISTER_CONFIG(ledstrip.automaticLight)
+        REGISTER_CONFIG(ledstrip.brakeLights_useAccel)
+        REGISTER_CONFIG(ledstrip.brakeLights_usePower)
+
+        for (auto &entry : ledstrip.custom_color)
+        {
+            REGISTER_CONFIG(entry)
+        }
+
+        REGISTER_CONFIG(ledstrip.leds_per_meter)
+
+        REGISTER_CONFIG(battery.cellsSeries)
+        REGISTER_CONFIG(battery.cellsParallel)
+        REGISTER_CONFIG(battery.cellType)
+        REGISTER_CONFIG(battery.watthoursPerKilometer)
+        REGISTER_CONFIG(battery.front30VoltCalibration)
+        REGISTER_CONFIG(battery.back30VoltCalibration)
+        REGISTER_CONFIG(battery.front50VoltCalibration)
+        REGISTER_CONFIG(battery.back50VoltCalibration)
+        REGISTER_CONFIG(battery.applyCalibration)
+
+        REGISTER_CONFIG(lockscreen.allowPresetSwitch)
+        REGISTER_CONFIG(lockscreen.keepLockedAfterReboot)
+        REGISTER_CONFIG(lockscreen.locked)
+
+        for (auto &entry : lockscreen.pin)
+        {
+            REGISTER_CONFIG(entry)
+        }
+
+        for (auto &entry : lockscreen.pin2)
+        {
+            REGISTER_CONFIG(entry)
+        }
+
+        REGISTER_CONFIG(savedStatistics.totalCentimeters)
+
+        REGISTER_CONFIG(handbremse.mode)
+        REGISTER_CONFIG(handbremse.triggerTimeout)
+        REGISTER_CONFIG(handbremse.automatic)
+        REGISTER_CONFIG(handbremse.enable)
+        REGISTER_CONFIG(handbremse.visualize)
+
+        REGISTER_CONFIG(espnow.syncTime)
+        REGISTER_CONFIG(espnow.syncTimeWithOthers)
+        REGISTER_CONFIG(espnow.syncBlink)
+
+        REGISTER_CONFIG(feature.ble.isEnabled)
+        REGISTER_CONFIG(feature.cloud.isEnabled)
+        REGISTER_CONFIG(feature.dnsannounce.isEnabled)
+        REGISTER_CONFIG(feature.esp_now.isEnabled)
+        REGISTER_CONFIG(feature.garage.isEnabled)
+        REGISTER_CONFIG(feature.gschissene_diode.isEnabled)
+        REGISTER_CONFIG(feature.ledstrip.isEnabled)
+        REGISTER_CONFIG(feature.ntp.isEnabled)
+        REGISTER_CONFIG(feature.ota.isEnabled)
+        REGISTER_CONFIG(feature.udpcloud.isEnabled)
+        REGISTER_CONFIG(feature.webserver.isEnabled)
+        REGISTER_CONFIG(feature.webserver_disable_lock.isEnabled)
+
+        REGISTER_CONFIG(bleSettings.bleEnabled)
+        REGISTER_CONFIG(bleSettings.bleFenceEnabled)
+
+        REGISTER_CONFIG(defaultStatusDisplay)
+        REGISTER_CONFIG(emulateFeedback)
     }
 
     template<typename T>
-    void callForEveryFeature(T &&callback)
+    void callForEveryFeature(T &&callable)
     {
-#define HELPER(x) callback(x);
-        FEATURES(HELPER)
-#undef HELPER
-        callback(feature.webserver_disable_lock);
+#define REGISTER_FEATURE(name) \
+        if(callable(name)) return;
+
+        REGISTER_FEATURE(feature.ble)
+        REGISTER_FEATURE(feature.cloud)
+        REGISTER_FEATURE(feature.dnsannounce)
+        REGISTER_FEATURE(feature.esp_now)
+        REGISTER_FEATURE(feature.garage)
+        REGISTER_FEATURE(feature.gschissene_diode)
+        REGISTER_FEATURE(feature.ledstrip)
+        REGISTER_FEATURE(feature.ntp)
+        REGISTER_FEATURE(feature.ota)
+        REGISTER_FEATURE(feature.udpcloud)
+        REGISTER_FEATURE(feature.webserver)
+        REGISTER_FEATURE(feature.webserver_disable_lock)
     }
 
-    auto getAllFeatureParams()
-    {
-        return cpputils::make_array(
-#define HELPER(x) std::ref<ConfiguredFeatureFlag>(x),
-            FEATURES(HELPER)
-#undef HELPER
-            std::ref<ConfiguredFeatureFlag>(feature.webserver_disable_lock)
-        );
-    }
-
-    constexpr size_t getConfigCount() const
+    size_t getConfigCount()
     {
         size_t count = 0;
-#define HELPER(x) count++;
-        NEW_SETTINGS(HELPER)
-#undef HELPER
+        callForEveryConfig([&count](auto &config) {
+            count++;
+            return false;
+        });
         return count;
     }
 };

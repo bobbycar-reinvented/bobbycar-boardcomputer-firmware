@@ -32,6 +32,7 @@ constexpr char TEXT_SWAPFRONTBACK[] = "Swap front/back";
 #ifdef FEATURE_CAN
 constexpr char TEXT_FRONTSENDCAN[] = "Front send CAN";
 constexpr char TEXT_BACKSENDCAN[] = "Back send CAN";
+constexpr char TEXT_RECVCAN[] = "Recv CAN";
 constexpr char TEXT_CANTRANSMITTIMEOUT[] = "CanTransmitTimeout";
 constexpr char TEXT_CANRECEIVETIMEOUT[] = "CanReceiveTimeout";
 constexpr char TEXT_CANRESETONERROR[] = "Reset on error";
@@ -91,6 +92,7 @@ ControllerHardwareSettingsMenu::ControllerHardwareSettingsMenu()
 #ifdef FEATURE_CAN
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTSENDCAN>,       BobbyCheckbox, SendFrontCanCmdAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKSENDCAN>,        BobbyCheckbox, SendBackCanCmdAccessor>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RECVCAN>,       BobbyCheckbox, RecvCanCmdAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANTRANSMITTIMEOUT>, PushScreenAction<CanTransmitTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRECEIVETIMEOUT>,  PushScreenAction<CanReceiveTimeoutChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRESETONERROR>,    BobbyCheckbox, CanResetOnErrorAccessor>>();

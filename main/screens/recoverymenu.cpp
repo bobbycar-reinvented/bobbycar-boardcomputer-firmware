@@ -54,6 +54,7 @@ RecoveryMenu::RecoveryMenu()
 
     configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature){
         constructMenuItem<BasicFeatureFlagMenuItem>(feature);
+        return false;
     });
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS>, ResetNVSAction, StaticMenuItemIcon<&bobbyicons::info>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>, PushScreenAction<RebootScreen>, StaticMenuItemIcon<&bobbyicons::reboot>>>();

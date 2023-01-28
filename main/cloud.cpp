@@ -326,11 +326,11 @@ void send_config(uint32_t skipCount)
         if (skipCount > 0)
         {
             --skipCount;
-            return;
+            return false;
         }
 
         if (stop)
-            return;
+            return false;
 
         const std::string_view nvsName{config.nvsName()};
 
@@ -356,6 +356,8 @@ void send_config(uint32_t skipCount)
             }
             stop = true;
         }
+
+        return false;
     });
 
     if (!has_overflowed)
@@ -391,6 +393,7 @@ void send_single_config(const std::string &nvsName, bool force_update = false)
             configObject["f"] = force_update;
             success = true;
         }
+        return false;
     });
     std::string body;
     if (!success)
@@ -867,10 +870,11 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
                     if (const auto result = set_config(config, value); !result)
                     {
                         ESP_LOGE(TAG, "set_config() failed with %s", result.error().c_str());
-                        return;
+                        return false;
                     }
                     success = true;
                 }
+                return false;
             });
             if (!success)
             {
@@ -896,10 +900,11 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
                     if (const auto result = configs.reset_config(config); !result)
                     {
                         ESP_LOGE(TAG, "reset_config() failed with %s", result.error().c_str());
-                        return;
+                        return false;
                     }
                     success = true;
                 }
+                return false;
             });
             if (!success)
             {

@@ -132,6 +132,7 @@ bool checkEnabledByName(const std::string& name) {
     configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature) {
         if (feature.getTaskName() == name)
             enabled = feature.isEnabled.value();
+        return false;
     });
     return enabled;
 }
