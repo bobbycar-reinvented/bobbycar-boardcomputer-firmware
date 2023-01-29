@@ -12,6 +12,7 @@
 
 // local includes
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "utils.h"
 
 namespace espgui {
@@ -33,7 +34,7 @@ ChangeValueDisplay<UnifiedModelMode>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_FOCVOLTAGE>>>(UnifiedModelMode::FocVoltage, *this, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_FOCSPEED>>>(UnifiedModelMode::FocSpeed, *this, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<UnifiedModelMode>, StaticText<TEXT_FOCTORQUE>>>(UnifiedModelMode::FocTorque, *this, *this, *this);
-    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&bobbyicons::back>>>(*this);
+    constructMenuItem<makeComponentArgs<MenuItem, BackProxyAction, StaticText<TEXT_BACK>, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>(*this);
 }
 
 void ChangeValueDisplay<UnifiedModelMode>::start()

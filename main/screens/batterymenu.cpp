@@ -15,8 +15,11 @@
 #include "battery.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "icons/graph.h"
+#include "icons/graph_grey.h"
 #include "icons/settings.h"
+#include "icons/settings_grey.h"
 #include "screens/batterygraphdisplay.h"
 #include "screens/calibratevoltagedisplay.h"
 #include "typesafeenumchangemenu.h"
@@ -48,7 +51,7 @@ class WhStatisticsText : public virtual espgui::TextInterface { public: std::str
 
 using BatteryCellSeriesChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
-    espgui::StaticText<TEXT_CELL_SERIES>,
+    espgui::StaticTitle<TEXT_CELL_SERIES>,
     BatterySeriesCellsAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -56,7 +59,7 @@ using BatteryCellSeriesChangeScreen = espgui::makeComponent<
 
 using BatteryCellParallelChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
-    espgui::StaticText<TEXT_CELL_PARALLEL>,
+    espgui::StaticTitle<TEXT_CELL_PARALLEL>,
     BatteryParallelCellsAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -64,7 +67,7 @@ using BatteryCellParallelChangeScreen = espgui::makeComponent<
 
 using BatteryWHperKMChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
-    espgui::StaticText<TEXT_BATTERY_WHKM>,
+    espgui::StaticTitle<TEXT_BATTERY_WHKM>,
     BatteryWHperKMAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -81,13 +84,13 @@ BatteryMenu::BatteryMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CELL_PARALLEL, BatteryParallelCellsAccessor>,    PushScreenAction<BatteryCellParallelChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BATTERY_WHKM, BatteryWHperKMAccessor>,           PushScreenAction<BatteryWHperKMChangeScreen>>>();
     constructMenuItem<PushScreenTypeSafeChangeMenuItem<BatteryCellType, TEXT_SELECT_CELL_TYPE>>(&configs.battery.cellType);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SHOW_BATTERY_GRAPH>,                                      PushScreenAction<BatteryGraphDisplay>, StaticMenuItemIcon<&bobbyicons::graph>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SHOW_BATTERY_GRAPH>,                                      PushScreenAction<BatteryGraphDisplay>, StaticMenuItemIcon<&bobbyicons::graph, &bobbyicons::graph_grey>>>();
     constructMenuItem<makeComponent<MenuItem, WhStatisticsText,                                                         DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_CALIBRATE>,                                       PushScreenAction<CalibrateVoltageDisplay>, StaticMenuItemIcon<&bobbyicons::settings>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_CALIBRATE>,                                       PushScreenAction<CalibrateVoltageDisplay>, StaticMenuItemIcon<&bobbyicons::settings, &bobbyicons::settings_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string BatteryMenu::text() const
+std::string BatteryMenu::title() const
 {
     return TEXT_BATTERY;
 }

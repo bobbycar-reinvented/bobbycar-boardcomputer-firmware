@@ -9,6 +9,7 @@
 #include "accessors/settingsaccessors.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "screens/boardcomputerhardwaresettingsmenu.h"
 
 namespace bobby {
@@ -20,7 +21,7 @@ constexpr char TEXT_BACK[] = "Back";
 
 using StatsUpdateRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_STATSUPDATERATE>,
+    espgui::StaticTitle<TEXT_STATSUPDATERATE>,
     StatsUpdateRateAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -31,10 +32,10 @@ TimersMenu::TimersMenu()
 {
     using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSUPDATERATE>,   espgui::PushScreenAction<StatsUpdateRateChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              espgui::PushScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              espgui::PushScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string TimersMenu::text() const
+std::string TimersMenu::title() const
 {
     return TEXT_TIMERS;
 }

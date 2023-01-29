@@ -20,7 +20,7 @@ class CanDebugMenu : public BobbyMenuDisplay
 public:
     CanDebugMenu();
 
-    std::string text() const override;
+    std::string title() const override;
 
     void update() override;
 

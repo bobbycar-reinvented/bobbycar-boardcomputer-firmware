@@ -12,6 +12,7 @@
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 
 namespace bobby {
 
@@ -25,7 +26,7 @@ constexpr char TEXT_BACK[] = "Back";
 
 using UdpCloudSendRateChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_UDPSENDRATE>,
+    espgui::StaticTitle<TEXT_UDPSENDRATE>,
     UdpCloudSendIntervalAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -33,7 +34,7 @@ using UdpCloudSendRateChangeDisplay = espgui::makeComponent<
 
 using UdpCloudHostChangeDisplay = espgui::makeComponent<
         BobbyChangeValueDisplay<std::string>,
-        espgui::StaticText<TEXT_UDPHOST>,
+        espgui::StaticTitle<TEXT_UDPHOST>,
         UdpCloudHostAccessor,
         espgui::ConfirmActionInterface<espgui::PopScreenAction>,
         espgui::BackActionInterface<espgui::PopScreenAction>
@@ -41,7 +42,7 @@ using UdpCloudHostChangeDisplay = espgui::makeComponent<
 
 using UdpCloudPortChangeDisplay = espgui::makeComponent<
         BobbyChangeValueDisplay<uint16_t>,
-        espgui::StaticText<TEXT_UDPPORT>,
+        espgui::StaticTitle<TEXT_UDPPORT>,
         UdpCloudPortAccessor,
         espgui::ConfirmActionInterface<espgui::PopScreenAction>,
         espgui::BackActionInterface<espgui::PopScreenAction>
@@ -56,10 +57,10 @@ UdpCloudSettingsMenu::UdpCloudSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPSENDRATE>,          PushScreenAction<UdpCloudSendRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPHOST>,              PushScreenAction<UdpCloudHostChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPPORT>,              PushScreenAction<UdpCloudPortChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string UdpCloudSettingsMenu::text() const
+std::string UdpCloudSettingsMenu::title() const
 {
     return TEXT_UDPCLOUDSETTINGS;
 }

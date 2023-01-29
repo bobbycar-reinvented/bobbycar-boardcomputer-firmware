@@ -10,15 +10,12 @@
 // local includes
 #include "actions/popscreenaction.h"
 #include "espnowfunctions.h"
-#include "globals.h"
-#include "icons/back.h"
 #include "newsettings.h"
 
 namespace bobby {
 
 namespace {
 constexpr char TEXT_GARAGE[] = "Garage";
-constexpr char TEXT_BACK[] = "Back";
 
 class SendEspNowMessageAction : public virtual espgui::ActionInterface
 {
@@ -43,11 +40,9 @@ GarageMenu::GarageMenu()
         auto &menuitem = constructMenuItem<makeComponentArgs<MenuItem, SendEspNowMessageAction, ChangeableText>>(index);
         menuitem.setTitle(wirelessDoor.doorId.value());
     }
-
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
-std::string GarageMenu::text() const
+std::string GarageMenu::title() const
 {
     return TEXT_GARAGE;
 }

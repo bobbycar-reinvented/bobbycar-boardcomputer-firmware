@@ -4,6 +4,7 @@
 #include <esp_system.h>
 
 // 3rdparty lib includes
+#include <fontrenderer.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
 
@@ -15,14 +16,14 @@ void ResetNVSScreen::initScreen(espgui::TftInterface &tft)
 {
     Base::initScreen(tft);
 
-    tft.drawString("Rebooting...", 0, 50, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    espgui::FontRenderer{tft}.drawString("Rebooting...", 0, 50, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
     configs.reset();
 
     esp_restart();
 }
 
-std::string ResetNVSScreen::text() const
+std::string ResetNVSScreen::title() const
 {
     return "Reset NVS";
 }

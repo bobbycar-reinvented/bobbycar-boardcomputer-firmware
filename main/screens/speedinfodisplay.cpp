@@ -2,6 +2,7 @@
 
 // 3rdparty lib includes
 #include <fmt/core.h>
+#include <fontrenderer.h>
 #include <screenmanager.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
@@ -37,23 +38,25 @@ void SpeedInfoDisplay::redraw(espgui::TftInterface &tft)
 
     Base::redraw(tft);
 
-    tft.setTextSize(4);
+    auto font = espgui::FontRenderer{tft};
 
-    m_labelSpeed.redraw(tft,
+    font.setTextSize(4);
+
+    m_labelSpeed.redraw(tft, font,
             std::abs(avgSpeedKmh) < 10 ? fmt::format("{:.2f}", avgSpeedKmh) :
             (std::abs(avgSpeedKmh) < 100 ? fmt::format("{:.1f}", avgSpeedKmh) : fmt::format("{:.0f}", avgSpeedKmh)), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
-    tft.setTextSize(1);
-    m_batteryPercentLabel.redraw(tft, getBatteryPercentageString(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    font.setTextSize(1);
+    m_batteryPercentLabel.redraw(tft, font, getBatteryPercentageString(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
         auto watt = sumCurrent * *avgVoltage;
 
-        m_voltageLabel.redraw(tft, fmt::format("{:.1f} V", avgVoltage.value()), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
-        tft.setTextSize(2);
-        m_currentPowerLabel.redraw(tft, fmt::format("{:.0f} W", watt), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
-        tft.setTextSize(1);
+        m_voltageLabel.redraw(tft, font, fmt::format("{:.1f} V", avgVoltage.value()), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+        font.setTextSize(2);
+        m_currentPowerLabel.redraw(tft, font, fmt::format("{:.0f} W", watt), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+        font.setTextSize(1);
     }
     else
     {
@@ -61,11 +64,11 @@ void SpeedInfoDisplay::redraw(espgui::TftInterface &tft)
         m_currentPowerLabel.redraw(tft, "No power", espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     }
 
-    m_distanceLabel.redraw(tft,
+    m_distanceLabel.redraw(tft, font,
             drivingStatistics.meters_driven > 1000 ? fmt::format("{:.3f} km", drivingStatistics.meters_driven / 1000) :
             (drivingStatistics.meters_driven > 100 ? fmt::format("{:.1f} m", drivingStatistics.meters_driven) : fmt::format("{:.2f} m", drivingStatistics.meters_driven)), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
-    tft.setTextSize(1);
+    font.setTextSize(1);
 
     m_dischargingBar->redraw(tft, sumCurrent < 0.f ? (-sumCurrent) : 0.f);
     m_chargingBar->redraw(tft, sumCurrent > 0.f ? sumCurrent : 0.f);

@@ -9,7 +9,6 @@
 #include <actions/popscreenaction.h>
 
 // local includes
-#include "icons/back.h"
 #include "texthelpers/esptexthelpers.h"
 
 namespace bobby {
@@ -58,10 +57,9 @@ AboutMenu::AboutMenu()
     constructMenuItem<makeComponent<MenuItem, EspSketchSizeText,            StaticFont<2>, DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EspSketchMd5Text,             StaticFont<2>, DisabledColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EspFreeSketchSpaceText,       StaticFont<2>, DisabledColor, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,        PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
-std::string AboutMenu::text() const
+std::string AboutMenu::title() const
 {
     return TEXT_ABOUT;
 }

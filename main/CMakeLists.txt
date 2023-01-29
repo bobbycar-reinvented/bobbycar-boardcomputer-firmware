@@ -82,35 +82,62 @@ set(BOBBY_HEADERS
     guihelpers/menudisplaywithtime.h
     handbremse.h
     icons/alert.h
+    icons/alert_grey.h
     icons/back.h
+    icons/back_grey.h
     icons/battery.h
+    icons/battery_grey.h
     icons/bluetooth.h
+    icons/bluetooth_grey.h
     icons/bms.h
+    icons/bms_grey.h
     icons/bobbycar.h
     icons/buzzer.h
+    icons/buzzer_grey.h
     icons/checked.h
+    icons/checked_grey.h
     icons/close.h
+    icons/close_grey.h
     icons/demos.h
+    icons/demos_grey.h
     icons/git.h
+    icons/git_grey.h
     icons/graph.h
+    icons/graph_grey.h
     icons/greenpass.h
+    icons/greenpass_grey.h
     icons/hardware.h
+    icons/hardware_grey.h
     icons/info.h
+    icons/info_grey.h
     icons/lock.h
+    icons/lock_grey.h
     icons/logo.h
     icons/modes.h
+    icons/modes_grey.h
     icons/neopixel.h
+    icons/neopixel_grey.h
     icons/poweroff.h
+    icons/poweroff_grey.h
     icons/presets.h
+    icons/presets_grey.h
     icons/reboot.h
+    icons/reboot_grey.h
     icons/scan.h
+    icons/scan_grey.h
     icons/settings.h
+    icons/settings_grey.h
     icons/shortcircuit.h
     icons/statistics.h
+    icons/statistics_grey.h
     icons/time.h
+    icons/time_grey.h
     icons/unchecked.h
+    icons/unchecked_grey.h
     icons/update.h
+    icons/update_grey.h
     icons/wifi.h
+    icons/wifi_grey.h
     ledstrip.h
     ledstripdefines.h
     modeinterface.h
@@ -318,35 +345,62 @@ set(BOBBY_SOURCES
     guihelpers/bobbysplitgraphdisplay.cpp
     handbremse.cpp
     icons/alert.cpp
+    icons/alert_grey.cpp
     icons/back.cpp
+    icons/back_grey.cpp
     icons/battery.cpp
+    icons/battery_grey.cpp
     icons/bluetooth.cpp
+    icons/bluetooth_grey.cpp
     icons/bms.cpp
+    icons/bms_grey.cpp
     icons/bobbycar.cpp
     icons/buzzer.cpp
+    icons/buzzer_grey.cpp
     icons/checked.cpp
+    icons/checked_grey.cpp
     icons/close.cpp
+    icons/close_grey.cpp
     icons/demos.cpp
+    icons/demos_grey.cpp
     icons/git.cpp
+    icons/git_grey.cpp
     icons/graph.cpp
+    icons/graph_grey.cpp
     icons/greenpass.cpp
+    icons/greenpass_grey.cpp
     icons/hardware.cpp
+    icons/hardware_grey.cpp
     icons/info.cpp
+    icons/info_grey.cpp
     icons/lock.cpp
+    icons/lock_grey.cpp
     icons/logo.cpp
     icons/modes.cpp
+    icons/modes_grey.cpp
     icons/neopixel.cpp
+    icons/neopixel_grey.cpp
     icons/poweroff.cpp
+    icons/poweroff_grey.cpp
     icons/presets.cpp
+    icons/presets_grey.cpp
     icons/reboot.cpp
+    icons/reboot_grey.cpp
     icons/scan.cpp
+    icons/scan_grey.cpp
     icons/settings.cpp
+    icons/settings_grey.cpp
     icons/shortcircuit.cpp
     icons/statistics.cpp
+    icons/statistics_grey.cpp
     icons/time.cpp
+    icons/time_grey.cpp
     icons/unchecked.cpp
+    icons/unchecked_grey.cpp
     icons/update.cpp
+    icons/update_grey.cpp
     icons/wifi.cpp
+    icons/wifi_grey.cpp
     ledstrip.cpp
     main.cpp
     modes.cpp

@@ -4,6 +4,7 @@
 #include <esp_system.h>
 
 // 3rdparty lib includes
+#include <fontrenderer.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
 
@@ -12,12 +13,13 @@ void RebootScreen::initScreen(espgui::TftInterface &tft)
 {
     Base::initScreen(tft);
 
-    tft.drawString("Rebooting...", 0, 50, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    auto font = espgui::FontRenderer{tft};
+    font.drawString("Rebooting...", 0, 50, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
     esp_restart();
 }
 
-std::string RebootScreen::text() const
+std::string RebootScreen::title() const
 {
     return "Reboot";
 }

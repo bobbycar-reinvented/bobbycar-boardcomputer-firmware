@@ -356,7 +356,6 @@ CONFIG_ARDUINO_SELECTIVE_Wire=y
 # ESP Gui settings
 #
 CONFIG_ESPGUI_MENUDISPLAY_ROWS=10
-CONFIG_ESPGUI_ICONS_SWAPBYTES=y
 # end of ESP Gui settings
 
 #
@@ -1708,6 +1707,13 @@ CONFIG_ASIO_SSL_BIO_SIZE=1024
 # end of ESP-ASIO
 
 #
+# esp-modem
+#
+CONFIG_ESP_MODEM_CMUX_DEFRAGMENT_PAYLOAD=y
+CONFIG_ESP_MODEM_CMUX_DELAY_AFTER_DLCI_SETUP=0
+# end of esp-modem
+
+#
 # ESP WebSocket client
 #
 # CONFIG_ESP_WS_CLIENT_ENABLE_DYNAMIC_BUFFER is not set
@@ -1791,7 +1797,22 @@ CONFIG_TFT_RST=2
 # end of Control Pin configuration
 
 #
-# Fonts
+# Touch screen configuration
+#
+# CONFIG_ENABLE_TOUCH is not set
+# end of Touch screen configuration
+# end of TFT_eSPI
+
+#
+# ESP-NimBLE-CPP configuration
+#
+# CONFIG_NIMBLE_CPP_ENABLE_RETURN_CODE_TEXT is not set
+# CONFIG_NIMBLE_CPP_ENABLE_GAP_EVENT_CODE_TEXT is not set
+# CONFIG_NIMBLE_CPP_ENABLE_ADVERTISMENT_TYPE_TEXT is not set
+# end of ESP-NimBLE-CPP configuration
+
+#
+# espfontlib
 #
 # CONFIG_TFT_LOAD_GLCD is not set
 CONFIG_TFT_LOAD_FONT2=y
@@ -1802,30 +1823,7 @@ CONFIG_TFT_LOAD_FONT7=y
 # CONFIG_TFT_LOAD_GFXFF is not set
 # CONFIG_TFT_SMOOTH_FONT is not set
 # CONFIG_TFT_IS_AUTOBAHN is not set
-# end of Fonts
-
-#
-# Touch screen configuration
-#
-# CONFIG_ENABLE_TOUCH is not set
-# end of Touch screen configuration
-# end of TFT_eSPI
-
-#
-# ESP-NimBLE-CPP configuration
-#
-# CONFIG_NIMBLE_CPP_LOG_LEVEL_NONE is not set
-# CONFIG_NIMBLE_CPP_LOG_LEVEL_ERROR is not set
-# CONFIG_NIMBLE_CPP_LOG_LEVEL_WARNING is not set
-CONFIG_NIMBLE_CPP_LOG_LEVEL_INFO=y
-# CONFIG_NIMBLE_CPP_LOG_LEVEL_DEBUG is not set
-CONFIG_NIMBLE_CPP_LOG_LEVEL=3
-# CONFIG_NIMBLE_CPP_ENABLE_RETURN_CODE_TEXT is not set
-# CONFIG_NIMBLE_CPP_ENABLE_GAP_EVENT_CODE_TEXT is not set
-# CONFIG_NIMBLE_CPP_ENABLE_ADVERTISEMENT_TYPE_TEXT is not set
-# CONFIG_NIMBLE_CPP_ATT_VALUE_TIMESTAMP_ENABLED is not set
-CONFIG_NIMBLE_CPP_ATT_VALUE_INIT_LENGTH=20
-# end of ESP-NimBLE-CPP configuration
+# end of espfontlib
 # end of Component config
 
 # Deprecated options for backward compatibility

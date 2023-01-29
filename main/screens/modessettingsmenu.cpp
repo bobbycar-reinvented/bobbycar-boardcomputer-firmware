@@ -5,7 +5,6 @@
 #include <menuitem.h>
 
 // local includes
-#include "icons/back.h"
 #include "screens/defaultmodesettingsmenu.h"
 #include "screens/gametrakmodesettingsmenu.h"
 #include "screens/larsmmodesettingsmenu.h"
@@ -21,7 +20,6 @@ constexpr char TEXT_TEMPOMATMODESETTINGS[] = "Tempomat mode settings";
 constexpr char TEXT_LARSMMODESETTINGS[] = "Larsm mode settings";
 constexpr char TEXT_REMOTECONTROLMODESETTINGS[] = "Remote mode settings";
 constexpr char TEXT_GAMETRAKMODESETTINGS[] = "Gametrak mode settings";
-constexpr char TEXT_BACK[] = "Back";
 } // namespace
 
 ModesSettingsMenu::ModesSettingsMenu()
@@ -34,10 +32,9 @@ ModesSettingsMenu::ModesSettingsMenu()
 #ifdef FEATURE_GAMETRAK
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GAMETRAKMODESETTINGS>,  SwitchScreenAction<GametrakModeSettingsMenu>>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
-std::string ModesSettingsMenu::text() const
+std::string ModesSettingsMenu::title() const
 {
     return TEXT_MODESSETTINGS;
 }

@@ -7,6 +7,7 @@
 // local includes
 #include "actions/switchprofileaction.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 
 namespace bobby {
 
@@ -25,10 +26,10 @@ ProfilesMenu::ProfilesMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILE1>, SwitchProfileAction<1>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILE2>, SwitchProfileAction<2>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILE3>, SwitchProfileAction<3>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,     PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string ProfilesMenu::text() const
+std::string ProfilesMenu::title() const
 {
     return TEXT_PROFILES;
 }

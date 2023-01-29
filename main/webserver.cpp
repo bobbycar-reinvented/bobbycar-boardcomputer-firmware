@@ -146,7 +146,7 @@ bool menuDisplayChanged()
                 menuBuf.resize(menuDisplay->menuItemCount());
                 auto iterator = std::begin(menuBuf);
                 menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
-                    *(iterator++) = std::make_pair(menuItem.text(), menuItem.icon());
+                    *(iterator++) = std::make_pair(menuItem.text(), menuItem.icon(selectedIndex == std::distance(std::begin(menuBuf), iterator))); // Note: Did not check if this works
                 });
                 lastSelectIndex = menuDisplay->selectedIndex();
                 return true;
@@ -154,9 +154,9 @@ bool menuDisplayChanged()
             bool _return{false};
             auto iterator = std::begin(menuBuf);
             menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
-                if (menuItem.text() != iterator->first || menuItem.icon() != iterator->second)
+                if (menuItem.text() != iterator->first || menuItem.icon(selectedIndex == std::distance(std::begin(menuBuf), iterator)) != iterator->second)
                 {
-                    *iterator = std::make_pair(menuItem.text(), menuItem.icon());
+                    *iterator = std::make_pair(menuItem.text(), menuItem.icon(selectedIndex == std::distance(std::begin(menuBuf), iterator))); // Note: Did not check if this works
                     _return = true;
                 }
                 iterator++;

@@ -14,7 +14,7 @@ class RebootScreen : public BobbyDisplayWithTitle
 public:
     void initScreen(espgui::TftInterface &tft) override;
 
-    std::string text() const override;
+    std::string title() const override;
 
     void buttonPressed(espgui::Button button) override;
     void buttonReleased(espgui::Button button) override;

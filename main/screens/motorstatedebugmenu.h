@@ -8,15 +8,16 @@
 // local includes
 #include "guihelpers/bobbymenudisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "texthelpers/debugtexthelpers.h"
 #include "utils.h"
 
 namespace bobby {
 
-template<const char *Ttext, typename Ttexts>
+template<const char *Ttitle, typename Ttexts>
 class MotorStateDebugMenu :
     public BobbyMenuDisplay,
-    public espgui::StaticText<Ttext>,
+    public espgui::StaticTitle<Ttitle>,
     public espgui::BackActionInterface<espgui::PopScreenAction>
 {
 public:
@@ -34,7 +35,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::PhaseAdvMaxText,   DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::CruiseCtrlEnaText, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::NCruiseMotTgtText, DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
     }
 
 private:

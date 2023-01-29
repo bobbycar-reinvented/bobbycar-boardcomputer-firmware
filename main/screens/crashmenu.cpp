@@ -7,6 +7,7 @@
 #include "actions/assertaction.h"
 #include "actions/dividebyzeroaction.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 
 namespace bobby {
 
@@ -22,10 +23,10 @@ CrashMenu::CrashMenu()
     using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRASH_ASSERT>,    AssertAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRASH_DIVZERO>,   DivideByZeroAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,            PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,            PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string CrashMenu::text() const
+std::string CrashMenu::title() const
 {
     return TEXT_CRASHMENU;
 }

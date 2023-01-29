@@ -22,7 +22,7 @@ class JoystickDebugDisplay : public BobbyDisplayWithTitle
 public:
     JoystickDebugDisplay();
 
-    std::string text() const override;
+    std::string title() const override;
     void start() override;
     void update() override;
     void redraw(espgui::TftInterface &tft) override;

@@ -11,9 +11,10 @@
 // local includes
 #include "espnowfunctions.h"
 #include "guihelpers/bobbycheckbox.h"
-#include "icons/back.h"
 #include "icons/settings.h"
+#include "icons/settings_grey.h"
 #include "icons/time.h"
+#include "icons/time_grey.h"
 #include "screens/espnowsettingsmenu.h"
 #include "screens/settingsmenu.h"
 
@@ -58,14 +59,13 @@ EspNowMenu::EspNowMenu()
 {
     using namespace espgui;
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SENDTSMSG>, SendBobbycarTimesyncMessageAction, StaticMenuItemIcon<&bobbyicons::time>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SENDTSMSG>, SendBobbycarTimesyncMessageAction, StaticMenuItemIcon<&bobbyicons::time, &bobbyicons::time_grey>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_RECEIVETS>, BobbyCheckbox, ReceiveTimeStampAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_RECEIVETSFROMBOBBY>, BobbyCheckbox, ReceiveTsFromOtherBobbycarsAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SETTINGS>, PushScreenAction<EspNowSettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW_SETTINGS>, PushScreenAction<EspNowSettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings, &bobbyicons::settings_grey>>>();
 }
 
-std::string EspNowMenu::text() const
+std::string EspNowMenu::title() const
 {
     return TEXT_ESPNOW_MENU;
 }

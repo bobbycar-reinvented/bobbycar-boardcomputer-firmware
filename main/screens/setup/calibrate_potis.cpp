@@ -2,6 +2,7 @@
 
 // 3rdparty lib includes
 #include <cpputils.h>
+#include <fontrenderer.h>
 #include <screenmanager.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
@@ -19,8 +20,9 @@ void SetupCalibratePotisDisplay::initScreen(espgui::TftInterface &tft)
 {
     Base::initScreen(tft);
 
-    tft.drawString("gas:", 25, 47, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
-    tft.drawString("brems:", 25, 147, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    auto font = espgui::FontRenderer{tft};
+    font.drawString("gas:", 25, 47, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    font.drawString("brems:", 25, 147, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
     for (auto &label : m_labels)
         label.start(tft);
@@ -263,7 +265,7 @@ void SetupCalibratePotisDisplay::buttonPressed(espgui::Button button)
     }
 };
 
-std::string SetupCalibratePotisDisplay::text() const
+std::string SetupCalibratePotisDisplay::title() const
 {
     return "Calibrate Potis";
 }

@@ -10,7 +10,7 @@ class WifiStaSettingsMenu : public BobbyMenuDisplay
 public:
     WifiStaSettingsMenu();
 
-    std::string text() const override;
+    std::string title() const override;
     void back() override;
 };
 } // namespace bobby

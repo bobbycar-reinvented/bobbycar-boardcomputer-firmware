@@ -10,14 +10,11 @@
 
 // local includes
 #include "accessors/settingsaccessors.h"
-#include "globals.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "icons/back.h"
 #include "screens/enablemenu.h"
 #include "screens/invertmenu.h"
-#include "screens/settingsmenu.h"
-#include "utils.h"
 
 namespace bobby {
 
@@ -38,18 +35,17 @@ constexpr char TEXT_CANRECEIVETIMEOUT[] = "CanReceiveTimeout";
 constexpr char TEXT_CANRESETONERROR[] = "Reset on error";
 constexpr char TEXT_CANREINSTALLDRIVER[] = "Reinstall on error";
 #endif
-constexpr char TEXT_BACK[] = "Back";
 
 using WheelDiameterMmChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_WHEELDIAMETERMM>,
+    espgui::StaticTitle<TEXT_WHEELDIAMETERMM>,
     WheelDiameterMmAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using WheelDiameterInchChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<float>,
-    espgui::StaticText<TEXT_WHEELDIAMETERINCH>,
+    espgui::StaticTitle<TEXT_WHEELDIAMETERINCH>,
     WheelDiameterInchAccessor,
     espgui::RatioNumberStep<float, std::ratio<1,10>>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
@@ -57,7 +53,7 @@ using WheelDiameterInchChangeScreen = espgui::makeComponent<
 >;
 using NumMagnetPolesChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_NUMMAGNETPOLES>,
+    espgui::StaticTitle<TEXT_NUMMAGNETPOLES>,
     NumMagnetPolesAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -65,14 +61,14 @@ using NumMagnetPolesChangeScreen = espgui::makeComponent<
 #ifdef FEATURE_CAN
 using CanTransmitTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_CANTRANSMITTIMEOUT>,
+    espgui::StaticTitle<TEXT_CANTRANSMITTIMEOUT>,
     CanTransmitTimeoutAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using CanReceiveTimeoutChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_CANRECEIVETIMEOUT>,
+    espgui::StaticTitle<TEXT_CANRECEIVETIMEOUT>,
     CanReceiveTimeoutAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -98,10 +94,9 @@ ControllerHardwareSettingsMenu::ControllerHardwareSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANRESETONERROR>,    BobbyCheckbox, CanResetOnErrorAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CANREINSTALLDRIVER>, BobbyCheckbox, CanReinstallDriverAccessor>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
-std::string ControllerHardwareSettingsMenu::text() const
+std::string ControllerHardwareSettingsMenu::title() const
 {
     return TEXT_CONTROLLERHARDWARESETTINGS;
 }

@@ -11,6 +11,7 @@
 #include "changevaluedisplay_bobbyquickactions.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 
 namespace bobby {
 
@@ -29,7 +30,7 @@ constexpr char TEXT_BACK[] = "Back";
 template<typename Tvalue, const char* TEXT, typename Accessor>
 using QuickActionChangeValueDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<Tvalue>,
-    espgui::StaticText<TEXT>,
+    espgui::StaticTitle<TEXT>,
     Accessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -48,10 +49,10 @@ SetupQuickActionsMenu::SetupQuickActionsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SETUPEXTRA2, QuickActionExtra2Accessor>,  PushScreenAction<QuickActionChangeValueDisplay<BobbyQuickActions, TEXT_SETUPEXTRA2, QuickActionExtra2Accessor>>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SETUPEXTRA3, QuickActionExtra3Accessor>,  PushScreenAction<QuickActionChangeValueDisplay<BobbyQuickActions, TEXT_SETUPEXTRA3, QuickActionExtra3Accessor>>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SETUPEXTRA4, QuickActionExtra4Accessor>,  PushScreenAction<QuickActionChangeValueDisplay<BobbyQuickActions, TEXT_SETUPEXTRA4, QuickActionExtra4Accessor>>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,  PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,  PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string SetupQuickActionsMenu::text() const
+std::string SetupQuickActionsMenu::title() const
 {
     return TEXT_SETUPQUICKACTIONS;
 }

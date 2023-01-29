@@ -18,6 +18,7 @@
 // local includes
 #include "guihelpers/bobbyerrorhandler.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 
 namespace bobby {
 
@@ -257,10 +258,10 @@ CanDebugMenu::CanDebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_START>, CanStartAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_UNINSTALL>, CanUninstallAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TWAI_INSTALL>, CanInstallAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string CanDebugMenu::text() const
+std::string CanDebugMenu::title() const
 {
     return TEXT_CANDEBUG;
 }

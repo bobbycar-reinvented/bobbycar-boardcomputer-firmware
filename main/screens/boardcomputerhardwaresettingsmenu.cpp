@@ -14,7 +14,9 @@
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "icons/lock.h"
+#include "icons/lock_grey.h"
 #include "screens/extrabuttoncalibratemenu.h"
 #include "screens/lockscreensettingsmenu.h"
 #include "screens/setupquickactionsmenu.h"
@@ -77,43 +79,43 @@ public:
 };
 
 using DisplayBrightnessChangeScreen = espgui::makeComponent<
-        BobbyChangeValueDisplay<uint8_t>,
-        espgui::StaticText<TEXT_BRIGHTNESS>,
-        DisplayBrightnessAccessor,
-        espgui::ConfirmActionInterface<espgui::PopScreenAction>,
-        espgui::BackActionInterface<espgui::PopScreenAction>
+    BobbyChangeValueDisplay<uint8_t>,
+    espgui::StaticTitle<TEXT_BRIGHTNESS>,
+    DisplayBrightnessAccessor,
+    espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+    espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using SampleCountChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_SAMPLECOUNT>,
+    espgui::StaticTitle<TEXT_SAMPLECOUNT>,
     SampleCountAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GasMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_GASMIN>,
+    espgui::StaticTitle<TEXT_GASMIN>,
     GasMinAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GasMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_GASMAX>,
+    espgui::StaticTitle<TEXT_GASMAX>,
     GasMaxAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using BremsMinChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_BREMSMIN>,
+    espgui::StaticTitle<TEXT_BREMSMIN>,
     BremsMinAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using BremsMaxChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_BREMSMAX>,
+    espgui::StaticTitle<TEXT_BREMSMAX>,
     BremsMaxAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -123,14 +125,14 @@ using BremsMaxChangeScreen = espgui::makeComponent<
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined (FEATURE_DPAD_6WIRESW) || defined (DPAD_BOARDCOMPUTER_V2)
 using DPadDebounceChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
-    espgui::StaticText<TEXT_DPADDEBOUNCE>,
+    espgui::StaticTitle<TEXT_DPADDEBOUNCE>,
     DPadDebounceAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using ButtonDelayChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
-    espgui::StaticText<TEXT_BUTTONDELAY>,
+    espgui::StaticTitle<TEXT_BUTTONDELAY>,
     ButtonDelayAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -200,7 +202,7 @@ using namespace espgui;
 
 BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          PushScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKSCREENSETTINGS>,                          PushScreenAction<LockscreenSettingsMenu>, StaticMenuItemIcon<&bobbyicons::lock, &bobbyicons::lock_grey>>>();
     constructMenuItem<makeComponentArgs<MenuItem, PushButtonCalibrateDisplayAction,                         StaticText<TEXT_BUTTONCALIBRATE>>>(true);
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_EXTRABUTTONCALIBRATE>,                        PushScreenAction<ExtraButtonCalibrateMenu>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QUICKACTIONS>,                                PushScreenAction<SetupQuickActionsMenu>>>();
@@ -236,10 +238,10 @@ BoardcomputerHardwareSettingsMenu::BoardcomputerHardwareSettingsMenu()
 #endif
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                                    DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIMERS>,                                      PushScreenAction<TimersMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                                        PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string BoardcomputerHardwareSettingsMenu::text() const
+std::string BoardcomputerHardwareSettingsMenu::title() const
 {
     return TEXT_BOARDCOMPUTERHARDWARESETTINGS;
 }

@@ -10,7 +10,7 @@ class StatisticsMenu : public bobby::MenuDisplayWithTime
 public:
     StatisticsMenu();
 
-    std::string text() const override;
+    std::string title() const override;
 
     void back() override;
 };

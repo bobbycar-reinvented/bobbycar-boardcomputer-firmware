@@ -8,8 +8,11 @@
 
 // local includes
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "icons/presets.h"
+#include "icons/presets_grey.h"
 #include "icons/update.h"
+#include "icons/update_grey.h"
 #include "screens/selectbuildserverbranch.h"
 #include "screens/selectbuildservermenu.h"
 #include "screens/selectotabuildmenu.h"
@@ -29,14 +32,14 @@ constexpr char TEXT_BACK[] = "Back";
 OtaMenu::OtaMenu()
 {
     using namespace espgui;
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILD>,             PushScreenAction<SelectBuildMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILD>,             PushScreenAction<SelectBuildMenu>, StaticMenuItemIcon<&bobbyicons::presets, &bobbyicons::presets_grey>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECT_BRANCH>,           PushScreenAction<SelectBuildserverBranchMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATENOW>,               PushScreenAction<UpdateDisplay>, StaticMenuItemIcon<&bobbyicons::update>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATENOW>,               PushScreenAction<UpdateDisplay>, StaticMenuItemIcon<&bobbyicons::update, &bobbyicons::update_grey>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILDSERVERMENU>,   PushScreenAction<SelectBuildServerMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string OtaMenu::text() const
+std::string OtaMenu::title() const
 {
     return TEXT_UPDATE;
 }

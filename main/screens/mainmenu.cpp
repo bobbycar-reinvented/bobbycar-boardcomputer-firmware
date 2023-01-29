@@ -28,24 +28,40 @@
 #include "screens/rebootscreen.h"
 #include "screens/debugmenu.h"
 #include "icons/battery.h"
+#include "icons/battery_grey.h"
 #include "icons/modes.h"
+#include "icons/modes_grey.h"
 #include "icons/presets.h"
+#include "icons/presets_grey.h"
 #include "icons/graph.h"
+#include "icons/graph_grey.h"
 #ifdef FEATURE_BMS
 #include "icons/bms.h"
+#include "icons/bms_grey.h"
 #endif
-#include "icons/settings.h"
-#include "icons/lock.h"
-#include "icons/demos.h"
-#include "icons/update.h"
-#include "icons/neopixel.h"
-#include "icons/poweroff.h"
-#include "icons/reboot.h"
-#include "icons/statistics.h"
-#include "icons/greenpass.h"
-#include "icons/time.h"
-#include "screens/statusdisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
+#include "icons/demos.h"
+#include "icons/demos_grey.h"
+#include "icons/greenpass.h"
+#include "icons/greenpass_grey.h"
+#include "icons/lock.h"
+#include "icons/lock_grey.h"
+#include "icons/neopixel.h"
+#include "icons/neopixel_grey.h"
+#include "icons/poweroff.h"
+#include "icons/poweroff_grey.h"
+#include "icons/reboot.h"
+#include "icons/reboot_grey.h"
+#include "icons/settings.h"
+#include "icons/settings_grey.h"
+#include "icons/statistics.h"
+#include "icons/statistics_grey.h"
+#include "icons/time.h"
+#include "icons/time_grey.h"
+#include "icons/update.h"
+#include "icons/update_grey.h"
+#include "screens/statusdisplay.h"
 
 
 namespace bobby {
@@ -86,26 +102,25 @@ MainMenu::MainMenu()
 {
     using namespace espgui;
 
-    // constructMenuItem<makeComponent<MenuItem, mainmenu::CurrentTimeText,     DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,          PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATUS>,          PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
     if (configs.feature.ledstrip.isEnabled.value())
     {
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     PushScreenAction<LedstripMenu>,   StaticMenuItemIcon<&bobbyicons::neopixel>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LEDSTRIP>,     PushScreenAction<LedstripMenu>,   StaticMenuItemIcon<&bobbyicons::neopixel, &bobbyicons::neopixel_grey>>>();
     }
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATISTICSMENU>, PushScreenAction<StatisticsMenu>, StaticMenuItemIcon<&bobbyicons::statistics>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,   PushScreenAction<SelectModeMenu>, StaticMenuItemIcon<&bobbyicons::modes>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATISTICSMENU>, PushScreenAction<StatisticsMenu>, StaticMenuItemIcon<&bobbyicons::statistics, &bobbyicons::statistics_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTMODE>,   PushScreenAction<SelectModeMenu>, StaticMenuItemIcon<&bobbyicons::modes, &bobbyicons::modes_grey>>>();
     if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESETTINGS>, ModeSettingsAction>>(); }
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY>,      PushScreenAction<BatteryMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,     PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GREENPASS>,    PushScreenAction<GreenPassMenu>, StaticMenuItemIcon<&bobbyicons::greenpass>>>();
-    constructMenuItem<makeComponentArgs<MenuItem, PushScreenActionArgs<Lockscreen, bool>, StaticText<TEXT_LOCKVEHICLE>, StaticMenuItemIcon<&bobbyicons::lock>>>(false);
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY>,      PushScreenAction<BatteryMenu>, StaticMenuItemIcon<&bobbyicons::battery, &bobbyicons::battery_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETTINGS>,     PushScreenAction<SettingsMenu>, StaticMenuItemIcon<&bobbyicons::settings, &bobbyicons::settings_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GREENPASS>,    PushScreenAction<GreenPassMenu>, StaticMenuItemIcon<&bobbyicons::greenpass, &bobbyicons::greenpass_grey>>>();
+    constructMenuItem<makeComponentArgs<MenuItem, PushScreenActionArgs<Lockscreen, bool>, StaticText<TEXT_LOCKVEHICLE>, StaticMenuItemIcon<&bobbyicons::lock, &bobbyicons::lock_grey>>>(false);
     if (configs.feature.garage.isEnabled.value() && configs.feature.esp_now.isEnabled.value())
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GARAGE>,       PushScreenAction<GarageMenu>>>();
     }
     if (configs.feature.ota.isEnabled.value())
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATE>,       PushScreenAction<OtaMenu>, StaticMenuItemIcon<&bobbyicons::update>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       PushScreenAction<GraphsMenu>, StaticMenuItemIcon<&bobbyicons::graph>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UPDATE>,       PushScreenAction<OtaMenu>, StaticMenuItemIcon<&bobbyicons::update, &bobbyicons::update_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GRAPHS>,       PushScreenAction<GraphsMenu>, StaticMenuItemIcon<&bobbyicons::graph, &bobbyicons::graph_grey>>>();
 #if defined(FEATURE_CAN) && defined(FEATURE_POWERSUPPLY)
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWERSUPPLY>,  PushScreenAction<PowerSupplyDisplay>>>();
 #endif
@@ -115,19 +130,19 @@ MainMenu::MainMenu()
 #if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BMS>,          PushScreenAction<BmsMenu>, StaticMenuItemIcon<&bobbyicons::bms>>>();
 #endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        PushScreenAction<DemosMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     PushScreenAction<ProfilesMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
-    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MANAGEPROFILESMENU>,PushScreenAction<ManageProfilesMenu>, StaticMenuItemIcon<&bobbyicons::presets>>>(); }
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEMOS>,        PushScreenAction<DemosMenu>, StaticMenuItemIcon<&bobbyicons::demos, &bobbyicons::demos_grey>>>();
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_PROFILES>,     PushScreenAction<ProfilesMenu>, StaticMenuItemIcon<&bobbyicons::presets, &bobbyicons::presets_grey>>>(); }
+    if (SHOWITEM)   { constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MANAGEPROFILESMENU>,PushScreenAction<ManageProfilesMenu>, StaticMenuItemIcon<&bobbyicons::presets, &bobbyicons::presets_grey>>>(); }
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUG>,        PushScreenAction<DebugMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,     PushScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&bobbyicons::poweroff>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_POWEROFF>,     PushScreenAction<PoweroffDisplay>, StaticMenuItemIcon<&bobbyicons::poweroff, &bobbyicons::poweroff_grey>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONFISCATIONMODE>, PushScreenAction<ConfiscationDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>,       PushScreenAction<RebootScreen>, StaticMenuItemIcon<&bobbyicons::reboot>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>,       PushScreenAction<RebootScreen>, StaticMenuItemIcon<&bobbyicons::reboot, &bobbyicons::reboot_grey>>>();
 //#ifdef MAINMENU_PLUGIN
     // GMEN1
 //#endif
 }
 
-std::string MainMenu::text() const
+std::string MainMenu::title() const
 {
     return TEXT_MAINMENU;
 }

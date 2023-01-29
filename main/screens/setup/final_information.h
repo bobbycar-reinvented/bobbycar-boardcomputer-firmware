@@ -18,6 +18,6 @@ public:
 
     void buttonPressed(espgui::Button button) override;
 
-    [[nodiscard]] std::string text() const override;
+    [[nodiscard]] std::string title() const override;
 };
 } // namespace bobby

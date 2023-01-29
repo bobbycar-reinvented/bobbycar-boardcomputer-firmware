@@ -9,7 +9,7 @@ class BmsMenu : public BobbyMenuDisplay
 public:
     BmsMenu();
 
-    std::string text() const override { return TEXT_BMS; }
+    std::string title() const override { return TEXT_BMS; }
     void back() override;
 };
 #endif
