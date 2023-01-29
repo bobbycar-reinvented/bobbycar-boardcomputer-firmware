@@ -88,8 +88,12 @@ extern "C" void app_main()
 
     if (const auto result = configs.init("bobbycar"); result != ESP_OK)
         ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
+    else
+        ESP_LOGI(TAG, "config_init_settings() succeeded");
 
+    ESP_LOGI(TAG, "init screen");
     bobby::initScreen();
+    ESP_LOGI(TAG, "init screen done");
 
     profileSettings = presets::defaultProfileSettings;
 
