@@ -22,7 +22,7 @@ public:
 
     void buttonPressed(espgui::Button button) override;
 
-    [[nodiscard]] std::string text() const override;
+    [[nodiscard]] std::string title() const override;
 private:
     espchrono::millis_clock::time_point m_menu_opened_timestamp;
     cpputils::DelayedConstruction<espgui::ProgressBar> m_init_text_progressbar;

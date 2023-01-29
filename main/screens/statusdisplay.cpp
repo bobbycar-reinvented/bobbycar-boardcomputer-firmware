@@ -6,6 +6,7 @@
 // 3rdparty lib includes
 #include <espwifistack.h>
 #include <fmt/core.h>
+#include <fontrenderer.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
 
@@ -36,11 +37,13 @@ void StatusDisplay::initScreen(espgui::TftInterface &tft)
 {
     Base::initScreen(tft);
 
-    tft.drawString("gas", 0, 0, espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    auto font = espgui::FontRenderer{tft};
+
+    font.drawString("gas", 0, 0, espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_labelRawGas.start(tft);
     m_labelGas.start(tft);
     m_progressBarGas.start(tft);
-    tft.drawString("brems", 0, 15, espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    font.drawString("brems", 0, 15, espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_labelRawBrems.start(tft);
     m_labelBrems.start(tft);
     m_progressBarBrems.start(tft);
@@ -52,21 +55,21 @@ void StatusDisplay::initScreen(espgui::TftInterface &tft)
     m_frontStatus.start(tft);
     m_backStatus.start(tft);
 
-    tft.drawString("WiFi:", 0, bottomLines[0], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    font.drawString("WiFi:", 0, bottomLines[0], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_labelWifiStatus.start(tft);
-    tft.drawString("Lim0:", 173, bottomLines[0], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    font.drawString("Lim0:", 173, bottomLines[0], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_labelLimit0.start(tft);
-    tft.drawString("IP:", 0, bottomLines[1], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    font.drawString("IP:", 0, bottomLines[1], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_labelIpAddress.start(tft);
     m_labelSignal.start(tft);
-    tft.drawString("Lim1:", 173, bottomLines[1], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    font.drawString("Lim1:", 173, bottomLines[1], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_labelLimit1.start(tft);
-    tft.drawString("Perf:", 0, bottomLines[2], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    font.drawString("Perf:", 0, bottomLines[2], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_labelPerformance.start(tft);
     m_labelFreeMem.start(tft);
-    tft.drawString("Mode:", 125, bottomLines[2], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    font.drawString("Mode:", 125, bottomLines[2], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_labelMode.start(tft);
-    tft.drawString("Name:", 0, bottomLines[3], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    font.drawString("Name:", 0, bottomLines[3], espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_labelName.start(tft);
     m_labelProfile.start(tft);
 }
@@ -74,6 +77,8 @@ void StatusDisplay::initScreen(espgui::TftInterface &tft)
 void StatusDisplay::redraw(espgui::TftInterface &tft)
 {
     Base::redraw(tft);
+
+    auto font = espgui::FontRenderer{tft};
 
     {
         const auto now = espchrono::millis_clock::now();
@@ -117,7 +122,7 @@ void StatusDisplay::redraw(espgui::TftInterface &tft)
         {
             blink_fill_with_black = false;
             tft.fillRect(0, 0, tft.width(), 6, espgui::TFT_BLACK);
-            tft.drawString("gas", 0, 0, espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+            font.drawString("gas", 0, 0, espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
             m_labelRawGas.start(tft);
             m_labelGas.start(tft);
             m_progressBarGas.start(tft);
@@ -240,7 +245,7 @@ StatusDisplay::BoardStatus::BoardStatus(int y) :
 
 void StatusDisplay::BoardStatus::start(espgui::TftInterface &tft)
 {
-    tft.drawString("pwm:", 0, m_y, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    espgui::FontRenderer{tft}.drawString("pwm:", 0, m_y, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_labelLeftPwm.start(tft);
     m_labelRightPwm.start(tft);
     m_initialRedraw = true;
@@ -248,6 +253,8 @@ void StatusDisplay::BoardStatus::start(espgui::TftInterface &tft)
 
 void StatusDisplay::BoardStatus::redraw(espgui::TftInterface &tft, const Controller &controller)
 {
+    auto font = espgui::FontRenderer{tft};
+
     m_labelLeftPwm.redraw(tft, std::to_string(controller.command.left.pwm), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_labelRightPwm.redraw(tft, std::to_string(controller.command.right.pwm), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
@@ -257,22 +264,20 @@ void StatusDisplay::BoardStatus::redraw(espgui::TftInterface &tft, const Control
 
         if (controller.feedbackValid)
         {
-            tft.drawString("U=", 0, m_y+25, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+            font.drawString("U=", 0, m_y+25, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
             m_labelVoltage.start(tft);
-            tft.drawString("T=", 120, m_y+25, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+            font.drawString("T=", 120, m_y+25, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
             m_labelTemperature.start(tft);
-            tft.drawString("l:", 0, m_y+50, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+            font.drawString("l:", 0, m_y+50, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
             m_leftMotor.start(tft);
-            tft.drawString("r:", 0, m_y+75, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+            font.drawString("r:", 0, m_y+75, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
             m_rightMotor.start(tft);
         }
         else
         {
-            tft.drawString("No data!", 60, m_y+50, espgui::TFT_RED, espgui::TFT_BLACK, 4);
+            font.drawString("No data!", 60, m_y+50, espgui::TFT_RED, espgui::TFT_BLACK, 4);
 
-            tft.setSwapBytes(true);
             tft.pushImage(10, m_y+40, bobbyicons::alert.WIDTH, bobbyicons::alert.HEIGHT, bobbyicons::alert.buffer);
-            tft.setSwapBytes(false);
         }
 
         m_lastFeedbackValid = controller.feedbackValid;

@@ -27,7 +27,7 @@ void BatteryGraphDisplay::initScreen(espgui::TftInterface &tft)
     drawBatteryCurve(tft);
 }
 
-std::string BatteryGraphDisplay::text() const
+std::string BatteryGraphDisplay::title() const
 {
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {

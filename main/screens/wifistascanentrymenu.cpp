@@ -19,6 +19,7 @@
 
 // local includes
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "newsettings.h"
 #include "wifiguiutils.h"
 #include "wifistaconfigentrymenu.h"
@@ -100,10 +101,10 @@ WifiStaScanEntryMenu::WifiStaScanEntryMenu(const wifi_ap_record_t &info) :
                                                                                                 default: return std::to_string(m_info.country.policy);
                                                                                                 }
                                                                                             }()));
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string WifiStaScanEntryMenu::text() const
+std::string WifiStaScanEntryMenu::title() const
 {
     return fmt::format("Scan entry {}", richTextEscape(std::string_view{reinterpret_cast<const char*>(m_info.ssid)}));
 }

@@ -11,6 +11,7 @@
 // local includes
 #include "globals.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "screens/qrdisplay.h"
 #include "texthelpers/networktexthelpers.h"
 #include "utils.h"
@@ -39,10 +40,10 @@ NetworkSettingsMenu::NetworkSettingsMenu()
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{1});
     constructMenuItem<makeComponentArgs<MenuItem, DnsText,                      DummyAction>>(uint8_t{2});
     constructMenuItem<makeComponent<MenuItem,     WifiTxPowerText,              DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,        PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,        PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string NetworkSettingsMenu::text() const
+std::string NetworkSettingsMenu::title() const
 {
     return "Network settings";
 }

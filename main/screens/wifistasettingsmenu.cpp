@@ -14,6 +14,7 @@
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "texthelpers/wifistatexthelpers.h"
 #include "wifistaconfigsmenu.h"
 #include "wifistascanmenu.h"
@@ -31,7 +32,7 @@ constexpr char TEXT_BACK[] = "Back";
 
 using StaMinRssiChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int8_t>,
-    espgui::StaticText<TEXT_MIN_RSSI>,
+    espgui::StaticTitle<TEXT_MIN_RSSI>,
     WifiStaMinRssiAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -58,10 +59,10 @@ WifiStaSettingsMenu::WifiStaSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, WifiStaIpv6LinklocalText,        DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, WifiStaIpv6GlobalText,           DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_MIN_RSSI_FORMATTED, WifiStaMinRssiAccessor>, PushScreenAction<StaMinRssiChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,           PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,           PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string WifiStaSettingsMenu::text() const
+std::string WifiStaSettingsMenu::title() const
 {
     return "Sta Settings";
 }

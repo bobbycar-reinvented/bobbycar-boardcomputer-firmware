@@ -18,9 +18,13 @@
 #include "screens/qrcodedebug.h"
 #include "screens/xydebugdisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "icons/battery.h"
+#include "icons/battery_grey.h"
 #include "icons/info.h"
+#include "icons/info_grey.h"
 #include "icons/lock.h"
+#include "icons/lock_grey.h"
 #include "texthelpers/esptexthelpers.h"
 #include "utils.h"
 #ifdef FEATURE_CAN
@@ -84,7 +88,7 @@ DebugMenu::DebugMenu()
 #endif
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_QRCODE_DEBUG>,         PushScreenAction<QrCodeDebugDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_XY_DEBUG>,             PushScreenAction<XYDebugDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         PushScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERYDEBUG>,         PushScreenAction<BatteryDebugMenu>, StaticMenuItemIcon<&bobbyicons::battery, &bobbyicons::battery_grey>>>();
     if (configs.feature.udpcloud.isEnabled.value())
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TOGGLECLOUDDEBUG>, BobbyCheckbox, UdpCloudDebugEnableAccessor>>();
@@ -115,12 +119,12 @@ DebugMenu::DebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SAVESETTINGS>,         SaveSettingsAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ERASENVS>,             EraseNvsAction>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                             DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS_NEW>,        ResetNVSAction, StaticMenuItemIcon<&bobbyicons::info>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS_NEW>,        ResetNVSAction, StaticMenuItemIcon<&bobbyicons::info, &bobbyicons::info_grey>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICMENU>,          PushScreenAction<DynamicDebugMenu>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string DebugMenu::text() const
+std::string DebugMenu::title() const
 {
     return TEXT_DEBUG;
 }

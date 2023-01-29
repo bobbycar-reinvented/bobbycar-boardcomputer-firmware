@@ -456,7 +456,7 @@ void send_information()
 
         if (const auto *display = currentDisplay->asMenuDisplay())
         {
-            displayObject["name"] = display->text();
+            displayObject["name"] = display->title();
         }
     }
     else

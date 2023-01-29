@@ -8,7 +8,9 @@
 #include "guihelpers/bobbyerrorhandler.h"
 #include "guihelpers/bobbypopupdisplay.h"
 #include "icons/checked.h"
+#include "icons/checked_grey.h"
 #include "icons/unchecked.h"
+#include "icons/unchecked_grey.h"
 #include "newsettings.h"
 #include "taskmanager.h"
 
@@ -80,9 +82,12 @@ public:
             isDirty = true;
     }
 
-    const espgui::MenuItemIcon *icon() const override
+    const espgui::MenuItemIcon *icon(bool selected) const override
     {
-        return m_flag.isEnabled.value() ? &bobbyicons::checked : &bobbyicons::unchecked;
+        if (selected)
+            return m_flag.isEnabled.value() ? &bobbyicons::checked_grey : &bobbyicons::unchecked_grey;
+        else
+            return m_flag.isEnabled.value() ? &bobbyicons::checked : &bobbyicons::unchecked;
     }
 private:
     ConfiguredFeatureFlag &m_flag;
@@ -113,7 +118,7 @@ void FeatureFlagsMenu::start()
     isDirty = false;
 }
 
-std::string FeatureFlagsMenu::text() const
+std::string FeatureFlagsMenu::title() const
 {
     return TEXT_FEATUREFLAGS;
 }

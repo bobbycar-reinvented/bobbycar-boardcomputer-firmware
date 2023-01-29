@@ -21,19 +21,19 @@ constexpr const char * const TAG = "BOBBYBLE";
 class RemoteControlCallbacks : public NimBLECharacteristicCallbacks
 {
 public:
-    void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override;
+    void onWrite(NimBLECharacteristic* pCharacteristic) override;
 };
 
 class WirelessSettingsCallbacks : public NimBLECharacteristicCallbacks
 {
 public:
-    void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override;
+    void onWrite(NimBLECharacteristic* pCharacteristic) override;
 };
 
 class WiFiListCallbacks : public NimBLECharacteristicCallbacks
 {
 public:
-    void onRead(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override;
+    void onRead(NimBLECharacteristic* pCharacteristic) override;
 };
 
 } // namespace
@@ -236,7 +236,7 @@ void handleBle()
 
 namespace {
 
-void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo)
+void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
 {
     const std::string& val = pCharacteristic->getValue();
 
@@ -268,7 +268,7 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic, NimB
     }
 }
 
-void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo)
+void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic)
 {
     const std::string& val = pCharacteristic->getValue();
 
@@ -292,7 +292,7 @@ void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic, N
     }
 }
 
-void WiFiListCallbacks::onRead(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo)
+void WiFiListCallbacks::onRead(NimBLECharacteristic* pCharacteristic)
 {
     StaticJsonDocument<768> responseDoc;
     auto wifiArray = responseDoc.createNestedArray("wifis");

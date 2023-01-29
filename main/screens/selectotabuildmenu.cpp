@@ -14,6 +14,7 @@
 #include "globals.h"
 #include "guihelpers/bobbyerrorhandler.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "newsettings.h"
 #include "screens/otamenu.h"
 #include "utils.h"
@@ -64,12 +65,12 @@ SelectBuildMenu::SelectBuildMenu()
     if (buildserver::count_available_buildserver() < 1)
     {
         MESSAGE(TEXT_OTA_NOBUILDSERVERAVAILABLE);
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
     }
     else if (configs.otaServerUrl.value().empty())
     {
         MESSAGE(TEXT_OTA_NOBUILDSERVERSELECTED);
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
     }
     else
     {
@@ -77,7 +78,7 @@ SelectBuildMenu::SelectBuildMenu()
         if (staStatus != wifi_stack::WiFiStaStatus::CONNECTED)
         {
             MESSAGE(TEXT_OTA_NOCONNECTION);
-            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+            constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
         }
         else
         {
@@ -90,7 +91,7 @@ SelectBuildMenu::SelectBuildMenu()
                 auto hash = filename.substr(0, filename.length() - 4);
                 menuitem.setHash(hash);
                 menuitem.setUrl(serverUrl);
-                constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+                constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
             }
             else
             {
@@ -101,7 +102,7 @@ SelectBuildMenu::SelectBuildMenu()
     }
 }
 
-std::string SelectBuildMenu::text() const
+std::string SelectBuildMenu::title() const
 {
     return TEXT_SELECTBUILD;
 }
@@ -141,7 +142,7 @@ void SelectBuildMenu::buildMenuFromJson()
         menuitem.setHash(hash);
         menuitem.setUrl(fmt::format(fmt::runtime(url_for_hashes), hash));
     }
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
 void SelectBuildMenu::back()

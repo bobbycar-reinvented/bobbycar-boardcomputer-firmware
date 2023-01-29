@@ -2,6 +2,7 @@
 
 // 3rdparty lib includes
 #include <esprandom.h>
+#include <fontrenderer.h>
 #include <randomutils.h>
 #include <screenmanager.h>
 #include <tftcolors.h>
@@ -36,9 +37,7 @@ void ConfiscationDisplay::initScreen(espgui::TftInterface &tft)
 {
     Base::initScreen(tft);
 
-    tft.setSwapBytes(true);
     tft.pushImage(10, 70, bobbyicons::shortcircuit.WIDTH, bobbyicons::shortcircuit.HEIGHT, bobbyicons::shortcircuit.buffer, true);
-    tft.setSwapBytes(false);
 
     m_progressBar.start(tft);
 
@@ -46,10 +45,11 @@ void ConfiscationDisplay::initScreen(espgui::TftInterface &tft)
 
     auto y = 235;
     constexpr auto lineheight = 15;
-    tft.drawString("Bei erneuter, widerrechtlicher", 10, y+=lineheight, TFT_WHITE, TFT_BLACK, 2);
-    tft.drawString("Beschlagnahmung wird die Selbst-", 10, y+=lineheight, TFT_WHITE, TFT_BLACK, 2);
-    tft.drawString("Vernichtung durch Kurzschluss", 10, y+=lineheight, TFT_WHITE, TFT_BLACK, 2);
-    tft.drawString(fmt::format("der Batterie eingeleitet (ca {:.2f}MJ)", calculateMegaJoules()), 10, y+=lineheight, TFT_WHITE, TFT_BLACK, 2);
+    auto font = espgui::FontRenderer{tft};
+    font.drawString("Bei erneuter, widerrechtlicher", 10, y+=lineheight, TFT_WHITE, TFT_BLACK, 2);
+    font.drawString("Beschlagnahmung wird die Selbst-", 10, y+=lineheight, TFT_WHITE, TFT_BLACK, 2);
+    font.drawString("Vernichtung durch Kurzschluss", 10, y+=lineheight, TFT_WHITE, TFT_BLACK, 2);
+    font.drawString(fmt::format("der Batterie eingeleitet (ca {:.2f}MJ)", calculateMegaJoules()), 10, y+=lineheight, TFT_WHITE, TFT_BLACK, 2);
 }
 
 void ConfiscationDisplay::redraw(espgui::TftInterface &tft)
@@ -107,7 +107,7 @@ void ConfiscationDisplay::buttonPressed(espgui::Button button)
     }
 }
 
-std::string ConfiscationDisplay::text() const
+std::string ConfiscationDisplay::title() const
 {
     return "Explosions-Modus";
 }

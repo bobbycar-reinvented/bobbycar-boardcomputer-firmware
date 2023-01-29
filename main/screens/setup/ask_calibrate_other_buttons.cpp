@@ -52,7 +52,7 @@ void SetupAskCalibrateOtherButtonsDisplay::buttonPressed(espgui::Button button)
     Base::buttonPressed(button);
 }
 
-std::string SetupAskCalibrateOtherButtonsDisplay::text() const
+std::string SetupAskCalibrateOtherButtonsDisplay::title() const
 {
     return "Other Buttons";
 }

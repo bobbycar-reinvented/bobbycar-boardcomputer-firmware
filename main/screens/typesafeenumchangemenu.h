@@ -12,6 +12,7 @@
 #include "guihelpers/bobbyerrorhandler.h"
 #include "guihelpers/bobbymenudisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 
 namespace bobby {
 
@@ -73,10 +74,10 @@ public:
         iterateEnum<TEnum>::iterate([&](TEnum enum_value, const auto &string_value){
             constructMenuItem<TypesafeEnumSetterMenuItem<TEnum>>(enum_value, m_config);
         });
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
     }
 
-    std::string text() const override
+    std::string title() const override
     {
         return fmt::format("Select {}", m_config->nvsName());
     }

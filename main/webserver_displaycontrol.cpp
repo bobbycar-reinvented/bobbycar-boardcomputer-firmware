@@ -65,6 +65,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
             if (const auto *menuDisplay = currentDisplay->asMenuDisplay())
             {
                 body += fmt::format("\"index\":{},\"items\":[", menuDisplay->selectedIndex());
+                int i = 0;
                 menuDisplay->runForEveryMenuItem([&,selectedIndex=menuDisplay->selectedIndex()](const espgui::MenuItem &menuItem){
                     body += "{";
                     const auto itemName = menuItem.text();
@@ -112,8 +113,11 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                     }
 
                     std::string menuItemName = font + color + itemName;
-                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\",\"index\":{}", menuItemName, (menuItem.icon()) ? menuItem.icon()->name : "", selectedIndex);
+                    const bool isCurrent = selectedIndex == i;
+                    body += fmt::format("\"name\":\"{}\",\"icon\":\"{}\",\"index\":{}", menuItemName, (menuItem.icon(isCurrent)) ? menuItem.icon(isCurrent)->name : "", selectedIndex); // Note: Not tested
                     body += "},";
+
+                    i++;
                 });
                 body += "],";
             }

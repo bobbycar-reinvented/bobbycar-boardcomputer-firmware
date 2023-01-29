@@ -12,7 +12,6 @@
 #include "changevaluedisplay_handbremsmode.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
-#include "icons/back.h"
 #include "screens/typesafeenumchangemenu.h"
 
 namespace bobby {
@@ -24,11 +23,10 @@ constexpr char TEXT_HANDBREMSE_VISUALIZE[] = "Visualize Handbremse";
 constexpr char TEXT_HANDBREMSE_MODE[] = "Handbrems Mode";
 constexpr char TEXT_HANDBREMSE_TRIGGERTIMEOUT[] = "Handbrems Timeout";
 constexpr char TEXT_HANDBREMSE[] = "Handbremse";
-constexpr char TEXT_BACK[] = "Back";
 
 using HandBremsTriggerTimeoutChangeValueDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
-    espgui::StaticText<TEXT_HANDBREMSE_TRIGGERTIMEOUT>,
+    espgui::StaticTitle<TEXT_HANDBREMSE_TRIGGERTIMEOUT>,
     HandbremsTimeoutAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -43,10 +41,9 @@ HandbremsSettingsMenu::HandbremsSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_HANDBREMSE_VISUALIZE>, BobbyCheckbox, HandbremsVisualizeAccessor>>();
     constructMenuItem<PushScreenTypeSafeChangeMenuItem<HandbremseMode, TEXT_HANDBREMSE_MODE>>(&configs.handbremse.mode);
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_HANDBREMSE_TRIGGERTIMEOUT, HandbremsTimeoutAccessor>, PushScreenAction<HandBremsTriggerTimeoutChangeValueDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
-std::string HandbremsSettingsMenu::text() const
+std::string HandbremsSettingsMenu::title() const
 {
     return TEXT_HANDBREMSE;
 }

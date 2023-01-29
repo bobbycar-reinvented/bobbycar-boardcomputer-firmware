@@ -10,7 +10,7 @@ namespace bobby {
 
 class WifiApClientsMenu :
     public BobbyMenuDisplay,
-    public virtual espgui::ChangeableText
+    public virtual espgui::ChangeableTitle
 {
     using Base = BobbyMenuDisplay;
 

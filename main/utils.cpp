@@ -1,6 +1,7 @@
 #include "utils.h"
 
 // 3rdparty lib includes
+#include <fontrenderer.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
 
@@ -440,17 +441,19 @@ void drawLargeText(espgui::TftInterface &tft, const std::string&& text)
     int x = leftMargin + 5;
     int y = topMargin + 5;
 
+    auto font = espgui::FontRenderer{tft};
+
     for (char c : text)
     {
         if (c == '\n' || x > tft.width() - rightMargin - 10)
         {
             x = leftMargin + 5;
-            y += tft.fontHeight(2);
+            y += font.fontHeight(2);
         }
 
         if (c != '\n')
         {
-            const int16_t addedWidth = tft.drawChar(tft.decodeUTF8(c), x, y, espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+            const int16_t addedWidth = font.drawChar(font.decodeUTF8(c), x, y, espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
             x += addedWidth;
         }
 

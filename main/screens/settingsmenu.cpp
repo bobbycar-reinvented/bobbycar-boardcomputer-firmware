@@ -13,15 +13,25 @@
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "icons/bluetooth.h"
+#include "icons/bluetooth_grey.h"
 #include "icons/buzzer.h"
+#include "icons/buzzer_grey.h"
 #include "icons/demos.h"
+#include "icons/demos_grey.h"
 #include "icons/git.h"
+#include "icons/git_grey.h"
 #include "icons/hardware.h"
+#include "icons/hardware_grey.h"
 #include "icons/info.h"
+#include "icons/info_grey.h"
 #include "icons/time.h"
+#include "icons/time_grey.h"
 #include "icons/update.h"
+#include "icons/update_grey.h"
 #include "icons/wifi.h"
+#include "icons/wifi_grey.h"
 #include "screens.h"
 #include "screens/aboutmenu.h"
 #include "screens/blesettingsmenu.h"
@@ -89,7 +99,7 @@ struct BackLedAccessor : public espgui::RefAccessor<bool> { bool &getRef() const
 
 using AnhaengerIdChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
-    espgui::StaticText<TEXT_ANHAENGER_ID>,
+    espgui::StaticTitle<TEXT_ANHAENGER_ID>,
     AnhaengerIdAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -97,7 +107,7 @@ using AnhaengerIdChangeScreen = espgui::makeComponent<
 
 using UsernameChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<std::string>,
-    espgui::StaticText<TEXT_USERNAME>,
+    espgui::StaticTitle<TEXT_USERNAME>,
     UsernameAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -114,44 +124,44 @@ SettingsMenu::SettingsMenu()
     if (!simplified)
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LIMITSSETTINGS>,            PushScreenAction<LimitsSettingsMenu>>>();
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NETWORKSETTINGS>,               PushScreenAction<NetworkSettingsMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NETWORKSETTINGS>,               PushScreenAction<NetworkSettingsMenu>, StaticMenuItemIcon<&bobbyicons::wifi, &bobbyicons::wifi_grey>>>();
     if (configs.feature.esp_now.isEnabled.value())
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW>,                    PushScreenAction<EspNowMenu>, StaticMenuItemIcon<&bobbyicons::wifi>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ESPNOW>,                    PushScreenAction<EspNowMenu>, StaticMenuItemIcon<&bobbyicons::wifi, &bobbyicons::wifi_grey>>>();
 #ifdef FEATURE_BLUETOOTH
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLUETOOTHSETTINGS>,             PushScreenAction<BluetoothSettingsMenu>, StaticMenuItemIcon<&bobbyicons::bluetooth>>>();
 #endif
     if (configs.feature.ble.isEnabled.value())
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLESETTINGS>,               PushScreenAction<BleSettingsMenu>, StaticMenuItemIcon<&bobbyicons::bluetooth>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BLESETTINGS>,               PushScreenAction<BleSettingsMenu>, StaticMenuItemIcon<&bobbyicons::bluetooth, &bobbyicons::bluetooth_grey>>>();
     if (configs.feature.cloud.isEnabled.value())
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLOUDSETTINGS>,             PushScreenAction<CloudSettingsMenu>>>();
     if (configs.feature.udpcloud.isEnabled.value())
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPCLOUDSETTINGS>,          PushScreenAction<UdpCloudSettingsMenu>>>();
     if (configs.feature.ota.isEnabled.value())
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILDSERVERMENU>,     PushScreenAction<SelectBuildServerMenu>, StaticMenuItemIcon<&bobbyicons::update>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIME>,                          PushScreenAction<TimeSettingsMenu>, StaticMenuItemIcon<&bobbyicons::time>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECTBUILDSERVERMENU>,     PushScreenAction<SelectBuildServerMenu>, StaticMenuItemIcon<&bobbyicons::update, &bobbyicons::update_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_TIME>,                          PushScreenAction<TimeSettingsMenu>, StaticMenuItemIcon<&bobbyicons::time, &bobbyicons::time_grey>>>();
     if (!simplified)
     {
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODESSETTINGS>,              PushScreenAction<ModesSettingsMenu>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>, PushScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>, PushScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CONTROLLERHARDWARESETTINGS>, PushScreenAction<ControllerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware, &bobbyicons::hardware_grey>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BOARDCOMPUTERHARDWARESETTINGS>, PushScreenAction<BoardcomputerHardwareSettingsMenu>, StaticMenuItemIcon<&bobbyicons::hardware, &bobbyicons::hardware_grey>>>();
     }
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FEATUREFLAGS>,                  PushScreenAction<FeatureFlagsMenu>, StaticMenuItemIcon<&bobbyicons::demos>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FEATUREFLAGS>,                  PushScreenAction<FeatureFlagsMenu>, StaticMenuItemIcon<&bobbyicons::demos, &bobbyicons::demos_grey>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_USERNAME>,                      PushScreenAction<UsernameChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_ANHAENGER_ID, AnhaengerIdAccessor>, PushScreenAction<AnhaengerIdChangeScreen>>>();
     constructMenuItem<PushScreenTypeSafeChangeMenuItem<DefaultStatusDisplay, TEXT_SELECT_DEFAULT_STATUSDISPLAY>>(&configs.defaultStatusDisplay);
 //#if defined(FEATURE_BLUETOOTH) && defined(FEATURE_BMS)
 //    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_AUTOCONNECTBMS>,                BobbyCheckbox, AutoConnectBmsAccessor>>();
 //#endif
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUZZER>,                        PushScreenAction<BuzzerMenu>, StaticMenuItemIcon<&bobbyicons::buzzer>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BUZZER>,                        PushScreenAction<BuzzerMenu>, StaticMenuItemIcon<&bobbyicons::buzzer, &bobbyicons::buzzer_grey>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_FRONTLED>,                      BobbyCheckbox, FrontLedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACKLED>,                       BobbyCheckbox, BackLedAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRASHMENU>,                     PushScreenAction<CrashMenu>,  StaticMenuItemIcon<&bobbyicons::demos>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ABOUT>,                         PushScreenAction<AboutMenu>, StaticMenuItemIcon<&bobbyicons::info>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GIT>,                           PushScreenAction<GitMenu>, StaticMenuItemIcon<&bobbyicons::git>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                          PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CRASHMENU>,                     PushScreenAction<CrashMenu>,  StaticMenuItemIcon<&bobbyicons::demos, &bobbyicons::demos_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_ABOUT>,                         PushScreenAction<AboutMenu>, StaticMenuItemIcon<&bobbyicons::info, &bobbyicons::info_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_GIT>,                           PushScreenAction<GitMenu>, StaticMenuItemIcon<&bobbyicons::git, &bobbyicons::git_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                          PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string SettingsMenu::text() const
+std::string SettingsMenu::title() const
 {
     return TEXT_SETTINGS;
 }

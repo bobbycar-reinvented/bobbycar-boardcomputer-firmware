@@ -14,6 +14,7 @@
 #include "changevaluedisplay_unifiedmodelmode.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "utils.h"
 
 namespace bobby {
@@ -27,7 +28,7 @@ constexpr char TEXT_BACK[] = "Back";
 
 using TempomatModeCruiseMotTgtChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
-    espgui::StaticText<TEXT_NCRUISEMOTTGT>,
+    espgui::StaticTitle<TEXT_NCRUISEMOTTGT>,
     TempomatModeCruiseMotTgtAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -35,7 +36,7 @@ using TempomatModeCruiseMotTgtChangeDisplay = espgui::makeComponent<
 
 using TempomatModeModelModeChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<UnifiedModelMode>,
-    espgui::StaticText<TEXT_MODELMODE>,
+    espgui::StaticTitle<TEXT_MODELMODE>,
     TempomatModeModelModeAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -49,10 +50,10 @@ TempomatModeSettingsMenu::TempomatModeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_APPLY, AvgSpeedAccessor>, TempomatModeApplyCurrentSpeedAction>>();
     constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_NCRUISEMOTTGT, TempomatModeCruiseMotTgtAccessor>, PushScreenAction<TempomatModeModelModeChangeScreen>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>, PushScreenAction<TempomatModeModelModeChangeScreen>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,      PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string TempomatModeSettingsMenu::text() const
+std::string TempomatModeSettingsMenu::title() const
 {
     return TEXT_TEMPOMATMODESETTINGS;
 }

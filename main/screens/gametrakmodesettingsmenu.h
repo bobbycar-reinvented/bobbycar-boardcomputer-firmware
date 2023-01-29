@@ -19,7 +19,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
     }
 
-    std::string text() const override
+    std::string title() const override
     {
         return TEXT_GAMETRAKMODESETTINGS;
     }

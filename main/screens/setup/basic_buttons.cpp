@@ -121,7 +121,7 @@ void SetupBasicButtonsDisplay::buttonReleased(espgui::Button button)
     // Base::buttonReleased(button);
 }
 
-std::string SetupBasicButtonsDisplay::text() const
+std::string SetupBasicButtonsDisplay::title() const
 {
     return "Calibrate Buttons";
 }

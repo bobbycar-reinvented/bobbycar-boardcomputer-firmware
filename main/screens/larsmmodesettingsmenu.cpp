@@ -25,21 +25,21 @@ constexpr char TEXT_BACK[] = "Back";
 
 using LarsmModeModelModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<UnifiedModelMode>,
-    espgui::StaticText<TEXT_MODELMODE>,
+    espgui::StaticTitle<TEXT_MODELMODE>,
     LarsmModeModelModeAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using LarsmModeModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<LarsmModeMode>,
-    espgui::StaticText<TEXT_SETMODE>,
+    espgui::StaticTitle<TEXT_SETMODE>,
     LarsmModeModeAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using LarsmModeIterationsChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
-    espgui::StaticText<TEXT_SETITERATIONS>,
+    espgui::StaticTitle<TEXT_SETITERATIONS>,
     LarsmModeIterationsAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -53,10 +53,9 @@ LarsmModeSettingsMenu::LarsmModeSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,     PushScreenAction<LarsmModeModelModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETMODE>,       PushScreenAction<LarsmModeModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SETITERATIONS>, PushScreenAction<LarsmModeIterationsChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,          PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
-std::string LarsmModeSettingsMenu::text() const
+std::string LarsmModeSettingsMenu::title() const
 {
     return TEXT_LARSMMODESETTINGS;
 }

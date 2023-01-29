@@ -12,9 +12,9 @@
 
 // local includes
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "newsettings.h"
 #include "wifistaconfigentrymenu.h"
-#include "wifistasettingsmenu.h"
 
 namespace bobby {
 
@@ -40,10 +40,10 @@ WifiStaConfigsMenu::WifiStaConfigsMenu()
 {
     for (int i = 0; i < configs.wifi_configs.size(); i++)
         constructMenuItem<WifiStaConfigurationMenuItem>(i);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,           PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string WifiStaConfigsMenu::text() const
+std::string WifiStaConfigsMenu::title() const
 {
     return "Configurations";
 }

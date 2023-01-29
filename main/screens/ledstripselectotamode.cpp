@@ -36,10 +36,9 @@ LedstripOtaAnimationChangeMenu::LedstripOtaAnimationChangeMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_NONE>,          LedstripChangeOtaAnimModeAction<OtaAnimationModes::None>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_PROGRESS>,      LedstripChangeOtaAnimModeAction<OtaAnimationModes::GreenProgressBar>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_OTAANIM_COLOR>,         LedstripChangeOtaAnimModeAction<OtaAnimationModes::ColorChangeAll>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                  PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
-std::string LedstripOtaAnimationChangeMenu::text() const
+std::string LedstripOtaAnimationChangeMenu::title() const
 {
     return TEXT_BLINKANIMATION;
 }

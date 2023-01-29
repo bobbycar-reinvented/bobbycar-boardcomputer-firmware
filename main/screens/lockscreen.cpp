@@ -4,6 +4,7 @@
 #include <algorithm>
 
 // 3rdparty lib includes
+#include <fontrenderer.h>
 #include <screenmanager.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
@@ -61,11 +62,13 @@ void Lockscreen::initScreen(espgui::TftInterface &tft)
 
     tft.fillScreen(espgui::TFT_BLACK);
 
-    tft.drawString("Lock vehicle", 5, 5, espgui::TFT_YELLOW, espgui::TFT_BLACK, 4);
+    auto font = espgui::FontRenderer{tft};
+
+    font.drawString("Lock vehicle", 5, 5, espgui::TFT_YELLOW, espgui::TFT_BLACK, 4);
 
     tft.fillRect(0, 34, tft.width(), 3, espgui::TFT_WHITE);
 
-    tft.drawString("Enter code to unlock:", 0, 50, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    font.drawString("Enter code to unlock:", 0, 50, espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
     for(int i = 0; i <= 3; i++)
     {

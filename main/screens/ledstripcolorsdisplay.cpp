@@ -4,6 +4,7 @@
 #include <esp_log.h>
 
 // 3rdparty lib includes
+#include <fontrenderer.h>
 #include <menuitem.h>
 #include <screenmanager.h>
 #include <tftcolors.h>
@@ -52,7 +53,7 @@ const std::array<uint16_t, 8> tft_colors = {
 };
 } // namespace
 
-std::string LedstripColorsDisplay::text() const
+std::string LedstripColorsDisplay::title() const
 {
     return TEXT_LEDSTRIPCOLORMENU;
 }
@@ -61,9 +62,7 @@ void LedstripColorsDisplay::initScreen(espgui::TftInterface &tft)
 {
     Base::initScreen(tft);
 
-    tft.setSwapBytes(true);
     tft.pushImage(70, 60, bobbyicons::bobbycar.WIDTH, bobbyicons::bobbycar.HEIGHT, bobbyicons::bobbycar.buffer);
-    tft.setSwapBytes(false);
 }
 
 void LedstripColorsDisplay::redraw(espgui::TftInterface &tft)
@@ -77,7 +76,7 @@ void LedstripColorsDisplay::redraw(espgui::TftInterface &tft)
         last_state = state_select_color;
     }
 
-    tft.drawString(state_select_color ?
+    espgui::FontRenderer{tft}.drawString(state_select_color ?
                        "Please select a color!" :
                        "Please select a side!", 50, y_pos, espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
 

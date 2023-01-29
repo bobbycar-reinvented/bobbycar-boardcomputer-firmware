@@ -13,6 +13,7 @@
 // local includes
 #include "buildserver.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "newsettings.h"
 #include "utils.h"
 
@@ -72,10 +73,10 @@ SelectBuildServerMenu::SelectBuildServerMenu()
         constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_NOBUILDSERVERCONFIGURED>, DefaultFont, StaticColor<espgui::TFT_RED>, DummyAction>>();
     }
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string SelectBuildServerMenu::text() const
+std::string SelectBuildServerMenu::title() const
 {
     return TEXT_SELECTBUILDSERVERMENU;
 }

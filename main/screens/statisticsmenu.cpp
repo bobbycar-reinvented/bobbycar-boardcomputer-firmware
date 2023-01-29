@@ -10,9 +10,13 @@
 // local includes
 #include "drivingstatistics.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "icons/reboot.h"
+#include "icons/reboot_grey.h"
 #include "icons/time.h"
+#include "icons/time_grey.h"
 #include "icons/update.h"
+#include "icons/update_grey.h"
 #include "utils.h"
 
 namespace bobby {
@@ -174,7 +178,7 @@ StatisticsMenu::StatisticsMenu()
 {
     using namespace espgui;
     constructMenuItem<makeComponent<MenuItem, WhPerKmText,                         DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, UptimeText,                          DummyAction, StaticMenuItemIcon<&bobbyicons::time>>>();
+    constructMenuItem<makeComponent<MenuItem, UptimeText,                          DummyAction, StaticMenuItemIcon<&bobbyicons::time, &bobbyicons::time_grey>>>();
     constructMenuItem<makeComponent<MenuItem, CurrentKilometersText,               DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, CurrentDrivingTimeText,              DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TotalKilometersText,                 DummyAction>>();
@@ -186,12 +190,12 @@ StatisticsMenu::StatisticsMenu()
     constructMenuItem<makeComponent<MenuItem, EfficiencyText, EfficiencyTextColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, TotalMetersText,                     DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, EmptyText,                           DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSSAVE>,          SaveKilometersAction, StaticMenuItemIcon<&bobbyicons::update>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSCLEAR>,         ClearCurrentStatsAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSSAVE>,          SaveKilometersAction, StaticMenuItemIcon<&bobbyicons::update, &bobbyicons::update_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATSCLEAR>,         ClearCurrentStatsAction, StaticMenuItemIcon<&bobbyicons::reboot, &bobbyicons::reboot_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string StatisticsMenu::text() const
+std::string StatisticsMenu::title() const
 {
     return TEXT_STATISTICSMENU;
 }

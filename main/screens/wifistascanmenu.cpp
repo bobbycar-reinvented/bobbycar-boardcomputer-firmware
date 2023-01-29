@@ -18,6 +18,7 @@
 #include "actions/wifistascanaction.h"
 #include "actions/wifistascanclearaction.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "newsettings.h"
 #include "wifiguiutils.h"
 #include "wifistascanentrymenu.h"
@@ -52,10 +53,10 @@ WifiStaScanMenu::WifiStaScanMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STARTSCAN>, WifiStaScanAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_CLEARRESULTS>, WifiStaScanClearAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string WifiStaScanMenu::text() const
+std::string WifiStaScanMenu::title() const
 {
     const auto scanStatus = wifi_stack::get_scan_status();
     auto text = fmt::format("Scan {}{}",

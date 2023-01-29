@@ -8,6 +8,7 @@
 #include "globals.h"
 #include "guihelpers/bobbyerrorhandler.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "mainmenu.h"
 #include "presets.h"
 #include "settingsutils.h"
@@ -231,7 +232,7 @@ ManageProfilesMenu::ManageProfilesMenu()
        constructMenuItem<ManageProfileMenuItem>(*this, i);
     }
     constructMenuItem<ManageProfileModeMenuItem>(*this);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, espgui::PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, espgui::PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
 void ManageProfilesMenu::start()
@@ -253,7 +254,7 @@ void ManageProfilesMenu::stop()
     }
 }
 
-std::string ManageProfilesMenu::text() const
+std::string ManageProfilesMenu::title() const
 {
     return TEXT_MANAGEPROFILESMENU;
 }

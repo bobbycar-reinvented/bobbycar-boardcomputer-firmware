@@ -9,8 +9,6 @@
 // local includes
 #include "accessors/settingsaccessors.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
-#include "icons/back.h"
-#include "utils.h"
 
 namespace bobby {
 
@@ -22,7 +20,7 @@ constexpr char TEXT_BACK[] = "Back";
 
 using MotortestMultiplikatorChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint8_t>,
-    espgui::StaticText<TEXT_MOTORTESTMULTIPLIKATOR>,
+    espgui::StaticTitle<TEXT_MOTORTESTMULTIPLIKATOR>,
     MotortestModeMultiplikatorAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -30,7 +28,7 @@ using MotortestMultiplikatorChangeDisplay = espgui::makeComponent<
 
 using MotortestMaxPwmChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
-    espgui::StaticText<TEXT_MOTORTESTMAXPWM>,
+    espgui::StaticTitle<TEXT_MOTORTESTMAXPWM>,
     MotortestMaxPwmAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -43,10 +41,9 @@ MotortestModeSettingsMenu::MotortestModeSettingsMenu()
 {
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTESTMULTIPLIKATOR>,  PushScreenAction<MotortestMultiplikatorChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MOTORTESTMAXPWM>,         PushScreenAction<MotortestMaxPwmChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                    PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
-std::string MotortestModeSettingsMenu::text() const
+std::string MotortestModeSettingsMenu::title() const
 {
     return TEXT_MOTORTESTMODESETTINGS;
 }

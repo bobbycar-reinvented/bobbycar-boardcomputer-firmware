@@ -9,9 +9,7 @@
 
 // Local includes
 #include "accessors/settingsaccessors.h"
-#include "batterymenu.h"
 #include "guihelpers/bobbycheckbox.h"
-#include "icons/back.h"
 #include "newsettings.h"
 #include "utils.h"
 
@@ -21,10 +19,6 @@ namespace {
 constexpr char TEXT_BATTERY_CALIBRATE[] = "Calibrate Voltages";
 constexpr char TEXT_VOLTAGECALIBRATION_30V[] = "Calibrate 30.0V";
 constexpr char TEXT_VOLTAGECALIBRATION_50V[] = "Calibrate 50.0V";
-constexpr char TEXT_VOLTAGECALIBRATION_VALUE_30_FRONT[] = "30V Front";
-constexpr char TEXT_VOLTAGECALIBRATION_VALUE_30_BACK[] = "30V Back";
-constexpr char TEXT_VOLTAGECALIBRATION_VALUE_50_FRONT[] = "50V Front";
-constexpr char TEXT_VOLTAGECALIBRATION_VALUE_50_BACK[] = "50V Back";
 constexpr char TEXT_BATTERY_APPLYCALIB[] = "Apply calibration";
 constexpr char TEXT_VOLTAGECALIBRATION_RESET[] = "Reset calibration";
 constexpr char TEXT_BACK[] = "Back";
@@ -121,7 +115,6 @@ CalibrateVoltageDisplay::CalibrateVoltageDisplay()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_30V>,          Save30VCalibrationAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_50V>,          Save50VCalibrationAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BATTERY_APPLYCALIB>,              BobbyCheckbox, BatteryApplyCalibrationAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                            PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 
     constructMenuItem<makeComponent<MenuItem, EmptyText,                                        DummyAction>>();
 
@@ -133,7 +126,7 @@ CalibrateVoltageDisplay::CalibrateVoltageDisplay()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_VOLTAGECALIBRATION_RESET>,        ResetCalibrationAction>>();
 }
 
-std::string CalibrateVoltageDisplay::text() const
+std::string CalibrateVoltageDisplay::title() const
 {
     return TEXT_BATTERY_CALIBRATE;
 }

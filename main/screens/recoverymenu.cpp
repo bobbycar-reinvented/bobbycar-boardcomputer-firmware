@@ -10,7 +10,9 @@
 #include "guihelpers/bobbyerrorhandler.h"
 #include "icons/checked.h"
 #include "icons/info.h"
+#include "icons/info_grey.h"
 #include "icons/reboot.h"
+#include "icons/reboot_grey.h"
 #include "icons/unchecked.h"
 #include "newsettings.h"
 #include "screens/rebootscreen.h"
@@ -40,9 +42,12 @@ public:
             BobbyErrorHandler{}.errorOccurred(std::move(result).error());
     }
 
-    const espgui::MenuItemIcon *icon() const override
+    const espgui::MenuItemIcon *icon(bool selected) const override
     {
-        return m_flag.isEnabled.value() ? &bobbyicons::checked : &bobbyicons::unchecked;
+        if (selected)
+            return m_flag.isEnabled.value() ? &bobbyicons::checked_grey : &bobbyicons::unchecked_grey;
+        else
+            return m_flag.isEnabled.value() ? &bobbyicons::checked : &bobbyicons::unchecked;
     }
 private:
     ConfiguredFeatureFlag &m_flag;
@@ -56,11 +61,11 @@ RecoveryMenu::RecoveryMenu()
         constructMenuItem<BasicFeatureFlagMenuItem>(feature);
         return false;
     });
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS>, ResetNVSAction, StaticMenuItemIcon<&bobbyicons::info>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>, PushScreenAction<RebootScreen>, StaticMenuItemIcon<&bobbyicons::reboot>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_RESET_NVS>, ResetNVSAction, StaticMenuItemIcon<&bobbyicons::info, &bobbyicons::info_grey>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_REBOOT>, PushScreenAction<RebootScreen>, StaticMenuItemIcon<&bobbyicons::reboot, &bobbyicons::reboot_grey>>>();
 }
 
-std::string RecoveryMenu::text() const
+std::string RecoveryMenu::title() const
 {
     return "Recovery Menu";
 }

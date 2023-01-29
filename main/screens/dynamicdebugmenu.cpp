@@ -23,7 +23,9 @@
 #include "guihelpers/bobbycheckbox.h"
 #include "guihelpers/bobbyerrorhandler.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "icons/lock.h"
+#include "icons/lock_grey.h"
 #include "utils.h"
 
 namespace bobby {
@@ -83,7 +85,7 @@ private:
 class RandomIcon : public virtual MenuItemIconInterface
 {
 public:
-    const MenuItemIcon *icon() const override;
+    const MenuItemIcon *icon(bool selected) const override;
 
 private:
     mutable std::optional<espchrono::millis_clock::time_point> m_nextUpdate;
@@ -105,7 +107,7 @@ public:
 
 using ToggleChangeValueDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<bool>,
-    espgui::StaticText<TEXT_DEBUGTOGGLEMENU>,
+    espgui::StaticTitle<TEXT_DEBUGTOGGLEMENU>,
     ToggleAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -121,16 +123,28 @@ public:
 };
 } // namespace
 
+std::string RandomTitle::title() const
+{
+    const auto now = espchrono::millis_clock::now();
+    if (!m_nextUpdate || now >= *m_nextUpdate)
+    {
+        m_title = fmt::format("Dynamic title: {}", cpputils::randomNumber<uint8_t>(100, espcpputils::esp_random_device{}));
+        m_nextUpdate = now + std::chrono::milliseconds{cpputils::randomNumber<long>(100, 1000, espcpputils::esp_random_device{})};
+    }
+
+    return m_title;
+}
+
 std::string RandomText::text() const
 {
     const auto now = espchrono::millis_clock::now();
     if (!m_nextUpdate || now >= *m_nextUpdate)
     {
-        m_title = fmt::format("Dynamic text: {}", cpputils::randomNumber<uint8_t>(100, espcpputils::esp_random_device{}));
+        m_text = fmt::format("Dynamic text: {}", cpputils::randomNumber<uint8_t>(100, espcpputils::esp_random_device{}));
         m_nextUpdate = now + std::chrono::milliseconds{cpputils::randomNumber<long>(100, 1000, espcpputils::esp_random_device{})};
     }
 
-    return m_title;
+    return m_text;
 }
 
 DynamicDebugMenu::DynamicDebugMenu()
@@ -162,7 +176,7 @@ DynamicDebugMenu::DynamicDebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICCOLOR>, RandomColor, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICFONT>,  RandomFont, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DYNAMICICON>,  RandomIcon, DummyAction>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATICICON>,   StaticMenuItemIcon<&bobbyicons::lock>, DummyAction>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_STATICICON>,   StaticMenuItemIcon<&bobbyicons::lock, &bobbyicons::lock_grey>, DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_LOCKTOGGLE>,   BobbyCheckbox, ToggleLockedAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUGTOGGLE>,  BobbyCheckbox, ToggleAccessor>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DEBUGTOGGLEMENU>, PushScreenAction<ToggleChangeValueDisplay>>>();
@@ -176,7 +190,7 @@ DynamicDebugMenu::DynamicDebugMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DUMMYITEM>,    DummyAction>>();
 
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,         PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
 void DynamicDebugMenu::back()
@@ -212,7 +226,7 @@ int RandomFont::font() const
     return m_font;
 }
 
-const MenuItemIcon *RandomIcon::icon() const
+const MenuItemIcon *RandomIcon::icon(bool selected) const
 {
     const auto now = espchrono::millis_clock::now();
     if (!m_nextUpdate || now >= *m_nextUpdate)

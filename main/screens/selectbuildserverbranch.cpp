@@ -11,7 +11,9 @@
 #include "buildserver.h"
 #include "guihelpers/bobbyerrorhandler.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "icons/reboot.h"
+#include "icons/reboot_grey.h"
 #include "newsettings.h"
 
 namespace bobby {
@@ -88,7 +90,7 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
 
 #define ERR_MESSAGE(text)                                                                                                                       \
     constructMenuItem<makeComponent<MenuItem, StaticText<text>, DefaultFont, StaticColor<espgui::TFT_RED>, DummyAction>>();                             \
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>(); \
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>(); \
     return;
 
     if (count_available_buildserver() < 1)
@@ -111,7 +113,7 @@ SelectBuildserverBranchMenu::SelectBuildserverBranchMenu()
     SelectBranch::start_descriptor_request(configs.otaServerUrl.value());
 }
 
-std::string SelectBuildserverBranchMenu::text() const
+std::string SelectBuildserverBranchMenu::title() const
 {
     return TEXT_SELECT_BRANCH;
 }
@@ -146,8 +148,8 @@ void SelectBuildserverBranchMenu::update()
         }
 
         constructMenuItem<makeComponent<MenuItem, EmptyText, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECT_BRANCH_CLEAR>, ClearBranchAction, StaticMenuItemIcon<&bobbyicons::reboot>>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_SELECT_BRANCH_CLEAR>, ClearBranchAction, StaticMenuItemIcon<&bobbyicons::reboot, &bobbyicons::reboot_grey>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
     }
     Base::update();
 }

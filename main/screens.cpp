@@ -8,9 +8,10 @@
 #endif
 
 // 3rdparty lib includes
+#include <TFT_eSPI.h>
+#include <fontrenderer.h>
 #include <screenmanager.h>
 #include <tftcolors.h>
-#include <tftespiimpl.h>
 #include <tftinterface.h>
 
 // local includes
@@ -55,7 +56,7 @@ espgui::Label bootLabel{32, 250};
 namespace {
 bool disable_screen_flip{false};
 
-espgui::TftESpiImpl tft;
+TFT_eSPI tft;
 }
 
 void tft_init()
@@ -101,13 +102,14 @@ void initScreen()
     tft.init();
     tft.fillScreen(espgui::TFT_WHITE);
     tft.setRotation(configs.boardcomputerHardware.flipScreen.value() ? 2 : 0);
-    tft.setSwapBytes(true);
     tft.pushImage(0, 40, bobbyicons::logo.WIDTH, bobbyicons::logo.HEIGHT, bobbyicons::logo.buffer);
-    tft.setSwapBytes(false);
-    tft.drawString("Bobbycar-OS", 32, 200, espgui::TFT_BLACK, espgui::TFT_WHITE, 4);
-    tft.drawString("booting...", 32, 225, espgui::TFT_BLACK, espgui::TFT_WHITE, 4);
-    tft.drawString("last reboot reason:", 32, 275, espgui::TFT_BLACK, espgui::TFT_WHITE, 2);
-    tft.drawString(espcpputils::toString(esp_reset_reason()), 32, 295, espgui::TFT_BLACK, espgui::TFT_WHITE, 2);
+
+    auto renderer = espgui::FontRenderer{tft};
+
+    renderer.drawString("Bobbycar-OS", 32, 200, espgui::TFT_BLACK, espgui::TFT_WHITE, 4);
+    renderer.drawString("booting...", 32, 225, espgui::TFT_BLACK, espgui::TFT_WHITE, 4);
+    renderer.drawString("last reboot reason:", 32, 275, espgui::TFT_BLACK, espgui::TFT_WHITE, 2);
+    renderer.drawString(espcpputils::toString(esp_reset_reason()), 32, 295, espgui::TFT_BLACK, espgui::TFT_WHITE, 2);
     bootLabel.start(tft);
 
 #ifdef FEATURE_LEDBACKLIGHT

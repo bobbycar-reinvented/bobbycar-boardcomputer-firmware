@@ -38,7 +38,7 @@ public:
     void buttonPressed(espgui::Button button) override;
     void buttonReleased(espgui::Button button) override;
 
-    [[nodiscard]] std::string text() const override;
+    [[nodiscard]] std::string title() const override;
 private:
     const bool m_early_return;
 

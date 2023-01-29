@@ -9,6 +9,7 @@
 #include "debugcolorhelpers.h"
 #include "guihelpers/bobbymenudisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "screens/debugmenu.h"
 #include "texthelpers/debugtexthelpers.h"
 #include "utils.h"
@@ -18,7 +19,7 @@ namespace bobby {
 template<const char *Ttext, typename Ttexts, template<int> class ColorInterface>
 class FeedbackDebugMenu :
     public BobbyMenuDisplay,
-    public espgui::StaticText<Ttext>,
+    public espgui::StaticTitle<Ttext>,
     public espgui::BackActionInterface<espgui::PopScreenAction>
 {
 public:
@@ -30,7 +31,7 @@ public:
         //constructMenuItem<makeComponent<MenuItem, typename Ttexts::BoardTempText,        ColorInterface<TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::BoardTempFixedText,   ColorInterface<espgui::TFT_DARKGREY>, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::TimeoutCntSerialText, StaticFont<2>, ColorInterface<espgui::TFT_DARKGREY>, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
     }
 
 private:

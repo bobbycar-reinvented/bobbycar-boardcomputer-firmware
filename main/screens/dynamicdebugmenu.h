@@ -12,6 +12,16 @@
 
 namespace bobby {
 
+class RandomTitle : public virtual espgui::TitleInterface
+{
+public:
+    std::string title() const override;
+
+private:
+    mutable std::optional<espchrono::millis_clock::time_point> m_nextUpdate;
+    mutable std::string m_title;
+};
+
 class RandomText : public virtual espgui::TextInterface
 {
 public:
@@ -19,12 +29,12 @@ public:
 
 private:
     mutable std::optional<espchrono::millis_clock::time_point> m_nextUpdate;
-    mutable std::string m_title;
+    mutable std::string m_text;
 };
 
 class DynamicDebugMenu :
     public BobbyMenuDisplay,
-    public RandomText
+    public RandomTitle
 {
 public:
     DynamicDebugMenu();

@@ -10,6 +10,7 @@
 // 3rdparty lib includes
 #include <esp_ota_ops.h>
 #include <espasyncota.h>
+#include <fontrenderer.h>
 #include <screenmanager.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
@@ -25,13 +26,15 @@ void UpdateDisplay::initScreen(espgui::TftInterface &tft)
 {
     Base::initScreen(tft);
 
-    tft.drawString("Status:", 20, m_statusLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    auto font = espgui::FontRenderer{tft};
+
+    font.drawString("Status:", 20, m_statusLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_statusLabel.start(tft);
 
-    tft.drawString("Progress:", 20, m_progressLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    font.drawString("Progress:", 20, m_progressLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_progressLabel.start(tft);
 
-    tft.drawString("Total:", 20, m_totalLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    font.drawString("Total:", 20, m_totalLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_totalLabel.start(tft);
 
     m_messageLabel.start(tft);
@@ -40,7 +43,7 @@ void UpdateDisplay::initScreen(espgui::TftInterface &tft)
 
     if (const esp_app_desc_t *app_desc = esp_ota_get_app_description())
     {
-        tft.drawString(app_desc->version, 20, 250, TFT_ORANGE, TFT_BLACK, 4);
+        font.drawString(app_desc->version, 20, 250, TFT_ORANGE, TFT_BLACK, 4);
     }
 
     m_newVersionLabel.start(tft);
@@ -105,7 +108,7 @@ void UpdateDisplay::buttonPressed(espgui::Button button)
     }
 }
 
-std::string UpdateDisplay::text() const
+std::string UpdateDisplay::title() const
 {
     return "Update";
 }

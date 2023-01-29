@@ -16,6 +16,7 @@
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "newsettings.h"
 #include "wifistaconfigsmenu.h"
 
@@ -50,7 +51,7 @@ class StaChangeScreen :
 {
 public:
     explicit StaChangeScreen(int index) : Taccessor{index}, m_index{index} {}
-    std::string text() const override { return fmt::format(Ttitle, m_index + 1); }
+    std::string title() const override { return fmt::format(Ttitle, m_index + 1); }
     void confirm() override { espgui::popScreen(); }
     void back() override { espgui::popScreen(); }
 
@@ -126,10 +127,10 @@ WifiStaConfigEntryMenu::WifiStaConfigEntryMenu(int index) :
     constructMenuItem<StaStaticDns1MenuItem>(index);
     constructMenuItem<StaStaticDns2MenuItem>(index);
     constructMenuItem<makeComponentArgs<MenuItem, ClearConfigAction,                 StaticText<TEXT_DELETECONFIG>>>(index);
-    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem,     StaticText<TEXT_BACK>,             PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string WifiStaConfigEntryMenu::text() const
+std::string WifiStaConfigEntryMenu::title() const
 {
     return fmt::format("Wifi Config {}", m_index + 1);
 }

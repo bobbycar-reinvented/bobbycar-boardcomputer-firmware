@@ -7,14 +7,15 @@
 #include "actions/dummyaction.h"
 #include "actions/popscreenaction.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "texthelpers/debugtexthelpers.h"
 
 namespace bobby {
 
-template<const char *Ttext, typename Ttexts>
+template<const char *Ttitle, typename Ttexts>
 class CommandDebugMenu :
     public BobbyMenuDisplay,
-    public espgui::StaticText<Ttext>,
+    public espgui::StaticTitle<Ttitle>,
     public espgui::BackActionInterface<espgui::PopScreenAction>
 {
 public:
@@ -25,7 +26,7 @@ public:
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::BuzzerPatternText, DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::PoweroffText,      DisabledColor, DummyAction>>();
         constructMenuItem<makeComponent<MenuItem, typename Ttexts::LedText,           DisabledColor, DummyAction>>();
-        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+        constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,              PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
     }
 
 private:

@@ -5,6 +5,7 @@
 
 // 3rd party includes
 #include <fmt/core.h>
+#include <fontrenderer.h>
 #include <tftinterface.h>
 #include <tl/expected.hpp>
 #include <widgets/label.h>
@@ -23,12 +24,12 @@ class QrImportDisplay : public BobbyDisplay
 
 public:
     explicit QrImportDisplay(const std::string &nvs_key, espgui::TftInterface &tft) :
-        m_statuslabel{5,(tft.height() / 2)-tft.fontHeight(4)},
+        m_statuslabel{5,(tft.height() / 2)-espgui::FontRenderer{tft}.fontHeight(4)},
         m_nvs_key{nvs_key}
     {}
 
     explicit QrImportDisplay(std::string &&nvs_key, espgui::TftInterface &tft) :
-        m_statuslabel{5,(tft.height() / 2)-tft.fontHeight(4)},
+        m_statuslabel{5,(tft.height() / 2)-espgui::FontRenderer{tft}.fontHeight(4)},
         m_nvs_key{std::move(nvs_key)}
     {}
 

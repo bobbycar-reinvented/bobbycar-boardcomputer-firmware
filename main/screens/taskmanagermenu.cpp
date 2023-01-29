@@ -8,6 +8,7 @@
 
 // local includes
 #include "icons/back.h"
+#include "icons/back_grey.h"
 #include "taskmanager.h"
 
 namespace bobby {
@@ -39,10 +40,10 @@ TaskmanagerMenu::TaskmanagerMenu()
 {
     for (const auto &task : schedulerTasks)
         constructMenuItem<makeComponentArgs<MenuItem, TaskText, DummyAction>>(task);
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string TaskmanagerMenu::text() const
+std::string TaskmanagerMenu::title() const
 {
     return TEXT_TASKMANAGER;
 }

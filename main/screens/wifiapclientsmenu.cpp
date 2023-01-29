@@ -17,7 +17,7 @@
 
 // local includes
 #include "icons/back.h"
-#include "wifiapsettingsmenu.h"
+#include "icons/back_grey.h"
 #include "wifiguiutils.h"
 
 namespace bobby {
@@ -51,9 +51,9 @@ private:
 } // namespace
 
 WifiApClientsMenu::WifiApClientsMenu() :
-    espgui::ChangeableText{"AP Clients"s}
+    espgui::ChangeableTitle{"AP Clients"s}
 {
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
 void WifiApClientsMenu::back()

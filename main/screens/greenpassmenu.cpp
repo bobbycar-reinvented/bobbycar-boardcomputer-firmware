@@ -5,7 +5,6 @@
 
 // 3rdparty lib includes
 #include <actions/popscreenaction.h>
-#include <actions/pushscreenaction.h>
 #include <fmt/core.h>
 
 // local includes
@@ -14,7 +13,6 @@
 #include "icons/back.h"
 #include "qrimport.h"
 #include "screens/qrdisplay.h"
-#include "screens/qrimportdisplay.h"
 
 namespace bobby {
 
@@ -22,7 +20,6 @@ namespace {
 constexpr char TEXT_GREENPASS[] = "Green Pass";
 constexpr char TEXT_ADDCERT[] = "Add cert";
 constexpr char TEXT_DELCERT[] = "Delete cert mode";
-constexpr char TEXT_BACK[] = "Back";
 
 bool deleteMode;
 struct DeleteModeAccessor : espgui::RefAccessor<bool> { bool &getRef() const override { return deleteMode; } };
@@ -89,10 +86,9 @@ GreenPassMenu::GreenPassMenu()
     }
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_DELCERT>, BobbyCheckbox, DeleteModeAccessor>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>, PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
 }
 
-std::string GreenPassMenu::text() const
+std::string GreenPassMenu::title() const
 {
     return TEXT_GREENPASS;
 }

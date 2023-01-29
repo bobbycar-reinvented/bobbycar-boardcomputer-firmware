@@ -11,6 +11,7 @@
 #include "changevaluedisplay_unifiedmodelmode.h"
 #include "guihelpers/bobbychangevaluedisplay.h"
 #include "icons/back.h"
+#include "icons/back_grey.h"
 
 namespace bobby {
 
@@ -22,14 +23,14 @@ constexpr char TEXT_BACK[] = "Back";
 
 using MickModeModelModeChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<UnifiedModelMode>,
-    espgui::StaticText<TEXT_MODELMODE>,
+    espgui::StaticTitle<TEXT_MODELMODE>,
     MickModeModelModeAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using MickModeSmoothingChangeDisplay = espgui::makeComponent<
     BobbyChangeValueDisplay<uint16_t>,
-    espgui::StaticText<TEXT_MICKMODE_SMOOTHING>,
+    espgui::StaticTitle<TEXT_MICKMODE_SMOOTHING>,
     MickModeSmoothingAccessor,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
@@ -42,10 +43,10 @@ MickModeSettingsMenu::MickModeSettingsMenu()
 
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MODELMODE>,          PushScreenAction<MickModeModelModeChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_MICKMODE_SMOOTHING>, PushScreenAction<MickModeSmoothingChangeDisplay>>>();
-    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,               PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 
-std::string MickModeSettingsMenu::text() const
+std::string MickModeSettingsMenu::title() const
 {
     return TEXT_MICKMODESETTINGS;
 }
