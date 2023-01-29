@@ -542,6 +542,9 @@ public:
         REGISTER_CONFIG(gasMin)
         REGISTER_CONFIG(gasMax)
         REGISTER_CONFIG(gasMitte)
+        REGISTER_CONFIG(bremsMin)
+        REGISTER_CONFIG(bremsMax)
+        REGISTER_CONFIG(bremsMitte)
         REGISTER_CONFIG(deadband)
 
         REGISTER_CONFIG(dpadDebounce)
