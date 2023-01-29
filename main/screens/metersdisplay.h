@@ -6,8 +6,8 @@
 // 3rdparty lib includes
 #include <actions/switchscreenaction.h>
 #include <widgets/label.h>
-#include <widgets/progressbar.h>
-#include <widgets/reverseprogressbar.h>
+#include <widgets/variablerangeprogressbar.h>
+#include <widgets/variablerangereverseprogressbar.h>
 #include <widgets/verticalmeter.h>
 #include <widgets/vumeter.h>
 
@@ -29,8 +29,8 @@ public:
 private:
     espgui::VuMeter m_vuMeter;
 
-    espgui::ReverseProgressBar m_dischargingBar{10, 135, 90, 15, 0, 40, TFT_GREEN};
-    espgui::ProgressBar m_chargingBar{100, 135, 90, 15, 0, 40, TFT_RED};
+    espgui::VariableRangeReverseProgressBar m_dischargingBar{10, 135, 90, 15, 0, 40, TFT_GREEN};
+    espgui::VariableRangeProgressBar m_chargingBar{100, 135, 90, 15, 0, 40, TFT_RED};
 
     espgui::Label m_sumCurrentLabel{195,135};
 

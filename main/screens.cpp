@@ -77,6 +77,8 @@ void initScreen()
 
     if (const auto res = ledc_timer_config(&display_backlight); res != ESP_OK)
         ESP_LOGE(TAG, "ledc_timer_config() failed with %s", esp_err_to_name(res));
+    else
+        ESP_LOGI(TAG, "ledc_timer_config() succeeded");
 
     ledc_channel_config_t display_backlight_channel{
             .gpio_num = display::displayBacklightPin,
@@ -90,19 +92,32 @@ void initScreen()
 
     if (const auto res = ledc_channel_config(&display_backlight_channel); res != ESP_OK)
         ESP_LOGE(TAG, "ledc_channel_config() failed with %s", esp_err_to_name(res));
+    else
+        ESP_LOGI(TAG, "ledc_channel_config() succeeded");
 
     if (const auto res = ledc_set_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel, display::fixDuty(0)); res != ESP_OK)
         ESP_LOGE(TAG, "ledc_set_duty() failed with %s", esp_err_to_name(res));
+    else
+        ESP_LOGI(TAG, "ledc_set_duty() succeeded");
 
     if (const auto res = ledc_update_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel); res != ESP_OK)
         ESP_LOGE(TAG, "ledc_update_duty() failed with %s", esp_err_to_name(res));
+    else
+        ESP_LOGI(TAG, "ledc_update_duty() succeeded");
 #endif
 
     // vertical screen
     tft.init();
+    ESP_LOGI(TAG, "TFT init done");
+
     tft.fillScreen(espgui::TFT_WHITE);
+    ESP_LOGI(TAG, "TFT fill screen done");
+
     tft.setRotation(configs.boardcomputerHardware.flipScreen.value() ? 2 : 0);
+    ESP_LOGI(TAG, "TFT rotation done");
+
     tft.pushImage(0, 40, bobbyicons::logo.WIDTH, bobbyicons::logo.HEIGHT, bobbyicons::logo.buffer);
+    ESP_LOGI(TAG, "TFT push image done");
 
     auto renderer = espgui::FontRenderer{tft};
 
@@ -115,9 +130,13 @@ void initScreen()
 #ifdef FEATURE_LEDBACKLIGHT
     if (const auto res = ledc_set_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel, display::fixDuty(display::displayMaxDuty)); res != ESP_OK)
         ESP_LOGE(TAG, "ledc_set_duty() failed with %s", esp_err_to_name(res));
+    else
+        ESP_LOGI(TAG, "ledc_set_duty() succeeded");
 
     if (const auto res = ledc_update_duty(LEDC_LOW_SPEED_MODE, display::displayBacklightChannel); res != ESP_OK)
         ESP_LOGE(TAG, "ledc_update_duty() failed with %s", esp_err_to_name(res));
+    else
+        ESP_LOGI(TAG, "ledc_update_duty() succeeded");
 #endif
 }
 

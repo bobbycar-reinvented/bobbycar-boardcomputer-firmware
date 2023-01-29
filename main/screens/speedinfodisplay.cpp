@@ -38,6 +38,9 @@ void SpeedInfoDisplay::redraw(espgui::TftInterface &tft)
 
     Base::redraw(tft);
 
+    m_dischargingBar->setMinMax(0, profileSettings.limits.iDcMax);
+    m_chargingBar->setMinMax(0, profileSettings.limits.iDcMax);
+
     auto font = espgui::FontRenderer{tft};
 
     font.setTextSize(4);

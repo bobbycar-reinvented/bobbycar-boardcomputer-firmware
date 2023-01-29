@@ -4,8 +4,8 @@
 #include <delayedconstruction.h>
 #include <tftinterface.h>
 #include <widgets/label.h>
-#include <widgets/progressbar.h>
-#include <widgets/reverseprogressbar.h>
+#include <widgets/variablerangeprogressbar.h>
+#include <widgets/variablerangereverseprogressbar.h>
 
 // local includes
 #include "guihelpers/bobbydisplay.h"
@@ -24,8 +24,8 @@ public:
 private:
     espgui::Label m_labelSpeed{5, 5};
 
-    cpputils::DelayedConstruction<espgui::ReverseProgressBar> m_dischargingBar;
-    cpputils::DelayedConstruction<espgui::ProgressBar> m_chargingBar;
+    cpputils::DelayedConstruction<espgui::VariableRangeReverseProgressBar> m_dischargingBar;
+    cpputils::DelayedConstruction<espgui::VariableRangeProgressBar> m_chargingBar;
 
 #define START_Y 150
     espgui::Label m_batteryPercentLabel{5, START_Y};

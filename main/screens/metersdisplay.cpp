@@ -37,8 +37,11 @@ void MetersDisplay::redraw(espgui::TftInterface &tft)
 
     m_vuMeter.redraw(tft, avgSpeedKmh);
 
-    m_dischargingBar.redraw(tft, sumCurrent<0.f?(-sumCurrent):0.f);
-    m_chargingBar.redraw(tft, sumCurrent>0.f?sumCurrent:0.f);
+    m_dischargingBar.setMinMax(0, profileSettings.limits.iDcMax);
+    m_chargingBar.setMinMax(0, profileSettings.limits.iDcMax);
+
+    m_dischargingBar.redraw(tft, sumCurrent < 0.f ? (-sumCurrent) : 0.f);
+    m_chargingBar.redraw(tft, sumCurrent > 0.f ? sumCurrent : 0.f);
 
     m_sumCurrentLabel.redraw(tft, fmt::format("{:.02f}A", sumCurrent), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
 
