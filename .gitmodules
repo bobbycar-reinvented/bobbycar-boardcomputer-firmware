@@ -75,10 +75,10 @@
 	url = ../../0xFEEDC0DE64/asio_web.git
 [submodule "components/esptftlib"]
 	path = components/esptftlib
-	url = git@github.com:0xFEEDC0DE64/esptftlib.git
+	url = ../../0xFEEDC0DE64/esptftlib.git
 [submodule "espfontlib"]
 	path = espfontlib
-	url = git@github.com:0xFEEDC0DE64/espfontlib.git
+	url = ../../0xFEEDC0DE64/espfontlib.git
 [submodule "components/espfontlib"]
 	path = components/espfontlib
-	url = git@github.com:0xFEEDC0DE64/espfontlib.git
+	url = ../../0xFEEDC0DE64/espfontlib.git
