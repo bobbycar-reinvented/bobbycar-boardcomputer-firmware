@@ -117,7 +117,7 @@ void handleNormalChar(char c)
         {
         case 'i':
         case 'I':
-            bobby::tft_init();
+            bobby::tft_init_with_screen();
             break;
         case 'p':
         case 'P':

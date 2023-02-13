@@ -24,13 +24,16 @@ public:
 private:
     espgui::Label m_labelSpeed{5, 5};
 
+#define PROGRESS_BAR_START_Y 110
     cpputils::DelayedConstruction<espgui::VariableRangeReverseProgressBar> m_dischargingBar;
     cpputils::DelayedConstruction<espgui::VariableRangeProgressBar> m_chargingBar;
 
-#define START_Y 150
-    espgui::Label m_batteryPercentLabel{5, START_Y};
-    espgui::Label m_voltageLabel{5, START_Y + 29 * 1};
-    espgui::Label m_distanceLabel{5, START_Y + 29 * 2};
-    espgui::Label m_currentPowerLabel{5, START_Y + 29 * 3};
+#define START_Y PROGRESS_BAR_START_Y + 28
+#define LABEL_HEIGHT 27
+    espgui::Label m_batteryPercentLabel{5, START_Y + LABEL_HEIGHT * 0};
+    espgui::Label m_voltageLabel{5, START_Y + LABEL_HEIGHT * 1};
+    espgui::Label m_distanceLabel{5, START_Y + LABEL_HEIGHT * 2};
+    espgui::Label m_currentPowerLabel{5, START_Y + LABEL_HEIGHT * 3};
+    espgui::Label m_performanceLabel{5, START_Y + LABEL_HEIGHT * 5};
 };
 } // namespace bobby

@@ -4,15 +4,22 @@
 #include <esp_log.h>
 
 // local includes
-#include "newsettings.h"
-#include "settingsutils.h"
-#include "ledstripdefines.h"
-
 #include "bobbyquickactions.h"
+#include "ledstripdefines.h"
+#include "newsettings.h"
+#include "screens.h"
+#include "settingsutils.h"
 
 namespace {
 constexpr const char TAG[] = "BUTTONS";
 } // namespace
+
+namespace bobby {
+std::optional<espchrono::millis_clock::time_point> buttonLeftHeld;
+std::optional<espchrono::millis_clock::time_point> buttonRightHeld;
+std::optional<espchrono::millis_clock::time_point> buttonUpHeld;
+std::optional<espchrono::millis_clock::time_point> buttonDownHeld;
+} // namespace bobby
 
 [[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button)
 {
@@ -61,6 +68,25 @@ constexpr const char TAG[] = "BUTTONS";
 
 void buttonPressedCommon(espgui::Button button)
 {
+    const auto now = espchrono::millis_clock::now();
+
+    switch (button)
+    {
+        using namespace bobby;
+    case espgui::Button::Left:
+        buttonLeftHeld = now;
+        break;
+    case espgui::Button::Right:
+        buttonRightHeld = now;
+        break;
+    case espgui::Button::Up:
+        buttonUpHeld = now;
+        break;
+    case espgui::Button::Down:
+        buttonDownHeld = now;
+        break;
+    }
+
     switch (BobbyButton(button))
     {
     case BobbyButton::Profile0:
@@ -92,6 +118,32 @@ void buttonPressedCommon(espgui::Button button)
 
 void buttonReleasedCommon(espgui::Button button)
 {
+    switch (button)
+    {
+        using namespace bobby;
+        using namespace std::chrono_literals;
+    case espgui::Button::Left:
+        if (buttonLeftHeld && espchrono::ago(*buttonLeftHeld) > 500ms)
+            handleButtonLongPress(button);
+        buttonLeftHeld = std::nullopt;
+        break;
+    case espgui::Button::Right:
+        if (buttonRightHeld && espchrono::ago(*buttonRightHeld) > 500ms)
+            handleButtonLongPress(button);
+        buttonRightHeld = std::nullopt;
+        break;
+    case espgui::Button::Up:
+        if (buttonUpHeld && espchrono::ago(*buttonUpHeld) > 500ms)
+            handleButtonLongPress(button);
+        buttonUpHeld = std::nullopt;
+        break;
+    case espgui::Button::Down:
+        if (buttonDownHeld && espchrono::ago(*buttonDownHeld) > 500ms)
+            handleButtonLongPress(button);
+        buttonDownHeld = std::nullopt;
+        break;
+    }
+
     switch (BobbyButton(button))
     {
     case BobbyButton::Left2:
@@ -108,30 +160,23 @@ void buttonReleasedCommon(espgui::Button button)
     }
 }
 
-void BobbyButtons::rawButtonPressed(uint8_t button)
+void handleButtonLongPress(espgui::Button button)
 {
-    ESP_LOGI(TAG, "%hhu", button);
-    //Base::rawButtonPressed(button);
-    if (const auto translated = translateRawButton(button))
-        buttonPressed(*translated);
-}
-
-void BobbyButtons::rawButtonReleased(uint8_t button)
-{
-    ESP_LOGI(TAG, "%hhu", button);
-    //Base::rawButtonReleased(button);
-    if (const auto translated = translateRawButton(button))
-        buttonReleased(*translated);
-}
-
-void BobbyButtons::buttonPressed(espgui::Button button)
-{
-    //Base::buttonPressed(button);
-    buttonPressedCommon(button);
-}
-
-void BobbyButtons::buttonReleased(espgui::Button button)
-{
-    //Base::buttonReleased(button);
-    buttonReleasedCommon(button);
+    ESP_LOGI(TAG, "long press %hhu", button);
+    switch (button)
+    {
+    case espgui::Button::Left:
+        //
+        break;
+    case espgui::Button::Right:
+        bobby::tft_init_with_screen();
+        break;
+    case espgui::Button::Up:
+        //
+        break;
+    case espgui::Button::Down:
+        //
+        break;
+    default:;
+    }
 }

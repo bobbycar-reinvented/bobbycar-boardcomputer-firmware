@@ -57,7 +57,7 @@ void updateTime()
     if (!configs.feature.ntp.isEnabled.value())
         return;
 
-    if (bool(sntp_enabled()) != configs.timeServerEnabled.value())
+    if (sntp_enabled() != configs.timeServerEnabled.value())
     {
         if (configs.timeServerEnabled.value())
         {

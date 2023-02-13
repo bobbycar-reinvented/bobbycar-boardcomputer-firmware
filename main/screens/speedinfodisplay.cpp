@@ -8,18 +8,19 @@
 #include <tftinterface.h>
 
 // local includes
+#include "drivingstatistics.h"
 #include "screens/batteryinfodisplay.h"
 #include "screens/mainmenu.h"
 #include "screens/statusdisplay.h"
-#include "drivingstatistics.h"
+#include "taskmanager.h"
 
 namespace bobby {
 void SpeedInfoDisplay::initScreen(espgui::TftInterface &tft)
 {
     Base::initScreen(tft);
 
-    m_dischargingBar.construct(10, 110, tft.width()/2 - 10, 25, 0, 40, TFT_GREEN);
-    m_chargingBar.construct(tft.width()/2, 110, tft.width()/2 - 10, 25, 0, 40, TFT_RED);
+    m_dischargingBar.construct(10, PROGRESS_BAR_START_Y, tft.width()/2 - 10, 25, 0, 40, TFT_GREEN);
+    m_chargingBar.construct(tft.width()/2, PROGRESS_BAR_START_Y, tft.width()/2 - 10, 25, 0, 40, TFT_RED);
 
     m_labelSpeed.start(tft);
 
@@ -30,6 +31,8 @@ void SpeedInfoDisplay::initScreen(espgui::TftInterface &tft)
     m_voltageLabel.start(tft);
     m_distanceLabel.start(tft);
     m_currentPowerLabel.start(tft);
+
+    m_performanceLabel.start(tft);
 }
 
 void SpeedInfoDisplay::redraw(espgui::TftInterface &tft)
@@ -75,6 +78,8 @@ void SpeedInfoDisplay::redraw(espgui::TftInterface &tft)
 
     m_dischargingBar->redraw(tft, sumCurrent < 0.f ? (-sumCurrent) : 0.f);
     m_chargingBar->redraw(tft, sumCurrent > 0.f ? sumCurrent : 0.f);
+
+    m_performanceLabel.redraw(tft, std::to_string(drivingModeTask.callCount()), (drivingModeTask.callCount() < 35) ? espgui::TFT_ORANGE : espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
 }
 
 void SpeedInfoDisplay::buttonPressed(espgui::Button button)

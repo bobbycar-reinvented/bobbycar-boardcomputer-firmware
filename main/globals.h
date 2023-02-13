@@ -129,13 +129,3 @@ extern BluetoothSerial bluetoothSerial;
 
 extern ModeInterface *lastMode;
 extern ModeInterface *currentMode;
-
-#ifdef FEATURE_LEDBACKLIGHT
-constexpr const bool ledBacklightInverted =
-#ifdef LEDBACKLIGHT_INVERTED
-        true
-#else
-        false
-#endif
-;
-#endif

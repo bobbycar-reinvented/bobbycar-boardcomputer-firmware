@@ -53,7 +53,7 @@ constexpr const char * const TAG = "TASKS";
 void not_needed() {}
 
 BobbySchedulerTask schedulerTasksArr[] {
-    BobbySchedulerTask { "wifi",           wifi_begin,            wifi_update,             100ms, false },
+    BobbySchedulerTask { "wifi",           wifi_begin,            wifi_update,             350ms, false },
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined(FEATURE_DPAD_6WIRESW) || defined(DPAD_BOARDCOMPUTER_V2)
     BobbySchedulerTask { bobbydpad::dpad_name,  bobbydpad::dpad_init,       bobbydpad::dpad_update,       20ms, true  },
 #endif
@@ -63,7 +63,7 @@ BobbySchedulerTask schedulerTasksArr[] {
 #ifdef FEATURE_MOSFETS
     BobbySchedulerTask { "mosfets",        init_mosfets,          update_mosfets,          100ms, false },
 #endif
-    BobbySchedulerTask { "time",           initTime,              updateTime,              100ms, false },
+    BobbySchedulerTask { "time",           initTime,              updateTime,              250ms, false },
     BobbySchedulerTask { "potis",          initPotis,             readPotis,               20ms, false  },
 #ifdef FEATURE_BLUETOOTH
     BobbySchedulerTask { "bluetooth",      bluetooth_init,        bluetooth_update,        100ms, false },
@@ -72,24 +72,24 @@ BobbySchedulerTask schedulerTasksArr[] {
 #endif
 #endif
 #ifdef FEATURE_CAN
-    BobbySchedulerTask { "can",            can::initCan,          can::updateCan,          10ms, false  },
+    BobbySchedulerTask { "can",            can::initCan,          can::updateCan,          8ms, false  },
 #endif
-    BobbySchedulerTask { "debuginput",     initDebugInput,        handleDebugInput,        50ms, true  },
+    BobbySchedulerTask { "debuginput",     initDebugInput,        handleDebugInput,        75ms, true  },
 #ifdef FEATURE_SERIAL
     BobbySchedulerTask { "serial",         initSerial,            updateSerial,            50ms, false  },
 #endif
-    BobbySchedulerTask { "ota",            initOta,               handleOta,               75ms, false },
-    BobbySchedulerTask { "ble",            initBle,               handleBle,               100ms, false },
-    BobbySchedulerTask { "webserver",      initWebserver,         handleWebserver,         100ms, false },
-    BobbySchedulerTask { "ledstrip",       initLedStrip,          updateLedStrip,          24ms, false },
+    BobbySchedulerTask { "ota",            initOta,               handleOta,               100ms, false },
+    BobbySchedulerTask { "ble",            initBle,               handleBle,               125ms, false },
+    BobbySchedulerTask { "webserver",      initWebserver,         handleWebserver,         125ms, false },
+    BobbySchedulerTask { "ledstrip",       initLedStrip,          updateLedStrip,          10ms, false },
     BobbySchedulerTask { "espnow",         espnow::initESPNow,    espnow::handle,          150ms, false },
-    BobbySchedulerTask { "cloud",          initCloud,             updateCloud,             50ms, false },
-    BobbySchedulerTask { "udpcloud",       udpCloudInit,          udpCloudUpdate,          50ms, false },
-    BobbySchedulerTask { "drivingmode",    initDrivingMode,       updateDrivingMode,       15ms, false },
-    BobbySchedulerTask { "drivingstatistics", initStatistics,     calculateStatistics,     150ms, false },
-    BobbySchedulerTask { "dnsannounce",    init_dns_announce,     handle_dns_announce,     250ms, false },
+    BobbySchedulerTask { "cloud",          initCloud,             updateCloud,             60ms, false },
+    BobbySchedulerTask { "udpcloud",       udpCloudInit,          udpCloudUpdate,          60ms, false },
+    BobbySchedulerTask { "drivingmode",    initDrivingMode,       updateDrivingMode,       8ms, false },
+    BobbySchedulerTask { "drivingstatistics", initStatistics,     calculateStatistics,     175ms, false },
+    BobbySchedulerTask { "dnsannounce",    init_dns_announce,     handle_dns_announce,     500ms, false },
     BobbySchedulerTask { "updateDisp",     not_needed,            bobby::updateDisplay,    20ms, true },
-    BobbySchedulerTask { "redrawDisp",     not_needed,            bobby::redrawDisplay,    80ms, true },
+    BobbySchedulerTask { "redrawDisp",     not_needed,            bobby::redrawDisplay,    16ms, true },
     BobbySchedulerTask { "feedbackEmulator", feedbackemulator::init, feedbackemulator::update, 500ms, false},
 };
 } // namespace

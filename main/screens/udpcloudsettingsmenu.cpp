@@ -22,6 +22,7 @@ constexpr char TEXT_UDPCLOUDENABLED[] = "Udp Cloud enabled";
 constexpr char TEXT_UDPSENDRATE[] = "Udp send rate";
 constexpr char TEXT_UDPHOST[] = "Udp host";
 constexpr char TEXT_UDPPORT[] = "Udp port";
+constexpr char TEXT_UDPTOKEN[] = "Udp token";
 constexpr char TEXT_BACK[] = "Back";
 
 using UdpCloudSendRateChangeDisplay = espgui::makeComponent<
@@ -47,6 +48,14 @@ using UdpCloudPortChangeDisplay = espgui::makeComponent<
         espgui::ConfirmActionInterface<espgui::PopScreenAction>,
         espgui::BackActionInterface<espgui::PopScreenAction>
 >;
+
+using UdpCloudTokenChangeDisplay = espgui::makeComponent<
+        BobbyChangeValueDisplay<std::string>,
+        espgui::StaticTitle<TEXT_UDPTOKEN>,
+        UdpCloudTokenAccessor,
+        espgui::ConfirmActionInterface<espgui::PopScreenAction>,
+        espgui::BackActionInterface<espgui::PopScreenAction>
+>;
 } // namespace
 
 using namespace espgui;
@@ -57,6 +66,7 @@ UdpCloudSettingsMenu::UdpCloudSettingsMenu()
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPSENDRATE>,          PushScreenAction<UdpCloudSendRateChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPHOST>,              PushScreenAction<UdpCloudHostChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPPORT>,              PushScreenAction<UdpCloudPortChangeDisplay>>>();
+    constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_UDPTOKEN>,             PushScreenAction<UdpCloudTokenChangeDisplay>>>();
     constructMenuItem<makeComponent<MenuItem, StaticText<TEXT_BACK>,                 PopScreenAction, StaticMenuItemIcon<&bobbyicons::back, &bobbyicons::back_grey>>>();
 }
 

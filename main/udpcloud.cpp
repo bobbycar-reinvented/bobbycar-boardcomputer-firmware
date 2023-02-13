@@ -38,10 +38,7 @@ ip_addr_t udpCloudIp;
 // Little "flash" on statusdisplay when udp stuff is happening
 bool visualSendUdpPacket;
 
-void udpCloudInit()
-{
-
-}
+void udpCloudInit() {}
 
 void udpCloudUpdate()
 {
@@ -50,6 +47,31 @@ void udpCloudUpdate()
 
     if (configs.udpCloudSettings.udpCloudEnabled.value() && configs.udpCloudSettings.udpToken.touched())
         sendUdpCloudPacket();
+
+    if (espchrono::ago(lastDNSQuery) > 10s || !receipient.has_value())
+    {
+        lastDNSQuery = espchrono::millis_clock::now();
+        receipient = sockaddr_in{};
+        if (const auto res = dns_gethostbyname(configs.udpCloudSettings.udpCloudHost.value().c_str(), &udpCloudIp, nullptr, nullptr); res != ERR_OK)
+        {
+            ESP_LOGE(TAG, "dns_gethostbyname() failed because: (%s) (%i)", lwip_strerr(res), res);
+            timestampLastFailed = espchrono::millis_clock::now();
+            visualSendUdpPacket = false;
+            return;
+        }
+
+        if (udpCloudIp.type != IPADDR_TYPE_V4)
+        {
+            ESP_LOGE(TAG, "unsupported ip type: %hhu", udpCloudIp.type);
+            timestampLastFailed = espchrono::millis_clock::now();
+            visualSendUdpPacket = false;
+            return;
+        }
+
+        (*receipient).sin_port = htons(configs.udpCloudSettings.udpCloudPort.value());
+        (*receipient).sin_addr.s_addr = udpCloudIp.u_addr.ip4.addr;
+        (*receipient).sin_family = AF_INET;
+    }
 }
 
 std::optional<std::string> buildUdpCloudJson()
@@ -189,31 +211,6 @@ void sendUdpCloudPacket()
     {
         visualSendUdpPacket = false;
         return;
-    }
-
-    if (espchrono::ago(lastDNSQuery) > 10s || !receipient.has_value())
-    {
-        lastDNSQuery = espchrono::millis_clock::now();
-        receipient = sockaddr_in{};
-        if (const auto res = dns_gethostbyname(configs.udpCloudSettings.udpCloudHost.value().c_str(), &udpCloudIp, nullptr, nullptr); res != ERR_OK)
-        {
-            ESP_LOGE(TAG, "dns_gethostbyname() failed because: (%s) (%i)", lwip_strerr(res), res);
-            timestampLastFailed = espchrono::millis_clock::now();
-            visualSendUdpPacket = false;
-            return;
-        }
-
-        if (udpCloudIp.type != IPADDR_TYPE_V4)
-        {
-            ESP_LOGE(TAG, "unsupported ip type: %hhu", udpCloudIp.type);
-            timestampLastFailed = espchrono::millis_clock::now();
-            visualSendUdpPacket = false;
-            return;
-        }
-
-        (*receipient).sin_port = htons(configs.udpCloudSettings.udpCloudPort.value());
-        (*receipient).sin_addr.s_addr = udpCloudIp.u_addr.ip4.addr;
-        (*receipient).sin_family = AF_INET;
     }
 
     if(espchrono::ago(lastSend) / 1ms > configs.boardcomputerHardware.timersSettings.udpSendRateMs.value())

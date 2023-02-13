@@ -33,15 +33,18 @@ bool backlight_disabled{false};
 
 int fixDuty(int duty)
 {
-    if (ledBacklightInverted)
-        return displayMaxDuty - duty;
+#ifdef LEDBACKLIGHT_INVERTED
+    return displayMaxDuty - duty;
+#else
     return duty;
+#endif
 }
 
 void disableBacklight(bool disable)
 {
     backlight_disabled = disable;
 }
+
 bool backlightDisabled()
 {
     return backlight_disabled;
@@ -62,6 +65,13 @@ TFT_eSPI tft;
 void tft_init()
 {
     tft.init();
+}
+
+void tft_init_with_screen()
+{
+    tft.init();
+    if (currentDisplay)
+        currentDisplay->initScreen(tft);
 }
 
 void initScreen()
@@ -138,6 +148,8 @@ void initScreen()
     else
         ESP_LOGI(TAG, "ledc_update_duty() succeeded");
 #endif
+
+    ESP_LOGI(TAG, "TFT init done (%dx%d, w*h=%d)", tft.width(), tft.height(), tft.width() * tft.height());
 }
 
 void updateRotation()

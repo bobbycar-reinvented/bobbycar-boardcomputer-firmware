@@ -133,6 +133,7 @@ struct UdpCloudEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrappe
 struct UdpCloudDebugEnableAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.udpCloudSettings.enableCloudDebug; } };
 struct UdpCloudHostAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.udpCloudSettings.udpCloudHost; } };
 struct UdpCloudPortAccessor : public NewSettingsAccessor<uint16_t> { ConfigWrapper<uint16_t> &getConfig() const override { return configs.udpCloudSettings.udpCloudPort; } };
+struct UdpCloudTokenAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.udpCloudSettings.udpToken; } };
 
 // DefaultMode
 struct DefaultModeModelModeAccessor : public RefAccessorSaveSettings<UnifiedModelMode> { UnifiedModelMode &getRef() const override { return profileSettings.defaultMode.modelMode; } };

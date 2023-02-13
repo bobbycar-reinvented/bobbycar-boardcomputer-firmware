@@ -4,7 +4,8 @@
 #include <optional>
 
 // 3rdparty lib includes
-#include "buttonsinterface.h"
+#include <buttonsinterface.h>
+#include <espchrono.h>
 
 enum BobbyButton
 {
@@ -25,16 +26,14 @@ enum BobbyButton
     ButtonMax = Back
 };
 
+namespace bobby {
+extern std::optional<espchrono::millis_clock::time_point> buttonLeftHeld;
+extern std::optional<espchrono::millis_clock::time_point> buttonRightHeld;
+extern std::optional<espchrono::millis_clock::time_point> buttonUpHeld;
+extern std::optional<espchrono::millis_clock::time_point> buttonDownHeld;
+} // namespace bobby
+
 [[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button);
 void buttonPressedCommon(espgui::Button button);
 void buttonReleasedCommon(espgui::Button button);
-
-class BobbyButtons : public virtual espgui::ButtonsInterface
-{
-public:
-    void rawButtonPressed(uint8_t button) override;
-    void rawButtonReleased(uint8_t button) override;
-
-    void buttonPressed(espgui::Button button) override;
-    void buttonReleased(espgui::Button button) override;
-};
+void handleButtonLongPress(espgui::Button button);

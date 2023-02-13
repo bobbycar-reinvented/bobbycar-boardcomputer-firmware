@@ -36,6 +36,7 @@ bool backlightDisabled();
 extern espgui::Label bootLabel;
 
 void tft_init();
+void tft_init_with_screen();
 void initScreen();
 void updateDisplay();
 void updateRotation();
