@@ -51,6 +51,7 @@ set(BOBBY_HEADERS
     changevaluedisplay_larsmmode_mode.h
     changevaluedisplay_unifiedmodelmode.h
     cloud.h
+    cloudstats.h
     configutils_bobby.h
     controller.h
     debugcolorhelpers.h
@@ -322,6 +323,7 @@ set(BOBBY_SOURCES
     changevaluedisplay_larsmmode_mode.cpp
     changevaluedisplay_unifiedmodelmode.cpp
     cloud.cpp
+    cloudstats.cpp
     configwrapper_bobby.cpp
     controller.cpp
     debuginputhandler.cpp

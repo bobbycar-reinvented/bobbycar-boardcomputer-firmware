@@ -84,7 +84,7 @@ BobbySchedulerTask schedulerTasksArr[] {
     BobbySchedulerTask { "ledstrip",       initLedStrip,          updateLedStrip,          10ms, false },
     BobbySchedulerTask { "espnow",         espnow::initESPNow,    espnow::handle,          150ms, false },
     BobbySchedulerTask { "cloud",          initCloud,             updateCloud,             60ms, false },
-    BobbySchedulerTask { "udpcloud",       udpCloudInit,          udpCloudUpdate,          60ms, false },
+    BobbySchedulerTask { "udpcloud",       udpcloud::udpCloudInit, udpcloud::udpCloudUpdate, 60ms, false },
     BobbySchedulerTask { "drivingmode",    initDrivingMode,       updateDrivingMode,       8ms, false },
     BobbySchedulerTask { "drivingstatistics", initStatistics,     calculateStatistics,     175ms, false },
     BobbySchedulerTask { "dnsannounce",    init_dns_announce,     handle_dns_announce,     500ms, false },
