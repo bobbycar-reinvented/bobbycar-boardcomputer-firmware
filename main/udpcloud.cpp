@@ -87,11 +87,11 @@ void udpCloudUpdate()
 
     if (
             configs.udpCloudSettings.udpCloudHost.value().empty() ||
-            !configs.udpCloudSettings.udpCloudPort.touched() ||
+            configs.udpCloudSettings.udpCloudPort.value() < 80 ||
             !configs.udpCloudSettings.udpToken.touched() ||
             configs.udpCloudSettings.udpToken.value().empty() ||
             !receipient.has_value()
-            )
+        )
     {
         visualSendUdpPacket = false;
         return;
