@@ -13,7 +13,7 @@
 #include "taskmanager.h"
 #include "utils.h"
 
-namespace cloudstats {
+namespace bobby::cloudstats {
 using namespace std::chrono_literals;
 
 namespace {
@@ -68,7 +68,29 @@ std::optional<std::string> buildCloudJson()
     {
         const auto uptime = espchrono::millis_clock::now().time_since_epoch() / 1ms;
         doc["upt"] = uptime;
+        doc["loc"] = isLocked;
+        doc["mdr"] = drivingStatistics.meters_driven;
+        doc["mdt"] = drivingStatistics.totalMeters;
+        doc["cdt"] = drivingStatistics.currentDrivingTime / 1ms;
+        doc["sha"] = GIT_REV;
+        doc["brn"] = GIT_BRANCH;
+        doc["idf"] = esp_get_idf_version();
 
+        if (const auto wifi_sta_info = getWifiStaInfo(); wifi_sta_info)
+        {
+            doc["wif"] = (*wifi_sta_info).ssid;
+            doc["rssi"] = (*wifi_sta_info).rssi;
+        }
+        else
+        {
+            doc["wif"] = nullptr;
+            doc["rssi"] = nullptr;
+        }
+        break;
+    }
+    case 1:
+    case 4:
+    {
         if (gas)
             doc["pcg"] = *gas; // poti calculated gas
         if (raw_gas)
@@ -78,21 +100,6 @@ std::optional<std::string> buildCloudJson()
         if (raw_brems)
             doc["prb"] = *raw_brems; // poti raw brems
 
-        doc["loc"] = isLocked;
-        doc["mdr"] = drivingStatistics.meters_driven;
-        doc["mdt"] = drivingStatistics.totalMeters;
-        doc["cdt"] = drivingStatistics.currentDrivingTime / 1ms;
-        doc["sha"] = GIT_REV;
-
-        if (const auto ssid = getWifiSsid(); ssid)
-            doc["wif"] = *ssid;
-        else
-            doc["wif"] = nullptr;
-        break;
-    }
-    case 1:
-    case 4:
-    {
         if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
         {
             doc["bap"] = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
@@ -100,8 +107,7 @@ std::optional<std::string> buildCloudJson()
             doc["pwr"] = sumCurrent * *avgVoltage; // total watt
         }
         doc["whl"] = getRemainingWattHours(); // watt hours left
-        doc["kml"] =
-        getRemainingWattHours() / configs.battery.watthoursPerKilometer.value(); // calculated kilometers left
+        doc["kml"] = getRemainingWattHours() / configs.battery.watthoursPerKilometer.value(); // calculated kilometers left
         doc["ekm"] = getEstimatedKmLeft(); // kilometers left live calculation
         break;
     }

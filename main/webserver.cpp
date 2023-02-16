@@ -32,6 +32,8 @@ using namespace std::chrono_literals;
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
 
+bool webserver_initialized{false};
+
 //bool forceRefresh{false};
 bool lastScreenWasMenu{};
 int8_t lastSelectIndex{};
@@ -71,6 +73,9 @@ httpd_handle_t httpdHandle;
 
 void initWebserver()
 {
+    if (!configs.feature.webserver.isEnabled.value())
+        return;
+
     if(!configs.feature.webserver_disable_lock.isEnabled.value())
     {
         webserver_lock.construct();
@@ -113,10 +118,22 @@ void initWebserver()
         //if (result != ESP_OK)
         //    return result;
     }
+
+    webserver_initialized = true;
 }
 
 void handleWebserver()
 {
+    if (!configs.feature.webserver.isEnabled.value())
+    {
+        if (webserver_initialized)
+        {
+            webserver_initialized = false;
+            httpd_stop(httpdHandle);
+        }
+        return;
+    }
+
     if (!configs.feature.webserver_disable_lock.isEnabled.value())
     {
         webserver_lock->give();

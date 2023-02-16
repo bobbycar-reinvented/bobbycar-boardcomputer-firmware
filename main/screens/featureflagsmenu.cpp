@@ -31,6 +31,7 @@ void exitFeatureFlagsMenu()
     if (isDirty)
     {
         BobbyErrorHandler{}.errorOccurred(TEXT_POPUP);
+        isDirty = false;
     }
 }
 

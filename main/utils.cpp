@@ -463,10 +463,10 @@ void drawLargeText(espgui::TftInterface &tft, const std::string&& text)
     }
 }
 
-std::optional<std::string> getWifiSsid()
+std::optional<wifi_ap_record_t> getWifiStaInfo()
 {
     if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
         if (const auto &result = wifi_stack::get_sta_ap_info(); result)
-            return std::string{reinterpret_cast<const char*>(result->ssid)};
+            return *result;
     return std::nullopt;
 }

@@ -3,6 +3,8 @@
 // local includes
 #include "textinterface.h"
 
+namespace bobby {
+
 struct CloudCreatedText : public virtual espgui::TextInterface
 {
 public:
@@ -20,3 +22,5 @@ struct CloudConnectedText : public virtual espgui::TextInterface
 public:
     std::string text() const override;
 };
+
+} // namespace bobby

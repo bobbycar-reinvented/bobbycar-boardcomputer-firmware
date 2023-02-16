@@ -4,9 +4,9 @@
 #include <optional>
 #include <string>
 
-namespace cloudstats {
+namespace bobby::cloudstats {
 std::optional<std::string> buildCloudJson();
 void updateDependencies();
 void udpNeedsConstruction(bool needsConstruction);
 void espnowNeedsConstruction(bool needsConstruction);
-} // namespace cloudstats
+} // namespace bobby::cloudstats

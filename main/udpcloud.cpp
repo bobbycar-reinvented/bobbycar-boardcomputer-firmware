@@ -17,7 +17,8 @@
 
 using namespace std::chrono_literals;
 
-namespace udpcloud {
+namespace bobby::udpcloud {
+
 namespace {
 constexpr const char *const TAG = "bobbycloud";
 
@@ -30,6 +31,7 @@ ip_addr_t udpCloudIp;
 cpputils::DelayedConstruction<wifi_stack::UdpSender> udpCloudSender;
 
 bool visualSendUdpPacket;
+
 } // namespace
 
 void udpCloudInit()
@@ -130,4 +132,5 @@ bool blink()
 {
     return visualSendUdpPacket;
 }
+
 } // namespace udpcloud

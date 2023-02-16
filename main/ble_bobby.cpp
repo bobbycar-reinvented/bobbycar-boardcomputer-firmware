@@ -36,6 +36,7 @@ public:
     void onRead(NimBLECharacteristic* pCharacteristic) override;
 };
 
+bool initBleDone{false};
 } // namespace
 
 BLEServer *pServer{};
@@ -88,6 +89,8 @@ void createBle()
     pAdvertising->addServiceUUID(serviceUuid);
     pAdvertising->setScanResponse(true);
     NimBLEDevice::startAdvertising();
+
+    initBleDone = true;
 }
 
 void destroyBle()
@@ -102,12 +105,14 @@ void destroyBle()
     remotecontrolCharacteristic = {};
     wirelessConfig = {};
     getwifilist = {};
+
+    initBleDone = false;
 }
 } // namespace
 
 void initBle()
 {
-    if (configs.bleSettings.bleEnabled.value())
+    if (configs.bleSettings.bleEnabled.value() && configs.feature.ble.isEnabled.value())
         createBle();
 }
 
@@ -115,6 +120,9 @@ void initBle()
 void handleBle()
 {
     if (!configs.feature.ble.isEnabled.value())
+        return;
+
+    if (!initBleDone)
         return;
 
     if (configs.bleSettings.bleEnabled.value())

@@ -6,23 +6,27 @@
 // local includes
 #include "cloud.h"
 
+namespace bobby {
+
 std::string CloudCreatedText::text() const
 {
-    return fmt::format("created: {}", cloudClient ? "true" : "false");
+    return fmt::format("created: {}", cloud::cloudClient ? "true" : "false");
 }
 
 std::string CloudStartedText::text() const
 {
     std::string text = "started: ";
-    if (cloudClient)
-        text += cloudStarted ? "true" : "false";
+    if (cloud::cloudClient)
+        text += cloud::cloudStarted ? "true" : "false";
     return text;
 }
 
 std::string CloudConnectedText::text() const
 {
     std::string text = "connected: ";
-    if (cloudClient)
-        text += cloudClient.is_connected() ? "true" : "false";
+    if (cloud::cloudClient)
+        text += cloud::cloudClient.is_connected() ? "true" : "false";
     return text;
 }
+
+} // namespace bobby

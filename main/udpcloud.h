@@ -1,6 +1,7 @@
 #pragma once
 
-namespace udpcloud {
+namespace bobby::udpcloud {
+
 void udpCloudInit();
 
 void udpCloudUpdate();
@@ -8,4 +9,5 @@ void udpCloudUpdate();
 void sendUdpCloudPacket();
 
 bool blink();
-} // namespace udpcloud
+
+} // namespace bobby::udpcloud
