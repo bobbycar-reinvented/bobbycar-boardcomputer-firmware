@@ -89,7 +89,7 @@ BobbySchedulerTask schedulerTasksArr[]{
         BobbySchedulerTask { "serial",         initSerial,            updateSerial,            50ms, false  },
 #endif
         BobbySchedulerTask{"ota", initOta, handleOta, 100ms, false, true},
-        BobbySchedulerTask{"ble", initBle, handleBle, 125ms, false},
+        BobbySchedulerTask{"ble", initBle, handleBle, 125ms, false, true},
         BobbySchedulerTask{"webserver", initWebserver, handleWebserver, 125ms, false, true},
         BobbySchedulerTask{"ledstrip", initLedStrip, updateLedStrip, 10ms, false, true},
         BobbySchedulerTask{"espnow", espnow::initESPNow, espnow::handle, 150ms, false, true},
