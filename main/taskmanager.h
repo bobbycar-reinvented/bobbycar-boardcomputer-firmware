@@ -10,6 +10,8 @@
 // local includes
 #include "bobbyschedulertask.h"
 
+namespace bobby {
+
 extern cpputils::ArrayView<BobbySchedulerTask> schedulerTasks;
 
 extern const BobbySchedulerTask &drivingModeTask;
@@ -21,3 +23,5 @@ tl::expected<bool, std::string> checkInitializedByName(const std::string& name);
 bool checkEnabledByName(const std::string& name);
 
 void reload_tasks();
+
+} // namespace bobby

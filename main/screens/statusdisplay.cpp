@@ -147,7 +147,7 @@ void StatusDisplay::redraw(espgui::TftInterface &tft)
     {
         if(configs.udpCloudSettings.udpCloudEnabled.value() && configs.udpCloudSettings.enableCloudDebug.value())
         {
-            tft.fillRect(125, 258, 8, 8, (visualSendUdpPacket) ? espgui::TFT_DARKGREY : espgui::TFT_BLACK);
+            tft.fillRect(125, 258, 8, 8, (udpcloud::blink()) ? espgui::TFT_DARKGREY : espgui::TFT_BLACK);
         }
 //      else // is not needed because of redraw
 //      {

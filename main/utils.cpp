@@ -1,6 +1,7 @@
 #include "utils.h"
 
 // 3rdparty lib includes
+#include <espwifistack.h>
 #include <fontrenderer.h>
 #include <tftcolors.h>
 #include <tftinterface.h>
@@ -460,4 +461,12 @@ void drawLargeText(espgui::TftInterface &tft, const std::string&& text)
         if (y >= tft.height() - bottomMargin)
             break;
     }
+}
+
+std::optional<wifi_ap_record_t> getWifiStaInfo()
+{
+    if (wifi_stack::get_sta_status() == wifi_stack::WiFiStaStatus::CONNECTED)
+        if (const auto &result = wifi_stack::get_sta_ap_info(); result)
+            return *result;
+    return std::nullopt;
 }

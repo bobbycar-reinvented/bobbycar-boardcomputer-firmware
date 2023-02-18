@@ -232,12 +232,17 @@ bool tryParseCanInput()
 
         if (espchrono::millis_clock::now() - controllers.front.lastCanFeedback > CAN_TIMEOUT)
             controllers.front.feedbackValid = false;
+        /*else
+            ESP_LOGI(TAG, "frontTimeout: %lldms, %s", espchrono::ago(controllers.front.lastCanFeedback) / 1ms, esp_err_to_name(result));*/
 
         if (espchrono::millis_clock::now() - controllers.back.lastCanFeedback > CAN_TIMEOUT)
             controllers.back.feedbackValid = false;
+        /*else
+            ESP_LOGI(TAG, "backTimeout: %lldms, %s", espchrono::ago(controllers.back.lastCanFeedback) / 1ms, esp_err_to_name(result));*/
 
-        ESP_LOGI(TAG, "frontValid: %s, backValid: %s", controllers.front.feedbackValid ? "true" : "false", controllers.back.feedbackValid ? "true" : "false");
-        return false;
+        //ESP_LOGI(TAG, "frontValid: %s, backValid: %s", controllers.front.feedbackValid ? "true" : "false", controllers.back.feedbackValid ? "true" : "false");
+        if (!controllers.front.feedbackValid || !controllers.back.feedbackValid)
+            return false;
     }
 
     if (!configs.controllerHardware.recvCanCmd.value())

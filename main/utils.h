@@ -104,6 +104,7 @@ bool is_valid_timestamp(espchrono::utc_clock::time_point timestamp);
 std::string toString(esp_chip_model_t esp_chip_model);
 std::optional<SetupStep> checkIfInCalibration();
 void drawLargeText(espgui::TftInterface &tft, const std::string&& text);
+std::optional<wifi_ap_record_t> getWifiStaInfo();
 
 namespace bobbydpad {
 #ifdef FEATURE_DPAD

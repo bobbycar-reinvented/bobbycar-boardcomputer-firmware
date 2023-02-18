@@ -28,6 +28,8 @@
 
 using namespace std::chrono_literals;
 
+namespace bobby::cloud {
+
 espcpputils::websocket_client cloudClient;
 bool cloudStarted{};
 espchrono::millis_clock::time_point lastCreateTry;
@@ -785,7 +787,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
 {
     CPP_UNUSED(event_handler_arg);
 
-    const esp_websocket_event_data_t *data = reinterpret_cast<const esp_websocket_event_data_t *>(event_data);
+    const auto *data = reinterpret_cast<const esp_websocket_event_data_t *>(event_data);
 
     switch (esp_websocket_event_id_t(event_id))
     {
@@ -1010,6 +1012,7 @@ void cloudEventHandler(void *event_handler_arg, esp_event_base_t event_base, int
 void createCloud()
 {
     hasAnnouncedItself = false;
+
     ESP_LOGI("BOBBY", "called");
 
     if (cloudClient)
@@ -1085,3 +1088,4 @@ void destroyCloud()
     cloudClient = {};
     cloudStarted = false;
 }
+} // namespace bobby::cloud

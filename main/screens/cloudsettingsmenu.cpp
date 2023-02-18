@@ -58,7 +58,7 @@ struct CloudBufferLengthText : public virtual espgui::TextInterface
 public:
     std::string text() const override
     {
-        return fmt::format("buffer: {}", cloudBuffer.size());
+        return fmt::format("buffer: {}", cloud::cloudBuffer.size());
     }
 };
 

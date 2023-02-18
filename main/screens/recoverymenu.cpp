@@ -5,6 +5,7 @@
 #include <menuitem.h>
 
 // local includes
+#include "actions/dummyaction.h"
 #include "actions/resetnvsaction.h"
 #include "guihelpers/bobbycheckbox.h"
 #include "guihelpers/bobbyerrorhandler.h"
@@ -16,6 +17,7 @@
 #include "icons/unchecked.h"
 #include "newsettings.h"
 #include "screens/rebootscreen.h"
+#include "texthelpers/esptexthelpers.h"
 
 namespace bobby {
 
@@ -56,6 +58,8 @@ private:
 RecoveryMenu::RecoveryMenu()
 {
     using namespace espgui;
+
+    constructMenuItem<makeComponent<MenuItem, LastRebootReasonText, StaticFont<2>, DisabledColor, DummyAction>>();
 
     configs.callForEveryFeature([&](ConfiguredFeatureFlag &feature){
         constructMenuItem<BasicFeatureFlagMenuItem>(feature);

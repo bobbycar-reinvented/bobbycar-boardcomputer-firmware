@@ -136,7 +136,7 @@ void calculate_sun()
     SunSet sunSet;
     sunSet.setPosition(47.076668, 15.421371, 0); // Vienna
     sunSet.setTZOffset(0);
-    sunSet.setCurrentDate(static_cast<int>((*sunrise_dt).date.year()), static_cast<uint>((*sunrise_dt).date.month()), static_cast<uint>((*sunrise_dt).date.day()));
+    sunSet.setCurrentDate(static_cast<int>((*sunrise_dt).date.year()), static_cast<int>(static_cast<uint>((*sunrise_dt).date.month())), static_cast<int>(static_cast<uint>((*sunrise_dt).date.day())));
     sunrise = static_cast<int>(sunSet.calcSunrise());
     sunset = static_cast<int>(sunSet.calcSunset());
 }

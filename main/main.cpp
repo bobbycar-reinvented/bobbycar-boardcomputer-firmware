@@ -34,7 +34,8 @@ using namespace std::chrono_literals;
 
 #define BOOT_PROGRESS(s) \
     bobby::set_boot_msg(s); \
-    ESP_LOGI("BOOT", "%s", s);
+    ESP_LOGE("BOOT", "%s (%lldms, %lldms since last one)", s, espchrono::ago(boot_start) / 1ms, espchrono::ago(last_boot_label) / 1ms); \
+    last_boot_label = espchrono::millis_clock::now();
 
 namespace {
 espchrono::millis_clock::time_point lastStatsPush;
@@ -42,8 +43,11 @@ std::optional<espchrono::millis_clock::time_point> lastStatsUpdate;
 RTC_NOINIT_ATTR bool recovery;
 } // namespace
 
-extern "C" void app_main()
+extern "C" [[noreturn]] void app_main()
 {
+    const auto boot_start = espchrono::millis_clock::now();
+    auto last_boot_label = boot_start;
+
     if (const auto reset_reason = esp_reset_reason(); reset_reason == ESP_RST_POWERON)
     {
         recovery = false;
@@ -59,7 +63,7 @@ extern "C" void app_main()
         if (const auto result = configs.init("bobbycar"); result != ESP_OK)
             ESP_LOGE(TAG, "config_init_settings() failed with %s", esp_err_to_name(result));
 
-        for (auto &task : schedulerTasks)
+        for (auto &task : bobby::schedulerTasks)
         {
             task.setup(recovery);
         }
@@ -70,13 +74,13 @@ extern "C" void app_main()
 
         while (true)
         {
-            for (auto &schedulerTask : schedulerTasks)
+            for (auto &schedulerTask : bobby::schedulerTasks)
             {
                 if (schedulerTask.isInitialized())
                     schedulerTask.loop();
             }
 
-            espcpputils::delay(1ms);
+            //espcpputils::delay(1ms);
         };
     }
     else
@@ -91,10 +95,10 @@ extern "C" void app_main()
     else
         ESP_LOGI(TAG, "config_init_settings() succeeded");
 
-    ESP_LOGI(TAG, "init screen");
+    BOOT_PROGRESS("init screen");
     bobby::initScreen();
-    ESP_LOGI(TAG, "init screen done");
 
+    BOOT_PROGRESS("profile settings");
     profileSettings = presets::defaultProfileSettings;
 
     if (settingsPersister.init())
@@ -107,9 +111,10 @@ extern "C" void app_main()
     else
         ESP_LOGE("BOBBY", "init() failed");
 
-    for (auto &task : schedulerTasks)
+    BOOT_PROGRESS("starting tasks");
+    for (auto &task : bobby::schedulerTasks)
     {
-        if (checkEnabledByName(task.name()))
+        if (bobby::checkEnabledByName(task.name()))
         {
             BOOT_PROGRESS(task.name());
             task.setup(false);
@@ -156,6 +161,7 @@ extern "C" void app_main()
     esp_chip_info(&chip_info);
     esp_pm_get_configuration(&pm_config);
 
+    BOOT_PROGRESS("main loop");
     ESP_LOGI(TAG, "Entering main loop...");
 
     while (true)
@@ -171,10 +177,12 @@ extern "C" void app_main()
 //       if (!heap_caps_check_integrity_all(true))
 //            ESP_LOGW(TAG, "OIS IM OARSCH!!!!!");
 
-        for (auto &schedulerTask : schedulerTasks)
+        for (auto &schedulerTask : bobby::schedulerTasks)
         {
             if (schedulerTask.isInitialized())
                 schedulerTask.loop();
+            else if (schedulerTask.hasDelayedInit())
+                schedulerTask.delayedInit();
         }
 
         if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/configs.boardcomputerHardware.timersSettings.statsUpdateRate.value())
@@ -186,7 +194,7 @@ extern "C" void app_main()
 
         if (now - lastStatsPush >= 1s)
         {
-            sched_pushStats(false);
+            bobby::sched_pushStats(false);
 
             lastStatsPush = now;
         }
@@ -206,6 +214,6 @@ extern "C" void app_main()
             }
         }
 
-        espcpputils::delay(1ms);
+        //espcpputils::delay(1ms);
     }
 }

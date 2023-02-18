@@ -1,14 +1,13 @@
 #pragma once
 
-// system includes
-#include <optional>
-#include <string>
-
-// Little "flash" on statusdisplay when udp stuff is happening
-extern bool visualSendUdpPacket;
+namespace bobby::udpcloud {
 
 void udpCloudInit();
+
 void udpCloudUpdate();
 
-std::optional<std::string> buildUdpCloudJson();
 void sendUdpCloudPacket();
+
+bool blink();
+
+} // namespace bobby::udpcloud
