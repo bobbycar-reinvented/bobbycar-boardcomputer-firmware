@@ -173,14 +173,20 @@ void SetupCalibratePotisDisplay::buttonPressed(espgui::Button button)
 
         break;
     case Button::Left:
-    back:
         switch (m_status)
         {
         case Status::Begin:
+            /* // what was the idea here?!?
             if (m_early_return)
-                espgui::popScreen();
+            {
+                if (espgui::displayStack.size() > 1)
+                    espgui::popScreen();
+                else
+                    switchToDefaultStatusDisplay();
+            }
             else
                 espgui::switchScreen<SetupAskSetupCloudsDisplay>();
+            */
             break;
 #ifdef FEATURE_JOYSTICK
             case Status::Mitte:
@@ -253,13 +259,25 @@ void SetupCalibratePotisDisplay::buttonPressed(espgui::Button button)
                 copyToSettings();
 
                 if (m_early_return)
-                    espgui::popScreen();
+                    if (espgui::displayStack.size() > 1)
+                        espgui::popScreen();
+                    else
+                        switchToDefaultStatusDisplay();
                 else
                     espgui::switchScreen<SetupAskSetupCloudsDisplay>();
             }
             break;
         case 1: // right button pressed
-            goto back;
+            if (m_early_return)
+            {
+                if (espgui::displayStack.size() > 1)
+                    espgui::popScreen();
+                else
+                    switchToDefaultStatusDisplay();
+            }
+            else
+                espgui::switchScreen<SetupAskSetupCloudsDisplay>();
+            break;
         }
         break;
     }
