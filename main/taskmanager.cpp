@@ -108,9 +108,9 @@ cpputils::ArrayView<BobbySchedulerTask> schedulerTasks{std::begin(schedulerTasks
 
 const BobbySchedulerTask &drivingModeTask = []() -> const BobbySchedulerTask & {
     auto iter = std::find_if(std::begin(schedulerTasksArr), std::end(schedulerTasksArr),
-                             [](const BobbySchedulerTask &task) {
-                                 return std::string_view{task.name()} == "drivingmode";
-                             });
+         [](const BobbySchedulerTask &task) {
+             return std::string_view{task.name()} == "drivingmode";
+         });
     return *iter;
 }();
 
