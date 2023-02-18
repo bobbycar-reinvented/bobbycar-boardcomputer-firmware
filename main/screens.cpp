@@ -191,6 +191,8 @@ void updateDisplay()
 
     if (currentDisplay)
         currentDisplay->update();
+    else
+        ESP_LOGE(TAG, "currentDisplay is nullptr");
 
     if (changeScreenCallback)
     {
@@ -229,6 +231,8 @@ void redrawDisplay()
     {
         currentDisplay->redraw(tft);
     }
+    else
+        ESP_LOGE(TAG, "currentDisplay is nullptr");
 }
 
 void disableScreenFlip(bool enable)
