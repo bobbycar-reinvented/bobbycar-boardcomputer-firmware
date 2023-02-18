@@ -75,6 +75,7 @@ std::optional<std::string> buildCloudJson()
         doc["sha"] = GIT_REV;
         doc["brn"] = GIT_BRANCH;
         doc["idf"] = esp_get_idf_version();
+        doc["dir"] = GIT_DIRTY;
 
         if (const auto wifi_sta_info = getWifiStaInfo(); wifi_sta_info)
         {

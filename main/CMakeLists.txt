@@ -580,8 +580,10 @@ execute_process(
 
 if (NOT GIT_STATUS STREQUAL "")
     set(GIT_STATUS "dirty")
+    set(GIT_DIRTY true)
 else()
     set(GIT_STATUS "clean")
+    set(GIT_DIRTY false)
 endif()
 
 string(STRIP "${GIT_REV}" GIT_REV)
@@ -597,6 +599,7 @@ message(WARNING "Git short revision: ${GIT_SHORT_REV}")
 message(WARNING "Git message: ${GIT_MESSAGE}")
 message(WARNING "Git branch: ${GIT_BRANCH}")
 message(WARNING "Git status: ${GIT_STATUS}")
+message(WARNING "Git dirty: ${GIT_DIRTY}")
 
 if(NOT DEFINED BOBBY_DEFAULT_USERNAME)
     message(FATAL_ERROR "Please define BOBBY_DEFAULT_USERNAME")
@@ -615,6 +618,8 @@ target_compile_options(${COMPONENT_TARGET}
         -DGIT_SHORT_REV="${GIT_SHORT_REV}"
         -DGIT_MESSAGE="${GIT_MESSAGE}"
         -DGIT_BRANCH="${GIT_BRANCH}"
+        -DGIT_STATUS="${GIT_STATUS}"
+        -DGIT_DIRTY=${GIT_DIRTY}
         -DBOBBY_DEFAULT_USERNAME="${BOBBY_DEFAULT_USERNAME}"
         ${BOBBYCAR_BUILDFLAGS}
         -Werror=unused-but-set-variable
