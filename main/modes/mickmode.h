@@ -7,6 +7,8 @@
 // local includes
 #include "modeinterface.h"
 
+namespace bobby {
+
 class MickMode : public ModeInterface
 {
     using Base = ModeInterface;
@@ -25,3 +27,5 @@ private:
 namespace modes {
 extern MickMode mickMode;
 } // namespace modes
+
+} // namespace bobby

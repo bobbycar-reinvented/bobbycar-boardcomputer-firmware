@@ -20,7 +20,6 @@
 
 // local includes
 #include "newsettings.h"
-#include "webserver_lock.h"
 
 using namespace std::chrono_literals;
 using esphttpdutils::HtmlTag;

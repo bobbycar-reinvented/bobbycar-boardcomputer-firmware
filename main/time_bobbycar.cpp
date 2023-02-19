@@ -27,6 +27,14 @@ espchrono::time_zone espchrono::get_default_timezone() noexcept
 }
 #endif
 
+namespace bobby::time {
+
+espchrono::time_zone get_default_timezone() noexcept
+{
+    using namespace espchrono;
+    return time_zone{configs.timezoneOffset.value(), configs.timeDst.value()};
+}
+
 namespace {
 constexpr const char * const TAG = "BOBBYTIME";
 } // namespace
@@ -140,3 +148,5 @@ void calculate_sun()
     sunrise = static_cast<int>(sunSet.calcSunrise());
     sunset = static_cast<int>(sunSet.calcSunset());
 }
+
+} // namespace bobby::time

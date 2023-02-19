@@ -43,7 +43,7 @@ void BatteryInfoDisplay::redraw(espgui::TftInterface &tft)
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
         const auto cellType = configs.battery.cellType.value();
-        const uint16_t percentage = getBatteryPercentage(*avgVoltage, cellType);
+        const uint16_t percentage = battery::getBatteryPercentage(*avgVoltage, cellType);
         const auto segment_count = std::max(percentage / 10, 1);
 
         if (segment_count != m_lastBarCount)

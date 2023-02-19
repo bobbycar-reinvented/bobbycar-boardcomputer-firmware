@@ -8,13 +8,7 @@
 #include <espchrono.h>
 
 // local includes
-#include "bobbytypesafeenum.h"
-
-#define HandbremseModeValues(x) \
-    x(MOSFETS_OFF) \
-    x(OPENMODE) \
-    x(SPEED_0)
-DECLARE_BOBBYTYPESAFE_ENUM(HandbremseMode, : uint8_t, HandbremseModeValues)
+#include "enums.h"
 
 namespace handbremse {
 

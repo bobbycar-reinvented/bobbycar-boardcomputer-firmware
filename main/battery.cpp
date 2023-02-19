@@ -1,13 +1,18 @@
 #include "battery.h"
 
 // 3rdparty lib includes
-#include <fmt/core.h>
 #include <cpputils.h>
+#include <fmt/core.h>
 
 // local includes
 #include "drivingstatistics.h"
 #include "globals.h"
 #include "newsettings.h"
+
+namespace bobby::battery {
+
+std::optional<float> bootBatPercentage;
+std::optional<float> bootBatWh;
 
 float getBatteryPercentage(float batVoltage, BatteryCellType cellType)
 {
@@ -307,7 +312,4 @@ std::optional<CalibrationPointVoltages> get_point_n_voltages(BatteryCellType cel
     return std::nullopt;
 }
 
-namespace battery {
-std::optional<float> bootBatPercentage;
-std::optional<float> bootBatWh;
 }

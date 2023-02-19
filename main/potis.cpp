@@ -19,6 +19,8 @@
 
 using namespace std::chrono_literals;
 
+namespace bobby::potis {
+
 namespace {
 constexpr const char * const TAG = "POTIS";
 
@@ -159,3 +161,5 @@ void readPotis()
     gametrakDist = cpputils::mapValueClamped<float>(raw_gametrakDist, configs.boardcomputerHardware.gametrakDistMin.value, configs.boardcomputerHardware.gametrakDistMax.value, 0., 1000.);
 #endif
 }
+
+} // namespace bobby::potis

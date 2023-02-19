@@ -18,7 +18,7 @@ public:
     void buttonPressed(espgui::Button button) override;
 
     void drawColors(espgui::TftInterface &tft);
-    void drawSide(espgui::TftInterface &tft, Bobbycar_Side side, unsigned int color);
+    void drawSide(espgui::TftInterface &tft, ledstrip::Bobbycar_Side side, unsigned int color);
     void clearSides(espgui::TftInterface &tft);
 
 private:

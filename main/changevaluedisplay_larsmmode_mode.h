@@ -12,9 +12,9 @@
 namespace espgui {
 
 template<>
-class ChangeValueDisplay<LarsmModeMode> :
+class ChangeValueDisplay<bobby::LarsmModeMode> :
     public MenuDisplay,
-    public virtual AccessorInterface<LarsmModeMode>,
+public virtual AccessorInterface<bobby::LarsmModeMode>,
     public virtual ConfirmInterface,
     public virtual ErrorHandlerInterface
 {

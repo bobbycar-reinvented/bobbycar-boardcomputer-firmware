@@ -38,12 +38,12 @@ constexpr char TEXT_BATTERY_APPLYCALIB[] = "Apply calibration";
 constexpr char TEXT_VOLTAGECALIBRATION_RESET[] = "Reset calibration";
 constexpr char TEXT_BACK[] = "Back";
 
-class CurrentBatteryStatusText : public virtual espgui::TextInterface { public: std::string text() const override { return getBatteryPercentageString(); } };
+class CurrentBatteryStatusText : public virtual espgui::TextInterface { public: std::string text() const override { return battery::getBatteryPercentageString(); } };
 class WhStatisticsText : public virtual espgui::TextInterface { public: std::string text() const override
     {
         if (battery::bootBatWh)
         {
-            return fmt::format("&s&2{}Wh => &1{}Wh &6({})", (int)*battery::bootBatWh, (int)getRemainingWattHours(), (int)getRemainingWattHours() - (int)battery::bootBatWh.value());
+            return fmt::format("&s&2{}Wh => &1{}Wh &6({})", (int)*battery::bootBatWh, (int)battery::getRemainingWattHours(), (int)battery::getRemainingWattHours() - (int)battery::bootBatWh.value());
         }
         return "";
     }
@@ -118,7 +118,7 @@ void BatteryMenu::redraw(espgui::TftInterface &tft)
 
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        const auto batPercent = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
+        const auto batPercent = battery::getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
         if (battery::bootBatPercentage)
         {
             m_doubleProgressBarBatPercentage.redraw(tft, batPercent, *battery::bootBatPercentage);

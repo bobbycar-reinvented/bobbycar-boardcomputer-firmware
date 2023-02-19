@@ -5,6 +5,8 @@
 #include "motorpwmlimiter.h"
 #include "utils.h"
 
+namespace bobby {
+
 void initDrivingMode()
 {
 
@@ -30,3 +32,5 @@ void updateDrivingMode()
     // Last, send values to motor controllers
     sendCommands();
 }
+
+} // namespace bobby

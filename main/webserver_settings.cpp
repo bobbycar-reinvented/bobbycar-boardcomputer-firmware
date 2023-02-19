@@ -18,7 +18,8 @@
 
 // local includes
 #include "globals.h"
-#include "webserver_lock.h"
+
+namespace bobby::webserver {
 
 using namespace std::chrono_literals;
 using esphttpdutils::HtmlTag;
@@ -303,3 +304,4 @@ esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
                   "text/plain",
                   body)
 }
+} // namespace bobby::webserver

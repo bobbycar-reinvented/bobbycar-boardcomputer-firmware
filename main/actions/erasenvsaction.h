@@ -10,7 +10,8 @@
 
 using namespace espgui;
 
-namespace {
+namespace bobby {
+
 class EraseNvsAction : public virtual ActionInterface
 {
 public:
@@ -42,4 +43,6 @@ public:
         }
     }
 };
-}
+
+} // namespace bobby
+

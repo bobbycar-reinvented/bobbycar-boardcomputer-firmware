@@ -73,8 +73,8 @@ BobbySchedulerTask schedulerTasksArr[]{
 #ifdef FEATURE_MOSFETS
         BobbySchedulerTask { "mosfets",        init_mosfets,          update_mosfets,          100ms, false },
 #endif
-        BobbySchedulerTask{"time", initTime, updateTime, 250ms, false, true},
-        BobbySchedulerTask{"potis", initPotis, readPotis, 20ms, false},
+        BobbySchedulerTask{"time", time::initTime, time::updateTime, 250ms, false, true},
+        BobbySchedulerTask{"potis", potis::initPotis, potis::readPotis, 20ms, false},
 #ifdef FEATURE_BLUETOOTH
         BobbySchedulerTask { "bluetooth",      bluetooth_init,        bluetooth_update,        100ms, false },
 #ifdef FEATURE_BMS
@@ -84,14 +84,14 @@ BobbySchedulerTask schedulerTasksArr[]{
 #ifdef FEATURE_CAN
         BobbySchedulerTask{"can", can::initCan, can::updateCan, 8ms, false},
 #endif
-        BobbySchedulerTask{"debuginput", initDebugInput, handleDebugInput, 75ms, true},
+        BobbySchedulerTask{"debuginput", debug::initDebugInput, debug::handleDebugInput, 75ms, true},
 #ifdef FEATURE_SERIAL
         BobbySchedulerTask { "serial",         initSerial,            updateSerial,            50ms, false  },
 #endif
-        BobbySchedulerTask{"ota", initOta, handleOta, 100ms, false, true},
-        BobbySchedulerTask{"ble", initBle, handleBle, 125ms, false, true},
-        BobbySchedulerTask{"webserver", initWebserver, handleWebserver, 125ms, false, true},
-        BobbySchedulerTask{"ledstrip", initLedStrip, updateLedStrip, 10ms, false, true},
+        BobbySchedulerTask{"ota", ota::initOta, ota::handleOta, 100ms, false, true},
+        BobbySchedulerTask{"ble", ble::initBle, ble::handleBle, 125ms, false, true},
+        BobbySchedulerTask{"webserver", webserver::initWebserver, webserver::handleWebserver, 125ms, false, true},
+        BobbySchedulerTask{"ledstrip", ledstrip::initLedStrip, ledstrip::updateLedStrip, 10ms, false, true},
         BobbySchedulerTask{"espnow", espnow::initESPNow, espnow::handle, 150ms, false, true},
         BobbySchedulerTask{"cloud", cloud::initCloud, cloud::updateCloud, 60ms, false, true},
         BobbySchedulerTask{"udpcloud", udpcloud::udpCloudInit, udpcloud::udpCloudUpdate, 60ms, false, true},

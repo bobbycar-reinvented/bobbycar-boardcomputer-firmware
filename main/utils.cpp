@@ -12,6 +12,8 @@
 
 using namespace std::chrono_literals;
 
+namespace bobby {
+
 bool currentlyReverseBeeping{};
 bool reverseBeepToggle;
 espchrono::millis_clock::time_point lastReverseBeepToggle;
@@ -470,3 +472,4 @@ std::optional<wifi_ap_record_t> getWifiStaInfo()
             return *result;
     return std::nullopt;
 }
+} // namespace bobby

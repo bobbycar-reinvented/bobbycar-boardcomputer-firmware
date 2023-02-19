@@ -9,6 +9,8 @@
 #include "accessorhelpers.h"
 #include "newsettings.h"
 
+namespace bobby {
+
 // Bluetooth
 struct BluetoothNameAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.bluetoothName; } };
 
@@ -277,3 +279,5 @@ struct DisplayBrightnessAccessor : public NewSettingsAccessor<uint8_t> { ConfigW
 // Other
 struct AnhaengerIdAccessor : public NewSettingsAccessor<uint16_t> { ConfigWrapper<uint16_t> &getConfig() const override { return configs.anhaenger_id; } };
 struct UsernameAccessor : public NewSettingsAccessor<std::string> { ConfigWrapper<std::string> &getConfig() const override { return configs.otaUsername; } };
+
+} // namespace bobby

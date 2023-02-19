@@ -1,6 +1,9 @@
 #pragma once
 
-namespace feedbackemulator {
-    void init();
-    void update();
-} // namespace feedbackemulator
+namespace bobby::feedbackemulator {
+
+void init();
+
+void update();
+
+} // namespace bobby::feedbackemulator

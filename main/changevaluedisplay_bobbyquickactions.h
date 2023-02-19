@@ -2,12 +2,12 @@
 
 // 3rdparty lib includes
 #include <changevaluedisplay.h>
-#include <menudisplay.h>
 #include <confirminterface.h>
 #include <errorhandlerinterface.h>
+#include <menudisplay.h>
 
 // local includes
-#include "bobbyquickactions.h"
+#include "enums.h"
 
 namespace espgui {
 

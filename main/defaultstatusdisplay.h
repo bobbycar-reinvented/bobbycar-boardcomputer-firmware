@@ -5,14 +5,7 @@
 #include <screenmanager.h>
 
 // local includes
-#include "bobbytypesafeenum.h"
-
-#define DefaultStatusDisplayValues(x) \
-    x(Default) \
-    x(Meters) \
-    x(Battery) \
-    x(BetterStatus)
-DECLARE_BOBBYTYPESAFE_ENUM(DefaultStatusDisplay, : uint8_t, DefaultStatusDisplayValues)
+#include "enums.h"
 
 void switchToDefaultStatusDisplay();
 

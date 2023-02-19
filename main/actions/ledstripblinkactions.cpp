@@ -1,9 +1,14 @@
 #include "ledstripblinkactions.h"
 
+// local includes
 #include "ledstrip.h"
 #include "ledstripdefines.h"
 
 using namespace espgui;
+
+namespace bobby {
+
+using namespace ledstrip;
 
 void LedstripAnimationBlinkNoneAction::triggered()
 {
@@ -11,10 +16,12 @@ void LedstripAnimationBlinkNoneAction::triggered()
 }
 
 #ifndef LEDSTRIP_WRONG_DIRECTION
+
 void LedstripAnimationBlinkLeftAction::triggered()
 {
     blinkAnimation = LEDSTRIP_OVERWRITE_BLINKLEFT;
 }
+
 #else
 void LedstripAnimationBlinkLeftAction::triggered()
 {
@@ -23,10 +30,12 @@ void LedstripAnimationBlinkLeftAction::triggered()
 #endif
 
 #ifndef LEDSTRIP_WRONG_DIRECTION
+
 void LedstripAnimationBlinkRightAction::triggered()
 {
     blinkAnimation = LEDSTRIP_OVERWRITE_BLINKRIGHT;
 }
+
 #else
 void LedstripAnimationBlinkRightAction::triggered()
 {
@@ -38,3 +47,5 @@ void LedstripAnimationBlinkBothAction::triggered()
 {
     blinkAnimation = LEDSTRIP_OVERWRITE_BLINKBOTH;
 }
+
+} // namespace bobby

@@ -10,6 +10,8 @@
 #include "globals.h"
 #include "utils.h"
 
+namespace bobby {
+
 namespace modes {
 MickMode mickMode;
 } // namespace modes
@@ -79,3 +81,5 @@ void MickMode::update()
         }
     }
 }
+
+} // namespace bobby

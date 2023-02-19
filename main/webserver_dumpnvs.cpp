@@ -16,8 +16,9 @@
 
 // local includes
 #include "globals.h"
-#include "webserver_lock.h"
 #include "settingsutils.h"
+
+namespace bobby::webserver {
 
 using esphttpdutils::HtmlTag;
 using namespace espchrono;
@@ -170,3 +171,5 @@ esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
     serializeJson(doc, body);
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::Ok, "application/json", body)
 }
+
+} // namespace bobby::webserver

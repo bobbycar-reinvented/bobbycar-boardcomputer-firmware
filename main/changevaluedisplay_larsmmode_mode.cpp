@@ -26,6 +26,8 @@ constexpr char TEXT_LARSMMODE4[] = "Mode4";
 constexpr char TEXT_BACK[] = "Back";
 } // namespace
 
+using namespace bobby;
+
 ChangeValueDisplay<LarsmModeMode>::ChangeValueDisplay()
 {
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<LarsmModeMode>, StaticText<TEXT_LARSMMODE1>>>(LarsmModeMode::Mode1, *this, *this, *this);

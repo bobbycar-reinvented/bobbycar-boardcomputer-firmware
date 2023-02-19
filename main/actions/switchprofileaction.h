@@ -5,7 +5,8 @@
 
 using namespace espgui;
 
-namespace {
+namespace bobby {
+
 template<uint8_t index>
 class SwitchProfileAction : public virtual ActionInterface
 {
@@ -15,4 +16,5 @@ public:
         settingsutils::switchProfile(index);
     }
 };
-}
+
+} // namespace bobby

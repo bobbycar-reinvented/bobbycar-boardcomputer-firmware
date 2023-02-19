@@ -65,9 +65,11 @@ set(BOBBY_HEADERS
     dpad6wire.h
     dpad_boardcomputer_v2.h
     drivingstatistics.h
+    enums.h
     espnowfunctions.h
     feedbackemulator.h
     feedbackparser.h
+    globallock.h
     globals.h
     guihelpers/bobbychangevaluedisplay.h
     guihelpers/bobbycheckbox.h
@@ -289,8 +291,7 @@ set(BOBBY_HEADERS
     webserver.h
     webserver_displaycontrol.h
     webserver_dumpnvs.h
-    webserver_lock.h
-    webserver_newsettings.h
+        webserver_newsettings.h
     webserver_ota.h
     webserver_settings.h
     widgets/doubleprogressbar.h
@@ -336,6 +337,7 @@ set(BOBBY_SOURCES
     drivingstatistics.cpp
     espnowfunctions.cpp
     feedbackemulator.cpp
+    globallock.cpp
     globals.cpp
     guihelpers/bobbychangevaluedisplay.cpp
     guihelpers/bobbydisplay.cpp
@@ -420,8 +422,7 @@ set(BOBBY_SOURCES
     newsettings.cpp
     ota.cpp
     potis.cpp
-    presets.cpp
-    qrimport.cpp
+        qrimport.cpp
     screens.cpp
     screens/aboutmenu.cpp
     screens/batterydebugmenu.cpp
@@ -536,8 +537,7 @@ set(BOBBY_SOURCES
     webserver.cpp
     webserver_displaycontrol.cpp
     webserver_dumpnvs.cpp
-    webserver_lock.cpp
-    webserver_newsettings.cpp
+        webserver_newsettings.cpp
     webserver_ota.cpp
     webserver_settings.cpp
     widgets/doubleprogressbar.cpp

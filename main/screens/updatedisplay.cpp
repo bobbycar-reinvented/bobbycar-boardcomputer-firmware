@@ -53,24 +53,24 @@ void UpdateDisplay::redraw(espgui::TftInterface &tft)
 {
     Base::redraw(tft);
 
-    if (asyncOta)
+    if (ota::isOtaInProgress())
     {
-        m_statusLabel.redraw(tft, toString(asyncOta->status()), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
-        const auto progress = asyncOta->progress();
+        m_statusLabel.redraw(tft, toString(ota::otaStatus()), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+        const auto progress = ota::otaProgress();
         m_progressLabel.redraw(tft, std::to_string(progress), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
-        if (const auto totalSize = asyncOta->totalSize(); totalSize && *totalSize > 0)
+        if (const auto totalSize = ota::otaTotalSize(); totalSize && *totalSize > 0)
         {
             m_totalLabel.redraw(tft, std::to_string(*totalSize), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
-            m_progressBar.redraw(tft, float(progress) / *totalSize * 100);
+            m_progressBar.redraw(tft, ota::otaPercent());
         }
         else
         {
             m_totalLabel.clear(tft, TFT_BLACK);
             m_progressBar.redraw(tft, 0);
         }
-        m_messageLabel.redraw(tft, asyncOta->message(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+        m_messageLabel.redraw(tft, ota::otaMessage(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
-        if (const auto &appDesc = asyncOta->appDesc())
+        if (const auto appDesc = ota::otaAppDesc(); appDesc)
         {
             m_newVersionLabel.redraw(tft, appDesc->version, espgui::TFT_GREEN, espgui::TFT_BLACK, 4);
         }
@@ -101,7 +101,7 @@ void UpdateDisplay::buttonPressed(espgui::Button button)
         espgui::popScreen();
         break;
     case Button::Right:
-        if (const auto result = triggerOta(configs.otaUrl.value()); !result)
+        if (const auto result = ota::triggerOta(configs.otaUrl.value()); !result)
             ESP_LOGE("BOBBY", "triggerOta() failed with %.*s", result.error().size(), result.error().data());
         break;
     default:;

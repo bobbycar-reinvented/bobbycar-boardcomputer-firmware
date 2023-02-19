@@ -1,34 +1,14 @@
 #pragma once
 
 // system includes
+#include <cstdint>
 #include <vector>
 
 // 3rdparty lib includes
 #include <espchrono.h>
 #include <FastLED.h>
 
-// local includes
-#include "bobbytypesafeenum.h"
-#include "ledstripdefines.h"
-
-#define OtaAnimationModesValues(x) \
-    x(None) \
-    x(GreenProgressBar) \
-    x(ColorChangeAll)
-DECLARE_BOBBYTYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues)
-
-#define LedstripAnimationValues(x) \
-    x(DefaultRainbow) \
-    x(Pride) \
-    x(BetterRainbow) \
-    x(SpeedSync) \
-    x(CustomColor) \
-    x(SnakeAnimation) \
-    x(GasOMeter) \
-    x(WarningAnimation) \
-    x(Drehlicht) \
-    x(MancheLKWsHabenDieseAnimation)
-DECLARE_BOBBYTYPESAFE_ENUM(LedstripAnimation, : uint8_t, LedstripAnimationValues)
+namespace bobby::ledstrip {
 
 enum Bobbycar_Side
 {
@@ -53,19 +33,33 @@ extern bool brakeLightsStatus;
 extern espchrono::millis_clock::time_point brakeLightTimer;
 
 void showDefaultLedstrip();
+
 void showAnimation();
+
 void showBetterRainbow();
+
 void showSpeedSyncAnimation();
+
 void showCustomColor();
+
 void showSnakeAnimation();
+
 void showGasOMeterAnimation();
+
 void showOtaAnimation();
+
 void showPrideAnimation();
+
 void showWarningAnimation();
+
 void showDrehlichtAnimation();
+
 void showMancheLKWShabensoeinelichtanimation();
 
 void initLedStrip();
+
 void updateLedStrip();
 
 [[nodiscard]] bool activateAutomaticFrontLight();
+
+} // namespace bobby::ledstrip

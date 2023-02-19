@@ -7,6 +7,8 @@
 #include "unifiedmodelmode.h"
 #include "modes/larsmmode.h"
 
+namespace bobby {
+
 struct ProfileSettings
 {
     struct Limits {
@@ -130,3 +132,5 @@ void ProfileSettings::executeForEveryProfileSetting(T &&callable)
     callable("wc.ses50", wheelchairMode.sensitivity50Kmh);
 #endif
 }
+
+} // namespace bobby

@@ -14,7 +14,7 @@
 #include "bobbyhupe.h"
 #include "bobbyblinker.h"
 
-namespace espnow {
+namespace bobby::espnow {
 uint16_t lastYear; // Used for esp-now timesync
 
 std::deque<esp_now_message_t> message_queue{};
@@ -147,7 +147,7 @@ void initESPNow()
 void handle()
 {
     bobbyhupe::handle_hupe();
-    bobbyblinker::handle_blinker();
+    blinker::handle_blinker();
     if (initialized < 255 && espnow_init_allowed())
     {
         initESPNow();
@@ -259,7 +259,7 @@ void onRecvTs(uint64_t millis, bool isFromBobbycar)
     const auto milliseconds = std::chrono::milliseconds(millis);
     const auto timepoint = espchrono::utc_clock::time_point(milliseconds);
     // ESP_LOGW(TAG, "setting current time to %s", espchrono::toString(timepoint.time_since_epoch()).c_str());
-    time_set_now(timepoint);
+    time::time_set_now(timepoint);
 
     if (receiveTimeStamp)
     {
@@ -317,4 +317,4 @@ bool isInitialized()
 {
     return initialized >= 255;
 }
-} // namespace espnow
+} // namespace bobby::espnow

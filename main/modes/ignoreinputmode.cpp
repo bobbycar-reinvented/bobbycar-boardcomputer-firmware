@@ -4,6 +4,8 @@
 #include "globals.h"
 #include "utils.h"
 
+namespace bobby {
+
 void IgnoreInputMode::update()
 {
     for (bobbycar::protocol::serial::MotorState &motor : motors())
@@ -15,3 +17,5 @@ void IgnoreInputMode::update()
         motor.nCruiseMotTgt = 0;
     }
 }
+
+} // namespace bobby

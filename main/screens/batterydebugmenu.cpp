@@ -13,6 +13,9 @@
 namespace bobby {
 
 namespace {
+
+using namespace battery;
+
 constexpr char TEXT_BATTERYDEBUG[] = "Bat Debug Menu";
 constexpr char TEXT_BACK[] = "Back";
 

@@ -8,17 +8,17 @@
 #include <esp_log.h>
 
 // 3rdparty lib includes
-#include <changevaluedisplay.h>
 #include <changevaluedisplay_string.h>
 #include <esp32-hal-gpio.h>
 #include <screenmanager.h>
 
 // local includes
-#include "bobbybuttons.h"
 #include "bobbyquickactions.h"
 #include "globals.h"
 #include "screens.h"
 #include "utils.h"
+
+namespace bobby::debug {
 
 namespace {
 constexpr const char * const TAG = "DEBUG";
@@ -215,3 +215,5 @@ void handleSpecialChar(char c)
     }
 }
 } // namespace
+
+} // namespace bobby::debug

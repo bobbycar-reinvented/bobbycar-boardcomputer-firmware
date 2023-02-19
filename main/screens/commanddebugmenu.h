@@ -10,7 +10,7 @@
 #include "icons/back_grey.h"
 #include "texthelpers/debugtexthelpers.h"
 
-namespace bobby {
+namespace bobby::debug {
 
 template<const char *Ttitle, typename Ttexts>
 class CommandDebugMenu :
@@ -38,4 +38,4 @@ constexpr char TEXT_BACKCOMMAND[] = "Back command";
 using FrontCommandDebugMenu = CommandDebugMenu<TEXT_FRONTCOMMAND, FrontTexts>;
 using BackCommandDebugMenu = CommandDebugMenu<TEXT_BACKCOMMAND, BackTexts>;
 
-} // namespace bobby
+} // namespace bobby::debug

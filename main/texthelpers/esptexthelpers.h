@@ -47,27 +47,27 @@ class LastRebootReasonText : public virtual espgui::TextInterface { public: std:
 
 #ifdef FEATURE_CAN
 class CanIcCrashText : public virtual espgui::TextInterface { public: std::string text() const override {
-    return fmt::format("CAN IC reseted: {}", can::can_total_error_cnt); }};
+    return fmt::format("CAN IC reseted: {}", bobby::can::can_total_error_cnt); }};
 #endif
 
 constexpr char TEXT_ESPCHIPREVISION[] = "Chip revision: ";
 class EspChipRevisionText : public virtual espgui::TextInterface { public: std::string text() const override {
-    return fmt::format("{}{}", TEXT_ESPCHIPREVISION, chip_info.revision);
+    return fmt::format("{}{}", TEXT_ESPCHIPREVISION, bobby::chip_info.revision);
 }};
 
 constexpr char TEXT_ESPCHIPMODEL[] = "Chip Model: ";
 class EspChipModelText : public virtual espgui::TextInterface { public: std::string text() const override {
-        return fmt::format("{}{}", TEXT_ESPCHIPMODEL, toString(chip_info.model));
+        return fmt::format("{}{}", TEXT_ESPCHIPMODEL, bobby::toString(bobby::chip_info.model));
     }};
 
 constexpr char TEXT_ESPMAXCPUFREQMHZ[] = "Cpu max freq MHz: ";
 class EspCpuMaxFreqMHzText : public virtual espgui::TextInterface { public: std::string text() const override {
-    return fmt::format("{}{}", TEXT_ESPMAXCPUFREQMHZ, pm_config.max_freq_mhz);
+    return fmt::format("{}{}", TEXT_ESPMAXCPUFREQMHZ, bobby::pm_config.max_freq_mhz);
 }};
 
 constexpr char TEXT_ESPMINCPUFREQMHZ[] = "Cpu max freq MHz: ";
 class EspCpuMinFreqMHzText : public virtual espgui::TextInterface { public: std::string text() const override {
-        return fmt::format("{}{}", TEXT_ESPMINCPUFREQMHZ, pm_config.min_freq_mhz);
+        return fmt::format("{}{}", TEXT_ESPMINCPUFREQMHZ, bobby::pm_config.min_freq_mhz);
 }};
 
 constexpr char TEXT_ESPSDKVERSION[] = "Sdk version: ";

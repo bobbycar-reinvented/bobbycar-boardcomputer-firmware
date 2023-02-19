@@ -24,7 +24,7 @@
 
 using namespace std::chrono_literals;
 
-namespace can {
+namespace bobby::can {
 uint32_t can_total_error_cnt;
 namespace {
 constexpr const char * const TAG = "BOBBYCAN";
@@ -562,5 +562,5 @@ void sendCanCommands()
     }
 }
 
-} // namespace can
+} // namespace bobby::can
 #endif

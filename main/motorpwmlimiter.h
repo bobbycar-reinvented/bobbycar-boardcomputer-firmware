@@ -1,5 +1,7 @@
 #pragma once
 
-namespace motor_pwm_limiter {
+namespace bobby::motor_pwm_limiter {
+
 void update();
-} // namespace motor_pwm_limiter
+
+} // namespace bobby::motor_pwm_limiter

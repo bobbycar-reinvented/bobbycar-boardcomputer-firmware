@@ -25,10 +25,11 @@
 #include "bobbybuttons.h"
 #include "globals.h"
 #include "newsettings.h"
-#include "webserver_lock.h"
 
 using esphttpdutils::HtmlTag;
 using namespace std::chrono_literals;
+
+namespace bobby::webserver {
 
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
@@ -563,3 +564,5 @@ esp_err_t webserver_setValue_handler(httpd_req_t *req)
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
 }
+
+} // namespace bobby::webserver
