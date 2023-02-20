@@ -147,4 +147,8 @@ OtaCloudUpdateStatus otaStatus()
     return _asyncOta->status();
 }
 
+bool isConstructed()
+{
+    return _asyncOta;
+}
 } // namespace bobby::ota

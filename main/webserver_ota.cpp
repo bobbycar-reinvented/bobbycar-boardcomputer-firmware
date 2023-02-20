@@ -6,15 +6,18 @@
 #include <esp_ota_ops.h>
 
 // 3rdparty lib includes
-#include <htmlbuilder.h>
-#include <fmt/core.h>
 #include <espcppmacros.h>
 #include <esphttpdutils.h>
+#include <fmt/core.h>
+#include <htmlbuilder.h>
+#include <recursivelockhelper.h>
 #include <strutils.h>
+#include <tickchrono.h>
 
 // local includes
-#include "ota.h"
+#include "globallock.h"
 #include "newsettings.h"
+#include "ota.h"
 
 using namespace std::chrono_literals;
 using esphttpdutils::HtmlTag;
@@ -27,6 +30,12 @@ constexpr const char * const TAG = "BOBBYWEB";
 
 esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        ESP_LOGE(TAG, "Could not acquire lock");
+        return ESP_FAIL;
+    }
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
@@ -79,6 +88,13 @@ esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
 
 esp_err_t webserver_ota_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        ESP_LOGE(TAG, "Could not acquire lock");
+        return ESP_FAIL;
+    }
+
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
     std::string body;
@@ -142,7 +158,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
         }
         else
         {
-            body += "\"info\":\"Updater is not constructed.\"";
+            body += "\"info\":\"Updater is idle.\"";
         }
 
         body += "}}";
@@ -339,6 +355,12 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
 
 esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        ESP_LOGE(TAG, "Could not acquire lock");
+        return ESP_FAIL;
+    }
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 

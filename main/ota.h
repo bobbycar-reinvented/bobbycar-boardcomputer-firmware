@@ -38,4 +38,6 @@ const std::optional<esp_app_desc_t> &otaAppDesc();
 
 OtaCloudUpdateStatus otaStatus();
 
+bool isConstructed();
+
 } // namespace bobby::ota

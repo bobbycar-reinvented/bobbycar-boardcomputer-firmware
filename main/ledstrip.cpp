@@ -1,18 +1,22 @@
 #include "ledstrip.h"
 
-// 3rdparty lib includes
+// system includes
 #include <cmath>
+
+// 3rdparty lib includes
 #include <cpputils.h>
 #include <espchrono.h>
+#include <recursivelockhelper.h>
 
 // local includes
+#include "enums.h"
+#include "globallock.h"
 #include "globals.h"
 #include "ledstripdefines.h"
 #include "newsettings.h"
 #include "ota.h"
 #include "time_bobbycar.h"
 #include "utils.h"
-#include "enums.h"
 
 using namespace std::chrono_literals;
 
@@ -254,6 +258,8 @@ void updateLedStrip()
        std::fill(std::end(leds) - configs.ledstrip.stvoFrontOffset.value() - configs.ledstrip.stvoFrontLength.value(), std::end(leds) - configs.ledstrip.stvoFrontOffset.value(), CRGB{255, 255, 255});
        }
     }
+
+    espcpputils::RecursiveLockHelper helper{global_lock->handle};
 
     FastLED.setMaxPowerInVoltsAndMilliamps(5, configs.ledstrip.maxMilliamps.value());
     FastLED.setBrightness(configs.ledstrip.brightness.value());

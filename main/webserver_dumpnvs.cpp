@@ -5,16 +5,18 @@
 #include <esp_log.h>
 
 // 3rdparty lib includes
-#include <htmlbuilder.h>
-#include <fmt/core.h>
+#include <ArduinoJson.h>
+#include <espchrono.h>
 #include <espcppmacros.h>
 #include <esphttpdutils.h>
-#include <espchrono.h>
+#include <fmt/core.h>
+#include <htmlbuilder.h>
 #include <lockhelper.h>
+#include <recursivelockhelper.h>
 #include <tickchrono.h>
-#include <ArduinoJson.h>
 
 // local includes
+#include "globallock.h"
 #include "globals.h"
 #include "settingsutils.h"
 
@@ -129,6 +131,12 @@ showInputForSetting(std::string_view key, T value, JsonObject &body)
 
 esp_err_t webserver_dump_nvs_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        ESP_LOGE(TAG, "Could not acquire lock");
+        return ESP_FAIL;
+    }
 
     DynamicJsonDocument doc(6144);
 
