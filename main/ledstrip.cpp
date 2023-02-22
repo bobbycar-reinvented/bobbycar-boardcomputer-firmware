@@ -77,6 +77,7 @@ bool brakeLights()
 
 void initLedStrip()
 {
+    //return;
     if (configs.feature.ledstrip.isEnabled.value())
     {
         leds.resize(configs.ledstrip.ledsCount.value());
@@ -88,9 +89,22 @@ void initLedStrip()
 
 void updateLedStrip()
 {
+    //return
     if (configs.feature.ledstrip.isEnabled.value() && !initialized)
+    {
         initLedStrip();
-    else if (!configs.feature.ledstrip.isEnabled.value() && initialized)
+        return;
+    }
+
+    espcpputils::RecursiveLockHelper helper{global_lock->handle};
+
+    if (!helper.locked())
+    {
+        ESP_LOGE("LED", "Failed to lock global lock");
+        return;
+    }
+
+    if (!configs.feature.ledstrip.isEnabled.value() && initialized)
     {
         std::fill(std::begin(leds), std::end(leds), CRGB::Black);
         FastLED.show();
@@ -258,8 +272,6 @@ void updateLedStrip()
        std::fill(std::end(leds) - configs.ledstrip.stvoFrontOffset.value() - configs.ledstrip.stvoFrontLength.value(), std::end(leds) - configs.ledstrip.stvoFrontOffset.value(), CRGB{255, 255, 255});
        }
     }
-
-    espcpputils::RecursiveLockHelper helper{global_lock->handle};
 
     FastLED.setMaxPowerInVoltsAndMilliamps(5, configs.ledstrip.maxMilliamps.value());
     FastLED.setBrightness(configs.ledstrip.brightness.value());

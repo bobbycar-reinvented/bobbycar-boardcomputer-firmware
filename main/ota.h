@@ -24,6 +24,8 @@ tl::expected<void, std::string> triggerOta(std::string_view url);
 
 tl::expected<void, std::string> switchAppPartition();
 
+tl::expected<void, std::string> readOtaAppInfo();
+
 bool isOtaInProgress();
 
 int otaProgress();

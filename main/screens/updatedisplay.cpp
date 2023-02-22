@@ -37,6 +37,9 @@ void UpdateDisplay::initScreen(espgui::TftInterface &tft)
     font.drawString("Total:", 20, m_totalLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_totalLabel.start(tft);
 
+    font.drawString("Percent:", 20, m_percentLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    m_percentLabel.start(tft);
+
     m_messageLabel.start(tft);
 
     m_progressBar.start(tft);
@@ -62,6 +65,7 @@ void UpdateDisplay::redraw(espgui::TftInterface &tft)
         {
             m_totalLabel.redraw(tft, std::to_string(*totalSize), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
             m_progressBar.redraw(tft, ota::otaPercent());
+            m_percentLabel.redraw(tft, fmt::format("{:.2f}%", ota::otaPercent()), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
         }
         else
         {

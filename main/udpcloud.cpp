@@ -30,13 +30,15 @@ std::optional<sockaddr_in> receipient;
 ip_addr_t udpCloudIp;
 cpputils::DelayedConstruction<wifi_stack::UdpSender> udpCloudSender;
 
-bool visualSendUdpPacket;
+bool visualSendUdpPacket{false};
 
+bool got_ip{false};
 } // namespace
 
 void udpCloudInit()
 {
     visualSendUdpPacket = false;
+    got_ip = false;
 }
 
 void udpCloudUpdate()
@@ -79,6 +81,8 @@ void udpCloudUpdate()
         (*receipient).sin_port = htons(configs.udpCloudSettings.udpCloudPort.value());
         (*receipient).sin_addr.s_addr = udpCloudIp.u_addr.ip4.addr;
         (*receipient).sin_family = AF_INET;
+
+        got_ip = true;
     }
 
     if (espchrono::ago(timestampLastFailed) < 2s)
@@ -107,6 +111,9 @@ void udpCloudUpdate()
 
 void sendUdpCloudPacket()
 {
+    if (!got_ip)
+        return;
+
     cloudstats::udpNeedsConstruction(true);
 
     if (!udpCloudSender)

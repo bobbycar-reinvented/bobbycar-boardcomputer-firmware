@@ -25,6 +25,7 @@ set(BOBBY_HEADERS
     actions/resetnvsaction.h
     actions/savesettingsaction.h
     actions/setupactions.h
+    actions/switchapppartitionaction.h
     actions/switchprofileaction.h
     actions/tempomatmodeapplycurrentpeedaction.h
     actions/updateswapfrontbackaction.h
@@ -307,6 +308,7 @@ set(BOBBY_SOURCES
     actions/modesettingsaction.cpp
     actions/qraction.cpp
     actions/setupactions.cpp
+    actions/switchapppartitionaction.cpp
     actions/wifistascanaction.cpp
     actions/wifistascanclearaction.cpp
     battery.cpp
