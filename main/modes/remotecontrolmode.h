@@ -12,6 +12,8 @@
 #include "modeinterface.h"
 #include "ble_bobby.h"
 
+namespace bobby {
+
 class RemoteControlMode : public ModeInterface
 {
     using Base = ModeInterface;
@@ -19,15 +21,18 @@ class RemoteControlMode : public ModeInterface
 public:
     void update() override;
 
-    const char *displayName() const override { return "RemoteControl"; }
+    const char *displayName() const override
+    { return "RemoteControl"; }
 
-    void setRemoteCommand(const RemoteCommand &command);
+    void setRemoteCommand(const ble::RemoteCommand &command);
 
 private:
-    std::optional<RemoteCommand> m_remoteCommand;
+    std::optional<ble::RemoteCommand> m_remoteCommand;
     espchrono::millis_clock::time_point m_timestamp;
 };
 
 namespace modes {
 extern RemoteControlMode remoteControlMode;
 } // namespace modes
+
+} // namespace bobby

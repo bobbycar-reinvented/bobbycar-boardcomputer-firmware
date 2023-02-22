@@ -7,6 +7,8 @@
 
 using namespace std::chrono_literals;
 
+namespace bobby {
+
 namespace modes {
 RemoteControlMode remoteControlMode;
 } // namespace modes
@@ -44,8 +46,10 @@ void RemoteControlMode::update()
     }
 }
 
-void RemoteControlMode::setRemoteCommand(const RemoteCommand &command)
+void RemoteControlMode::setRemoteCommand(const ble::RemoteCommand &command)
 {
     m_remoteCommand = command;
     m_timestamp = espchrono::millis_clock::now();
 }
+
+} // namespace bobby

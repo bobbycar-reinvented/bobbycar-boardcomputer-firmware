@@ -5,7 +5,9 @@
 #include <optional>
 
 // local includes
-#include <bobbytypesafeenum.h>
+#include "enums.h"
+
+namespace bobby::battery {
 
 typedef struct {
     uint16_t minVoltage;
@@ -127,15 +129,6 @@ if (cellVoltage >= lowerVoltage && cellVoltage <= higherVoltage) \
     func(3.45f, 3.21f, 2.00f, 2.25f) \
     func(3.21f, 2.80f, 2.25f, 2.30f)
 
-#define BatteryCellTypeValues(x) \
-    x(_22P) \
-    x(HG2) \
-    x(MH1) \
-    x(VTC5) \
-    x(BAK_25R) \
-    x(HE4)
-DECLARE_BOBBYTYPESAFE_ENUM(BatteryCellType, : uint8_t, BatteryCellTypeValues)
-
 float getBatteryPercentage(float batVoltage, BatteryCellType cellType);
 
 float getRemainingWattHours();
@@ -162,7 +155,7 @@ uint8_t count_curve_points(BatteryCellType cellType);
 
 std::optional<CalibrationPointVoltages> get_point_n_voltages(BatteryCellType cellType, uint8_t num);
 
-namespace battery {
 extern std::optional<float> bootBatPercentage;
 extern std::optional<float> bootBatWh;
-}
+
+} // namespace bobby::battery

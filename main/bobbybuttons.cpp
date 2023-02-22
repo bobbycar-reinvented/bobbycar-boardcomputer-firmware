@@ -5,21 +5,20 @@
 
 // local includes
 #include "bobbyquickactions.h"
-#include "ledstripdefines.h"
 #include "newsettings.h"
 #include "screens.h"
 #include "settingsutils.h"
+
+namespace bobby {
 
 namespace {
 constexpr const char TAG[] = "BUTTONS";
 } // namespace
 
-namespace bobby {
 std::optional<espchrono::millis_clock::time_point> buttonLeftHeld;
 std::optional<espchrono::millis_clock::time_point> buttonRightHeld;
 std::optional<espchrono::millis_clock::time_point> buttonUpHeld;
 std::optional<espchrono::millis_clock::time_point> buttonDownHeld;
-} // namespace bobby
 
 [[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button)
 {
@@ -180,3 +179,5 @@ void handleButtonLongPress(espgui::Button button)
     default:;
     }
 }
+
+} // namespace bobby

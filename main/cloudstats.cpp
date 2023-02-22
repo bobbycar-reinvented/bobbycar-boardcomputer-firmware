@@ -103,12 +103,12 @@ std::optional<std::string> buildCloudJson()
 
         if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
         {
-            doc["bap"] = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
+            doc["bap"] = battery::getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
             doc["bav"] = *avgVoltage; // battery voltage
             doc["pwr"] = sumCurrent * *avgVoltage; // total watt
         }
-        doc["whl"] = getRemainingWattHours(); // watt hours left
-        doc["kml"] = getRemainingWattHours() / configs.battery.watthoursPerKilometer.value(); // calculated kilometers left
+        doc["whl"] = battery::getRemainingWattHours(); // watt hours left
+        doc["kml"] = battery::getRemainingWattHours() / configs.battery.watthoursPerKilometer.value(); // calculated kilometers left
         doc["ekm"] = getEstimatedKmLeft(); // kilometers left live calculation
         break;
     }

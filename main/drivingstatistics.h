@@ -7,6 +7,8 @@
 // 3rdparty lib includes
 #include <espchrono.h>
 
+namespace bobby {
+
 struct DrivingStatistics
 {
     float meters_driven;
@@ -27,3 +29,5 @@ float getEstimatedKmLeft();
 std::string getEfficiencyClassString();
 std::string getRemainingEstimateRangeString();
 uint16_t getEfficiencyClassColor();
+
+} // namespace bobby

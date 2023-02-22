@@ -53,7 +53,7 @@ void SpeedInfoDisplay::redraw(espgui::TftInterface &tft)
             (std::abs(avgSpeedKmh) < 100 ? fmt::format("{:.1f}", avgSpeedKmh) : fmt::format("{:.0f}", avgSpeedKmh)), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
     font.setTextSize(1);
-    m_batteryPercentLabel.redraw(tft, font, getBatteryPercentageString(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+    m_batteryPercentLabel.redraw(tft, font, battery::getBatteryPercentageString(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {

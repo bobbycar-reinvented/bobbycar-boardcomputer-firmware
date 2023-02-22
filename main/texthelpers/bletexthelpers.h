@@ -8,6 +8,8 @@ struct BleServerPeerDevicesText : public virtual espgui::TextInterface {
 public:
     std::string text() const override
     {
+        using namespace bobby::ble;
+
         std::string text = "peerDevices: ";
         if (pServer)
             text += std::to_string(pServer->getPeerDevices().size());
@@ -19,6 +21,8 @@ struct BleCharacSubscribedText : public virtual espgui::TextInterface {
 public:
     std::string text() const override
     {
+        using namespace bobby::ble;
+
         std::string text = "subscribed: ";
         if (livestatsCharacteristic)
             text += std::to_string(livestatsCharacteristic->getSubscribedCount());

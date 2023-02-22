@@ -18,7 +18,7 @@ using namespace std::chrono_literals;
 
 float calculateMegaJoules()
 {
-    return getBatteryWattHours() * 0.0036f;
+    return battery::getBatteryWattHours() * 0.0036f; // 3.6MJ per kWh
 }
 
 void ConfiscationDisplay::start()

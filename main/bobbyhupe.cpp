@@ -8,6 +8,8 @@
 
 using namespace std::chrono_literals;
 
+namespace bobby {
+
 namespace {
 constexpr const char * const TAG = "BOBBY_HUPE";
 
@@ -63,3 +65,5 @@ void handle_hupe()
     }
 }
 } // namespace bobbyhupe
+
+} // namespace bobby

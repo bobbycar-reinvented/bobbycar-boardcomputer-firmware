@@ -23,6 +23,7 @@
 #include "newsettings.h"
 #include "taskmanager.h"
 #include "udpcloud.h"
+#include "ledstripdefines.h"
 
 namespace bobby {
 
@@ -109,11 +110,11 @@ void StatusDisplay::redraw(espgui::TftInterface &tft)
     if(configs.feature.ledstrip.isEnabled.value())
     {
         static bool blink_fill_with_black;
-        if (configs.ledstrip.enableVisualizeBlink.value() && (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) && (blinkAnimation > 0))
+        if (configs.ledstrip.enableVisualizeBlink.value() && (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms) && (ledstrip::blinkAnimation > 0))
         {
-            if (BLINK_LEFT_EXPR)
+            if (ledstrip::BLINK_LEFT_EXPR)
                 tft.fillRect(0, 0, tft.width() / 2, 6, espgui::TFT_YELLOW);
-            if (BLINK_RIGHT_EXPR)
+            if (ledstrip::BLINK_RIGHT_EXPR)
                 tft.fillRect(tft.width() / 2, 0, tft.width() / 2, 6, espgui::TFT_YELLOW);
 
             blink_fill_with_black = true;
@@ -136,9 +137,9 @@ void StatusDisplay::redraw(espgui::TftInterface &tft)
     m_labelBrems.redraw(tft, brems ? fmt::format("{:.2f}", *brems) : "?", espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     m_progressBarBrems.redraw(tft, brems ? *brems : 0);
 
-    m_batterypercent.redraw(tft, getBatteryPercentageString(), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
-    m_watthoursleft.redraw(tft, getBatteryRemainingWattHoursString(), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
-    m_kilometersleft.redraw(tft, getRemainingRangeString(), getEfficiencyClassColor(), espgui::TFT_BLACK, 2);
+    m_batterypercent.redraw(tft, battery::getBatteryPercentageString(), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    m_watthoursleft.redraw(tft, battery::getBatteryRemainingWattHoursString(), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+    m_kilometersleft.redraw(tft, battery::getRemainingRangeString(), getEfficiencyClassColor(), espgui::TFT_BLACK, 2);
 
     m_frontStatus.redraw(tft, controllers.front);
     m_backStatus.redraw(tft, controllers.back);

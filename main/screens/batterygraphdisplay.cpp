@@ -15,6 +15,8 @@ constexpr const char * const TAG = "BatteryGraphDisplay";
 
 namespace bobby {
 
+using namespace battery;
+
 namespace {
 constexpr char TEXT_BATTERY_GRAPH[] = "Battery Level";
 constexpr const uint8_t TOP_OFFSET = 40;
@@ -31,7 +33,7 @@ std::string BatteryGraphDisplay::title() const
 {
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        return fmt::format("{} ({:.1f}%)", TEXT_BATTERY_GRAPH, getBatteryPercentage(*avgVoltage, configs.battery.cellType.value()));
+        return fmt::format("{} ({:.1f}%)", TEXT_BATTERY_GRAPH, battery::getBatteryPercentage(*avgVoltage, configs.battery.cellType.value()));
     }
     return TEXT_BATTERY_GRAPH;
 }

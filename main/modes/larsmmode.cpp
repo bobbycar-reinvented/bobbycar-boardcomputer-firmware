@@ -4,6 +4,8 @@
 #include "globals.h"
 #include "utils.h"
 
+namespace bobby {
+
 namespace modes {
 LarsmMode larsmMode;
 } // namespace modes
@@ -106,3 +108,5 @@ void LarsmMode::update()
         }
     }
 }
+
+} // namespace bobby

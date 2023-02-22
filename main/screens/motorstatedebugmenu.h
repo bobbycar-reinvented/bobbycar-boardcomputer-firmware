@@ -12,7 +12,7 @@
 #include "texthelpers/debugtexthelpers.h"
 #include "utils.h"
 
-namespace bobby {
+namespace bobby::debug {
 
 template<const char *Ttitle, typename Ttexts>
 class MotorStateDebugMenu :
@@ -54,4 +54,4 @@ using BackLeftMotorStateDebugMenu = MotorStateDebugMenu<TEXT_BACKLEFTCOMMAND, Ba
 constexpr char TEXT_BACKRIGHTCOMMAND[] = "Back right command";
 using BackRightMotorStateDebugMenu = MotorStateDebugMenu<TEXT_BACKRIGHTCOMMAND, BackTexts::RightCommand>;
 
-} // namespace bobby
+} // namespace bobby::debug

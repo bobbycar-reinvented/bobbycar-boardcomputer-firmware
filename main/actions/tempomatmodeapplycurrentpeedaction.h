@@ -13,6 +13,8 @@ class TempomatModeApplyCurrentSpeedAction : public virtual ActionInterface
 public:
     void triggered() override
     {
+        using namespace bobby;
+
         modes::tempomatMode.nCruiseMotTgt = avgSpeed;
     }
 };

@@ -8,27 +8,30 @@
 #include <esp_log.h>
 
 // 3rdparty lib includes
-#include <htmlbuilder.h>
-#include <fmt/core.h>
-#include <espcppmacros.h>
-#include <numberparsing.h>
-#include <esphttpdutils.h>
-#include <textinterface.h>
-#include <menudisplay.h>
 #include <changevaluedisplay.h>
 #include <changevaluedisplay_string.h>
+#include <espcppmacros.h>
+#include <esphttpdutils.h>
+#include <fmt/core.h>
+#include <htmlbuilder.h>
 #include <lockhelper.h>
-#include <tickchrono.h>
+#include <menudisplay.h>
+#include <numberparsing.h>
+#include <recursivelockhelper.h>
 #include <screenmanager.h>
+#include <textinterface.h>
+#include <tickchrono.h>
 
 // local includes
 #include "bobbybuttons.h"
+#include "globallock.h"
 #include "globals.h"
 #include "newsettings.h"
-#include "webserver_lock.h"
 
 using esphttpdutils::HtmlTag;
 using namespace std::chrono_literals;
+
+namespace bobby::webserver {
 
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
@@ -36,6 +39,7 @@ constexpr const char * const TAG = "BOBBYWEB";
 
 esp_err_t webserver_root_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
 
     std::string body;
 
@@ -292,6 +296,7 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerRawButton_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
@@ -349,6 +354,7 @@ esp_err_t webserver_triggerRawButton_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
@@ -406,6 +412,7 @@ esp_err_t webserver_triggerButton_handler(httpd_req_t *req)
 
 esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
@@ -487,6 +494,7 @@ esp_err_t webserver_triggerItem_handler(httpd_req_t *req)
 
 esp_err_t webserver_setValue_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
@@ -563,3 +571,5 @@ esp_err_t webserver_setValue_handler(httpd_req_t *req)
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/")
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/\">/</a>")
 }
+
+} // namespace bobby::webserver

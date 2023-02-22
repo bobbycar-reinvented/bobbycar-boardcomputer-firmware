@@ -6,10 +6,11 @@
 #include "softpwmlimiter.h"
 #include "utils.h"
 
-namespace motor_pwm_limiter {
+namespace bobby::motor_pwm_limiter {
+
 void update()
 {
-    if (!configs.bleSettings.bleEnabled.value() || !configs.bleSettings.bleFenceEnabled.value() || (pServer && !pServer->getPeerDevices().empty()))
+    if (!configs.bleSettings.bleEnabled.value() || !configs.bleSettings.bleFenceEnabled.value() || (ble::pServer && !ble::pServer->getPeerDevices().empty()))
     {
         soft_pwm_limiter::trigger = false;
         soft_pwm_limiter::update();
@@ -28,8 +29,10 @@ void update()
 
     // Scale PWM proportionally to avoid loss of steering in case of wheelchair or RC mode
     soft_pwm_limiter::update();
+
     float new_max = soft_pwm_limiter::limit(max_pwm);
     float ratio;
+
     if (max_pwm > 0.f)
         ratio = new_max / max_pwm;
     else
@@ -44,4 +47,5 @@ void update()
         motor.pwm *= ratio;
     }
 }
-}
+
+} // namespace bobby::motor_pwm_limiter

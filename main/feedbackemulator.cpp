@@ -7,9 +7,9 @@
 // local includes
 #include "globals.h"
 
-namespace feedbackemulator {
-void init()
-{}
+namespace bobby::feedbackemulator {
+
+void init() {}
 
 void update()
 {
@@ -52,4 +52,5 @@ void update()
         controller.feedbackValid = true;
     }
 }
-} // feedbackemulator
+
+} // namespace bobby::feedbackemulator

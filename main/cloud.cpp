@@ -471,7 +471,7 @@ void send_information()
     // battery
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        infoObject["percentage"] = fmt::format("{:.1f}", getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())));
+        infoObject["percentage"] = fmt::format("{:.1f}", battery::getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())));
         infoObject["voltage"] = *avgVoltage;
     }
     else
@@ -515,7 +515,7 @@ void send_ota_status()
         return;
     doc.clear();
     doc["type"] = "otaStatus";
-    if (!asyncOta)
+    /*if (!asyncOta)
     {
         doc["info"] = nullptr;
     }
@@ -534,6 +534,30 @@ void send_ota_status()
         }
 
         if (const auto &appDesc = asyncOta->appDesc())
+        {
+            otaObject["newVersion"] = appDesc->version;
+            otaObject["date"] = appDesc->date;
+        }
+        else
+        {
+            otaObject["newVersion"] = nullptr;
+            otaObject["date"] = nullptr;
+        }
+    }*/
+
+    if (!ota::isOtaInProgress())
+        doc["info"] = nullptr;
+    else
+    {
+        JsonObject otaObject = doc.createNestedObject("info");
+        otaObject["status"] = toString(ota::otaStatus());
+        otaObject["progress"] = ota::otaProgress();
+        if (const auto total = ota::otaTotalSize(); total)
+            otaObject["totalSize"] = *total;
+        else
+            otaObject["totalSize"] = nullptr;
+
+        if (const auto &appDesc = ota::otaAppDesc(); appDesc)
         {
             otaObject["newVersion"] = appDesc->version;
             otaObject["date"] = appDesc->date;
@@ -606,7 +630,7 @@ void updateCloud()
         lastHeartbeat = now;
     }
 
-    if (asyncOtaTaskStarted)
+    if (ota::isOtaInProgress())
     {
         if (!lastOtaStatus || now - *lastOtaStatus >= 1000ms)
         {

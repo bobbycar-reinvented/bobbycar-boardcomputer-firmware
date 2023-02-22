@@ -4,6 +4,8 @@
 #include "bobbycar-common.h"
 #include "modeinterface.h"
 
+namespace bobby {
+
 class MotortestMode : public ModeInterface
 {
 public:
@@ -18,3 +20,5 @@ private:
 namespace modes {
 extern MotortestMode motortestMode;
 } // namespace modes
+
+} // namespace bobby

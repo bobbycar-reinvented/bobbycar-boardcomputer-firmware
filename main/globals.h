@@ -6,15 +6,6 @@
 #include <memory>
 #include <optional>
 
-// Arduino includes
-#ifdef FEATURE_BLUETOOTH
-#include <BluetoothSerial.h>
-#endif
-#ifdef FEATURE_SERIAL
-#include <HardwareSerial.h>
-#endif
-#include <SPI.h>
-
 // esp-idf includes
 #include <esp_chip_info.h>
 #include <esp32/pm.h>
@@ -29,6 +20,8 @@
 #include "newsettings.h"
 #include "profilesettings.h"
 #include "settingspersister.h"
+
+namespace bobby {
 
 extern std::optional<int16_t> raw_gas, raw_brems;
 extern std::optional<float> gas, brems;
@@ -79,16 +72,10 @@ public:
     explicit Controllers() :
         std::array<Controller, 2>{{
             Controller {
-#ifdef FEATURE_SERIAL
-                Serial1,
-#endif
                 profileSettings.controllerHardware.enableFrontLeft, profileSettings.controllerHardware.enableFrontRight, profileSettings.controllerHardware.invertFrontLeft, profileSettings.controllerHardware.invertFrontRight,
                 configs.battery.front30VoltCalibration, configs.battery.front50VoltCalibration
             },
             Controller {
-#ifdef FEATURE_SERIAL
-                Serial2,
-#endif
                 profileSettings.controllerHardware.enableBackLeft, profileSettings.controllerHardware.enableBackRight, profileSettings.controllerHardware.invertBackLeft, profileSettings.controllerHardware.invertBackRight,
                 configs.battery.back30VoltCalibration, configs.battery.back50VoltCalibration
             }
@@ -123,9 +110,7 @@ extern Controllers controllers;
 struct FrontControllerGetter { static Controller &get() { return controllers.front; }};
 struct BackControllerGetter { static Controller &get() { return controllers.back; }};
 
-#ifdef FEATURE_BLUETOOTH
-extern BluetoothSerial bluetoothSerial;
-#endif
-
 extern ModeInterface *lastMode;
 extern ModeInterface *currentMode;
+
+} // namespace bobby

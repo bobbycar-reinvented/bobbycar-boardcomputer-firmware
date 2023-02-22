@@ -132,12 +132,12 @@ template<> struct nvsGetterHelper<bobbycar::protocol::ControlMode> { static esp_
         *out_value = bobbycar::protocol::ControlMode(tempValue);
     return err;
 }};
-template<> struct nvsGetterHelper<LarsmModeMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, LarsmModeMode* out_value)
+template<> struct nvsGetterHelper<bobby::LarsmModeMode> { static esp_err_t nvs_get(nvs_handle handle, const char* key, bobby::LarsmModeMode* out_value)
 {
     uint8_t tempValue;
     esp_err_t err = nvs_get_u8(handle, key, &tempValue);
     if (err == ESP_OK)
-        *out_value = LarsmModeMode(tempValue);
+        *out_value = bobby::LarsmModeMode{tempValue};
     return err;
 }};
 #ifdef FEATURE_BLUETOOTH
@@ -238,7 +238,7 @@ bool SettingsPersister::load(T &settings)
 
     if (m_profile)
     {
-        profileSettings.executeForEveryProfileSetting([&](const char *key, auto &value)
+        bobby::profileSettings.executeForEveryProfileSetting([&](const char *key, auto &value)
         {
             if (esp_err_t result = nvsGetterHelper<std::decay_t<decltype(value)>>::nvs_get(m_profile->handle, key, &value); result != ESP_OK)
             {
@@ -257,7 +257,7 @@ bool SettingsPersister::load(T &settings)
     return result;
 }
 
-template bool SettingsPersister::load<ProfileSettings>(ProfileSettings &profileSettings);
+template bool SettingsPersister::load<bobby::ProfileSettings>(bobby::ProfileSettings &profileSettings);
 
 template<typename T> struct nvsSetterHelper;
 template<> struct nvsSetterHelper<int8_t> { static constexpr auto nvs_set = &nvs_set_i8; };
@@ -279,7 +279,7 @@ template<> struct nvsSetterHelper<bobbycar::protocol::ControlMode> { static esp_
 {
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
-template<> struct nvsSetterHelper<LarsmModeMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, LarsmModeMode value)
+template<> struct nvsSetterHelper<bobby::LarsmModeMode> { static esp_err_t nvs_set(nvs_handle handle, const char* key, bobby::LarsmModeMode value)
 {
     return nvs_set_u8(handle, key, uint8_t(value));
 }};
@@ -337,7 +337,7 @@ bool SettingsPersister::save(T &settings)
 
     if (m_profile)
     {
-        profileSettings.executeForEveryProfileSetting([&](const char *key, const auto &value)
+        bobby::profileSettings.executeForEveryProfileSetting([&](const char *key, const auto &value)
         {
             if (esp_err_t result = nvsSetterHelper<std::decay_t<decltype(value)>>::nvs_set(m_profile->handle, key, value); result != ESP_OK)
             {
@@ -355,7 +355,7 @@ bool SettingsPersister::save(T &settings)
     return result;
 }
 
-template bool SettingsPersister::save<ProfileSettings>(ProfileSettings &settings);
+template bool SettingsPersister::save<bobby::ProfileSettings>(bobby::ProfileSettings &settings);
 
 std::optional<uint8_t> SettingsPersister::currentlyOpenProfileIndex() const
 {

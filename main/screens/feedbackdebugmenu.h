@@ -14,7 +14,7 @@
 #include "texthelpers/debugtexthelpers.h"
 #include "utils.h"
 
-namespace bobby {
+namespace bobby::debug {
 
 template<const char *Ttext, typename Ttexts, template<int> class ColorInterface>
 class FeedbackDebugMenu :
@@ -44,4 +44,4 @@ using FrontFeedbackDebugMenu = FeedbackDebugMenu<TEXT_FRONTFEEDBACK, FrontTexts,
 constexpr char TEXT_BACKFEEDBACK[] = "Back feedback";
 using BackFeedbackDebugMenu = FeedbackDebugMenu<TEXT_BACKFEEDBACK, BackTexts, FrontFeedbackColor>;
 
-} // namespace bobby
+} // namespace bobby::debug

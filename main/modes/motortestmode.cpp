@@ -4,6 +4,8 @@
 #include "globals.h"
 #include "utils.h"
 
+namespace bobby {
+
 namespace modes {
 MotortestMode motortestMode;
 } // namespace modes
@@ -18,10 +20,13 @@ void MotortestMode::update()
 {
     const auto m_pwmMax = profileSettings.motortestMode.maxPwm;
     m_pwm += m_dir * profileSettings.motortestMode.multiplikator;
-    if (m_pwm > m_pwmMax) {
+    if (m_pwm > m_pwmMax)
+    {
         m_pwm = m_pwmMax;
         m_dir = -m_dir;
-    } else if (m_pwm < -m_pwmMax) {
+    }
+    else if (m_pwm < -m_pwmMax)
+    {
         m_pwm = -m_pwmMax;
         m_dir = -m_dir;
     }
@@ -35,3 +40,5 @@ void MotortestMode::update()
         motor.nCruiseMotTgt = 0;
     }
 }
+
+} // namespace bobby

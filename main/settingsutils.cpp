@@ -7,7 +7,8 @@
 #include "globals.h"
 #include "presets.h"
 
-namespace settingsutils {
+namespace bobby::settingsutils {
+
 void switchProfile(uint8_t index)
 {
 #ifdef SIMPLIFIED_TRIGGER_TRIGGERONPRESET
@@ -35,4 +36,5 @@ void switchProfile(uint8_t index)
         return;
     }
 }
-} // namespace settingsutils
+
+} // namespace bobby::settingsutils

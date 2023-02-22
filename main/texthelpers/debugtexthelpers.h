@@ -8,7 +8,8 @@
 #include "globals.h"
 #include "utils.h"
 
-namespace {
+namespace bobby::debug {
+
 template<typename controller>
 struct ControllerTexts
 {
@@ -88,4 +89,5 @@ public:
 
 using FrontTexts = ControllerTexts<FrontControllerGetter>;
 using BackTexts = ControllerTexts<BackControllerGetter>;
-}
+
+} // namespace bobby::debug

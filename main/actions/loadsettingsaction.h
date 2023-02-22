@@ -5,10 +5,12 @@
 
 using namespace espgui;
 
-namespace {
+namespace bobby {
+
 class LoadSettingsAction : public virtual ActionInterface
 {
 public:
     void triggered() override { loadProfileSettings(); }
 };
-}
+
+} // namespace bobby

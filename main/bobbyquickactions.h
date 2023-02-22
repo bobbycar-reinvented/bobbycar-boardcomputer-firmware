@@ -4,23 +4,9 @@
 #include <buttonsinterface.h>
 
 // local includes
-#include "bobbytypesafeenum.h"
 #include "bobbybuttons.h"
 
-#define BobbyQuickActionsValues(x) \
-    x(NONE) \
-    x(BLINK_LEFT) \
-    x(BLINK_RIGHT) \
-    x(HANDBREMSE) \
-    x(OPEN_GARAGE) \
-    x(WIFI_SCAN) \
-    x(PWMOMAT) \
-    x(HUPE) \
-    x(COMPRESSOR_TOGGLE)
-
-DECLARE_BOBBYTYPESAFE_ENUM(BobbyQuickActions, : uint8_t, BobbyQuickActionsValues)
-
-namespace quickactions {
+namespace bobby::quickactions {
 
 void handle_bobby_quickaction(espgui::Button button, bool pressed = true);
 
@@ -32,4 +18,4 @@ void handle_handbremse();
 void action_wifi_scan();
 void handle_pwmomat();
 
-} // namespace quickactions
+} // namespace bobby::quickactions

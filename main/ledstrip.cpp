@@ -1,11 +1,16 @@
 #include "ledstrip.h"
 
+// system includes
+#include <cmath>
+
 // 3rdparty lib includes
 #include <cpputils.h>
 #include <espchrono.h>
-#include <math.h>
+#include <recursivelockhelper.h>
 
 // local includes
+#include "enums.h"
+#include "globallock.h"
 #include "globals.h"
 #include "ledstripdefines.h"
 #include "newsettings.h"
@@ -14,6 +19,8 @@
 #include "utils.h"
 
 using namespace std::chrono_literals;
+
+namespace bobby::ledstrip {
 
 std::vector<CRGB> leds;
 uint8_t gHue = 0;
@@ -70,6 +77,7 @@ bool brakeLights()
 
 void initLedStrip()
 {
+    //return;
     if (configs.feature.ledstrip.isEnabled.value())
     {
         leds.resize(configs.ledstrip.ledsCount.value());
@@ -81,9 +89,22 @@ void initLedStrip()
 
 void updateLedStrip()
 {
+    //return
     if (configs.feature.ledstrip.isEnabled.value() && !initialized)
+    {
         initLedStrip();
-    else if (!configs.feature.ledstrip.isEnabled.value() && initialized)
+        return;
+    }
+
+    espcpputils::RecursiveLockHelper helper{global_lock->handle};
+
+    if (!helper.locked())
+    {
+        ESP_LOGE("LED", "Failed to lock global lock");
+        return;
+    }
+
+    if (!configs.feature.ledstrip.isEnabled.value() && initialized)
     {
         std::fill(std::begin(leds), std::end(leds), CRGB::Black);
         FastLED.show();
@@ -260,7 +281,7 @@ void updateLedStrip()
 void showAnimation()
 {
     if (configs.ledstrip.enableLedAnimation.value()
-        && !(asyncOtaTaskStarted && configs.ledstrip.otaMode.value() != OtaAnimationModes::None)
+        && !(ota::isOtaInProgress() && configs.ledstrip.otaMode.value() != OtaAnimationModes::None)
         )
     {
         switch (configs.ledstrip.animationType.value())
@@ -278,7 +299,7 @@ void showAnimation()
         default: showDefaultLedstrip();
         }
     }
-    else if (asyncOtaTaskStarted && configs.ledstrip.otaMode.value() != OtaAnimationModes::None)
+    else if (ota::isOtaInProgress() && configs.ledstrip.otaMode.value() != OtaAnimationModes::None)
     {
         // show ota animation
         showOtaAnimation();
@@ -291,12 +312,11 @@ void showOtaAnimation()
 {
     std::fill(std::begin(leds), std::end(leds), CRGB{0,0,0});
     const auto leds_count = leds.size();
-    float percentage = 0;
 
-    const auto progress = asyncOta->progress();
-    if (const auto totalSize = asyncOta->totalSize(); totalSize && *totalSize > 0)
+    //const auto progress = ota::otaProgress();
+    if (const auto totalSize = ota::otaTotalSize(); totalSize && *totalSize > 0)
     {
-        percentage = (float(progress) / *totalSize * 100);
+        const float percentage = ota::otaPercent();
         if (configs.ledstrip.otaMode.value() == OtaAnimationModes::GreenProgressBar)
         {
             int numLeds = (leds_count * percentage) / 100;
@@ -411,7 +431,7 @@ void showGasOMeterAnimation()
         auto watt = sumCurrent * *avgVoltage;
         auto w_per_kmh = watt / std::abs(avgSpeedKmh);
         CRGB color = 0;
-        if (isinf(w_per_kmh) || isnan(w_per_kmh))
+        if (std::isinf(w_per_kmh) || std::isnan(w_per_kmh))
         {
             color = 0;
         }
@@ -581,9 +601,11 @@ void showMancheLKWShabensoeinelichtanimation()
     if (!sunrise_dt || (*sunrise_dt).date.day() != today.date.day())
     {
         sunrise_dt = today;
-        calculate_sun();
+        time::calculate_sun();
     }
 
     const int currentTimeInMinutes = today.hour * 60 + today.minute;
     return (currentTimeInMinutes <= sunrise || currentTimeInMinutes >= sunset);
 }
+
+} // namespace bobby::ledstrip

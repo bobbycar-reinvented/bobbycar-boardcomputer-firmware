@@ -3,7 +3,8 @@
 // local includes
 #include "profilesettings.h"
 
-namespace presets {
+namespace bobby::presets {
+
 constexpr ProfileSettings::Limits defaultLimits {
     .iMotMax = DEFAULT_IMOTMAX,           // profileSetting
     .iDcMax = DEFAULT_IDCMAX,             // profileSetting
@@ -139,4 +140,5 @@ constexpr ProfileSettings defaultProfileSettings {
     .wheelchairMode = defaultWheelChairMode
 #endif
 };
-} // namespace presets
+
+} // namespace bobby::presets

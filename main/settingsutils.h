@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
-namespace settingsutils {
+namespace bobby::settingsutils {
+
 void switchProfile(uint8_t index);
-} // namespace settingsutils
+
+} // namespace bobby::settingsutils

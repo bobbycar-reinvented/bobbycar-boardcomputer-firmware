@@ -53,6 +53,8 @@ const std::array<uint16_t, 8> tft_colors = {
 };
 } // namespace
 
+using namespace ledstrip;
+
 std::string LedstripColorsDisplay::title() const
 {
     return TEXT_LEDSTRIPCOLORMENU;

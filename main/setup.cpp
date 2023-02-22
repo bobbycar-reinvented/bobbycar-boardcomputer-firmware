@@ -3,7 +3,8 @@
 // local includes
 #include "globals.h"
 
-namespace setup {
+namespace bobby::setup {
+
 bool currently_locked;
 ModeInterface* oldMode;
 IgnoreInputMode setup_mode{0, bobbycar::protocol::ControlType::FieldOrientedControl, bobbycar::protocol::ControlMode::Torque};
@@ -46,4 +47,5 @@ bool isLocked()
 {
     return currently_locked;
 }
-} // namespace setup
+
+} // namespace bobby::setup

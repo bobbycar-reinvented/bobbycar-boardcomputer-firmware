@@ -38,43 +38,43 @@ constexpr char TEXT_BACK[] = "Back";
 using RawGasGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_RAW_GAS>,
-    espgui::SingleGraphAccessor<RawGasStatistics>,
+    espgui::SingleGraphAccessor<statistics::RawGasStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using RawBremsGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_RAW_BREMS>,
-    espgui::SingleGraphAccessor<RawBremsStatistics>,
+    espgui::SingleGraphAccessor<statistics::RawBremsStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using GasGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_GAS>,
-    espgui::SingleGraphAccessor<GasStatistics>,
+    espgui::SingleGraphAccessor<statistics::GasStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using BremsGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_BREMS>,
-    espgui::SingleGraphAccessor<BremsStatistics>,
+    espgui::SingleGraphAccessor<statistics::BremsStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using PotisGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<2>,
     espgui::StaticTitle<TEXT_POTIS>,
-    espgui::DualGraphAccessor<GasStatistics, BremsStatistics>,
+    espgui::DualGraphAccessor<statistics::GasStatistics, statistics::BremsStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using PotisSplitGraphDisplay = espgui::makeComponent<
     BobbySplitGraphDisplay<1, 1>,
     espgui::StaticTitle<TEXT_POTIS>,
-    espgui::SingleTopGraphAccessor<GasStatistics>,
-    espgui::SingleBottomGraphAccessor<BremsStatistics>,
+    espgui::SingleTopGraphAccessor<statistics::GasStatistics>,
+    espgui::SingleBottomGraphAccessor<statistics::BremsStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
@@ -82,14 +82,14 @@ using PotisSplitGraphDisplay = espgui::makeComponent<
 using AvgSpeedGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_AVGSPEED>,
-    espgui::SingleGraphAccessor<AvgSpeedStatistics>,
+    espgui::SingleGraphAccessor<statistics::AvgSpeedStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using AvgSpeedKmhGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_AVGSPEEDKMH>,
-    espgui::SingleGraphAccessor<AvgSpeedKmhStatistics>,
+    espgui::SingleGraphAccessor<statistics::AvgSpeedKmhStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
@@ -97,7 +97,7 @@ using AvgSpeedKmhGraphDisplay = espgui::makeComponent<
 using SumCurrentGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_SUMCURRENT>,
-    espgui::SingleGraphAccessor<SumCurrentStatistics>,
+    espgui::SingleGraphAccessor<statistics::SumCurrentStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
@@ -105,29 +105,29 @@ using SumCurrentGraphDisplay = espgui::makeComponent<
 using FrontVoltageGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_FRONTVOLTAGE>,
-    espgui::SingleGraphAccessor<FrontVoltageStatistics>,
+    espgui::SingleGraphAccessor<statistics::FrontVoltageStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using BackVoltageGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_BACKVOLTAGE>,
-    espgui::SingleGraphAccessor<BackVoltageStatistics>,
+    espgui::SingleGraphAccessor<statistics::BackVoltageStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using VoltagesGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<2>,
     espgui::StaticTitle<TEXT_VOLTAGES>,
-    espgui::DualGraphAccessor<FrontVoltageStatistics, BackVoltageStatistics>,
+    espgui::DualGraphAccessor<statistics::FrontVoltageStatistics, statistics::BackVoltageStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
 using VoltagesSplitGraphDisplay = espgui::makeComponent<
     BobbySplitGraphDisplay<1, 1>,
     espgui::StaticTitle<TEXT_VOLTAGES>,
-    espgui::SingleTopGraphAccessor<FrontVoltageStatistics>,
-    espgui::SingleBottomGraphAccessor<BackVoltageStatistics>,
+    espgui::SingleTopGraphAccessor<statistics::FrontVoltageStatistics>,
+    espgui::SingleBottomGraphAccessor<statistics::BackVoltageStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
@@ -167,7 +167,12 @@ class MotorCurrentsStatistics : public virtual espgui::GraphAccessorInterface<4>
 {
     std::array<std::reference_wrapper<const statistics::ContainerType>, 4> getBuffers() const override
     {
-        return {FrontLeftCurrentStatistics{}.getBuffer(), FrontRightCurrentStatistics{}.getBuffer(), BackLeftCurrentStatistics{}.getBuffer(), BackRightCurrentStatistics{}.getBuffer()};
+        return {
+            statistics::FrontLeftCurrentStatistics{}.getBuffer(),
+            statistics::FrontRightCurrentStatistics{}.getBuffer(),
+            statistics::BackLeftCurrentStatistics{}.getBuffer(),
+            statistics::BackRightCurrentStatistics{}.getBuffer()
+        };
     }
 };
 using MotorCurrentsGraphDisplay = espgui::makeComponent<
@@ -181,7 +186,7 @@ using MotorCurrentsGraphDisplay = espgui::makeComponent<
 using RssiGraphDisplay = espgui::makeComponent<
     BobbyGraphDisplay<1>,
     espgui::StaticTitle<TEXT_RSSI>,
-    espgui::SingleGraphAccessor<RssiStatistics>,
+    espgui::SingleGraphAccessor<statistics::RssiStatistics>,
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;

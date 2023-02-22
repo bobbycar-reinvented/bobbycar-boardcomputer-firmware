@@ -5,6 +5,8 @@
 #include "utils.h"
 #include "defaultmode.h"
 
+namespace bobby {
+
 namespace modes {
 TempomatMode tempomatMode;
 } // namespace modes
@@ -54,3 +56,5 @@ void TempomatMode::update()
         }
     }
 }
+
+} // namespace bobby

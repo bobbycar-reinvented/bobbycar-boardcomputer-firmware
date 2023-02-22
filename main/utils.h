@@ -48,6 +48,8 @@
 #endif
 #include "setup.h"
 
+namespace bobby {
+
 extern bool currentlyReverseBeeping;
 extern bool reverseBeepToggle;
 extern espchrono::millis_clock::time_point lastReverseBeepToggle;
@@ -150,3 +152,5 @@ static constexpr const auto &dpad_update = nullptr;
 static constexpr const char * const dpad_name = "";
 #endif
 } // namespace bobbydpad
+
+} // namespace bobby

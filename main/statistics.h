@@ -9,14 +9,13 @@
 #include "bmsutils.h"
 #include "utils.h"
 
-namespace statistics {
+namespace bobby::statistics {
 using ContainerType = ring_buffer<float, 200>;
 extern ContainerType raw_gas, raw_brems, gas, brems, avgSpeed, avgSpeedKmh, sumCurrent, frontVoltage, backVoltage, frontLeftCurrent, frontRightCurrent, backLeftCurrent, backRightCurrent,
 #ifdef FEATURE_BMS
     bmsVoltage, bmsCurrent, bmsPower,
 #endif
     rssi;
-} // namespace statistics
 
 void pushStats();
 
@@ -52,3 +51,5 @@ using FrontRightCurrentStatistics = BufferAccessorImpl<statistics::frontRightCur
 using BackLeftCurrentStatistics = BufferAccessorImpl<statistics::backLeftCurrent>;
 using BackRightCurrentStatistics = BufferAccessorImpl<statistics::backRightCurrent>;
 using RssiStatistics = BufferAccessorImpl<statistics::rssi>;
+
+} // namespace bobby::statistics

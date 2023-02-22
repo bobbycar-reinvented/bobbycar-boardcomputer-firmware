@@ -7,6 +7,8 @@
 #include <buttonsinterface.h>
 #include <espchrono.h>
 
+namespace bobby {
+
 enum BobbyButton
 {
     Profile0 = espgui::Button::ButtonMax + 1,
@@ -26,14 +28,14 @@ enum BobbyButton
     ButtonMax = Back
 };
 
-namespace bobby {
 extern std::optional<espchrono::millis_clock::time_point> buttonLeftHeld;
 extern std::optional<espchrono::millis_clock::time_point> buttonRightHeld;
 extern std::optional<espchrono::millis_clock::time_point> buttonUpHeld;
 extern std::optional<espchrono::millis_clock::time_point> buttonDownHeld;
-} // namespace bobby
 
 [[nodiscard]] std::optional<espgui::Button> translateRawButton(uint8_t button);
 void buttonPressedCommon(espgui::Button button);
 void buttonReleasedCommon(espgui::Button button);
 void handleButtonLongPress(espgui::Button button);
+
+} // namespace bobby

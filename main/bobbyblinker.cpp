@@ -7,11 +7,15 @@
 #include <cpputils.h>
 
 // local includes
-#include "globals.h"
 #include "espnowfunctions.h"
-#include "ledstrip.h"
+#include "globals.h"
+#include "ledstripdefines.h"
 
 using namespace std::chrono_literals;
+
+namespace bobby::blinker {
+
+using namespace ledstrip;
 
 namespace {
 constexpr const char * const TAG = "BOBBY_BLINKER";
@@ -33,7 +37,6 @@ void sendState(const std::string& state)
 bool brakeLightsOffSent{false};
 } // namespace
 
-namespace bobbyblinker {
 std::optional<espchrono::millis_clock::time_point> blinker_last_time_sent;
 std::optional<espchrono::millis_clock::time_point> brake_last_time_sent;
 
@@ -81,4 +84,4 @@ void handle_blinker()
         }
     }
 }
-} // namespace bobbyblinker
+} // namespace bobby::blinker

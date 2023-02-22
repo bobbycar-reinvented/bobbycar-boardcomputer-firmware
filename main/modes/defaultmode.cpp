@@ -6,6 +6,8 @@
 
 using namespace std::chrono_literals;
 
+namespace bobby {
+
 namespace modes {
 DefaultMode defaultMode;
 } // namespace modes
@@ -22,7 +24,7 @@ void DefaultMode::update()
     {
         start();
 
-        for (bobbycar::protocol::serial::MotorState &motor : motors())
+        for (bobbycar::protocol::serial::MotorState &motor: motors())
         {
             motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
             motor.ctrlMod = bobbycar::protocol::ControlMode::OpenMode;
@@ -53,7 +55,8 @@ void DefaultMode::update()
         }
 
         auto gas_processed = profileSettings.defaultMode.squareGas ? (local_gas * local_gas) / 1000.f : local_gas;
-        auto brems_processed = profileSettings.defaultMode.squareBrems ? (local_brems * local_brems) / 1000 : local_brems;
+        auto brems_processed =
+                profileSettings.defaultMode.squareBrems ? (local_brems * local_brems) / 1000 : local_brems;
 
         const auto now = espchrono::millis_clock::now();
 
@@ -88,7 +91,8 @@ void DefaultMode::update()
                 standStillFirstDetected = std::nullopt;
 
             if (standStillFirstDetected && lastAutoRelease)
-                if (espchrono::ago(*standStillFirstDetected) > 100ms * configs.handbremse.triggerTimeout.value() && espchrono::ago(*lastAutoRelease) > 5s )
+                if (espchrono::ago(*standStillFirstDetected) > 100ms * configs.handbremse.triggerTimeout.value() &&
+                    espchrono::ago(*lastAutoRelease) > 5s)
                 {
                     angezogen = true;
                 }
@@ -134,7 +138,7 @@ void DefaultMode::update()
 
             if (releaseTimer)
             {
-                for (bobbycar::protocol::serial::MotorState &motor : motors())
+                for (bobbycar::protocol::serial::MotorState &motor: motors())
                 {
                     motor.pwm = 0;
                     motor.ctrlTyp = pair.first;
@@ -149,7 +153,7 @@ void DefaultMode::update()
             }
             else
             {
-                for (bobbycar::protocol::serial::MotorState &motor : motors())
+                for (bobbycar::protocol::serial::MotorState &motor: motors())
                 {
                     motor.ctrlTyp = bobbycar::protocol::ControlType::FieldOrientedControl;
                     switch (configs.handbremse.mode.value())
@@ -175,45 +179,57 @@ void DefaultMode::update()
         {
             if (gas_processed >= profileSettings.defaultMode.add_schwelle)
             {
-                pwm = (gas_processed/1000.f*profileSettings.defaultMode.gas1_wert) + (brems_processed/1000.f*profileSettings.defaultMode.brems1_wert);
+                pwm = (gas_processed / 1000.f * profileSettings.defaultMode.gas1_wert) +
+                      (brems_processed / 1000.f * profileSettings.defaultMode.brems1_wert);
 
-                if ((profileSettings.defaultMode.enableSmoothingUp || profileSettings.defaultMode.enableSmoothingDown) && (pwm > 1000.f || m_lastPwm > 1000.f))
+                if ((profileSettings.defaultMode.enableSmoothingUp ||
+                     profileSettings.defaultMode.enableSmoothingDown) && (pwm > 1000.f || m_lastPwm > 1000.f))
                 {
                     if (m_lastPwm < pwm && profileSettings.defaultMode.enableSmoothingUp)
                     {
-                        pwm = std::min(pwm, m_lastPwm + (profileSettings.defaultMode.smoothing * std::chrono::floor<std::chrono::milliseconds>(now - m_lastTime).count() / 100.f));
+                        pwm = std::min(pwm, m_lastPwm + (profileSettings.defaultMode.smoothing *
+                                                         std::chrono::floor<std::chrono::milliseconds>(
+                                                                 now - m_lastTime).count() / 100.f));
                         if (pwm < 1000.f)
                             pwm = 1000.f;
                     }
                     else if (m_lastPwm > pwm && profileSettings.defaultMode.enableSmoothingDown)
                     {
-                        pwm = std::max(pwm, m_lastPwm - (profileSettings.defaultMode.smoothing * std::chrono::floor<std::chrono::milliseconds>(now - m_lastTime).count() / 100.f));
+                        pwm = std::max(pwm, m_lastPwm - (profileSettings.defaultMode.smoothing *
+                                                         std::chrono::floor<std::chrono::milliseconds>(
+                                                                 now - m_lastTime).count() / 100.f));
                     }
                 }
             }
             else
             {
-                pwm = (gas_processed/1000.f*profileSettings.defaultMode.gas2_wert) - (brems_processed/1000.f*profileSettings.defaultMode.brems2_wert);
+                pwm = (gas_processed / 1000.f * profileSettings.defaultMode.gas2_wert) -
+                      (brems_processed / 1000.f * profileSettings.defaultMode.brems2_wert);
                 if (
-                        (profileSettings.defaultMode.enableFieldWeakSmoothingUp || profileSettings.defaultMode.enableFieldWeakSmoothingDown) &&
+                        (profileSettings.defaultMode.enableFieldWeakSmoothingUp ||
+                         profileSettings.defaultMode.enableFieldWeakSmoothingDown) &&
                         (m_lastPwm > profileSettings.defaultMode.fwSmoothLowerLimit) &&
                         brems_processed > 0)
                 {
                     if (m_lastPwm < pwm && profileSettings.defaultMode.enableFieldWeakSmoothingUp)
                     {
                         auto effective_smoothing = profileSettings.defaultMode.smoothing;
-                        auto difference_to_target = std::abs(pwm-m_lastPwm);
-                        effective_smoothing *= std::max((difference_to_target / 500),0.5f);
+                        auto difference_to_target = std::abs(pwm - m_lastPwm);
+                        effective_smoothing *= std::max((difference_to_target / 500), 0.5f);
 
-                        pwm = std::min(pwm, m_lastPwm + (effective_smoothing * std::chrono::floor<std::chrono::milliseconds>(now - m_lastTime).count() / 100.f));
+                        pwm = std::min(pwm, m_lastPwm + (effective_smoothing *
+                                                         std::chrono::floor<std::chrono::milliseconds>(
+                                                                 now - m_lastTime).count() / 100.f));
                     }
                     else if (m_lastPwm > pwm && profileSettings.defaultMode.enableFieldWeakSmoothingDown)
                     {
                         auto effective_smoothing = profileSettings.defaultMode.smoothing;
-                        auto difference_to_target = std::abs(pwm-m_lastPwm);
-                        effective_smoothing *= std::max((difference_to_target / 500),0.5f);
+                        auto difference_to_target = std::abs(pwm - m_lastPwm);
+                        effective_smoothing *= std::max((difference_to_target / 500), 0.5f);
 
-                        pwm = std::max(pwm, m_lastPwm - (effective_smoothing * std::chrono::floor<std::chrono::milliseconds>(now - m_lastTime).count() / 100.f));
+                        pwm = std::max(pwm, m_lastPwm - (effective_smoothing *
+                                                         std::chrono::floor<std::chrono::milliseconds>(
+                                                                 now - m_lastTime).count() / 100.f));
                     }
                 }
             }
@@ -224,12 +240,13 @@ void DefaultMode::update()
                 pwmomat::wish = pwmomat::WISH::NONE;
                 pwmomat::enabled_time = now;
             }
-            else if ((pwmomat::tempomat_pwm && pwmomat::enabled_time) && (espchrono::ago(*pwmomat::enabled_time) > 500ms))
+            else if ((pwmomat::tempomat_pwm && pwmomat::enabled_time) &&
+                     (espchrono::ago(*pwmomat::enabled_time) > 500ms))
             {
-                if ((*pwmomat::tempomat_pwm >= 0 && (pwm >= *pwmomat::tempomat_pwm + 10  || pwm < -10)) ||
-                    (*pwmomat::tempomat_pwm <  0 && (pwm <= *pwmomat::tempomat_pwm - 10  || pwm >  10)) ||
+                if ((*pwmomat::tempomat_pwm >= 0 && (pwm >= *pwmomat::tempomat_pwm + 10 || pwm < -10)) ||
+                    (*pwmomat::tempomat_pwm < 0 && (pwm <= *pwmomat::tempomat_pwm - 10 || pwm > 10)) ||
                     (pwmomat::wish == pwmomat::WISH::WISH_DISABLE)
-                   )
+                        )
                 {
                     pwmomat::wish = pwmomat::WISH::NONE;
                     pwmomat::tempomat_pwm = std::nullopt;
@@ -242,7 +259,7 @@ void DefaultMode::update()
             m_lastPwm = pwm;
             m_lastTime = now;
 
-            for (bobbycar::protocol::serial::MotorState &motor : motorsInController(controllers.front))
+            for (bobbycar::protocol::serial::MotorState &motor: motorsInController(controllers.front))
             {
                 motor.ctrlTyp = pair.first;
                 motor.ctrlMod = pair.second;
@@ -250,7 +267,7 @@ void DefaultMode::update()
                 motor.cruiseCtrlEna = false;
                 motor.nCruiseMotTgt = 0;
             }
-            for (bobbycar::protocol::serial::MotorState &motor : motorsInController(controllers.back))
+            for (bobbycar::protocol::serial::MotorState &motor: motorsInController(controllers.back))
             {
                 motor.ctrlTyp = pair.first;
                 motor.ctrlMod = pair.second;
@@ -270,8 +287,10 @@ void DefaultMode::update()
     }
 }
 
-void DefaultMode::setRemoteCommand(const RemoteCommand &command)
+void DefaultMode::setRemoteCommand(const ble::RemoteCommand &command)
 {
     m_remoteCommand = command;
     m_timestamp = espchrono::millis_clock::now();
 }
+
+} // namespace bobby

@@ -469,7 +469,6 @@ public:
 
     struct {
         ConfiguredFeatureFlag ledstrip              {"f_ledstrip", false, false, "ledstrip"};
-        ConfiguredFeatureFlag webserver_disable_lock{"f_no_web_lock", false, true};
         ConfiguredFeatureFlag garage                {"f_garage" };
         ConfiguredFeatureFlag cloud                 {"f_cloud", false, false, "cloud"};
         ConfiguredFeatureFlag udpcloud              {"f_udpcloud", false, false, "udpcloud"};
@@ -721,7 +720,6 @@ public:
         REGISTER_CONFIG(feature.ota.isEnabled)
         REGISTER_CONFIG(feature.udpcloud.isEnabled)
         REGISTER_CONFIG(feature.webserver.isEnabled)
-        REGISTER_CONFIG(feature.webserver_disable_lock.isEnabled)
 
         REGISTER_CONFIG(bleSettings.bleEnabled)
         REGISTER_CONFIG(bleSettings.bleFenceEnabled)
@@ -747,7 +745,6 @@ public:
         REGISTER_FEATURE(feature.ota)
         REGISTER_FEATURE(feature.udpcloud)
         REGISTER_FEATURE(feature.webserver)
-        REGISTER_FEATURE(feature.webserver_disable_lock)
     }
 
     size_t getConfigCount()

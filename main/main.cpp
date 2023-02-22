@@ -31,6 +31,7 @@ using namespace std::chrono_literals;
 #include "newsettings.h"
 #include "taskmanager.h"
 #include "defaultstatusdisplay.h"
+#include "globallock.h"
 
 #define BOOT_PROGRESS(s) \
     bobby::set_boot_msg(s); \
@@ -45,6 +46,8 @@ RTC_NOINIT_ATTR bool recovery;
 
 extern "C" [[noreturn]] void app_main()
 {
+    using namespace bobby;
+
     const auto boot_start = espchrono::millis_clock::now();
     auto last_boot_label = boot_start;
 
@@ -111,10 +114,12 @@ extern "C" [[noreturn]] void app_main()
     else
         ESP_LOGE("BOBBY", "init() failed");
 
+    global_lock.construct();
+
     BOOT_PROGRESS("starting tasks");
-    for (auto &task : bobby::schedulerTasks)
+    for (auto &task : schedulerTasks)
     {
-        if (bobby::checkEnabledByName(task.name()))
+        if (checkEnabledByName(task.name()))
         {
             BOOT_PROGRESS(task.name());
             task.setup(false);
@@ -135,14 +140,14 @@ extern "C" [[noreturn]] void app_main()
         {
         case SetupStep::INFORMATION:
             BOOT_PROGRESS("Calibtration");
-            espgui::switchScreen<bobby::SetupInformationDisplay>();
+            espgui::switchScreen<SetupInformationDisplay>();
             break;
         case SetupStep::BASIC_BUTTONS:
             BOOT_PROGRESS("Calibtration");
-            espgui::switchScreen<bobby::SetupBasicButtonsDisplay>(true);
+            espgui::switchScreen<SetupBasicButtonsDisplay>(true);
             break;
         case SetupStep::CALIBRATE_POTIS:
-            espgui::switchScreen<bobby::SetupCalibratePotisDisplay>(true);
+            espgui::switchScreen<SetupCalibratePotisDisplay>(true);
             break;
         default:;
         }
@@ -150,7 +155,7 @@ extern "C" [[noreturn]] void app_main()
     else if (configs.lockscreen.keepLockedAfterReboot.value() && configs.lockscreen.locked.value())
     {
         BOOT_PROGRESS("Locked");
-        espgui::pushScreen<bobby::Lockscreen>(true);
+        espgui::pushScreen<Lockscreen>(true);
     }
     else
     {
@@ -177,7 +182,7 @@ extern "C" [[noreturn]] void app_main()
 //       if (!heap_caps_check_integrity_all(true))
 //            ESP_LOGW(TAG, "OIS IM OARSCH!!!!!");
 
-        for (auto &schedulerTask : bobby::schedulerTasks)
+        for (auto &schedulerTask : schedulerTasks)
         {
             if (schedulerTask.isInitialized())
                 schedulerTask.loop();
@@ -188,13 +193,13 @@ extern "C" [[noreturn]] void app_main()
         if (!lastStatsUpdate || now - *lastStatsUpdate >= 1000ms/configs.boardcomputerHardware.timersSettings.statsUpdateRate.value())
         {
             updateAccumulators();
-            pushStats();
+            statistics::pushStats();
             lastStatsUpdate = now;
         }
 
         if (now - lastStatsPush >= 1s)
         {
-            bobby::sched_pushStats(false);
+            sched_pushStats(false);
 
             lastStatsPush = now;
         }
@@ -207,8 +212,8 @@ extern "C" [[noreturn]] void app_main()
                 {
                     if (avgVoltage > 30)
                     {
-                        battery::bootBatPercentage = getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
-                        battery::bootBatWh = getRemainingWattHours();
+                        battery::bootBatPercentage = battery::getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
+                        battery::bootBatWh = battery::getRemainingWattHours();
                     }
                 }
             }

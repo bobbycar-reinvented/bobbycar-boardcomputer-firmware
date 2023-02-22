@@ -6,7 +6,8 @@
 #include <vector>
 #include <esp_now.h>
 
-namespace espnow {
+namespace bobby::espnow {
+
 extern uint16_t lastYear;
 constexpr const uint8_t broadcast_address[] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 struct esp_now_message_t
@@ -24,9 +25,14 @@ extern std::deque<esp_now_message_t> message_queue;
 extern std::vector<esp_now_peer_info_t> peers;
 
 void initESPNow();
+
 void handle();
+
 void onRecvTs(uint64_t millis, bool isFromBobbycar = false);
+
 esp_err_t send_espnow_message(std::string_view message);
+
 bool isInitialized();
-} // namespace espnow
+
+} // namespace bobby::espnow
 

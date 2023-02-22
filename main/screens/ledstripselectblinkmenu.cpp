@@ -57,7 +57,7 @@ namespace {
 
 std::string CurrentSelectedBlinkAnimationText::text() const
 {
-    switch (blinkAnimation)
+    switch (ledstrip::blinkAnimation)
     {
     case LEDSTRIP_OVERWRITE_BLINKLEFT:
 #ifndef LEDSTRIP_WRONG_DIRECTION

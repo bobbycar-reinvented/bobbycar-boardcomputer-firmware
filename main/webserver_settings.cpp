@@ -8,17 +8,19 @@
 #include <esp_log.h>
 
 // 3rdparty lib includes
-#include <htmlbuilder.h>
-#include <fmt/core.h>
 #include <espcppmacros.h>
 #include <esphttpdutils.h>
+#include <fmt/core.h>
+#include <htmlbuilder.h>
 #include <numberparsing.h>
-#include <lockhelper.h>
+#include <recursivelockhelper.h>
 #include <tickchrono.h>
 
 // local includes
+#include "globallock.h"
 #include "globals.h"
-#include "webserver_lock.h"
+
+namespace bobby::webserver {
 
 using namespace std::chrono_literals;
 using esphttpdutils::HtmlTag;
@@ -86,6 +88,12 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 
 esp_err_t webserver_settings_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        ESP_LOGE(TAG, "Could not acquire lock");
+        return ESP_FAIL;
+    }
 
     std::string body;
 
@@ -243,6 +251,12 @@ saveSetting(T &value, std::string_view newValue, std::string &body)
 
 esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        ESP_LOGE(TAG, "Could not acquire lock");
+        return ESP_FAIL;
+    }
 
     std::string query;
     if (auto result = esphttpdutils::webserver_get_query(req))
@@ -303,3 +317,4 @@ esp_err_t webserver_saveSettings_handler(httpd_req_t *req)
                   "text/plain",
                   body)
 }
+} // namespace bobby::webserver

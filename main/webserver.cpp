@@ -8,26 +8,29 @@
 #include <esp_log.h>
 
 // 3rdparty lib includes
-#include <menuitem.h>
+#include <display.h>
 #include <espcppmacros.h>
 #include <esphttpdutils.h>
-#include <display.h>
-#include <screenmanager.h>
-#include <menudisplay.h>
 #include <lockhelper.h>
+#include <menudisplay.h>
+#include <menuitem.h>
+#include <recursivelockhelper.h>
+#include <screenmanager.h>
 #include <tickchrono.h>
 
 // local includes
-#include "webserver_lock.h"
-#include "webserver_displaycontrol.h"
-#include "webserver_ota.h"
-#include "webserver_settings.h"
-#include "webserver_newsettings.h"
-#include "webserver_dumpnvs.h"
+#include "globallock.h"
 #include "globals.h"
 #include "newsettings.h"
+#include "webserver_displaycontrol.h"
+#include "webserver_dumpnvs.h"
+#include "webserver_newsettings.h"
+#include "webserver_ota.h"
+#include "webserver_settings.h"
 
 using namespace std::chrono_literals;
+
+namespace bobby::webserver {
 
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
@@ -46,18 +49,7 @@ esp_err_t webserver_status_handler(httpd_req_t *req);
 esp_err_t webserver_middleware_handler(httpd_req_t *req) {
     const auto handler = reinterpret_cast<esp_err_t(*)(httpd_req_t*)>(req->user_ctx);
 
-    if (configs.feature.webserver_disable_lock.isEnabled.value())
-    {
-        return handler(req);
-    }
-
-    if (!webserver_lock.constructed())
-    {
-        webserver_lock.construct();
-        webserver_lock->take(portMAX_DELAY);
-    }
-
-    espcpputils::LockHelper helper{webserver_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
     if (!helper.locked())
     {
         constexpr const std::string_view msg = "could not lock webserver_lock";
@@ -75,12 +67,6 @@ void initWebserver()
 {
     if (!configs.feature.webserver.isEnabled.value())
         return;
-
-    if(!configs.feature.webserver_disable_lock.isEnabled.value())
-    {
-        webserver_lock.construct();
-        webserver_lock->take(portMAX_DELAY);
-    }
 
     {
         httpd_config_t httpConfig HTTPD_DEFAULT_CONFIG();
@@ -126,19 +112,14 @@ void handleWebserver()
 {
     if (!configs.feature.webserver.isEnabled.value())
     {
+        espcpputils::RecursiveLockHelper helper{global_lock->handle};
+
         if (webserver_initialized)
         {
             webserver_initialized = false;
             httpd_stop(httpdHandle);
         }
         return;
-    }
-
-    if (!configs.feature.webserver_disable_lock.isEnabled.value())
-    {
-        webserver_lock->give();
-        vTaskDelay(1);
-        webserver_lock->take(portMAX_DELAY);
     }
 }
 
@@ -234,3 +215,5 @@ esp_err_t webserver_status_handler(httpd_req_t *req)
 }
 
 } // namespace
+
+} // namespace bobby::webserver

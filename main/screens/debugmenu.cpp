@@ -40,6 +40,8 @@
 
 namespace bobby {
 
+using namespace bobby::debug;
+
 namespace {
 constexpr char TEXT_DEBUG[] = "Debug";
 constexpr char TEXT_TASKMANAGER[] = "Taskmanager";

@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint>
 /*
  * This file contains a few defines, so you don't have to remember which ledstrip animation is which number
  */

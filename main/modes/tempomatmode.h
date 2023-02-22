@@ -7,6 +7,8 @@
 #include "bobbycar-common.h"
 #include "modeinterface.h"
 
+namespace bobby {
+
 class TempomatMode : public ModeInterface
 {
     using Base = ModeInterface;
@@ -23,3 +25,5 @@ public:
 namespace modes {
 extern TempomatMode tempomatMode;
 } // namespace modes
+
+} // namespace bobby

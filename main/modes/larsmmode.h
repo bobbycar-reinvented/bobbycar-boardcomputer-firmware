@@ -4,6 +4,8 @@
 #include "bobbycar-common.h"
 #include "modeinterface.h"
 
+namespace bobby {
+
 enum class LarsmModeMode : uint8_t { Mode1, Mode2, Mode3, Mode4 };
 
 class LarsmMode : public ModeInterface
@@ -26,3 +28,5 @@ private:
 namespace modes {
 extern LarsmMode larsmMode;
 } // namespace modes
+
+} // namespace bobby

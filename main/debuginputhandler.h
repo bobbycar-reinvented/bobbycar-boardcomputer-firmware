@@ -1,7 +1,9 @@
 #pragma once
 
-//extern wl_status_t last_status;
-//extern IPAddress last_ip;
+namespace bobby::debug {
 
 void initDebugInput();
+
 void handleDebugInput();
+
+} // namespace bobby::debug

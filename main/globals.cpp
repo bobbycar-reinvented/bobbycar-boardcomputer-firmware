@@ -1,5 +1,7 @@
 #include "globals.h"
 
+namespace bobby {
+
 std::optional<int16_t> raw_gas, raw_brems;
 std::optional<float> gas, brems;
 
@@ -55,3 +57,5 @@ BluetoothSerial bluetoothSerial;
 
 ModeInterface *lastMode{};
 ModeInterface *currentMode{};
+
+} // namespace bobby

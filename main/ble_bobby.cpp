@@ -15,6 +15,8 @@
 #include "newsettings.h"
 #include "utils.h"
 
+namespace bobby::ble {
+
 namespace {
 constexpr const char * const TAG = "BOBBYBLE";
 
@@ -257,6 +259,8 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic, NimB
 
     if (configs.feature.ledstrip.isEnabled.value())
     {
+        using namespace bobby::ledstrip;
+
         const auto newBlinkAnimation = doc["anim"].as<int16_t>();
         if (blinkAnimation != newBlinkAnimation) blinkAnimation = newBlinkAnimation;
     }
@@ -315,3 +319,5 @@ void WiFiListCallbacks::onRead(NimBLECharacteristic* pCharacteristic, NimBLEConn
     pCharacteristic->setValue(json);
 }
 } // namespace
+
+} // namespace bobby::ble

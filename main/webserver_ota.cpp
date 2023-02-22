@@ -6,22 +6,23 @@
 #include <esp_ota_ops.h>
 
 // 3rdparty lib includes
-#include <htmlbuilder.h>
-#include <fmt/core.h>
 #include <espcppmacros.h>
 #include <esphttpdutils.h>
-#include <lockhelper.h>
-#include <tickchrono.h>
+#include <fmt/core.h>
+#include <htmlbuilder.h>
+#include <recursivelockhelper.h>
 #include <strutils.h>
+#include <tickchrono.h>
 
 // local includes
-#include "ota.h"
-#include "webserver_lock.h"
-#include "globals.h"
+#include "globallock.h"
 #include "newsettings.h"
+#include "ota.h"
 
 using namespace std::chrono_literals;
 using esphttpdutils::HtmlTag;
+
+namespace bobby::webserver {
 
 namespace {
 constexpr const char * const TAG = "BOBBYWEB";
@@ -29,6 +30,12 @@ constexpr const char * const TAG = "BOBBYWEB";
 
 esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        ESP_LOGE(TAG, "Could not acquire lock");
+        return ESP_FAIL;
+    }
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
@@ -49,10 +56,10 @@ esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
     if (key_result == ESP_OK && (configs.webserverPassword.value().empty() || configs.webserverPassword.value() == tmpBuf))
     {
         body += "{";
-        if (asyncOta)
+        if (ota::isOtaInProgress())
         {
-            const auto progress = asyncOta->progress();
-            const auto totalSize = asyncOta->totalSize();
+            const auto progress = ota::otaProgress();
+            const auto totalSize = ota::otaTotalSize();
 
             body += fmt::format("\"cur_ota_percent\":\"{}\",", (totalSize && *totalSize > 0) ? fmt::format("{:.02f}", float(progress) / *totalSize * 100) : "?");
         }
@@ -81,6 +88,12 @@ esp_err_t webserver_ota_percentage_handler(httpd_req_t *req)
 
 esp_err_t webserver_ota_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        ESP_LOGE(TAG, "Could not acquire lock");
+        return ESP_FAIL;
+    }
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
@@ -118,14 +131,14 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
 
         body += "\"updater\":{";
 
-        if (asyncOta)
+        if (ota::isOtaInProgress())
         {
-            body += fmt::format("\"status\":\"{}\"", toString(asyncOta->status()));
+            body += fmt::format("\"status\":\"{}\"", toString(ota::otaStatus()));
 
-            if (const auto &appDesc = asyncOta->appDesc())
+            if (const auto appDesc = ota::otaAppDesc())
             {
-                const auto progress = asyncOta->progress();
-                const auto totalSize = asyncOta->totalSize();
+                const auto progress = ota::otaProgress();
+                const auto totalSize = ota::otaTotalSize();
 
                 body += fmt::format("\"cur_ota_percent\":\"{}\",", (totalSize && *totalSize > 0) ? fmt::format("{:.02f}", float(progress) / *totalSize * 100) : "?");
                 body += fmt::format("\"cur_ota_progress\":\"{}\",", progress);
@@ -145,7 +158,7 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
         }
         else
         {
-            body += "\"info\":\"Updater is not constructed.\"";
+            body += "\"info\":\"Updater is idle.\"";
         }
 
         body += "}}";
@@ -242,14 +255,14 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                 body += esphttpdutils::htmlentities(msg);
             }
 
-            if (asyncOta)
+            if (ota::isOtaInProgress())
             {
                 HtmlTag tableTag{"table", "border=\"1\"", body};
 
                 {
                     HtmlTag trTag{"tr", body};
                     { HtmlTag tdTag{"td", body}; body += "Update status"; }
-                    { HtmlTag tdTag{"td", body}; body += esphttpdutils::htmlentities(toString(asyncOta->status())); }
+                    { HtmlTag tdTag{"td", body}; body += esphttpdutils::htmlentities(toString(ota::otaStatus())); }
                 }
 
                 {
@@ -257,8 +270,8 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                     { HtmlTag tdTag{"td", body}; body += "Update progress"; }
                     {
                         HtmlTag tdTag{"td", body};
-                        const auto progress = asyncOta->progress();
-                        const auto totalSize = asyncOta->totalSize();
+                        const auto progress = ota::otaProgress();
+                        const auto totalSize = ota::otaTotalSize();
                         body += fmt::format("{} / {}{}",
                                             progress,
                                             totalSize ? std::to_string(*totalSize) : "?",
@@ -269,10 +282,10 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
                 {
                     HtmlTag trTag{"tr", body};
                     { HtmlTag tdTag{"td", body}; body += "Update message"; }
-                    { HtmlTag tdTag{"td", body}; body += esphttpdutils::htmlentities(asyncOta->message()); }
+                    { HtmlTag tdTag{"td", body}; body += esphttpdutils::htmlentities(ota::otaMessage()); }
                 }
 
-                if (const auto &appDesc = asyncOta->appDesc())
+                if (const auto appDesc = ota::otaAppDesc())
                 {
                     {
                         HtmlTag trTag{"tr", body};
@@ -342,6 +355,12 @@ esp_err_t webserver_ota_handler(httpd_req_t *req)
 
 esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)
 {
+    espcpputils::RecursiveLockHelper helper{global_lock->handle, std::chrono::ceil<espcpputils::ticks>(5s).count()};
+    if (!helper.locked())
+    {
+        ESP_LOGE(TAG, "Could not acquire lock");
+        return ESP_FAIL;
+    }
 
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Access-Control-Allow-Origin", "http://web.bobbycar.cloud");
 
@@ -381,7 +400,7 @@ esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)
         url = valueBuf;
     }
 
-    if (const auto result = triggerOta(url); !result)
+    if (const auto result = ota::triggerOta(url); !result)
     {
         ESP_LOGE(TAG, "%.*s", result.error().size(), result.error().data());
         CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::BadRequest, "text/plain", result.error());
@@ -390,3 +409,5 @@ esp_err_t webserver_trigger_ota_handler(httpd_req_t *req)
     CALL_AND_EXIT_ON_ERROR(httpd_resp_set_hdr, req, "Location", "/ota")
     CALL_AND_EXIT(esphttpdutils::webserver_resp_send, req, esphttpdutils::ResponseStatus::TemporaryRedirect, "text/html", "Ok, continue at <a href=\"/ota\">/</a>")
 }
+
+} // namespace bobby::webserver

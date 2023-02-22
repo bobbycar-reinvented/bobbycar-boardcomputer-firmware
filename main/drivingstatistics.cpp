@@ -2,15 +2,15 @@
 
 // 3rdparty lib includes
 #include <FastLED.h>
-#include <date/date.h>
 #include <tftinterface.h>
 
-// Local
-#include "globals.h"
+// local includes
 #include "battery.h"
-#include "utils.h"
+#include "globals.h"
 
 using namespace std::chrono_literals;
+
+namespace bobby {
 
 DrivingStatistics drivingStatistics;
 
@@ -26,7 +26,7 @@ float getAvgKmh()
 
 float getEstimatedKmLeft()
 {
-    return (getRemainingWattHours() / getAvgWhPerKm());
+    return (battery::getRemainingWattHours() / getAvgWhPerKm());
 }
 
 std::string getEfficiencyClassString()
@@ -107,7 +107,7 @@ void calculateStatistics()
     else
     {
         drivingStatistics.wh_used += (13 * ((duration / 1ms) / 1000.f)) / 3600.f; // Wh
-        drivingStatistics.batteryWhEstimate = getRemainingWattHours();
+        drivingStatistics.batteryWhEstimate = battery::getRemainingWattHours();
     }
 
     if ((drivingStatistics.totalMeters > ((drivingStatistics.last_cm_written / 100.f) + 100)) || (saveTotal && abs(avgSpeedKmh) < 0.5f))
@@ -123,3 +123,5 @@ void calculateStatistics()
         }
     }
 }
+
+} // namespace bobby

@@ -1,14 +1,17 @@
 #include "bobbyquickactions.h"
 
 // local includes
+#include "bobbyhupe.h"
 #include "espnowfunctions.h"
 #include "handbremse.h"
+#include "ledstripdefines.h"
 #include "newsettings.h"
 #include "tempomat.h"
 #include "wifi_bobbycar.h"
-#include "bobbyhupe.h"
 
-namespace quickactions {
+namespace bobby::quickactions {
+
+using namespace bobby::ledstrip;
 
 void handle_bobby_quickaction(espgui::Button button, bool pressed)
 {
@@ -175,4 +178,4 @@ void handle_pwmomat()
     }
 }
 
-} // namespace quickactions
+} // namespace bobby::quickactions

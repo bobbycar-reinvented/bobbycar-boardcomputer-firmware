@@ -4,6 +4,8 @@
 #include "bobbycar-common.h"
 #include "modeinterface.h"
 
+namespace bobby {
+
 class IgnoreInputMode : public ModeInterface
 {
 public:
@@ -21,3 +23,5 @@ private:
     const bobbycar::protocol::ControlType m_ctrlTyp;
     const bobbycar::protocol::ControlMode m_ctrlMod;
 };
+
+} // namespace bobby
