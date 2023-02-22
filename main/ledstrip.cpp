@@ -89,7 +89,10 @@ void initLedStrip()
 
 void updateLedStrip()
 {
-    //return
+#ifdef OTA_FIX
+    if (ota::isOtaInProgress())
+        return;
+#endif
     if (configs.feature.ledstrip.isEnabled.value() && !initialized)
     {
         initLedStrip();
