@@ -80,7 +80,7 @@ float getRemainingWattHours()
 
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        return (target_mah / 1000.f) * 3.7f * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value() * (getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())) / 100);
+        return (target_mah / 1000.f) * 3.7f * configs.battery.cellsParallel.value() * configs.battery.cellsSeries.value() * (getBatteryPercentage(*avgVoltage, configs.battery.cellType.value()) / 100);
     }
     else
         return 0.f;
@@ -99,21 +99,30 @@ float getBatteryWattHours()
 
 float getTarget_mAh()
 {
-    float target_mah = 2000; //default
-    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::_22P) target_mah = 2200;
-    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::HG2) target_mah = 3000;
-    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::MH1) target_mah = 3200;
-    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::VTC5) target_mah = 2600;
-    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::BAK_25R) target_mah = 2500;
-    if(BatteryCellType(configs.battery.cellType.value()) == BatteryCellType::HE4) target_mah = 2300;
-    return target_mah;
+    switch (configs.battery.cellType.value())
+    {
+    case BatteryCellType::_22P:
+        return 2200;
+    case BatteryCellType::HG2:
+        return 3000;
+    case BatteryCellType::MH1:
+        return 3200;
+    case BatteryCellType::VTC5:
+        return 2600;
+    case BatteryCellType::BAK_25R:
+        return 2500;
+    case BatteryCellType::HE4:
+        return 2300;
+    default:
+        return 2000;
+    }
 }
 
 std::string getBatteryPercentageString()
 {
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        std::string output = fmt::format("Battery: {:.1f}%", getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())));
+        std::string output = fmt::format("Battery: {:.1f}%", getBatteryPercentage(*avgVoltage, configs.battery.cellType.value()));
         return output;
     }
     else

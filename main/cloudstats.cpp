@@ -103,13 +103,15 @@ std::optional<std::string> buildCloudJson()
 
         if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
         {
-            doc["bap"] = battery::getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
+            doc["bap"] = battery::getBatteryPercentage(*avgVoltage, configs.battery.cellType.value());
             doc["bav"] = *avgVoltage; // battery voltage
             doc["pwr"] = sumCurrent * *avgVoltage; // total watt
         }
         doc["whl"] = battery::getRemainingWattHours(); // watt hours left
         doc["kml"] = battery::getRemainingWattHours() / configs.battery.watthoursPerKilometer.value(); // calculated kilometers left
         doc["ekm"] = getEstimatedKmLeft(); // kilometers left live calculation
+        doc["acl"] = avgAccel; // average acceleration
+        doc["cur"] = sumCurrent; // total current
         break;
     }
     case 2:
@@ -133,8 +135,8 @@ std::optional<std::string> buildCloudJson()
             doc["fre"] = controller.feedback.right.error;
 
             // Speed
-            doc["fls"] = convertToKmh(controller.feedback.left.speed) * (controller.invertLeft ? -1 : 1);
-            doc["frs"] = convertToKmh(controller.feedback.right.speed) * (controller.invertRight ? -1 : 1);
+            doc["fls"] = convertToKmh(controller.feedback.left.speed) * (controller.invertLeft ? -1.f : 1.f);
+            doc["frs"] = convertToKmh(controller.feedback.right.speed) * (controller.invertRight ? -1.f : 1.f);
         }
         else
         {
@@ -163,8 +165,8 @@ std::optional<std::string> buildCloudJson()
             doc["bre"] = controller.feedback.right.error;
 
             // Speed
-            doc["bls"] = convertToKmh(controller.feedback.left.speed) * (controller.invertLeft ? -1 : 1);
-            doc["brs"] = convertToKmh(controller.feedback.right.speed) * (controller.invertRight ? -1 : 1);
+            doc["bls"] = convertToKmh(controller.feedback.left.speed) * (controller.invertLeft ? -1.f : 1.f);
+            doc["brs"] = convertToKmh(controller.feedback.right.speed) * (controller.invertRight ? -1.f : 1.f);
         }
         else
         {

@@ -118,7 +118,7 @@ void BatteryMenu::redraw(espgui::TftInterface &tft)
 
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        const auto batPercent = battery::getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
+        const auto batPercent = battery::getBatteryPercentage(*avgVoltage, configs.battery.cellType.value());
         if (battery::bootBatPercentage)
         {
             m_doubleProgressBarBatPercentage.redraw(tft, batPercent, *battery::bootBatPercentage);

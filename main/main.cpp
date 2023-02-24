@@ -212,7 +212,7 @@ extern "C" [[noreturn]] void app_main()
                 {
                     if (avgVoltage > 30)
                     {
-                        battery::bootBatPercentage = battery::getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value()));
+                        battery::bootBatPercentage = battery::getBatteryPercentage(*avgVoltage, configs.battery.cellType.value());
                         battery::bootBatWh = battery::getRemainingWattHours();
                     }
                 }

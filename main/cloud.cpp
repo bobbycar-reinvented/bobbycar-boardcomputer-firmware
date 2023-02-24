@@ -471,7 +471,7 @@ void send_information()
     // battery
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
-        infoObject["percentage"] = fmt::format("{:.1f}", battery::getBatteryPercentage(*avgVoltage, BatteryCellType(configs.battery.cellType.value())));
+        infoObject["percentage"] = fmt::format("{:.1f}", battery::getBatteryPercentage(*avgVoltage, configs.battery.cellType.value()));
         infoObject["voltage"] = *avgVoltage;
     }
     else
