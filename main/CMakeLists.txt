@@ -292,7 +292,7 @@ set(BOBBY_HEADERS
     webserver.h
     webserver_displaycontrol.h
     webserver_dumpnvs.h
-        webserver_newsettings.h
+    webserver_newsettings.h
     webserver_ota.h
     webserver_settings.h
     widgets/doubleprogressbar.h
@@ -424,7 +424,7 @@ set(BOBBY_SOURCES
     newsettings.cpp
     ota.cpp
     potis.cpp
-        qrimport.cpp
+    qrimport.cpp
     screens.cpp
     screens/aboutmenu.cpp
     screens/batterydebugmenu.cpp
@@ -539,7 +539,7 @@ set(BOBBY_SOURCES
     webserver.cpp
     webserver_displaycontrol.cpp
     webserver_dumpnvs.cpp
-        webserver_newsettings.cpp
+    webserver_newsettings.cpp
     webserver_ota.cpp
     webserver_settings.cpp
     widgets/doubleprogressbar.cpp
@@ -593,6 +593,8 @@ string(SUBSTRING "${GIT_REV}" 1 7 GIT_SHORT_REV)
 string(STRIP "${GIT_MESSAGE}" GIT_MESSAGE)
 string(REPLACE "\n" " " GIT_MESSAGE "${GIT_MESSAGE}")
 string(REPLACE "\"" "\\\"" GIT_MESSAGE "${GIT_MESSAGE}")
+string(REPLACE "\t" " " GIT_MESSAGE "${GIT_MESSAGE}")
+string(REPLACE ";" "," GIT_MESSAGE "${GIT_MESSAGE}")
 string(SUBSTRING "${GIT_MESSAGE}" 0 100 GIT_MESSAGE)
 string(STRIP "${GIT_BRANCH}" GIT_BRANCH)
 
