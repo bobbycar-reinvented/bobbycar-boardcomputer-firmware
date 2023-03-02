@@ -52,6 +52,7 @@ constexpr char TEXT_LEDSTRIP_BRAKE_USE_ACCEL[] = "Brakelight use acceleration";
 constexpr char TEXT_LEDSTRIP_BRAKE_USE_POWER[] = "Brakelight use motor power";
 constexpr char TEXT_BACK[] = "Back";
 
+#ifndef LEDSTRIP_USE_ARRAY
 using LedsCountChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
     espgui::StaticTitle<TEXT_LEDSCOUNT>,
@@ -59,6 +60,7 @@ using LedsCountChangeScreen = espgui::makeComponent<
     espgui::ConfirmActionInterface<espgui::PopScreenAction>,
     espgui::BackActionInterface<espgui::PopScreenAction>
 >;
+#endif
 
 using CenterOffsetChangeScreen = espgui::makeComponent<
     BobbyChangeValueDisplay<int16_t>,
@@ -175,7 +177,9 @@ LedstripMenu::LedstripMenu()
     if (configs.feature.ota.isEnabled.value())
         if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_CHANGE_OTA_ANIM>,     espgui::PushScreenAction<LedstripOtaAnimationChangeMenu>>>(); }
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_ANIMATION_MULTIPLIER>,                            espgui::PushScreenAction<AnimationMultiplierChangeScreen>>>();
+#ifndef LEDSTRIP_USE_ARRAY
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_LEDSCOUNT, LedsCountAccessor>,           espgui::PushScreenAction<LedsCountChangeScreen>>>(); }
+#endif
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_CENTEROFFSET, CenterOffsetAccessor>,     espgui::PushScreenAction<CenterOffsetChangeScreen>>>(); }
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_SMALLOFFSET, SmallOffsetAccessor>,       espgui::PushScreenAction<SmallOffsetChangeScreen>>>(); }
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, TextWithValueHelper<TEXT_BIGOFFSET, BigOffsetAccessor>,           espgui::PushScreenAction<BigOffsetChangeScreen>>>(); }

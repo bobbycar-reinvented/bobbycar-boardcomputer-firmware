@@ -1,8 +1,12 @@
 #pragma once
 
 // system includes
-#include <cstdint>
+#ifdef LEDSTRIP_USE_ARRAY
+#include <array>
+#else
 #include <vector>
+#endif
+#include <cstdint>
 
 // 3rdparty lib includes
 #include <espchrono.h>
@@ -22,7 +26,12 @@ enum Bobbycar_Side
     FRONT
 };
 
+#ifndef LEDSTRIP_USE_ARRAY
 extern std::vector<CRGB> leds;
+#else
+extern std::array<CRGB, LEDSTRIP_USE_ARRAY> leds;
+#endif
+
 extern uint8_t gHue;
 extern float gLedPosition; // yes, this is intendet as a float value! Do NOT change!
 

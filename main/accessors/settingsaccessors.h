@@ -180,7 +180,9 @@ struct RemoteControlModeModelModeAccessor : public RefAccessorSaveSettings<Unifi
 // Ledstrip
 struct EnableLedAnimationAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableLedAnimation; } };
 struct EnableBrakeLightsAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.ledstrip.enableBrakeLights; } };
+#ifndef LEDSTRIP_USE_ARRAY
 struct LedsCountAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.ledsCount; } };
+#endif
 struct CenterOffsetAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.centerOffset; } };
 struct SmallOffsetAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.smallOffset; } };
 struct BigOffsetAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.ledstrip.bigOffset; } };

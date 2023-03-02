@@ -386,7 +386,9 @@ public:
     struct {
         ConfigWrapperLegacy<bool> enableLedAnimation    {true,                                   DoReset,   {},                         "enableLedAnimat"     };
         ConfigWrapperLegacy<bool> enableBrakeLights     {true,                                   DoReset,   {},                         "enableBrakeLigh"     };
-        ConfigWrapperLegacy<int16_t> ledsCount          {288,                                    DoReset,   {},                         "ledsCount"           };
+#ifndef LEDSTRIP_USE_ARRAY
+        ConfigWrapperLegacy<int16_t> ledsCount          {288,                                    DoReset,   MinMaxValue<int16_t, 1, 300>,"ledsCount"          };
+#endif
         ConfigWrapperLegacy<int16_t> centerOffset       {1,                                      DoReset,   {},                         "centerOffset"        };
         ConfigWrapperLegacy<int16_t> smallOffset        {4,                                      DoReset,   {},                         "smallOffset"         };
         ConfigWrapperLegacy<int16_t> bigOffset          {10,                                     DoReset,   {},                         "bigOffset"           };
@@ -645,7 +647,9 @@ public:
 
         REGISTER_CONFIG(ledstrip.enableLedAnimation)
         REGISTER_CONFIG(ledstrip.enableBrakeLights)
+#ifndef LEDSTRIP_USE_ARRAY
         REGISTER_CONFIG(ledstrip.ledsCount)
+#endif
         REGISTER_CONFIG(ledstrip.centerOffset)
         REGISTER_CONFIG(ledstrip.smallOffset)
         REGISTER_CONFIG(ledstrip.bigOffset)
