@@ -180,8 +180,8 @@ esp_err_t webserver_root_handler(httpd_req_t *req)
                 HtmlTag pTag{"p", body};
                 body += "<b>Display control</b> - "
                         "<a href=\"/ota\">Update</a> - "
-                        "<a href=\"/settings\">Settings</a> - "
-                        "<a href=\"/newSettings\">New Settings</a> - "
+                        "<a href=\"/settings\">Profile Settings</a> - "
+                        "<a href=\"/newSettings\">Settings</a> - "
                         "<a href=\"/dumpnvs\">Dump NVS</a>";
             }
 

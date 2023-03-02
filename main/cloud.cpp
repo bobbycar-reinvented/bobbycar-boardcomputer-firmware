@@ -70,12 +70,7 @@ typename std::enable_if<
         !std::is_same_v<T, wifi_auth_mode_t> &&
         !std::is_same_v<T, sntp_sync_mode_t> &&
         !std::is_same_v<T, espchrono::DayLightSavingMode> &&
-        !std::is_same_v<T, OtaAnimationModes> &&
-        !std::is_same_v<T, LedstripAnimation> &&
-        !std::is_same_v<T, DefaultStatusDisplay> &&
-        !std::is_same_v<T, HandbremseMode> &&
-        !std::is_same_v<T, BobbyQuickActions> &&
-        !std::is_same_v<T, BatteryCellType>
+        !isBobbyEnum_v<T>
         , void>::type
 toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
@@ -285,12 +280,7 @@ typename std::enable_if<
         std::is_same_v<T, wifi_auth_mode_t> ||
         std::is_same_v<T, sntp_sync_mode_t> ||
         std::is_same_v<T, espchrono::DayLightSavingMode> ||
-        std::is_same_v<T, OtaAnimationModes> ||
-        std::is_same_v<T, LedstripAnimation> ||
-        std::is_same_v<T, DefaultStatusDisplay> ||
-        std::is_same_v<T, HandbremseMode> ||
-        std::is_same_v<T, BobbyQuickActions> ||
-        std::is_same_v<T, BatteryCellType>
+        isBobbyEnum_v<T>
         , tl::expected<void, std::string>>::type
 set_config(ConfigWrapper<T> &config, std::string_view newValue)
 {

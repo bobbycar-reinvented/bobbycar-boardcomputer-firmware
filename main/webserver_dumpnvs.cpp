@@ -38,8 +38,8 @@ typename std::enable_if<
         !std::is_same<T, std::string>::value &&
         !std::is_same<T, espchrono::minutes32>::value &&
         !std::is_same<T, espchrono::DayLightSavingMode>::value &&
-        !std::is_same<T, UnifiedModelMode>::value
-        && !std::is_same<T, OtaAnimationModes>::value
+        !std::is_same<T, UnifiedModelMode>::value &&
+        !isBobbyEnum_v<T>
     , bool>::type
 showInputForSetting(std::string_view key, T value, JsonObject &body)
 {
@@ -121,7 +121,7 @@ showInputForSetting(std::string_view key, T value, JsonObject &body)
 
 template<typename T>
 typename std::enable_if<
-    std::is_same<T, OtaAnimationModes>::value
+    isBobbyEnum_v<T>
     , bool>::type
 showInputForSetting(std::string_view key, T value, JsonObject &body)
 {

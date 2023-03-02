@@ -1,5 +1,8 @@
 #pragma once
 
+// system includes
+#include <type_traits>
+
 // local includes
 #include <bobbytypesafeenum.h>
 
@@ -68,3 +71,14 @@ DECLARE_BOBBYTYPESAFE_ENUM(HandbremseMode, : uint8_t, HandbremseModeValues)
     x(BASIC_BUTTONS) \
     x(CALIBRATE_POTIS)
 DECLARE_BOBBYTYPESAFE_ENUM(SetupStep, : uint8_t, SetupStepValues);
+
+// one big std::is_same_v<...> for all enums
+template <typename T>
+constexpr bool isBobbyEnum_v =
+        std::is_same_v<T, OtaAnimationModes> ||
+        std::is_same_v<T, LedstripAnimation> ||
+        std::is_same_v<T, BatteryCellType> ||
+        std::is_same_v<T, BobbyQuickActions> ||
+        std::is_same_v<T, DefaultStatusDisplay> ||
+        std::is_same_v<T, HandbremseMode> ||
+        std::is_same_v<T, SetupStep>;

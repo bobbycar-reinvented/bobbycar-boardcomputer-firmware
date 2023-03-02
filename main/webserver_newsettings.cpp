@@ -48,12 +48,7 @@ typename std::enable_if<
     !std::is_same_v<T, wifi_auth_mode_t> &&
     !std::is_same_v<T, sntp_sync_mode_t> &&
     !std::is_same_v<T, espchrono::DayLightSavingMode> &&
-    !std::is_same_v<T, OtaAnimationModes> &&
-    !std::is_same_v<T, LedstripAnimation> &&
-    !std::is_same_v<T, DefaultStatusDisplay> &&
-    !std::is_same_v<T, DefaultStatusDisplay> &&
-    !std::is_same_v<T, HandbremseMode> &&
-    !std::is_same_v<T, BatteryCellType>
+    !isBobbyEnum_v<T>
 , void>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
@@ -203,11 +198,7 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 
 template<typename T>
 typename std::enable_if<
-    std::is_same_v<T, OtaAnimationModes> ||
-    std::is_same_v<T, LedstripAnimation> ||
-    std::is_same_v<T, DefaultStatusDisplay> ||
-    std::is_same_v<T, BatteryCellType> ||
-    std::is_same_v<T, HandbremseMode>
+    isBobbyEnum_v<T>
 , void>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
 {
@@ -267,8 +258,8 @@ esp_err_t webserver_newSettings_handler(httpd_req_t *req)
                 HtmlTag pTag{"p", body};
                 body += "<a href=\"/\">Display control</a> - "
                         "<a href=\"/ota\">Update</a> - "
-                        "<a href=\"/settings\">Settings</a> - "
-                        "<b>New Settings</b> - "
+                        "<a href=\"/settings\">Profile Settings</a> - "
+                        "<b>Settings</b> - "
                         "<a href=\"/dumpnvs\">Dump NVS</a>";
             }
 
@@ -353,11 +344,7 @@ typename std::enable_if<
     !std::is_same_v<T, wifi_auth_mode_t> &&
     !std::is_same_v<T, sntp_sync_mode_t> &&
     !std::is_same_v<T, espchrono::DayLightSavingMode> &&
-    !std::is_same_v<T, OtaAnimationModes> &&
-    !std::is_same_v<T, LedstripAnimation> &&
-    !std::is_same_v<T, DefaultStatusDisplay> &&
-    !std::is_same_v<T, HandbremseMode> &&
-    !std::is_same_v<T, BobbyQuickActions>
+    !isBobbyEnum_v<T>
 , tl::expected<void, std::string>>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
 {
@@ -441,11 +428,7 @@ typename std::enable_if<
     std::is_same_v<T, wifi_auth_mode_t> ||
     std::is_same_v<T, sntp_sync_mode_t> ||
     std::is_same_v<T, espchrono::DayLightSavingMode> ||
-    std::is_same_v<T, OtaAnimationModes> ||
-    std::is_same_v<T, LedstripAnimation> ||
-    std::is_same_v<T, DefaultStatusDisplay> ||
-    std::is_same_v<T, HandbremseMode> ||
-    std::is_same_v<T, BobbyQuickActions>
+    isBobbyEnum_v<T>
 , tl::expected<void, std::string>>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
 {
