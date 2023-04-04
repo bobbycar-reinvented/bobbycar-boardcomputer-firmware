@@ -22,12 +22,7 @@ using namespace std::chrono_literals;
 
 namespace bobby::ledstrip {
 
-#ifndef LEDSTRIP_USE_ARRAY
 std::vector<CRGB> leds;
-#else
-std::array<CRGB, LEDSTRIP_USE_ARRAY> leds;
-#endif
-
 uint8_t gHue = 0;
 float gLedPosition = 0; // yes, this is intendet as a float value! Do NOT change!
 
@@ -85,9 +80,7 @@ void initLedStrip()
     //return;
     if (configs.feature.ledstrip.isEnabled.value())
     {
-#ifndef LEDSTRIP_USE_ARRAY
         leds.resize(configs.ledstrip.ledsCount.value());
-#endif
         FastLED.addLeds<NEOPIXEL, PINS_LEDSTRIP>(&*std::begin(leds), leds.size())
             .setCorrection(TypicalSMD5050);
         initialized = true;
@@ -285,7 +278,7 @@ void updateLedStrip()
 
     FastLED.setMaxPowerInVoltsAndMilliamps(5, configs.ledstrip.maxMilliamps.value());
     FastLED.setBrightness(configs.ledstrip.brightness.value());
-    //FastLED.show();
+    FastLED.show();
 }
 
 void showAnimation()

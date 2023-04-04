@@ -169,8 +169,6 @@ extern "C" [[noreturn]] void app_main()
     BOOT_PROGRESS("main loop");
     ESP_LOGI(TAG, "Entering main loop...");
 
-    // auto last_time = espchrono::millis_clock::now();
-
     while (true)
     {
         const auto now = espchrono::millis_clock::now();
@@ -181,14 +179,8 @@ extern "C" [[noreturn]] void app_main()
             recovery = false;
         }
 
-       /*if (!heap_caps_check_integrity_all(true))
-            ESP_LOGW(TAG, "OIS IM OARSCH!!!!!");
-       else if (espchrono::ago(last_time) > 100ms)
-        {
-            last_time = now;
-            const float fragmentation = 100 - heap_caps_get_largest_free_block(MALLOC_CAP_8BIT) * 100.0f / heap_caps_get_free_size(MALLOC_CAP_8BIT);
-            ESP_LOGW(TAG, "Fragmentation: %f%%", fragmentation);
-        }*/
+//       if (!heap_caps_check_integrity_all(true))
+//            ESP_LOGW(TAG, "OIS IM OARSCH!!!!!");
 
         for (auto &schedulerTask : schedulerTasks)
         {
