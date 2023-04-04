@@ -30,7 +30,8 @@ void updateDrivingMode()
     motor_pwm_limiter::update();
 
     // Last, send values to motor controllers
-    sendCommands();
+    if (!configs.emulateFeedback.value())
+        sendCommands();
 }
 
 } // namespace bobby
