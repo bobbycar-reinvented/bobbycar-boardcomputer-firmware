@@ -435,6 +435,7 @@ public:
         ConfigWrapperLegacy<bool> allowPresetSwitch     {true,                                   DoReset,   {},                         "lockAlwPresetSw"     };
         ConfigWrapperLegacy<bool> keepLockedAfterReboot {false,                                  DoReset,   {},                         "keepLocked"          };
         ConfigWrapperLegacy<bool> locked                {false,                                  DoReset,   {},                         "currentlyLocked"     };
+        ConfigWrapperLegacy<std::optional<uint32_t>> rememberMe{std::nullopt,                    DoReset,   {},                         "rememberMe"          };
         std::array<ConfigWrapperLegacy<int8_t>, 4> pin {
             ConfigWrapperLegacy<int8_t>                 {1,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin0"      },
             ConfigWrapperLegacy<int8_t>                 {2,                                      DoReset,   MinMaxValue<int8_t, 0, 9>,  "lockscreenPin1"      },
@@ -686,6 +687,7 @@ public:
         REGISTER_CONFIG(lockscreen.allowPresetSwitch)
         REGISTER_CONFIG(lockscreen.keepLockedAfterReboot)
         REGISTER_CONFIG(lockscreen.locked)
+        REGISTER_CONFIG(lockscreen.rememberMe)
 
         for (auto &entry : lockscreen.pin)
         {

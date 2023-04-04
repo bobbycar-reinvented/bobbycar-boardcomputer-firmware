@@ -166,6 +166,15 @@ extern "C" [[noreturn]] void app_main()
     esp_chip_info(&chip_info);
     esp_pm_get_configuration(&pm_config);
 
+    if (const auto value = configs.lockscreen.rememberMe.value(); value)
+    {
+        const auto savedKilometers = configs.savedStatistics.totalCentimeters.value() / 100000;
+        const auto currentKilometers = *value / 100000;
+
+        simplified = (currentKilometers - savedKilometers) > 10;
+        ESP_LOGI(TAG, "Remember me -> simplified: %d", simplified);
+    }
+
     BOOT_PROGRESS("main loop");
     ESP_LOGI(TAG, "Entering main loop...");
 
