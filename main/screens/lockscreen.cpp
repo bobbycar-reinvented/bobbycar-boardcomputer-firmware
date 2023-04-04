@@ -210,6 +210,9 @@ void Lockscreen::drawRect(espgui::TftInterface &tft, int index, int offset, uint
 
 void Lockscreen::exit() const
 {
+    if (configs.lockscreen.rememberMe.value())
+        configs.write_config(configs.lockscreen.rememberMe, configs.savedStatistics.totalCentimeters.value());
+
     if (m_switchScreen)
     {
         switchToDefaultStatusDisplay();
