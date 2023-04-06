@@ -67,9 +67,6 @@
 [submodule "components/TFT_eSPI"]
 	path = components/TFT_eSPI
 	url = ../../0xFEEDC0DE64/TFT_eSPI.git
-[submodule "esp_boost"]
-	path = esp_boost
-	url = ../../0xFEEDC0DE64/esp_boost.git
 [submodule "components/asio_web"]
 	path = components/asio_web
 	url = ../../0xFEEDC0DE64/asio_web.git
