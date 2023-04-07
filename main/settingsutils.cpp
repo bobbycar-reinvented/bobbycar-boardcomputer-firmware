@@ -16,7 +16,8 @@ void switchProfile(uint8_t index)
     if (index == SIMPLIFIED_TRIGGER_TRIGGERONPRESET)
     {
         simplified = true;
-        configs.write_config(configs.lockscreen.rememberMe, std::nullopt);
+        if (const auto val = configs.lockscreen.rememberMe.value(); val)
+            configs.write_config(configs.lockscreen.rememberMe, std::max(1UL, *val - 20*100000));
 #ifdef SETTINGSUTILS_PLUGIN
 #include SETTINGSUTILS_PLUGIN
 #endif
