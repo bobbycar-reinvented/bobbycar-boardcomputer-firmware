@@ -28,7 +28,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 idf_build_set_property(CXX_COMPILE_OPTIONS -std=gnu++23 APPEND)
 
 set(EXTRA_COMPONENT_DIRS
-    esp_boost
     esp-protocols/components
 )
 
