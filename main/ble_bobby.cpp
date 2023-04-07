@@ -114,8 +114,8 @@ void destroyBle()
 
 void initBle()
 {
-    if (configs.bleSettings.bleEnabled.value() && configs.feature.ble.isEnabled.value())
-        createBle();
+    /*if (configs.bleSettings.bleEnabled.value() && configs.feature.ble.isEnabled.value())
+        createBle();*/
 }
 
 
@@ -124,13 +124,13 @@ void handleBle()
     if (!configs.feature.ble.isEnabled.value())
         return;
 
-    if (!initBleDone)
-        return;
-
     if (configs.bleSettings.bleEnabled.value())
     {
         if (!pServer)
             createBle();
+
+        if (!initBleDone)
+            return;
 
         if (livestatsCharacteristic->getSubscribedCount())
         {
