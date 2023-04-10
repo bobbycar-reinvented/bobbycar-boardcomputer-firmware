@@ -166,13 +166,17 @@ extern "C" [[noreturn]] void app_main()
     esp_chip_info(&chip_info);
     esp_pm_get_configuration(&pm_config);
 
-    if (const auto value = configs.lockscreen.rememberMe.value(); value)
+    if (const std::optional<uint32_t> value = configs.lockscreen.rememberMe.value(); value)
     {
-        const auto savedKilometers = configs.savedStatistics.totalCentimeters.value() / 100000;
-        const auto currentKilometers = *value / 100000;
+        // value is savedCentimeters of the last time the lockscreen was unlocked
+        const uint32_t savedCentimeters = configs.savedStatistics.totalCentimeters.value();
+        const auto diff_in_cm = savedCentimeters - *value;
 
-        simplified = (currentKilometers - savedKilometers) > 10;
-        ESP_LOGI(TAG, "Remember me -> simplified: %d", simplified);
+        // simplified should be true if diff is more than 15km
+        simplified = diff_in_cm > 15 * 100 * 1000; // 15km * 100cm/km * 1000
+        ESP_LOGW(TAG, "Remember me: %lucm, saved: %lucm", *value, savedCentimeters);
+        ESP_LOGW(TAG, "Diff: %lucm", diff_in_cm);
+        ESP_LOGW(TAG, "Simplified is %s", simplified ? "enabled" : "disabled");
     }
 
     BOOT_PROGRESS("main loop");
