@@ -70,7 +70,8 @@ typename std::enable_if<
         !std::is_same_v<T, wifi_auth_mode_t> &&
         !std::is_same_v<T, sntp_sync_mode_t> &&
         !std::is_same_v<T, espchrono::DayLightSavingMode> &&
-        !isBobbyEnum_v<T>
+        !isBobbyEnum_v<T> &&
+        !typeutils::is_optional_v<T>
         , void>::type
 toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 {
@@ -146,6 +147,25 @@ toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
 
 template<typename T>
 typename std::enable_if<
+        typeutils::is_optional_v<T> &&
+        !std::is_same_v<T, std::optional<wifi_stack::mac_t>>
+        , void>::type
+toArduinoJson(std::string_view key, T value, T defaultValue, JsonObject &object)
+{
+    object["n"] = key;
+    if (value)
+        object["v"] = *value;
+    else
+        object["v"] = nullptr;
+
+    if (defaultValue)
+        object["d"] = *defaultValue;
+    else
+        object["d"] = nullptr;
+}
+
+template<typename T>
+typename std::enable_if<
         std::is_same_v<T, OtaAnimationModes> ||
         std::is_same_v<T, LedstripAnimation> ||
         std::is_same_v<T, DefaultStatusDisplay> ||
@@ -191,12 +211,8 @@ typename std::enable_if<
         !std::is_same_v<T, wifi_auth_mode_t> &&
         !std::is_same_v<T, sntp_sync_mode_t> &&
         !std::is_same_v<T, espchrono::DayLightSavingMode> &&
-        !std::is_same_v<T, OtaAnimationModes> &&
-        !std::is_same_v<T, LedstripAnimation> &&
-        !std::is_same_v<T, DefaultStatusDisplay> &&
-        !std::is_same_v<T, HandbremseMode> &&
-        !std::is_same_v<T, BobbyQuickActions> &&
-        !std::is_same_v<T, BatteryCellType>
+        !typeutils::is_optional_v<T> &&
+        !isBobbyEnum_v<T>
         , tl::expected<void, std::string>>::type
 set_config(ConfigWrapper<T> &config, std::string_view newValue)
 {
@@ -273,6 +289,21 @@ set_config(ConfigWrapper<T> &config, std::string_view newValue)
         return configs.write_config(config, *parsed);
     else
         return tl::make_unexpected(parsed.error());
+}
+
+template<typename T>
+typename std::enable_if<
+        typeutils::is_optional_v<T> &&
+        !std::is_same_v<T, std::optional<wifi_stack::mac_t>>
+        , tl::expected<void, std::string>>::type
+set_config(ConfigWrapper<T> &config, std::string_view newValue)
+{
+    if (newValue.empty())
+        return configs.write_config(config, std::nullopt);
+    else if (auto parsed = cpputils::fromString<typename T::value_type>(newValue))
+        return configs.write_config(config, *parsed);
+    else
+        return tl::make_unexpected(fmt::format("could not parse {} ({})", newValue, parsed.error()));
 }
 
 template<typename T>

@@ -20,6 +20,7 @@
 
 // local includes
 #include "newsettings.h"
+#include "typeutils.h"
 
 using namespace std::chrono_literals;
 using esphttpdutils::HtmlTag;
@@ -48,6 +49,7 @@ typename std::enable_if<
     !std::is_same_v<T, wifi_auth_mode_t> &&
     !std::is_same_v<T, sntp_sync_mode_t> &&
     !std::is_same_v<T, espchrono::DayLightSavingMode> &&
+    !typeutils::is_optional_v<T> &&
     !isBobbyEnum_v<T>
 , void>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
@@ -198,6 +200,23 @@ showInputForSetting(std::string_view key, T value, std::string &body)
 
 template<typename T>
 typename std::enable_if<
+    typeutils::is_optional_v<T> &&
+    !std::is_same_v<std::optional<wifi_stack::mac_t>, T>
+, void>::type
+showInputForSetting(std::string_view key, T value, std::string &body)
+{
+    if (value)
+    {
+        showInputForSetting(key, *value, body);
+    }
+    else
+    {
+        body += fmt::format("<input type=\"text\" name=\"{}\" value=\"\" />", esphttpdutils::htmlentities(key));
+    }
+}
+
+template<typename T>
+typename std::enable_if<
     isBobbyEnum_v<T>
 , void>::type
 showInputForSetting(std::string_view key, T value, std::string &body)
@@ -344,6 +363,7 @@ typename std::enable_if<
     !std::is_same_v<T, wifi_auth_mode_t> &&
     !std::is_same_v<T, sntp_sync_mode_t> &&
     !std::is_same_v<T, espchrono::DayLightSavingMode> &&
+    !typeutils::is_optional_v<T> &&
     !isBobbyEnum_v<T>
 , tl::expected<void, std::string>>::type
 saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
@@ -421,6 +441,21 @@ saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
         return configs.write_config(config, *parsed);
     else
         return tl::make_unexpected(parsed.error());
+}
+
+template<typename T>
+typename std::enable_if<
+    typeutils::is_optional_v<T> &&
+    !std::is_same_v<T, std::optional<wifi_stack::mac_t>>
+, tl::expected<void, std::string>>::type
+saveSetting(ConfigWrapper<T> &config, std::string_view newValue)
+{
+    if (newValue.empty())
+        return configs.write_config(config, std::nullopt);
+    else if (auto parsed = cpputils::fromString<typename T::value_type>(newValue))
+        return configs.write_config(config, T(*parsed));
+    else
+        return tl::make_unexpected(fmt::format("could not parse {}", newValue));
 }
 
 template<typename T>
