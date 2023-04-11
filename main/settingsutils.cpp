@@ -7,8 +7,11 @@
 #include "globals.h"
 #include "newsettings.h"
 #include "presets.h"
+#include "typeutils.h"
 
 namespace bobby::settingsutils {
+
+using namespace typeutils;
 
 void switchProfile(uint8_t index)
 {
@@ -17,7 +20,7 @@ void switchProfile(uint8_t index)
     {
         simplified = true;
         if (const auto val = configs.lockscreen.rememberMe.value(); val)
-            configs.write_config(configs.lockscreen.rememberMe, std::max(1UL, *val - 20*100000));
+            configs.write_config(configs.lockscreen.rememberMe, std::max<optional_value_type_t<typeof val>>(1, *val - 20*100000));
 #ifdef SETTINGSUTILS_PLUGIN
 #include SETTINGSUTILS_PLUGIN
 #endif

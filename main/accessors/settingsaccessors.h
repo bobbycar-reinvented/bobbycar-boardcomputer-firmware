@@ -224,7 +224,7 @@ struct LockscreenAllowPresetSwitchAccessor : public NewSettingsAccessor<bool> { 
 template<uint8_t index>
 struct LockscreenPinDigitAccessor : public NewSettingsAccessor<int8_t> { ConfigWrapper<int8_t> &getConfig() const override { return configs.lockscreen.pin[index]; } };
 struct LockscreenKeepLockedAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.lockscreen.keepLockedAfterReboot; } };
-struct LockscreenRememberMeAccessor : public NewSettingsAccessor<std::optional<uint32_t>> { ConfigWrapper<std::optional<uint32_t>> &getConfig() const override { return configs.lockscreen.rememberMe; } };
+struct LockscreenRememberMeAccessor : public NewSettingsAccessor<std::optional<uint64_t>> { ConfigWrapper<std::optional<uint64_t>> &getConfig() const override { return configs.lockscreen.rememberMe; } };
 
 // Handbremse
 struct HandbremsEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.handbremse.enable; } };
