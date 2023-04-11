@@ -15,40 +15,76 @@ template<typename T>
 const char *t_to_str<T>::str = "unknown";
 
 #define DEFINE_FOR_TYPE2(TYPE, STR) \
-    template<> const char *t_to_str<TYPE>::str = #STR; \
-    template<> const char *t_to_str<TYPE const&>::str = #STR; \
-    template<> const char *t_to_str<std::optional<TYPE>>::str = "std::optional<" #STR ">"; \
-    template<> const char *t_to_str<std::optional<TYPE> const&>::str = "std::optional<" #STR ">"; \
-    template<> const char *t_to_str<ConfigWrapper<TYPE>>::str = #STR; \
-    template<> const char *t_to_str<ConfigWrapper<TYPE> const&>::str = #STR; \
-    template<> const char *t_to_str<ConfigWrapperLegacy<TYPE>>::str = #STR; \
-    template<> const char *t_to_str<ConfigWrapperLegacy<TYPE> const&>::str = #STR;
+    template<> inline const char *t_to_str<TYPE>::str = #STR; \
+    template<> inline const char *t_to_str<TYPE const&>::str = #STR; \
+    template<> inline const char *t_to_str<std::optional<TYPE>>::str = "std::optional<" #STR ">"; \
+    template<> inline const char *t_to_str<std::optional<TYPE> const&>::str = "std::optional<" #STR ">"; \
+    template<> inline const char *t_to_str<ConfigWrapper<TYPE>>::str = #STR; \
+    template<> inline const char *t_to_str<ConfigWrapper<TYPE> const&>::str = #STR; \
+    template<> inline const char *t_to_str<ConfigWrapperLegacy<TYPE>>::str = #STR; \
+    template<> inline const char *t_to_str<ConfigWrapperLegacy<TYPE> const&>::str = #STR;
+
+#define TYPE_VALUES(x) \
+    x(bool) \
+    x(int8_t) \
+    x(uint8_t) \
+    x(int16_t) \
+    x(uint16_t) \
+    x(int32_t) \
+    x(uint32_t) \
+    x(int64_t) \
+    x(uint64_t) \
+    x(float) \
+    x(double) \
+    x(string) \
+    x(sntp_sync_mode_t) \
+    x(espchrono::DayLightSavingMode) \
+    x(OtaAnimationModes) \
+    x(LedstripAnimation) \
+    x(DefaultStatusDisplay) \
+    x(HandbremseMode) \
+    x(BobbyQuickActions) \
+    x(BatteryCellType) \
+    x(wifi_auth_mode_t) \
+    x(wifi_stack::mac_t) \
+    x(wifi_stack::ip_address_t) \
+    x(espchrono::milliseconds32) \
+    x(espchrono::minutes32)
 
 #define DEFINE_FOR_TYPE(TYPE) DEFINE_FOR_TYPE2(TYPE, TYPE)
-DEFINE_FOR_TYPE(bool)
-DEFINE_FOR_TYPE(int8_t)
-DEFINE_FOR_TYPE(uint8_t)
-DEFINE_FOR_TYPE(int16_t)
-DEFINE_FOR_TYPE(uint16_t)
-DEFINE_FOR_TYPE(int32_t)
-DEFINE_FOR_TYPE(uint32_t)
-DEFINE_FOR_TYPE(int64_t)
-DEFINE_FOR_TYPE(uint64_t)
-DEFINE_FOR_TYPE(float)
-DEFINE_FOR_TYPE(double)
-DEFINE_FOR_TYPE(string)
-DEFINE_FOR_TYPE(sntp_sync_mode_t)
-DEFINE_FOR_TYPE(espchrono::DayLightSavingMode)
-DEFINE_FOR_TYPE(OtaAnimationModes)
-DEFINE_FOR_TYPE(LedstripAnimation)
-DEFINE_FOR_TYPE(DefaultStatusDisplay)
-DEFINE_FOR_TYPE(HandbremseMode)
-DEFINE_FOR_TYPE(BobbyQuickActions)
-DEFINE_FOR_TYPE(BatteryCellType)
-DEFINE_FOR_TYPE(wifi_auth_mode_t)
-DEFINE_FOR_TYPE(wifi_stack::mac_t)
-DEFINE_FOR_TYPE(wifi_stack::ip_address_t)
-DEFINE_FOR_TYPE(espchrono::milliseconds32)
-DEFINE_FOR_TYPE(espchrono::minutes32)
+TYPE_VALUES(DEFINE_FOR_TYPE)
 #undef DEFINE_FOR_TYPE
+
+// type traits is_numeric_v for std::optional<T>
+template<typename T>
+struct is_numeric : std::is_arithmetic<T> {};
+
+template<typename T>
+struct is_numeric<std::optional<T>> : is_numeric<T> {};
+
+template<typename T>
+inline constexpr bool is_numeric_v = is_numeric<T>::value;
+
+template<typename T>
+struct is_optional : std::false_type {};
+
+template<typename T>
+struct is_optional<std::optional<T>> : std::true_type {};
+
+template<typename T>
+inline constexpr bool is_optional_v = is_optional<T>::value;
+
+template<typename T>
+struct optional_value_type {
+    using type = T;
+};
+
+template<typename T>
+struct optional_value_type<std::optional<T>> {
+    using type = T;
+};
+
+template<typename T>
+using optional_value_type_t = typename optional_value_type<T>::type;
+
 } // namespace typeutils
