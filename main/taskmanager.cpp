@@ -92,7 +92,7 @@ BobbySchedulerTask schedulerTasksArr[]{
         BobbySchedulerTask{"ble", ble::initBle, ble::handleBle, 125ms, false, true},
         BobbySchedulerTask{"webserver", webserver::initWebserver, webserver::handleWebserver, 125ms, false, true},
         BobbySchedulerTask{"ledstrip", ledstrip::initLedStrip, ledstrip::updateLedStrip, 10ms, false, true},
-        BobbySchedulerTask{"espnow", espnow::initESPNow, espnow::handle, 150ms, false, true},
+        BobbySchedulerTask{"espnow", espnow::initESPNow, espnow::handle, 100ms, false, true},
         BobbySchedulerTask{"cloud", cloud::initCloud, cloud::updateCloud, 60ms, false, true},
         BobbySchedulerTask{"udpcloud", udpcloud::udpCloudInit, udpcloud::udpCloudUpdate, 60ms, false, true},
         BobbySchedulerTask{"drivingmode", initDrivingMode, updateDrivingMode, 8ms, false},

@@ -237,6 +237,8 @@ struct HandbremsVisualizeAccessor : public NewSettingsAccessor<bool> { ConfigWra
 struct ESPNowSyncTimeEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.syncTime; } };
 struct ESPNowSyncTimeWithOthersEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.syncTimeWithOthers; } };
 struct ESPNowSyncBlinkEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.syncBlink; } };
+struct ESPNowCloudEnabledAccessor : public NewSettingsAccessor<bool> { ConfigWrapper<bool> &getConfig() const override { return configs.espnow.cloudEnabled; } };
+struct ESPNowCloudSendRateAccessor : public NewSettingsAccessor<int16_t> { ConfigWrapper<int16_t> &getConfig() const override { return configs.boardcomputerHardware.timersSettings.espNowCloudSendRateMs; } };
 
 // Button Mapping accessors
 struct ButtonLeftAccessor : public NewSettingsAccessor<uint8_t> { ConfigWrapper<uint8_t> &getConfig() const override { return configs.dpadMappingLeft; } };

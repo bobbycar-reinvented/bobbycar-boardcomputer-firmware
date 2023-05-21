@@ -28,7 +28,7 @@ void initESPNow();
 
 void handle();
 
-void onRecvTs(uint64_t millis, bool isFromBobbycar = false);
+void onRecvTs(uint64_t millis);
 
 esp_err_t send_espnow_message(std::string_view message);
 

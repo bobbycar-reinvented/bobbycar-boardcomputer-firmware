@@ -362,6 +362,7 @@ public:
             ConfigWrapperLegacy<int16_t> cloudCollectRate{100,                                   DoReset,   {},                         "cloudCollectRat"     };
             ConfigWrapperLegacy<int16_t> cloudSendRate  {1,                                      DoReset,   {},                         "cloudSendRate"       };
             ConfigWrapperLegacy<int16_t> udpSendRateMs  {65,                                     DoReset,   {},                         "udpSendRate"         };
+            ConfigWrapperLegacy<int16_t> espNowCloudSendRateMs{100,                              DoReset,   {},                         "espNowCloudSndR"     };
         } timersSettings;
         ConfigWrapperLegacy<bool> flipScreen            {false,                                  NoReset,   {},                         "flipScreen"          };
         ConfigWrapperLegacy<bool> setupFinished         {false,                                  DoReset,   {},                         "setupFinished"       };
@@ -466,6 +467,7 @@ public:
         ConfigWrapperLegacy<bool> syncTime              {false,                                  DoReset,   {},                         "espnowSyncT"         };
         ConfigWrapperLegacy<bool> syncTimeWithOthers    {false,                                  DoReset,   {},                         "espnowSyncTWO"       };
         ConfigWrapperLegacy<bool> syncBlink             {false,                                  DoReset,   {},                         "espnowSyncBl"        };
+        ConfigWrapperLegacy<bool> cloudEnabled          {false,                                  DoReset,   {},                         "espnowCloud"         };
     } espnow;
 
     struct {
@@ -628,6 +630,7 @@ public:
         REGISTER_CONFIG(boardcomputerHardware.timersSettings.cloudCollectRate)
         REGISTER_CONFIG(boardcomputerHardware.timersSettings.cloudSendRate)
         REGISTER_CONFIG(boardcomputerHardware.timersSettings.udpSendRateMs)
+        REGISTER_CONFIG(boardcomputerHardware.timersSettings.espNowCloudSendRateMs)
 
         REGISTER_CONFIG(boardcomputerHardware.flipScreen)
         REGISTER_CONFIG(boardcomputerHardware.setupFinished)
@@ -710,6 +713,7 @@ public:
         REGISTER_CONFIG(espnow.syncTime)
         REGISTER_CONFIG(espnow.syncTimeWithOthers)
         REGISTER_CONFIG(espnow.syncBlink)
+        REGISTER_CONFIG(espnow.cloudEnabled)
 
         REGISTER_CONFIG(feature.ble.isEnabled)
         REGISTER_CONFIG(feature.cloud.isEnabled)

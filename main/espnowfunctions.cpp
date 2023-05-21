@@ -7,17 +7,17 @@
 #include <espwifistack.h>
 
 // local includes
-#include "globals.h"
-#include "utils.h"
-#include "time_bobbycar.h"
-#include "newsettings.h"
-#include "bobbyhupe.h"
 #include "bobbyblinker.h"
+#include "bobbyhupe.h"
+#include "cloudstats.h"
+#include "newsettings.h"
+#include "time_bobbycar.h"
 
 namespace bobby::espnow {
 uint16_t lastYear; // Used for esp-now timesync
 
 std::deque<esp_now_message_t> message_queue{};
+espchrono::millis_clock::time_point lastCloudSend;
 std::vector<esp_now_peer_info_t> peers{};
 uint8_t initialized{0};
 
@@ -58,7 +58,7 @@ extern "C" void onReceive(const esp_now_recv_info* info, const uint8_t *data, in
     ESP_LOGD(TAG, "Received data");
     const std::string_view data_str{(const char *)data, size_t(data_len)};
 
-    size_t sep_pos = data_str.find(":");
+    size_t sep_pos = data_str.find(':');
     if (std::string_view::npos != sep_pos)
     {
         esp_now_message_t msg{
@@ -211,7 +211,7 @@ void handle()
         return;
     }
 
-    if (message_queue.size())
+    if (!message_queue.empty())
     {
         for (const esp_now_message_t &msg : message_queue)
         {
@@ -237,7 +237,7 @@ void handle()
                 if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
                 {
                     ESP_LOGI(TAG, "setting current time to %" PRIu64, *result);
-                    onRecvTs(*result, true);
+                    onRecvTs(*result);
                 }
                 else
                 {
@@ -252,9 +252,29 @@ void handle()
 clear:
         message_queue.erase(std::begin(message_queue), std::end(message_queue));
     }
+
+    using namespace std::chrono_literals;
+    if (configs.espnow.cloudEnabled.value() && espchrono::ago(lastCloudSend) / 1ms > configs.boardcomputerHardware.timersSettings.espNowCloudSendRateMs.value())
+    {
+        cloudstats::espnowNeedsConstruction(true);
+
+        if (const auto json = cloudstats::buildCloudJson(); json)
+        {
+            if (const auto res = send_espnow_message(*json); res != ESP_OK)
+            {
+                ESP_LOGE(TAG, "send_espnow_message() failed with %s", esp_err_to_name(res));
+            }
+            else
+            {
+                lastCloudSend = espchrono::millis_clock::now();
+            }
+        }
+    }
+    else
+        cloudstats::espnowNeedsConstruction(false);
 }
 
-void onRecvTs(uint64_t millis, bool isFromBobbycar)
+void onRecvTs(uint64_t millis)
 {
     const auto milliseconds = std::chrono::milliseconds(millis);
     const auto timepoint = espchrono::utc_clock::time_point(milliseconds);
@@ -283,7 +303,7 @@ esp_err_t send_espnow_message(std::string_view message)
         return ESP_ERR_ESPNOW_IF;
     }
 
-    if (peers.size() < 1)
+    if (peers.empty())
     {
         return ESP_FAIL;
     }
@@ -306,8 +326,14 @@ esp_err_t send_espnow_message(std::string_view message)
         }
         else
         {
+            using namespace std::chrono_literals;
+
             const auto timeAfter = espchrono::millis_clock::now();
-            ESP_LOGI(TAG, "Successfully executed esp_now_send(): Took %lldms", std::chrono::floor<std::chrono::milliseconds>(timeAfter-timeBefore).count());
+            if (espchrono::ago(timeAfter) > 1.5ms)
+            {
+                ESP_LOGW(TAG, "esp_now_send() took %lldms",
+                         std::chrono::floor<std::chrono::milliseconds>(timeAfter - timeBefore).count());
+            }
         }
     }
     return ESP_OK;
