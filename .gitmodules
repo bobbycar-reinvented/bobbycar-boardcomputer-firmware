@@ -79,3 +79,6 @@
 [submodule "components/espfontlib"]
 	path = components/espfontlib
 	url = ../../0xFEEDC0DE64/espfontlib.git
+[submodule "components/esp-idf-qr-code-generator-component"]
+	path = components/esp-idf-qr-code-generator-component
+	url = ../../CommanderRedYT/esp-idf-qr-code-generator-component.git
