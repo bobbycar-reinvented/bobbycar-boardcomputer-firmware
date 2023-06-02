@@ -6,7 +6,6 @@
 #include <tftinterface.h>
 
 // local includes
-#include "globals.h"
 #include "newsettings.h"
 #include "screenmanager.h"
 
@@ -14,21 +13,22 @@ namespace bobby {
 
 using namespace espgui;
 
+using namespace qrcodegen;
+
 void QrCodeDebugDisplay::redraw(espgui::TftInterface &tft)
 {
     Base::redraw(tft);
 
     if (m_qrcode)
     {
-        auto &qr = *m_qrcode;
-        for (uint8_t y = 0; y < qr.size; y++) {
-            for (uint8_t x = 0; x < qr.size; x++) {
-                if (qrcode_getModule(&qr, x, y))
-                {
-                    tft.drawPixel(x+2,y+2, espgui::TFT_BLACK);
-                } else {
-                    tft.drawPixel(x+2,y+2, espgui::TFT_WHITE);
-                }
+        auto &qrcode = *m_qrcode;
+        auto size = qrcode.getSize();
+
+        for (auto y = 0; y < size; y++)
+        {
+            for (auto x = 0; x < size; x++)
+            {
+                tft.drawPixel(x + 2, y + 2, qrcode.getModule(x, y) ? espgui::TFT_BLACK : espgui::TFT_WHITE);
             }
         }
 
@@ -46,8 +46,15 @@ void QrCodeDebugDisplay::buttonPressed(espgui::Button button)
     case Button::Left: popScreen(); break;
     case Button::Right:
     {
-        uint8_t qrcodeBytes[qrcode_getBufferSize(7)];
-        qrcode_initText(&*m_qrcode, qrcodeBytes, 7, ECC_MEDIUM, fmt::format("WIFI:T:WPA;S:{};P:{};", configs.wifiApName.value(), configs.wifiApKey.value()).c_str());
+        if (const auto encoded = QrCode::encodeText(fmt::format("WIFI:T:WPA;S:{};P:{};", configs.wifiApName.value(), configs.wifiApKey.value()).c_str(), QrCode::Ecc::ECC_MEDIUM); !encoded)
+        {
+            popScreen();
+            return;
+        }
+        else
+        {
+            m_qrcode = *encoded;
+        }
         break;
     }
     default:;

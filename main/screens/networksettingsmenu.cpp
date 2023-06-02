@@ -55,7 +55,7 @@ void NetworkSettingsMenu::back()
 
 void NetworkAccessPointQRAction::triggered()
 {
-    std::string qr = fmt::format("WIFI:T:{};S:{};P:{};H:;", get_wifi_security_string(configs.wifiApAuthmode.value()), configs.wifiApName.value(), configs.wifiApKey.value());
+    const std::string qr = fmt::format("WIFI:T:{};S:{};P:{};H:;", get_wifi_security_string(configs.wifiApAuthmode.value()), configs.wifiApName.value(), configs.wifiApKey.value());
     espgui::pushScreen<QrDisplay>(qr);
 }
 } // namespace bobby

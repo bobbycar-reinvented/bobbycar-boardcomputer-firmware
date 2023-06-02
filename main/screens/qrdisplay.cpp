@@ -1,91 +1,87 @@
 #include "qrdisplay.h"
 
+// system includes
+#include <cmath>
+
+// 3rd party includes
+#include <qrcodegen.hpp>
+#include <screenmanager.h>
+#include <tftinterface.h>
+#include <tftcolors.h>
+
+// local includes
+#include "guihelpers/bobbydisplay.h"
+#include "newsettings.h"
+
+using namespace qrcodegen;
+
 namespace bobby {
-// this only works for ECC_MEDIUM
-uint16_t get_qrver_from_strlen(std::string_view str)
+
+QrDisplay::QrDisplay(std::string_view msg) : m_msg{msg} {}
+
+void QrDisplay::initScreen(espgui::TftInterface &tft)
 {
-    // alpha numeric, ECC Level M
-    // version 1-40
-    uint32_t len = str.length();
-    if (len <= 20)
-        return 1;
-    else if (len <= 38)
-        return 2;
-    else if (len <= 61)
-        return 3;
-    else if (len <= 90)
-        return 4;
-    else if (len <= 122)
-        return 5;
-    else if (len <= 154)
-        return 6;
-    else if (len <= 178)
-        return 7;
-    else if (len <= 221)
-        return 8;
-    else if (len <= 262)
-        return 9;
-    else if (len <= 311)
-        return 10;
-    else if (len <= 366)
-        return 11;
-    else if (len <= 419)
-        return 12;
-    else if (len <= 483)
-        return 13;
-    else if (len <= 528)
-        return 14;
-    else if (len <= 600)
-        return 15;
-    else if (len <= 656)
-        return 16;
-    else if (len <= 734)
-        return 17;
-    else if (len <= 816)
-        return 18;
-    else if (len <= 909)
-        return 19;
-    else if (len <= 970)
-        return 20;
-    else if (len <= 1035)
-        return 21;
-    else if (len <= 1134)
-        return 22;
-    else if (len <= 1248)
-        return 23;
-    else if (len <= 1326)
-        return 24;
-    else if (len <= 1451)
-        return 25;
-    else if (len <= 1542)
-        return 26;
-    else if (len <= 1637)
-        return 27;
-    else if (len <= 1732)
-        return 28;
-    else if (len <= 1839)
-        return 29;
-    else if (len <= 1994)
-        return 30;
-    else if (len <= 2113)
-        return 31;
-    else if (len <= 2238)
-        return 32;
-    else if (len <= 2369)
-        return 33;
-    else if (len <= 2506)
-        return 34;
-    else if (len <= 2632)
-        return 35;
-    else if (len <= 2780)
-        return 36;
-    else if (len <= 2894)
-        return 37;
-    else if (len <= 3054)
-        return 38;
-    else if (len <= 3220)
-        return 39;
+    using namespace espgui;
+
+    if (const auto encoded = QrCode::encodeText(m_msg.data(), QrCode::Ecc::ECC_MEDIUM); !encoded)
+    {
+        popScreen();
+        return;
+    }
     else
-        return 40;
+    {
+        const QrCode &qrcode = *encoded;
+        // 10px border
+        const auto size = qrcode.getSize();
+        const auto size_with_border = size + 10;
+
+        // 320x240 tft.width() x tft.height()
+        // calculate multiplier by seeing how many pixels would fit. use float, round down, then cast to int
+        const auto multiplier = static_cast<int>(std::floor(tft.width() / size_with_border));
+
+        // center the qr code
+        const auto x_offset = (tft.width() - (size * multiplier)) / 2;
+        const auto y_offset = (tft.height() - (size * multiplier)) / 2;
+
+        // clear screen
+        tft.fillScreen(TFT_WHITE);
+
+        // draw qr code
+        for (auto y = 0; y < size; y++)
+        {
+            for (auto x = 0; x < size; x++)
+            {
+                tft.fillRect(x_offset + (x * multiplier), y_offset + (y * multiplier), multiplier, multiplier, qrcode.getModule(x, y) ? TFT_BLACK : TFT_WHITE);
+            }
+        }
+    }
 }
+
+void QrDisplay::buttonPressed(espgui::Button button)
+{
+    Base::buttonPressed(button);
+
+    switch (button)
+    {
+    case espgui::Button::Left:
+    case espgui::Button::Right:
+        espgui::popScreen();
+        break;
+    default:;
+    }
+}
+
+void QrDisplay::start()
+{
+    Base::start();
+    m_oldBrightness = configs.boardcomputerHardware.display_brightness.value();
+    configs.write_config(configs.boardcomputerHardware.display_brightness, 50);
+}
+
+void QrDisplay::stop()
+{
+    Base::stop();
+    configs.write_config(configs.boardcomputerHardware.display_brightness, m_oldBrightness);
+}
+
 } // namespace bobby

@@ -4,7 +4,7 @@
 #include <optional>
 
 // 3rdparty lib includes
-#include <qrcode.h>
+#include <qrcodegen.hpp>
 
 // local includes
 #include "guihelpers/bobbydisplay.h"
@@ -17,11 +17,13 @@ class QrCodeDebugDisplay :
     using Base = BobbyDisplay;
 
 public:
+    using Base::Base;
+
     void redraw(espgui::TftInterface &tft) override;
 
     void buttonPressed(espgui::Button button) override;
 
 private:
-    std::optional<QRCode> m_qrcode;
+    std::optional<qrcodegen::QrCode> m_qrcode;
 };
 } // namespace bobby
