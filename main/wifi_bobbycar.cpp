@@ -11,13 +11,31 @@
 
 // local includes
 #include "newsettings.h"
+#include "espnowfunctions.h"
 
 namespace {
 wifi_stack::config createConfig();
 std::optional<wifi_stack::sta_config> createStaConfig();
 wifi_stack::wifi_entry createWifiEntry(const WiFiConfig &wifi_config);
 std::optional<wifi_stack::ap_config> createApConfig();
+std::optional<uint8_t> ap_channel_override;
+bool channelSwitched{false};
 } // namespace
+
+void set_ap_channel_override(uint8_t channel)
+{
+    ap_channel_override = channel;
+}
+
+void disable_ap_channel_override()
+{
+    ap_channel_override = std::nullopt;
+}
+
+std::optional<uint8_t>& get_ap_channel_override()
+{
+    return ap_channel_override;
+}
 
 void wifi_begin()
 {
@@ -26,6 +44,18 @@ void wifi_begin()
 
 void wifi_update()
 {
+    if (ap_channel_override)
+    {
+        if (!channelSwitched)
+        {
+            ESP_LOGI("BOBBY", "switching to channel %d", *ap_channel_override);
+            bobby::espnow::send_espnow_message("CHOK");
+            channelSwitched = true;
+        }
+    }
+    else
+        channelSwitched = false;
+
     wifi_stack::update(createConfig());
 }
 
@@ -135,7 +165,7 @@ std::optional<wifi_stack::ap_config> createApConfig()
             .subnet = configs.wifiApMask.value(),
             .gateway = configs.wifiApIp.value(),
         },
-        .channel = configs.wifiApChannel.value(),
+        .channel = ap_channel_override ? *ap_channel_override : configs.wifiApChannel.value(),
         .authmode = configs.wifiApAuthmode.value(),
         .ssid_hidden = configs.wifiApHidden.value(),
         .max_connection = 4,

@@ -30,6 +30,8 @@ void handle();
 
 void onRecvTs(uint64_t millis);
 
+void onRecvChannelSuggestion(uint8_t channel);
+
 esp_err_t send_espnow_message(std::string_view message);
 
 bool isInitialized();

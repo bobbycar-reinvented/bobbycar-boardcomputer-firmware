@@ -12,6 +12,7 @@
 #include "cloudstats.h"
 #include "newsettings.h"
 #include "time_bobbycar.h"
+#include "wifi_bobbycar.h"
 
 namespace bobby::espnow {
 uint16_t lastYear; // Used for esp-now timesync
@@ -244,6 +245,21 @@ void handle()
                     ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
                 }
             }
+            else if (msg.type == "CH")
+            {
+                if (!configs.espnow.cloudEnabled.value())
+                    goto clear;
+
+                if (const auto result = cpputils::fromString<uint64_t>(msg.content); result)
+                {
+                    ESP_LOGI(TAG, "setting ap channel override to %" PRIu64, *result);
+                    onRecvChannelSuggestion(*result);
+                }
+                else
+                {
+                    ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
+                }
+            }
             else
             {
                 ESP_LOGI(TAG, "Unknown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());
@@ -291,6 +307,19 @@ void onRecvTs(uint64_t millis)
     }
 
     receiveTsFromOtherBobbycars = false;
+}
+
+void onRecvChannelSuggestion(uint8_t channel)
+{
+    ESP_LOGI(TAG, "setting ap channel override to %u", channel);
+
+    if (channel > 13)
+    {
+        ESP_LOGW(TAG, "invalid channel: %u", channel);
+        return;
+    }
+
+    set_ap_channel_override(channel);
 }
 
 esp_err_t send_espnow_message(std::string_view message)
