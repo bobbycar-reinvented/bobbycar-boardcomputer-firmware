@@ -64,6 +64,9 @@ void createBle()
 
     ESP_LOGI(TAG, "Creating BLE server");
 
+    if (!NimBLEDevice::getInitialized())
+        return;
+
     pServer = NimBLEDevice::createServer();
 
     ESP_LOGI(TAG, "Creating BLE service");
@@ -99,7 +102,8 @@ void destroyBle()
 {
     ESP_LOGI("BOBBY", "called");
 
-    NimBLEDevice::deinit(true);
+    if (NimBLEDevice::getInitialized())
+        NimBLEDevice::deinit(true);
 
     pServer = {};
     pService = {};
