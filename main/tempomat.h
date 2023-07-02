@@ -17,4 +17,7 @@ enum class WISH : uint8_t {
 };
 
 extern WISH wish;
+
+void increase();
+void decrease();
 } // namespace pwmomat

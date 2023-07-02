@@ -73,6 +73,12 @@ void handle_bobby_quickaction(espgui::Button button, bool pressed)
             case BobbyQuickActions::COMPRESSOR_TOGGLE:
                 bobbyhupe::toggle_compressor();
                 break;
+            case BobbyQuickActions::PWMOMAT_INCREASE:
+                pwmomat::increase();
+                break;
+            case BobbyQuickActions::PWMOMAT_DECREASE:
+                pwmomat::decrease();
+                break;
             default:
                 return;
         }

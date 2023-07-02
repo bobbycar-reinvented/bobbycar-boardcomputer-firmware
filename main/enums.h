@@ -46,8 +46,9 @@ DECLARE_BOBBYTYPESAFE_ENUM(BatteryCellType, : uint8_t, BatteryCellTypeValues)
     x(WIFI_SCAN) \
     x(PWMOMAT) \
     x(HUPE) \
-    x(COMPRESSOR_TOGGLE)
-
+    x(COMPRESSOR_TOGGLE) \
+    x(PWMOMAT_INCREASE) \
+    x(PWMOMAT_DECREASE)
 DECLARE_BOBBYTYPESAFE_ENUM(BobbyQuickActions, : uint8_t, BobbyQuickActionsValues)
 
 // default status display

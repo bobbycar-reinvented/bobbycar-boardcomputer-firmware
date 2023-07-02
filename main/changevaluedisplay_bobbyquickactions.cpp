@@ -26,6 +26,8 @@ constexpr char TEXT_QUICKACTION_WIFI_SCAN[] = "Wifi Scan";
 constexpr char TEXT_QUICKACTION_TEMPOMAT[] = "Toggle PWM-Omat";
 constexpr char TEXT_QUICKACTION_COMPRESSOR[] = "Remote-Compressor";
 constexpr char TEXT_QUICKACTION_HUPE[] = "Remote-Hupe";
+constexpr char TEXT_QUICKACTION_PWMOMAT_INCREASE[] = "PWM-Omat +";
+constexpr char TEXT_QUICKACTION_PWMOMAT_DECREASE[] = "PWM-Omat -";
 constexpr char TEXT_BACK[] = "Back";
 } // namespace
 
@@ -40,6 +42,8 @@ ChangeValueDisplay<BobbyQuickActions>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_TEMPOMAT>>>(BobbyQuickActions::PWMOMAT, *this, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_COMPRESSOR>>>(BobbyQuickActions::COMPRESSOR_TOGGLE, *this, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_HUPE>>>(BobbyQuickActions::HUPE, *this, *this, *this);
+    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_PWMOMAT_INCREASE>>>(BobbyQuickActions::PWMOMAT_INCREASE, *this, *this, *this);
+    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_PWMOMAT_DECREASE>>>(BobbyQuickActions::PWMOMAT_DECREASE, *this, *this, *this);
 }
 
 void ChangeValueDisplay<BobbyQuickActions>::start()
@@ -57,6 +61,8 @@ void ChangeValueDisplay<BobbyQuickActions>::start()
     case BobbyQuickActions::PWMOMAT: setSelectedIndex(6); break;
     case BobbyQuickActions::COMPRESSOR_TOGGLE: setSelectedIndex(7); break;
     case BobbyQuickActions::HUPE: setSelectedIndex(8); break;
+    case BobbyQuickActions::PWMOMAT_INCREASE: setSelectedIndex(9); break;
+    case BobbyQuickActions::PWMOMAT_DECREASE: setSelectedIndex(10); break;
         default:
         ESP_LOGW(TAG, "Unknown BobbyQuickActions: %i", std::to_underlying(value));
         setSelectedIndex(9);
