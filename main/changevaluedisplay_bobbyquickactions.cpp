@@ -28,6 +28,8 @@ constexpr char TEXT_QUICKACTION_COMPRESSOR[] = "Remote-Compressor";
 constexpr char TEXT_QUICKACTION_HUPE[] = "Remote-Hupe";
 constexpr char TEXT_QUICKACTION_PWMOMAT_INCREASE[] = "PWM-Omat +";
 constexpr char TEXT_QUICKACTION_PWMOMAT_DECREASE[] = "PWM-Omat -";
+constexpr char TEXT_QUICKACTION_PWMOMAT_INCREASE_GARAGE[] = "Garage & PWM-Omat +";
+constexpr char TEXT_QUICKACTION_PWMOMAT_DECREASE_GARAGE[] = "Garage & PWM-Omat -";
 constexpr char TEXT_BACK[] = "Back";
 } // namespace
 
@@ -44,6 +46,8 @@ ChangeValueDisplay<BobbyQuickActions>::ChangeValueDisplay()
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_HUPE>>>(BobbyQuickActions::HUPE, *this, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_PWMOMAT_INCREASE>>>(BobbyQuickActions::PWMOMAT_INCREASE, *this, *this, *this);
     constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticText<TEXT_QUICKACTION_PWMOMAT_DECREASE>>>(BobbyQuickActions::PWMOMAT_DECREASE, *this, *this, *this);
+    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticFont<2>, StaticText<TEXT_QUICKACTION_PWMOMAT_INCREASE_GARAGE>>>(BobbyQuickActions::PWMOMAT_INCREASE_GARAGE, *this, *this, *this);
+    constructMenuItem<makeComponentArgs<MenuItem, SetValueAction<BobbyQuickActions>, StaticFont<2>, StaticText<TEXT_QUICKACTION_PWMOMAT_DECREASE_GARAGE>>>(BobbyQuickActions::PWMOMAT_DECREASE_GARAGE, *this, *this, *this);
 }
 
 void ChangeValueDisplay<BobbyQuickActions>::start()
@@ -63,6 +67,8 @@ void ChangeValueDisplay<BobbyQuickActions>::start()
     case BobbyQuickActions::HUPE: setSelectedIndex(8); break;
     case BobbyQuickActions::PWMOMAT_INCREASE: setSelectedIndex(9); break;
     case BobbyQuickActions::PWMOMAT_DECREASE: setSelectedIndex(10); break;
+    case BobbyQuickActions::PWMOMAT_INCREASE_GARAGE: setSelectedIndex(11); break;
+    case BobbyQuickActions::PWMOMAT_DECREASE_GARAGE: setSelectedIndex(12); break;
         default:
         ESP_LOGW(TAG, "Unknown BobbyQuickActions: %i", std::to_underlying(value));
         setSelectedIndex(9);

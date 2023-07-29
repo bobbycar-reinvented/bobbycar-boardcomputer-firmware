@@ -494,6 +494,8 @@ public:
 
     ConfigWrapperLegacy<DefaultStatusDisplay> defaultStatusDisplay {DefaultStatusDisplay::Default, DoReset, {},                         "statusdisplay"       };
 
+    ConfigWrapperLegacy<uint8_t> pwmomat_change_val     {10,                                     DoReset,   {},                         "pwmChangeVal"        };
+
     ConfigWrapperLegacy<bool> setupDone             {false,                                      DoReset,   {},                         "setupDone"           };
 
     template<typename T>
@@ -731,6 +733,8 @@ public:
         REGISTER_CONFIG(bleSettings.bleFenceEnabled)
 
         REGISTER_CONFIG(defaultStatusDisplay)
+        REGISTER_CONFIG(pwmomat_change_val)
+        REGISTER_CONFIG(setupDone)
         REGISTER_CONFIG(emulateFeedback)
     }
 

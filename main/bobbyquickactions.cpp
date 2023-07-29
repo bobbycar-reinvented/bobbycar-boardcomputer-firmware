@@ -79,6 +79,18 @@ void handle_bobby_quickaction(espgui::Button button, bool pressed)
             case BobbyQuickActions::PWMOMAT_DECREASE:
                 pwmomat::decrease();
                 break;
+            case BobbyQuickActions::PWMOMAT_INCREASE_GARAGE:
+                if(pwmomat::is_active())
+                    pwmomat::increase();
+                else
+                    open_garage();
+                break;
+            case BobbyQuickActions::PWMOMAT_DECREASE_GARAGE:
+                if(pwmomat::is_active())
+                    pwmomat::decrease();
+                else
+                    open_garage();
+                break;
             default:
                 return;
         }

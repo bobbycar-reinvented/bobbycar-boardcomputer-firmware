@@ -20,4 +20,5 @@ extern WISH wish;
 
 void increase();
 void decrease();
+bool is_active();
 } // namespace pwmomat
