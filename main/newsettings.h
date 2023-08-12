@@ -264,8 +264,8 @@ public:
     ConfigWrapperLegacy<espchrono::minutes32> timezoneOffset{espchrono::minutes32{60},           DoReset,   {},                           "timezoneOffset"      }; // MinMaxValue<minutes32, -1440m, 1440m>
     ConfigWrapperLegacy<espchrono::DayLightSavingMode>timeDst{espchrono::DayLightSavingMode::EuropeanSummerTime, DoReset, {},             "time_dst"            };
 
-    ConfigWrapperLegacy<bool>           canResetOnError {false,                                  DoReset,   {},                           "canBusRstErr"        };
-    ConfigWrapperLegacy<bool>       canUninstallOnReset {false,                                  DoReset,   {},                           "canUnstlRstErr"      };
+    ConfigWrapperLegacy<bool>           canResetOnError {true,                                   DoReset,   {},                           "canBusRstErr"        };
+    ConfigWrapperLegacy<bool>       canUninstallOnReset {true,                                   DoReset,   {},                           "canUnstlRstErr"      };
 
     ConfigWrapperLegacy<int16_t>     sampleCount        {50,                                     DoReset,   {},                           "sampleCount"         };
     ConfigWrapperLegacy<int16_t>     gasMin             {0,                                      DoReset,  MinMaxValue<int16_t, 0, 4095>, "gasMin"              };
