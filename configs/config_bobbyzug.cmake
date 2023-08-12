@@ -1,5 +1,5 @@
 set(BOBBY_APP_NAME bobbyzug)
-set(BOBBY_DEFAULT_USERNAME bobbyzugls)
+set(BOBBY_DEFAULT_USERNAME bobbyzug)
 
 set(BOBBYCAR_BUILDFLAGS
 # Pins
