@@ -126,7 +126,15 @@ void updateLedStrip()
         std::fill(std::begin(leds), std::end(leds), CRGB{0, 0, 0});
         if (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms || enAnim)
         {
-            const auto anim_to_fill = time_to_percent(750ms, 500ms, 100ms, configs.ledstrip.enableFullBlink.value() ? (leds.size() / 2) : configs.ledstrip.bigOffset.value() - configs.ledstrip.smallOffset.value(), configs.ledstrip.enableFullBlink.value());
+            const auto anim_to_fill = time_to_percent(
+                    750ms,
+                    500ms,
+                    100ms,
+                    configs.ledstrip.enableFullBlink.value() ?
+                        (leds.size() % 2 == 0 ? leds.size() / 2 : leds.size() / 2 - 1) :
+                        configs.ledstrip.bigOffset.value() - configs.ledstrip.smallOffset.value(),
+                    configs.ledstrip.enableFullBlink.value()
+            );
             if (configs.ledstrip.enableBeepWhenBlink.value())
             {
                 if (espchrono::utc_clock::now().time_since_epoch() % 750ms < 375ms)
@@ -151,7 +159,7 @@ void updateLedStrip()
                     }
                     else
                     {
-                        std::fill(std::begin(leds)+anim_to_fill, center, color);
+                        std::fill(std::begin(leds) + anim_to_fill, center, color);
                     }
                 }
                 if (BLINK_RIGHT_EXPR)
