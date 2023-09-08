@@ -73,6 +73,7 @@ set(BOBBYCAR_BUILDFLAGS
 #    -DDPAD_BOARDCOMPUTER_V2_DEBUG
 
     -DOTA_FIX
+    -DFEATURE_ESPNOW_BMS
 )
 
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ignore/lockscreen_plugin.cmake")

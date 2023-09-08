@@ -67,6 +67,7 @@ set(BOBBY_HEADERS
     dpad_boardcomputer_v2.h
     drivingstatistics.h
     enums.h
+    espnowbms.h
     espnowfunctions.h
     feedbackemulator.h
     feedbackparser.h
@@ -188,6 +189,7 @@ set(BOBBY_HEADERS
     screens/demosmenu.h
     screens/dynamicdebugmenu.h
     screens/enablemenu.h
+    screens/espnowbmsdisplay.h
     screens/espnowmenu.h
     screens/espnowsettingsmenu.h
     screens/extrabuttoncalibratemenu.h
@@ -337,6 +339,7 @@ set(BOBBY_SOURCES
     dpad6wire.cpp
     dpad_boardcomputer_v2.cpp
     drivingstatistics.cpp
+    espnowbms.cpp
     espnowfunctions.cpp
     feedbackemulator.cpp
     globallock.cpp
@@ -447,6 +450,7 @@ set(BOBBY_SOURCES
     screens/demosmenu.cpp
     screens/dynamicdebugmenu.cpp
     screens/enablemenu.cpp
+    screens/espnowbmsdisplay.cpp
     screens/espnowmenu.cpp
     screens/espnowsettingsmenu.cpp
     screens/extrabuttoncalibratemenu.cpp

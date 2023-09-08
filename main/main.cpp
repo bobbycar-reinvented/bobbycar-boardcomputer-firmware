@@ -33,6 +33,10 @@ using namespace std::chrono_literals;
 #include "defaultstatusdisplay.h"
 #include "globallock.h"
 
+#if defined(FEATURE_BMS) && defined(FEATURE_ESPNOW_BMS)
+#error "FEATURE_BMS and FEATURE_ESPNOW_BMS are mutually exclusive"
+#endif
+
 #define BOOT_PROGRESS(s) \
     bobby::set_boot_msg(s); \
     ESP_LOGE("BOOT", "%s (%lldms, %lldms since last one)", s, espchrono::ago(boot_start) / 1ms, espchrono::ago(last_boot_label) / 1ms); \

@@ -13,6 +13,9 @@
 #include "newsettings.h"
 #include "time_bobbycar.h"
 #include "wifi_bobbycar.h"
+#ifdef FEATURE_ESPNOW_BMS
+#include "espnowbms.h"
+#endif
 
 namespace bobby::espnow {
 uint16_t lastYear; // Used for esp-now timesync
@@ -178,7 +181,7 @@ void handle()
 
             if (initialized >= 3) // callback
             {
-                if (const auto error = esp_now_unregister_recv_cb(); error != ESP_OK)
+                if (const auto error = esp_now_unregister_recv_cb(); error != ESP_OK && error != ESP_ERR_ESPNOW_NOT_FOUND)
                 {
                     ESP_LOGE(TAG, "esp_now_unregister_recv_cb() failed with %s", esp_err_to_name(error));
                     return;
@@ -193,7 +196,7 @@ void handle()
 
             if (initialized >= 2) // esp deinit
             {
-                if (const auto error = esp_now_deinit(); error != ESP_OK)
+                if (const auto error = esp_now_deinit(); error != ESP_OK && error != ESP_ERR_ESPNOW_NOT_FOUND)
                 {
                     ESP_LOGE(TAG, "esp_now_deinit() failed with %s", esp_err_to_name(error));
                     return;
@@ -260,6 +263,12 @@ void handle()
                     ESP_LOGW(TAG, "could not parse number: %.*s", result.error().size(), result.error().data());
                 }
             }
+#ifdef FEATURE_ESPNOW_BMS
+            else if (msg.type == "BMS")
+            {
+                espnowbms::commandReceived(msg.content);
+            }
+#endif
             else
             {
                 ESP_LOGI(TAG, "Unknown Type: %s - Message: %s", msg.type.c_str(), msg.content.c_str());

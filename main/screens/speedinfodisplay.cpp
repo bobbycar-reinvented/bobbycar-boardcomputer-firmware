@@ -13,6 +13,9 @@
 #include "screens/mainmenu.h"
 #include "screens/statusdisplay.h"
 #include "taskmanager.h"
+#ifdef FEATURE_ESPNOW_BMS
+#include "screens/espnowbmsdisplay.h"
+#endif
 
 namespace bobby {
 void SpeedInfoDisplay::initScreen(espgui::TftInterface &tft)
@@ -119,6 +122,8 @@ void SpeedInfoDisplay::buttonPressed(espgui::Button button)
     case Button::Down:
 #ifdef FEATURE_BMS
         espgui::switchScreen<BmsDisplay>();
+#elif defined(FEATURE_ESPNOW_BMS)
+        espgui::switchScreen<EspNowBmsDisplay>();
 #else
         espgui::switchScreen<StatusDisplay>();
 #endif
