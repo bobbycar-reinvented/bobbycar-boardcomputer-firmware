@@ -10,16 +10,19 @@
 constexpr const char * const TAG = "espnowbms";
 
 namespace bobby::espnowbms {
-AntBmsData ant_bms_data;
+cpputils::DelayedConstruction<AntBmsData> ant_bms_data;
 
-void init()
-{
-
-}
+void init() {}
 
 void update()
 {
+    using namespace std::chrono_literals;
 
+    if (!ant_bms_data.constructed())
+        return;
+
+    if (ant_bms_data->last_update.has_value() && espchrono::ago(*ant_bms_data->last_update) > 10s)
+        ant_bms_data.destruct();
 }
 
 void commandReceived(const std::string& command)
@@ -36,9 +39,15 @@ void commandReceived(const std::string& command)
         return;
     }
 
-    ant_bms_data.parseDoc(doc);
+    if (!ant_bms_data.constructed())
+    {
+        ant_bms_data.construct();
+    }
 
-    ESP_LOGD(TAG, "parsed data: %.2fV, %.2fA, %.2fW", ant_bms_data.total_voltage, ant_bms_data.current, ant_bms_data.power);
+    if (!ant_bms_data.constructed())
+        return;
+
+    ant_bms_data->parseDoc(doc);
 }
 } // namespace bobby::espnowbms
 #endif // FEATURE_ESPNOW_BMS

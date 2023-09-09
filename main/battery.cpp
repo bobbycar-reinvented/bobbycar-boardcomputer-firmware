@@ -8,6 +8,9 @@
 #include "drivingstatistics.h"
 #include "globals.h"
 #include "newsettings.h"
+#ifdef FEATURE_ESPNOW_BMS
+#include "espnowbms.h"
+#endif
 
 namespace bobby::battery {
 
@@ -123,6 +126,11 @@ std::string getBatteryPercentageString()
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
         std::string output = fmt::format("Battery: {:.1f}%", getBatteryPercentage(*avgVoltage, configs.battery.cellType.value()));
+        return output;
+    }
+    else if (espnowbms::ant_bms_data.constructed())
+    {
+        std::string output = fmt::format("Battery: {:.1f}%", espnowbms::ant_bms_data->state_of_charge);
         return output;
     }
     else

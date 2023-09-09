@@ -26,22 +26,17 @@ void EspNowBmsDisplay::initScreen(espgui::TftInterface &tft)
     m_statusLabel.start(tft);
     m_statusLabel.redraw(tft, "init", espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
 
-    FontRenderer fontRenderer{tft};
-
-    fontRenderer.drawString("Voltage:", 15, m_voltageLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_voltageLabel.start(tft);
-
-    fontRenderer.drawString("AvgCell:", 15, m_averageCellVoltLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_averageCellVoltLabel.start(tft);
-
-    fontRenderer.drawString("SOC:", 15, m_socLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_socLabel.start(tft);
-
-    fontRenderer.drawString("Power:", 15, m_powerLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_powerLabel.start(tft);
-
-    fontRenderer.drawString("Current:", 15, m_currentLabel.y(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
     m_currentLabel.start(tft);
+
+    m_minCellVoltLabel.start(tft);
+    m_maxCellVoltLabel.start(tft);
+    m_cellDiffVoltLabel.start(tft);
+    m_mosfetTempLabel.start(tft);
+    m_balTempLabel.start(tft);
 
     for (auto &label: m_battLabels)
         label.start(tft);
@@ -53,24 +48,33 @@ void EspNowBmsDisplay::initScreen(espgui::TftInterface &tft)
 
 void EspNowBmsDisplay::redraw(espgui::TftInterface &tft)
 {
+    using namespace espnowbms;
     Base::redraw(tft);
 
-    bool hasData = espnowbms::ant_bms_data.last_update.has_value();
+    bool hasData = ant_bms_data && ant_bms_data->last_update.has_value();
 
     m_statusLabel.redraw(tft, hasData ? "OK" : "FAIL", hasData ? espgui::TFT_GREEN : espgui::TFT_RED, espgui::TFT_BLACK, 2);
 
     if (hasData)
     {
-        m_voltageLabel.redraw(tft, fmt::format("{:.02f}V", espnowbms::ant_bms_data.total_voltage), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
-        m_averageCellVoltLabel.redraw(tft, fmt::format("{:.02f} V", espnowbms::ant_bms_data.average_cell_voltage), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
-        m_socLabel.redraw(tft, fmt::format("{:.02f}%", espnowbms::ant_bms_data.state_of_charge), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
-        m_powerLabel.redraw(tft, fmt::format("{:.02f}W", espnowbms::ant_bms_data.power), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
-        m_currentLabel.redraw(tft, fmt::format("{:.02f}A", espnowbms::ant_bms_data.current), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        using namespace std::chrono_literals;
 
-        m_battery_state.redraw(tft, fmt::format("Batt: {}", espnowbms::ant_bms_data.battery_status_string), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
-        m_chargemos_state.redraw(tft, fmt::format("Charge: {}", espnowbms::ant_bms_data.charge_mosfet_status_string), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
-        m_dischargemos_state.redraw(tft, fmt::format("Discharge: {}", espnowbms::ant_bms_data.discharge_mosfet_status_string), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
-        m_balancing_state.redraw(tft, fmt::format("Balance: {}", espnowbms::ant_bms_data.balancer_status_string), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_voltageLabel.redraw(tft, fmt::format("Voltage: {:.02f}V", ant_bms_data->total_voltage), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_averageCellVoltLabel.redraw(tft, fmt::format("AvgCell: {:.02f} V", ant_bms_data->average_cell_voltage), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_socLabel.redraw(tft, fmt::format("SoC: {:.02f}%", ant_bms_data->state_of_charge), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_powerLabel.redraw(tft, fmt::format("Power: {:.1f}W", ant_bms_data->power), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_currentLabel.redraw(tft, fmt::format("Current: {:.2f}A", ant_bms_data->current), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+
+        m_minCellVoltLabel.redraw(tft, fmt::format("MinCell: {:.03f}V", ant_bms_data->min_cell_voltage), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_maxCellVoltLabel.redraw(tft, fmt::format("MaxCell: {:.03f}V", ant_bms_data->max_cell_voltage), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_cellDiffVoltLabel.redraw(tft, fmt::format("CellDiff: {:.03f}V", ant_bms_data->max_cell_voltage - ant_bms_data->min_cell_voltage), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_mosfetTempLabel.redraw(tft, fmt::format("MosfTemp: {:.1f}°C", ant_bms_data->mosfet_temperature), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_balTempLabel.redraw(tft, fmt::format("BalTemp: {:.1f}°C", ant_bms_data->balancer_temperature), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+
+        m_battery_state.redraw(tft, fmt::format("Batt: {} LastUpdate: {}ms", ant_bms_data->battery_status_string, ant_bms_data->last_update.has_value() ? espchrono::ago(*ant_bms_data->last_update) / 1ms : 0), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_chargemos_state.redraw(tft, fmt::format("Charge: {} Time: {}", ant_bms_data->charge_mosfet_status_string, ant_bms_data->accumulated_charging_time_formatted), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_dischargemos_state.redraw(tft, fmt::format("Discharge: {} Time: {}", ant_bms_data->discharge_mosfet_status_string, ant_bms_data->accumulated_discharging_time_formatted), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
+        m_balancing_state.redraw(tft, fmt::format("Balance: {}", ant_bms_data->balancer_status_string), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
     }
     else
     {
@@ -85,46 +89,37 @@ void EspNowBmsDisplay::redraw(espgui::TftInterface &tft)
     {
         float highestVoltage = [&](){
             float highest = 0;
-            for (auto &v: espnowbms::ant_bms_data.cell_voltages)
+            for (auto &v: ant_bms_data->cell_voltages)
                 highest = std::max(highest, v);
             return highest;
         }();
 
         float lowestVoltage = [&](){
             float lowest = 1000;
-            for (auto &v: espnowbms::ant_bms_data.cell_voltages)
+            for (auto &v: ant_bms_data->cell_voltages)
                 lowest = std::min(lowest, v);
             return lowest;
         }();
 
         for (int i = 0; i < m_battLabels.size(); i++)
         {
-            if (espnowbms::ant_bms_data.cell_voltages.size() <= i)
+            if (ant_bms_data->cell_voltages.size() <= i)
                 break;
 
-            auto value = espnowbms::ant_bms_data.cell_voltages[i];
+            auto value = ant_bms_data->cell_voltages[i];
 
             bool isHighest = value == highestVoltage;
             bool isLowest = value == lowestVoltage;
-            bool isBalancing = espnowbms::ant_bms_data.balanced_cell_bitmask & (1 << i);
 
-            uint16_t color = espgui::TFT_WHITE;
-            uint16_t bgColor = espgui::TFT_BLACK;
+            std::string color = "&6";
 
             // if highest, textColor should be green. if lowest, textColor should be red. if balancing, background should be white. if not balancing, background should be black.
             if (isHighest)
-                color = espgui::TFT_GREEN;
+                color = "&2";
             else if (isLowest)
-                color = espgui::TFT_RED;
+                color = "&1";
 
-            if (isBalancing)
-            {
-                bgColor = espgui::TFT_WHITE;
-                if (!isHighest && !isLowest)
-                    color = espgui::TFT_BLACK;
-            }
-
-            m_battLabels[i].redraw(tft, fmt::format("{:.03f}V", espnowbms::ant_bms_data.cell_voltages[i]), color, bgColor, 2);
+            m_battLabels[i].redraw(tft, fmt::format("{}{}&c:{:.03f}V", color, i, ant_bms_data->cell_voltages[i]), espgui::TFT_WHITE, espgui::TFT_BLACK, 2);
         }
     }
     else

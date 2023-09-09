@@ -12,6 +12,7 @@
 #include <espchrono.h>
 #include <fmt/core.h>
 #include <tl/expected.hpp>
+#include <delayedconstruction.h>
 
 // local includes
 #include "bobbytypesafeenum.h"
@@ -338,7 +339,7 @@ struct AntBmsData
     }
 };
 
-extern AntBmsData ant_bms_data;
+extern cpputils::DelayedConstruction<AntBmsData> ant_bms_data;
 
 void init();
 void update();

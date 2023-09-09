@@ -15,6 +15,7 @@
 #include "taskmanager.h"
 #ifdef FEATURE_ESPNOW_BMS
 #include "screens/espnowbmsdisplay.h"
+#include "espnowbms.h"
 #endif
 
 namespace bobby {
@@ -69,8 +70,7 @@ void SpeedInfoDisplay::redraw(espgui::TftInterface &tft)
                          fmt::format("{:.0f}", avgSpeedKmh)), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
     font.setTextSize(1);
-    m_batteryPercentLabel.redraw(tft, font, battery::getBatteryPercentageString(), espgui::TFT_WHITE, espgui::TFT_BLACK,
-                                 4);
+    m_batteryPercentLabel.redraw(tft, font, battery::getBatteryPercentageString(), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
 
     if (const auto avgVoltage = controllers.getAvgVoltage(); avgVoltage)
     {
@@ -80,6 +80,15 @@ void SpeedInfoDisplay::redraw(espgui::TftInterface &tft)
                               espgui::TFT_BLACK, 4);
         font.setTextSize(2);
         m_currentPowerLabel.redraw(tft, font, fmt::format("{:.0f} W", watt), espgui::TFT_WHITE, espgui::TFT_BLACK, 4);
+        font.setTextSize(1);
+    }
+    else if (espnowbms::ant_bms_data.constructed())
+    {
+        m_voltageLabel.redraw(tft, font, fmt::format("{:.2f} V  |  {:.2f} A", espnowbms::ant_bms_data->total_voltage, espnowbms::ant_bms_data->current), espgui::TFT_WHITE,
+                              espgui::TFT_BLACK, 4);
+        font.setTextSize(2);
+        m_currentPowerLabel.redraw(tft, font, fmt::format("{:.0f} W", espnowbms::ant_bms_data->power), espgui::TFT_WHITE,
+                                   espgui::TFT_BLACK, 4);
         font.setTextSize(1);
     }
     else
@@ -98,8 +107,17 @@ void SpeedInfoDisplay::redraw(espgui::TftInterface &tft)
 
     font.setTextSize(1);
 
-    m_dischargingBar->redraw(tft, sumCurrent < 0.f ? (-sumCurrent) : 0.f);
-    m_chargingBar->redraw(tft, sumCurrent > 0.f ? sumCurrent : 0.f);
+    if (controllers.front.feedbackValid && controllers.back.feedbackValid)
+    {
+        m_dischargingBar->redraw(tft, sumCurrent < 0.f ? (-sumCurrent) : 0.f);
+        m_chargingBar->redraw(tft, sumCurrent > 0.f ? sumCurrent : 0.f);
+    }
+    else if (espnowbms::ant_bms_data.constructed())
+    {
+        auto &current = espnowbms::ant_bms_data->current;
+        m_dischargingBar->redraw(tft, current < 0.f ? (-current) : 0.f);
+        m_chargingBar->redraw(tft, current > 0.f ? current : 0.f);
+    }
 
     m_performanceLabel.redraw(tft, std::to_string(drivingModeTask.callCount()),
                               (drivingModeTask.callCount() < 35) ? espgui::TFT_ORANGE : espgui::TFT_WHITE,

@@ -23,24 +23,35 @@ public:
 
     void buttonPressed(espgui::Button button) override;
 
-    espgui::Label m_statusLabel{215, 0};
+private:
+    static constexpr const int OFFSET_Y = 15;
+    static constexpr const int OFFSET_X = 10;
+    static constexpr const int STATUS_LABEL_WIDTH = 110;
+    static constexpr const int BATT_LABEL_WIDTH = 75;
 
-    espgui::Label m_voltageLabel{123, 0};
-    espgui::Label m_averageCellVoltLabel{123, 25};
-    espgui::Label m_socLabel{123, 50};
-    espgui::Label m_powerLabel{123, 75};
-    espgui::Label m_currentLabel{123, 100};
+    espgui::Label m_statusLabel{OFFSET_X, OFFSET_Y*1};
+    espgui::Label m_voltageLabel{OFFSET_X, OFFSET_Y*2};
+    espgui::Label m_averageCellVoltLabel{OFFSET_X, OFFSET_Y*3};
+    espgui::Label m_socLabel{OFFSET_X, OFFSET_Y*4};
+    espgui::Label m_powerLabel{OFFSET_X, OFFSET_Y*5};
+    espgui::Label m_currentLabel{OFFSET_X, OFFSET_Y*6};
+    espgui::Label m_minCellVoltLabel{OFFSET_X + STATUS_LABEL_WIDTH, OFFSET_Y*2};
+    espgui::Label m_maxCellVoltLabel{OFFSET_X + STATUS_LABEL_WIDTH, OFFSET_Y*3};
+    espgui::Label m_cellDiffVoltLabel{OFFSET_X + STATUS_LABEL_WIDTH, OFFSET_Y*4};
+    espgui::Label m_mosfetTempLabel{OFFSET_X + STATUS_LABEL_WIDTH, OFFSET_Y*5};
+    espgui::Label m_balTempLabel{OFFSET_X + STATUS_LABEL_WIDTH, OFFSET_Y * 6};
 
     std::array<espgui::Label, 12> m_battLabels{{
-        espgui::Label{5, 125}, espgui::Label{60, 125}, espgui::Label{120, 125}, espgui::Label{180, 125},
-        espgui::Label{5, 150}, espgui::Label{60, 150}, espgui::Label{120, 150}, espgui::Label{180, 150},
-        espgui::Label{5, 175}, espgui::Label{60, 175}, espgui::Label{120, 175}, espgui::Label{180, 175}
+       espgui::Label{OFFSET_X, OFFSET_Y* 8}, espgui::Label{OFFSET_X+BATT_LABEL_WIDTH, OFFSET_Y* 8}, espgui::Label{OFFSET_X+BATT_LABEL_WIDTH*2, OFFSET_Y* 8},
+       espgui::Label{OFFSET_X, OFFSET_Y* 9}, espgui::Label{OFFSET_X+BATT_LABEL_WIDTH, OFFSET_Y* 9}, espgui::Label{OFFSET_X+BATT_LABEL_WIDTH*2, OFFSET_Y* 9},
+       espgui::Label{OFFSET_X, OFFSET_Y*10}, espgui::Label{OFFSET_X+BATT_LABEL_WIDTH, OFFSET_Y*10}, espgui::Label{OFFSET_X+BATT_LABEL_WIDTH*2, OFFSET_Y*10},
+       espgui::Label{OFFSET_X, OFFSET_Y*11}, espgui::Label{OFFSET_X+BATT_LABEL_WIDTH, OFFSET_Y*11}, espgui::Label{OFFSET_X+BATT_LABEL_WIDTH*2, OFFSET_Y*11}
     }};
 
-    espgui::Label m_battery_state{5, 200};
-    espgui::Label m_chargemos_state{5, 225};
-    espgui::Label m_dischargemos_state{5, 250};
-    espgui::Label m_balancing_state{5, 275};
+    espgui::Label m_battery_state{OFFSET_X, OFFSET_Y*13};
+    espgui::Label m_chargemos_state{OFFSET_X, OFFSET_Y*14};
+    espgui::Label m_dischargemos_state{OFFSET_X, OFFSET_Y*15};
+    espgui::Label m_balancing_state{OFFSET_X, OFFSET_Y*16};
 };
 
 } // namespace bobby

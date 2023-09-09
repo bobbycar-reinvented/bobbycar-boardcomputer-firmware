@@ -39,6 +39,10 @@
 #include "serial_bobby.h"
 #endif
 
+#ifdef FEATURE_ESPNOW_BMS
+#include "espnowbms.h"
+#endif
+
 #include "ota.h"
 #include "ble_bobby.h"
 #include "webserver.h"
@@ -101,6 +105,9 @@ BobbySchedulerTask schedulerTasksArr[]{
         BobbySchedulerTask{"updateDisp", not_needed, bobby::updateDisplay, 20ms, true},
         BobbySchedulerTask{"redrawDisp", not_needed, bobby::redrawDisplay, 16ms, true},
         BobbySchedulerTask{"feedbackEmulator", feedbackemulator::init, feedbackemulator::update, 500ms, false, true},
+#ifdef FEATURE_ESPNOW_BMS
+        BobbySchedulerTask{"espnowbms", espnowbms::init, espnowbms::update, 1s, true},
+#endif
 };
 } // namespace
 
