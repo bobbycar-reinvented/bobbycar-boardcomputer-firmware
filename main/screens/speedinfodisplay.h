@@ -28,7 +28,7 @@ private:
     cpputils::DelayedConstruction<espgui::VariableRangeReverseProgressBar> m_dischargingBar;
     cpputils::DelayedConstruction<espgui::VariableRangeProgressBar> m_chargingBar;
 
-#define START_Y PROGRESS_BAR_START_Y + 28
+#define START_Y (PROGRESS_BAR_START_Y + 28)
 #define LABEL_HEIGHT 27
     espgui::Label m_batteryPercentLabel{5, START_Y + LABEL_HEIGHT * 0};
     espgui::Label m_voltageLabel{5, START_Y + LABEL_HEIGHT * 1};

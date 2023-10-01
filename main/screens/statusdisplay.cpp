@@ -16,6 +16,9 @@
 #ifdef FEATURE_BMS
 #include "screens/bmsdisplay.h"
 #endif
+#ifdef FEATURE_ESPNOW_BMS
+#include "screens/espnowbmsdisplay.h"
+#endif
 #include "screens/mainmenu.h"
 #include "screens/metersdisplay.h"
 #include "drivingstatistics.h"
@@ -222,9 +225,11 @@ void StatusDisplay::buttonPressed(espgui::Button button)
         break;
     case Button::Up:
 #ifdef FEATURE_BMS
-        switchScreen<BmsDisplay>();
+        espgui::switchScreen<BmsDisplay>();
+#elif defined(FEATURE_ESPNOW_BMS)
+        espgui::switchScreen<EspNowBmsDisplay>();
 #else
-        switchScreen<SpeedInfoDisplay>();
+        espgui::switchScreen<SpeedInfoDisplay>();
 #endif
         break;
     case Button::Down:
