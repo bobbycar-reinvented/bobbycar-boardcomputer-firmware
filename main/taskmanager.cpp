@@ -66,6 +66,12 @@ constexpr const char *const TAG = "TASKS";
 
 void not_needed() {}
 
+constexpr std::chrono::milliseconds operator""_fps(unsigned long long fps) {
+    return std::chrono::milliseconds(1000 / fps);
+}
+
+static_assert(60_fps == 16ms, "60fps should be 16ms");
+
 BobbySchedulerTask schedulerTasksArr[]{
         BobbySchedulerTask{"wifi", wifi_begin, wifi_update, 350ms, false},
 #if defined(FEATURE_DPAD) || defined(FEATURE_DPAD_3WIRESW) || defined(FEATURE_DPAD_5WIRESW) || defined(FEATURE_DPAD_5WIRESW_2OUT) || defined(FEATURE_DPAD_6WIRESW) || defined(DPAD_BOARDCOMPUTER_V2)
@@ -78,7 +84,7 @@ BobbySchedulerTask schedulerTasksArr[]{
         BobbySchedulerTask { "mosfets",        init_mosfets,          update_mosfets,          100ms, false },
 #endif
         BobbySchedulerTask{"time", time::initTime, time::updateTime, 250ms, false, true},
-        BobbySchedulerTask{"potis", potis::initPotis, potis::readPotis, 20ms, false},
+        BobbySchedulerTask{"potis", potis::initPotis, potis::readPotis, 60_fps, false},
 #ifdef FEATURE_BLUETOOTH
         BobbySchedulerTask { "bluetooth",      bluetooth_init,        bluetooth_update,        100ms, false },
 #ifdef FEATURE_BMS
@@ -86,7 +92,7 @@ BobbySchedulerTask schedulerTasksArr[]{
 #endif
 #endif
 #ifdef FEATURE_CAN
-        BobbySchedulerTask{"can", can::initCan, can::updateCan, 8ms, false},
+        BobbySchedulerTask{"can", can::initCan, can::updateCan, 120_fps, false},
 #endif
         BobbySchedulerTask{"debuginput", debug::initDebugInput, debug::handleDebugInput, 75ms, true},
 #ifdef FEATURE_SERIAL
@@ -95,15 +101,15 @@ BobbySchedulerTask schedulerTasksArr[]{
         BobbySchedulerTask{"ota", ota::initOta, ota::handleOta, 100ms, false, true},
         BobbySchedulerTask{"ble", ble::initBle, ble::handleBle, 125ms, false, true},
         BobbySchedulerTask{"webserver", webserver::initWebserver, webserver::handleWebserver, 125ms, false, true},
-        BobbySchedulerTask{"ledstrip", ledstrip::initLedStrip, ledstrip::updateLedStrip, 10ms, false, true},
+        BobbySchedulerTask{"ledstrip", ledstrip::initLedStrip, ledstrip::updateLedStrip, 75_fps, false, true},
         BobbySchedulerTask{"espnow", espnow::initESPNow, espnow::handle, 100ms, false, true},
         BobbySchedulerTask{"cloud", cloud::initCloud, cloud::updateCloud, 60ms, false, true},
         BobbySchedulerTask{"udpcloud", udpcloud::udpCloudInit, udpcloud::udpCloudUpdate, 60ms, false, true},
-        BobbySchedulerTask{"drivingmode", initDrivingMode, updateDrivingMode, 8ms, false},
+        BobbySchedulerTask{"drivingmode", initDrivingMode, updateDrivingMode, 120_fps, false},
         BobbySchedulerTask{"drivingstatistics", initStatistics, calculateStatistics, 175ms, false},
         BobbySchedulerTask{"dnsannounce", init_dns_announce, handle_dns_announce, 500ms, false, true},
         BobbySchedulerTask{"updateDisp", not_needed, bobby::updateDisplay, 20ms, true},
-        BobbySchedulerTask{"redrawDisp", not_needed, bobby::redrawDisplay, 16ms, true},
+        BobbySchedulerTask{"redrawDisp", not_needed, bobby::redrawDisplay, 30_fps, true},
         BobbySchedulerTask{"feedbackEmulator", feedbackemulator::init, feedbackemulator::update, 500ms, false, true},
 #ifdef FEATURE_ESPNOW_BMS
         BobbySchedulerTask{"espnowbms", espnowbms::init, espnowbms::update, 1s, true},
