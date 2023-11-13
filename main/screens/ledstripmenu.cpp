@@ -31,7 +31,6 @@ constexpr char TEXT_SELECTANIMATION[] = "Select Animation";
 constexpr char TEXT_BRAKELIGHTS[] = "Brake Lights";
 constexpr char TEXT_LEDSTRIPCOLORMENU[] = "Customize Ledstrip";
 constexpr char TEXT_BLINKANIMATION[] = "Blink animation";
-constexpr char TEXT_ANIMATION_TYPE[] = "Blink animation";
 constexpr char TEXT_LEDSCOUNT[] = "LEDs Count";
 constexpr char TEXT_CENTEROFFSET[] = "Center Offset";
 constexpr char TEXT_SMALLOFFSET[] = "Small Offset";
@@ -146,17 +145,28 @@ public:
         return fmt::format("&sLedstrip max current: &f&2{:.02f}A", configs.ledstrip.maxMilliamps.value() / 1000.f);
     }
 };
+
+class FastLedFpsText : public virtual espgui::TextInterface
+{
+public:
+    std::string text() const override
+    {
+        return fmt::format("&sFastLed fps: &f&2{}", FastLED.getFPS());
+    }
+};
 } // namespace
 
 LedstripMenu::LedstripMenu()
 {
     using namespace espgui;
 
+    constructMenuItem<makeComponent<MenuItem, FastLedFpsText, DummyAction>>();
+
+    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDANIMATION>, BobbyCheckbox, EnableLedAnimationAccessor>>();
+
     if (!simplified) { constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDSTRIP_STVO>, BobbyCheckbox, EnableLedstripStVOAccessor>>(); }
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_STVO_ENABLEFRONTLIGHT>, BobbyCheckbox, EnableLedstripStVOFrontlight>>();
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_AUTOMATIC_LIGHTS>, BobbyCheckbox, LedstripAutomaticLightAccessor>>();
-
-    constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDANIMATION>, BobbyCheckbox, EnableLedAnimationAccessor>>();
 
     constructMenuItem<PushScreenTypeSafeChangeMenuItem<LedstripAnimation, TEXT_SELECTANIMATION>>(&configs.ledstrip.animationType);
 

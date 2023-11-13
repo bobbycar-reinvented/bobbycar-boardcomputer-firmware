@@ -117,6 +117,13 @@ void updateLedStrip()
     else if (!configs.feature.ledstrip.isEnabled.value())
         return;
 
+    // enter if
+    if (espchrono::millis_clock::now().time_since_epoch() < 5s)
+    {
+        std::fill(std::begin(leds), std::end(leds), simplified ? CRGB::Gold : CRGB::Green);
+        return;
+    }
+
     EVERY_N_MILLISECONDS( 20 ) { gHue++; }
     static bool have_disabled_beeper = false;
     const bool enAnim = configs.ledstrip.enableAnimBlink.value();
