@@ -29,6 +29,7 @@ float gLedPosition = 0; // yes, this is intendet as a float value! Do NOT change
 bool brakeLightsStatus;
 
 espchrono::millis_clock::time_point brakeLightTimer;
+espchrono::millis_clock::time_point initializedTimestamp;
 
 uint16_t blinkAnimation = LEDSTRIP_OVERWRITE_NONE;
 
@@ -84,6 +85,7 @@ void initLedStrip()
         FastLED.addLeds<NEOPIXEL, PINS_LEDSTRIP>(&*std::begin(leds), leds.size())
             .setCorrection(TypicalSMD5050);
         initialized = true;
+        initializedTimestamp = espchrono::millis_clock::now();
     }
 }
 
@@ -118,13 +120,15 @@ void updateLedStrip()
         return;
 
     // enter if
-    if (espchrono::millis_clock::now().time_since_epoch() < 5s)
+    if (initializedTimestamp.time_since_epoch() < 2s)
     {
         std::fill(std::begin(leds), std::end(leds), simplified ? CRGB::Gold : CRGB::Green);
+        FastLED.show();
         return;
     }
 
-    EVERY_N_MILLISECONDS( 20 ) { gHue++; }
+    // EVERY_N_MILLISECONDS( 16 ) { gHue++; }
+    gHue++;
     static bool have_disabled_beeper = false;
     const bool enAnim = configs.ledstrip.enableAnimBlink.value();
 
