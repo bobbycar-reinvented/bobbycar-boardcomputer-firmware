@@ -26,18 +26,6 @@ public:
     void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override;
 };
 
-class WirelessSettingsCallbacks : public NimBLECharacteristicCallbacks
-{
-public:
-    void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override;
-};
-
-class WiFiListCallbacks : public NimBLECharacteristicCallbacks
-{
-public:
-    void onRead(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override;
-};
-
 bool initBleDone{false};
 } // namespace
 
@@ -50,9 +38,6 @@ BLECharacteristic *getwifilist{};
 
 namespace {
 RemoteControlCallbacks bleRemoteCallbacks;
-
-WirelessSettingsCallbacks bleWirelessSettingsCallbacks;
-WiFiListCallbacks bleWiFiListCallbacks;
 
 void createBle()
 {
@@ -78,11 +63,6 @@ void createBle()
     livestatsCharacteristic = pService->createCharacteristic("a48321ea-329f-4eab-a401-30e247211524", NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     remotecontrolCharacteristic = pService->createCharacteristic("4201def0-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE_NR);
     remotecontrolCharacteristic->setCallbacks(&bleRemoteCallbacks);
-
-    wirelessConfig = pService->createCharacteristic("4201def1-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::WRITE);
-    wirelessConfig->setCallbacks(&bleWirelessSettingsCallbacks);
-    getwifilist = pService->createCharacteristic("4201def2-a264-43e6-946b-6b2d9612dfed", NIMBLE_PROPERTY::READ);
-    getwifilist->setCallbacks(&bleWiFiListCallbacks);
 
     ESP_LOGI(TAG, "Starting BLE service");
 
@@ -282,45 +262,6 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic, NimB
         modes::defaultMode.setRemoteCommand(cmd);
         modes::remoteControlMode.setRemoteCommand(cmd);
     }
-}
-
-void WirelessSettingsCallbacks::onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo)
-{
-    const std::string& val = pCharacteristic->getValue();
-
-    StaticJsonDocument<256> doc;
-    if (const auto error = deserializeJson(doc, val))
-    {
-        ESP_LOGW(TAG, "ignoring cmd with invalid json: %.*s %s", val.size(), val.data(), error.c_str());
-        return;
-    }
-
-    auto write_type = doc["type"].as<std::string>();
-
-    if (write_type == "wifi") {
-        const int index = doc["wifi_index"].as<int>();
-        ESP_LOGI(TAG, "Set wifi%i: WiFi-SSID: %s, WiFi-Password: ***", doc["wifi_index"].as<int>(), doc["wifi_ssid"].as<const char*>());
-        configs.write_config(configs.wifi_configs[index].ssid, doc["wifi_ssid"].as<std::string>());
-        configs.write_config(configs.wifi_configs[index].key, doc["wifi_pass"].as<std::string>());
-    } else {
-        const auto deserialized = deserializeJson(doc, val);
-        ESP_LOGW(TAG, "Unkown type %s -> json: %.*s %s", doc["type"].as<const char*>(), val.size(), val.data(), deserialized.c_str());
-    }
-}
-
-void WiFiListCallbacks::onRead(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo)
-{
-    StaticJsonDocument<768> responseDoc;
-    auto wifiArray = responseDoc.createNestedArray("wifis");
-    ESP_LOGI(TAG, "Got request for listing wifi ssids.");
-    for (const auto &wifi : configs.wifi_configs)
-    {
-        wifiArray.add(wifi.ssid.value());
-    }
-    responseDoc["wifi_count"] = configs.wifi_configs.size();
-    std::string json;
-    serializeJson(responseDoc, json);
-    pCharacteristic->setValue(json);
 }
 } // namespace
 
