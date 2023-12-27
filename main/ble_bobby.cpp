@@ -20,6 +20,19 @@ namespace bobby::ble {
 namespace {
 constexpr const char * const TAG = "BOBBYBLE";
 
+using BleJsonDocument = StaticJsonDocument<1024>;
+std::weak_ptr<BleJsonDocument> bleJsonDocument{};
+
+std::shared_ptr<BleJsonDocument> getBleJson()
+{
+    if (auto json = bleJsonDocument.lock())
+        return json;
+
+    auto json = std::make_shared<BleJsonDocument>();
+    bleJsonDocument = json;
+    return json;
+}
+
 class RemoteControlCallbacks : public NimBLECharacteristicCallbacks
 {
 public:
@@ -50,7 +63,10 @@ void createBle()
     ESP_LOGI(TAG, "Creating BLE server");
 
     if (!NimBLEDevice::getInitialized())
+    {
+        ESP_LOGE(TAG, "BLE not initialized");
         return;
+    }
 
     pServer = NimBLEDevice::createServer();
 
@@ -71,8 +87,14 @@ void createBle()
     ESP_LOGI(TAG, "Starting BLE advertising");
 
     NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+
+    ESP_LOGI(TAG, "Setting BLE advertising parameters");
+
     pAdvertising->addServiceUUID(serviceUuid);
     pAdvertising->setScanResponse(true);
+
+    ESP_LOGI(TAG, "Setting BLE advertising data");
+
     NimBLEDevice::startAdvertising();
 
     initBleDone = true;
@@ -118,9 +140,13 @@ void handleBle()
 
         if (livestatsCharacteristic->getSubscribedCount())
         {
-            StaticJsonDocument<1024> doc;
+            auto guard = getBleJson();
+            auto &bleDoc = *guard;
+
+            bleDoc.clear();
+
             {
-                auto arr = doc.createNestedArray("v");
+                auto arr = bleDoc.createNestedArray("v");
                 if (controllers.front.feedbackValid)
                     arr.add(controllers.front.getCalibratedVoltage());
                 else
@@ -132,7 +158,7 @@ void handleBle()
             }
 
             {
-                auto arr = doc.createNestedArray("t");
+                auto arr = bleDoc.createNestedArray("t");
                 if (controllers.front.feedbackValid)
                     arr.add(fixBoardTemp(controllers.front.feedback.boardTemp));
                 else
@@ -144,7 +170,7 @@ void handleBle()
             }
 
             {
-                auto arr = doc.createNestedArray("e");
+                auto arr = bleDoc.createNestedArray("e");
                 if (controllers.front.feedbackValid)
                 {
                     arr.add(controllers.front.feedback.left.error);
@@ -168,7 +194,7 @@ void handleBle()
             }
 
             {
-                auto arr = doc.createNestedArray("s");
+                auto arr = bleDoc.createNestedArray("s");
                 if (controllers.front.feedbackValid)
                 {
                     arr.add(convertToKmh(controllers.front.feedback.left.speed * (profileSettings.controllerHardware.invertFrontLeft ? -1 : 1)));
@@ -192,7 +218,7 @@ void handleBle()
             }
 
             {
-                auto arr = doc.createNestedArray("a");
+                auto arr = bleDoc.createNestedArray("a");
                 if (controllers.front.feedbackValid)
                 {
                     arr.add(fixCurrent(controllers.front.feedback.left.dcLink) * 2);
@@ -216,7 +242,7 @@ void handleBle()
             }
 
             std::string json;
-            serializeJson(doc, json);
+            serializeJson(bleDoc, json);
 
             livestatsCharacteristic->setValue(json);
             livestatsCharacteristic->notify();
@@ -234,7 +260,9 @@ void RemoteControlCallbacks::onWrite(NimBLECharacteristic* pCharacteristic, NimB
 {
     const std::string& val = pCharacteristic->getValue();
 
-    StaticJsonDocument<256> doc;
+    auto guard = getBleJson();
+    auto &doc = *guard;
+
     if (const auto error = deserializeJson(doc, val))
     {
         ESP_LOGW(TAG, "ignoring cmd with invalid json: %.*s %s", val.size(), val.data(), error.c_str());

@@ -59,8 +59,15 @@ bool espnow_init_allowed()
 namespace {
 extern "C" void onReceive(const esp_now_recv_info* info, const uint8_t *data, int data_len)
 {
-    ESP_LOGD(TAG, "Received data");
     const std::string_view data_str{(const char *)data, size_t(data_len)};
+    /*
+    ESP_LOGI(TAG, "Received data (%.*s)", data_str.size(), data_str.data());
+
+    const auto sender_mac = wifi_stack::toString(wifi_stack::fromPtr(info->src_addr));
+    const auto receiver_mac = wifi_stack::toString(wifi_stack::fromPtr(info->des_addr));
+
+    ESP_LOGI(TAG, "Received data from %s to %s", sender_mac.c_str(), receiver_mac.c_str());
+    */
 
     size_t sep_pos = data_str.find(':');
     if (std::string_view::npos != sep_pos)
