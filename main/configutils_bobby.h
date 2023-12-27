@@ -5,12 +5,7 @@
 #include <configutils_priv_enum.h>
 
 // local includes
-#include "battery.h"
-#include "bobbyquickactions.h"
-#include "cloud.h"
-#include "defaultstatusdisplay.h"
-#include "handbremse.h"
-#include "ledstrip.h"
+#include "enums.h"
 
 IMPLEMENT_NVS_GET_SET_ENUM(BatteryCellType)
 IMPLEMENT_NVS_GET_SET_ENUM(BobbyQuickActions)
