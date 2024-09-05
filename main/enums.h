@@ -26,6 +26,15 @@ DECLARE_BOBBYTYPESAFE_ENUM(OtaAnimationModes, : uint8_t, OtaAnimationModesValues
     x(MancheLKWsHabenDieseAnimation)
 DECLARE_BOBBYTYPESAFE_ENUM(LedstripAnimation, : uint8_t, LedstripAnimationValues)
 
+#define LedstripColorOrderValues(x) \
+    x(RGB) \
+    x(RBG) \
+    x(GRB) \
+    x(GBR) \
+    x(BRG) \
+    x(BGR)
+DECLARE_BOBBYTYPESAFE_ENUM(LedstripColorOrder, : uint8_t, LedstripColorOrderValues)
+
 // battery
 #define BatteryCellTypeValues(x) \
     x(_22P) \
@@ -80,6 +89,7 @@ template <typename T>
 constexpr bool isBobbyEnum_v =
         std::is_same_v<T, OtaAnimationModes> ||
         std::is_same_v<T, LedstripAnimation> ||
+        std::is_same_v<T, LedstripColorOrder> ||
         std::is_same_v<T, BatteryCellType> ||
         std::is_same_v<T, BobbyQuickActions> ||
         std::is_same_v<T, DefaultStatusDisplay> ||

@@ -28,6 +28,7 @@ namespace {
 constexpr char TEXT_LEDSTRIP[] = "Ledstrip";
 constexpr char TEXT_LEDANIMATION[] = "LED Animation";
 constexpr char TEXT_SELECTANIMATION[] = "Select Animation";
+constexpr char TEXT_LEDSTRIP_COLOR_ORDER[] = "Color Order";
 constexpr char TEXT_BRAKELIGHTS[] = "Brake Lights";
 constexpr char TEXT_LEDSTRIPCOLORMENU[] = "Customize Ledstrip";
 constexpr char TEXT_BLINKANIMATION[] = "Blink animation";
@@ -159,6 +160,7 @@ LedstripMenu::LedstripMenu()
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_LEDANIMATION>, BobbyCheckbox, EnableLedAnimationAccessor>>();
 
     constructMenuItem<PushScreenTypeSafeChangeMenuItem<LedstripAnimation, TEXT_SELECTANIMATION>>(&configs.ledstrip.animationType);
+    constructMenuItem<PushScreenTypeSafeChangeMenuItem<LedstripColorOrder, TEXT_LEDSTRIP_COLOR_ORDER>>(&configs.ledstrip.colorOrder);
 
     constructMenuItem<makeComponent<MenuItem, espgui::StaticText<TEXT_BRAKELIGHTS>,  BobbyCheckbox, EnableBrakeLightsAccessor>>();
 

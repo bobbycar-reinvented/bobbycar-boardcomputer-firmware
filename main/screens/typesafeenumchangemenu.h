@@ -1,7 +1,6 @@
 #pragma once
 
 // 3rdparty lib includes
-#include <actions/dummyaction.h>
 #include <actions/popscreenaction.h>
 #include <actions/pushscreenaction.h>
 #include <configwrapper.h>
@@ -24,7 +23,7 @@ class TypesafeEnumCurrentValueMenuItem :
         public espgui::MenuItem
 {
 public:
-    TypesafeEnumCurrentValueMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
+    explicit TypesafeEnumCurrentValueMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
     std::string text() const override
     {
         return toString(m_config->value());
@@ -40,7 +39,7 @@ private:
 };
 
 template<typename TEnum>
-class TypesafeEnumSetterMenuItem :
+class TypesafeEnumSetterMenuItem final :
         public espgui::MenuItem
 {
 public:
@@ -57,16 +56,16 @@ public:
             BobbyErrorHandler{}.errorOccurred(std::move(result).error());
     }
 private:
-    const TEnum m_value;
+    TEnum m_value;
     ConfigWrapper<TEnum>* m_config;
 };
 
 template<typename TEnum>
-class TypeSafeChangeMenu :
+class TypeSafeChangeMenu final :
         public BobbyMenuDisplay
 {
 public:
-    TypeSafeChangeMenu(ConfigWrapper<TEnum>* config) : m_config{config}
+    explicit TypeSafeChangeMenu(ConfigWrapper<TEnum>* config) : m_config{config}
     {
         using namespace espgui;
         using namespace typesafeenumchangemenu;
@@ -92,10 +91,10 @@ private:
 } // namespace typesafeenumchangemenu
 
 template<typename TEnum, const char *Ttext>
-class SwitchScreenTypeSafeChangeMenuItem : public espgui::MenuItem
+class SwitchScreenTypeSafeChangeMenuItem final : public espgui::MenuItem
 {
 public:
-    SwitchScreenTypeSafeChangeMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
+    explicit SwitchScreenTypeSafeChangeMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
 
     static constexpr const char *STATIC_TEXT = Ttext;
     std::string text() const override
@@ -112,10 +111,10 @@ private:
 };
 
 template<typename TEnum, const char *Ttext>
-class PopScreenTypeSafeChangeMenuItem : public espgui::MenuItem
+class PopScreenTypeSafeChangeMenuItem final : public espgui::MenuItem
 {
 public:
-    PopScreenTypeSafeChangeMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
+    explicit PopScreenTypeSafeChangeMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
 
     static constexpr const char *STATIC_TEXT = Ttext;
     std::string text() const override
@@ -132,10 +131,10 @@ private:
 };
 
 template<typename TEnum, const char *Ttext>
-class PushScreenTypeSafeChangeMenuItem : public espgui::MenuItem
+class PushScreenTypeSafeChangeMenuItem final : public espgui::MenuItem
 {
 public:
-    PushScreenTypeSafeChangeMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
+    explicit PushScreenTypeSafeChangeMenuItem(ConfigWrapper<TEnum>* config) : m_config{config} {}
 
     static constexpr const char *STATIC_TEXT = Ttext;
     std::string text() const override

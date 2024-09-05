@@ -414,10 +414,11 @@ public:
             ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol7"       },
             ConfigWrapperLegacy<uint32_t>                   {0,                                  DoReset,   {},                         "ledCustomCol8"       },
         };
-        ConfigWrapperLegacy<uint8_t> leds_per_meter     {144,                                    DoReset,   {},                         "ledsPerMeter"        };
-        ConfigWrapperLegacy<bool> automaticLight        {false,                                  DoReset,   {},                         "nightLights"         };
-        ConfigWrapperLegacy<bool> brakeLights_useAccel  {false,                                  DoReset,   {},                         "brakeLightsA"    };
-        ConfigWrapperLegacy<bool> brakeLights_usePower  {false,                                  DoReset,   {},                         "brakeLightsP"    };
+        ConfigWrapperLegacy<uint8_t> leds_per_meter       {144,                                    DoReset,   {},                         "ledsPerMeter"      };
+        ConfigWrapperLegacy<bool> automaticLight          {false,                                  DoReset,   {},                         "nightLights"       };
+        ConfigWrapperLegacy<bool> brakeLights_useAccel    {false,                                  DoReset,   {},                         "brakeLightsA"      };
+        ConfigWrapperLegacy<bool> brakeLights_usePower    {false,                                  DoReset,   {},                         "brakeLightsP"      };
+        ConfigWrapperLegacy<LedstripColorOrder> colorOrder{LedstripColorOrder::GRB,                DoReset,   {},                         "ledColorOrder"     };
     } ledstrip;
 
     struct {
@@ -671,6 +672,7 @@ public:
         REGISTER_CONFIG(ledstrip.automaticLight)
         REGISTER_CONFIG(ledstrip.brakeLights_useAccel)
         REGISTER_CONFIG(ledstrip.brakeLights_usePower)
+        REGISTER_CONFIG(ledstrip.colorOrder)
 
         for (auto &entry : ledstrip.custom_color)
         {

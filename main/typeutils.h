@@ -41,6 +41,7 @@ const char *t_to_str<T>::str = "unknown";
     x(espchrono::DayLightSavingMode) \
     x(OtaAnimationModes) \
     x(LedstripAnimation) \
+    x(LedstripColorOrder) \
     x(DefaultStatusDisplay) \
     x(HandbremseMode) \
     x(BobbyQuickActions) \

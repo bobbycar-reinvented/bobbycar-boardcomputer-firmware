@@ -168,6 +168,7 @@ template<typename T>
 typename std::enable_if<
         std::is_same_v<T, OtaAnimationModes> ||
         std::is_same_v<T, LedstripAnimation> ||
+        std::is_same_v<T, LedstripColorOrder> ||
         std::is_same_v<T, DefaultStatusDisplay> ||
         std::is_same_v<T, HandbremseMode> ||
         std::is_same_v<T, BobbyQuickActions> ||

@@ -1,3 +1,5 @@
+constexpr const char * const TAG = "LEDSTRIP";
+
 #include "ledstrip.h"
 
 // system includes
@@ -81,8 +83,33 @@ void initLedStrip()
     if (configs.feature.ledstrip.isEnabled.value())
     {
         leds.resize(configs.ledstrip.ledsCount.value());
-        FastLED.addLeds<NEOPIXEL, PINS_LEDSTRIP>(&*std::begin(leds), leds.size())
-            .setCorrection(TypicalSMD5050);
+
+        const auto colorOrder = configs.ledstrip.colorOrder.value();
+
+        ESP_LOGW(TAG, "Using color order for ledstrip: %s", toString(colorOrder).c_str());
+
+        switch (colorOrder)
+        {
+        case LedstripColorOrder::RGB:
+            FastLED.addLeds<WS2812B, PINS_LEDSTRIP, RGB>(&*std::begin(leds), leds.size()).setCorrection(TypicalSMD5050);
+            break;
+        case LedstripColorOrder::RBG:
+            FastLED.addLeds<WS2812B, PINS_LEDSTRIP, RBG>(&*std::begin(leds), leds.size()).setCorrection(TypicalSMD5050);
+            break;
+        case LedstripColorOrder::GRB:
+        default:
+            FastLED.addLeds<WS2812B, PINS_LEDSTRIP, GRB>(&*std::begin(leds), leds.size()).setCorrection(TypicalSMD5050);
+            break;
+        case LedstripColorOrder::GBR:
+            FastLED.addLeds<WS2812B, PINS_LEDSTRIP, GBR>(&*std::begin(leds), leds.size()).setCorrection(TypicalSMD5050);
+            break;
+        case LedstripColorOrder::BRG:
+            FastLED.addLeds<WS2812B, PINS_LEDSTRIP, BRG>(&*std::begin(leds), leds.size()).setCorrection(TypicalSMD5050);
+            break;
+        case LedstripColorOrder::BGR:
+            FastLED.addLeds<WS2812B, PINS_LEDSTRIP, BGR>(&*std::begin(leds), leds.size()).setCorrection(TypicalSMD5050);
+            break;
+        }
         initialized = true;
     }
 }
